@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 // Css Imports
-import "./index.css";
+import "./index.scss";
 
 // Component Imports
 import App from "./App";
@@ -9,15 +9,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 // Redux Imports
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { store } from "redux/store";
 // Localization Helper Import
-import ConnectedIntlProvider from "./components/ConnectedIntlProvide";
+import ConnectedIntlProvider from "components/ConnectedIntlProvide";
 // Router Import
 import { BrowserRouter as Router } from "react-router-dom";
 
-if (process.env.NODE_ENV !== "production") {
-  import("antd/dist/antd.css");
-}
+import("antd/dist/antd.css");
 
 ReactDOM.render(
   <Provider store={store}>
