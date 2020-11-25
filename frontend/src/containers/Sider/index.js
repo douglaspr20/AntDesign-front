@@ -12,6 +12,19 @@ class Sider extends Component {
         <Route path={INTERNAL_LINKS.HOME} exact render={() => <Sidebar />} />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
+        <Route
+          path={INTERNAL_LINKS.LEARNING_LIBRARY}
+          render={() => <Sidebar />}
+        />
+        <Route path={INTERNAL_LINKS.MENTORING} render={() => <Sidebar />} />
+        <Route path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
+        <Route
+          path={INTERNAL_LINKS.CERTIFICATIONS}
+          render={() => <Sidebar />}
+        />
+        <Route path={INTERNAL_LINKS.HUB} render={() => <Sidebar />} />
+        <Route path={INTERNAL_LINKS.FAVORITES} render={() => <Sidebar />} />
+        <Route path={INTERNAL_LINKS.READ_LATER} render={() => <Sidebar />} />
       </Switch>
     );
   }
