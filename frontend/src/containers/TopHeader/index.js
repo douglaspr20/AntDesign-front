@@ -16,6 +16,34 @@ class TopHeader extends Component {
         />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
+        <Route
+          path={INTERNAL_LINKS.LEARNING_LIBRARY}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.MENTORING}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.EVENTS}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.CERTIFICATIONS}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.HUB}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.FAVORITES}
+          render={(props) => <TopNavBar {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.READ_LATER}
+          render={(props) => <TopNavBar {...props} />}
+        />
       </Switch>
     );
   }
