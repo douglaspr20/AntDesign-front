@@ -19,39 +19,39 @@ export default {
     {
       label: "Learning library",
       icon: IconLibrary,
-      url: "/#",
+      url: INTERNAL_LINKS.LEARNING_LIBRARY,
     },
     {
       label: "Mentoring",
       icon: IconMentoring,
-      url: "/#",
+      url: INTERNAL_LINKS.MENTORING,
     },
     {
       label: "Events",
       icon: IconCalendar,
-      url: "/#",
+      url: INTERNAL_LINKS.EVENTS,
     },
     {
       label: "Certifications",
       icon: IconMedal,
-      url: "/#",
+      url: INTERNAL_LINKS.CERTIFICATIONS,
     },
     {
       label: "Hub",
       icon: IconReader,
-      url: "/#",
+      url: INTERNAL_LINKS.HUB,
     },
   ],
   BOTTOM_MENUS: [
     {
       label: "Favorites",
       icon: IconStar,
-      url: "/#",
+      url: INTERNAL_LINKS.FAVORITES,
     },
     {
       label: "Read later",
       icon: IconBookmark,
-      url: "/#",
+      url: INTERNAL_LINKS.READ_LATER,
     },
   ],
 };

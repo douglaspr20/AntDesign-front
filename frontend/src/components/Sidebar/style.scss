@@ -1,0 +1,65 @@
+@import "styles/main.scss";
+
+.layout-sidebar {
+  box-shadow: $shadow-primary;
+  background: $color-white;
+
+  .ant-layout-sider-children {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    width: 108px;
+
+    &-container {
+      width: 68px;
+      height: 68px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  &-top-menus {
+    flex: 1;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &-bottom-menus {
+    margin-bottom: 19px;
+  }
+
+  &-menu {
+    height: 83px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-right: 3px solid transparent !important;
+
+    &.ant-menu-item-selected,
+    &:hover {
+      background-color: $color-background-dark !important;
+      border-right: 3px solid $color-primary !important;
+
+      a {
+        color: $color-text-primary !important;
+      }
+    }
+
+    &.ant-menu-item-selected::after {
+      display: none;
+    }
+  }
+}
