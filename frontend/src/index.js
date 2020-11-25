@@ -11,7 +11,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { store } from "redux/store";
 // Localization Helper Import
-import ConnectedIntlProvider from "components/ConnectedIntlProvide";
+import ConnectedIntlProvider from "components/ConnectedIntlProvider";
 // Router Import
 import { BrowserRouter as Router } from "react-router-dom";
 
