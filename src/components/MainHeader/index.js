@@ -32,8 +32,8 @@ class MainHeader extends React.Component {
     const pathInfo = MenuList.find((item) => item.url === pathname);
 
     return (
-      <div className="top-header">
-        <div className="top-header-left">
+      <div className="main-header">
+        <div className="main-header-left">
           {pathInfo && (
             <>
               <div className="page-icon">
@@ -43,7 +43,7 @@ class MainHeader extends React.Component {
             </>
           )}
         </div>
-        <div className="top-header-right">
+        <div className="main-header-right">
           <CustomButtom
             text="Upgrade"
             type="primary"

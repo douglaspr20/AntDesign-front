@@ -1,5 +1,6 @@
 @import "styles/main.scss";
 
 .home-page {
-  background: $color-primary;
+  background: $color-background;
+  min-height: calc(100vh - 72px);
 }
