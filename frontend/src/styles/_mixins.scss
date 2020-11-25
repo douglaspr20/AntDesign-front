@@ -1,5 +1,5 @@
 @mixin app-font($size, $line-height, $weight: normal, $style: normal) {
-  font-family: "Raleway", sans-serif !important;
+  font-family: "Roboto", sans-serif !important;
   font-style: $style !important;
   font-weight: $weight !important;
   font-size: $size !important;
