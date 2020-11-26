@@ -19,5 +19,9 @@
       @include app-font(26px, 30px);
       color: $color-text-primary;
     }
+
+    .custom-button {
+      font-weight: 500 !important;
+    }
   }
 }
