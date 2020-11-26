@@ -3,4 +3,29 @@
 .home-page {
   background: $color-background;
   min-height: calc(100vh - 72px);
+  height: calc(100vh - 72px);
+  overflow: auto;
+
+  &-profile {
+    background: $color-white;
+    padding: 28px 2rem;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &-container {
+    padding: 60px 2rem;
+    background: $color-background;
+
+    .view_all_events {
+      cursor: pointer;
+    }
+  }
+
+  .event-card-group {
+    margin-top: 2.25rem;
+  }
+
+  .event-card-item:not(:first-child) {
+    margin-top: 2.25rem;
+  }
 }
