@@ -50,7 +50,7 @@ class NavBar extends Component {
         </div>
         <Menu
           theme={navBarTheme}
-          defaultSelectedKeys={[this.props.location.pathname]}
+          selectedKeys={[this.props.location.pathname]}
           mode="inline"
           style={menuStyle}
           className="layout-sidebar-top-menus"
@@ -65,7 +65,7 @@ class NavBar extends Component {
         </Menu>
         <Menu
           theme={navBarTheme}
-          defaultSelectedKeys={[this.props.location.pathname]}
+          selectedKeys={[this.props.location.pathname]}
           mode="inline"
           style={menuStyle}
           className="layout-sidebar-bottom-menus"
