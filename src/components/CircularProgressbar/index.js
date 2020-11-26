@@ -30,7 +30,7 @@ class CircularProgressbar extends React.Component {
           percent={percent}
           format={() => (
             <div className="circular-progress-bar-inner">
-              <span>{`Only ${percent}%`}</span>
+              <span>{`Only ${100 - percent}%`}</span>
               <span>{`to go!`}</span>
             </div>
           )}
