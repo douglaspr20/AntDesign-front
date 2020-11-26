@@ -4,7 +4,7 @@ import groupBy from "lodash/groupBy";
 import moment from "moment";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import { DateAvatar, EventCard } from "components";
+import { DateAvatar, EventCard, ArticleCard, CustomButton } from "components";
 
 import "./style.scss";
 
@@ -38,6 +38,25 @@ const EventsData = [
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
   },
 ];
+
+const ArticlesData = [
+  {
+    title: "We want to show you the most relevan information for you",
+    desc:
+      "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
+    file: "",
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    title:
+      "We want to show you the most relevan information for you the most relevan information for you",
+    desc:
+      "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
+    file: "",
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+];
+
 const monthStr = [
   "JAN",
   "FEB",
@@ -104,6 +123,38 @@ class HomePage extends React.Component {
               </div>
             );
           })}
+          <Row gutter={16}>
+            <Col lg={{ span: 16, offset: 4 }}>
+              <h3 className="list-label">Recommended of the month</h3>
+            </Col>
+            {ArticlesData.map((article, index) => (
+              <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
+                <ArticleCard data={article} />
+              </Col>
+            ))}
+          </Row>
+          <Row gutter={16}>
+            <Col lg={{ span: 16, offset: 4 }}>
+              <h3 className="list-label">Recommended For you</h3>
+            </Col>
+            <Col lg={{ span: 16, offset: 4 }}>
+              <div className="recommend-card">
+                <Row gutter={16}>
+                  <Col
+                    span={14}
+                    offset={5}
+                    className="d-flex flex-column items-center"
+                  >
+                    <h2>
+                      Access to the best HHRR information library and boost your
+                      potential
+                    </h2>
+                    <CustomButton text="Upgrade" type="primary" size="xl" />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
         </div>
       </div>
     );

@@ -13,11 +13,38 @@
   }
 
   &-container {
-    padding: 60px 2rem;
+    padding: 60px 2rem 150px;
     background: $color-background;
 
     .view_all_events {
       cursor: pointer;
+    }
+
+    .list-label {
+      font-weight: 900 !important;
+      margin-top: 60px !important;
+    }
+
+    .article-card {
+      margin-top: 2.25rem;
+    }
+
+    .recommend-card {
+      padding: 2.25rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: $color-white;
+      box-shadow: 4px 0px 14px #37215714;
+      border: 1px solid $color-border;
+      border-radius: 0.5rem;
+      margin-top: 2.25rem;
+
+      h2 {
+        margin-bottom: 28px !important;
+        text-align: center;
+      }
     }
   }
 
