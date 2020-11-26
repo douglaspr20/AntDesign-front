@@ -15,7 +15,7 @@ import ConnectedIntlProvider from "components/ConnectedIntlProvide";
 // Router Import
 import { BrowserRouter as Router } from "react-router-dom";
 
-import("antd/dist/antd.css");
+import "antd/dist/antd.css";
 
 ReactDOM.render(
   <Provider store={store}>

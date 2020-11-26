@@ -1,0 +1,23 @@
+@import "styles/main.scss";
+
+.profile-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 28px 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid $color-border;
+
+  .section-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 355px;
+
+    & > span {
+      @include app-font(26px, 30px);
+      color: $color-text-primary;
+    }
+  }
+}
