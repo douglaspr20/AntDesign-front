@@ -31,7 +31,6 @@
 
   &-top-menus {
     flex: 1;
-    overflow: auto;
 
     &::-webkit-scrollbar {
       display: none;
@@ -46,12 +45,12 @@
     height: 83px !important;
     padding: 0 !important;
     margin: 0 !important;
-    border-right: 4px solid transparent !important;
+    border-right: 3px solid transparent !important;
 
     &.ant-menu-item-selected,
     &:hover {
       background-color: $color-background-dark !important;
-      border-right: 4px solid $color-primary !important;
+      border-right: 3px solid $color-primary !important;
 
       a {
         color: $color-text-primary !important;
