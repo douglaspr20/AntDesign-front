@@ -39,7 +39,7 @@ class NavBar extends Component {
       <Sider
         {...siderProp}
         theme={navBarTheme}
-        style={{ zIndex: 10 }}
+        style={{ zIndex: 999 }}
         width={108}
         className="layout-sidebar"
       >
