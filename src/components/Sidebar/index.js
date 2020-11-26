@@ -7,6 +7,7 @@ import { Link, withRouter } from "react-router-dom";
 
 import { SIDEBAR_MENU_LIST } from "enum";
 import SidebarMenuItem from "./SidebarMenuItem";
+import LogoSidebar from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
@@ -44,7 +45,7 @@ class NavBar extends Component {
       >
         <div className="layout-sidebar-logo">
           <div className="layout-sidebar-logo-container">
-            <img src={TopMenuList[0].icon} alt="sidebar-logo" />
+            <img src={LogoSidebar} alt="sidebar-logo" />
           </div>
         </div>
         <Menu
@@ -90,8 +91,5 @@ const mapDispatchToProps = {
 };
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(injectIntl(NavBar))
+  connect(mapStateToProps, mapDispatchToProps)(injectIntl(NavBar))
 );
