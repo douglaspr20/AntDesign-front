@@ -5,7 +5,7 @@ import { setCollapsed } from "redux/actions/env-actions";
 import { injectIntl } from "react-intl";
 import { Link, withRouter } from "react-router-dom";
 
-import { SIDEBAR_MENU_LIST } from "enum";
+import { SIDEBAR_MENU_LIST, INTERNAL_LINKS } from "enum";
 import SidebarMenuItem from "./SidebarMenuItem";
 import LogoSidebar from "images/logo-sidebar.svg";
 
@@ -45,7 +45,9 @@ class NavBar extends Component {
       >
         <div className="layout-sidebar-logo">
           <div className="layout-sidebar-logo-container">
-            <img src={LogoSidebar} alt="sidebar-logo" />
+            <Link to={INTERNAL_LINKS.HOME}>
+              <img src={LogoSidebar} alt="sidebar-logo" />
+            </Link>
           </div>
         </div>
         <Menu
