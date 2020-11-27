@@ -25,19 +25,25 @@
   &-content {
     padding: 1.5rem 28px;
     flex: 1;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
 
     & > h3 {
       font-weight: 500 !important;
       margin-bottom: 0.5rem !important;
     }
 
-    & > h5 {
-      font-weight: 500 !important;
+    & p {
+      @include app-font(14px, 21px, 500);
       color: $color-text-secondary !important;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
       overflow: hidden;
+      display: block;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      margin: 0;
+      height: 100%;
+      /* autoprefixer: off */
     }
 
     &-file {
