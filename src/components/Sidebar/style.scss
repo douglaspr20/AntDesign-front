@@ -32,6 +32,7 @@
 
   &-top-menus {
     flex: 1;
+    overflow: auto;
 
     &::-webkit-scrollbar {
       display: none;
@@ -47,6 +48,7 @@
     padding: 0 !important;
     margin: 0 !important;
     border-right: 3px solid transparent !important;
+    width: 100% !important;
 
     &.ant-menu-item-selected,
     &:hover {
