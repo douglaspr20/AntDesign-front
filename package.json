@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.3.0",
     "antd": "^4.1.4",
     "babel-plugin-import": "^1.11.0",
+    "clsx": "^1.1.1",
     "customize-cra": "^0.2.12",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",

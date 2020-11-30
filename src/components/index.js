@@ -5,3 +5,4 @@ export { default as CircularProgressbar } from "./CircularProgressbar";
 export { default as EventCard } from "./EventCard";
 export { default as DateAvatar } from "./DateAvatar";
 export { default as ArticleCard } from "./ArticleCard";
+export { default as SvgIcon } from "./Icon";
