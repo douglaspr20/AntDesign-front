@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import IconDocument from "images/icon-document.svg";
 
+import { SvgIcon } from "components";
+
 import "./style.scss";
 
 class ArticleCard extends React.Component {
@@ -57,10 +59,16 @@ class ArticleCard extends React.Component {
             </p>
           </div>
           <div className="article-card-content-file">
-            <div className="doc-image">
-              <img src={IconDocument} alt="doc-icon" />
+            <div className="d-flex items-center">
+              <div className="article-card-icon">
+                <img src={IconDocument} alt="doc-icon" />
+              </div>
+              <h6>{`Article`}</h6>
             </div>
-            <h6>{`Article`}</h6>
+            <div className="d-flex items-center">
+              <SvgIcon name="star" className="article-card-icon" />
+              <SvgIcon name="bookmark" />
+            </div>
           </div>
         </div>
       </div>
