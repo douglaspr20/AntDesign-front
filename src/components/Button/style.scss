@@ -59,6 +59,42 @@
     }
   }
 
+  &.secondary.no-border {
+    background: $color-white !important;
+    border: none !important;
+    color: $color-success !important;
+
+    &:hover,
+    &:focus {
+      background: $color-success;
+      color: $color-white;
+    }
+
+    &.xs {
+      font-weight: 500 !important;
+      padding: 0 13px !important;
+    }
+  }
+
+  &.remove {
+    background: $color-background !important;
+    border: 1px solid $color-border !important;
+    color: $color-text-third !important;
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+      background: $color-white !important;
+      color: $color-error !important;
+      border: 1px solid $color-error !important;
+    }
+
+    &.xs {
+      font-weight: 500 !important;
+      padding: 0 13px !important;
+    }
+  }
+
   &.xs {
     height: 28px;
     padding: 0 39px;

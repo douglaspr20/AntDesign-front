@@ -48,10 +48,11 @@
 
     &-file {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       margin-top: 0.5rem;
 
-      .doc-image {
+      .article-card-icon {
         width: 1.5rem;
         height: 1.5rem;
         margin-right: 0.25rem;
@@ -64,7 +65,7 @@
         }
       }
 
-      & > h6 {
+      & h6 {
         font-weight: 500 !important;
         color: $color-text-third !important;
       }
