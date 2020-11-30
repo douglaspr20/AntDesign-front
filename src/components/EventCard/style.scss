@@ -45,9 +45,15 @@
       width: 112px;
       padding: 0 !important;
       font-weight: 500 !important;
+    }
 
-      &.not-going-btn {
-        margin-right: 1.5rem;
+    .going-label {
+      margin-right: 37px;
+      color: $color-success;
+      @include app-font(14px, 19px, normal);
+
+      span {
+        margin-left: 0.5rem;
       }
     }
   }

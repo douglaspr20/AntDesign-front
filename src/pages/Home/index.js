@@ -16,7 +16,7 @@ const EventsData = [
     timezone: "EST",
     type: "Online event",
     cost: "Free",
-    actionType: "attend",
+    going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
   },
   {
@@ -25,7 +25,7 @@ const EventsData = [
     timezone: "EST",
     type: "Online event",
     cost: "Free",
-    actionType: "going",
+    going: true,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
   },
   {
@@ -34,7 +34,7 @@ const EventsData = [
     timezone: "EST",
     type: "Online event",
     cost: "Free",
-    actionType: "attend",
+    going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
   },
 ];
