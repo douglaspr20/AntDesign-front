@@ -29,4 +29,23 @@
       transform: translate(-50%, 0);
     }
   }
+
+  &-content {
+    padding: 20px 2rem 40px;
+
+    .textfield-label {
+      font-weight: bold !important;
+      margin-top: 52px !important;
+    }
+
+    .textfield-value {
+      font-weight: 500 !important;
+      margin-top: 0.75rem !important;
+      color: $color-primary !important;
+
+      &.completed {
+        color: $color-text-secondary !important;
+      }
+    }
+  }
 }

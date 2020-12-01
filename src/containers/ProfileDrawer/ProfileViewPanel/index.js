@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 import { ProfileAvatar, CustomButton } from "components";
 
@@ -40,6 +41,36 @@ class ProfileViewPanel extends React.Component {
             type="primary"
             size="lg"
           />
+        </div>
+        <div className="profile-view-panel-content">
+          <h5 className="textfield-label">About you</h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.about })}>
+            {user.about || "Complete"}
+          </h3>
+          <h5 className="textfield-label">Title / Profession</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.titleProfessions,
+            })}
+          >
+            {user.titleProfessions || "Complete"}
+          </h3>
+          <h5 className="textfield-label">Proficiency level</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.proficiencyLevel,
+            })}
+          >
+            {user.proficiencyLevel || "Complete"}
+          </h3>
+          <h5 className="textfield-label">Topics of interest</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.topicsOfInterest,
+            })}
+          >
+            {user.topicsOfInterest || "Complete"}
+          </h3>
         </div>
       </div>
     );
