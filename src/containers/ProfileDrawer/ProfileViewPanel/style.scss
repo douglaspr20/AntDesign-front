@@ -1,0 +1,32 @@
+@import "styles/main.scss";
+
+.profile-view-panel {
+  margin: -24px;
+
+  &-header {
+    background: $color-background;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .user-info {
+      &-avatar {
+        margin-top: 26px;
+      }
+
+      &-name {
+        margin-top: 0.5rem !important;
+        margin-bottom: 37px !important;
+      }
+    }
+
+    .profile-complete-btn {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+}
