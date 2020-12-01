@@ -25,7 +25,15 @@ class ProfileDrawer extends React.Component {
   }
 
   onDrawerClose = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false, edit: false });
+  };
+
+  onEdit = () => {
+    this.setState({ edit: true });
+  };
+
+  onSave = () => {
+    this.setState({ edit: false });
   };
 
   render() {
@@ -36,8 +44,10 @@ class ProfileDrawer extends React.Component {
         visible={visible}
         onClose={this.onDrawerClose}
       >
-        {edit && <ProfileEditPanel />}
-        {!edit && <ProfileViewPanel />}
+        {edit && (
+          <ProfileEditPanel onSave={() => this.setState({ edit: true })} />
+        )}
+        {!edit && <ProfileViewPanel onEdit={this.onEdit} />}
       </CustomDrawer>
     );
   }

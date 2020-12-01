@@ -1,7 +1,9 @@
 import React from "react";
 import clsx from "clsx";
+import PropTypes from "prop-types";
 
 import { ProfileAvatar, CustomButton } from "components";
+import { CONTACT_ICONS } from "enum";
 
 import "./style.scss";
 
@@ -18,11 +20,27 @@ class ProfileViewPanel extends React.Component {
         titleProfessions: "HR Management & Coaching",
         proficiencyLevel: "",
         topicsOfInterest: "",
+        personalLinks: {
+          data: {
+            facebook: "http://facebook.com",
+            linkedin: "http://linkedin.com",
+            twitter: "http://twitter.com",
+            link: "https://link",
+          },
+          completed: true,
+        },
+        mainLanguage: "",
+        timezone: "",
         completed: false,
         percentOfCompletion: 75,
       },
     };
   }
+
+  onEdit = () => {
+    this.props.onEdit();
+  };
+
   render() {
     const { user } = this.state;
 
@@ -40,6 +58,7 @@ class ProfileViewPanel extends React.Component {
             text={user.completed ? "Edit Profile" : "Complete profile"}
             type="primary"
             size="lg"
+            onClick={this.onEdit}
           />
         </div>
         <div className="profile-view-panel-content">
@@ -71,10 +90,49 @@ class ProfileViewPanel extends React.Component {
           >
             {user.topicsOfInterest || "Complete"}
           </h3>
+          <h5 className="textfield-label">Personal links</h5>
+          {user.personalLinks.completed &&
+            Object.keys(user.personalLinks.data).map((contact) => (
+              <div className="personal-link" key={contact}>
+                <div className="personal-link-icon">
+                  <i className={CONTACT_ICONS[contact]} />
+                </div>
+                <h3 className="textfield-value completed">
+                  {user.personalLinks.data[contact]}
+                </h3>
+              </div>
+            ))}
+          {!user.personalLinks.completed && (
+            <h3 className="textfield-value">Complete</h3>
+          )}
+          <h5 className="textfield-label">Main language</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.mainLanguage,
+            })}
+          >
+            {user.mainLanguage || "Complete"}
+          </h3>
+          <h5 className="textfield-label">Time zone</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.timezone,
+            })}
+          >
+            {user.timezone || "Complete"}
+          </h3>
         </div>
       </div>
     );
   }
 }
+
+ProfileViewPanel.propTypes = {
+  onEdit: PropTypes.func,
+};
+
+ProfileViewPanel.defaultProps = {
+  onEdit: () => {},
+};
 
 export default ProfileViewPanel;
