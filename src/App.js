@@ -7,6 +7,8 @@ import { Layout } from "antd";
 import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
+import { EVENT_TYPES } from "enum";
+import Emitter from "services/emitter";
 
 import "./styles/main.scss";
 
@@ -17,9 +19,14 @@ class App extends Component {
     if (window.innerWidth < 480) this.props.setIsMobile(true);
     this.updateDimensions = this.updateDimensions.bind(this);
   }
+
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
+    Emitter.on(EVENT_TYPES.EVENT_VIEW_PROFILE, () => {
+      console.log("event accepted");
+    });
   }
+
   updateDimensions() {
     this.props.setDimensions(window.innerWidth, window.innerHeight);
     if (window.innerWidth < 480) this.props.setIsMobile(true);
@@ -50,7 +57,4 @@ const mapDispatchToProps = {
   setIsMobile,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
