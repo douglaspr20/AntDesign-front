@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { SIDEBAR_MENU_LIST } from "enum";
 import CustomButtom from "../Button";
+import ProfilePopupMenu from "../ProfilePopupMenu";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 
@@ -58,9 +59,11 @@ class MainHeader extends React.Component {
             )}
           </div>
           <span className="user-name">{user.name}</span>
-          <div className="profile-menu-chevron">
-            <img src={IconChevronDown} alt="profile-menu" />
-          </div>
+          <ProfilePopupMenu>
+            <div className="profile-menu-chevron">
+              <img src={IconChevronDown} alt="profile-menu" />
+            </div>
+          </ProfilePopupMenu>
         </div>
       </div>
     );

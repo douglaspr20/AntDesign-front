@@ -6,3 +6,4 @@ export { default as EventCard } from "./EventCard";
 export { default as DateAvatar } from "./DateAvatar";
 export { default as ArticleCard } from "./ArticleCard";
 export { default as SvgIcon } from "./Icon";
+export { default as ProfilePopupMenu } from "./ProfilePopupMenu";
