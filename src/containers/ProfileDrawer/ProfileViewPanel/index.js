@@ -21,13 +21,8 @@ class ProfileViewPanel extends React.Component {
         proficiencyLevel: "",
         topicsOfInterest: "",
         personalLinks: {
-          data: {
-            facebook: "http://facebook.com",
-            linkedin: "http://linkedin.com",
-            twitter: "http://twitter.com",
-            link: "https://link",
-          },
-          completed: true,
+          data: {},
+          completed: false,
         },
         mainLanguage: "",
         timezone: "",
