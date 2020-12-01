@@ -1,0 +1,27 @@
+@import "styles/main.scss";
+
+.custom-drawer {
+  .ant-drawer-mask {
+    background: #3c475252 !important;
+  }
+
+  .ant-drawer-content-wrapper {
+    box-shadow: -4px 0px 14px #37215714 !important;
+    border: 1px solid $color-border !important;
+  }
+
+  .ant-drawer-header {
+    padding: 20px 2rem !important;
+    border-bottom: 1px solid $color-border !important;
+  }
+
+  .ant-drawer-close {
+    height: 100% !important;
+    padding-right: 32px;
+
+    .anticon.anticon-close {
+      font-size: 24px !important;
+      color: $color-text-primary !important;
+    }
+  }
+}
