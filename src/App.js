@@ -7,19 +7,23 @@ import { Layout } from "antd";
 import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
+import ProfileDrawer from "containers/ProfileDrawer";
 
 import "./styles/main.scss";
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.props.setDimensions(window.innerWidth, window.innerHeight);
     if (window.innerWidth < 480) this.props.setIsMobile(true);
     this.updateDimensions = this.updateDimensions.bind(this);
   }
+
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
   }
+
   updateDimensions() {
     this.props.setDimensions(window.innerWidth, window.innerHeight);
     if (window.innerWidth < 480) this.props.setIsMobile(true);
@@ -36,6 +40,7 @@ class App extends Component {
             <Content />
           </Layout>
         </Layout>
+        <ProfileDrawer />
       </div>
     );
   }
@@ -50,7 +55,4 @@ const mapDispatchToProps = {
   setIsMobile,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

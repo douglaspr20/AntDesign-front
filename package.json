@@ -8,6 +8,7 @@
     "babel-plugin-import": "^1.11.0",
     "clsx": "^1.1.1",
     "customize-cra": "^0.2.12",
+    "eventemitter3": "^4.0.7",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.20",

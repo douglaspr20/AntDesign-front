@@ -1,0 +1,67 @@
+@import "styles/main.scss";
+
+.profile-view-panel {
+  margin: -24px;
+
+  &-header {
+    background: $color-background;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .user-info {
+      &-avatar {
+        margin-top: 26px;
+      }
+
+      &-name {
+        margin-top: 0.5rem !important;
+        margin-bottom: 37px !important;
+      }
+    }
+
+    .profile-complete-btn {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &-content {
+    padding: 20px 2rem 40px;
+
+    .textfield-label {
+      font-weight: bold !important;
+      margin-top: 52px !important;
+    }
+
+    .textfield-value {
+      font-weight: 500 !important;
+      margin-top: 0.75rem !important;
+      color: $color-primary !important;
+
+      &.completed {
+        color: $color-text-secondary !important;
+      }
+    }
+
+    .personal-link {
+      display: flex;
+      align-items: center;
+      margin-top: 0.75rem;
+
+      &-icon {
+        font-size: 28px;
+        color: $color-text-primary;
+      }
+
+      .textfield-value {
+        margin-top: 0 !important;
+        margin-left: 1rem !important;
+      }
+    }
+  }
+}

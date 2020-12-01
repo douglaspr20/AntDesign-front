@@ -7,3 +7,5 @@ export { default as DateAvatar } from "./DateAvatar";
 export { default as ArticleCard } from "./ArticleCard";
 export { default as SvgIcon } from "./Icon";
 export { default as ProfilePopupMenu } from "./ProfilePopupMenu";
+export { default as CustomDrawer } from "./Drawer";
+export { default as ProfileAvatar } from "./ProfileAvatar";

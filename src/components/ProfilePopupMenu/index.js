@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { Popover } from "antd";
 
 import { CustomButton } from "components";
+import { EVENT_TYPES } from "enum";
+import Emitter from "services/emitter";
 
 import "./style.scss";
 
@@ -19,15 +21,25 @@ class ProfilePopupMenu extends React.Component {
         name: "Edgar davis",
         abbrName: "ED",
       },
+      visible: false,
     };
   }
 
+  onViewProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+    this.setState({ visible: false });
+  };
+
+  onVisibleChange = (visible) => {
+    this.setState({ visible });
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
-    const { user } = this.state;
+    const { user, visible } = this.state;
 
     const TitleSection = () => (
-      <div className="profile-popover-title">
+      <div className="profile-popover-title" onClick={this.onViewProfile}>
         <div className="user-avatar">
           {user.img ? <img src={user.img} alt="user-avatar" /> : user.abbrName}
         </div>
@@ -62,8 +74,10 @@ class ProfilePopupMenu extends React.Component {
         className={clsx("profile-popover", className)}
         placement="bottomRight"
         trigger="click"
+        visible={visible}
         title={<TitleSection />}
         content={<ContentSection />}
+        onVisibleChange={this.onVisibleChange}
       >
         {children}
       </Popover>
