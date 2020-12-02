@@ -1,0 +1,58 @@
+@import "styles/main.scss";
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+
+  .ant-checkbox-inner {
+    border: 2px solid $color-border !important;
+  }
+
+  &:hover .ant-checkbox-checked::after {
+    border: none !important;
+  }
+
+  &.primary {
+    .ant-checkbox.ant-checkbox-checked {
+      .ant-checkbox-inner {
+        background: $color-primary !important;
+        border: 2px solid $color-primary !important;
+      }
+    }
+  }
+
+  &.md .ant-checkbox-inner {
+    width: 28px;
+    height: 28px;
+
+    &::after {
+      width: 10px;
+      height: 1rem;
+      margin-top: -2px;
+    }
+  }
+
+  &.sm .ant-checkbox-inner {
+    width: 20px;
+    height: 20px;
+
+    &::after {
+      width: 9px;
+      height: 13px;
+      margin-left: -2px;
+      margin-top: -1px;
+    }
+  }
+
+  &.md > span:last-child {
+    padding-left: 1rem !important;
+    @include app-font(20px, 30px);
+    color: $color-text-secondary;
+  }
+
+  &.sm > span:last-child {
+    padding-left: 1rem !important;
+    @include app-font(14px, 30px);
+    color: $color-text-secondary;
+  }
+}
