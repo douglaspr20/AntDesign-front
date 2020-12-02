@@ -1,0 +1,11 @@
+@import "styles/main.scss";
+
+.custom-input {
+  min-height: 52px !important;
+  padding: 0.75rem 1rem !important;
+  background: $color-white;
+  border: 1px solid $color-border !important;
+  border-radius: 0.5rem !important;
+  @include app-font(20px, 30px);
+  color: $color-text-secondary !important;
+}
