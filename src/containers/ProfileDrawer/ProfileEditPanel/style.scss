@@ -64,11 +64,64 @@
   }
 
   &-content {
-    padding: 50px 2rem 2rem;
+    padding: 50px 2rem 10rem;
 
     .textfield-label {
       font-weight: bold !important;
       margin-top: 52px !important;
+    }
+
+    .textfield-input {
+      margin-top: 0.75rem;
+    }
+
+    .custom-checkbox-group {
+      display: flex;
+      flex-direction: column;
+
+      .ant-checkbox-wrapper {
+        margin-top: 12px;
+        margin-left: 0 !important;
+      }
+    }
+
+    .custom-radio-group {
+      display: flex;
+      flex-direction: column;
+
+      .custom-radio {
+        margin-top: 12px;
+      }
+    }
+
+    .custom-select {
+      margin-top: 12px;
+    }
+
+    .personal-links {
+      margin-top: 12px;
+
+      .personal-link {
+        display: flex;
+        align-items: center;
+        margin-top: 0.75rem;
+
+        &-icon {
+          font-size: 32px;
+          color: $color-text-secondary;
+          width: 2rem;
+          height: 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 20px;
+        }
+
+        .textfield-value {
+          margin-top: 0 !important;
+          margin-left: 1rem !important;
+        }
+      }
     }
   }
 

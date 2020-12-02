@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
+import isEmpty from "lodash/isEmpty";
 
 import { ProfileAvatar, CustomButton } from "components";
 import { CONTACT_ICONS } from "enum";
@@ -20,10 +21,7 @@ class ProfileViewPanel extends React.Component {
         titleProfessions: "HR Management & Coaching",
         proficiencyLevel: "",
         topicsOfInterest: "",
-        personalLinks: {
-          data: {},
-          completed: false,
-        },
+        personalLinks: {},
         mainLanguage: "",
         timezone: "",
         completed: false,
@@ -38,6 +36,7 @@ class ProfileViewPanel extends React.Component {
 
   render() {
     const { user } = this.state;
+    const personalLinksCompleted = !isEmpty(user.personalLinks);
 
     return (
       <div className="profile-view-panel">
@@ -86,18 +85,18 @@ class ProfileViewPanel extends React.Component {
             {user.topicsOfInterest || "Complete"}
           </h3>
           <h5 className="textfield-label">Personal links</h5>
-          {user.personalLinks.completed &&
-            Object.keys(user.personalLinks.data).map((contact) => (
+          {personalLinksCompleted &&
+            Object.keys(user.personalLinks).map((contact) => (
               <div className="personal-link" key={contact}>
                 <div className="personal-link-icon">
                   <i className={CONTACT_ICONS[contact]} />
                 </div>
                 <h3 className="textfield-value completed">
-                  {user.personalLinks.data[contact]}
+                  {user.personalLinks[contact]}
                 </h3>
               </div>
             ))}
-          {!user.personalLinks.completed && (
+          {!personalLinksCompleted && (
             <h3 className="textfield-value">Complete</h3>
           )}
           <h5 className="textfield-label">Main language</h5>
