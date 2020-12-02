@@ -1,0 +1,35 @@
+@import "styles/main.scss";
+
+.custom-select {
+  width: 100%;
+
+  .ant-select-selector {
+    height: 52px !important;
+    border-radius: 8px !important;
+    border: 1px solid $color-border !important;
+    padding: 0 48px 0 16px !important;
+  }
+
+  .ant-select-selection-item {
+    display: flex;
+    align-items: center;
+    @include app-font(20px, 34px);
+    color: $color-text-secondary;
+  }
+
+  .ant-select-arrow {
+    font-size: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    top: 0 !important;
+    transform: translate(0, 50%) !important;
+  }
+}
+
+.custom-select-dropdown {
+  .ant-select-item-option-content {
+    @include app-font(20px, 34px);
+    color: $color-text-secondary;
+    padding-left: 8px;
+  }
+}
