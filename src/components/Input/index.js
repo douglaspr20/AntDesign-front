@@ -13,7 +13,7 @@ class CustomInput extends React.Component {
       <Input.TextArea
         {...rest}
         rows={4}
-        className={clsx("custom-input", className)}
+        className={clsx("custom-input", className, "mutiple")}
       />
     ) : (
       <Input {...rest} className={clsx("custom-input", className)} />

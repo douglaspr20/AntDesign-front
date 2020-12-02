@@ -8,4 +8,26 @@
   border-radius: 0.5rem !important;
   @include app-font(20px, 30px);
   color: $color-text-secondary !important;
+
+  &:not(.mutiple) {
+    max-height: 52px;
+  }
+
+  .ant-input-group-addon {
+    border: none !important;
+    padding: 0;
+    @include app-font(20px, 30px);
+    color: $color-text-secondary;
+  }
+
+  .ant-input {
+    border: none !important;
+    padding: 0;
+    @include app-font(20px, 30px);
+    color: $color-text-secondary;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
 }
