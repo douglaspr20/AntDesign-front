@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  width: fit-content;
 
   &.md .custom-radio-inner {
     width: 28px;

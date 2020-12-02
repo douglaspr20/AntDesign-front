@@ -3,6 +3,7 @@
 .custom-checkbox {
   display: flex;
   align-items: center;
+  width: fit-content;
 
   .ant-checkbox-inner {
     border: 2px solid $color-border !important;
