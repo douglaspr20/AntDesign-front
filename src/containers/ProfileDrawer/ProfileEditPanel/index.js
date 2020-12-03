@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
+import { Modal } from "antd";
 
 import {
   CustomButton,
@@ -15,6 +16,7 @@ import {
   TIMEZONE_LIST,
   LANGUAGES,
 } from "enum";
+import PhotoUploadForm from "../PhotoUploadForm";
 
 import "./style.scss";
 
@@ -26,21 +28,8 @@ class ProfileEditPanel extends React.Component {
     super(props);
 
     this.state = {
-      user: {
-        firstName: "Edgar",
-        lastName: "Davis",
-        abbrName: "ED",
-        img: null,
-        about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
-        titleProfessions: "HR Management & Coaching",
-        proficiencyLevel: "",
-        topicsOfInterest: [],
-        personalLinks: {},
-        language: "",
-        timezone: "",
-        completed: false,
-        percentOfCompletion: 75,
-      },
+      user: props.user,
+      visibleModal: false,
     };
   }
 
@@ -58,8 +47,36 @@ class ProfileEditPanel extends React.Component {
     }
   };
 
+  onPhotoSave = (value) => {
+    this.setState((state) => {
+      state.user["img"] = value;
+      state.visibleModal = false;
+      return state;
+    });
+  };
+
+  showPhotoModal = () => {
+    this.setState({ visibleModal: true });
+  };
+
+  cancelPhotoUpload = () => {
+    this.setState({ visibleModal: false });
+  };
+
+  onSave = () => {
+    let { user } = this.state;
+    user.abbrName = `${user.firstName ? user.firstName[0] : ""}${
+      user.lastName ? user.lastName[0] : ""
+    }`;
+    this.props.onSave(user);
+  };
+
+  onCancel = () => {
+    this.props.onCancel();
+  };
+
   render() {
-    const { user } = this.state;
+    const { user, visibleModal } = this.state;
 
     return (
       <div className="profile-edit-panel">
@@ -68,11 +85,16 @@ class ProfileEditPanel extends React.Component {
             <div className="profile-user-img">
               <div className="profile-user-img-container">
                 {user.img ? (
-                  <img src={user.img} alt="user-avatar" />
+                  <div className="profile-user-img-wrapper">
+                    <img src={user.img} alt="user-avatar" />
+                  </div>
                 ) : (
                   <h1 className="profile-user-img-name">{user.abbrName}</h1>
                 )}
-                <div className="profile-user-img-camera">
+                <div
+                  className="profile-user-img-camera"
+                  onClick={this.showPhotoModal}
+                >
                   <i className="fal fa-camera" />
                 </div>
               </div>
@@ -110,6 +132,7 @@ class ProfileEditPanel extends React.Component {
             />
             <h5 className="textfield-label">Tell us topics of your interest</h5>
             <Checkbox.Group
+              defaultValue={user.topicsOfInterest}
               className="custom-checkbox-group"
               onChange={(values) =>
                 this.onFieldChange("topicsOfInterest", values)
@@ -165,20 +188,49 @@ class ProfileEditPanel extends React.Component {
           </div>
         </div>
         <div className="profile-edit-panel-footer">
-          <CustomButton text="Cancel" type="third outlined" size="lg" />
-          <CustomButton text="Save" type="secondary" size="lg" />
+          <CustomButton
+            text="Cancel"
+            type="third outlined"
+            size="lg"
+            onClick={this.onCancel}
+          />
+          <CustomButton
+            text="Save"
+            type="secondary"
+            size="lg"
+            onClick={this.onSave}
+          />
         </div>
+        <Modal
+          className="photo-upload-modal"
+          title={
+            <div className="photo-upload-modal-title">Select your photo.</div>
+          }
+          centered
+          visible={visibleModal}
+          width={500}
+          closable={true}
+          maskClosable={false}
+          footer={[]}
+          onCancel={this.cancelPhotoUpload}
+        >
+          <PhotoUploadForm src={user.img} onSave={this.onPhotoSave} />
+        </Modal>
       </div>
     );
   }
 }
 
 ProfileEditPanel.propTypes = {
-  title: PropTypes.string,
+  user: PropTypes.object,
+  onSave: PropTypes.func,
+  onCancel: PropTypes.func,
 };
 
 ProfileEditPanel.defaultProps = {
-  title: "",
+  user: {},
+  onSave: () => {},
+  onCancel: () => {},
 };
 
 export default ProfileEditPanel;
