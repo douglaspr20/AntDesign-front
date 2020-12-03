@@ -9,13 +9,70 @@ import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES } from "enum";
 import "./style.scss";
 
 class ProfileViewPanel extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: props.user,
+    };
+  }
+
+  componentDidMount() {
+    this.getProfileCompletion();
+  }
+
   onEdit = () => {
     this.props.onEdit();
   };
 
+  getProfileCompletion = () => {
+    let { user } = this.props;
+    const fields = [
+      "firstName",
+      "lastName",
+      "img",
+      "about",
+      "titleProfessions",
+      "proficiencyLevel",
+      "topicsOfInterest",
+      "personalLinks",
+      "language",
+      "timezone",
+    ];
+    let percentOfCompletion = fields.reduce((res, item) => {
+      if (item === "personalLinks") {
+        return this.getEmptyPersonalLinks(user.personalLinks) ? res : res + 10;
+      }
+      return isEmpty(user[item]) ? res : res + 10;
+    }, 0);
+
+    this.setState({
+      user: {
+        ...user,
+        percentOfCompletion,
+        completed: percentOfCompletion === 100,
+      },
+    });
+  };
+
+  getEmptyPersonalLinks = (personalLinks) => {
+    let empty = true;
+    if (personalLinks) {
+      Object.keys(personalLinks).forEach((contact) => {
+        if (personalLinks[contact]) {
+          empty = false;
+        }
+      });
+    }
+
+    return empty;
+  };
+
   render() {
-    const { user } = this.props;
-    const personalLinksCompleted = !isEmpty(user.personalLinks);
+    const { user } = this.state;
+    const personalLinksCompleted = !this.getEmptyPersonalLinks(
+      user.personalLinks
+    );
     const timezone = (
       TIMEZONE_LIST.find((item) => item.value === user.timezone) || {}
     ).text;
