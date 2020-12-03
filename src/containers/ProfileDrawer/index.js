@@ -13,6 +13,21 @@ class ProfileDrawer extends React.Component {
     super(props);
 
     this.state = {
+      user: {
+        firstName: "Edgar",
+        lastName: "Davis",
+        abbrName: "ED",
+        img: null,
+        about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
+        titleProfessions: "HR Management & Coaching",
+        proficiencyLevel: "",
+        topicsOfInterest: [],
+        personalLinks: {},
+        language: "",
+        timezone: "",
+        completed: false,
+        percentOfCompletion: 75,
+      },
       visible: false,
       edit: false,
     };
@@ -32,12 +47,12 @@ class ProfileDrawer extends React.Component {
     this.setState({ edit: true });
   };
 
-  onSave = () => {
-    this.setState({ edit: false });
+  onSave = (userInfo) => {
+    this.setState({ edit: false, user: userInfo });
   };
 
   render() {
-    const { visible, edit } = this.state;
+    const { visible, edit, user } = this.state;
     return (
       <CustomDrawer
         title={edit ? "Edit profile" : "Profile"}
@@ -45,9 +60,13 @@ class ProfileDrawer extends React.Component {
         onClose={this.onDrawerClose}
       >
         {edit && (
-          <ProfileEditPanel onSave={() => this.setState({ edit: true })} />
+          <ProfileEditPanel
+            user={user}
+            onSave={this.onSave}
+            onCancel={() => this.setState({ edit: false })}
+          />
         )}
-        {!edit && <ProfileViewPanel onEdit={this.onEdit} />}
+        {!edit && <ProfileViewPanel user={user} onEdit={this.onEdit} />}
       </CustomDrawer>
     );
   }

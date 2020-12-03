@@ -4,39 +4,24 @@ import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";
 
 import { ProfileAvatar, CustomButton } from "components";
-import { CONTACT_ICONS } from "enum";
+import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES } from "enum";
 
 import "./style.scss";
 
 class ProfileViewPanel extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: {
-        name: "Edgar Davis",
-        abbrName: "ED",
-        img: null,
-        about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
-        titleProfessions: "HR Management & Coaching",
-        proficiencyLevel: "",
-        topicsOfInterest: "",
-        personalLinks: {},
-        mainLanguage: "",
-        timezone: "",
-        completed: false,
-        percentOfCompletion: 75,
-      },
-    };
-  }
-
   onEdit = () => {
     this.props.onEdit();
   };
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
     const personalLinksCompleted = !isEmpty(user.personalLinks);
+    const timezone = (
+      TIMEZONE_LIST.find((item) => item.value === user.timezone) || {}
+    ).text;
+    const language = (
+      LANGUAGES.find((item) => item.value === user.language) || {}
+    ).text;
 
     return (
       <div className="profile-view-panel">
@@ -46,7 +31,7 @@ class ProfileViewPanel extends React.Component {
             user={user}
             percent={user.percentOfCompletion}
           />
-          <h1 className="user-info-name">{user.name}</h1>
+          <h1 className="user-info-name">{`${user.firstName} ${user.lastName}`}</h1>
           <CustomButton
             className="profile-complete-btn"
             text={user.completed ? "Edit Profile" : "Complete profile"}
@@ -79,10 +64,10 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">Topics of interest</h5>
           <h3
             className={clsx("textfield-value", {
-              completed: !!user.topicsOfInterest,
+              completed: user.topicsOfInterest && user.topicsOfInterest.length,
             })}
           >
-            {user.topicsOfInterest || "Complete"}
+            {user.topicsOfInterest.join(", ") || "Complete"}
           </h3>
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
@@ -92,7 +77,9 @@ class ProfileViewPanel extends React.Component {
                   <i className={CONTACT_ICONS[contact]} />
                 </div>
                 <h3 className="textfield-value completed">
-                  {user.personalLinks[contact]}
+                  {user.personalLinks[contact]
+                    ? `http://${user.personalLinks[contact]}`
+                    : ""}
                 </h3>
               </div>
             ))}
@@ -102,10 +89,10 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">Main language</h5>
           <h3
             className={clsx("textfield-value", {
-              completed: !!user.mainLanguage,
+              completed: !!user.language,
             })}
           >
-            {user.mainLanguage || "Complete"}
+            {language || "Complete"}
           </h3>
           <h5 className="textfield-label">Time zone</h5>
           <h3
@@ -113,7 +100,7 @@ class ProfileViewPanel extends React.Component {
               completed: !!user.timezone,
             })}
           >
-            {user.timezone || "Complete"}
+            {timezone || "Complete"}
           </h3>
         </div>
       </div>
@@ -122,10 +109,12 @@ class ProfileViewPanel extends React.Component {
 }
 
 ProfileViewPanel.propTypes = {
+  user: PropTypes.object,
   onEdit: PropTypes.func,
 };
 
 ProfileViewPanel.defaultProps = {
+  user: {},
   onEdit: () => {},
 };
 

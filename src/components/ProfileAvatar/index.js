@@ -32,7 +32,9 @@ class ProfileAvatar extends React.Component {
           format={() => (
             <div className="profile-avatar-inner">
               {user.img ? (
-                <img src={user.img} alt="user-avatar" />
+                <div className="profile-avatar-wrapper">
+                  <img src={user.img} alt="user-avatar" />
+                </div>
               ) : (
                 <h1>{user.abbrName}</h1>
               )}
