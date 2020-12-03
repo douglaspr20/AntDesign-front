@@ -1,0 +1,24 @@
+@import "styles/main.scss";
+
+.photo-upload-form {
+  &-img {
+    min-width: 400px;
+    min-height: 400px;
+    background: $color-background;
+  }
+
+  .upload-btn {
+    margin-right: 1rem;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 3.5rem;
+
+    .profile_pic {
+      display: none;
+    }
+  }
+}
