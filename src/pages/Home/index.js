@@ -90,7 +90,7 @@ class HomePage extends React.Component {
           <Row gutter={16}>
             <Col lg={{ span: 16, offset: 4 }}>
               <div className="d-flex justify-between">
-                <h3 className="text-bold">Events</h3>
+                <h3 className="font-bold">Events</h3>
                 <h3 className="color-primary view_all_events">
                   View all events
                 </h3>

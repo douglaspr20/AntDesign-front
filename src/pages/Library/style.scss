@@ -1,0 +1,14 @@
+@import "../../styles/main.scss";
+
+.learning-library-page {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+
+  .search-results-container {
+    height: calc(100vh - 72px);
+    background: $color-background;
+    overflow: auto;
+    padding: 4rem;
+  }
+}

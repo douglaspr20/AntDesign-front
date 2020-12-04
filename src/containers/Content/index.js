@@ -5,6 +5,7 @@ import { Layout } from "antd";
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
+import LearningLibraryPage from "pages/Library";
 import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -26,6 +27,10 @@ class Content extends Component {
           <Route
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
+          />
+          <Route
+            path={INTERNAL_LINKS.LEARNING_LIBRARY}
+            render={(props) => <LearningLibraryPage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>
