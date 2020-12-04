@@ -38,7 +38,7 @@ class EventCard extends React.Component {
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
           <h3>{title}</h3>
-          <h5>{`${date}${timezone}`}</h5>
+          <h5>{`${date} ${timezone}`}</h5>
           <h5>{type}</h5>
           <div className="d-flex justify-between items-center w-full">
             <h6>{cost}</h6>
