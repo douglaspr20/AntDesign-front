@@ -93,8 +93,16 @@ h6 {
 }
 
 // font
-.text-bold {
+.font-bold {
   font-weight: bold !important;
+}
+
+.font-regular {
+  font-weight: 500 !important;
+}
+
+.font-medium {
+  font-weight: 600 !important;
 }
 
 // colors
