@@ -13,3 +13,4 @@ export { default as CustomInput } from "./Input";
 export { default as CustomCheckbox } from "./Checkbox";
 export { default as CustomRadio } from "./Radio";
 export { default as CustomSelect } from "./Select";
+export { default as LibraryCard } from "./LibraryCard";
