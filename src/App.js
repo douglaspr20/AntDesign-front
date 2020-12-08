@@ -2,14 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { setDimensions, setIsMobile } from "./redux/actions/env-actions";
-import { Layout } from "antd";
+import { Spin, Layout } from "antd";
 
 import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 
+import IconLoading from "images/icon-loading.gif";
+
 import "./styles/main.scss";
+import "./App.scss";
 
 class App extends Component {
   constructor(props) {
@@ -41,6 +44,11 @@ class App extends Component {
           </Layout>
         </Layout>
         <ProfileDrawer />
+        {this.props.home.loading && (
+          <div className="loading-container">
+            <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
+          </div>
+        )}
       </div>
     );
   }

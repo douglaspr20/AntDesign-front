@@ -1,14 +1,14 @@
 // Action Types
-export const TEST = "TEST";
+export const SET_LOADING = "SET_LOADING";
 
 /* Home Page's Actions */
 
 // Test Setter
-export function setTest(test) {
-    return dispatch => {
-        dispatch({
-            type: TEST,
-            payload: test
-        })
-    };
+export function setLoading(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_LOADING,
+      payload: data,
+    });
+  };
 }
