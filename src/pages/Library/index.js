@@ -6,6 +6,8 @@ import FilterPanel from "./FilterPanel";
 import { numberWithCommas } from "utils/format";
 import { CustomSelect, LibraryCard, CustomButton } from "components";
 
+import IconLoadingMore from "images/icon-loading-more.gif";
+
 import "./style.scss";
 
 const Library = {
@@ -41,8 +43,16 @@ const SortOptions = [
 
 const LearningLibraryPage = () => {
   const [data, setData] = useState(LibraryData);
+  const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
-  const onShowMore = () => {};
+
+  const onShowMore = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setData([...data, ...LibraryData]);
+      setLoading(false);
+    }, 3000);
+  };
 
   return (
     <div className="learning-library-page">
@@ -75,12 +85,15 @@ const LearningLibraryPage = () => {
           ))}
         </Row>
         <div className="search-results-container-footer d-flex justify-center items-center">
-          <CustomButton
-            text="Show more"
-            type="primary outlined"
-            size="lg"
-            onClick={onShowMore}
-          />
+          {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+          {!loading && (
+            <CustomButton
+              text="Show more"
+              type="primary outlined"
+              size="lg"
+              onClick={onShowMore}
+            />
+          )}
         </div>
       </div>
     </div>
