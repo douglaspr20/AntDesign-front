@@ -5,6 +5,8 @@ import { Row, Col } from "antd";
 import FilterPanel from "./FilterPanel";
 import { numberWithCommas } from "utils/format";
 import { CustomSelect, LibraryCard, CustomButton } from "components";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -54,6 +56,10 @@ const LearningLibraryPage = () => {
     }, 3000);
   };
 
+  const planUpdate = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   return (
     <div className="learning-library-page">
       <FilterPanel />
@@ -80,7 +86,7 @@ const LearningLibraryPage = () => {
               xl={{ span: 8 }}
               xxl={{ span: 6 }}
             >
-              <LibraryCard data={item} />
+              <LibraryCard data={item} onClickAccess={planUpdate} />
             </Col>
           ))}
         </Row>

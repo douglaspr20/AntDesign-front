@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { SIDEBAR_MENU_LIST } from "enum";
+import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
 import CustomButton from "../Button";
 import ProfilePopupMenu from "../ProfilePopupMenu";
+import Emitter from "services/emitter";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 
@@ -26,6 +27,10 @@ class MainHeader extends React.Component {
       },
     };
   }
+
+  planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
 
   render() {
     const { user } = this.state;
@@ -50,6 +55,7 @@ class MainHeader extends React.Component {
             type="primary"
             size="lg"
             className="btn-upgrade"
+            onClick={this.planUpgrade}
           />
           <div className="user-avatar">
             {user.img ? (

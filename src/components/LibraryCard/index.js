@@ -8,7 +8,7 @@ import { CustomButton, SvgIcon } from "components";
 
 import "./style.scss";
 
-const LibraryCard = ({ data }) => {
+const LibraryCard = ({ data, onClickAccess }) => {
   const [lineClamp, setLineClamp] = useState(3);
   const { title, image, description } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
@@ -18,10 +18,12 @@ const LibraryCard = ({ data }) => {
     setTimeout(() => {
       getRowNum();
     }, 500);
-    window.addEventListener("resize", () => {
-      getRowNum();
-    });
+    // eslint-disable-next-line
   }, []);
+
+  window.addEventListener("resize", () => {
+    getRowNum();
+  });
 
   const getRowNum = () => {
     const descElement = document.querySelector(`#${randomId}`);
@@ -74,6 +76,7 @@ const LibraryCard = ({ data }) => {
           type="primary"
           size="md"
           className="library-card-hover-btn"
+          onClick={onClickAccess}
         />
       </div>
     </div>
