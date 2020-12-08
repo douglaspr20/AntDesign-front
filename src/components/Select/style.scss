@@ -18,11 +18,11 @@
   }
 
   .ant-select-arrow {
-    font-size: 32px !important;
-    width: 32px !important;
-    height: 32px !important;
-    top: 0 !important;
-    transform: translate(0, 50%) !important;
+    font-size: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    top: calc(50% + 6px) !important;
+    transform: translate(0, -50%) !important;
     color: $color-text-primary !important;
   }
 }

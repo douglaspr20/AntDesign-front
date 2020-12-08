@@ -10,5 +10,34 @@
     background: $color-background;
     overflow: auto;
     padding: 4rem;
+
+    &-header {
+      margin-bottom: 36px;
+    }
+
+    &-sort {
+      width: max-content;
+      height: 24px !important;
+
+      .ant-select-selector {
+        height: 24px !important;
+        padding-right: 24px !important;
+      }
+    }
+
+    &-footer {
+      height: 40px;
+    }
+  }
+
+  .search-results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(305px, 1fr));
+    grid-gap: 2rem;
+
+    &-item {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
