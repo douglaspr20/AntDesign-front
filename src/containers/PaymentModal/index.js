@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Input } from "antd";
+import { connect } from "react-redux";
 import { CloseCircleFilled } from "@ant-design/icons";
 import StripeScriptLoader from "react-stripe-script-loader";
 import {
@@ -12,15 +13,17 @@ import {
 } from "react-stripe-elements";
 
 import { CustomCheckbox } from "components";
+import { setPlanUpdated } from "redux/actions/home-actions";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const PaymentModal = ({ visible, onPay, ...rest }) => {
+const PaymentModal = ({ visible, onPay, setPlanUpdated, ...rest }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     onPay();
+    setPlanUpdated(true);
   };
 
   return (
@@ -95,4 +98,12 @@ PaymentModal.defaultProps = {
   onPay: () => {},
 };
 
-export default PaymentModal;
+const mapStateToProps = (state, props) => {
+  return { ...state, ...props };
+};
+
+const mapDispatchToProps = {
+  setPlanUpdated,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentModal);

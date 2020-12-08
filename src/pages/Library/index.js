@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
 import FilterPanel from "./FilterPanel";
@@ -43,7 +44,7 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = () => {
+const LearningLibraryPage = ({ planUpdated }) => {
   const [data, setData] = useState(LibraryData);
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
@@ -86,7 +87,11 @@ const LearningLibraryPage = () => {
               xl={{ span: 8 }}
               xxl={{ span: 6 }}
             >
-              <LibraryCard data={item} onClickAccess={planUpdate} />
+              <LibraryCard
+                data={item}
+                onClickAccess={planUpdate}
+                locked={!planUpdated}
+              />
             </Col>
           ))}
         </Row>
@@ -114,4 +119,8 @@ LearningLibraryPage.defaultProps = {
   title: "",
 };
 
-export default LearningLibraryPage;
+const mapStateToProps = (state, props) => {
+  return { planUpdated: state.home ? state.home.planUpdated : false };
+};
+
+export default connect(mapStateToProps)(LearningLibraryPage);

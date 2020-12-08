@@ -1,8 +1,9 @@
 // Action Type Imports
-import { SET_LOADING } from "../actions/home-actions";
+import { SET_LOADING, SET_PLAN_UPDATED } from "../actions/home-actions";
 
 const initialState = {
   loading: false,
+  planUpdated: false,
 };
 // Home Page's Reducer
 export default function homeReducer(state = initialState, action) {
@@ -12,7 +13,11 @@ export default function homeReducer(state = initialState, action) {
         ...state,
         loading: action.payload,
       };
-
+    case SET_PLAN_UPDATED:
+      return {
+        ...state,
+        planUpdated: action.payload,
+      };
     default:
       return { ...state };
   }
