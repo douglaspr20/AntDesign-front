@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST } from "enum";
+import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
 import CustomButton from "../Button";
 import ProfilePopupMenu from "../ProfilePopupMenu";
+import Emitter from "services/emitter";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 
@@ -27,10 +29,15 @@ class MainHeader extends React.Component {
     };
   }
 
+  planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   render() {
     const { user } = this.state;
     const { pathname } = this.props.history.location || {};
     const pathInfo = MenuList.find((item) => item.url === pathname);
+    const { planUpdated } = this.props.home;
 
     return (
       <div className="main-header">
@@ -45,12 +52,15 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          <CustomButton
-            text="Upgrade"
-            type="primary"
-            size="lg"
-            className="btn-upgrade"
-          />
+          {!planUpdated && (
+            <CustomButton
+              text="Upgrade"
+              type="primary"
+              size="lg"
+              className="btn-upgrade"
+              onClick={this.planUpgrade}
+            />
+          )}
           <div className="user-avatar">
             {user.img ? (
               <img src={user.img} alt="user-avatar" />
@@ -78,4 +88,8 @@ MainHeader.defaultProps = {
   title: "",
 };
 
-export default MainHeader;
+const mapStateToProps = (state, props) => {
+  return { ...state, ...props };
+};
+
+export default connect(mapStateToProps)(MainHeader);

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
 import FilterPanel from "./FilterPanel";
 import { numberWithCommas } from "utils/format";
 import { CustomSelect, LibraryCard, CustomButton } from "components";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -41,7 +44,7 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = () => {
+const LearningLibraryPage = ({ planUpdated }) => {
   const [data, setData] = useState(LibraryData);
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
@@ -52,6 +55,10 @@ const LearningLibraryPage = () => {
       setData([...data, ...LibraryData]);
       setLoading(false);
     }, 3000);
+  };
+
+  const planUpdate = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
   return (
@@ -80,7 +87,11 @@ const LearningLibraryPage = () => {
               xl={{ span: 8 }}
               xxl={{ span: 6 }}
             >
-              <LibraryCard data={item} />
+              <LibraryCard
+                data={item}
+                onClickAccess={planUpdate}
+                locked={!planUpdated}
+              />
             </Col>
           ))}
         </Row>
@@ -108,4 +119,8 @@ LearningLibraryPage.defaultProps = {
   title: "",
 };
 
-export default LearningLibraryPage;
+const mapStateToProps = (state, props) => {
+  return { planUpdated: state.home ? state.home.planUpdated : false };
+};
+
+export default connect(mapStateToProps)(LearningLibraryPage);

@@ -8,7 +8,7 @@ import { CustomButton, SvgIcon } from "components";
 
 import "./style.scss";
 
-const LibraryCard = ({ data }) => {
+const LibraryCard = ({ data, locked, onClickAccess }) => {
   const [lineClamp, setLineClamp] = useState(3);
   const { title, image, description } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
@@ -18,10 +18,12 @@ const LibraryCard = ({ data }) => {
     setTimeout(() => {
       getRowNum();
     }, 500);
-    window.addEventListener("resize", () => {
-      getRowNum();
-    });
+    // eslint-disable-next-line
   }, []);
+
+  window.addEventListener("resize", () => {
+    getRowNum();
+  });
 
   const getRowNum = () => {
     const descElement = document.querySelector(`#${randomId}`);
@@ -62,31 +64,38 @@ const LibraryCard = ({ data }) => {
           </div>
         </div>
       </div>
-      <div className="library-lock-icon1">
-        <img src={IconLockClosed} alt="icon-lock" />
-      </div>
-      <div className="library-card-hover">
-        <div className="library-card-hover-lock-icon">
+      {locked && (
+        <div className="library-lock-icon1">
           <img src={IconLockClosed} alt="icon-lock" />
         </div>
-        <CustomButton
-          text="Get unlimited access"
-          type="primary"
-          size="md"
-          className="library-card-hover-btn"
-        />
-      </div>
+      )}
+      {locked && (
+        <div className="library-card-hover">
+          <div className="library-card-hover-lock-icon">
+            <img src={IconLockClosed} alt="icon-lock" />
+          </div>
+          <CustomButton
+            text="Get unlimited access"
+            type="primary"
+            size="md"
+            className="library-card-hover-btn"
+            onClick={onClickAccess}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 LibraryCard.propTypes = {
   data: PropTypes.object,
+  locked: PropTypes.bool,
   onClickAccess: PropTypes.func,
 };
 
 LibraryCard.defaultProps = {
   data: {},
+  locked: true,
   onClickAccess: () => {},
 };
 
