@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import IconDocument from "images/icon-document.svg";
+import IconLockClosed from "images/icon-lock-closed.svg";
 
-import { SvgIcon } from "components";
+import { CustomButton, SvgIcon } from "components";
 
 import "./style.scss";
 
@@ -60,6 +61,20 @@ const LibraryCard = ({ data }) => {
             <SvgIcon name="bookmark" />
           </div>
         </div>
+      </div>
+      <div className="library-lock-icon1">
+        <img src={IconLockClosed} alt="icon-lock" />
+      </div>
+      <div className="library-card-hover">
+        <div className="library-card-hover-lock-icon">
+          <img src={IconLockClosed} alt="icon-lock" />
+        </div>
+        <CustomButton
+          text="Get unlimited access"
+          type="primary"
+          size="md"
+          className="library-card-hover-btn"
+        />
       </div>
     </div>
   );

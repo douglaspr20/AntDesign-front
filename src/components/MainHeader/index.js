@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { SIDEBAR_MENU_LIST } from "enum";
-import CustomButtom from "../Button";
+import CustomButton from "../Button";
 import ProfilePopupMenu from "../ProfilePopupMenu";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
@@ -45,7 +45,7 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          <CustomButtom
+          <CustomButton
             text="Upgrade"
             type="primary"
             size="lg"
