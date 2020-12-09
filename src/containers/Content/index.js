@@ -11,12 +11,14 @@ import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
+import { PrivateRoute } from "components";
+
 class Content extends Component {
   render() {
     return (
       <Layout.Content>
         <Switch>
-          <Route
+          <PrivateRoute
             path={INTERNAL_LINKS.HOME}
             exact
             render={(props) => <HomePage {...props} />}
@@ -29,11 +31,11 @@ class Content extends Component {
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
-          <Route
+          <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}
             render={(props) => <LearningLibraryPage {...props} />}
           />
-          <Route
+          <PrivateRoute
             path={`${INTERNAL_LINKS.ARTICLE}/:id`}
             render={(props) => <ArticlePage {...props} />}
           />
