@@ -1,0 +1,47 @@
+@import "styles/main.scss";
+
+.article-page {
+  width: 100%;
+  height: calc(100vh - 72px);
+  overflow: auto;
+  padding: 60px 0;
+  background: $color-white;
+
+  &-title {
+    line-height: 48px !important;
+    text-align: center;
+  }
+
+  &-desc {
+    color: $color-text-third !important;
+    margin-top: 26px !important;
+    text-align: center;
+    font-weight: 500 !important;
+  }
+
+  .view-original {
+    margin-top: 36px !important;
+    text-align: center;
+    color: $color-accent !important;
+    font-weight: 500 !important;
+  }
+
+  &-text {
+    @include app-font(20px, 30px);
+    color: $color-text-primary;
+    text-align: justify;
+
+    &:first-child {
+      margin-top: 60px !important;
+    }
+
+    &:not(:first-child) {
+      margin-top: 36px !important;
+    }
+  }
+
+  &-subtitle {
+    line-height: 48px !important;
+    margin-top: 60px !important;
+  }
+}
