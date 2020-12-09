@@ -8,7 +8,12 @@ import ImgArticle from "images/icon-document.svg";
 
 import "./style.scss";
 
-const ArticleHeader = () => {
+const ArticleHeader = ({ history }) => {
+  const onCloseClick = () => {
+    console.log("history", history);
+    history.goBack();
+  };
+
   return (
     <div className="article-header">
       <Row gutter={16}>
@@ -27,7 +32,7 @@ const ArticleHeader = () => {
           </div>
         </Col>
       </Row>
-      <CloseOutlined className="article-header-close" />
+      <CloseOutlined className="article-header-close" onClick={onCloseClick} />
     </div>
   );
 };
