@@ -37,7 +37,7 @@ const ArticlePage = () => {
             </Col>
             <Col span={24}>
               {Data.original.map((data, index) => (
-                <p key={index} className="article-page-text">
+                <p key={index} className="article-page-text original">
                   {data}
                 </p>
               ))}
