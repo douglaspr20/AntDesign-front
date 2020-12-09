@@ -9,4 +9,5 @@ export default {
   HUB: "/hub",
   FAVORITES: "/favorites",
   READ_LATER: "/read-later",
+  ARTICLE: "/article",
 };

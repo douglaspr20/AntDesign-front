@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 // Headers
-import { MainHeader } from "components";
+import { MainHeader, ArticleHeader } from "components";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -43,6 +43,10 @@ class TopHeader extends Component {
         <Route
           path={INTERNAL_LINKS.READ_LATER}
           render={(props) => <MainHeader {...props} />}
+        />
+        <Route
+          path={`${INTERNAL_LINKS.ARTICLE}/:id`}
+          render={(props) => <ArticleHeader {...props} />}
         />
       </Switch>
     );

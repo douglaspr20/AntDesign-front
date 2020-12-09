@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
 import IconDocument from "images/icon-document.svg";
 
 import { SvgIcon } from "components";
+import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
 
@@ -35,7 +37,7 @@ class ArticleCard extends React.Component {
 
   render() {
     const {
-      data: { img, title, desc },
+      data: { img, title, desc, article },
       className,
     } = this.props;
     const { randomId, lineClamp } = this.state;
@@ -59,12 +61,14 @@ class ArticleCard extends React.Component {
             </p>
           </div>
           <div className="article-card-content-file">
-            <div className="d-flex items-center">
-              <div className="article-card-icon">
-                <img src={IconDocument} alt="doc-icon" />
+            <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${article}`}>
+              <div className="d-flex items-center">
+                <div className="article-card-icon">
+                  <img src={IconDocument} alt="doc-icon" />
+                </div>
+                <h6>{`Article`}</h6>
               </div>
-              <h6>{`Article`}</h6>
-            </div>
+            </NavLink>
             <div className="d-flex items-center">
               <SvgIcon name="star" className="article-card-icon" />
               <SvgIcon name="bookmark" />

@@ -6,6 +6,7 @@ import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import LearningLibraryPage from "pages/Library";
+import ArticlePage from "pages/Article";
 import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -31,6 +32,10 @@ class Content extends Component {
           <Route
             path={INTERNAL_LINKS.LEARNING_LIBRARY}
             render={(props) => <LearningLibraryPage {...props} />}
+          />
+          <Route
+            path={`${INTERNAL_LINKS.ARTICLE}/:id`}
+            render={(props) => <ArticlePage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>

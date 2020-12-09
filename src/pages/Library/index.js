@@ -18,6 +18,7 @@ const Library = {
   image: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
   description:
     "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis el malesuada velit sollicitudin vehicula sollicitudin libero vel malesuada velit",
+  article: 1,
 };
 
 const LibraryData = Array.from(Array(12).keys()).map((item) => ({
