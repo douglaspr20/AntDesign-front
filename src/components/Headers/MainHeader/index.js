@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
-import CustomButton from "../Button";
-import ProfilePopupMenu from "../ProfilePopupMenu";
+import CustomButton from "../../Button";
+import ProfilePopupMenu from "../../ProfilePopupMenu";
 import Emitter from "services/emitter";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
