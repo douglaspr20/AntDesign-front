@@ -14,15 +14,24 @@ import { store } from "redux/store";
 import ConnectedIntlProvider from "components/ConnectedIntlProvide";
 // Router Import
 import { BrowserRouter as Router } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
+
+import Config from "./config";
 
 import "antd/dist/antd.css";
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedIntlProvider>
-      <Router>
-        <App />
-      </Router>
+      <Auth0Provider
+        domain={Config.AUTH0_DOMAIN}
+        clientId={Config.AUTH0_CLIENT_ID}
+        redirectUri={window.location.origin}
+      >
+        <Router>
+          <App />
+        </Router>
+      </Auth0Provider>
     </ConnectedIntlProvider>
   </Provider>,
   document.getElementById("root")

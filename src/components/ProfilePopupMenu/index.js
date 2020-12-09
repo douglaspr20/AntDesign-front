@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
 
-import { CustomButton } from "components";
+import { SignOutButton } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
@@ -58,7 +58,7 @@ class ProfilePopupMenu extends React.Component {
           </div>
         ))}
         <div className="profile-popover-content-footer">
-          <CustomButton
+          <SignOutButton
             text="Log out"
             className="log-out"
             type="primary outlined"
