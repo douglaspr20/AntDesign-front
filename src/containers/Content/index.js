@@ -7,6 +7,7 @@ import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import LearningLibraryPage from "pages/Library";
 import ArticlePage from "pages/Article";
+import FavouritePage from "pages/Favourites";
 import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -38,6 +39,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.ARTICLE}/:id`}
             render={(props) => <ArticlePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.FAVORITES}
+            render={(props) => <FavouritePage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>
