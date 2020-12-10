@@ -80,22 +80,16 @@ const LearningLibraryPage = ({ planUpdated }) => {
             </div>
           </Col>
         </Row>
-        <Row gutter={[62, 36]}>
-          {data.map((item) => (
-            <Col
-              key={item.id}
-              lg={{ span: 12 }}
-              xl={{ span: 8 }}
-              xxl={{ span: 6 }}
-            >
-              <LibraryCard
-                data={item}
-                onClickAccess={planUpdate}
-                locked={!planUpdated}
-              />
-            </Col>
+        <div className="search-results-list">
+          {data.map((item, index) => (
+            <LibraryCard
+              key={index}
+              data={item}
+              onClickAccess={planUpdate}
+              locked={!planUpdated}
+            />
           ))}
-        </Row>
+        </div>
         <div className="search-results-container-footer d-flex justify-center items-center">
           {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
           {!loading && (
