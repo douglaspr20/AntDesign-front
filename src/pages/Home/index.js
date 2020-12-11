@@ -2,7 +2,9 @@ import React from "react";
 import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
 import moment from "moment";
+import { NavLink } from "react-router-dom";
 
+import { INTERNAL_LINKS } from "enum";
 import ProfileStatusBar from "./ProfileStatusBar";
 import { DateAvatar, EventCard, ArticleCard, CustomButton } from "components";
 
@@ -74,93 +76,93 @@ const monthStr = [
   "DEC",
 ];
 
-class HomePage extends React.Component {
-  render() {
-    const groupedByEventData = groupBy(EventsData, "date");
-    console.log("grup", groupedByEventData);
+const HomePage = () => {
+  const groupedByEventData = groupBy(EventsData, "date");
+  console.log("grup", groupedByEventData);
 
-    return (
-      <div className="home-page">
-        <div className="home-page-profile">
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <ProfileStatusBar percent={90} />
-            </Col>
-          </Row>
-        </div>
-        <div className="home-page-container">
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <div className="d-flex justify-between">
-                <h3 className="font-bold">Events</h3>
+  return (
+    <div className="home-page">
+      <div className="home-page-profile">
+        <Row gutter={16}>
+          <Col lg={{ span: 16, offset: 4 }}>
+            <ProfileStatusBar percent={90} />
+          </Col>
+        </Row>
+      </div>
+      <div className="home-page-container">
+        <Row gutter={16}>
+          <Col lg={{ span: 16, offset: 4 }}>
+            <div className="d-flex justify-between">
+              <h3 className="font-bold">Events</h3>
+              <NavLink to={INTERNAL_LINKS.EVENTS}>
                 <h3 className="color-primary view_all_events">
                   View all events
                 </h3>
-              </div>
+              </NavLink>
+            </div>
+          </Col>
+        </Row>
+        {Object.keys(groupedByEventData).map((date) => {
+          const day = moment(date, DataFormat).date();
+          const month = moment(date, DataFormat).month();
+          return (
+            <div className="event-card-group" key={date}>
+              <Row gutter={16}>
+                <Col lg={{ span: 2, offset: 4 }}>
+                  <DateAvatar day={day} month={monthStr[month]} />
+                </Col>
+                <Col lg={{ span: 14 }}>
+                  <Row gutter={18}>
+                    {groupedByEventData[date].map((event, index) => (
+                      <Col
+                        key={`${date}-${index}`}
+                        span={24}
+                        className="event-card-item"
+                      >
+                        <EventCard data={event} />
+                      </Col>
+                    ))}
+                  </Row>
+                </Col>
+              </Row>
+            </div>
+          );
+        })}
+        <Row gutter={16}>
+          <Col lg={{ span: 16, offset: 4 }}>
+            <h3 className="list-label">Recommended of the month</h3>
+          </Col>
+          {ArticlesData.map((article, index) => (
+            <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
+              <ArticleCard data={article} />
             </Col>
-          </Row>
-          {Object.keys(groupedByEventData).map((date) => {
-            const day = moment(date, DataFormat).date();
-            const month = moment(date, DataFormat).month();
-            return (
-              <div className="event-card-group" key={date}>
-                <Row gutter={16}>
-                  <Col lg={{ span: 2, offset: 4 }}>
-                    <DateAvatar day={day} month={monthStr[month]} />
-                  </Col>
-                  <Col lg={{ span: 14 }}>
-                    <Row gutter={18}>
-                      {groupedByEventData[date].map((event, index) => (
-                        <Col
-                          key={`${date}-${index}`}
-                          span={24}
-                          className="event-card-item"
-                        >
-                          <EventCard data={event} />
-                        </Col>
-                      ))}
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
-            );
-          })}
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <h3 className="list-label">Recommended of the month</h3>
-            </Col>
-            {ArticlesData.map((article, index) => (
-              <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
-                <ArticleCard data={article} />
-              </Col>
-            ))}
-          </Row>
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <h3 className="list-label">Recommended For you</h3>
-            </Col>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <div className="recommend-card">
-                <Row gutter={16}>
-                  <Col
-                    span={14}
-                    offset={5}
-                    className="d-flex flex-column items-center"
-                  >
-                    <h2>
-                      Access to the best HHRR information library and boost your
-                      potential
-                    </h2>
-                    <CustomButton text="Upgrade" type="primary" size="xl" />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </div>
+          ))}
+        </Row>
+        <Row gutter={16}>
+          <Col lg={{ span: 16, offset: 4 }}>
+            <h3 className="list-label">Recommended For you</h3>
+          </Col>
+          <Col lg={{ span: 16, offset: 4 }}>
+            <div className="recommend-card">
+              <Row gutter={16}>
+                <Col
+                  span={14}
+                  offset={5}
+                  className="d-flex flex-column items-center"
+                >
+                  <h2>
+                    Access to the best HHRR information library and boost your
+                    potential
+                  </h2>
+                  <CustomButton text="Upgrade" type="primary" size="xl" />
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default HomePage;
