@@ -1,59 +1,95 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 
-import { DateAvatar, EventCard } from "components";
+import { Tabs } from "components";
+import EventList from "./EventList";
 
 import "./style.scss";
 
-const DataFormat = "YYYY.MM.DD hh:mm A";
-const EventsData = [
-  {
-    date: "2020.11.18 19:00 pm",
-    title: "Meetup - How to improve your soft skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-  {
-    date: "2020.11.18 19:00 pm",
-    title: "Meetup - Beers and HHRR after work",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: true,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-  {
-    date: "2020.11.22 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-];
-
-const monthStr = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
-
 const EventsPage = () => {
-  return <div className="events-page">Events Page</div>;
+  const UPcomingEvents = [
+    {
+      date: "2020.11.18 19:00 pm",
+      title: "Meetup - How to improve your soft skills",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: false,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+    {
+      date: "2020.11.18 19:00 pm",
+      title: "Meetup - Beers and HHRR after work",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: true,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+    {
+      date: "2020.11.22 19:00 pm",
+      title: "Bay area job seekers and recruiters network skills",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: false,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+    {
+      date: "2020.11.22 19:00 pm",
+      title: "Bay area job seekers and recruiters network skills",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: false,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+    {
+      date: "2020.11.23 19:00 pm",
+      title: "Bay area job seekers and recruiters network skills",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: false,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+    {
+      date: "2020.11.24 19:00 pm",
+      title: "Bay area job seekers and recruiters network skills",
+      timezone: "EST",
+      type: "Online event",
+      cost: "Free",
+      going: false,
+      img:
+        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    },
+  ];
+
+  const MyEvents = [];
+
+  const TabData = [
+    {
+      title: "Upcoming events",
+      content: () => <EventList data={UPcomingEvents} />,
+    },
+    {
+      title: "My events",
+      content: () => <EventList data={MyEvents} />,
+    },
+  ];
+
+  return (
+    <div className="events-page">
+      <div className="events-page-container">
+        <Tabs data={TabData} />
+      </div>
+    </div>
+  );
 };
 
 EventsPage.propTypes = {

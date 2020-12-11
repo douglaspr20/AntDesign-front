@@ -1,0 +1,18 @@
+@import "styles/main.scss";
+
+.event-list {
+  padding-top: 60px;
+  height: calc(100vh - 200px);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-batch {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    grid-column-gap: 53px;
+  }
+}
