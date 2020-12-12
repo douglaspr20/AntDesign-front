@@ -4,6 +4,8 @@ import { CheckOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 
 import { CustomButton } from "components";
+import { EVENT_TYPES } from "enum";
+import Emitter from "services/emitter";
 
 import "./style.scss";
 
@@ -24,6 +26,11 @@ class EventCard extends React.Component {
     this.setState({ going: false });
   };
 
+  openEventDetails = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE);
+    console.log('emit')
+  };
+
   render() {
     const {
       data: { date, title, timezone, type, cost, img },
@@ -37,7 +44,7 @@ class EventCard extends React.Component {
           {img && <img src={img} alt="card-img" />}
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
-          <h3>{title}</h3>
+          <h3 onClick={this.openEventDetails}>{title}</h3>
           <h5>{`${date} ${timezone}`}</h5>
           <h5>{type}</h5>
           <div className="d-flex justify-between items-center w-full">
