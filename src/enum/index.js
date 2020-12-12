@@ -7,3 +7,4 @@ export { default as PROFILE_SETTINGS } from "./ProfileSettings";
 export { default as LANGUAGES } from "./Languages";
 export { default as TIMEZONE_LIST } from "./TimezoneList";
 export { default as SEARCH_FILTERS } from "./SearchFilters";
+export { default as MONTH_NAMES } from "./MonthNames";

@@ -1,0 +1,91 @@
+@import "styles/main.scss";
+
+.event-details {
+  margin: -24px;
+
+  &-header {
+    width: 100%;
+    height: 305px;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-actions {
+      position: absolute;
+      bottom: -32px;
+      margin-left: 32px;
+      display: flex;
+      align-items: center;
+
+      .date-avatar {
+        margin-right: 20px;
+      }
+
+      .going-label {
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        padding: 0 28px;
+        margin-right: 20px;
+        background: white;
+        @include app-font(20px, 26px, 600);
+        color: $color-success;
+
+        .anticon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  &-content {
+    padding: 72px 2rem 120px;
+
+    .event-title {
+      margin-bottom: 1.5rem !important;
+      line-height: 48px !important;
+      font-weight: bold !important;
+    }
+
+    .event-date {
+      @include app-font(20px, 26px, 500);
+      color: $color-text-secondary !important;
+    }
+
+    .add-to-calendar {
+      margin-left: 1rem !important;
+      color: $color-accent !important;
+      cursor: pointer;
+    }
+
+    .event-type {
+      margin-top: 20px !important;
+      font-weight: 500 !important;
+      color: $color-text-secondary !important;
+    }
+
+    .event-cost {
+      margin-top: 20px !important;
+      font-weight: 500 !important;
+      color: $color-text-third !important;
+    }
+
+    &-subtitle {
+      margin-top: 60px !important;
+      @include app-font(20px, 48px, bold);
+      color: $color-text-primary !important;
+    }
+
+    &-subtext {
+      margin-top: 1.5rem;
+      @include app-font(20px, 30px);
+      color: $color-text-secondary !important;
+    }
+  }
+}
