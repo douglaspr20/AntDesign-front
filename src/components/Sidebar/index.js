@@ -4,6 +4,7 @@ import { Layout, Menu } from "antd";
 import { setCollapsed } from "redux/actions/env-actions";
 import { injectIntl } from "react-intl";
 import { Link, withRouter } from "react-router-dom";
+import { CloseOutlined } from "@ant-design/icons";
 
 import { SIDEBAR_MENU_LIST, INTERNAL_LINKS } from "enum";
 import SidebarMenuItem from "./SidebarMenuItem";
@@ -16,21 +17,23 @@ const TopMenuList = SIDEBAR_MENU_LIST.TOP_MENUS;
 const BottomMenuList = SIDEBAR_MENU_LIST.BOTTOM_MENUS;
 
 class NavBar extends Component {
-  onCollapse = (collapsed) => {
-    this.props.setCollapsed(collapsed);
-  };
-
-  toggle = () => {
-    this.props.setCollapsed(!this.props.env.siderMenuCollapsed);
+  onCloseSidebar = () => {
+    const { isMobile } = this.props.env || {};
+    if (isMobile) {
+      this.props.setCollapsed(true);
+    }
   };
 
   render() {
     // When adding new menu item give it's key the pathname
     //this.props.location.pathname
-    const siderProp = this.props.env.isMobile
-      ? { breakpoint: "lg", collapsedWidth: "0", collapsible: false }
-      : { collapsible: false };
+    const { isMobile, siderMenuCollapsed } = this.props.env || {};
+    const siderProp = isMobile
+      ? { breakpoint: "lg", collapsedWidth: "0", collapsible: true }
+      : { collapsible: true };
     const navBarTheme = "light";
+    const collapsed = isMobile ? siderMenuCollapsed : false;
+
     const menuStyle = {
       // laggy for now
       // position:'fixed',overflow: "hidden !important",maxWidth:"200px"
@@ -38,9 +41,11 @@ class NavBar extends Component {
     return (
       <Sider
         {...siderProp}
+        collapsed={collapsed}
         theme={navBarTheme}
+        trigger={null}
         style={{ zIndex: 999 }}
-        width={108}
+        width={isMobile ? 272 : 108}
         className="layout-sidebar"
       >
         <div className="layout-sidebar-logo">
@@ -59,7 +64,7 @@ class NavBar extends Component {
         >
           {TopMenuList.map((menu) => (
             <Menu.Item key={menu.url} className="layout-sidebar-menu">
-              <Link to={menu.url}>
+              <Link to={menu.url} onClick={this.onCloseSidebar}>
                 <SidebarMenuItem icon={menu.icon} text={menu.label} />
               </Link>
             </Menu.Item>
@@ -74,12 +79,17 @@ class NavBar extends Component {
         >
           {BottomMenuList.map((menu) => (
             <Menu.Item key={menu.url} className="layout-sidebar-menu">
-              <Link to={menu.url}>
+              <Link to={menu.url} onClick={this.onCloseSidebar}>
                 <SidebarMenuItem icon={menu.icon} text={menu.label} />
               </Link>
             </Menu.Item>
           ))}
         </Menu>
+        {isMobile && (
+          <div className="layout-sidebar-close">
+            <CloseOutlined onClick={this.onCloseSidebar} />
+          </div>
+        )}
       </Sider>
     );
   }

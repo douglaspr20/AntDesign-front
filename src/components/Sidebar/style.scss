@@ -3,6 +3,11 @@
 .layout-sidebar {
   box-shadow: $shadow-primary;
   background: $color-white;
+  position: relative;
+
+  @media (max-width: 575.98px) {
+    position: absolute !important;
+  }
 
   .ant-layout-sider-children {
     height: 100vh;
@@ -31,8 +36,11 @@
   }
 
   &-top-menus {
-    flex: 1;
     overflow: auto;
+
+    @media (min-width: 575.98px) {
+      flex: 1;
+    }
 
     &::-webkit-scrollbar {
       display: none;
@@ -50,6 +58,10 @@
     border-right: 3px solid transparent !important;
     width: 100% !important;
 
+    @media (max-width: 575.98px) {
+      height: 56px !important;
+    }
+
     &.ant-menu-item-selected,
     &:hover {
       background-color: $color-background-dark !important;
@@ -64,4 +76,21 @@
       display: none;
     }
   }
+
+  &-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: $color-text-secondary;
+  }
+}
+
+.ant-menu-inline-collapsed-tooltip {
+  display: none !important;
 }

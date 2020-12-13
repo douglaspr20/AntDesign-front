@@ -24,7 +24,7 @@ class App extends Component {
     super(props);
 
     this.props.setDimensions(window.innerWidth, window.innerHeight);
-    if (window.innerWidth < 480) this.props.setIsMobile(true);
+    if (window.innerWidth < 576) this.props.setIsMobile(true);
     this.updateDimensions = this.updateDimensions.bind(this);
 
     this.state = {
@@ -42,7 +42,7 @@ class App extends Component {
 
   updateDimensions() {
     this.props.setDimensions(window.innerWidth, window.innerHeight);
-    if (window.innerWidth < 480) this.props.setIsMobile(true);
+    if (window.innerWidth < 576) this.props.setIsMobile(true);
     else this.props.setIsMobile(false);
   }
 
