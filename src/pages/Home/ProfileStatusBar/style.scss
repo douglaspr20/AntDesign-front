@@ -15,6 +15,17 @@
     align-items: flex-start;
     max-width: 355px;
 
+    @media (max-width: 767.98px) {
+      justify-content: center;
+      max-width: 1000px;
+    }
+
+    @media (max-width: 575.98px) {
+      .custom-button {
+        width: 100%;
+      }
+    }
+
     & > span {
       @include app-font(26px, 30px);
       color: $color-text-primary;
@@ -22,6 +33,15 @@
 
     .custom-button {
       font-weight: 500 !important;
+      margin-top: 28px;
+    }
+  }
+
+  .section-right {
+    @media (max-width: 767.98px) {
+      .circular-progress-bar {
+        display: none;
+      }
     }
   }
 }

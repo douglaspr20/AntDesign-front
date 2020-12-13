@@ -46,8 +46,8 @@ class EventCard extends React.Component {
           <h3 onClick={this.openEventDetails}>{title}</h3>
           <h5>{`${date} ${timezone}`}</h5>
           <h5>{type}</h5>
-          <div className="d-flex justify-between items-center w-full">
-            <h6>{cost}</h6>
+          <div className="event-card-content-footer">
+            <h6 className="event-card-cost">{cost}</h6>
             <div className="d-flex">
               {!going && (
                 <CustomButton
