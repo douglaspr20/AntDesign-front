@@ -91,9 +91,12 @@
         @include app-font(16px, 21px, 600);
       }
 
-      .textfield-value, .textfield-value.completed {
+      .textfield-value {
         @include app-font(16px, 24px);
-        color: $color-text-primary !important;
+
+        &.completed {
+          color: $color-text-primary !important;
+        }
       }
     }
   }
