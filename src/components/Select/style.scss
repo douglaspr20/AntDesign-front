@@ -25,6 +25,13 @@
     transform: translate(0, -50%) !important;
     color: $color-text-primary !important;
   }
+
+  @media (max-width: 575.98px) {
+    .ant-select-selection-item {
+      @include app-font(16px, 24px);
+      color: $color-text-primary !important;
+    }
+  }
 }
 
 .custom-select-dropdown {
@@ -32,5 +39,10 @@
     @include app-font(20px, 34px);
     color: $color-text-secondary;
     padding-left: 8px;
+
+    @media (max-width: 575.98px) {
+      @include app-font(16px, 24px);
+      color: $color-text-primary !important;
+    }
   }
 }

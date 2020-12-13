@@ -4,7 +4,7 @@
   margin: -24px;
 
   &-header {
-    background: $color-background;
+    background: $color-background-dark;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,6 +19,10 @@
       &-name {
         margin-top: 0.5rem !important;
         margin-bottom: 37px !important;
+
+        @media (max-width: 575.98px) {
+          @include app-font(26px, 34px, bold);
+        }
       }
     }
 
@@ -27,6 +31,10 @@
       bottom: -20px;
       left: 50%;
       transform: translate(-50%, 0);
+
+      @media (max-width: 575.98px) {
+        width: calc(100% - 40px);
+      }
     }
   }
 
@@ -72,6 +80,20 @@
 
       &:not(:first-child) {
         margin-top: 1.5rem;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      padding: 34px 20px 40px;
+
+      .textfield-label {
+        margin-top: 28px !important;
+        @include app-font(16px, 21px, 600);
+      }
+
+      .textfield-value, .textfield-value.completed {
+        @include app-font(16px, 24px);
+        color: $color-text-primary !important;
       }
     }
   }

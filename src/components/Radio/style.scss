@@ -30,6 +30,10 @@
     @include app-font(20px, 30px);
     color: $color-text-secondary;
     margin-left: 1rem;
+
+    @media (max-width: 575.98px) {
+      @include app-font(16px, 30px);
+    }
   }
 
   &.primary.checked {
