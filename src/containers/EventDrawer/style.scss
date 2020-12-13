@@ -70,6 +70,12 @@
       color: $color-text-secondary !important;
     }
 
+    i.fa-circle {
+      color: $color-text-secondary;
+      font-size: 3px;
+      padding: 0 8px;
+    }
+
     .event-cost {
       margin-top: 20px !important;
       font-weight: 500 !important;

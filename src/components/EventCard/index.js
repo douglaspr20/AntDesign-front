@@ -27,8 +27,7 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE);
-    console.log('emit')
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE, this.props.data);
   };
 
   render() {
