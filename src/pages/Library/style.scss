@@ -34,6 +34,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(305px, 1fr));
     grid-gap: 2rem;
+    margin-bottom: 44px;
 
     &-item {
       display: flex;
