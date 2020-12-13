@@ -9,6 +9,10 @@
   border-radius: 0.5rem;
   height: 206px;
 
+  @media (max-width: 575.98px) {
+    height: max-content;
+  }
+
   &-img {
     width: 220px;
     height: 206px;
@@ -31,14 +35,27 @@
     padding: 1.5rem 28px;
     flex: 1;
 
+    @media (max-width: 575.98px) {
+      padding: 28px 1.5rem;
+    }
+
     & > h3 {
       font-weight: 500 !important;
       cursor: pointer;
+
+      @media (max-width: 575.98px) {
+        margin-bottom: 1.5rem !important;
+      }
     }
 
     & > h5 {
       font-weight: 500 !important;
       color: #707070 !important;
+
+      @media (max-width: 575.98px) {
+        margin-bottom: 1rem !important;
+        @include app-font(16px, 21px);
+      }
     }
 
     h6 {
@@ -60,6 +77,30 @@
       span {
         margin-left: 0.5rem;
       }
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 21px, 600);
+        margin-right: 0;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 28px;
+
+        span {
+          margin-left: 0;
+        }
+
+        .anticon.anticon-check {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .not-going-btn {
+      @media (max-width: 575.98px) {
+        width: 100%;
+        min-height: 36px;
+      }
     }
 
     &-footer {
@@ -74,6 +115,34 @@
 
         .event-card-cost {
           margin-bottom: 28px !important;
+          @include app-font(16px, 21px);
+        }
+      }
+
+      &-actions {
+        display: flex;
+
+        @media (max-width: 575.98px) {
+          width: 100%;
+
+          .custom-button {
+            height: 36px !important;
+            flex: 1;
+            @include app-font(16px, 21px, 600);
+          }
+        }
+
+        .going-group-part {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          @media (max-width: 575.98px) {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+          }
         }
       }
     }

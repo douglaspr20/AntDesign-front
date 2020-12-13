@@ -48,7 +48,7 @@ class EventCard extends React.Component {
           <h5>{type}</h5>
           <div className="event-card-content-footer">
             <h6 className="event-card-cost">{cost}</h6>
-            <div className="d-flex">
+            <div className="event-card-content-footer-actions">
               {!going && (
                 <CustomButton
                   text="Attend"
@@ -58,7 +58,7 @@ class EventCard extends React.Component {
                 />
               )}
               {going && (
-                <div className="d-flex justify-center items-center">
+                <div className="going-group-part">
                   <div className="going-label">
                     <CheckOutlined />
                     <span>I'm going</span>

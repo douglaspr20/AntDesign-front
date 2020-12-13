@@ -8,6 +8,10 @@
   border-radius: 0.5rem;
   border: 1px solid $color-border;
 
+  @media (max-width: 575.98px) {
+    padding: 28px 20px;
+  }
+
   .section-left {
     display: flex;
     flex-direction: column;
@@ -29,6 +33,10 @@
     & > span {
       @include app-font(26px, 30px);
       color: $color-text-primary;
+
+      @media (max-width: 575.98px) {
+        @include app-font(20px, 30px, 600);
+      }
     }
 
     .custom-button {
