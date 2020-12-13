@@ -84,14 +84,14 @@ const HomePage = () => {
     <div className="home-page">
       <div className="home-page-profile">
         <Row gutter={16}>
-          <Col lg={{ span: 16, offset: 4 }}>
+          <Col span={24} lg={{ span: 16, offset: 4 }}>
             <ProfileStatusBar percent={90} />
           </Col>
         </Row>
       </div>
       <div className="home-page-container">
         <Row gutter={16}>
-          <Col lg={{ span: 16, offset: 4 }}>
+          <Col span={24} lg={{ span: 16, offset: 4 }}>
             <div className="d-flex justify-between">
               <h3 className="font-bold">Events</h3>
               <NavLink to={INTERNAL_LINKS.EVENTS}>
@@ -107,11 +107,17 @@ const HomePage = () => {
           const month = moment(date, DataFormat).month();
           return (
             <div className="event-card-group" key={date}>
-              <Row gutter={16}>
-                <Col lg={{ span: 2, offset: 4 }}>
-                  <DateAvatar day={day} month={monthStr[month]} />
+              <Row gutter={[16, 16]}>
+                <Col span={24} md={{ span: 2 }} lg={{ span: 2, offset: 4 }}>
+                  <div className="d-flex justify-center items-center">
+                    <DateAvatar day={day} month={monthStr[month]} />
+                  </div>
                 </Col>
-                <Col lg={{ span: 14 }}>
+                <Col
+                  span={24}
+                  md={{ span: 21, offset: 1 }}
+                  lg={{ span: 14, offset: 0 }}
+                >
                   <Row gutter={18}>
                     {groupedByEventData[date].map((event, index) => (
                       <Col

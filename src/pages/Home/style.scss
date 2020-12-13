@@ -10,11 +10,21 @@
     background: $color-white;
     padding: 28px 2rem;
     border-bottom: 1px solid $color-border;
+
+    @media (max-width: 575.98px) {
+      border-bottom: none;
+      background: $color-background;
+      padding: 28px 1rem;
+    }
   }
 
   &-container {
     padding: 60px 2rem 150px;
     background: $color-background;
+
+    @media (max-width: 575.98px) {
+      padding: 60px 1rem 150px;
+    }
 
     .view_all_events {
       cursor: pointer;
