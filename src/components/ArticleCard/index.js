@@ -71,7 +71,7 @@ class ArticleCard extends React.Component {
             </NavLink>
             <div className="d-flex items-center">
               <SvgIcon name="star" className="article-card-icon" />
-              <SvgIcon name="bookmark" />
+              <SvgIcon name="bookmark" className="article-card-icon" />
             </div>
           </div>
         </div>

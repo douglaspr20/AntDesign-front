@@ -1,19 +1,30 @@
 @import "styles/main.scss";
 
 .article-card {
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 220px 1fr;
   background: $color-white;
   box-shadow: 4px 0px 14px #37215714;
   border: 1px solid $color-border;
   border-radius: 0.5rem;
   height: 195px;
 
+  @media (max-width: 575.98px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 152px 1fr;
+    height: 400px;
+  }
+
   &-img {
     width: 220px;
     height: 195px;
     border: 1px solid $color-border;
     border-radius: 0.5rem;
+
+    @media (max-width: 575.98px) {
+      height: 100%;
+      width: 100%;
+    }
 
     img {
       width: 100%;
@@ -24,9 +35,12 @@
 
   &-content {
     padding: 1.5rem 28px;
-    flex: 1;
     display: grid;
     grid-template-rows: auto 1fr auto;
+
+    @media (max-width: 575.98px) {
+      padding: 1.5rem 20px;
+    }
 
     & > h3 {
       font-weight: 500 !important;
@@ -44,6 +58,10 @@
       margin: 0;
       height: 100%;
       /* autoprefixer: off */
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 24px, 500);
+      }
     }
 
     &-file {
@@ -55,8 +73,20 @@
       .article-card-icon {
         width: 1.5rem;
         height: 1.5rem;
-        margin-right: 0.25rem;
         overflow: hidden;
+
+        &.custom-icon {
+          margin-left: 0.5rem;
+        }
+
+        @media (max-width: 575.98px) {
+          width: 2rem !important;
+          height: 2rem !important;
+
+          &.custom-icon {
+            margin-left: 0.75rem;
+          }
+        }
 
         img {
           width: 100%;
@@ -68,6 +98,11 @@
       & h6 {
         font-weight: 500 !important;
         color: $color-text-third !important;
+        margin-left: 0.25rem !important;
+
+        @media (max-width: 575.98px) {
+          @include app-font(16px, 21px);
+        }
       }
     }
   }

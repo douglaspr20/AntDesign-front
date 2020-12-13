@@ -107,7 +107,7 @@ const HomePage = () => {
           const month = moment(date, DataFormat).month();
           return (
             <div className="event-card-group" key={date}>
-              <Row gutter={[16, 16]}>
+              <Row gutter={[16, 20]}>
                 <Col span={24} md={{ span: 2 }} lg={{ span: 2, offset: 4 }}>
                   <div className="d-flex justify-center items-center">
                     <DateAvatar day={day} month={monthStr[month]} />
@@ -152,15 +152,21 @@ const HomePage = () => {
             <div className="recommend-card">
               <Row gutter={16}>
                 <Col
-                  span={14}
-                  offset={5}
+                  span={24}
+                  offset={0}
+                  md={{ span: 14, offset: 5 }}
                   className="d-flex flex-column items-center"
                 >
-                  <h2>
+                  <h2 className="recommend-card-label">
                     Access to the best HHRR information library and boost your
                     potential
                   </h2>
-                  <CustomButton text="Upgrade" type="primary" size="xl" />
+                  <CustomButton
+                    text="Upgrade"
+                    type="primary"
+                    size="xl"
+                    className="recommend-card-upgrade"
+                  />
                 </Col>
               </Row>
             </div>

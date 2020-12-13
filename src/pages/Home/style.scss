@@ -22,10 +22,6 @@
     padding: 60px 2rem 150px;
     background: $color-background;
 
-    @media (max-width: 575.98px) {
-      padding: 60px 1rem 150px;
-    }
-
     .view_all_events {
       cursor: pointer;
     }
@@ -51,15 +47,46 @@
       border-radius: 0.5rem;
       margin-top: 2.25rem;
 
-      h2 {
+      @media (max-width: 575.98px) {
+        margin-top: 20px;
+        padding: 28px 20px;
+
+        &-label {
+          @include app-font(20px, 30px, 600);
+        }
+
+        &-upgrade {
+          width: 100%;
+          font-weight: 500 !important;
+        }
+      }
+
+      &-label {
         margin-bottom: 28px !important;
         text-align: center;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      padding: 16px 1rem 150px;
+
+      .list-label {
+        margin-top: 36px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .article-card {
+        margin-top: 20px;
       }
     }
   }
 
   .event-card-group {
     margin-top: 2.25rem;
+
+    @media (max-width: 575.98px) {
+      margin-top: 18px;
+    }
   }
 
   .event-card-item:not(:first-child) {
