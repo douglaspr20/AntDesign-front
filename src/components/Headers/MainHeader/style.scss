@@ -11,6 +11,10 @@
   box-shadow: $shadow-secondary;
   z-index: 99;
 
+  @media (max-width: 575.98px) {
+    padding: 0 1rem;
+  }
+
   &-left {
     display: flex;
     align-items: center;
@@ -19,6 +23,10 @@
       width: 2rem;
       height: 2rem;
       margin-right: 0.75rem;
+
+      @media (max-width: 575.98px) {
+        display: none;
+      }
 
       img {
         width: 100%;
@@ -31,14 +39,45 @@
       @include app-font(26px, 34px, 600);
       color: $color-text-primary;
     }
+
+    &-menu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2rem;
+      height: 2rem;
+      color: $color-text-primary;
+      margin-right: 0.75rem;
+      font-size: 24px;
+    }
   }
 
   &-right {
     display: flex;
     align-items: center;
 
+    @media (max-width: 575.98px) {
+      .user-name,
+      .profile-menu-chevron {
+        display: none !important;
+      }
+
+      .user-avatar {
+        margin-right: 0 !important;
+      }
+    }
+
+    & > .profile-popover {
+      display: flex;
+      align-items: center;
+    }
+
     .btn-upgrade {
       margin-right: 2rem;
+
+      @media (max-width: 767.98px) {
+        display: none !important;
+      }
     }
 
     .user-avatar {

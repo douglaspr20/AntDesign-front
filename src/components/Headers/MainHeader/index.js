@@ -6,6 +6,7 @@ import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import Emitter from "services/emitter";
+import { setCollapsed } from "redux/actions/env-actions";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 
@@ -33,6 +34,10 @@ class MainHeader extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  onShowSidebar = () => {
+    this.props.setCollapsed(false);
+  };
+
   render() {
     const { user } = this.state;
     const { pathname } = this.props.history.location || {};
@@ -42,6 +47,11 @@ class MainHeader extends React.Component {
     return (
       <div className="main-header">
         <div className="main-header-left">
+          {this.props.isMobile && (
+            <div className="main-header-left-menu" onClick={this.onShowSidebar}>
+              <i className="fal fa-bars" />
+            </div>
+          )}
           {pathInfo && (
             <>
               <div className="page-icon">
@@ -61,15 +71,15 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
-          <div className="user-avatar">
-            {user.img ? (
-              <img src={user.img} alt="user-avatar" />
-            ) : (
-              user.abbrName
-            )}
-          </div>
-          <span className="user-name">{user.name}</span>
           <ProfilePopupMenu>
+            <div className="user-avatar">
+              {user.img ? (
+                <img src={user.img} alt="user-avatar" />
+              ) : (
+                user.abbrName
+              )}
+            </div>
+            <span className="user-name">{user.name}</span>
             <div className="profile-menu-chevron">
               <img src={IconChevronDown} alt="profile-menu" />
             </div>
@@ -89,7 +99,11 @@ MainHeader.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => {
-  return { ...state, ...props };
+  return { ...state, ...props, isMobile: state.env.isMobile };
 };
 
-export default connect(mapStateToProps)(MainHeader);
+const mapDispatchToProps = {
+  setCollapsed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);

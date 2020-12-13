@@ -9,6 +9,13 @@
   align-items: center;
   background: transparent;
 
+  @media (max-width: 575.98px) {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 32px;
+    height: 56px;
+  }
+
   &-icon {
     width: 32px;
     height: 32px;
