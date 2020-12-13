@@ -48,4 +48,14 @@
       display: none;
     }
   }
+
+  @media (max-width: 575.98px) {
+    .ant-drawer-content-wrapper {
+      width: 100% !important;
+    }
+
+    .ant-drawer-header {
+      padding: 20px 1rem !important;
+    }
+  }
 }

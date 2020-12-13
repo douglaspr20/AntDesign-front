@@ -11,7 +11,7 @@
   &-header {
     width: 100%;
     height: 86px;
-    background: $color-background;
+    background: $color-background-dark;
     position: relative;
 
     .profile-user-img {
@@ -72,6 +72,13 @@
         box-shadow: 4px 0px 14px #37215714;
         border: 1px solid $color-border;
         cursor: pointer;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .profile-user-img {
+        left: 50%;
+        transform: translate(-50%, 0);
       }
     }
   }
@@ -136,6 +143,34 @@
         }
       }
     }
+
+    @media (max-width: 575.98px) {
+      padding: 44px 20px 7.5rem;
+
+      .textfield-label {
+        @include app-font(16px, 21px, 600);
+        color: $color-text-secondary !important;
+        margin-top: 28px !important;
+      }
+
+      .textfield-input {
+        margin-top: 0.5rem;
+        @include app-font(16px, 24px);
+        color: $color-text-primary;
+      }
+
+      .personal-links {
+        .personal-link-icon {
+          margin-right: 0.5rem;
+        }
+
+        .ant-input-group-addon,
+        .ant-input {
+          @include app-font(16px, 24px);
+          color: $color-text-primary;
+        }
+      }
+    }
   }
 
   &-footer {
@@ -145,9 +180,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 20px;
 
     .custom-button:first-child {
       margin-right: 3rem;
+    }
+
+    @media (max-width: 575.98px) {
+      .custom-button {
+        width: 100%;
+
+        &:first-child {
+          margin-right: 2rem;
+        }
+      }
     }
   }
 }
