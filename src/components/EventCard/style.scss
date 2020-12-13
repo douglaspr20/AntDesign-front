@@ -73,6 +73,7 @@
       margin-right: 37px;
       color: $color-success;
       @include app-font(14px, 19px, normal);
+      white-space: nowrap;
 
       span {
         margin-left: 0.5rem;
