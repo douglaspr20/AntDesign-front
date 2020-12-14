@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
 import FilterPanel from "./FilterPanel";
+import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
 import { CustomSelect, LibraryCard, CustomButton } from "components";
 import Emitter from "services/emitter";
@@ -62,10 +63,25 @@ const LearningLibraryPage = ({ planUpdated }) => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
+  };
+
   return (
     <div className="learning-library-page">
       <FilterPanel />
+      <FilterDrawer />
       <div className="search-results-container">
+        <Row>
+          <Col span={24}>
+            <div className="search-results-container-mobile-header">
+              <h3 className="filters-btn" onClick={showFilterPanel}>
+                Filters
+              </h3>
+              <h3>{`${numberWithCommas(1234)} results`}</h3>
+            </div>
+          </Col>
+        </Row>
         <Row>
           <Col span={24}>
             <div className="search-results-container-header d-flex justify-between items-center">

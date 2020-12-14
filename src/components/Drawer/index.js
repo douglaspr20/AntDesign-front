@@ -8,14 +8,22 @@ import "./style.scss";
 
 class CustomDrawer extends React.Component {
   render() {
-    const { className, width, children, title, onClose, ...rest } = this.props;
+    const {
+      className,
+      width,
+      children,
+      placement,
+      title,
+      onClose,
+      ...rest
+    } = this.props;
 
     return (
       <Drawer
         {...rest}
         title={<h2>{title}</h2>}
         className={clsx("custom-drawer", className, { "no-header": !title })}
-        placement="right"
+        placement={placement}
         closable={true}
         onClose={onClose}
         width={width}
@@ -33,12 +41,14 @@ class CustomDrawer extends React.Component {
 
 CustomDrawer.propTypes = {
   title: PropTypes.string,
+  placement: PropTypes.string,
   width: PropTypes.number,
   onClose: PropTypes.func,
 };
 
 CustomDrawer.defaultProps = {
   title: "Drawer",
+  placement: "right",
   width: 772,
   onClose: () => {},
 };
