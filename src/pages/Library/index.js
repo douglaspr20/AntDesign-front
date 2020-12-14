@@ -68,6 +68,14 @@ const LearningLibraryPage = ({ planUpdated }) => {
       <div className="search-results-container">
         <Row>
           <Col span={24}>
+            <div className="search-results-container-mobile-header">
+              <h3 className="filters-btn">Filters</h3>
+              <h3>{`${numberWithCommas(1234)} results`}</h3>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
             <div className="search-results-container-header d-flex justify-between items-center">
               <h3>{`${numberWithCommas(1234)} results`}</h3>
               <CustomSelect

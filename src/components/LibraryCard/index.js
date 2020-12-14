@@ -64,7 +64,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           </NavLink>
           <div className="d-flex items-center">
             <SvgIcon name="star" className="library-card-icon" />
-            <SvgIcon name="bookmark" />
+            <SvgIcon name="bookmark" className="library-card-icon" />
           </div>
         </div>
       </div>

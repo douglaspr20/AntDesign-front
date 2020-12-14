@@ -59,8 +59,12 @@
     .library-card-icon {
       width: 1.5rem;
       height: 1.5rem;
-      margin-right: 0.25rem;
+      margin-left: 0.25rem;
       overflow: hidden;
+
+      &:first-child {
+        margin-left: 0;
+      }
 
       img {
         width: 100%;
@@ -72,6 +76,7 @@
     & h6 {
       font-weight: 500 !important;
       color: $color-text-third !important;
+      margin-left: 0.25rem !important;
     }
   }
 
