@@ -98,6 +98,16 @@
           color: $color-text-primary !important;
         }
       }
+
+      .personal-link {
+        &-icon {
+          margin-right: 0.5rem;
+        }
+
+        .textfield-value {
+          margin-left: 0 !important;
+        }
+      }
     }
   }
 }
