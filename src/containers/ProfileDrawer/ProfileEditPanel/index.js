@@ -156,7 +156,7 @@ class ProfileEditPanel extends React.Component {
                 </CustomRadio>
               ))}
             </div>
-            <h5 className="textfield-label">Peronal links</h5>
+            <h5 className="textfield-label">Personal links</h5>
             <div className="personal-links">
               {Object.keys(CONTACT_ICONS).map((contact) => (
                 <div className="personal-link" key={contact}>
