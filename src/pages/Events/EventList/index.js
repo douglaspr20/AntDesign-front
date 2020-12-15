@@ -30,6 +30,11 @@ const EventList = ({ data, onAttend, ...rest }) => {
   const groupedByEventData = groupBy(data, "date");
   console.log("grup", groupedByEventData);
 
+  const onEventChanged = (event, going) => {
+    event.going = going;
+    onAttend(event);
+  };
+
   return (
     <div {...rest} className="event-list">
       {data && data.length === 0 && <NoEventCard />}
@@ -46,7 +51,10 @@ const EventList = ({ data, onAttend, ...rest }) => {
                   span={24}
                   className="event-list-item"
                 >
-                  <EventCard data={event} onAttend={() => onAttend(event)} />
+                  <EventCard
+                    data={event}
+                    onAttend={(going) => onEventChanged(event, going)}
+                  />
                 </Col>
               ))}
             </Row>
