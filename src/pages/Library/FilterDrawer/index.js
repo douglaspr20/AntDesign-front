@@ -40,6 +40,7 @@ const FilterDrawer = () => {
       visible={visible}
       placement="left"
       onClose={onDrawerClose}
+      destroyOnClose={true}
     >
       <div className="filter-drawer-container">
         <div className="filter-drawer-header">

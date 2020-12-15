@@ -131,7 +131,9 @@ LearningLibraryPage.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => {
-  return { planUpdated: state.home ? state.home.planUpdated : false };
+  return {
+    planUpdated: state.home ? state.home.planUpdated : false,
+  };
 };
 
 export default connect(mapStateToProps)(LearningLibraryPage);
