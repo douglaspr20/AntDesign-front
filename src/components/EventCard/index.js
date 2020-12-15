@@ -20,6 +20,7 @@ class EventCard extends React.Component {
 
   onAttend = () => {
     this.setState({ going: true });
+    this.props.onAttend();
   };
 
   onCancelAttend = () => {
@@ -84,11 +85,13 @@ class EventCard extends React.Component {
 EventCard.propTypes = {
   data: PropTypes.object,
   className: PropTypes.string,
+  onAttend: PropTypes.func,
 };
 
 EventCard.defaultProps = {
   data: {},
   className: "",
+  onAttend: () => {},
 };
 
 export default EventCard;

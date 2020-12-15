@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { Tabs } from "components";
@@ -24,7 +24,7 @@ const EventsPage = () => {
       timezone: "EST",
       type: "Online event",
       cost: "Free",
-      going: true,
+      going: false,
       img:
         "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     },
@@ -70,16 +70,21 @@ const EventsPage = () => {
     },
   ];
 
-  const MyEvents = [];
+  const [upcomingEvents] = useState(UPcomingEvents);
+  const [myEvents, setMyEvents] = useState([]);
+
+  const addMyEvents = (event) => {
+    setMyEvents([...myEvents, event]);
+  };
 
   const TabData = [
     {
       title: "Upcoming events",
-      content: () => <EventList data={UPcomingEvents} />,
+      content: () => <EventList data={upcomingEvents} onAttend={addMyEvents} />,
     },
     {
       title: "My events",
-      content: () => <EventList data={MyEvents} />,
+      content: () => <EventList data={myEvents} />,
     },
   ];
 
