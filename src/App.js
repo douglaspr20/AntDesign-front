@@ -12,6 +12,8 @@ import EventDrawer from "containers/EventDrawer";
 import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
+import PaymentForm from "./containers/PaymentForm";
+import { setPlanUpdated } from "redux/actions/home-actions";
 import { EVENT_TYPES } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
@@ -29,6 +31,7 @@ class App extends Component {
 
     this.state = {
       openPaymentModal: false,
+      openPaymentPanel: false,
     };
   }
 
@@ -36,7 +39,11 @@ class App extends Component {
     window.addEventListener("resize", this.updateDimensions);
 
     Emitter.on(EVENT_TYPES.OPEN_PAYMENT_MODAL, () => {
-      this.setState({ openPaymentModal: true });
+      if (this.props.isMobile) {
+        this.setState({ openPaymentPanel: true });
+      } else {
+        this.setState({ openPaymentModal: true });
+      }
     });
   }
 
@@ -50,8 +57,18 @@ class App extends Component {
     this.setState({ openPaymentModal: false });
   };
 
+  onHidePaymentPanel = () => {
+    this.setState({ openPaymentPanel: false });
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.onHidePaymentPanel();
+    this.props.setPlanUpdated(true);
+  };
+
   render() {
-    const { openPaymentModal } = this.state;
+    const { openPaymentModal, openPaymentPanel } = this.state;
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
@@ -74,18 +91,25 @@ class App extends Component {
           onPay={this.onHidePaymentModal}
           onCancel={this.onHidePaymentModal}
         />
+        {openPaymentPanel && (
+          <PaymentForm
+            handleSubmit={this.handleSubmit}
+            hidePanel={this.onHidePaymentPanel}
+          />
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state, props) => {
-  return { ...state, ...props };
+  return { ...state, ...props, isMobile: state.env.isMobile };
 };
 
 const mapDispatchToProps = {
   setDimensions,
   setIsMobile,
+  setPlanUpdated,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
