@@ -17,7 +17,7 @@ const ArticleHeader = ({ history }) => {
   return (
     <div className="article-header">
       <Row gutter={16}>
-        <Col lg={{ span: 12, offset: 6 }}>
+        <Col span={24} lg={{ span: 12, offset: 6 }}>
           <div className="article-header-content d-flex justify-between items-center">
             <div className="d-flex items-center">
               <div className="icon-wrapper">
@@ -27,7 +27,13 @@ const ArticleHeader = ({ history }) => {
             </div>
             <div className="d-flex items-center">
               <SvgIcon name="star" className="star-icon" />
-              <SvgIcon name="bookmark" />
+              <SvgIcon name="bookmark" className="bookmark-icon" />
+            </div>
+            <div className="article-header-mobile-close">
+              <CloseOutlined
+                className="article-header-mobile-close-icon"
+                onClick={onCloseClick}
+              />
             </div>
           </div>
         </Col>
