@@ -10,20 +10,14 @@ import Emitter from "services/emitter";
 import "./style.scss";
 
 class EventCard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      going: props.data ? props.data.going : false,
-    };
-  }
-
   onAttend = () => {
     this.setState({ going: true });
+    this.props.onAttend(true);
   };
 
   onCancelAttend = () => {
     this.setState({ going: false });
+    this.props.onAttend(false);
   };
 
   openEventDetails = () => {
@@ -32,10 +26,9 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { date, title, timezone, type, cost, img },
+      data: { date, title, timezone, type, cost, img, going },
       className,
     } = this.props;
-    const { going } = this.state;
 
     return (
       <div className={clsx("event-card", className)}>
@@ -84,11 +77,13 @@ class EventCard extends React.Component {
 EventCard.propTypes = {
   data: PropTypes.object,
   className: PropTypes.string,
+  onAttend: PropTypes.func,
 };
 
 EventCard.defaultProps = {
   data: {},
   className: "",
+  onAttend: () => {},
 };
 
 export default EventCard;

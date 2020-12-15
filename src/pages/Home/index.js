@@ -80,6 +80,10 @@ const HomePage = () => {
   const groupedByEventData = groupBy(EventsData, "date");
   console.log("grup", groupedByEventData);
 
+  const onEventChanged = (event, going) => {
+    event.going = going;
+  };
+
   return (
     <div className="home-page">
       <div className="home-page-profile">
@@ -125,7 +129,10 @@ const HomePage = () => {
                         span={24}
                         className="event-card-item"
                       >
-                        <EventCard data={event} />
+                        <EventCard
+                          data={event}
+                          onAttend={(going) => onEventChanged(event, going)}
+                        />
                       </Col>
                     ))}
                   </Row>

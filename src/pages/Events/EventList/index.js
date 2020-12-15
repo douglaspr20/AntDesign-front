@@ -26,9 +26,14 @@ const monthStr = [
 
 const DataFormat = "YYYY.MM.DD hh:mm A";
 
-const EventList = ({ data, ...rest }) => {
+const EventList = ({ data, onAttend, ...rest }) => {
   const groupedByEventData = groupBy(data, "date");
   console.log("grup", groupedByEventData);
+
+  const onEventChanged = (event, going) => {
+    event.going = going;
+    onAttend(event);
+  };
 
   return (
     <div {...rest} className="event-list">
@@ -46,7 +51,10 @@ const EventList = ({ data, ...rest }) => {
                   span={24}
                   className="event-list-item"
                 >
-                  <EventCard data={event} />
+                  <EventCard
+                    data={event}
+                    onAttend={(going) => onEventChanged(event, going)}
+                  />
                 </Col>
               ))}
             </Row>
@@ -59,10 +67,12 @@ const EventList = ({ data, ...rest }) => {
 
 EventList.propTypes = {
   data: PropTypes.array,
+  onAttend: PropTypes.func,
 };
 
 EventList.defaultProps = {
   data: [],
+  onAttend: () => {},
 };
 
 export default EventList;
