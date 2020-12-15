@@ -11,6 +11,10 @@
   &-title {
     line-height: 48px !important;
     text-align: center;
+
+    @media (max-width: 575.98px) {
+      @include app-font(26px, 39px, 700);
+    }
   }
 
   &-desc {
@@ -26,6 +30,11 @@
     color: $color-accent !important;
     font-weight: 500 !important;
     cursor: pointer;
+
+    @media (max-width: 575.98px) {
+      margin-top: 28px !important;
+      @include app-font(20px, 26px);
+    }
   }
 
   &-text {
@@ -37,10 +46,23 @@
     &.original:not(:first-child) {
       margin-top: 36px !important;
     }
+
+    @media (max-width: 575.98px) {
+      margin-top: 44px !important;
+    }
   }
 
   &-subtitle {
     line-height: 48px !important;
     margin-top: 60px !important;
+
+    @media (max-width: 575.98px) {
+      margin-top: 44px !important;
+      @include app-font(26px, 39px, 700);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    padding: 44px 0;
   }
 }
