@@ -10,6 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 20px;
 
   &-icon {
     width: 60px;
@@ -29,5 +30,10 @@
     @include app-font(26px, 39px);
     color: $color-text-third;
     margin-top: 1.5rem;
+    text-align: center;
+
+    @media (max-width: 767.98px) {
+      @include app-font(20px, 30px);
+    }
   }
 }
