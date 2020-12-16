@@ -39,6 +39,23 @@
     .star-icon {
       margin-right: 1rem;
     }
+
+    @media (max-width: 991.98px) {
+      padding: 0 8px;
+
+      .article-title {
+        @include app-font(16px, 21px);
+      }
+
+      .star-icon {
+        margin-right: 0.75rem;
+      }
+
+      .bookmark-icon, .star-icon {
+        width: 32px !important;
+        height: 32px !important;
+      }
+    }
   }
 
   &-close {
@@ -48,5 +65,26 @@
     transform: translate(0, -50%);
     font-size: 24px;
     cursor: pointer;
+
+    @media (max-width: 991.98px) {
+      display: none !important;
+    }
+  }
+
+  &-mobile-close {
+    width: 100px;
+    text-align: right;
+    padding: 8px;
+    display: none;
+
+    &-icon {
+      font-size: 24px;
+      cursor: pointer;
+      color: $color-text-third !important;
+    }
+
+    @media (max-width: 991.98px) {
+      display: block !important;
+    }
   }
 }

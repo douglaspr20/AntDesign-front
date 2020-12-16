@@ -28,7 +28,12 @@ const ArticlePage = () => {
   return (
     <div className="article-page">
       <Row gutter={16}>
-        <Col lg={{ span: 12, offset: 6 }}>
+        <Col
+          xs={{ span: 22, offset: 1 }}
+          sm={{ span: 20, offset: 2 }}
+          md={{ span: 16, offset: 4 }}
+          lg={{ span: 12, offset: 6 }}
+        >
           <Row gutter={64}>
             <Col lg={{ span: 20, offset: 2 }}>
               <h1 className="article-page-title">{Data.title}</h1>
