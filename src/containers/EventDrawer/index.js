@@ -57,7 +57,9 @@ const EventDrawer = () => {
       <div className="event-details">
         <div className="event-details-header">
           <img src={event.img} alt="event-img" />
-          <div className="event-details-header-actions">
+        </div>
+        <div className="event-details-content">
+          <div className="event-details-content-actions">
             <DateAvatar day={event.day || 0} month={event.month || ""} />
             {!event.going && (
               <CustomButton
@@ -84,19 +86,19 @@ const EventDrawer = () => {
               </React.Fragment>
             )}
           </div>
-        </div>
-        <div className="event-details-content">
           <h1 className="event-title">{event.title}</h1>
-          <div className="d-flex items-center">
-            <h3 className="event-date">
-              {moment(event.date, DataFormat).format("DD MMM")}
-            </h3>
-            <i className="fas fa-circle" />
-            <h3 className="event-date">
-              {`${moment(event.date, DataFormat).format("hh:mm A")} ${
-                event.timezone
-              }`}
-            </h3>
+          <div className="d-flex items-center event-info">
+            <div className="d-flex items-center">
+              <h3 className="event-date">
+                {moment(event.date, DataFormat).format("DD MMM")}
+              </h3>
+              <i className="fas fa-circle" />
+              <h3 className="event-date">
+                {`${moment(event.date, DataFormat).format("hh:mm A")} ${
+                  event.timezone
+                }`}
+              </h3>
+            </div>
             <h3 className="add-to-calendar">Add to calendar</h3>
           </div>
           <h3 className="event-type">{event.type}</h3>
