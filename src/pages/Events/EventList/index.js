@@ -28,7 +28,6 @@ const DataFormat = "YYYY.MM.DD hh:mm A";
 
 const EventList = ({ data, onAttend, ...rest }) => {
   const groupedByEventData = groupBy(data, "date");
-  console.log("grup", groupedByEventData);
 
   const onEventChanged = (event, going) => {
     event.going = going;
