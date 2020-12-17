@@ -17,7 +17,6 @@ const EventDrawer = () => {
 
   Emitter.on(EVENT_TYPES.EVENT_VIEW_ARTICLE, (data) => {
     setVisible(true);
-    console.log("data accept", data);
     setEvent({
       ...data,
       dateStr: `${moment(data.date, DataFormat).format("DD MMM . hh:mm A")} ${
