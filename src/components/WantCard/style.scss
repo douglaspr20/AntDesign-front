@@ -1,0 +1,27 @@
+@import "styles/main.scss";
+
+.want-card {
+  border-radius: 0.5rem;
+  background: $color-white;
+  box-shadow: 4px 0px 12px #37215714;
+  border: 1px solid $color-border;
+  padding: 60px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  &-title {
+    @include app-font(26px, 39px);
+    text-align: center;
+    margin-bottom: 60px !important;
+
+    &:first-child {
+      margin-bottom: 32px !important;
+    }
+  }
+
+  &-button {
+    @include app-font(20px, 26px);
+  }
+}

@@ -20,3 +20,4 @@ export { default as SignOutButton } from "./SignOutButton";
 export { default as PrivateRoute } from "./PrivateRoute";
 export { default as Tabs } from "./Tabs";
 export { default as NoEventCard } from "./NoEventCard";
+export { default as WantCard } from "./WantCard";
