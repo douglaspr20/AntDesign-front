@@ -1,0 +1,15 @@
+@import "styles/main.scss";
+
+.mentoring-page {
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: $color-background;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+
+  &-container {
+    width: 904px;
+  }
+}
