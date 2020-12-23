@@ -5,22 +5,22 @@ import { WantCard } from "components";
 
 import "./style.scss";
 
-const MentorPanel = () => {
+const MentorPanel = ({ openSetting }) => {
   return (
     <div className="mentor-panel">
       <div className="mentor-panel-container">
-        <WantCard type="mentor" />
+        <WantCard type="mentor" onClick={openSetting} />
       </div>
     </div>
   );
 };
 
 MentorPanel.propTypes = {
-  title: PropTypes.string,
+  openSetting: PropTypes.func,
 };
 
 MentorPanel.defaultProps = {
-  title: "",
+  openSetting: () => {},
 };
 
 export default MentorPanel;

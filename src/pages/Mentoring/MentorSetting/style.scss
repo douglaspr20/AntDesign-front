@@ -1,0 +1,38 @@
+@import "styles/main.scss";
+
+.mentor-setting {
+  padding-top: 12px;
+
+  &-sublabel {
+    @include app-font(14px, 19px, bold);
+    margin: 44px 0 12px !important;
+  }
+
+  &-specialties {
+    margin-top: 12px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    grid-gap: 20px;
+
+    & > .custom-checkbox {
+      margin-left: 0 !important;
+    }
+  }
+
+  &-footer {
+    margin-top: 50px;
+    padding: 50px 0;
+    border-top: 1px solid $color-border;
+    display: flex;
+    justify-content: center;
+
+    .custom-button {
+      width: 202px;
+
+      &:first-child {
+        margin-right: 2rem;
+      }
+    }
+  }
+}

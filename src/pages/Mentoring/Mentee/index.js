@@ -5,22 +5,22 @@ import { WantCard } from "components";
 
 import "./style.scss";
 
-const MenteePanel = () => {
+const MenteePanel = ({ openSetting }) => {
   return (
     <div className="mentee-panel">
       <div className="mentee-panel-container">
-        <WantCard type="mentee" />
+        <WantCard type="mentee" onClick={openSetting} />
       </div>
     </div>
   );
 };
 
 MenteePanel.propTypes = {
-  title: PropTypes.string,
+  openSetting: PropTypes.func,
 };
 
 MenteePanel.defaultProps = {
-  title: "",
+  openSetting: "",
 };
 
 export default MenteePanel;
