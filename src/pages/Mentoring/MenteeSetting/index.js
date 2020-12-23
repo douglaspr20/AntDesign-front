@@ -9,10 +9,18 @@ import "./style.scss";
 
 const Specialties = PROFILE_SETTINGS.SPECIALTIES;
 
-const MenteeSetting = ({ onCancel, onSave }) => {
-  const [reason, setReason] = useState("");
-  const [title, setTitle] = useState("");
-  const [specialties, setSpecialties] = useState([]);
+const MenteeSetting = ({ setting, onCancel, onSave }) => {
+  const [reason, setReason] = useState(setting.reason);
+  const [title, setTitle] = useState(setting.title);
+  const [specialties, setSpecialties] = useState(setting.specialties || []);
+
+  const onClickSave = () => {
+    onSave({
+      reason,
+      title,
+      specialties,
+    });
+  };
 
   return (
     <div className="mentee-setting">
@@ -53,18 +61,25 @@ const MenteeSetting = ({ onCancel, onSave }) => {
           size="xl"
           onClick={onCancel}
         />
-        <CustomButton text="Save" type="primary" size="lg" onClick={onSave} />
+        <CustomButton
+          text="Save"
+          type="primary"
+          size="lg"
+          onClick={onClickSave}
+        />
       </div>
     </div>
   );
 };
 
 MenteeSetting.propTypes = {
+  setting: PropTypes.object,
   onCancel: PropTypes.func,
   onSave: PropTypes.func,
 };
 
 MenteeSetting.defaultProps = {
+  setting: {},
   onCancel: () => {},
   onSave: () => {},
 };

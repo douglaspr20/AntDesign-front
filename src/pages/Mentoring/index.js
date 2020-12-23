@@ -12,43 +12,72 @@ import "./style.scss";
 const Mentoring = () => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
+  const [isMentor, setIsMentor] = useState(false);
+  const [isMentee, setIsMentee] = useState(false);
+  const [mentorSetting, setMentorSetting] = useState({});
+  const [menteeSetting, setMenteeSetting] = useState({});
 
   const showSetting = (type) => {
     setOpenSetting(true);
     setSelectedType(type);
   };
 
-  const onSaveMentorSetting = () => {
+  const onSaveMentorSetting = (data) => {
     setOpenSetting(false);
+    setIsMentor(true);
+    setMentorSetting(data);
   };
 
-  const onSaveMenteeSetting = () => {
+  const onSaveMenteeSetting = (data) => {
     setOpenSetting(false);
+    setIsMentee(true);
+    setMenteeSetting(data);
   };
 
   const TabData = [
     {
       title: "Mentor",
-      content: () => <MentorPanel openSetting={() => showSetting("mentor")} />,
+      content: () => (
+        <MentorPanel
+          setting={mentorSetting}
+          isMentor={isMentor}
+          openSetting={() => showSetting("mentor")}
+          onEdit={() => showSetting("mentor")}
+        />
+      ),
     },
     {
       title: "Mentee",
-      content: () => <MenteePanel openSetting={() => showSetting("mentee")} />,
+      content: () => (
+        <MenteePanel
+          setting={menteeSetting}
+          isMentee={isMentee}
+          openSetting={() => showSetting("mentee")}
+          onEdit={() => showSetting("mentee")}
+        />
+      ),
     },
   ];
 
   return (
     <div className="mentoring-page">
       <div className="mentoring-page-container">
-        {!openSetting && <Tabs data={TabData} />}
+        {!openSetting && (
+          <Tabs
+            current={selectedType === "mentor" ? "0" : "1"}
+            data={TabData}
+          />
+        )}
         {openSetting && selectedType === "mentor" && (
           <MentorSetting
+            setting={mentorSetting}
             onCancel={() => setOpenSetting(false)}
             onSave={onSaveMentorSetting}
           />
         )}
         {openSetting && selectedType === "mentee" && (
           <MenteeSetting
+            setting={menteeSetting}
             onCancel={() => setOpenSetting(false)}
             onSave={onSaveMenteeSetting}
           />
