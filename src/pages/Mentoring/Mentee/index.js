@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WantCard } from "components";
+import { SpecialtyItem, WantCard } from "components";
 
 import "./style.scss";
 
@@ -19,9 +19,7 @@ const MenteePanel = ({ setting, isMentee, openSetting, onEdit }) => {
             </p>
             <div className="mentee-panel-description-specialties">
               {(setting.specialties || []).map((spec, index) => (
-                <div key={`specialty-${index}`} className="specialty-item">
-                  {spec}
-                </div>
+                <SpecialtyItem key={`specialty-${index}`} title={spec} />
               ))}
             </div>
             <span className="edit-information" onClick={onEdit}>
