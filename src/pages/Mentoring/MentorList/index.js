@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const MentorList = () => {
-  const user = {
+const MentorList = ({ user }) => {
+  const entry = {
     firstName: "Edgar",
     lastName: "Davis",
     abbrName: "ED",
@@ -22,19 +24,30 @@ const MentorList = () => {
       "Technologies",
     ],
     personalLinks: {},
-    language: "",
-    timezone: "",
+    language: "English EN - United States",
+    timezone: "(GMT -12:00) Eniwetok, Kwajalein",
     completed: false,
     percentOfCompletion: 75,
+    role: "mentor",
+    reason:
+      "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
+    connected: false,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
 
-  const [menteeList, setMenteeList] = useState(Data);
+  const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
   const [match] = useState(8);
 
   const onShowMore = () => {
-    setMenteeList((prev) => [...prev, ...Data]);
+    setMentorList((prev) => [...prev, ...Data]);
+  };
+
+  const onMemberCardClick = (member) => {
+    Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
+      member,
+      match: (user || {}).specialties || [],
+    });
   };
 
   return (
@@ -48,8 +61,13 @@ const MentorList = () => {
         </span>
       </div>
       <div className="mentor-list-items">
-        {(menteeList || []).map((mentee, index) => (
-          <MemberCard key={`mentee-${index}`} user={mentee} />
+        {(mentorList || []).map((mentor, index) => (
+          <MemberCard
+            key={`mentor-${index}`}
+            user={mentor}
+            match={user ? user.specialties : []}
+            onClick={() => onMemberCardClick(mentor)}
+          />
         ))}
         <div className="mentor-list-items-more">
           <CustomButton
@@ -65,11 +83,11 @@ const MentorList = () => {
 };
 
 MentorList.propTypes = {
-  title: PropTypes.string,
+  user: PropTypes.object,
 };
 
 MentorList.defaultProps = {
-  title: "",
+  user: "",
 };
 
 export default MentorList;

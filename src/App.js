@@ -9,6 +9,7 @@ import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 import EventDrawer from "containers/EventDrawer";
+import MemberDrawer from "containers/MemberDrawer";
 import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
@@ -81,6 +82,7 @@ class App extends Component {
         </Layout>
         <ProfileDrawer />
         <EventDrawer />
+        <MemberDrawer />
         {this.props.home.loading && (
           <div className="loading-container">
             <Spin indicator={<img src={IconLoading} alt="loading-img" />} />

@@ -18,12 +18,17 @@ const TabData = [
   },
 ];
 
-const CustomTabs = ({ current, className, data, ...rest }) => {
+const CustomTabs = ({ current, className, data, onChange, ...rest }) => {
+  const onTabChange = (tab) => {
+    onChange(tab);
+  };
+
   return (
     <Tabs
       {...rest}
       className={clsx("custom-tabs", className)}
       defaultActiveKey={current}
+      onChange={onTabChange}
     >
       {data.map((tab, index) => (
         <TabPane
@@ -42,12 +47,14 @@ CustomTabs.propTypes = {
   current: PropTypes.string,
   className: PropTypes.string,
   data: PropTypes.array,
+  onChange: PropTypes.func,
 };
 
 CustomTabs.defaultProps = {
   current: "0",
   className: "",
   data: TabData,
+  onChange: () => {},
 };
 
 export default CustomTabs;

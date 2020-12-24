@@ -61,6 +61,10 @@ const Mentoring = () => {
     },
   ];
 
+  const onTabChange = (tab) => {
+    setSelectedType(tab === "1" ? "mentee" : "mentor");
+  };
+
   return (
     <div className="mentoring-page">
       <div className="mentoring-page-container">
@@ -68,6 +72,7 @@ const Mentoring = () => {
           <Tabs
             current={selectedType === "mentor" ? "0" : "1"}
             data={TabData}
+            onChange={onTabChange}
           />
         )}
         {openSetting && selectedType === "mentor" && (
@@ -88,14 +93,14 @@ const Mentoring = () => {
       {!openSetting && selectedType === "mentor" && isMentor && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MentorList />
+            <MenteeList user={mentorSetting} />
           </div>
         </div>
       )}
       {!openSetting && selectedType === "mentee" && isMentee && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MenteeList />
+            <MentorList user={menteeSetting} />
           </div>
         </div>
       )}
