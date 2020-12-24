@@ -19,7 +19,9 @@ const MentorPanel = ({ setting, isMentor, openSetting, onEdit }) => {
             </p>
             <div className="mentor-panel-description-specialties">
               {(setting.specialties || []).map((spec, index) => (
-                <div className="specialty-item">{spec}</div>
+                <div key={`specialty-${index}`} className="specialty-item">
+                  {spec}
+                </div>
               ))}
             </div>
             <span className="edit-information" onClick={onEdit}>

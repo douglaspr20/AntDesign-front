@@ -19,7 +19,9 @@ const MenteePanel = ({ setting, isMentee, openSetting, onEdit }) => {
             </p>
             <div className="mentee-panel-description-specialties">
               {(setting.specialties || []).map((spec, index) => (
-                <div className="specialty-item">{spec}</div>
+                <div key={`specialty-${index}`} className="specialty-item">
+                  {spec}
+                </div>
               ))}
             </div>
             <span className="edit-information" onClick={onEdit}>
