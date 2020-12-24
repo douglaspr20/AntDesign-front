@@ -5,7 +5,7 @@ import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const MemberCard = ({ user }) => {
+const MemberCard = ({ user, match }) => {
   const onClick = () => {};
 
   const onClickMatch = () => {};
@@ -38,12 +38,20 @@ const MemberCard = ({ user }) => {
         <h5 className="member-title">{user.titleProfessions}</h5>
         <p className="member-about">{user.about}</p>
         <div className="member-specialties">
-          {(user.topicsOfInterest || []).map((spec, index) => (
-            <SpecialtyItem
-              key={`specialty-${randomId}-${index}`}
-              title={spec}
-            />
-          ))}
+          {(user.topicsOfInterest || [])
+            .sort((x, y) => {
+              const first = (match || []).includes(x);
+              const second = (match || []).includes(y);
+
+              return !first && second ? 1 : first && second ? 0 : -1;
+            })
+            .map((spec, index) => (
+              <SpecialtyItem
+                key={`specialty-${randomId}-${index}`}
+                title={spec}
+                active={(match || []).includes(spec)}
+              />
+            ))}
         </div>
       </div>
     </div>
@@ -52,10 +60,12 @@ const MemberCard = ({ user }) => {
 
 MemberCard.propTypes = {
   user: PropTypes.object,
+  match: PropTypes.array,
 };
 
 MemberCard.defaultProps = {
   user: "",
+  match: [],
 };
 
 export default MemberCard;

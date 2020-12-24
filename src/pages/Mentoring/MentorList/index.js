@@ -6,8 +6,8 @@ import { numberWithCommas } from "utils/format";
 
 import "./style.scss";
 
-const MentorList = () => {
-  const user = {
+const MentorList = ({ user }) => {
+  const entry = {
     firstName: "Edgar",
     lastName: "Davis",
     abbrName: "ED",
@@ -27,7 +27,7 @@ const MentorList = () => {
     completed: false,
     percentOfCompletion: 75,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
 
   const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
@@ -49,7 +49,11 @@ const MentorList = () => {
       </div>
       <div className="mentor-list-items">
         {(mentorList || []).map((mentor, index) => (
-          <MemberCard key={`mentor-${index}`} user={mentor} />
+          <MemberCard
+            key={`mentor-${index}`}
+            user={mentor}
+            match={user ? user.specialties : []}
+          />
         ))}
         <div className="mentor-list-items-more">
           <CustomButton
@@ -65,11 +69,11 @@ const MentorList = () => {
 };
 
 MentorList.propTypes = {
-  title: PropTypes.string,
+  user: PropTypes.object,
 };
 
 MentorList.defaultProps = {
-  title: "",
+  user: "",
 };
 
 export default MentorList;

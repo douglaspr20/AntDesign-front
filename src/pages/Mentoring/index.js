@@ -93,14 +93,14 @@ const Mentoring = () => {
       {!openSetting && selectedType === "mentor" && isMentor && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MenteeList />
+            <MenteeList user={mentorSetting} />
           </div>
         </div>
       )}
       {!openSetting && selectedType === "mentee" && isMentee && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MentorList />
+            <MentorList user={menteeSetting} />
           </div>
         </div>
       )}

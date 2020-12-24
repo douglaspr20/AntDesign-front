@@ -6,8 +6,8 @@ import { numberWithCommas } from "utils/format";
 
 import "./style.scss";
 
-const MenteeList = () => {
-  const user = {
+const MenteeList = ({ user }) => {
+  const entry = {
     firstName: "Andryi",
     lastName: "Shevchenko",
     abbrName: "AS",
@@ -27,7 +27,7 @@ const MenteeList = () => {
     completed: false,
     percentOfCompletion: 75,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
 
   const [menteeList, setMenteeList] = useState(Data);
   const [total] = useState(234);
@@ -49,7 +49,11 @@ const MenteeList = () => {
       </div>
       <div className="mentee-list-items">
         {(menteeList || []).map((mentee, index) => (
-          <MemberCard key={`mentor-${index}`} user={mentee} />
+          <MemberCard
+            key={`mentor-${index}`}
+            user={mentee}
+            match={user ? user.specialties : []}
+          />
         ))}
         <div className="mentee-list-items-more">
           <CustomButton
@@ -65,11 +69,11 @@ const MenteeList = () => {
 };
 
 MenteeList.propTypes = {
-  title: PropTypes.string,
+  user: PropTypes.object,
 };
 
 MenteeList.defaultProps = {
-  title: "",
+  user: {},
 };
 
 export default MenteeList;
