@@ -33,14 +33,22 @@ const MenteeList = ({ user }) => {
       "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
     connected: false,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({
+    id: item,
+    ...entry,
+  }));
 
   const [menteeList, setMenteeList] = useState(Data);
   const [total] = useState(234);
   const [match] = useState(8);
 
   const onShowMore = () => {
-    setMenteeList((prev) => [...prev, ...Data]);
+    setMenteeList((prev) =>
+      [...prev, ...Data].map((item, index) => ({
+        ...item,
+        id: index,
+      }))
+    );
   };
 
   const onMemberCardClick = (member) => {
@@ -49,6 +57,22 @@ const MenteeList = ({ user }) => {
       match: (user || {}).specialties || [],
     });
   };
+
+  const onMatchClicked = (index) => {
+    if (!menteeList[index].connected) {
+      setMenteeList((prev) => {
+        prev[index].connected = true;
+        return [...prev];
+      });
+    }
+  };
+
+  Emitter.on(EVENT_TYPES.MEMBER_CHANGED, (member) => {
+    setMenteeList((prev) => {
+      prev[member.id] = member;
+      return [...prev];
+    });
+  });
 
   return (
     <div className="mentee-list">
@@ -67,6 +91,7 @@ const MenteeList = ({ user }) => {
             user={mentee}
             match={user ? user.specialties : []}
             onClick={() => onMemberCardClick(mentee)}
+            onMatchClicked={() => onMatchClicked(index)}
           />
         ))}
         <div className="mentee-list-items-more">

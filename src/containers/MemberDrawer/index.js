@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useStateWithCallbackLazy } from "use-state-with-callback";
 
 import {
   CustomButton,
@@ -13,7 +14,7 @@ import "./style.scss";
 
 const MemberDrawer = () => {
   const [visible, setVisible] = useState(false);
-  const [member, setMember] = useState({});
+  const [member, setMember] = useStateWithCallbackLazy({});
   const [match, setMatch] = useState([]);
 
   Emitter.on(EVENT_TYPES.OPEN_MEMBER_PANEL, ({ member, match }) => {
@@ -27,7 +28,12 @@ const MemberDrawer = () => {
   };
 
   const onClickMatch = () => {
-    setMember((prev) => ({ ...prev, connected: true }));
+    setMember(
+      (prev) => ({ ...prev, connected: true }),
+      (current) => {
+        Emitter.emit(EVENT_TYPES.MEMBER_CHANGED, current);
+      }
+    );
   };
 
   return (
