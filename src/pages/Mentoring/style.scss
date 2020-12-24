@@ -10,8 +10,35 @@
   flex-direction: column;
   padding: 3rem 0 0;
 
+  @media (max-width: 1199.98px) {
+    padding: 3rem 3rem;
+  }
+
+  @media (max-width: 575.98px) {
+    padding: 2rem 1rem 0;
+  }
+
   &-container {
     width: 904px;
+
+    @media (max-width: 575.98px) {
+      .ant-tabs-nav-list {
+        display: grid !important;
+        grid-template-columns: 50% 50%;
+        justify-items: center;
+        width: 100%;
+
+        .ant-tabs-tab {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+
+    @media (max-width: 1199.98px) {
+      width: 100%;
+    }
   }
 
   &-list {
