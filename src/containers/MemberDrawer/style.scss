@@ -1,0 +1,64 @@
+@import "styles/main.scss";
+
+.member-details {
+  margin: -24px;
+
+  &-header {
+    background: $color-background-dark;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .user-info {
+      &-avatar {
+        margin-top: 26px;
+      }
+
+      &-name {
+        margin-top: 0.5rem !important;
+        margin-bottom: 37px !important;
+
+        @media (max-width: 575.98px) {
+          @include app-font(26px, 34px, bold);
+        }
+      }
+    }
+
+    .profile-complete-btn {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+
+      @media (max-width: 575.98px) {
+        width: calc(100% - 40px);
+      }
+    }
+  }
+
+  &-content {
+    padding: 20px 2rem 40px;
+
+    &-label {
+      font-weight: bold !important;
+      margin-top: 52px !important;
+    }
+
+    &-text {
+      @include app-font(20px, 30px);
+      color: $color-text-secondary;
+    }
+
+    &-specialties {
+      display: flex;
+      margin-top: 8px;
+
+      .specialty-item {
+        margin-top: 4px;
+        margin-right: 20px;
+      }
+    }
+  }
+}

@@ -42,7 +42,10 @@ class ProfileAvatar extends React.Component {
           )}
         />
         {percent !== 0 && percent !== 100 && (
-          <i className="profile-avatar-dot fas fa-circle" style={dotPos} />
+          <i
+            className="profile-avatar-dot fas fa-circle"
+            style={{ ...dotPos, color: color }}
+          />
         )}
       </div>
     );

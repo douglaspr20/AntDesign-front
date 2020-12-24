@@ -5,10 +5,11 @@ import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const MemberCard = ({ user, match }) => {
-  const onClick = () => {};
-
-  const onClickMatch = () => {};
+const MemberCard = ({ user, match, onClick }) => {
+  const onClickMatch = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
 
   const randomId = Math.floor(Math.random() * 1000) + 1;
 
@@ -61,11 +62,13 @@ const MemberCard = ({ user, match }) => {
 MemberCard.propTypes = {
   user: PropTypes.object,
   match: PropTypes.array,
+  onClick: PropTypes.func,
 };
 
 MemberCard.defaultProps = {
   user: "",
   match: [],
+  onClick: () => {},
 };
 
 export default MemberCard;

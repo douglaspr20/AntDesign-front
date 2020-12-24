@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -22,10 +24,14 @@ const MentorList = ({ user }) => {
       "Technologies",
     ],
     personalLinks: {},
-    language: "",
-    timezone: "",
+    language: "English EN - United States",
+    timezone: "(GMT -12:00) Eniwetok, Kwajalein",
     completed: false,
     percentOfCompletion: 75,
+    role: "mentor",
+    reason:
+      "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
+    connected: false,
   };
   const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
 
@@ -35,6 +41,13 @@ const MentorList = ({ user }) => {
 
   const onShowMore = () => {
     setMentorList((prev) => [...prev, ...Data]);
+  };
+
+  const onMemberCardClick = (member) => {
+    Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
+      member,
+      match: (user || {}).specialties || [],
+    });
   };
 
   return (
@@ -53,6 +66,7 @@ const MentorList = ({ user }) => {
             key={`mentor-${index}`}
             user={mentor}
             match={user ? user.specialties : []}
+            onClick={() => onMemberCardClick(mentor)}
           />
         ))}
         <div className="mentor-list-items-more">
