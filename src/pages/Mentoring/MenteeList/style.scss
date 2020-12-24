@@ -21,5 +21,14 @@
   }
 
   &-items {
+    .member-card {
+      margin-top: 36px;
+    }
+
+    &-more {
+      margin-top: 44px;
+      display: flex;
+      justify-content: center;
+    }
   }
 }

@@ -1,14 +1,41 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
 
 import "./style.scss";
 
 const MenteeList = () => {
-  // const [mentorList, setMentorList] = useState([]);
+  const user = {
+    firstName: "Andryi",
+    lastName: "Shevchenko",
+    abbrName: "AS",
+    img: null,
+    about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
+    titleProfessions: "HR Management & Coaching",
+    proficiencyLevel: "",
+    topicsOfInterest: [
+      "Leadership",
+      "Recruiting",
+      "Human Resources",
+      "Technologies",
+    ],
+    personalLinks: {},
+    language: "",
+    timezone: "",
+    completed: false,
+    percentOfCompletion: 75,
+  };
+  const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
+
+  const [menteeList, setMenteeList] = useState(Data);
   const [total] = useState(234);
   const [match] = useState(8);
+
+  const onShowMore = () => {
+    setMenteeList((prev) => [...prev, ...Data]);
+  };
 
   return (
     <div className="mentee-list">
@@ -20,7 +47,19 @@ const MenteeList = () => {
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
       </div>
-      <div className="mentee-list-items"></div>
+      <div className="mentee-list-items">
+        {(menteeList || []).map((mentee, index) => (
+          <MemberCard key={`mentor-${index}`} user={mentee} />
+        ))}
+        <div className="mentee-list-items-more">
+          <CustomButton
+            text="Show more"
+            type="primary outlined"
+            size="lg"
+            onClick={onShowMore}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -29,12 +29,12 @@ const MentorList = () => {
   };
   const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
 
-  const [menteeList, setMenteeList] = useState(Data);
+  const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
   const [match] = useState(8);
 
   const onShowMore = () => {
-    setMenteeList((prev) => [...prev, ...Data]);
+    setMentorList((prev) => [...prev, ...Data]);
   };
 
   return (
@@ -48,8 +48,8 @@ const MentorList = () => {
         </span>
       </div>
       <div className="mentor-list-items">
-        {(menteeList || []).map((mentee, index) => (
-          <MemberCard key={`mentee-${index}`} user={mentee} />
+        {(mentorList || []).map((mentor, index) => (
+          <MemberCard key={`mentor-${index}`} user={mentor} />
         ))}
         <div className="mentor-list-items-more">
           <CustomButton
