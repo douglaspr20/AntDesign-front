@@ -1,0 +1,34 @@
+@import "styles/main.scss";
+
+.mentor-list {
+  padding: 60px 0;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 18px;
+
+    &-left {
+      @include app-font(20px, 30px, bold);
+      color: $color-text-primary;
+    }
+
+    &-right {
+      @include app-font(20px, 30px);
+      color: $color-text-secondary;
+    }
+  }
+
+  &-items {
+    .member-card {
+      margin-top: 36px;
+    }
+
+    &-more {
+      margin-top: 44px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

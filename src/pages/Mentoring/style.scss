@@ -1,0 +1,24 @@
+@import "styles/main.scss";
+
+.mentoring-page {
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: $color-background;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 3rem 0 0;
+
+  &-container {
+    width: 904px;
+  }
+
+  &-list {
+    width: 100%;
+    height: 100%;
+    background: $color-white;
+    display: flex;
+    justify-content: center;
+  }
+}
