@@ -1,17 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 import "./style.scss";
 
-const SpecialtyItem = ({ title }) => {
-  return <div className="specialty-item">{title}</div>;
+const SpecialtyItem = ({ active, title }) => {
+  return (
+    <div className={clsx("specialty-item", { active: active })}>{title}</div>
+  );
 };
 
 SpecialtyItem.propTypes = {
+  active: PropTypes.bool,
   title: PropTypes.string,
 };
 
 SpecialtyItem.defaultProps = {
+  active: true,
   title: "",
 };
 
