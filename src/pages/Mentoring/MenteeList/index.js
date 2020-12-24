@@ -6,9 +6,9 @@ import { numberWithCommas } from "utils/format";
 import "./style.scss";
 
 const MenteeList = () => {
-  const [mentorList, setMentorList] = useState([]);
-  const [total, setTotal] = useState(234);
-  const [match, setMatch] = useState(8);
+  // const [mentorList, setMentorList] = useState([]);
+  const [total] = useState(234);
+  const [match] = useState(8);
 
   return (
     <div className="mentee-list">

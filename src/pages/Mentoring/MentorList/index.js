@@ -30,8 +30,8 @@ const MentorList = () => {
   const Data = Array.from(Array(10).keys()).map((item) => ({ ...user }));
 
   const [menteeList, setMenteeList] = useState(Data);
-  const [total, setTotal] = useState(1234);
-  const [match, setMatch] = useState(8);
+  const [total] = useState(1234);
+  const [match] = useState(8);
 
   const onShowMore = () => {
     setMenteeList((prev) => [...prev, ...Data]);
