@@ -6,6 +6,8 @@ import MentorPanel from "./Mentor";
 import MenteePanel from "./Mentee";
 import MenteeSetting from "./MenteeSetting";
 import MentorSetting from "./MentorSetting";
+import MentorList from "./MentorList";
+import MenteeList from "./MenteeList";
 
 import "./style.scss";
 
@@ -83,6 +85,20 @@ const Mentoring = () => {
           />
         )}
       </div>
+      {!openSetting && selectedType === "mentor" && isMentor && (
+        <div className="mentoring-page-list">
+          <div className="mentoring-page-container">
+            <MentorList />
+          </div>
+        </div>
+      )}
+      {!openSetting && selectedType === "mentee" && isMentee && (
+        <div className="mentoring-page-list">
+          <div className="mentoring-page-container">
+            <MenteeList />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
