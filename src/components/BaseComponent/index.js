@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import "./style.scss";
 
-const BaseComponent = () => {
-  return <div className="base-component">{this.props.title}</div>;
+const BaseComponent = ({ title }) => {
+  return <div className="base-component">{title}</div>;
 };
 
 BaseComponent.propTypes = {

@@ -28,7 +28,8 @@
     "react-stripe-script-loader": "^1.1.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "use-state-with-callback": "^2.0.3"
   },
   "scripts": {
     "start": "react-app-rewired start",
