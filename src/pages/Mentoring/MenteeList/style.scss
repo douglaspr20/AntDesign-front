@@ -2,6 +2,32 @@
 
 .mentee-list {
   padding: 60px 0;
+  position: relative;
+
+  @media (max-width: 575.98px) {
+    padding: 44px 0;
+  }
+
+  &-collapse {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 4px 0px 14px #37215714;
+    background: $color-primary;
+    position: absolute;
+    top: -18px;
+    right: 4px;
+    color: $color-white;
+    font-weight: 900;
+    font-size: 20px;
+
+    @media (max-width: 575.98px) {
+      display: flex;
+    }
+  }
 
   &-header {
     display: flex;
@@ -18,6 +44,28 @@
       @include app-font(20px, 30px);
       color: $color-text-secondary;
     }
+
+    @media (max-width: 767.98px) {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+
+      .mentee-list-header-left {
+        margin-bottom: 26px;
+      }
+    }
+
+    @media (max-width: 576.98px) {
+      margin-bottom: 44px;
+
+      .mentee-list-header-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 
   &-items {
@@ -29,6 +77,12 @@
       margin-top: 44px;
       display: flex;
       justify-content: center;
+    }
+
+    @media (max-width: 576.98px) {
+      .member-card {
+        margin-top: 20px;
+      }
     }
   }
 }

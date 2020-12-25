@@ -18,6 +18,7 @@ const Mentoring = () => {
   const [isMentee, setIsMentee] = useState(false);
   const [mentorSetting, setMentorSetting] = useState({});
   const [menteeSetting, setMenteeSetting] = useState({});
+  const [collapsed, setCollapsed] = useState(false);
 
   const showSetting = (type) => {
     setOpenSetting(true);
@@ -43,6 +44,7 @@ const Mentoring = () => {
         <MentorPanel
           setting={mentorSetting}
           isMentor={isMentor}
+          collapsed={collapsed}
           openSetting={() => showSetting("mentor")}
           onEdit={() => showSetting("mentor")}
         />
@@ -54,6 +56,7 @@ const Mentoring = () => {
         <MenteePanel
           setting={menteeSetting}
           isMentee={isMentee}
+          collapsed={collapsed}
           openSetting={() => showSetting("mentee")}
           onEdit={() => showSetting("mentee")}
         />
@@ -63,6 +66,10 @@ const Mentoring = () => {
 
   const onTabChange = (tab) => {
     setSelectedType(tab === "1" ? "mentee" : "mentor");
+  };
+
+  const onCollapse = (col) => {
+    setCollapsed(col);
   };
 
   return (
@@ -93,14 +100,14 @@ const Mentoring = () => {
       {!openSetting && selectedType === "mentor" && isMentor && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MenteeList user={mentorSetting} />
+            <MenteeList user={mentorSetting} onCollapse={onCollapse} />
           </div>
         </div>
       )}
       {!openSetting && selectedType === "mentee" && isMentee && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MentorList user={menteeSetting} />
+            <MentorList user={menteeSetting} onCollapse={onCollapse} />
           </div>
         </div>
       )}

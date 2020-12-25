@@ -1,16 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
-import { SpecialtyItem, WantCard } from "components";
+import { SpecialtyItem, WantCard, CustomButton } from "components";
 
 import "./style.scss";
 
-const MenteePanel = ({ setting, isMentee, openSetting, onEdit }) => {
+const MenteePanel = ({ setting, isMentee, collapsed, openSetting, onEdit }) => {
   return (
-    <div className="mentee-panel">
+    <div className={clsx("mentee-panel", { collapsed: collapsed })}>
       <div className="mentee-panel-container">
         {isMentee ? (
           <div className="mentee-panel-description">
+            <CustomButton
+              className="mentee-panel-description-edit"
+              text="Edit mentee information"
+              type="primary outlined"
+              size="xs"
+              onClick={onEdit}
+            />
             <h5 className="mentee-panel-description-label">
               Why do you want to be a mentee?
             </h5>
@@ -37,6 +45,7 @@ const MenteePanel = ({ setting, isMentee, openSetting, onEdit }) => {
 MenteePanel.propTypes = {
   setting: PropTypes.object,
   isMentee: PropTypes.bool,
+  collapsed: PropTypes.bool,
   openSetting: PropTypes.func,
   onEdit: PropTypes.func,
 };
@@ -45,6 +54,7 @@ MenteePanel.defaultProps = {
   setting: {},
   isMentee: false,
   openSetting: "",
+  collapsed: false,
   onEdit: () => {},
 };
 

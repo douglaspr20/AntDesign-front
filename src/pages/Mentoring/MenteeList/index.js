@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
@@ -8,7 +9,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const MenteeList = ({ user }) => {
+const MenteeList = ({ user, onCollapse }) => {
   const entry = {
     firstName: "Andryi",
     lastName: "Shevchenko",
@@ -33,14 +34,23 @@ const MenteeList = ({ user }) => {
       "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
     connected: false,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({
+    id: item,
+    ...entry,
+  }));
 
   const [menteeList, setMenteeList] = useState(Data);
   const [total] = useState(234);
   const [match] = useState(8);
+  const [collapsed, setCollapsed] = useState(false);
 
   const onShowMore = () => {
-    setMenteeList((prev) => [...prev, ...Data]);
+    setMenteeList((prev) =>
+      [...prev, ...Data].map((item, index) => ({
+        ...item,
+        id: index,
+      }))
+    );
   };
 
   const onMemberCardClick = (member) => {
@@ -50,12 +60,43 @@ const MenteeList = ({ user }) => {
     });
   };
 
+  const onMatchClicked = (index) => {
+    if (!menteeList[index].connected) {
+      setMenteeList((prev) => {
+        prev[index].connected = true;
+        return [...prev];
+      });
+    }
+  };
+
+  Emitter.on(EVENT_TYPES.MEMBER_CHANGED, (member) => {
+    setMenteeList((prev) => {
+      prev[member.id] = member;
+      return [...prev];
+    });
+  });
+
+  const onCollapseClick = () => {
+    onCollapse(!collapsed);
+    setCollapsed((prev) => !prev);
+  };
+
   return (
     <div className="mentee-list">
+      <div className="mentee-list-collapse" onClick={onCollapseClick}>
+        <i
+          className={clsx(
+            "fas",
+            { "fa-chevron-down": collapsed },
+            { "fa-chevron-up": !collapsed }
+          )}
+        />
+      </div>
       <div className="mentee-list-header">
-        <span className="mentee-list-header-left">{`${numberWithCommas(
-          total
-        )} ${total === 1 ? "mentor" : "mentors"} match with you`}</span>
+        <div className="mentee-list-header-left">
+          <span>{`${numberWithCommas(total)}`}</span>
+          <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        </div>
         <span className="mentee-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
@@ -67,6 +108,7 @@ const MenteeList = ({ user }) => {
             user={mentee}
             match={user ? user.specialties : []}
             onClick={() => onMemberCardClick(mentee)}
+            onMatchClicked={() => onMatchClicked(index)}
           />
         ))}
         <div className="mentee-list-items-more">
@@ -84,10 +126,12 @@ const MenteeList = ({ user }) => {
 
 MenteeList.propTypes = {
   user: PropTypes.object,
+  onCollapse: PropTypes.func,
 };
 
 MenteeList.defaultProps = {
   user: {},
+  onCollapse: () => {},
 };
 
 export default MenteeList;

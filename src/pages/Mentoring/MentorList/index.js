@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
@@ -8,7 +9,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const MentorList = ({ user }) => {
+const MentorList = ({ user, onCollapse }) => {
   const entry = {
     firstName: "Edgar",
     lastName: "Davis",
@@ -33,14 +34,23 @@ const MentorList = ({ user }) => {
       "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
     connected: false,
   };
-  const Data = Array.from(Array(10).keys()).map((item) => ({ ...entry }));
+  const Data = Array.from(Array(10).keys()).map((item) => ({
+    id: item,
+    ...entry,
+  }));
 
   const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
   const [match] = useState(8);
+  const [collapsed, setCollapsed] = useState(false);
 
   const onShowMore = () => {
-    setMentorList((prev) => [...prev, ...Data]);
+    setMentorList((prev) =>
+      [...prev, ...Data].map((item, index) => ({
+        ...item,
+        id: index,
+      }))
+    );
   };
 
   const onMemberCardClick = (member) => {
@@ -50,12 +60,43 @@ const MentorList = ({ user }) => {
     });
   };
 
+  const onMatchClicked = (index) => {
+    if (!mentorList[index].connected) {
+      setMentorList((prev) => {
+        prev[index].connected = true;
+        return [...prev];
+      });
+    }
+  };
+
+  Emitter.on(EVENT_TYPES.MEMBER_CHANGED, (member) => {
+    setMentorList((prev) => {
+      prev[member.id] = member;
+      return [...prev];
+    });
+  });
+
+  const onCollapseClick = () => {
+    onCollapse(!collapsed);
+    setCollapsed((prev) => !prev);
+  };
+
   return (
     <div className="mentor-list">
+      <div className="mentor-list-collapse" onClick={onCollapseClick}>
+        <i
+          className={clsx(
+            "fas",
+            { "fa-chevron-down": collapsed },
+            { "fa-chevron-up": !collapsed }
+          )}
+        />
+      </div>
       <div className="mentor-list-header">
-        <span className="mentor-list-header-left">{`${numberWithCommas(
-          total
-        )} ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        <div className="mentor-list-header-left">
+          <span>{`${numberWithCommas(total)}`}</span>
+          <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        </div>
         <span className="mentor-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
@@ -67,6 +108,7 @@ const MentorList = ({ user }) => {
             user={mentor}
             match={user ? user.specialties : []}
             onClick={() => onMemberCardClick(mentor)}
+            onMatchClicked={() => onMatchClicked(index)}
           />
         ))}
         <div className="mentor-list-items-more">
@@ -84,10 +126,12 @@ const MentorList = ({ user }) => {
 
 MentorList.propTypes = {
   user: PropTypes.object,
+  onCollapse: PropTypes.func,
 };
 
 MentorList.defaultProps = {
   user: "",
+  onCollapse: () => {},
 };
 
 export default MentorList;

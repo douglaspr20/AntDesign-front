@@ -24,36 +24,38 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
 
   return (
     <div className="mentor-setting">
-      <h2>Becoming into a mentor</h2>
-      <h5 className="mentor-setting-sublabel">
-        Why do you want to be a mentor?
-      </h5>
-      <CustomInput
-        className="mentor-setting-input"
-        multiple={true}
-        defaultValue={reason}
-        onChange={setReason}
-      />
-      <h5 className="mentor-setting-sublabel">
-        What is your title or profession?
-      </h5>
-      <CustomInput
-        className="mentor-setting-input"
-        defaultValue={title}
-        onChange={setTitle}
-      />
-      <h5 className="mentor-setting-sublabel">What are your specialties?</h5>
-      <Checkbox.Group
-        defaultValue={specialties}
-        className="mentor-setting-specialties"
-        onChange={setSpecialties}
-      >
-        {Specialties.map((spec, index) => (
-          <CustomCheckbox key={`specialty-${index}`} value={spec}>
-            {spec}
-          </CustomCheckbox>
-        ))}
-      </Checkbox.Group>
+      <div className="mentor-setting-container">
+        <h2>Becoming into a mentor</h2>
+        <h5 className="mentor-setting-sublabel first">
+          Why do you want to be a mentor?
+        </h5>
+        <CustomInput
+          className="mentor-setting-input"
+          multiple={true}
+          defaultValue={reason}
+          onChange={setReason}
+        />
+        <h5 className="mentor-setting-sublabel">
+          What is your title or profession?
+        </h5>
+        <CustomInput
+          className="mentor-setting-input"
+          defaultValue={title}
+          onChange={setTitle}
+        />
+        <h5 className="mentor-setting-sublabel">What are your specialties?</h5>
+        <Checkbox.Group
+          defaultValue={specialties}
+          className="mentor-setting-specialties"
+          onChange={setSpecialties}
+        >
+          {Specialties.map((spec, index) => (
+            <CustomCheckbox key={`specialty-${index}`} value={spec}>
+              {spec}
+            </CustomCheckbox>
+          ))}
+        </Checkbox.Group>
+      </div>
       <div className="mentor-setting-footer">
         <CustomButton
           text="Cancel"

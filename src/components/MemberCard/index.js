@@ -5,10 +5,11 @@ import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const MemberCard = ({ user, match, onClick }) => {
+const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
   const onClickMatch = (event) => {
     event.preventDefault();
     event.stopPropagation();
+    onMatchClicked();
   };
 
   const randomId = Math.floor(Math.random() * 1000) + 1;
@@ -30,9 +31,10 @@ const MemberCard = ({ user, match, onClick }) => {
         <div className="member-card-right-header">
           <h3 className="member-name">{`${user.firstName} ${user.lastName}`}</h3>
           <CustomButton
-            text="Match"
+            text={user.connected ? "Connected" : "Match"}
             size="sm"
             type="primary"
+            disabled={user.connected}
             onClick={onClickMatch}
           />
         </div>
@@ -55,6 +57,14 @@ const MemberCard = ({ user, match, onClick }) => {
             ))}
         </div>
       </div>
+      <CustomButton
+        className="mobile-match-button"
+        text={user.connected ? "Connected" : "Match"}
+        size="md"
+        type="primary"
+        disabled={user.connected}
+        onClick={onClickMatch}
+      />
     </div>
   );
 };
@@ -63,12 +73,14 @@ MemberCard.propTypes = {
   user: PropTypes.object,
   match: PropTypes.array,
   onClick: PropTypes.func,
+  onMatchClicked: PropTypes.func,
 };
 
 MemberCard.defaultProps = {
   user: "",
   match: [],
   onClick: () => {},
+  onMatchClicked: () => {},
 };
 
 export default MemberCard;
