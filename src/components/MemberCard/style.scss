@@ -73,13 +73,19 @@
       flex: 1;
       @include app-font(16px, 24px);
       color: $color-text-secondary;
-      padding: 0 0 16px;
+      padding: 0;
+      margin-bottom: 1rem;
       overflow: hidden;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
       text-overflow: ellipsis;
-      margin: 0;
+      /* autoprefixer: off */
+
+      @media (max-width: 575.98px) {
+        -webkit-line-clamp: 5;
+        /* autoprefixer: off */
+      }
     }
 
     .member-specialties {
