@@ -10,12 +10,16 @@ import Emitter from "services/emitter";
 import "./style.scss";
 
 class EventCard extends React.Component {
-  onAttend = () => {
+  onAttend = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState({ going: true });
     this.props.onAttend(true);
   };
 
-  onCancelAttend = () => {
+  onCancelAttend = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState({ going: false });
     this.props.onAttend(false);
   };
@@ -31,12 +35,15 @@ class EventCard extends React.Component {
     } = this.props;
 
     return (
-      <div className={clsx("event-card", className)}>
+      <div
+        className={clsx("event-card", className)}
+        onClick={this.openEventDetails}
+      >
         <div className="event-card-img">
           {img && <img src={img} alt="card-img" />}
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
-          <h3 onClick={this.openEventDetails}>{title}</h3>
+          <h3>{title}</h3>
           <h5>{`${date} ${timezone}`}</h5>
           <h5>{type}</h5>
           <div className="event-card-content-footer">

@@ -1,6 +1,7 @@
 // Action Types
 export const SET_LOADING = "SET_LOADING";
 export const SET_PLAN_UPDATED = "SET_PLAN_UPDATED";
+export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 
 /* Home Page's Actions */
 
@@ -18,6 +19,15 @@ export function setPlanUpdated(data) {
   return (dispatch) => {
     dispatch({
       type: SET_PLAN_UPDATED,
+      payload: data,
+    });
+  };
+}
+
+export function updateUserInformation(data) {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_USER_INFO,
       payload: data,
     });
   };

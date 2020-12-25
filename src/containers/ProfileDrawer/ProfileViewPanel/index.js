@@ -17,42 +17,8 @@ class ProfileViewPanel extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.getProfileCompletion();
-  }
-
   onEdit = () => {
     this.props.onEdit();
-  };
-
-  getProfileCompletion = () => {
-    let { user } = this.props;
-    const fields = [
-      "firstName",
-      "lastName",
-      "img",
-      "about",
-      "titleProfessions",
-      "proficiencyLevel",
-      "topicsOfInterest",
-      "personalLinks",
-      "language",
-      "timezone",
-    ];
-    let percentOfCompletion = fields.reduce((res, item) => {
-      if (item === "personalLinks") {
-        return this.getEmptyPersonalLinks(user.personalLinks) ? res : res + 10;
-      }
-      return isEmpty(user[item]) ? res : res + 10;
-    }, 0);
-
-    this.setState({
-      user: {
-        ...user,
-        percentOfCompletion,
-        completed: percentOfCompletion === 100,
-      },
-    });
   };
 
   getEmptyPersonalLinks = (personalLinks) => {

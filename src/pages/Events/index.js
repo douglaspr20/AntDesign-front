@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Emitter from "services/emitter";
 
 import { Tabs } from "components";
 import EventList from "./EventList";
+
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -76,16 +79,30 @@ const EventsPage = () => {
     },
   ];
 
-  const [upcomingEvents] = useState(UPcomingEvents);
+  const [upcomingEvents, setUpcomingEvents] = useState(UPcomingEvents);
   const [myEvents, setMyEvents] = useState([]);
 
   const addMyEvents = (event) => {
     if (event.going) {
-      setMyEvents((prevEvents) => [...prevEvents, event]);
+      setMyEvents((prevEvents) => {
+        const oldData = prevEvents.filter((e) => e.id !== event.id);
+        return [...oldData, event];
+      });
     } else {
       setMyEvents((prevEvents) => prevEvents.filter((e) => e.id !== event.id));
     }
   };
+
+  Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
+    setUpcomingEvents((prev) => {
+      const index = prev.findIndex((item) => item.id === event.id);
+      if (index >= 0) {
+        prev[index] = event;
+      }
+      return [...prev];
+    });
+    addMyEvents(event);
+  });
 
   const TabData = [
     {

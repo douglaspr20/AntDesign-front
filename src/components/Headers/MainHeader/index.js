@@ -18,18 +18,6 @@ const MenuList = [
 ];
 
 class MainHeader extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: {
-        img: null,
-        name: "Edgar davis",
-        abbrName: "ED",
-      },
-    };
-  }
-
   planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
@@ -39,7 +27,7 @@ class MainHeader extends React.Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { userProfile: user } = this.props;
     const { pathname } = this.props.history.location || {};
     const pathInfo = MenuList.find((item) => item.url === pathname);
     const { planUpdated } = this.props.home;
@@ -79,7 +67,9 @@ class MainHeader extends React.Component {
                 user.abbrName
               )}
             </div>
-            <span className="user-name">{user.name}</span>
+            <span className="user-name">{`${user.firstName || ""} ${
+              user.lastName || ""
+            }`}</span>
             <div className="profile-menu-chevron">
               <img src={IconChevronDown} alt="profile-menu" />
             </div>
@@ -99,7 +89,12 @@ MainHeader.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => {
-  return { ...state, ...props, isMobile: state.env.isMobile };
+  return {
+    ...state,
+    ...props,
+    isMobile: state.env.isMobile,
+    userProfile: state.home.userProfile,
+  };
 };
 
 const mapDispatchToProps = {
