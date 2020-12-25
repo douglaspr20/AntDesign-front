@@ -1,16 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
-import { SpecialtyItem, WantCard } from "components";
+import { SpecialtyItem, WantCard, CustomButton } from "components";
 
 import "./style.scss";
 
-const MentorPanel = ({ setting, isMentor, openSetting, onEdit }) => {
+const MentorPanel = ({ setting, isMentor, collapsed, openSetting, onEdit }) => {
   return (
-    <div className="mentor-panel">
+    <div className={clsx("mentor-panel", { collapsed: collapsed })}>
       <div className="mentor-panel-container">
         {isMentor ? (
           <div className="mentor-panel-description">
+            <CustomButton
+              className="mentor-panel-description-edit"
+              text="Edit mentor information"
+              type="primary outlined"
+              size="xs"
+              onClick={onEdit}
+            />
             <h5 className="mentor-panel-description-label">
               Why do you want to be a mentor?
             </h5>
@@ -37,6 +45,7 @@ const MentorPanel = ({ setting, isMentor, openSetting, onEdit }) => {
 MentorPanel.propTypes = {
   setting: PropTypes.object,
   isMentor: PropTypes.bool,
+  collapsed: PropTypes.bool,
   openSetting: PropTypes.func,
   onEdit: PropTypes.func,
 };
@@ -44,6 +53,7 @@ MentorPanel.propTypes = {
 MentorPanel.defaultProps = {
   setting: {},
   isMentor: false,
+  collapsed: false,
   openSetting: () => {},
   onEdit: () => {},
 };

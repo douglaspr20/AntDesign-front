@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
@@ -8,7 +9,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const MentorList = ({ user }) => {
+const MentorList = ({ user, onCollapse }) => {
   const entry = {
     firstName: "Edgar",
     lastName: "Davis",
@@ -41,6 +42,7 @@ const MentorList = ({ user }) => {
   const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
   const [match] = useState(8);
+  const [collapsed, setCollapsed] = useState(false);
 
   const onShowMore = () => {
     setMentorList((prev) =>
@@ -74,12 +76,27 @@ const MentorList = ({ user }) => {
     });
   });
 
+  const onCollapseClick = () => {
+    onCollapse(!collapsed);
+    setCollapsed((prev) => !prev);
+  };
+
   return (
     <div className="mentor-list">
+      <div className="mentor-list-collapse" onClick={onCollapseClick}>
+        <i
+          className={clsx(
+            "fas",
+            { "fa-chevron-down": collapsed },
+            { "fa-chevron-up": !collapsed }
+          )}
+        />
+      </div>
       <div className="mentor-list-header">
-        <span className="mentor-list-header-left">{`${numberWithCommas(
-          total
-        )} ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        <div className="mentor-list-header-left">
+          <span>{`${numberWithCommas(total)}`}</span>
+          <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        </div>
         <span className="mentor-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
@@ -109,10 +126,12 @@ const MentorList = ({ user }) => {
 
 MentorList.propTypes = {
   user: PropTypes.object,
+  onCollapse: PropTypes.func,
 };
 
 MentorList.defaultProps = {
   user: "",
+  onCollapse: () => {},
 };
 
 export default MentorList;

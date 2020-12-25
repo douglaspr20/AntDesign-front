@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
@@ -8,7 +9,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const MenteeList = ({ user }) => {
+const MenteeList = ({ user, onCollapse }) => {
   const entry = {
     firstName: "Andryi",
     lastName: "Shevchenko",
@@ -41,6 +42,7 @@ const MenteeList = ({ user }) => {
   const [menteeList, setMenteeList] = useState(Data);
   const [total] = useState(234);
   const [match] = useState(8);
+  const [collapsed, setCollapsed] = useState(false);
 
   const onShowMore = () => {
     setMenteeList((prev) =>
@@ -74,12 +76,27 @@ const MenteeList = ({ user }) => {
     });
   });
 
+  const onCollapseClick = () => {
+    onCollapse(!collapsed);
+    setCollapsed((prev) => !prev);
+  };
+
   return (
     <div className="mentee-list">
+      <div className="mentee-list-collapse" onClick={onCollapseClick}>
+        <i
+          className={clsx(
+            "fas",
+            { "fa-chevron-down": collapsed },
+            { "fa-chevron-up": !collapsed }
+          )}
+        />
+      </div>
       <div className="mentee-list-header">
-        <span className="mentee-list-header-left">{`${numberWithCommas(
-          total
-        )} ${total === 1 ? "mentor" : "mentors"} match with you`}</span>
+        <div className="mentee-list-header-left">
+          <span>{`${numberWithCommas(total)}`}</span>
+          <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+        </div>
         <span className="mentee-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
@@ -109,10 +126,12 @@ const MenteeList = ({ user }) => {
 
 MenteeList.propTypes = {
   user: PropTypes.object,
+  onCollapse: PropTypes.func,
 };
 
 MenteeList.defaultProps = {
   user: {},
+  onCollapse: () => {},
 };
 
 export default MenteeList;
