@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
-import { Modal } from "antd";
+import { Checkbox, Modal } from "antd";
+import isEmpty from "lodash/isEmpty";
 
 import {
   CustomButton,
@@ -63,11 +63,49 @@ class ProfileEditPanel extends React.Component {
     this.setState({ visibleModal: false });
   };
 
+  getProfileCompletion = (user) => {
+    const fields = [
+      "firstName",
+      "lastName",
+      "img",
+      "about",
+      "titleProfessions",
+      "proficiencyLevel",
+      "topicsOfInterest",
+      "personalLinks",
+      "language",
+      "timezone",
+    ];
+    let percentOfCompletion = fields.reduce((res, item) => {
+      if (item === "personalLinks") {
+        return this.getEmptyPersonalLinks(user.personalLinks) ? res : res + 10;
+      }
+      return isEmpty(user[item]) ? res : res + 10;
+    }, 0);
+
+    return percentOfCompletion;
+  };
+
+  getEmptyPersonalLinks = (personalLinks) => {
+    let empty = true;
+    if (personalLinks) {
+      Object.keys(personalLinks).forEach((contact) => {
+        if (personalLinks[contact]) {
+          empty = false;
+        }
+      });
+    }
+
+    return empty;
+  };
+
   onSave = () => {
     let { user } = this.state;
     user.abbrName = `${user.firstName ? user.firstName[0] : ""}${
       user.lastName ? user.lastName[0] : ""
     }`;
+    user.percentOfCompletion = this.getProfileCompletion(user);
+    user.completed = user.percentOfCompletion === 100;
     this.props.onSave(user);
   };
 

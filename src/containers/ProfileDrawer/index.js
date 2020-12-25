@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { CustomDrawer } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
+import { updateUserInformation } from "redux/actions/home-actions";
 
 import ProfileEditPanel from "./ProfileEditPanel";
 import ProfileViewPanel from "./ProfileViewPanel";
@@ -13,21 +15,6 @@ class ProfileDrawer extends React.Component {
     super(props);
 
     this.state = {
-      user: {
-        firstName: "Edgar",
-        lastName: "Davis",
-        abbrName: "ED",
-        img: null,
-        about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
-        titleProfessions: "HR Management & Coaching",
-        proficiencyLevel: "",
-        topicsOfInterest: [],
-        personalLinks: {},
-        language: "",
-        timezone: "",
-        completed: false,
-        percentOfCompletion: 75,
-      },
       visible: false,
       edit: false,
     };
@@ -48,11 +35,14 @@ class ProfileDrawer extends React.Component {
   };
 
   onSave = (userInfo) => {
-    this.setState({ edit: false, user: userInfo });
+    this.props.updateUserInformation(userInfo);
+    this.setState({ edit: false });
   };
 
   render() {
-    const { visible, edit, user } = this.state;
+    const { visible, edit } = this.state;
+    const { userProfile: user } = this.props;
+
     return (
       <CustomDrawer
         title={edit ? "Edit profile" : "Profile"}
@@ -80,4 +70,12 @@ ProfileDrawer.defaultProps = {
   title: "",
 };
 
-export default ProfileDrawer;
+const mapStateToProps = (state, props) => {
+  return { ...state, ...props, userProfile: state.home.userProfile };
+};
+
+const mapDispatchToProps = {
+  updateUserInformation,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileDrawer);

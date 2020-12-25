@@ -92,6 +92,7 @@
       @include app-font(14px, 19px, bold);
       text-align: center;
       margin-right: 0.75rem;
+      overflow: hidden;
 
       img {
         width: 100%;

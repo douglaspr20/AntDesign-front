@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
+import { connect } from "react-redux";
 
 import { SignOutButton } from "components";
 import { EVENT_TYPES } from "enum";
@@ -16,11 +17,6 @@ class ProfilePopupMenu extends React.Component {
     super(props);
 
     this.state = {
-      user: {
-        img: null,
-        name: "Edgar davis",
-        abbrName: "ED",
-      },
       visible: false,
     };
   }
@@ -36,7 +32,8 @@ class ProfilePopupMenu extends React.Component {
 
   render() {
     const { className, children, ...rest } = this.props;
-    const { user, visible } = this.state;
+    const { visible } = this.state;
+    const { userProfile: user } = this.props;
 
     const TitleSection = () => (
       <div className="profile-popover-title" onClick={this.onViewProfile}>
@@ -44,7 +41,9 @@ class ProfilePopupMenu extends React.Component {
           {user.img ? <img src={user.img} alt="user-avatar" /> : user.abbrName}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{user.name}</p>
+          <p className="user-info-name">{`${user.firstName || ""} ${
+            user.lastName || ""
+          }`}</p>
           <p className="user-info-view">View profile</p>
         </div>
       </div>
@@ -93,4 +92,10 @@ ProfilePopupMenu.defaultProps = {
   title: "",
 };
 
-export default ProfilePopupMenu;
+const mapStateToProps = (state, props) => {
+  return { ...state, ...props, userProfile: state.home.userProfile };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePopupMenu);

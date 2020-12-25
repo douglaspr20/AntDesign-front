@@ -3,6 +3,7 @@ import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { INTERNAL_LINKS } from "enum";
 import ProfileStatusBar from "./ProfileStatusBar";
@@ -76,7 +77,7 @@ const monthStr = [
   "DEC",
 ];
 
-const HomePage = () => {
+const HomePage = ({ userProfile }) => {
   const groupedByEventData = groupBy(EventsData, "date");
 
   const onEventChanged = (event, going) => {
@@ -85,13 +86,17 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <div className="home-page-profile">
-        <Row gutter={16}>
-          <Col span={24} lg={{ span: 16, offset: 4 }}>
-            <ProfileStatusBar percent={90} />
-          </Col>
-        </Row>
-      </div>
+      {userProfile && userProfile.percentOfCompletion !== 100 && (
+        <div className="home-page-profile">
+          <Row gutter={16}>
+            <Col span={24} lg={{ span: 16, offset: 4 }}>
+              <ProfileStatusBar
+                percent={userProfile ? userProfile.percentOfCompletion : 0}
+              />
+            </Col>
+          </Row>
+        </div>
+      )}
       <div className="home-page-container">
         <Row gutter={16}>
           <Col span={24} lg={{ span: 16, offset: 4 }}>
@@ -183,4 +188,10 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+const mapStateToProps = (state, props) => {
+  return { ...state, ...props, userProfile: state.home.userProfile };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
