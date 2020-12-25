@@ -14,5 +14,19 @@
     display: grid;
     grid-template-columns: 64px 1fr;
     grid-column-gap: 53px;
+
+    .date-avatar {
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 575.98px) {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+
+    // Medium devices (tablets, less than 992px)
+    @media (max-width: 991.98px) {
+      grid-column-gap: 16px;
+    }
   }
 }

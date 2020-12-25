@@ -78,7 +78,6 @@ const monthStr = [
 
 const HomePage = () => {
   const groupedByEventData = groupBy(EventsData, "date");
-  console.log("grup", groupedByEventData);
 
   const onEventChanged = (event, going) => {
     event.going = going;

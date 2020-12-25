@@ -16,7 +16,6 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
-    console.log("only once callled");
     setTimeout(() => {
       getRowNum();
     }, 500);

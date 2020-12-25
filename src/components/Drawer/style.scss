@@ -49,13 +49,21 @@
     }
   }
 
-  @media (max-width: 575.98px) {
+  @media (max-width: 767.98px) {
     .ant-drawer-content-wrapper {
       width: 100% !important;
     }
 
     .ant-drawer-header {
       padding: 20px 1rem !important;
+    }
+
+    .custom-drawer-close {
+      width: 30px;
+      height: 30px;
+      top: 22px;
+      right: 22px;
+      font-size: 16px;
     }
   }
 }

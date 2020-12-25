@@ -10,7 +10,6 @@ import "./style.scss";
 
 const ArticleHeader = ({ history }) => {
   const onCloseClick = () => {
-    console.log("history", history);
     history.goBack();
   };
 
