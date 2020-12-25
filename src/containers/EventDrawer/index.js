@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { CheckOutlined } from "@ant-design/icons";
@@ -45,6 +45,10 @@ const EventDrawer = () => {
   const onCancelAttend = () => {
     setEvent((prev) => ({ ...prev, going: false }));
   };
+
+  useEffect(() => {
+    Emitter.emit(EVENT_TYPES.EVENT_CHANGED, event);
+  }, [event]);
 
   return (
     <CustomDrawer

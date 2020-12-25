@@ -8,6 +8,7 @@
   border: 1px solid $color-border;
   border-radius: 0.5rem;
   height: 206px;
+  cursor: pointer;
 
   @media (max-width: 575.98px) {
     height: max-content;
