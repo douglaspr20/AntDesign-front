@@ -57,6 +57,14 @@ const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
             ))}
         </div>
       </div>
+      <CustomButton
+        className="mobile-match-button"
+        text={user.connected ? "Connected" : "Match"}
+        size="md"
+        type="primary"
+        disabled={user.connected}
+        onClick={onClickMatch}
+      />
     </div>
   );
 };
