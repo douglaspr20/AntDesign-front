@@ -41,23 +41,44 @@
   &-content {
     padding: 20px 2rem 40px;
 
+    @media (max-width: 575.98px) {
+      padding: 20px 20px 40px;
+    }
+
     &-label {
       font-weight: bold !important;
       margin-top: 52px !important;
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 21px, 600);
+        color: $color-text-secondary !important;
+        margin-top: 28px !important;
+      }
     }
 
     &-text {
       @include app-font(20px, 30px);
       color: $color-text-secondary;
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 24px);
+        color: $color-text-primary !important;
+        margin-top: 8px;
+      }
     }
 
     &-specialties {
       display: flex;
-      margin-top: 8px;
 
       .specialty-item {
-        margin-top: 4px;
+        margin-top: 12px;
         margin-right: 20px;
+      }
+
+      @media (max-width: 575.98px) {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: 0;
       }
     }
   }
