@@ -22,6 +22,7 @@ import "./style.scss";
 
 const Topics = PROFILE_SETTINGS.TOPICS;
 const ProficiencyLevels = PROFILE_SETTINGS.PROFICIENCY_LEVEL;
+const Languages = LANGUAGES.ParsedLanguageData;
 
 class ProfileEditPanel extends React.Component {
   constructor(props) {
@@ -183,7 +184,7 @@ class ProfileEditPanel extends React.Component {
             </div>
             <h5 className="textfield-label">Main language</h5>
             <CustomSelect
-              options={LANGUAGES}
+              options={Languages}
               value={user.language}
               onChange={(value) => this.onFieldChange("language", value)}
             />

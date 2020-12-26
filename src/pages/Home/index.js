@@ -8,39 +8,11 @@ import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
 import ProfileStatusBar from "./ProfileStatusBar";
 import { DateAvatar, EventCard, ArticleCard, CustomButton } from "components";
+import { updateEventData } from "redux/actions/home-actions";
 
 import "./style.scss";
 
 const DataFormat = "YYYY.MM.DD hh:mm A";
-const EventsData = [
-  {
-    date: "2020.11.18 19:00 pm",
-    title: "Meetup - How to improve your soft skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-  {
-    date: "2020.11.18 19:00 pm",
-    title: "Meetup - Beers and HHRR after work",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: true,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-  {
-    date: "2020.11.22 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-];
 
 const ArticlesData = [
   {
@@ -77,11 +49,16 @@ const monthStr = [
   "DEC",
 ];
 
-const HomePage = ({ userProfile }) => {
-  const groupedByEventData = groupBy(EventsData, "date");
+const HomePage = ({ userProfile, events, updateEventData }) => {
+  const groupedByEventData = groupBy(events || [], "date");
 
   const onEventChanged = (event, going) => {
-    event.going = going;
+    let newEvents = events;
+    const index = newEvents.findIndex((item) => item.id === event.id);
+    if (index >= 0) {
+      newEvents[index] = { ...event, going };
+      updateEventData(events);
+    }
   };
 
   return (
@@ -189,9 +166,16 @@ const HomePage = ({ userProfile }) => {
 };
 
 const mapStateToProps = (state, props) => {
-  return { ...state, ...props, userProfile: state.home.userProfile };
+  return {
+    ...state,
+    ...props,
+    userProfile: state.home.userProfile,
+    events: state.home.events,
+  };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateEventData,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

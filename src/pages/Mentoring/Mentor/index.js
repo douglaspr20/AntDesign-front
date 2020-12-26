@@ -1,12 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import { connect } from "react-redux";
 
 import { SpecialtyItem, WantCard, CustomButton } from "components";
 
 import "./style.scss";
 
-const MentorPanel = ({ setting, isMentor, collapsed, openSetting, onEdit }) => {
+const MentorPanel = ({
+  setting,
+  isMentor,
+  mobileSetting,
+  openSetting,
+  onEdit,
+}) => {
+  const collapsed = mobileSetting.collapsed.mentor;
+
   return (
     <div className={clsx("mentor-panel", { collapsed: collapsed })}>
       <div className="mentor-panel-container">
@@ -58,4 +67,10 @@ MentorPanel.defaultProps = {
   onEdit: () => {},
 };
 
-export default MentorPanel;
+const mapStateToProps = (state) => {
+  return {
+    mobileSetting: state.home.setting,
+  };
+};
+
+export default connect(mapStateToProps)(MentorPanel);
