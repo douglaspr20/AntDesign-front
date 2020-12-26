@@ -1,10 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import isEmpty from "lodash/isEmpty";
 
 import { ProfileAvatar, CustomButton } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES } from "enum";
+import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
 
@@ -36,7 +36,7 @@ class ProfileViewPanel extends React.Component {
 
   render() {
     const { user } = this.state;
-    const personalLinksCompleted = !this.getEmptyPersonalLinks(
+    const personalLinksCompleted = !isEmptyPersonalLinks(
       user.personalLinks
     );
     const timezone = (
@@ -64,6 +64,10 @@ class ProfileViewPanel extends React.Component {
           />
         </div>
         <div className="profile-view-panel-content">
+          <h5 className="textfield-label">Company</h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.company })}>
+            {user.company || "Complete"}
+          </h3>
           <h5 className="textfield-label">About you</h5>
           <h3 className={clsx("textfield-value", { completed: !!user.about })}>
             {user.about || "Complete"}

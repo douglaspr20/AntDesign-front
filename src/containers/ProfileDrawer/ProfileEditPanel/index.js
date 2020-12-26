@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Modal } from "antd";
-import isEmpty from "lodash/isEmpty";
 
 import {
   CustomButton,
@@ -17,6 +16,7 @@ import {
   LANGUAGES,
 } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
+import { getProfileCompletion } from "utils/profile";
 
 import "./style.scss";
 
@@ -63,48 +63,12 @@ class ProfileEditPanel extends React.Component {
     this.setState({ visibleModal: false });
   };
 
-  getProfileCompletion = (user) => {
-    const fields = [
-      "firstName",
-      "lastName",
-      "img",
-      "about",
-      "titleProfessions",
-      "proficiencyLevel",
-      "topicsOfInterest",
-      "personalLinks",
-      "language",
-      "timezone",
-    ];
-    let percentOfCompletion = fields.reduce((res, item) => {
-      if (item === "personalLinks") {
-        return this.getEmptyPersonalLinks(user.personalLinks) ? res : res + 10;
-      }
-      return isEmpty(user[item]) ? res : res + 10;
-    }, 0);
-
-    return percentOfCompletion;
-  };
-
-  getEmptyPersonalLinks = (personalLinks) => {
-    let empty = true;
-    if (personalLinks) {
-      Object.keys(personalLinks).forEach((contact) => {
-        if (personalLinks[contact]) {
-          empty = false;
-        }
-      });
-    }
-
-    return empty;
-  };
-
   onSave = () => {
     let { user } = this.state;
     user.abbrName = `${user.firstName ? user.firstName[0] : ""}${
       user.lastName ? user.lastName[0] : ""
     }`;
-    user.percentOfCompletion = this.getProfileCompletion(user);
+    user.percentOfCompletion = getProfileCompletion(user);
     user.completed = user.percentOfCompletion === 100;
     this.props.onSave(user);
   };
@@ -150,6 +114,12 @@ class ProfileEditPanel extends React.Component {
               className="textfield-input"
               defaultValue={user.lastName}
               onChange={(value) => this.onFieldChange("lastName", value)}
+            />
+            <h5 className="textfield-label">Company</h5>
+            <CustomInput
+              className="textfield-input"
+              defaultValue={user.company}
+              onChange={(value) => this.onFieldChange("company", value)}
             />
             <h5 className="textfield-label">Tell us something about you</h5>
             <CustomInput

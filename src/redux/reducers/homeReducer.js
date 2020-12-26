@@ -11,6 +11,7 @@ const initialState = {
   userProfile: {
     firstName: "Edgar",
     lastName: "Davis",
+    company: "",
     abbrName: "ED",
     img: null,
     about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
@@ -21,7 +22,7 @@ const initialState = {
     language: "",
     timezone: "",
     completed: false,
-    percentOfCompletion: 40,
+    percentOfCompletion: 36,
   },
 };
 // Home Page's Reducer
