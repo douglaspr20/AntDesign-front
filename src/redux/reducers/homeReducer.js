@@ -3,7 +3,72 @@ import {
   SET_LOADING,
   SET_PLAN_UPDATED,
   UPDATE_USER_INFO,
+  UPDATE_EVENTS,
+  UPDATE_MY_EVENTS,
 } from "../actions/home-actions";
+
+const EventData = [
+  {
+    id: 1,
+    date: "2020.11.18 19:00 pm",
+    title: "Meetup - How to improve your soft skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    id: 2,
+    date: "2020.11.18 19:00 pm",
+    title: "Meetup - Beers and HHRR after work",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    id: 3,
+    date: "2020.11.22 19:00 pm",
+    title: "Bay area job seekers and recruiters network skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    id: 4,
+    date: "2020.11.22 19:00 pm",
+    title: "Bay area job seekers and recruiters network skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    id: 5,
+    date: "2020.11.23 19:00 pm",
+    title: "Bay area job seekers and recruiters network skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+  {
+    id: 6,
+    date: "2020.11.24 19:00 pm",
+    title: "Bay area job seekers and recruiters network skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+];
 
 const initialState = {
   loading: false,
@@ -24,6 +89,8 @@ const initialState = {
     completed: false,
     percentOfCompletion: 36,
   },
+  events: EventData || [],
+  myEvents: [],
 };
 // Home Page's Reducer
 export default function homeReducer(state = initialState, action) {
@@ -42,6 +109,16 @@ export default function homeReducer(state = initialState, action) {
       return {
         ...state,
         userProfile: { ...(action.payload || {}) },
+      };
+    case UPDATE_EVENTS:
+      return {
+        ...state,
+        events: [...(action.payload || [])],
+      };
+    case UPDATE_MY_EVENTS:
+      return {
+        ...state,
+        myEvents: [...(action.payload || [])],
       };
     default:
       return { ...state };

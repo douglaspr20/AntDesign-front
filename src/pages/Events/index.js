@@ -1,113 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Emitter from "services/emitter";
+import { connect } from "react-redux";
 
 import { Tabs } from "components";
 import EventList from "./EventList";
+import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
 
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const EventsPage = () => {
-  const UPcomingEvents = [
-    {
-      id: 1,
-      date: "2020.11.18 19:00 pm",
-      title: "Meetup - How to improve your soft skills",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-    {
-      id: 2,
-      date: "2020.11.18 19:00 pm",
-      title: "Meetup - Beers and HHRR after work",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-    {
-      id: 3,
-      date: "2020.11.22 19:00 pm",
-      title: "Bay area job seekers and recruiters network skills",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-    {
-      id: 4,
-      date: "2020.11.22 19:00 pm",
-      title: "Bay area job seekers and recruiters network skills",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-    {
-      id: 5,
-      date: "2020.11.23 19:00 pm",
-      title: "Bay area job seekers and recruiters network skills",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-    {
-      id: 6,
-      date: "2020.11.24 19:00 pm",
-      title: "Bay area job seekers and recruiters network skills",
-      timezone: "EST",
-      type: "Online event",
-      cost: "Free",
-      going: false,
-      img:
-        "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    },
-  ];
-
-  const [upcomingEvents, setUpcomingEvents] = useState(UPcomingEvents);
-  const [myEvents, setMyEvents] = useState([]);
-
+const EventsPage = ({
+  events,
+  myEvents,
+  updateEventData,
+  updateMyEventData,
+}) => {
   const addMyEvents = (event) => {
     if (event.going) {
-      setMyEvents((prevEvents) => {
-        const oldData = prevEvents.filter((e) => e.id !== event.id);
-        return [...oldData, event];
-      });
+      const oldData = myEvents.filter((e) => e.id !== event.id);
+      updateMyEventData([...oldData, event]);
     } else {
-      setMyEvents((prevEvents) => prevEvents.filter((e) => e.id !== event.id));
+      const newData = myEvents.filter((e) => e.id !== event.id);
+      updateMyEventData(newData);
     }
   };
 
   Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
-    setUpcomingEvents((prev) => {
-      const index = prev.findIndex((item) => item.id === event.id);
-      if (index >= 0) {
-        prev[index] = event;
-      }
-      return [...prev];
-    });
+    const newEvents = events;
+    const index = events.findIndex((item) => item.id === event.id);
+    if (index >= 0) {
+      newEvents[index] = event;
+    }
+    updateEventData(newEvents);
     addMyEvents(event);
   });
 
   const TabData = [
     {
       title: "Upcoming events",
-      content: () => <EventList data={upcomingEvents} onAttend={addMyEvents} />,
+      content: () => <EventList data={events} onAttend={addMyEvents} />,
     },
     {
       title: "My events",
@@ -132,4 +65,18 @@ EventsPage.defaultProps = {
   title: "",
 };
 
-export default EventsPage;
+const mapStateToProps = (state, props) => {
+  return {
+    ...state,
+    ...props,
+    myEvents: state.home.myEvents,
+    events: state.home.events,
+  };
+};
+
+const mapDispatchToProps = {
+  updateEventData,
+  updateMyEventData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
