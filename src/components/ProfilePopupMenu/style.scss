@@ -1,6 +1,8 @@
 @import "styles/main.scss";
 
 .profile-popover {
+  cursor: pointer;
+  
   &-title {
     display: flex;
     align-items: center;

@@ -8,6 +8,8 @@ import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
 
+const Languages = LANGUAGES.ParsedLanguageData;
+
 class ProfileViewPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +45,7 @@ class ProfileViewPanel extends React.Component {
       TIMEZONE_LIST.find((item) => item.value === user.timezone) || {}
     ).text;
     const language = (
-      LANGUAGES.find((item) => item.value === user.language) || {}
+      Languages.find((item) => item.value === user.language) || {}
     ).text;
 
     return (
