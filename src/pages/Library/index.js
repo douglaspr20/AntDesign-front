@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import clsx from "clsx";
 
 import FilterPanel from "./FilterPanel";
 import FilterDrawer from "./FilterDrawer";
@@ -75,7 +76,10 @@ const LearningLibraryPage = ({ planUpdated }) => {
         <Row>
           <Col span={24}>
             <div className="search-results-container-mobile-header">
-              <h3 className="filters-btn" onClick={showFilterPanel}>
+              <h3
+                className={clsx("filters-btn", { disabled: !planUpdated })}
+                onClick={() => planUpdated && showFilterPanel()}
+              >
                 Filters
               </h3>
               <h3>{`${numberWithCommas(1234)} results`}</h3>
@@ -113,6 +117,7 @@ const LearningLibraryPage = ({ planUpdated }) => {
               text="Show more"
               type="primary outlined"
               size="lg"
+              disabled={!planUpdated}
               onClick={onShowMore}
             />
           )}

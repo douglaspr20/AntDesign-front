@@ -27,6 +27,11 @@
 
       .filters-btn {
         color: $color-primary !important;
+
+        &.disabled {
+          color: $color-disabled !important;
+          cursor: not-allowed;
+        }
       }
     }
 
