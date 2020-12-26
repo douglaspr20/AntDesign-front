@@ -1,12 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import { connect } from "react-redux";
 
 import { SpecialtyItem, WantCard, CustomButton } from "components";
 
 import "./style.scss";
 
-const MenteePanel = ({ setting, isMentee, collapsed, openSetting, onEdit }) => {
+const MenteePanel = ({
+  setting,
+  isMentee,
+  mobileSetting,
+  openSetting,
+  onEdit,
+}) => {
+  const collapsed = mobileSetting.collapsed.mentee;
+
   return (
     <div className={clsx("mentee-panel", { collapsed: collapsed })}>
       <div className="mentee-panel-container">
@@ -58,4 +67,10 @@ MenteePanel.defaultProps = {
   onEdit: () => {},
 };
 
-export default MenteePanel;
+const mapStateToProps = (state) => {
+  return {
+    mobileSetting: state.home.setting,
+  };
+};
+
+export default connect(mapStateToProps)(MenteePanel);

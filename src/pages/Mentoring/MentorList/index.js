@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import { connect } from "react-redux";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
+import { setSettingCollapsed } from "redux/actions/home-actions";
 
 import "./style.scss";
 
-const MentorList = ({ user, onCollapse }) => {
+const MentorList = ({ user, setting, setSettingCollapsed }) => {
   const entry = {
     firstName: "Edgar",
     lastName: "Davis",
@@ -38,11 +40,11 @@ const MentorList = ({ user, onCollapse }) => {
     id: item,
     ...entry,
   }));
+  const collapsed = setting.collapsed.mentee;
 
   const [mentorList, setMentorList] = useState(Data);
   const [total] = useState(1234);
   const [match] = useState(8);
-  const [collapsed, setCollapsed] = useState(false);
 
   const onShowMore = () => {
     setMentorList((prev) =>
@@ -77,8 +79,7 @@ const MentorList = ({ user, onCollapse }) => {
   });
 
   const onCollapseClick = () => {
-    onCollapse(!collapsed);
-    setCollapsed((prev) => !prev);
+    setSettingCollapsed({ mentee: !collapsed });
   };
 
   return (
@@ -126,12 +127,20 @@ const MentorList = ({ user, onCollapse }) => {
 
 MentorList.propTypes = {
   user: PropTypes.object,
-  onCollapse: PropTypes.func,
 };
 
 MentorList.defaultProps = {
   user: "",
-  onCollapse: () => {},
 };
 
-export default MentorList;
+const mapStateToProps = (state, props) => {
+  return {
+    setting: state.home.setting,
+  };
+};
+
+const mapDispatchToProps = {
+  setSettingCollapsed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MentorList);

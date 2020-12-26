@@ -5,6 +5,7 @@ import {
   UPDATE_USER_INFO,
   UPDATE_EVENTS,
   UPDATE_MY_EVENTS,
+  SET_SETTING_COLLAPSED,
 } from "../actions/home-actions";
 
 const EventData = [
@@ -91,6 +92,12 @@ const initialState = {
   },
   events: EventData || [],
   myEvents: [],
+  setting: {
+    collapsed: {
+      mentor: false,
+      mentee: false,
+    },
+  },
 };
 // Home Page's Reducer
 export default function homeReducer(state = initialState, action) {
@@ -119,6 +126,17 @@ export default function homeReducer(state = initialState, action) {
       return {
         ...state,
         myEvents: [...(action.payload || [])],
+      };
+    case SET_SETTING_COLLAPSED:
+      return {
+        ...state,
+        setting: {
+          ...state.setting,
+          collapsed: {
+            ...state.setting.collapsed,
+            ...action.payload,
+          },
+        },
       };
     default:
       return { ...state };
