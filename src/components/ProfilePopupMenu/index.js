@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Popover } from "antd";
 import { connect } from "react-redux";
 
-import { SignOutButton } from "components";
+import { CustomButton } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
@@ -57,7 +57,7 @@ class ProfilePopupMenu extends React.Component {
           </div>
         ))}
         <div className="profile-popover-content-footer">
-          <SignOutButton
+          <CustomButton
             text="Log out"
             className="log-out"
             type="primary outlined"
