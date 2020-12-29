@@ -1,11 +1,150 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useState } from "react";
+import { Form } from "antd";
+
+import { CustomButton, CustomInput } from "components";
+
+import IconLogo from "images/logo-sidebar.svg";
+
+import "./style.scss";
 
 const Login = () => {
-  const { loginWithRedirect } = useAuth0();
-  loginWithRedirect();
+  const [isLogin, setIsLogin] = useState(true);
+  const layout = {
+    labelCol: { span: 0 },
+    wrapperCol: { span: 24 },
+  };
 
-  return <div></div>;
+  const onFinish = () => {};
+
+  const onFinishFailed = () => {};
+
+  const onValuesChange = () => {};
+
+  const onChangeType = () => {
+    setIsLogin((prev) => !prev);
+  };
+
+  return (
+    <div className="login-page">
+      <div className="login-dialog">
+        <div className="login-dialog-header">
+          <h3>{isLogin ? "Log In" : "Sign up"}</h3>
+          <div className="login-dialog-logo">
+            <img src={IconLogo} alt="login-logo" />
+          </div>
+        </div>
+        <Form
+          {...layout}
+          className="login-dialog-form"
+          name="basic"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          onValuesChange={onValuesChange}
+        >
+          <div className="login-dialog-content">
+            {!isLogin && (
+              <React.Fragment>
+                <Form.Item
+                  name="firstName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your first name!",
+                    },
+                  ]}
+                  className="form-full-name"
+                >
+                  <CustomInput placeholder="First Name" size="sm" />
+                </Form.Item>
+                <Form.Item
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your last name!",
+                    },
+                  ]}
+                  className="form-full-name"
+                >
+                  <CustomInput placeholder="Last Name" size="sm" />
+                </Form.Item>
+              </React.Fragment>
+            )}
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email!",
+                },
+                {
+                  type: "email",
+                  message: "Please enter the valid email!",
+                },
+              ]}
+              className="form-full-name"
+            >
+              <CustomInput placeholder="Email" size="sm" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your password!",
+                },
+                {
+                  min: 8,
+                  message: "Password length should be 8 or more!",
+                },
+              ]}
+              className="form-full-name"
+            >
+              <CustomInput type="password" placeholder="Password" size="sm" />
+            </Form.Item>
+            {!isLogin && (
+              <Form.Item
+                name="confirm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        "The two passwords that you entered do not match!"
+                      );
+                    },
+                  }),
+                ]}
+                className="form-full-name"
+              >
+                <CustomInput
+                  type="password"
+                  placeholder="Confirm Password"
+                  size="sm"
+                />
+              </Form.Item>
+            )}
+          </div>
+          <div className="login-dialog-footer">
+            <CustomButton
+              text={isLogin ? "Log In" : "Sign up"}
+              type="primary"
+              size="lg"
+            />
+            <span className="signup-select" onClick={onChangeType}>
+              {isLogin ? "Sign up?" : "Log in?"}
+            </span>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

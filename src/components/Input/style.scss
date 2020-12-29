@@ -31,6 +31,17 @@
     }
   }
 
+  &.sm {
+    min-height: 40px !important;
+    padding: 0.5rem 0.5rem !important;
+    @include app-font(16px, 28px);
+
+    .ant-input-group-addon,
+    .ant-input {
+      @include app-font(16px, 28px);
+    }
+  }
+
   @media (max-width: 575.98px) {
     min-height: 44px !important;
     height: 44px;

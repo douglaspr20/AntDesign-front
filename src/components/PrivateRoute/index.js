@@ -1,22 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import { setLoading } from "redux/actions/home-actions";
 
 const PrivateRoute = ({ loading, setLoading, ...props }) => {
-  const { isAuthenticated, isLoading } = useAuth0();
   const redirect = INTERNAL_LINKS.LOGIN;
 
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading, setLoading]);
-
-  if (isLoading) {
-    return <div></div>;
-  }
+  const isAuthenticated = true;
 
   return isAuthenticated ? (
     <Route {...props} />
