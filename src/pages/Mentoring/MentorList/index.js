@@ -8,6 +8,7 @@ import { numberWithCommas } from "utils/format";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { setSettingCollapsed } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -133,11 +134,9 @@ MentorList.defaultProps = {
   user: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    setting: state.home.setting,
-  };
-};
+const mapStateToProps = (state) => ({
+  setting: homeSelector(state).setting,
+});
 
 const mapDispatchToProps = {
   setSettingCollapsed,

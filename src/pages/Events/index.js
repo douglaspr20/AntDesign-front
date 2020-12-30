@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Tabs } from "components";
 import EventList from "./EventList";
 import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
-
+import { homeSelector } from "redux/selectors/homeSelector";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
@@ -65,14 +65,10 @@ EventsPage.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    ...state,
-    ...props,
-    myEvents: state.home.myEvents,
-    events: state.home.events,
-  };
-};
+const mapStateToProps = (state) => ({
+  myEvents: homeSelector(state).myEvents,
+  events: homeSelector(state).events,
+});
 
 const mapDispatchToProps = {
   updateEventData,

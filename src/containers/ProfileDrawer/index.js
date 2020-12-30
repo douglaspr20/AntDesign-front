@@ -10,6 +10,8 @@ import { updateUserInformation } from "redux/actions/home-actions";
 import ProfileEditPanel from "./ProfileEditPanel";
 import ProfileViewPanel from "./ProfileViewPanel";
 
+import { homeSelector } from "redux/selectors/homeSelector";
+
 class ProfileDrawer extends React.Component {
   constructor(props) {
     super(props);
@@ -70,9 +72,9 @@ ProfileDrawer.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return { ...state, ...props, userProfile: state.home.userProfile };
-};
+const mapStateToProps = (state, props) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
   updateUserInformation,

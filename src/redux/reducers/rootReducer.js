@@ -1,9 +1,9 @@
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 
 import homeReducer from "./homeReducer";
-import envReducer from "./envReducer"
+import envReducer from "./envReducer";
 
 export default combineReducers({
-    home:homeReducer,
-    env:envReducer,
+  home: homeReducer,
+  env: envReducer,
 });

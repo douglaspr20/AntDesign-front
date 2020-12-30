@@ -9,6 +9,7 @@ import { INTERNAL_LINKS } from "enum";
 import ProfileStatusBar from "./ProfileStatusBar";
 import { DateAvatar, EventCard, ArticleCard, CustomButton } from "components";
 import { updateEventData } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -165,14 +166,10 @@ const HomePage = ({ userProfile, events, updateEventData }) => {
   );
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    ...state,
-    ...props,
-    userProfile: state.home.userProfile,
-    events: state.home.events,
-  };
-};
+const mapStateToProps = (state, props) => ({
+  userProfile: homeSelector(state).userProfile,
+  events: homeSelector(state).events,
+});
 
 const mapDispatchToProps = {
   updateEventData,

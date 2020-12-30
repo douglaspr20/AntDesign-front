@@ -13,6 +13,8 @@ import {
 import { Button, Input } from "antd";
 
 import { CustomCheckbox } from "components";
+import { envSelector } from "redux/selectors/envSelector";
+
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
@@ -87,8 +89,8 @@ PaymentForm.defaultProps = {
   hidePanel: () => {},
 };
 
-const mapStateToProps = (state) => {
-  return { isMobile: state.env.isMobile };
-};
+const mapStateToProps = (state) => ({
+  isMobile: envSelector(state).isMobile,
+});
 
 export default connect(mapStateToProps)(PaymentForm);

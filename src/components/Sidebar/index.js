@@ -10,6 +10,8 @@ import { SIDEBAR_MENU_LIST, INTERNAL_LINKS } from "enum";
 import SidebarMenuItem from "./SidebarMenuItem";
 import LogoSidebar from "images/logo-sidebar.svg";
 
+import { envSelector } from "redux/selectors/envSelector";
+
 import "./style.scss";
 
 const { Sider } = Layout;
@@ -94,9 +96,10 @@ class NavBar extends Component {
     );
   }
 }
-const mapStateToProps = (state, props) => {
-  return { ...state, ...props };
-};
+const mapStateToProps = (state) => ({
+  env: envSelector(state),
+
+});
 
 const mapDispatchToProps = {
   setCollapsed,

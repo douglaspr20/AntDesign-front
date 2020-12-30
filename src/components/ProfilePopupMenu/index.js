@@ -8,6 +8,8 @@ import { CustomButton } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
+import { homeSelector } from "redux/selectors/homeSelector";
+
 import "./style.scss";
 
 const ProfileMenus = ["Settings", "Account"];
@@ -34,15 +36,19 @@ class ProfilePopupMenu extends React.Component {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
     const { userProfile: user } = this.props;
-
+    
     const TitleSection = () => (
       <div className="profile-popover-title" onClick={this.onViewProfile}>
         <div className="user-avatar">
-          {user.img ? <img src={user.img} alt="user-avatar" /> : user.abbrName}
+          {user && user.img ? (
+            <img src={user ? user.img : ""} alt="user-avatar" />
+          ) : (
+            (user || {}).abbrName
+          )}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{`${user.firstName || ""} ${
-            user.lastName || ""
+          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
+            user ? user.lastName || "" : ""
           }`}</p>
           <p className="user-info-view">View profile</p>
         </div>
@@ -92,9 +98,7 @@ ProfilePopupMenu.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return { ...state, ...props, userProfile: state.home.userProfile };
-};
+const mapStateToProps = (state) => homeSelector(state);
 
 const mapDispatchToProps = {};
 

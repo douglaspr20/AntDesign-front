@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
 
 import { setLoading } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const PrivateRoute = ({ loading, setLoading, ...props }) => {
   const redirect = INTERNAL_LINKS.LOGIN;
@@ -22,7 +23,7 @@ const PrivateRoute = ({ loading, setLoading, ...props }) => {
 };
 
 const mapStateToProps = (state) => ({
-  loading: state.home.loading,
+  loading: homeSelector(state).loading,
 });
 
 const mapDispatchToProps = {

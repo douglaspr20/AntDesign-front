@@ -53,9 +53,7 @@ PaymentModal.defaultProps = {
   onPay: () => {},
 };
 
-const mapStateToProps = (state, props) => {
-  return { ...state, ...props };
-};
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   setPlanUpdated,

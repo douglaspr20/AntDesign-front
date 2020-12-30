@@ -1,12 +1,9 @@
+import { handleActions } from "redux-actions";
+import { Map } from "immutable";
+import cloneDeep from "lodash/cloneDeep";
+
 // Action Type Imports
-import {
-  SET_LOADING,
-  SET_PLAN_UPDATED,
-  UPDATE_USER_INFO,
-  UPDATE_EVENTS,
-  UPDATE_MY_EVENTS,
-  SET_SETTING_COLLAPSED,
-} from "../actions/home-actions";
+import { constants as homeConstants } from "../actions/home-actions";
 
 const EventData = [
   {
@@ -71,74 +68,60 @@ const EventData = [
   },
 ];
 
-const initialState = {
-  loading: false,
-  planUpdated: false,
-  userProfile: {
-    firstName: "Edgar",
-    lastName: "Davis",
-    company: "",
-    abbrName: "ED",
-    img: null,
-    about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
-    titleProfessions: "HR Management & Coaching",
-    proficiencyLevel: "",
-    topicsOfInterest: [],
-    personalLinks: {},
-    language: "",
-    timezone: "",
-    completed: false,
-    percentOfCompletion: 36,
+// Home Page's Reducer
+export const reducers = {
+  [homeConstants.SET_LOADING]: (state, { payload }) => {
+    return state.merge({ ...payload });
   },
-  events: EventData || [],
-  myEvents: [],
-  setting: {
-    collapsed: {
-      mentor: false,
-      mentee: false,
-    },
+  [homeConstants.SET_PLAN_UPDATED]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
+  [homeConstants.UPDATE_USER_INFO]: (state, { payload }) => {
+    return state.merge({ userProfile: cloneDeep(payload.userProfile) });
+  },
+  [homeConstants.UPDATE_EVENTS]: (state, { payload }) => {
+    return state.merge({ events: cloneDeep(payload.events) });
+  },
+  [homeConstants.UPDATE_MY_EVENTS]: (state, { payload }) => {
+    return state.merge({ myEvents: cloneDeep(payload.myEvents) });
+  },
+  [homeConstants.SET_SETTING_COLLAPSED]: (state, { payload }) => {
+    return state.merge({
+      setting: {
+        collapsed: { ...state.get("setting").collapsed, ...payload.collapsed },
+      },
+    });
   },
 };
-// Home Page's Reducer
-export default function homeReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_LOADING:
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    case SET_PLAN_UPDATED:
-      return {
-        ...state,
-        planUpdated: action.payload,
-      };
-    case UPDATE_USER_INFO:
-      return {
-        ...state,
-        userProfile: { ...(action.payload || {}) },
-      };
-    case UPDATE_EVENTS:
-      return {
-        ...state,
-        events: [...(action.payload || [])],
-      };
-    case UPDATE_MY_EVENTS:
-      return {
-        ...state,
-        myEvents: [...(action.payload || [])],
-      };
-    case SET_SETTING_COLLAPSED:
-      return {
-        ...state,
-        setting: {
-          ...state.setting,
-          collapsed: {
-            ...state.setting.collapsed,
-            ...action.payload,
-          },
-        },
-      };
-    default:
-      return { ...state };
-  }
-}
+
+export const initialState = () =>
+  Map({
+    loading: false,
+    planUpdated: false,
+    userProfile: {
+      firstName: "Edgar",
+      lastName: "Davis",
+      company: "",
+      abbrName: "ED",
+      img: null,
+      about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
+      titleProfessions: "HR Management & Coaching",
+      proficiencyLevel: "",
+      topicsOfInterest: [],
+      personalLinks: {},
+      language: "",
+      timezone: "",
+      completed: false,
+      percentOfCompletion: 36,
+    },
+    events: EventData || [],
+    myEvents: [],
+    setting: {
+      collapsed: {
+        mentor: false,
+        mentee: false,
+      },
+    },
+  });
+
+export default handleActions(reducers, initialState());
