@@ -21,6 +21,7 @@ import { actions as envActions } from "redux/actions/env-actions";
 import { setPlanUpdated } from "redux/actions/home-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
 import "./App.scss";
@@ -86,7 +87,7 @@ class App extends Component {
         <ProfileDrawer />
         <EventDrawer />
         <MemberDrawer />
-        {this.props.loading && (
+        {(this.props.loading || this.props.authLoading) && (
           <div className="loading-container">
             <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
           </div>
@@ -110,6 +111,7 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   ...envSelector(state),
   loading: homeSelector(state).loading,
+  authLoading: authSelector(state).loading,
 });
 
 const mapDispatchToProps = {

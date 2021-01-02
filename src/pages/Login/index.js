@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import { Form } from "antd";
+import { connect } from "react-redux";
 
 import { CustomButton, CustomInput } from "components";
+
+import { actions as authActions } from "redux/actions/auth-actions";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = () => {
+const Login = ({ login, logout }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
     wrapperCol: { span: 24 },
   };
 
-  const onFinish = () => {};
+  const onFinish = (values) => {
+    if (isLogin) {
+      const { email, password } = values;
+      login(email, password);
+    }
+  };
 
   const onFinishFailed = () => {};
 
@@ -133,6 +141,7 @@ const Login = () => {
           </div>
           <div className="login-dialog-footer">
             <CustomButton
+              htmlType="submit"
               text={isLogin ? "Log In" : "Sign up"}
               type="primary"
               size="lg"
@@ -147,4 +156,10 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = {
+  ...authActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
