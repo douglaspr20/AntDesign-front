@@ -12,7 +12,7 @@ import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = ({ isAuthenticated, login, history }) => {
+const Login = ({ isAuthenticated, login, signUp, history }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
@@ -23,6 +23,8 @@ const Login = ({ isAuthenticated, login, history }) => {
     if (isLogin) {
       const { email, password } = values;
       login(email, password);
+    } else {
+      signUp({ ...values });
     }
   };
 
@@ -121,7 +123,7 @@ const Login = ({ isAuthenticated, login, history }) => {
             </Form.Item>
             {!isLogin && (
               <Form.Item
-                name="confirm"
+                name="password2"
                 rules={[
                   {
                     required: true,
