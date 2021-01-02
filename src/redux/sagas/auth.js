@@ -10,8 +10,6 @@ import { signIn } from "../../api";
 
 export function* login({ payload }) {
   const defaultAuth = {
-    isAuthenticated: false,
-    loading: true,
     error: null,
     accessToken: null,
     firstName: null,
@@ -23,6 +21,8 @@ export function* login({ payload }) {
   yield put(
     authActions.setAuth({
       ...defaultAuth,
+      isAuthenticated: false,
+      loading: true,
     })
   );
 
@@ -55,6 +55,9 @@ export function* login({ payload }) {
       yield put(
         authActions.setAuth({
           ...defaultAuth,
+          isAuthenticated: false,
+          loading: false,
+          error: "Login Failed!",
         })
       );
     }
@@ -63,6 +66,9 @@ export function* login({ payload }) {
     yield put(
       authActions.setAuth({
         ...defaultAuth,
+        isAuthenticated: false,
+        loading: false,
+        error: error.response.data.message,
       })
     );
   }

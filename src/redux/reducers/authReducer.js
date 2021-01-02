@@ -6,8 +6,11 @@ import { constants as authConstants } from "../actions/auth-actions";
 
 export const reducers = {
   [authConstants.SET_AUTH]: (state, { payload }) => {
-    console.log("*** payload", payload);
-    storage.set("community", payload);
+    if (payload && payload.isAuthenticated) {
+      storage.set("community", payload);
+    } else {
+      storage.remove("community");
+    }
     return state.merge({ ...payload });
   },
 };
