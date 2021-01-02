@@ -24,9 +24,6 @@ export const initialState = () => {
     error: community ? community.error : null,
     accessToken: community ? community.accessToken : false,
     checkingAuth: community ? community.checkingAuth : false,
-    firstName: community ? community.firstName : false,
-    lastName: community ? community.lastName : false,
-    email: community ? community.email : false,
     role: community ? community.role : false,
   });
 };

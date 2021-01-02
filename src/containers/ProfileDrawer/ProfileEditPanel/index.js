@@ -29,7 +29,7 @@ class ProfileEditPanel extends React.Component {
     super(props);
 
     this.state = {
-      user: props.user,
+      user: props.user ? { ...props.user } : {},
       visibleModal: false,
     };
   }

@@ -5,26 +5,36 @@ import {
   constants as authConstants,
   actions as authActions,
 } from "../actions/auth-actions";
-
+import { actions as homeActions } from "../actions/home-actions";
 import { signIn, signUp } from "../../api";
 
-export function* login({ payload }) {
-  const defaultAuth = {
-    error: null,
-    accessToken: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    role: "",
-  };
+const defaultUserInfo = {
+  firstName: "",
+  lastName: "",
+  company: "",
+  abbrName: "",
+  img: null,
+  about: "",
+  titleProfessions: "",
+  proficiencyLevel: "",
+  topicsOfInterest: [],
+  personalLinks: {},
+  language: "",
+  timezone: "",
+  completed: false,
+  percentOfCompletion: 0,
+};
 
+export function* login({ payload }) {
   yield put(
     authActions.setAuth({
-      ...defaultAuth,
       isAuthenticated: false,
       loading: true,
+      error: null,
+      accessToken: null,
     })
   );
+  yield put(homeActions.updateUserInformation(defaultUserInfo));
 
   try {
     const response = yield call(signIn, {
@@ -33,10 +43,7 @@ export function* login({ payload }) {
     });
 
     if (response.status === 200) {
-      const {
-        token,
-        user: { firstName, lastName, email, role },
-      } = response.data;
+      const { token, user } = response.data;
       axios.defaults.headers.common.Authorization = token;
 
       yield put(
@@ -45,32 +52,43 @@ export function* login({ payload }) {
           loading: false,
           error: null,
           accessToken: token,
-          firstName,
-          lastName,
-          email,
-          role,
+        })
+      );
+
+      const abbrName = `${(user.firstName || "").slice(0, 1).toUpperCase()}${(
+        user.lastName || ""
+      )
+        .slice(0, 1)
+        .toUpperCase()}`;
+      yield put(
+        homeActions.updateUserInformation({
+          ...defaultUserInfo,
+          ...user,
+          abbrName,
         })
       );
     } else {
       yield put(
         authActions.setAuth({
-          ...defaultAuth,
           isAuthenticated: false,
           loading: false,
           error: "Login Failed!",
+          accessToken: null,
         })
       );
+      yield put(homeActions.updateUserInformation(defaultUserInfo));
     }
   } catch (error) {
     console.log("***** error", error);
     yield put(
       authActions.setAuth({
-        ...defaultAuth,
         isAuthenticated: false,
         loading: false,
         error: error.response.data.message,
+        accessToken: null,
       })
     );
+    yield put(homeActions.updateUserInformation(defaultUserInfo));
   }
 }
 
@@ -91,20 +109,12 @@ export function* logout() {
 }
 
 export function* signUpUser({ payload }) {
-  const defaultAuth = {
-    error: null,
-    accessToken: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    role: "",
-  };
-
   yield put(
     authActions.setAuth({
-      ...defaultAuth,
       isAuthenticated: false,
       loading: true,
+      error: null,
+      accessToken: null,
     })
   );
 
@@ -112,10 +122,7 @@ export function* signUpUser({ payload }) {
     const response = yield call(signUp, { ...payload });
 
     if (response.status === 200) {
-      const {
-        token,
-        user: { firstName, lastName, email, role },
-      } = response.data;
+      const { token, user } = response.data;
       axios.defaults.headers.common.Authorization = token;
 
       yield put(
@@ -124,19 +131,15 @@ export function* signUpUser({ payload }) {
           loading: false,
           error: null,
           accessToken: token,
-          firstName,
-          lastName,
-          email,
-          role,
         })
       );
     } else {
       yield put(
         authActions.setAuth({
-          ...defaultAuth,
           isAuthenticated: false,
           loading: false,
           error: "Signup Failed!",
+          accessToken: null,
         })
       );
     }
@@ -144,10 +147,10 @@ export function* signUpUser({ payload }) {
     console.log("***** error", error);
     yield put(
       authActions.setAuth({
-        ...defaultAuth,
         isAuthenticated: false,
         loading: false,
         error: error.response.data.message,
+        accessToken: null,
       })
     );
   }

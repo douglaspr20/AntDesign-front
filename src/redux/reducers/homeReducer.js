@@ -77,7 +77,9 @@ export const reducers = {
     return state.merge({ ...payload });
   },
   [homeConstants.UPDATE_USER_INFO]: (state, { payload }) => {
-    return state.merge({ userProfile: cloneDeep(payload.userProfile) });
+    return state.merge({
+      userProfile: cloneDeep(payload.userProfile),
+    });
   },
   [homeConstants.UPDATE_EVENTS]: (state, { payload }) => {
     return state.merge({ events: cloneDeep(payload.events) });
