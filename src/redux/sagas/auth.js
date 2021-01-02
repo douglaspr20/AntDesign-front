@@ -34,7 +34,7 @@ export function* login({ payload }) {
       accessToken: null,
     })
   );
-  yield put(homeActions.updateUserInformation(defaultUserInfo));
+  yield put(homeActions.updateUserInformation({}));
 
   try {
     const response = yield call(signIn, {
@@ -76,7 +76,7 @@ export function* login({ payload }) {
           accessToken: null,
         })
       );
-      yield put(homeActions.updateUserInformation(defaultUserInfo));
+      yield put(homeActions.updateUserInformation({}));
     }
   } catch (error) {
     console.log("***** error", error);
@@ -88,7 +88,7 @@ export function* login({ payload }) {
         accessToken: null,
       })
     );
-    yield put(homeActions.updateUserInformation(defaultUserInfo));
+    yield put(homeActions.updateUserInformation({}));
   }
 }
 
@@ -106,6 +106,7 @@ export function* logout() {
       email: null,
     })
   );
+  yield put(homeActions.updateUserInformation({}));
 }
 
 export function* signUpUser({ payload }) {
@@ -117,6 +118,7 @@ export function* signUpUser({ payload }) {
       accessToken: null,
     })
   );
+  yield put(homeActions.updateUserInformation({}));
 
   try {
     const response = yield call(signUp, { ...payload });
@@ -133,6 +135,18 @@ export function* signUpUser({ payload }) {
           accessToken: token,
         })
       );
+      const abbrName = `${(user.firstName || "").slice(0, 1).toUpperCase()}${(
+        user.lastName || ""
+      )
+        .slice(0, 1)
+        .toUpperCase()}`;
+      yield put(
+        homeActions.updateUserInformation({
+          ...defaultUserInfo,
+          ...user,
+          abbrName,
+        })
+      );
     } else {
       yield put(
         authActions.setAuth({
@@ -142,6 +156,7 @@ export function* signUpUser({ payload }) {
           accessToken: null,
         })
       );
+      yield put(homeActions.updateUserInformation({}));
     }
   } catch (error) {
     console.log("***** error", error);
@@ -153,6 +168,7 @@ export function* signUpUser({ payload }) {
         accessToken: null,
       })
     );
+    yield put(homeActions.updateUserInformation({}));
   }
 }
 
