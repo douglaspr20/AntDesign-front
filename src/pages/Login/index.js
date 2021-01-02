@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "antd";
 import { connect } from "react-redux";
 
 import { CustomButton, CustomInput } from "components";
 
 import { actions as authActions } from "redux/actions/auth-actions";
+import { authSelector } from "redux/selectors/authSelector";
+import { INTERNAL_LINKS } from "enum";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = ({ login, logout }) => {
+const Login = ({ isAuthenticated, login, history }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
@@ -31,6 +33,13 @@ const Login = ({ login, logout }) => {
   const onChangeType = () => {
     setIsLogin((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(INTERNAL_LINKS.HOME);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   return (
     <div className="login-page">
@@ -156,7 +165,9 @@ const Login = ({ login, logout }) => {
   );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  isAuthenticated: authSelector(state).isAuthenticated,
+});
 
 const mapDispatchToProps = {
   ...authActions,

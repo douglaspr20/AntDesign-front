@@ -9,6 +9,7 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import { actions as authActions } from "redux/actions/auth-actions";
 
 import "./style.scss";
 
@@ -32,11 +33,15 @@ class ProfilePopupMenu extends React.Component {
     this.setState({ visible });
   };
 
+  onLogout = () => {
+    this.props.logout();
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
     const { userProfile: user } = this.props;
-    
+
     const TitleSection = () => (
       <div className="profile-popover-title" onClick={this.onViewProfile}>
         <div className="user-avatar">
@@ -68,6 +73,7 @@ class ProfilePopupMenu extends React.Component {
             className="log-out"
             type="primary outlined"
             size="xs"
+            onClick={this.onLogout}
           />
         </div>
       </div>
@@ -92,14 +98,18 @@ class ProfilePopupMenu extends React.Component {
 
 ProfilePopupMenu.propTypes = {
   title: PropTypes.string,
+  logout: PropTypes.func,
 };
 
 ProfilePopupMenu.defaultProps = {
   title: "",
+  logout: () => {},
 };
 
 const mapStateToProps = (state) => homeSelector(state);
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  logout: authActions.logout,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePopupMenu);

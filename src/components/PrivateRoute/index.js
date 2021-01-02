@@ -5,11 +5,10 @@ import { INTERNAL_LINKS } from "enum";
 
 import { setLoading } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { authSelector } from "redux/selectors/authSelector";
 
-const PrivateRoute = ({ loading, setLoading, ...props }) => {
+const PrivateRoute = ({ loading, setLoading, isAuthenticated, ...props }) => {
   const redirect = INTERNAL_LINKS.LOGIN;
-
-  const isAuthenticated = true;
 
   return isAuthenticated ? (
     <Route {...props} />
@@ -24,6 +23,7 @@ const PrivateRoute = ({ loading, setLoading, ...props }) => {
 
 const mapStateToProps = (state) => ({
   loading: homeSelector(state).loading,
+  isAuthenticated: authSelector(state).isAuthenticated,
 });
 
 const mapDispatchToProps = {
