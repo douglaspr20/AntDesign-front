@@ -32,6 +32,7 @@ export function* login({ payload }) {
       loading: true,
       error: null,
       accessToken: null,
+      id: 0,
     })
   );
   yield put(homeActions.updateUserInformation({}));
@@ -52,6 +53,7 @@ export function* login({ payload }) {
           loading: false,
           error: null,
           accessToken: token,
+          id: user.id,
         })
       );
 
@@ -74,6 +76,7 @@ export function* login({ payload }) {
           loading: false,
           error: "Login Failed!",
           accessToken: null,
+          id: 0,
         })
       );
       yield put(homeActions.updateUserInformation({}));
@@ -86,6 +89,7 @@ export function* login({ payload }) {
         loading: false,
         error: error.response.data.message,
         accessToken: null,
+        id: 0,
       })
     );
     yield put(homeActions.updateUserInformation({}));
@@ -101,9 +105,7 @@ export function* logout() {
       loading: false,
       error: null,
       accessToken: null,
-      firstName: null,
-      lastName: null,
-      email: null,
+      id: 0,
     })
   );
   yield put(homeActions.updateUserInformation({}));
@@ -116,6 +118,7 @@ export function* signUpUser({ payload }) {
       loading: true,
       error: null,
       accessToken: null,
+      id: 0,
     })
   );
   yield put(homeActions.updateUserInformation({}));
@@ -133,6 +136,7 @@ export function* signUpUser({ payload }) {
           loading: false,
           error: null,
           accessToken: token,
+          id: user.id,
         })
       );
       const abbrName = `${(user.firstName || "").slice(0, 1).toUpperCase()}${(
@@ -154,6 +158,7 @@ export function* signUpUser({ payload }) {
           loading: false,
           error: "Signup Failed!",
           accessToken: null,
+          id: 0,
         })
       );
       yield put(homeActions.updateUserInformation({}));
@@ -166,6 +171,7 @@ export function* signUpUser({ payload }) {
         loading: false,
         error: error.response.data.message,
         accessToken: null,
+        id: 0,
       })
     );
     yield put(homeActions.updateUserInformation({}));
