@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { CheckOutlined } from "@ant-design/icons";
 
-import { DateAvatar, CustomButton, CustomDrawer } from "components";
+import {
+  DateAvatar,
+  CustomButton,
+  CustomDrawer,
+  SpecialtyItem,
+} from "components";
 import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
 
@@ -106,6 +111,13 @@ const EventDrawer = () => {
           </div>
           <h3 className="event-type">{event.type}</h3>
           <h3 className="event-cost">{event.cost}</h3>
+          {event.topics && event.topics.length > 0 && (
+            <div className="event-topics">
+              {event.topics.map((topic, index) => (
+                <SpecialtyItem key={index} title={topic} active={false} />
+              ))}
+            </div>
+          )}
           <h3 className="event-details-content-subtitle">About the event</h3>
           <p className="event-details-content-subtext">{event.about}</p>
           <h3 className="event-details-content-subtitle">Sponsors</h3>

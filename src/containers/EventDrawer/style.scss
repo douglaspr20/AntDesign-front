@@ -55,6 +55,16 @@
       color: $color-text-third !important;
     }
 
+    .event-topics {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 4px -10px 0;
+
+      .specialty-item {
+        margin: 16px 10px 0;
+      }
+    }
+
     &-actions {
       margin-top: -100px;
       margin-bottom: 40px;
@@ -129,7 +139,10 @@
         }
       }
 
-      .event-date, .add-to-calendar, .event-type, .event-cost {
+      .event-date,
+      .add-to-calendar,
+      .event-type,
+      .event-cost {
         @include app-font(16px, 21px);
         margin-top: 16px !important;
       }
