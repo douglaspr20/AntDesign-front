@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { CustomCheckbox } from "components";
 
 import { SEARCH_FILTERS } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -44,10 +45,8 @@ FilterPanel.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    planUpdated: state.home ? state.home.planUpdated : false,
-  };
-};
+const mapStateToProps = (state) => ({
+  planUpdated: homeSelector(state).planUpdated,
+});
 
 export default connect(mapStateToProps)(FilterPanel);

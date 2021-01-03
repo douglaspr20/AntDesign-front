@@ -1,20 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "antd";
+import { connect } from "react-redux";
 
 import { CustomButton, CustomInput } from "components";
+
+import { actions as authActions } from "redux/actions/auth-actions";
+import { authSelector } from "redux/selectors/authSelector";
+import { INTERNAL_LINKS } from "enum";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = () => {
+const Login = ({ isAuthenticated, error, login, signUp, history }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
     wrapperCol: { span: 24 },
   };
 
-  const onFinish = () => {};
+  const onFinish = (values) => {
+    if (isLogin) {
+      const { email, password } = values;
+      login(email, password);
+    } else {
+      signUp({ ...values });
+    }
+  };
 
   const onFinishFailed = () => {};
 
@@ -23,6 +35,13 @@ const Login = () => {
   const onChangeType = () => {
     setIsLogin((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push(INTERNAL_LINKS.HOME);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   return (
     <div className="login-page">
@@ -104,7 +123,7 @@ const Login = () => {
             </Form.Item>
             {!isLogin && (
               <Form.Item
-                name="confirm"
+                name="password2"
                 rules={[
                   {
                     required: true,
@@ -132,7 +151,9 @@ const Login = () => {
             )}
           </div>
           <div className="login-dialog-footer">
+            <span className="login-dialog-footer-error">{error}</span>
             <CustomButton
+              htmlType="submit"
               text={isLogin ? "Log In" : "Sign up"}
               type="primary"
               size="lg"
@@ -147,4 +168,13 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+  isAuthenticated: authSelector(state).isAuthenticated,
+  error: authSelector(state).error,
+});
+
+const mapDispatchToProps = {
+  ...authActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

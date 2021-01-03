@@ -2,13 +2,26 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
+import isEmpty from "lodash/isEmpty";
 
-import { setLoading } from "redux/actions/home-actions";
+import { setLoading, getUser } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { authSelector } from "redux/selectors/authSelector";
 
-const PrivateRoute = ({ loading, setLoading, ...props }) => {
+const PrivateRoute = ({
+  id,
+  loading,
+  setLoading,
+  isAuthenticated,
+  userProfile,
+  getUser,
+  ...props
+}) => {
   const redirect = INTERNAL_LINKS.LOGIN;
 
-  const isAuthenticated = true;
+  if (isAuthenticated && id && isEmpty(userProfile)) {
+    getUser(id);
+  }
 
   return isAuthenticated ? (
     <Route {...props} />
@@ -22,11 +35,15 @@ const PrivateRoute = ({ loading, setLoading, ...props }) => {
 };
 
 const mapStateToProps = (state) => ({
-  loading: state.home.loading,
+  loading: homeSelector(state).loading,
+  userProfile: homeSelector(state).userProfile,
+  isAuthenticated: authSelector(state).isAuthenticated,
+  id: authSelector(state).id,
 });
 
 const mapDispatchToProps = {
   setLoading,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

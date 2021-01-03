@@ -9,7 +9,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 // Redux Imports
 import { Provider } from "react-redux";
-import { store } from "redux/store";
+import { store } from "./redux/store";
 // Localization Helper Import
 import ConnectedIntlProvider from "components/ConnectedIntlProvide";
 // Router Import

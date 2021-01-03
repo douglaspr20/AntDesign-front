@@ -8,6 +8,9 @@ import { CustomButton } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
+import { homeSelector } from "redux/selectors/homeSelector";
+import { actions as authActions } from "redux/actions/auth-actions";
+
 import "./style.scss";
 
 const ProfileMenus = ["Settings", "Account"];
@@ -30,6 +33,10 @@ class ProfilePopupMenu extends React.Component {
     this.setState({ visible });
   };
 
+  onLogout = () => {
+    this.props.logout();
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
@@ -38,11 +45,15 @@ class ProfilePopupMenu extends React.Component {
     const TitleSection = () => (
       <div className="profile-popover-title" onClick={this.onViewProfile}>
         <div className="user-avatar">
-          {user.img ? <img src={user.img} alt="user-avatar" /> : user.abbrName}
+          {user && user.img ? (
+            <img src={user ? user.img : ""} alt="user-avatar" />
+          ) : (
+            (user || {}).abbrName
+          )}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{`${user.firstName || ""} ${
-            user.lastName || ""
+          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
+            user ? user.lastName || "" : ""
           }`}</p>
           <p className="user-info-view">View profile</p>
         </div>
@@ -62,6 +73,7 @@ class ProfilePopupMenu extends React.Component {
             className="log-out"
             type="primary outlined"
             size="xs"
+            onClick={this.onLogout}
           />
         </div>
       </div>
@@ -86,16 +98,18 @@ class ProfilePopupMenu extends React.Component {
 
 ProfilePopupMenu.propTypes = {
   title: PropTypes.string,
+  logout: PropTypes.func,
 };
 
 ProfilePopupMenu.defaultProps = {
   title: "",
+  logout: () => {},
 };
 
-const mapStateToProps = (state, props) => {
-  return { ...state, ...props, userProfile: state.home.userProfile };
-};
+const mapStateToProps = (state) => homeSelector(state);
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  logout: authActions.logout,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePopupMenu);

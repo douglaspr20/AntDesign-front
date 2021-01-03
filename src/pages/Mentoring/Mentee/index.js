@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 
 import { SpecialtyItem, WantCard, CustomButton } from "components";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -67,10 +68,8 @@ MenteePanel.defaultProps = {
   onEdit: () => {},
 };
 
-const mapStateToProps = (state) => {
-  return {
-    mobileSetting: state.home.setting,
-  };
-};
+const mapStateToProps = (state) => ({
+  mobileSetting: homeSelector(state).setting,
+});
 
 export default connect(mapStateToProps)(MenteePanel);

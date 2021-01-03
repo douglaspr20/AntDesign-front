@@ -10,6 +10,7 @@ import { numberWithCommas } from "utils/format";
 import { CustomSelect, LibraryCard, CustomButton } from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -135,10 +136,8 @@ LearningLibraryPage.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    planUpdated: state.home ? state.home.planUpdated : false,
-  };
-};
+const mapStateToProps = (state, props) => ({
+  planUpdated: homeSelector(state).planUpdated,
+});
 
 export default connect(mapStateToProps)(LearningLibraryPage);

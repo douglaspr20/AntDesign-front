@@ -10,6 +10,9 @@ import { setCollapsed } from "redux/actions/env-actions";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 
+import { homeSelector } from "redux/selectors/homeSelector";
+import { envSelector } from "redux/selectors/envSelector";
+
 import "./style.scss";
 
 const MenuList = [
@@ -30,7 +33,7 @@ class MainHeader extends React.Component {
     const { userProfile: user } = this.props;
     const { pathname } = this.props.history.location || {};
     const pathInfo = MenuList.find((item) => item.url === pathname);
-    const { planUpdated } = this.props.home;
+    const { planUpdated } = this.props;
 
     return (
       <div className="main-header">
@@ -88,14 +91,11 @@ MainHeader.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    ...state,
-    ...props,
-    isMobile: state.env.isMobile,
-    userProfile: state.home.userProfile,
-  };
-};
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+  planUpdated: homeSelector(state).planUpdated,
+  isMobile: envSelector(state).isMobile,
+});
 
 const mapDispatchToProps = {
   setCollapsed,

@@ -1,21 +1,12 @@
-import {applyMiddleware, compose, createStore} from "redux";
-
-import thunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
+import createSagaMiddleware from "redux-saga";
 
 import rootReducer from "./reducers/rootReducer";
-
+import mySaga from "./sagas";
 
 //import reduxPromise from 'redux-promise-middleware';
+const sagaMiddleware = createSagaMiddleware();
 
+export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
-const allEnhancers = compose(
-    applyMiddleware(/*reduxPromise,*/thunk)
-    //,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-
-
-
-export const store = createStore(
-    rootReducer,
-    allEnhancers
-);
+sagaMiddleware.run(mySaga);
