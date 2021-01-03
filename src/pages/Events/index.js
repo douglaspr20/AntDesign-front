@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Emitter from "services/emitter";
 import { connect } from "react-redux";
 
-import { Tabs } from "components";
+import { Tabs, FilterPanel } from "components";
 import EventList from "./EventList";
 import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -46,12 +46,21 @@ const EventsPage = ({
       title: "My events",
       content: () => <EventList data={myEvents} onAttend={addMyEvents} />,
     },
+    {
+      title: "My past events",
+      content: () => <EventList data={[]} onAttend={addMyEvents} />,
+    },
   ];
 
   return (
     <div className="events-page">
-      <div className="events-page-container">
-        <Tabs data={TabData} />
+      <div className="events-page-filter">
+        <FilterPanel title="Categories" />
+      </div>
+      <div className="events-page-wrapper">
+        <div className="events-page-container">
+          <Tabs data={TabData} />
+        </div>
       </div>
     </div>
   );
