@@ -1,8 +1,17 @@
 @import "styles/main.scss";
 
 .custom-calendar {
+  .ant-picker-panel {
+    border: none !important;
+  }
+
   .ant-picker-content {
     display: block;
+    height: fit-content !important;
+
+    th {
+      color: $color-text-third;
+    }
   }
 
   &-header {
@@ -65,9 +74,17 @@
       border: 1px solid $color-primary;
       border-radius: 4px;
 
+      .ant-picker-calendar-date-value {
+        color: $color-primary;
+      }
+
       &::before {
         display: none;
       }
     }
+  }
+
+  &-today {
+    width: 100%;
   }
 }

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
 import { Calendar } from "antd";
+import moment from "moment";
+
 import { SVG_ICONS } from "enum";
+import { CustomButton } from "components";
 
 import IconLeft from "images/icon-arrow-left.svg";
 import IconRight from "images/icon-arrow-right.svg";
@@ -10,7 +12,10 @@ import IconRight from "images/icon-arrow-right.svg";
 import "./style.scss";
 
 const CustomCalendar = ({ title }) => {
-  const onPanelChange = () => {};
+  const [current, setCurrent] = useState(moment());
+  const onDateChange = (date) => {
+    setCurrent(date);
+  };
 
   const getEventData = (value) => {
     let listData;
@@ -31,7 +36,6 @@ const CustomCalendar = ({ title }) => {
   const headerRender = ({ value, type, onChange, onTypeChange }) => {
     const current = value.clone();
     const localeData = value.localeData();
-    console.log("*** current", localeData.months(current));
     const currentMonth = `${localeData.months(current)} ${current.year()}`;
 
     const onPrevMonth = () => {
@@ -61,14 +65,28 @@ const CustomCalendar = ({ title }) => {
     return listData && listData.length > 0 ? SVG_ICONS.ICON_CIRCLE : null;
   };
 
+  const onSelectToday = () => {
+    setCurrent(moment());
+  };
+
   return (
-    <Calendar
-      className="custom-calendar"
-      fullscreen={false}
-      headerRender={headerRender}
-      dateCellRender={dateCellRender}
-      onPanelChange={onPanelChange}
-    />
+    <div className="custom-calendar">
+      <Calendar
+        className="custom-calendar-control"
+        value={current}
+        fullscreen={false}
+        headerRender={headerRender}
+        dateCellRender={dateCellRender}
+        onChange={onDateChange}
+      />
+      <CustomButton
+        className="custom-calendar-today"
+        text="Today"
+        type="primary outlined"
+        size="xs"
+        onClick={onSelectToday}
+      />
+    </div>
   );
 };
 
