@@ -74,7 +74,7 @@ export function* login({ payload }) {
         authActions.setAuth({
           isAuthenticated: false,
           loading: false,
-          error: "Login Failed!",
+          error: response.data.msg,
           accessToken: null,
           id: 0,
         })
@@ -82,12 +82,11 @@ export function* login({ payload }) {
       yield put(homeActions.updateUserInformation({}));
     }
   } catch (error) {
-    console.log("***** error", error);
     yield put(
       authActions.setAuth({
         isAuthenticated: false,
         loading: false,
-        error: error.response.data.message,
+        error: error.response.data.msg,
         accessToken: null,
         id: 0,
       })

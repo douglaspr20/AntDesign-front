@@ -12,7 +12,7 @@ import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = ({ isAuthenticated, login, signUp, history }) => {
+const Login = ({ isAuthenticated, error, login, signUp, history }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
@@ -151,6 +151,7 @@ const Login = ({ isAuthenticated, login, signUp, history }) => {
             )}
           </div>
           <div className="login-dialog-footer">
+            <span className="login-dialog-footer-error">{error}</span>
             <CustomButton
               htmlType="submit"
               text={isLogin ? "Log In" : "Sign up"}
@@ -169,6 +170,7 @@ const Login = ({ isAuthenticated, login, signUp, history }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: authSelector(state).isAuthenticated,
+  error: authSelector(state).error,
 });
 
 const mapDispatchToProps = {
