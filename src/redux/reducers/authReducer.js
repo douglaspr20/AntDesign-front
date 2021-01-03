@@ -24,7 +24,7 @@ export const initialState = () => {
     error: community ? community.error : null,
     accessToken: community ? community.accessToken : false,
     checkingAuth: community ? community.checkingAuth : false,
-    role: community ? community.role : false,
+    id: community ? community.id : 0,
   });
 };
 
