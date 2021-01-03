@@ -168,7 +168,7 @@ export function* signUpUser({ payload }) {
       authActions.setAuth({
         isAuthenticated: false,
         loading: false,
-        error: error.response.data.message,
+        error: error.response.data.msg,
         accessToken: null,
         id: 0,
       })
