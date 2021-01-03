@@ -27,6 +27,7 @@ class CustomDrawer extends React.Component {
         closable={true}
         onClose={onClose}
         width={width}
+        destroyOnClose={true}
       >
         {children}
         {!title && (
