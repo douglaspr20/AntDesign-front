@@ -9,3 +9,4 @@ export { default as TIMEZONE_LIST } from "./TimezoneList";
 export { default as SEARCH_FILTERS } from "./SearchFilters";
 export { default as MONTH_NAMES } from "./MonthNames";
 export { default as USER_ROLES } from "./UserRoles";
+export { default as EVENT_FILTER } from  "./EventFilters";
