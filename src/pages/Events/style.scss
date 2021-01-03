@@ -2,19 +2,35 @@
 
 .events-page {
   width: 100%;
-  height: calc(100vh - 72px);
   background: $color-background;
-  overflow: auto;
-  padding: 3rem 0;
   display: flex;
-  justify-content: center;
 
-  @media (max-width: 1199.98px) {
-    padding: 3rem 3rem;
+  &-filter {
+    width: 266px;
+    height: calc(100vh - 72px);
+    background: $color-white;
+    box-shadow: 4px 0px 14px #37215714;
+
+    @media (max-width: 977.98px) {
+      display: none;
+    }
   }
 
-  @media (max-width: 575.98px) {
-    padding: 2rem 1rem;
+  &-wrapper {
+    padding: 3rem 0;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 72px);
+    width: 100%;
+
+    @media (max-width: 1199.98px) {
+      padding: 3rem 3rem;
+    }
+  
+    @media (max-width: 575.98px) {
+      padding: 2rem 1rem;
+    }
   }
 
   &-container {
@@ -23,7 +39,7 @@
     @media (max-width: 575.98px) {
       .ant-tabs-nav-list {
         display: grid !important;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 1fr 1fr 1fr;
         justify-items: center;
         width: 100%;
 
@@ -31,7 +47,17 @@
           width: 100%;
           display: flex;
           justify-content: center;
+
+          .ant-tabs-tab-btn {
+            white-space: normal;
+            @include app-font(16px, 24px, 600);
+            text-align: center;
+          }
         }
+      }
+
+      .ant-tabs-nav-operations {
+        display: none;
       }
     }
 

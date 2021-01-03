@@ -4,10 +4,9 @@ import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import clsx from "clsx";
 
-import FilterPanel from "./FilterPanel";
 import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { CustomSelect, LibraryCard, CustomButton } from "components";
+import { CustomSelect, LibraryCard, CustomButton, FilterPanel } from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";

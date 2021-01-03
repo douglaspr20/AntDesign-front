@@ -1,4 +1,4 @@
-@import "../../../styles/main.scss";
+@import "styles/main.scss";
 
 .filter-panel {
   width: 266px;
@@ -11,6 +11,10 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .custom-calendar {
+    margin-bottom: 52px;
   }
 
   .search-filter {

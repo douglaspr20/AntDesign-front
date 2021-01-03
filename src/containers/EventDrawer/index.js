@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { CheckOutlined } from "@ant-design/icons";
+import { Menu, Dropdown } from "antd";
 
-import { DateAvatar, CustomButton, CustomDrawer } from "components";
+import {
+  DateAvatar,
+  CustomButton,
+  CustomDrawer,
+  SpecialtyItem,
+} from "components";
 import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
 
@@ -49,6 +55,14 @@ const EventDrawer = () => {
   useEffect(() => {
     Emitter.emit(EVENT_TYPES.EVENT_CHANGED, event);
   }, [event]);
+
+  const menu = (
+    <Menu>
+      <Menu.Item>Google</Menu.Item>
+      <Menu.Item>Google</Menu.Item>
+      <Menu.Item>Google</Menu.Item>
+    </Menu>
+  );
 
   return (
     <CustomDrawer
@@ -102,10 +116,23 @@ const EventDrawer = () => {
                 }`}
               </h3>
             </div>
-            <h3 className="add-to-calendar">Add to calendar</h3>
+            {event.going && (
+              <Dropdown overlay={menu}>
+                <h3 className="add-to-calendar ant-dropdown-link">
+                  Add to calendar
+                </h3>
+              </Dropdown>
+            )}
           </div>
           <h3 className="event-type">{event.type}</h3>
           <h3 className="event-cost">{event.cost}</h3>
+          {event.topics && event.topics.length > 0 && (
+            <div className="event-topics">
+              {event.topics.map((topic, index) => (
+                <SpecialtyItem key={index} title={topic} active={false} />
+              ))}
+            </div>
+          )}
           <h3 className="event-details-content-subtitle">About the event</h3>
           <p className="event-details-content-subtext">{event.about}</p>
           <h3 className="event-details-content-subtitle">Sponsors</h3>
