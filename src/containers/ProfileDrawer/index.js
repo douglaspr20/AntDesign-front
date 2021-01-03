@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { CustomDrawer } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
-import { updateUserInformation } from "redux/actions/home-actions";
+import { updateUser } from "redux/actions/home-actions";
 
 import ProfileEditPanel from "./ProfileEditPanel";
 import ProfileViewPanel from "./ProfileViewPanel";
@@ -37,7 +37,7 @@ class ProfileDrawer extends React.Component {
   };
 
   onSave = (userInfo) => {
-    this.props.updateUserInformation(userInfo);
+    this.props.updateUser(userInfo);
     this.setState({ edit: false });
   };
 
@@ -77,7 +77,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = {
-  updateUserInformation,
+  updateUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileDrawer);

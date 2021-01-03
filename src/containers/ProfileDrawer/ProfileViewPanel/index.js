@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
+import isEqual from "lodash/isEqual";
 
 import { ProfileAvatar, CustomButton } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES } from "enum";
@@ -17,6 +18,12 @@ class ProfileViewPanel extends React.Component {
     this.state = {
       user: props.user,
     };
+  }
+
+  componentDidUpdate(preProps) {
+    if (!isEqual(preProps.user, this.props.user)) {
+      this.setState({ user: this.props.user });
+    }
   }
 
   onEdit = () => {

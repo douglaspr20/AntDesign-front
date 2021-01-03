@@ -66,9 +66,6 @@ class ProfileEditPanel extends React.Component {
 
   onSave = () => {
     let { user } = this.state;
-    user.abbrName = `${user.firstName ? user.firstName[0] : ""}${
-      user.lastName ? user.lastName[0] : ""
-    }`;
     user.percentOfCompletion = getProfileCompletion(user);
     user.completed = user.percentOfCompletion === 100;
     this.props.onSave(user);

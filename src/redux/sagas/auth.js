@@ -57,16 +57,10 @@ export function* login({ payload }) {
         })
       );
 
-      const abbrName = `${(user.firstName || "").slice(0, 1).toUpperCase()}${(
-        user.lastName || ""
-      )
-        .slice(0, 1)
-        .toUpperCase()}`;
       yield put(
         homeActions.updateUserInformation({
           ...defaultUserInfo,
           ...user,
-          abbrName,
         })
       );
     } else {
@@ -138,16 +132,11 @@ export function* signUpUser({ payload }) {
           id: user.id,
         })
       );
-      const abbrName = `${(user.firstName || "").slice(0, 1).toUpperCase()}${(
-        user.lastName || ""
-      )
-        .slice(0, 1)
-        .toUpperCase()}`;
+      
       yield put(
         homeActions.updateUserInformation({
           ...defaultUserInfo,
           ...user,
-          abbrName,
         })
       );
     } else {
