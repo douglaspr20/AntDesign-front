@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { CheckOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 
-import { CustomButton } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
@@ -30,7 +30,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { date, title, timezone, type, cost, img, going },
+      data: { date, title, timezone, type, cost, img, going, topics },
       className,
     } = this.props;
 
@@ -46,13 +46,20 @@ class EventCard extends React.Component {
           <h3>{title}</h3>
           <h5>{`${date} ${timezone}`}</h5>
           <h5>{type}</h5>
+          <h6 className="event-card-cost">{cost}</h6>
+          {topics && topics.length > 0 && (
+            <div className="event-card-topics">
+              {topics.map((topic, index) => (
+                <SpecialtyItem key={index} title={topic} active={false} />
+              ))}
+            </div>
+          )}
           <div className="event-card-content-footer">
-            <h6 className="event-card-cost">{cost}</h6>
             <div className="event-card-content-footer-actions">
               {!going && (
                 <CustomButton
                   text="Attend"
-                  size="xs"
+                  size="md"
                   type="primary"
                   onClick={this.onAttend}
                 />
@@ -66,7 +73,7 @@ class EventCard extends React.Component {
                   <CustomButton
                     className="not-going-btn"
                     text="Not going"
-                    size="xs"
+                    size="md"
                     type="remove"
                     remove={true}
                     onClick={this.onCancelAttend}

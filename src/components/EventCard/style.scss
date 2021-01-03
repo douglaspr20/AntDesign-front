@@ -7,7 +7,6 @@
   box-shadow: 4px 0px 14px #37215714;
   border: 1px solid $color-border;
   border-radius: 0.5rem;
-  height: 206px;
   cursor: pointer;
 
   @media (max-width: 575.98px) {
@@ -16,7 +15,6 @@
 
   &-img {
     width: 220px;
-    height: 206px;
     border: 1px solid $color-border;
     border-radius: 0.5rem;
     overflow: hidden;
@@ -43,6 +41,7 @@
     & > h3 {
       font-weight: 500 !important;
       cursor: pointer;
+      margin-bottom: 1rem !important;
 
       @media (max-width: 575.98px) {
         margin-bottom: 1.5rem !important;
@@ -52,6 +51,7 @@
     & > h5 {
       font-weight: 500 !important;
       color: #707070 !important;
+      margin-bottom: 1rem !important;
 
       @media (max-width: 575.98px) {
         margin-bottom: 1rem !important;
@@ -105,15 +105,35 @@
       }
     }
 
+    .event-card-cost {
+      margin-bottom: 1rem !important;
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 21px);
+      }
+    }
+
+    .event-card-topics {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px;
+
+      .specialty-item {
+        margin: 0 10px 16px;
+      }
+    }
+
     &-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      margin-top: 8px;
 
       @media (max-width: 575.98px) {
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 12px;
 
         .event-card-cost {
           margin-bottom: 28px !important;

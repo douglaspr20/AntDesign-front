@@ -15,6 +15,7 @@ const EventData = [
     cost: "Free",
     going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: ["Community cultivator", "Leadership", "Recruiting"],
   },
   {
     id: 2,
@@ -25,6 +26,14 @@ const EventData = [
     cost: "Free",
     going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: [
+      "Human Resources",
+      "Leadership",
+      "Recruiting",
+      "Design",
+      "Community cultivator",
+      "Technology",
+    ],
   },
   {
     id: 3,
@@ -35,6 +44,7 @@ const EventData = [
     cost: "Free",
     going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: [],
   },
   {
     id: 4,
@@ -45,6 +55,14 @@ const EventData = [
     cost: "Free",
     going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: [
+      "Human Resources",
+      "Leadership",
+      "Recruiting",
+      "Design",
+      "Community cultivator",
+      "Technology",
+    ],
   },
   {
     id: 5,
