@@ -9,3 +9,15 @@ export const updateUser = ({ user }) => {
     ...user,
   });
 };
+
+export const updateUserAvatar = ({ id, img }) => {
+  let data = new FormData();
+  console.log("avatar", img);
+  data.append("file", img);
+
+  return httpClient.put(`private/user/image?id=${id}`, data, {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  });
+};

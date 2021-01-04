@@ -4,7 +4,7 @@ import {
   constants as homeConstants,
   actions as homeActions,
 } from "../actions/home-actions";
-import { getUserFromId, updateUser } from "../../api";
+import { getUserFromId, updateUser, updateUserAvatar } from "../../api";
 
 const defaultUserInfo = {
   firstName: "",
@@ -68,9 +68,34 @@ export function* putUser({ payload }) {
   }
 }
 
+export function* putUserAvatar({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateUserAvatar, { ...payload });
+
+    if (response.status === 200) {
+      const { affectedRows: user } = response.data;
+
+      yield put(
+        homeActions.updateUserInformation({
+          ...defaultUserInfo,
+          ...user,
+        })
+      );
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
+  yield takeLatest(homeConstants.UPDATE_USER_AVATAR, putUserAvatar);
 }
 
 export const userSaga = [fork(watchLogin)];

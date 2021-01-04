@@ -22,6 +22,7 @@ class PhotoUploadForm extends PureComponent {
         aspect: 1 / 1,
       },
       croppedImageUrl: null,
+      blob: null,
     };
   }
 
@@ -52,12 +53,12 @@ class PhotoUploadForm extends PureComponent {
 
   async makeClientCrop(crop) {
     if (this.imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await this.getCroppedImg(
+      const { url: croppedImageUrl, blob } = await this.getCroppedImg(
         this.imageRef,
         crop,
         "newFile.jpeg"
       );
-      this.setState({ croppedImageUrl });
+      this.setState({ croppedImageUrl, blob });
     }
   }
 
@@ -91,7 +92,7 @@ class PhotoUploadForm extends PureComponent {
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
-        resolve(this.fileUrl);
+        resolve({ url: this.fileUrl, blob });
       }, "image/jpeg");
     });
   }
@@ -103,9 +104,9 @@ class PhotoUploadForm extends PureComponent {
   };
 
   onSave = () => {
-    const { croppedImageUrl } = this.state;
+    const { croppedImageUrl, blob } = this.state;
 
-    this.props.onSave(croppedImageUrl);
+    this.props.onSave(croppedImageUrl, blob);
   };
 
   render() {
@@ -162,13 +163,13 @@ class PhotoUploadForm extends PureComponent {
 }
 
 PhotoUploadForm.propTypes = {
-  src: PropTypes.string,
+  src: PropTypes.object,
   className: PropTypes.string,
   onSave: PropTypes.func,
 };
 
 PhotoUploadForm.defaultProps = {
-  src: "",
+  src: null,
   className: "",
   onSave: () => {},
 };
