@@ -14,7 +14,7 @@ const FilterTitles = Object.keys(SEARCH_FILTERS);
 
 const FilterPanel = ({ title, planUpdated }) => (
   <div className="filter-panel">
-    <CustomCalendar />
+    <CustomCalendar disabled={!planUpdated} />
     <h2 className="font-regular">{title}</h2>
     <div className="filter-panel-content">
       {FilterTitles.map((filter, index) => (
