@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "antd";
 
 import { CustomInput } from "components";
+import { isValidPassword } from "utils/format";
 
 const SignupForm = () => {
   return (
@@ -51,14 +52,28 @@ const SignupForm = () => {
       <Form.Item
         name="password"
         rules={[
-          {
-            required: true,
-            message: "Please enter your password!",
-          },
-          {
-            min: 8,
-            message: "Password length should be 8 or more!",
-          },
+          () => ({
+            validator(rule, value) {
+              switch (isValidPassword(value)) {
+                case 0:
+                  return Promise.resolve();
+                case 1:
+                  return Promise.reject("Password length should be 8 or more!");
+                case 2:
+                  return Promise.reject("Password should contain number!");
+                case 3:
+                  return Promise.reject("Password should contain symbol!");
+                case 4:
+                  return Promise.reject(
+                    "Password should contain capital letter!"
+                  );
+                case 5:
+                  return Promise.reject("Please enter your password!");
+                default:
+                  return Promise.reject("Something went wrong!");
+              }
+            },
+          }),
         ]}
         className="form-full-name"
       >
