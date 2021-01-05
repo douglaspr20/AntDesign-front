@@ -58,6 +58,11 @@
       }
     }
 
+    .form-recaptcha .ant-form-item-control-input-content {
+      display: flex;
+      justify-content: center;
+    }
+
     &-footer {
       height: calc(100% - 90px);
       display: flex;

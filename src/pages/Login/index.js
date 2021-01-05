@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Form } from "antd";
 import { connect } from "react-redux";
 
-import { CustomButton, CustomInput } from "components";
+import { CustomButton } from "components";
 
 import { actions as authActions } from "redux/actions/auth-actions";
 import { authSelector } from "redux/selectors/authSelector";
 import { INTERNAL_LINKS } from "enum";
+
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 import IconLogo from "images/logo-sidebar.svg";
 
@@ -61,94 +64,7 @@ const Login = ({ isAuthenticated, error, login, signUp, history }) => {
           onValuesChange={onValuesChange}
         >
           <div className="login-dialog-content">
-            {!isLogin && (
-              <React.Fragment>
-                <Form.Item
-                  name="firstName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter your first name!",
-                    },
-                  ]}
-                  className="form-full-name"
-                >
-                  <CustomInput placeholder="First Name" size="sm" />
-                </Form.Item>
-                <Form.Item
-                  name="lastName"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter your last name!",
-                    },
-                  ]}
-                  className="form-full-name"
-                >
-                  <CustomInput placeholder="Last Name" size="sm" />
-                </Form.Item>
-              </React.Fragment>
-            )}
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your email!",
-                },
-                {
-                  type: "email",
-                  message: "Please enter the valid email!",
-                },
-              ]}
-              className="form-full-name"
-            >
-              <CustomInput placeholder="Email" size="sm" />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your password!",
-                },
-                {
-                  min: 8,
-                  message: "Password length should be 8 or more!",
-                },
-              ]}
-              className="form-full-name"
-            >
-              <CustomInput type="password" placeholder="Password" size="sm" />
-            </Form.Item>
-            {!isLogin && (
-              <Form.Item
-                name="password2"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      if (!value || getFieldValue("password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        "The two passwords that you entered do not match!"
-                      );
-                    },
-                  }),
-                ]}
-                className="form-full-name"
-              >
-                <CustomInput
-                  type="password"
-                  placeholder="Confirm Password"
-                  size="sm"
-                />
-              </Form.Item>
-            )}
+            {isLogin ? <LoginForm /> : <SignupForm />}
           </div>
           <div className="login-dialog-footer">
             <span className="login-dialog-footer-error">{error}</span>
