@@ -1,8 +1,11 @@
 import React from "react";
 import { Form } from "antd";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { CustomInput } from "components";
 import { isValidPassword } from "utils/format";
+
+const SecretKey = process.env.REACT_APP_RECAPTCHA_SITEKEY;
 
 const SignupForm = () => {
   return (
@@ -100,6 +103,18 @@ const SignupForm = () => {
         className="form-full-name"
       >
         <CustomInput type="password" placeholder="Confirm Password" size="sm" />
+      </Form.Item>
+      <Form.Item
+        name="recaptcha"
+        rules={[
+          {
+            required: true,
+            message: "Please resolve the reCAPTCHA!",
+          },
+        ]}
+        className="form-recaptcha"
+      >
+        <ReCAPTCHA sitekey={SecretKey} />
       </Form.Item>
     </React.Fragment>
   );
