@@ -7,12 +7,20 @@ export const signIn = ({ email, password }) => {
   });
 };
 
-export const signUp = ({ firstName, lastName, email, password, password2 }) => {
+export const signUp = ({
+  firstName,
+  lastName,
+  email,
+  password,
+  password2,
+  recaptcha,
+}) => {
   return httpClient.post("/public/register", {
     firstName,
     lastName,
     email,
     password,
     password2,
+    recaptcha,
   });
 };
