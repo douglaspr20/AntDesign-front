@@ -16,6 +16,7 @@ import "./style.scss";
 const EventsPage = ({
   events,
   myEvents,
+  myPastEvents,
   updateEventData,
   updateMyEventData,
 }) => {
@@ -52,7 +53,7 @@ const EventsPage = ({
     },
     {
       title: "My past events",
-      content: () => <EventList data={[]} onAttend={addMyEvents} />,
+      content: () => <EventList data={myPastEvents} onAttend={addMyEvents} />,
     },
   ];
 
@@ -110,6 +111,7 @@ EventsPage.defaultProps = {
 const mapStateToProps = (state) => ({
   myEvents: homeSelector(state).myEvents,
   events: homeSelector(state).events,
+  myPastEvents: homeSelector(state).myPastEvents,
 });
 
 const mapDispatchToProps = {

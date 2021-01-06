@@ -28,9 +28,21 @@ class EventCard extends React.Component {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE, this.props.data);
   };
 
+  onClickClaimDigitalCertificate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER);
+  };
+
+  onClickClaimCredits = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   render() {
     const {
-      data: { date, title, timezone, type, cost, img, going, topics },
+      data: { date, title, timezone, type, cost, img, going, topics, past },
       className,
     } = this.props;
 
@@ -56,7 +68,24 @@ class EventCard extends React.Component {
           )}
           <div className="event-card-content-footer">
             <div className="event-card-content-footer-actions">
-              {!going && (
+              {past && (
+                <div className="claim-buttons">
+                  <CustomButton
+                    className="claim-digital-certificate"
+                    text="Claim digital certificate"
+                    size="md"
+                    type="primary outlined"
+                    onClick={this.onClickClaimDigitalCertificate}
+                  />
+                  <CustomButton
+                    text="Claim credits"
+                    size="md"
+                    type="primary"
+                    onClick={this.onClickClaimCredits}
+                  />
+                </div>
+              )}
+              {!past && !going && (
                 <CustomButton
                   text="Attend"
                   size="md"
@@ -64,7 +93,7 @@ class EventCard extends React.Component {
                   onClick={this.onAttend}
                 />
               )}
-              {going && (
+              {!past && going && (
                 <div className="going-group-part">
                   <div className="going-label">
                     <CheckOutlined />

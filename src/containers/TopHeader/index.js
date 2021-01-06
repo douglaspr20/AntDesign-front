@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 // Headers
-import { MainHeader, ArticleHeader, PrivateRoute } from "components";
+import {
+  MainHeader,
+  ArticleHeader,
+  PrivateRoute,
+  CertificateHeader,
+} from "components";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -47,6 +52,10 @@ class TopHeader extends Component {
         <PrivateRoute
           path={`${INTERNAL_LINKS.ARTICLE}/:id`}
           render={(props) => <ArticleHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
+          render={(props) => <CertificateHeader {...props} />}
         />
       </Switch>
     );
