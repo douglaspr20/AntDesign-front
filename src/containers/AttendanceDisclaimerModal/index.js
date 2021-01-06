@@ -7,7 +7,7 @@ import { CustomModal, CustomButton } from "components";
 import { envSelector } from "redux/selectors/envSelector";
 import Emitter from "services/emitter";
 
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
 
@@ -24,7 +24,7 @@ const AttendanceDisclaimerModal = ({ isMobile }) => {
 
   const onConfirm = () => {
     setVisible(false);
-    Emitter.emit(EVENT_TYPES.VISIT_CERTIFICATE_PAGE, 1);
+    window.location.href = `${INTERNAL_LINKS.CERTIFICATE}/1`;
   };
 
   return (
