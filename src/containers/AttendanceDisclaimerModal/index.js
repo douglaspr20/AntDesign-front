@@ -24,6 +24,7 @@ const AttendanceDisclaimerModal = ({ isMobile }) => {
 
   const onConfirm = () => {
     setVisible(false);
+    Emitter.emit(EVENT_TYPES.VISIT_CERTIFICATE_PAGE, 1);
   };
 
   return (

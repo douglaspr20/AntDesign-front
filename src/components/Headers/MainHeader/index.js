@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
+import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import Emitter from "services/emitter";
@@ -21,6 +21,12 @@ const MenuList = [
 ];
 
 class MainHeader extends React.Component {
+  componentDidMount() {
+    Emitter.on(EVENT_TYPES.VISIT_CERTIFICATE_PAGE, (event) => {
+      this.props.history.push(`${INTERNAL_LINKS.CERTIFICATE}/${event}`);
+    });
+  }
+
   planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
