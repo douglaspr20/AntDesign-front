@@ -12,9 +12,9 @@ import "./style.scss";
 
 const FilterTitles = Object.keys(SEARCH_FILTERS);
 
-const FilterPanel = ({ title, planUpdated }) => (
+const FilterPanel = ({ title, planUpdated, hasCalendar }) => (
   <div className="filter-panel">
-    <CustomCalendar disabled={!planUpdated} />
+    {hasCalendar && <CustomCalendar disabled={!planUpdated} />}
     <h2 className="font-regular">{title}</h2>
     <div className="filter-panel-content">
       {FilterTitles.map((filter, index) => (
@@ -40,10 +40,12 @@ const FilterPanel = ({ title, planUpdated }) => (
 
 FilterPanel.propTypes = {
   title: PropTypes.string,
+  hasCalendar: PropTypes.bool,
 };
 
 FilterPanel.defaultProps = {
   title: "Filters",
+  hasCalendar: false,
 };
 
 const mapStateToProps = (state) => ({

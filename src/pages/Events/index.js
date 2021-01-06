@@ -55,7 +55,7 @@ const EventsPage = ({
   return (
     <div className="events-page">
       <div className="events-page-filter">
-        <FilterPanel title="Categories" />
+        <FilterPanel title="Categories" hasCalendar={true} />
       </div>
       <div className="events-page-wrapper">
         <div className="events-page-container">
