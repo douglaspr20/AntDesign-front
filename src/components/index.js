@@ -24,3 +24,4 @@ export { default as MemberCard } from "./MemberCard";
 export { default as CustomCalendar } from "./CustomCalendar";
 export { default as EventFilterPanel } from "./EventFilterPanel";
 export { default as LibraryFilterPanel } from "./LibraryFilterPanel";
+export { default as CustomModal } from "./Modal";
