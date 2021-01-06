@@ -22,4 +22,5 @@ export { default as WantCard } from "./WantCard";
 export { default as SpecialtyItem } from "./SpecialtyItem";
 export { default as MemberCard } from "./MemberCard";
 export { default as CustomCalendar } from "./CustomCalendar";
-export { default as FilterPanel } from "./FilterPanel";
+export { default as EventFilterPanel } from "./EventFilterPanel";
+export { default as LibraryFilterPanel } from "./LibraryFilterPanel";

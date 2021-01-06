@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { CustomSelect, LibraryCard, CustomButton, FilterPanel } from "components";
+import { CustomSelect, LibraryCard, CustomButton, LibraryFilterPanel } from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -70,7 +70,7 @@ const LearningLibraryPage = ({ planUpdated }) => {
 
   return (
     <div className="learning-library-page">
-      <FilterPanel />
+      <LibraryFilterPanel />
       <FilterDrawer />
       <div className="search-results-container">
         <Row>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Emitter from "services/emitter";
 import { connect } from "react-redux";
 
-import { Tabs, FilterPanel } from "components";
+import { Tabs, EventFilterPanel } from "components";
 import EventList from "./EventList";
 import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -55,7 +55,7 @@ const EventsPage = ({
   return (
     <div className="events-page">
       <div className="events-page-filter">
-        <FilterPanel title="Categories" hasCalendar={true} />
+        <EventFilterPanel title="Categories" />
       </div>
       <div className="events-page-wrapper">
         <div className="events-page-container">
