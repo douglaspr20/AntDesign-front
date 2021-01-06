@@ -13,7 +13,8 @@ import { actions as authActions } from "redux/actions/auth-actions";
 
 import "./style.scss";
 
-const ProfileMenus = ["Settings", "Account"];
+// const ProfileMenus = ["Settings", "Account"];
+const ProfileMenus = [];
 
 class ProfilePopupMenu extends React.Component {
   constructor(props) {
@@ -61,7 +62,11 @@ class ProfilePopupMenu extends React.Component {
     );
 
     const ContentSection = () => (
-      <div className="profile-popover-content">
+      <div
+        className={clsx("profile-popover-content", {
+          empty: ProfileMenus.length === 0,
+        })}
+      >
         {ProfileMenus.map((menu, index) => (
           <div key={index} className="profile-popover-content-menu">
             {menu}

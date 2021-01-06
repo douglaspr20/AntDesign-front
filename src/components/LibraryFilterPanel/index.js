@@ -3,25 +3,25 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, CustomCalendar } from "components";
+import { CustomCheckbox } from "components";
 
 import { SEARCH_FILTERS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
-const FilterTitles = Object.keys(SEARCH_FILTERS);
+const SearchFilters = SEARCH_FILTERS.library;
+const FilterTitles = Object.keys(SearchFilters);
 
 const FilterPanel = ({ title, planUpdated }) => (
-  <div className="filter-panel">
-    <CustomCalendar disabled={!planUpdated} />
+  <div className="library-filter-panel">
     <h2 className="font-regular">{title}</h2>
-    <div className="filter-panel-content">
+    <div className="library-filter-panel-content">
       {FilterTitles.map((filter, index) => (
         <div className="search-filter" key={`${filter}-${index}`}>
           <h5 className="search-filter-title font-bold">{filter}</h5>
           <Checkbox.Group>
-            {SEARCH_FILTERS[filter].map((item) => (
+            {SearchFilters[filter].map((item) => (
               <CustomCheckbox
                 key={item.value}
                 value={item.value}

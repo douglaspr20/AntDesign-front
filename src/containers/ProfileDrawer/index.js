@@ -24,8 +24,8 @@ class ProfileDrawer extends React.Component {
   }
 
   componentDidMount() {
-    Emitter.on(EVENT_TYPES.EVENT_VIEW_PROFILE, () => {
-      this.setState({ visible: true });
+    Emitter.on(EVENT_TYPES.EVENT_VIEW_PROFILE, (edit) => {
+      this.setState({ visible: true, edit: !!edit });
     });
   }
 

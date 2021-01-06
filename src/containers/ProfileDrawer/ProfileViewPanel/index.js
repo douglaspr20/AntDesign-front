@@ -75,11 +75,11 @@ class ProfileViewPanel extends React.Component {
           <h3
             className={clsx("textfield-value", { completed: !!user.company })}
           >
-            {user.company || "Complete"}
+            {user.company || "-"}
           </h3>
           <h5 className="textfield-label">About you</h5>
           <h3 className={clsx("textfield-value", { completed: !!user.about })}>
-            {user.about || "Complete"}
+            {user.about || "-"}
           </h3>
           <h5 className="textfield-label">Title / Profession</h5>
           <h3
@@ -87,7 +87,7 @@ class ProfileViewPanel extends React.Component {
               completed: !!user.titleProfessions,
             })}
           >
-            {user.titleProfessions || "Complete"}
+            {user.titleProfessions || "-"}
           </h3>
           <h5 className="textfield-label">Proficiency level</h5>
           <h3
@@ -95,7 +95,7 @@ class ProfileViewPanel extends React.Component {
               completed: !!user.proficiencyLevel,
             })}
           >
-            {user.proficiencyLevel || "Complete"}
+            {user.proficiencyLevel || "-"}
           </h3>
           <h5 className="textfield-label">Topics of interest</h5>
           <h3
@@ -103,7 +103,7 @@ class ProfileViewPanel extends React.Component {
               completed: user.topicsOfInterest && user.topicsOfInterest.length,
             })}
           >
-            {user.topicsOfInterest.join(", ") || "Complete"}
+            {user.topicsOfInterest.join(", ") || "-"}
           </h3>
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
@@ -120,7 +120,7 @@ class ProfileViewPanel extends React.Component {
               </div>
             ))}
           {!personalLinksCompleted && (
-            <h3 className="textfield-value">Complete</h3>
+            <h3 className="textfield-value">-</h3>
           )}
           <h5 className="textfield-label">Main language</h5>
           <h3
@@ -128,7 +128,7 @@ class ProfileViewPanel extends React.Component {
               completed: !!user.language,
             })}
           >
-            {language || "Complete"}
+            {language || "-"}
           </h3>
           <h5 className="textfield-label">Time zone</h5>
           <h3
@@ -136,7 +136,7 @@ class ProfileViewPanel extends React.Component {
               completed: !!user.timezone,
             })}
           >
-            {timezone || "Complete"}
+            {timezone || "-"}
           </h3>
         </div>
       </div>
