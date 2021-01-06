@@ -29,6 +29,7 @@ const AttendanceDisclaimerModal = () => {
       subTitle="Must accept to continue"
       visible={visible}
       width={430}
+      onCancel={() => setVisible(false)}
     >
       <div className="attendance-disclaimer">
         <p className="attendance-disclaimer-content">{Text}</p>

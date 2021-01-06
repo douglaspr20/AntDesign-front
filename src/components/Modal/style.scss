@@ -57,3 +57,76 @@
     background: $color-background !important;
   }
 }
+
+.custom-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-background;
+  z-index: 999;
+  padding: 0;
+  display: none;
+  flex-direction: column;
+
+  &.visible {
+    display: flex;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid $color-border;
+    background: $color-background-dark;
+    padding: 35px 0 28px;
+
+    &-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 1px solid $color-border;
+      overflow: hidden;
+      background: $color-white;
+      margin-bottom: 24px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    h3 {
+      @include app-font(23px, 30px, bold);
+      color: $color-text-primary !important;
+      margin-bottom: 4px !important;
+    }
+
+    h5 {
+      @include app-font(16px, 21px);
+      color: $color-text-secondary !important;
+    }
+  }
+
+  &-close {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $color-text-third;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-background;
+    font-size: 20px;
+  }
+
+  &-content {
+    flex: 1;
+  }
+}

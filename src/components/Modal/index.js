@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Modal } from "antd";
 import { connect } from "react-redux";
 import { CloseCircleFilled } from "@ant-design/icons";
+import clsx from "clsx";
 
 import { envSelector } from "redux/selectors/envSelector";
 import IconLogo from "images/logo-sidebar.svg";
@@ -15,9 +16,25 @@ const CustomModal = ({
   visible,
   width,
   children,
+  isMobile,
+  onCancel,
   ...rest
 }) => {
-  return (
+  return isMobile ? (
+    <div className={clsx("custom-panel", { visible: visible })}>
+      <div className="custom-panel-header">
+        <div className="custom-panel-header-logo">
+          <img src={IconLogo} alt="payment-logo" />
+        </div>
+        <h3>{title}</h3>
+        <h5>{subTitle}</h5>
+      </div>
+      <div className="custom-panel-close" onClick={onCancel}>
+        <i className="fas fa-times" />
+      </div>
+      <div className="custom-panel-content">{children}</div>
+    </div>
+  ) : (
     <Modal
       {...rest}
       className="custom-modal"
@@ -47,6 +64,7 @@ CustomModal.propTypes = {
   subTitle: PropTypes.string,
   visible: PropTypes.bool,
   width: PropTypes.number,
+  onCancel: PropTypes.func,
 };
 
 CustomModal.defaultProps = {
@@ -54,6 +72,7 @@ CustomModal.defaultProps = {
   subTitle: "",
   visible: false,
   width: 300,
+  onCancel: () => {},
 };
 
 const mapStateToProps = (state) => ({
