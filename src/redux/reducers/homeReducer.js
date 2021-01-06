@@ -86,6 +86,40 @@ const EventData = [
   },
 ];
 
+const MyPastEvents = [
+  {
+    id: 1,
+    date: "2021.01.06 19:00 pm",
+    title: "Meetup - How to improve your soft skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    past: true,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: ["Community cultivator", "Leadership", "Recruiting"],
+  },
+  {
+    id: 2,
+    date: "2021.01.06 19:00 pm",
+    title: "Meetup - Beers and HHRR after work",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    past: true,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: [
+      "Human Resources",
+      "Leadership",
+      "Recruiting",
+      "Design",
+      "Community cultivator",
+      "Technology",
+    ],
+  },
+];
+
 // Home Page's Reducer
 export const reducers = {
   [homeConstants.SET_LOADING]: (state, { payload }) => {
@@ -136,6 +170,7 @@ export const initialState = () =>
     },
     events: EventData || [],
     myEvents: [],
+    myPastEvents: MyPastEvents,
     setting: {
       collapsed: {
         mentor: false,

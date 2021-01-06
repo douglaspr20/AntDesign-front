@@ -10,6 +10,7 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
     events: payload.get("events"),
     myEvents: payload.get("myEvents"),
     setting: payload.get("setting"),
+    myPastEvents: payload.get("myPastEvents"),
   };
 });
 
