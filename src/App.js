@@ -13,6 +13,7 @@ import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
+import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
@@ -87,6 +88,7 @@ class App extends Component {
         <ProfileDrawer />
         <EventDrawer />
         <MemberDrawer />
+        <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (
           <div className="loading-container">
             <Spin indicator={<img src={IconLoading} alt="loading-img" />} />

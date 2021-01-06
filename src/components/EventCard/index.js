@@ -31,6 +31,8 @@ class EventCard extends React.Component {
   onClickClaimDigitalCertificate = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER);
   };
 
   onClickClaimCredits = (e) => {
