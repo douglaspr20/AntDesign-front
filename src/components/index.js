@@ -2,6 +2,7 @@ export { default as Sidebar } from "./Sidebar";
 export { default as CustomButton } from "./Button";
 export { default as MainHeader } from "./Headers/MainHeader";
 export { default as ArticleHeader } from "./Headers/ArticleHeader";
+export { default as CertificateHeader } from "./Headers/CertificateHeader";
 export { default as CircularProgressbar } from "./CircularProgressbar";
 export { default as EventCard } from "./EventCard";
 export { default as DateAvatar } from "./DateAvatar";
