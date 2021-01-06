@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 import IconDocument from "images/icon-document.svg";
-import IconLockClosed from "images/icon-lock-closed.svg";
 
-import { CustomButton, SvgIcon } from "components";
+import { SvgIcon } from "components";
 import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
