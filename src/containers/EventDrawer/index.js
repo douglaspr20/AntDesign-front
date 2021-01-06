@@ -52,6 +52,12 @@ const EventDrawer = () => {
     setEvent((prev) => ({ ...prev, going: false }));
   };
 
+  const onClickClaimDigitalCertificate = (e) => {
+    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER);
+  };
+
+  const onClickClaimCredits = (e) => {};
+
   useEffect(() => {
     Emitter.emit(EVENT_TYPES.EVENT_CHANGED, event);
   }, [event]);
@@ -78,7 +84,24 @@ const EventDrawer = () => {
         <div className="event-details-content">
           <div className="event-details-content-actions">
             <DateAvatar day={event.day || 0} month={event.month || ""} />
-            {!event.going && (
+            {event.past && (
+              <React.Fragment>
+                <CustomButton
+                  className="claim-digital-certificate"
+                  text="Claim digital certificate"
+                  size="lg"
+                  type="primary outlined"
+                  onClick={onClickClaimDigitalCertificate}
+                />
+                <CustomButton
+                  text="Claim credits"
+                  size="lg"
+                  type="primary"
+                  onClick={onClickClaimCredits}
+                />
+              </React.Fragment>
+            )}
+            {!event.past && !event.going && (
               <CustomButton
                 text="Attend"
                 size="lg"
@@ -86,7 +109,7 @@ const EventDrawer = () => {
                 onClick={onAttend}
               />
             )}
-            {event.going && (
+            {!event.past && event.going && (
               <React.Fragment>
                 <div className="going-label">
                   <CheckOutlined />
@@ -116,7 +139,7 @@ const EventDrawer = () => {
                 }`}
               </h3>
             </div>
-            {event.going && (
+            {!event.past && event.going && (
               <Dropdown overlay={menu}>
                 <h3 className="add-to-calendar ant-dropdown-link">
                   Add to calendar
