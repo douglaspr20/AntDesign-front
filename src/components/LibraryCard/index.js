@@ -67,14 +67,14 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           </div>
         </div>
       </div>
-      {locked && (
+      {/* {locked && (
         <div className="library-lock-icon1">
           <img src={IconLockClosed} alt="icon-lock" />
         </div>
-      )}
+      )} */}
       {locked && (
         <div className="library-card-hover">
-          <div className="library-card-hover-lock-icon">
+          {/* <div className="library-card-hover-lock-icon">
             <img src={IconLockClosed} alt="icon-lock" />
           </div>
           <CustomButton
@@ -83,7 +83,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
             size="md"
             className="library-card-hover-btn"
             onClick={onClickAccess}
-          />
+          /> */}
         </div>
       )}
     </div>

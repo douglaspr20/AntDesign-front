@@ -117,7 +117,6 @@ const LearningLibraryPage = ({ planUpdated }) => {
               text="Show more"
               type="primary outlined"
               size="lg"
-              disabled={!planUpdated}
               onClick={onShowMore}
             />
           )}
