@@ -1,19 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
-import { connect } from "react-redux";
 
 import { CustomCheckbox, CustomCalendar } from "components";
 
 import { SEARCH_FILTERS } from "enum";
-import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
 const SearchFilters = SEARCH_FILTERS.events;
 const FilterTitles = Object.keys(SearchFilters);
 
-const EventFilterPanel = ({ title, planUpdated, onFilterChange }) => {
+const EventFilterPanel = ({ title, onFilterChange }) => {
   const onDateChange = (date) => {
     const params = {
       date,
@@ -24,7 +22,7 @@ const EventFilterPanel = ({ title, planUpdated, onFilterChange }) => {
 
   return (
     <div className="event-filter-panel">
-      <CustomCalendar disabled={!planUpdated} dateChanged={onDateChange} />
+      <CustomCalendar dateChanged={onDateChange} />
       <h2 className="font-regular">{title}</h2>
       <div className="event-filter-panel-content">
         {FilterTitles.map((filter, index) => (
@@ -32,12 +30,7 @@ const EventFilterPanel = ({ title, planUpdated, onFilterChange }) => {
             <h5 className="search-filter-title font-bold">{filter}</h5>
             <Checkbox.Group>
               {SearchFilters[filter].map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={!planUpdated}
-                >
+                <CustomCheckbox key={item.value} value={item.value} size="sm">
                   {item.text}
                 </CustomCheckbox>
               ))}
@@ -59,8 +52,4 @@ EventFilterPanel.defaultProps = {
   onFilterChange: () => {},
 };
 
-const mapStateToProps = (state) => ({
-  planUpdated: homeSelector(state).planUpdated,
-});
-
-export default connect(mapStateToProps)(EventFilterPanel);
+export default EventFilterPanel;

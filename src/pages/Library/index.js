@@ -6,7 +6,12 @@ import clsx from "clsx";
 
 import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { CustomSelect, LibraryCard, CustomButton, LibraryFilterPanel } from "components";
+import {
+  CustomSelect,
+  LibraryCard,
+  CustomButton,
+  LibraryFilterPanel,
+} from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -121,6 +126,14 @@ const LearningLibraryPage = ({ planUpdated }) => {
             />
           )}
         </div>
+        {!planUpdated && (
+          <div className="upgrade-notification">
+            <div className="upgrade-notification-panel">
+              <h3>UPGRADE TO PREMIUM</h3>
+              <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

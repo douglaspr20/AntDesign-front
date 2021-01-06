@@ -62,11 +62,17 @@ class ProfilePopupMenu extends React.Component {
     );
 
     const ContentSection = () => (
-      <div
-        className={clsx("profile-popover-content", {
-          empty: ProfileMenus.length === 0,
-        })}
-      >
+      <div className="profile-popover-content">
+        <div className="profile-popover-content-membership">
+          {user.membership === "premium" ? (
+            <React.Fragment>
+              <div>Premium Membership</div>
+              <div>(From XX to YY)</div>
+            </React.Fragment>
+          ) : (
+            <div>Free Membership</div>
+          )}
+        </div>
         {ProfileMenus.map((menu, index) => (
           <div key={index} className="profile-popover-content-menu">
             {menu}
