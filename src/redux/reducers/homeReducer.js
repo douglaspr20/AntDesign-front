@@ -8,7 +8,7 @@ import { constants as homeConstants } from "../actions/home-actions";
 const EventData = [
   {
     id: 1,
-    date: "2020.11.18 19:00 pm",
+    date: "2021.01.06 19:00 pm",
     title: "Meetup - How to improve your soft skills",
     timezone: "EST",
     type: "Online event",
@@ -19,7 +19,7 @@ const EventData = [
   },
   {
     id: 2,
-    date: "2020.11.18 19:00 pm",
+    date: "2021.01.06 19:00 pm",
     title: "Meetup - Beers and HHRR after work",
     timezone: "EST",
     type: "Online event",
