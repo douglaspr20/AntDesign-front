@@ -1,0 +1,17 @@
+@import "styles/main.scss";
+
+.attendance-disclaimer {
+  padding: 0.5rem;
+
+  &-content {
+    @include app-font(14px, 21px);
+    margin-bottom: 44px;
+  }
+
+  &-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
