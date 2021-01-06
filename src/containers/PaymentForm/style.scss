@@ -59,6 +59,10 @@
     @include app-font(16px, 16px, bold);
     color: $color-white;
     border-radius: 5px;
+
+    &.monthly {
+      margin-bottom: 0.5rem;
+    }
   }
 
   &-header {
