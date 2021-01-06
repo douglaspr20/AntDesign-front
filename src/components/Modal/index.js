@@ -37,6 +37,7 @@ const CustomModal = ({
   ) : (
     <Modal
       {...rest}
+      onCancel={onCancel}
       className="custom-modal"
       title={
         <div className="custom-modal-title">
