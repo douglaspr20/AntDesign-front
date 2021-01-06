@@ -49,12 +49,10 @@
   &-content {
     margin: 4px 0;
 
-    &.empty {
-      margin-top: 0 !important;
-
-      .profile-popover-content-footer {
-        border-top: none !important;
-      }
+    &-membership {
+      color: $color-text-primary;
+      @include app-font(14px, 19px);
+      margin-bottom: 1rem;
     }
 
     &-menu {
