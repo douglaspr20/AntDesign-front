@@ -16,7 +16,6 @@ import {
   LANGUAGES,
 } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
-import { getProfileCompletion } from "utils/profile";
 
 import "./style.scss";
 
@@ -67,8 +66,6 @@ class ProfileEditPanel extends React.Component {
 
   onSave = () => {
     let { user } = this.state;
-    user.percentOfCompletion = getProfileCompletion(user);
-    user.completed = user.percentOfCompletion === 100;
     this.props.onSave(user);
   };
 

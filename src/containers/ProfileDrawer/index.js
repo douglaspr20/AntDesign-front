@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import omit from "lodash/omit";
 
 import { CustomDrawer } from "components";
 import { EVENT_TYPES } from "enum";
@@ -38,8 +37,7 @@ class ProfileDrawer extends React.Component {
   };
 
   onSave = (userInfo) => {
-    const userInfoStr = omit(userInfo, ["imageStr"]);
-    this.props.updateUser({ ...userInfoStr, img: userInfo.imageStr });
+    this.props.updateUser(userInfo);
     this.setState({ edit: false });
   };
 
