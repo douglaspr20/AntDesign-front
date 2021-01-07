@@ -9,7 +9,6 @@ const UPDATE_MY_EVENTS = "UPDATE_MY_EVENTS";
 const SET_SETTING_COLLAPSED = "SET_SETTING_COLLAPSED";
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
-const UPDATE_USER_AVATAR = "UPDATE_USER_AVATAR";
 
 export const constants = {
   SET_LOADING,
@@ -20,7 +19,6 @@ export const constants = {
   SET_SETTING_COLLAPSED,
   GET_USER,
   UPDATE_USER,
-  UPDATE_USER_AVATAR,
 };
 
 // ------------------------------------
@@ -46,10 +44,6 @@ export const setSettingCollapsed = createAction(
 );
 export const getUser = createAction(GET_USER, (id) => ({ id }));
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
-export const updateUserAvatar = createAction(UPDATE_USER_AVATAR, (id, img) => ({
-  id,
-  img,
-}));
 
 export const actions = {
   setLoading,
@@ -60,5 +54,4 @@ export const actions = {
   setSettingCollapsed,
   getUser,
   updateUser,
-  updateUserAvatar,
 };

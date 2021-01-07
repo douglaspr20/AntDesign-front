@@ -31,10 +31,6 @@ class ProfileEditPanel extends React.Component {
     this.state = {
       user: props.user ? { ...props.user } : {},
       visibleModal: false,
-      // imageUrl: props.user.img
-      //   ? window.URL.createObjectURL(props.user.img)
-      //   : "",
-      imageUrl: "",
     };
   }
 
@@ -52,11 +48,11 @@ class ProfileEditPanel extends React.Component {
     }
   };
 
-  onPhotoSave = (url, blob) => {
+  onPhotoSave = (url, base64) => {
     this.setState((state) => {
-      state.user["img"] = blob;
+      state.user["img"] = url;
       state.visibleModal = false;
-      state.imageUrl = url;
+      state.user.imageStr = base64;
       return state;
     });
   };
@@ -81,7 +77,7 @@ class ProfileEditPanel extends React.Component {
   };
 
   render() {
-    const { user, visibleModal, imageUrl } = this.state;
+    const { user, visibleModal } = this.state;
 
     return (
       <div className="profile-edit-panel">
@@ -91,7 +87,7 @@ class ProfileEditPanel extends React.Component {
               <div className="profile-user-img-container">
                 {user.img ? (
                   <div className="profile-user-img-wrapper">
-                    <img src={imageUrl} alt="user-avatar" />
+                    <img src={user.img} alt="user-avatar" />
                   </div>
                 ) : (
                   <h1 className="profile-user-img-name">{user.abbrName}</h1>
