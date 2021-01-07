@@ -13,6 +13,7 @@ import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
+import FeedbackBox from "./containers/FeedbackBox";
 import { EVENT_TYPES } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
@@ -82,6 +83,7 @@ class App extends Component {
           <Layout>
             <TopHeader />
             <Content />
+            <FeedbackBox/>
           </Layout>
         </Layout>
         <ProfileDrawer />
