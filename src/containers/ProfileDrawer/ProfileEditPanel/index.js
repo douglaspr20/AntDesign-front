@@ -30,6 +30,7 @@ class ProfileEditPanel extends React.Component {
     this.state = {
       user: props.user ? { ...props.user } : {},
       visibleModal: false,
+      editImageUrl: props.user ? props.user.img : "",
     };
   }
 
@@ -49,7 +50,7 @@ class ProfileEditPanel extends React.Component {
 
   onPhotoSave = (url, base64) => {
     this.setState((state) => {
-      state.user["img"] = url;
+      state.editImageUrl = url;
       state.visibleModal = false;
       state.user.imageStr = base64;
       return state;
@@ -74,7 +75,7 @@ class ProfileEditPanel extends React.Component {
   };
 
   render() {
-    const { user, visibleModal } = this.state;
+    const { user, visibleModal, editImageUrl } = this.state;
 
     return (
       <div className="profile-edit-panel">
@@ -82,9 +83,9 @@ class ProfileEditPanel extends React.Component {
           <div className="profile-edit-panel-header">
             <div className="profile-user-img">
               <div className="profile-user-img-container">
-                {user.img ? (
+                {editImageUrl ? (
                   <div className="profile-user-img-wrapper">
-                    <img src={user.img} alt="user-avatar" />
+                    <img src={editImageUrl} alt="user-avatar" />
                   </div>
                 ) : (
                   <h1 className="profile-user-img-name">{user.abbrName}</h1>
@@ -218,7 +219,7 @@ class ProfileEditPanel extends React.Component {
           footer={[]}
           onCancel={this.cancelPhotoUpload}
         >
-          <PhotoUploadForm src={user.img} onSave={this.onPhotoSave} />
+          <PhotoUploadForm onSave={this.onPhotoSave} />
         </Modal>
       </div>
     );

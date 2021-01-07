@@ -82,8 +82,6 @@ class PhotoUploadForm extends PureComponent {
       crop.height
     );
 
-    const base64 = canvas.toDataURL("image/jpeg");
-
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (!blob) {
@@ -94,6 +92,7 @@ class PhotoUploadForm extends PureComponent {
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
+        const base64 = canvas.toDataURL("image/jpeg");
         resolve({ url: this.fileUrl, base64 });
       }, "image/jpeg");
     });
