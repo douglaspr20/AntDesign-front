@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 
-import { CustomCheckbox, CustomCalendar } from "components";
+import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
 
 import { SEARCH_FILTERS } from "enum";
 
@@ -20,9 +20,20 @@ const EventFilterPanel = ({ title, onFilterChange }) => {
     onFilterChange(params);
   };
 
+  const onShowAllEvent = () => {
+    onFilterChange({});
+  };
+
   return (
     <div className="event-filter-panel">
       <CustomCalendar dateChanged={onDateChange} />
+      <CustomButton
+        className="event-filter-panel-allevents"
+        type="primary"
+        size="xs"
+        text="All Events"
+        onClick={onShowAllEvent}
+      />
       <h2 className="font-regular">{title}</h2>
       <div className="event-filter-panel-content">
         {FilterTitles.map((filter, index) => (

@@ -13,8 +13,13 @@
     display: none;
   }
 
+  &-allevents {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
   .custom-calendar {
-    margin-bottom: 52px;
+    margin-bottom: 1rem;
   }
 
   .search-filter {
