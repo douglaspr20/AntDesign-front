@@ -151,7 +151,6 @@ export const reducers = {
 export const initialState = () =>
   Map({
     loading: false,
-    planUpdated: false,
     userProfile: {
       // firstName: "Edgar",
       // lastName: "Davis",

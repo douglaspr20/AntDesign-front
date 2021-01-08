@@ -52,10 +52,12 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = ({ planUpdated }) => {
+const LearningLibraryPage = ({ userProfile }) => {
   const [data, setData] = useState(LibraryData);
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
+
+  const planUpdated = userProfile.memberShip !== "free";
 
   const onShowMore = () => {
     setLoading(true);
@@ -148,7 +150,7 @@ LearningLibraryPage.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  planUpdated: homeSelector(state).planUpdated,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(LearningLibraryPage);

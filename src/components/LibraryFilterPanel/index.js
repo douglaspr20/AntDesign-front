@@ -13,7 +13,7 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.library;
 const FilterTitles = Object.keys(SearchFilters);
 
-const FilterPanel = ({ title, planUpdated }) => (
+const FilterPanel = ({ title, userProfile }) => (
   <div className="library-filter-panel">
     <h2 className="font-regular">{title}</h2>
     <div className="library-filter-panel-content">
@@ -26,7 +26,7 @@ const FilterPanel = ({ title, planUpdated }) => (
                 key={item.value}
                 value={item.value}
                 size="sm"
-                disabled={!planUpdated}
+                disabled={userProfile.memberShip === "free"}
               >
                 {item.text}
               </CustomCheckbox>
@@ -47,7 +47,7 @@ FilterPanel.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  planUpdated: homeSelector(state).planUpdated,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(FilterPanel);

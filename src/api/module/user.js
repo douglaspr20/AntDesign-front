@@ -9,3 +9,9 @@ export const updateUser = ({ user }) => {
     ...user,
   });
 };
+
+export const upgradePlan = ({ data }) => {
+  return httpClient.put(`private/user/upgrade-plan?id=${data.user}`, {
+    ...data,
+  });
+};

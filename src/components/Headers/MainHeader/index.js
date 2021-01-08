@@ -33,7 +33,6 @@ class MainHeader extends React.Component {
     const { userProfile: user } = this.props;
     const { pathname } = this.props.history.location || {};
     const pathInfo = MenuList.find((item) => item.url === pathname);
-    const { planUpdated } = this.props;
 
     return (
       <div className="main-header">
@@ -53,7 +52,7 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          {!planUpdated && (
+          {user.memberShip === "free" && (
             <CustomButton
               text="Upgrade"
               type="primary"
@@ -93,7 +92,6 @@ MainHeader.defaultProps = {
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
-  planUpdated: homeSelector(state).planUpdated,
   isMobile: envSelector(state).isMobile,
 });
 

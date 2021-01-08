@@ -1,4 +1,4 @@
 import { signIn, signUp } from "./module/auth";
-import { getUserFromId, updateUser } from "./module/user";
+import { getUserFromId, updateUser, upgradePlan } from "./module/user";
 
-export { signIn, signUp, getUserFromId, updateUser };
+export { signIn, signUp, getUserFromId, updateUser, upgradePlan };

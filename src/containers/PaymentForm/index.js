@@ -72,7 +72,7 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => (
             <Button htmlType="submit" className="pay-buttton monthly">
               Pay $9.99 monthly
             </Button>
-            <Button htmlType="submit" className="pay-buttton">
+            <Button onClick={handleSubmit} className="pay-buttton">
               Pay $99.99 yearly
             </Button>
           </div>

@@ -19,7 +19,7 @@ import { EVENT_TYPES } from "enum";
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
-import { setPlanUpdated } from "redux/actions/home-actions";
+import { upgradePlan } from "redux/actions/home-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -70,7 +70,10 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
-    this.props.setPlanUpdated(true);
+    this.props.upgradePlan({
+      user: this.props.userProfile.id,
+      memberShip: "premium",
+    });
   };
 
   render() {
@@ -113,12 +116,13 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   ...envSelector(state),
   loading: homeSelector(state).loading,
+  userProfile: homeSelector(state).userProfile,
   authLoading: authSelector(state).loading,
 });
 
 const mapDispatchToProps = {
   ...envActions,
-  setPlanUpdated,
+  upgradePlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
