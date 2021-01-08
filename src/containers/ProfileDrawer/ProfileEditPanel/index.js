@@ -166,15 +166,25 @@ class ProfileEditPanel extends React.Component {
             </div>
             <h5 className="textfield-label">Main language</h5>
             <CustomSelect
+              showSearch
               options={Languages}
               value={user.language}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("language", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
             <h5 className="textfield-label">Time zone</h5>
             <CustomSelect
+              showSearch
               options={TIMEZONE_LIST}
               value={user.timezone}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("timezone", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
           </div>
         </div>
