@@ -1,0 +1,35 @@
+@import "styles/main.scss";
+
+.feedback-box-container {
+  background-color: white;
+  border: 1px solid #e1e2ee;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  bottom: 0px;
+  padding: 0.5em;
+  position: fixed;
+  right: 20px;
+  width: 150px;
+
+  @media(max-width: 1024px){
+    display: none;
+  }
+}
+
+.feedback-box-container__header {
+  text-align: center;
+}
+
+.feedback-box-container__container {
+  padding: 0.2em;
+}
+
+.feedback-box-container__container--textarea {
+  font-size: 12px !important;
+  line-height: 15px !important;
+  max-height: 150px !important;
+}
+
+.feedback-box-container__button {
+  text-align: center;
+}
