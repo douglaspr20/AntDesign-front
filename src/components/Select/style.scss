@@ -30,6 +30,14 @@
     color: $color-text-primary !important;
   }
 
+  .ant-select-selection-search {
+    @include app-font(20px, 34px);
+    color: $color-text-secondary;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+  }
+
   @media (max-width: 575.98px) {
     .ant-select-selection-item {
       @include app-font(16px, 24px);

@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import omit from "lodash/omit";
 
 import { CustomDrawer } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
-import { updateUser, updateUserAvatar } from "redux/actions/home-actions";
+import { updateUser } from "redux/actions/home-actions";
 
 import ProfileEditPanel from "./ProfileEditPanel";
 import ProfileViewPanel from "./ProfileViewPanel";
@@ -24,8 +23,8 @@ class ProfileDrawer extends React.Component {
   }
 
   componentDidMount() {
-    Emitter.on(EVENT_TYPES.EVENT_VIEW_PROFILE, () => {
-      this.setState({ visible: true });
+    Emitter.on(EVENT_TYPES.EVENT_VIEW_PROFILE, (edit) => {
+      this.setState({ visible: true, edit: !!edit });
     });
   }
 
@@ -38,9 +37,7 @@ class ProfileDrawer extends React.Component {
   };
 
   onSave = (userInfo) => {
-    const userInfoStr = omit(userInfo, ["img"]);
-    this.props.updateUser(userInfoStr);
-    // this.props.updateUserAvatar(userInfo.id, userInfo.img);
+    this.props.updateUser(userInfo);
     this.setState({ edit: false });
   };
 
@@ -81,7 +78,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = {
   updateUser,
-  updateUserAvatar,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileDrawer);

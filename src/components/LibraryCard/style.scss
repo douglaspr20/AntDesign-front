@@ -92,7 +92,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    opacity: 0;
+    opacity: 1;
     transition: 0.5s ease;
 
     &-lock-icon {
@@ -120,37 +120,37 @@
     }
   }
 
-  .library-lock-icon1 {
-    position: absolute;
-    top: -22px;
-    right: -22px;
-    width: 44px;
-    height: 44px;
-    border: 1px solid $color-border;
-    border-radius: 50%;
-    box-shadow: 4px 3px 14px #37215714;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: $color-white;
-    opacity: 1;
-    transition: 0.5s ease;
+  // .library-lock-icon1 {
+  //   position: absolute;
+  //   top: -22px;
+  //   right: -22px;
+  //   width: 44px;
+  //   height: 44px;
+  //   border: 1px solid $color-border;
+  //   border-radius: 50%;
+  //   box-shadow: 4px 3px 14px #37215714;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   background: $color-white;
+  //   opacity: 1;
+  //   transition: 0.5s ease;
 
-    img {
-      width: 32px;
-      height: 32px;
-      object-fit: cover;
-    }
-  }
+  //   img {
+  //     width: 32px;
+  //     height: 32px;
+  //     object-fit: cover;
+  //   }
+  // }
 
   &:hover {
     .library-card-hover {
       opacity: 1;
     }
 
-    .library-lock-icon1 {
-      opacity: 0;
-    }
+    // .library-lock-icon1 {
+    //   opacity: 0;
+    // }
   }
 }
 

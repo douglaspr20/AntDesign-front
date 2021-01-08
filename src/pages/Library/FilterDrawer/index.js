@@ -8,7 +8,8 @@ import Emitter from "services/emitter";
 
 import "./style.scss";
 
-const FilterTitles = Object.keys(SEARCH_FILTERS);
+const SearchFilters = SEARCH_FILTERS.library;
+const FilterTitles = Object.keys(SearchFilters);
 
 const FilterDrawer = () => {
   const [visible, setVisible] = useState(false);
@@ -57,7 +58,7 @@ const FilterDrawer = () => {
                 value={filterValues[filter]}
                 onChange={(values) => onFilterChange(filter, values)}
               >
-                {SEARCH_FILTERS[filter].map((item) => (
+                {SearchFilters[filter].map((item) => (
                   <CustomCheckbox key={item.value} value={item.value} size="md">
                     {item.text}
                   </CustomCheckbox>

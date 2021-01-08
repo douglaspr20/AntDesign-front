@@ -2,7 +2,7 @@
 
 .profile-popover {
   cursor: pointer;
-  
+
   &-title {
     display: flex;
     align-items: center;
@@ -48,6 +48,12 @@
 
   &-content {
     margin: 4px 0;
+
+    &-membership {
+      color: $color-text-primary;
+      @include app-font(14px, 19px);
+      margin-bottom: 1rem;
+    }
 
     &-menu {
       color: $color-text-primary;

@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
 import IconDocument from "images/icon-document.svg";
-import IconLockClosed from "images/icon-lock-closed.svg";
 
-import { CustomButton, SvgIcon } from "components";
+import { SvgIcon } from "components";
 import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
@@ -67,14 +66,14 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           </div>
         </div>
       </div>
-      {locked && (
+      {/* {locked && (
         <div className="library-lock-icon1">
           <img src={IconLockClosed} alt="icon-lock" />
         </div>
-      )}
+      )} */}
       {locked && (
         <div className="library-card-hover">
-          <div className="library-card-hover-lock-icon">
+          {/* <div className="library-card-hover-lock-icon">
             <img src={IconLockClosed} alt="icon-lock" />
           </div>
           <CustomButton
@@ -83,7 +82,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
             size="md"
             className="library-card-hover-btn"
             onClick={onClickAccess}
-          />
+          /> */}
         </div>
       )}
     </div>

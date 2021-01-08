@@ -14,12 +14,13 @@ import Emitter from "services/emitter";
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
 import FeedbackBox from "./containers/FeedbackBox";
+import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
-import { setPlanUpdated } from "redux/actions/home-actions";
+import { upgradePlan } from "redux/actions/home-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -70,7 +71,10 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
-    this.props.setPlanUpdated(true);
+    this.props.upgradePlan({
+      user: this.props.userProfile.id,
+      memberShip: "premium",
+    });
   };
 
   render() {
@@ -89,6 +93,7 @@ class App extends Component {
         <ProfileDrawer />
         <EventDrawer />
         <MemberDrawer />
+        <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (
           <div className="loading-container">
             <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
@@ -113,12 +118,13 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   ...envSelector(state),
   loading: homeSelector(state).loading,
+  userProfile: homeSelector(state).userProfile,
   authLoading: authSelector(state).loading,
 });
 
 const mapDispatchToProps = {
   ...envActions,
-  setPlanUpdated,
+  upgradePlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

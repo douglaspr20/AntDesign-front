@@ -6,7 +6,12 @@ import clsx from "clsx";
 
 import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { CustomSelect, LibraryCard, CustomButton, FilterPanel } from "components";
+import {
+  CustomSelect,
+  LibraryCard,
+  CustomButton,
+  LibraryFilterPanel,
+} from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -47,10 +52,12 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = ({ planUpdated }) => {
+const LearningLibraryPage = ({ userProfile }) => {
   const [data, setData] = useState(LibraryData);
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
+
+  const planUpdated = userProfile.memberShip !== "free";
 
   const onShowMore = () => {
     setLoading(true);
@@ -70,7 +77,7 @@ const LearningLibraryPage = ({ planUpdated }) => {
 
   return (
     <div className="learning-library-page">
-      <FilterPanel />
+      <LibraryFilterPanel />
       <FilterDrawer />
       <div className="search-results-container">
         <Row>
@@ -117,11 +124,18 @@ const LearningLibraryPage = ({ planUpdated }) => {
               text="Show more"
               type="primary outlined"
               size="lg"
-              disabled={!planUpdated}
               onClick={onShowMore}
             />
           )}
         </div>
+        {!planUpdated && (
+          <div className="upgrade-notification">
+            <div className="upgrade-notification-panel">
+              <h3>UPGRADE TO PREMIUM</h3>
+              <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -136,7 +150,7 @@ LearningLibraryPage.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  planUpdated: homeSelector(state).planUpdated,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(LearningLibraryPage);

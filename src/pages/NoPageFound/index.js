@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Empty, Button } from "antd";
-import { Link } from "react-router-dom";
 
 import "./style.scss";
 
 class NoPageFound extends Component {
   render() {
     return (
-      <div>
-        No Page Found
-        <Empty
-          description={
-            <span>We couldn't the page you are looking for. Sorry.</span>
-          }
-        >
-          <Button>
-            <Link to={"/"}>Go Home</Link>
-          </Button>
-        </Empty>
+      <div className="no-page-found">
+        <span className="no-page-found-title">Coming up in March 2021</span>
       </div>
     );
   }

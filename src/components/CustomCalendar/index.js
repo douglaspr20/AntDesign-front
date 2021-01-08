@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Calendar } from "antd";
 import moment from "moment";
 import clsx from "clsx";
+import { connect } from "react-redux";
 
+import { homeSelector } from "redux/selectors/homeSelector";
 import { SVG_ICONS } from "enum";
 import { CustomButton } from "components";
 
@@ -12,7 +14,7 @@ import IconRight from "images/icon-arrow-right.svg";
 
 import "./style.scss";
 
-const CustomCalendar = ({ disabled }) => {
+const CustomCalendar = ({ events, disabled, dateChanged }) => {
   const [current, setCurrent] = useState(moment());
   const onDateChange = (date) => {
     if (!disabled) {
@@ -21,18 +23,17 @@ const CustomCalendar = ({ disabled }) => {
   };
 
   const getEventData = (value) => {
-    let listData;
-    switch (value.date()) {
-      case 8:
-      case 12:
-      case 16:
-      case 23:
-      case 30:
-        listData = [{ type: "success", content: "" }];
-        break;
-      default:
-        listData = [];
-    }
+    let listData = events.filter((event) => {
+      const eventDate = moment(event.date, "YYYY.MM.DD. h:mm:a");
+      if (
+        eventDate.date() === value.date() &&
+        eventDate.year() === value.year() &&
+        eventDate.month() === value.month()
+      ) {
+        return true;
+      }
+      return false;
+    });
     return listData;
   };
 
@@ -80,6 +81,11 @@ const CustomCalendar = ({ disabled }) => {
     setCurrent(moment());
   };
 
+  useEffect(() => {
+    dateChanged(current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
+
   return (
     <div className="custom-calendar">
       <Calendar
@@ -104,10 +110,16 @@ const CustomCalendar = ({ disabled }) => {
 
 CustomCalendar.propTypes = {
   disabled: PropTypes.bool,
+  dateChanged: PropTypes.func,
 };
 
 CustomCalendar.defaultProps = {
   disabled: false,
+  dateChanged: () => {},
 };
 
-export default CustomCalendar;
+const mapStateToProps = (state) => ({
+  events: homeSelector(state).events,
+});
+
+export default connect(mapStateToProps)(CustomCalendar);

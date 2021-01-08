@@ -8,7 +8,7 @@ import { constants as homeConstants } from "../actions/home-actions";
 const EventData = [
   {
     id: 1,
-    date: "2020.11.18 19:00 pm",
+    date: "2021.01.06 19:00 pm",
     title: "Meetup - How to improve your soft skills",
     timezone: "EST",
     type: "Online event",
@@ -19,7 +19,7 @@ const EventData = [
   },
   {
     id: 2,
-    date: "2020.11.18 19:00 pm",
+    date: "2021.01.06 19:00 pm",
     title: "Meetup - Beers and HHRR after work",
     timezone: "EST",
     type: "Online event",
@@ -37,7 +37,7 @@ const EventData = [
   },
   {
     id: 3,
-    date: "2020.11.22 19:00 pm",
+    date: "2021.01.12 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -48,7 +48,7 @@ const EventData = [
   },
   {
     id: 4,
-    date: "2020.11.22 19:00 pm",
+    date: "2021.01.13 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -66,7 +66,7 @@ const EventData = [
   },
   {
     id: 5,
-    date: "2020.11.23 19:00 pm",
+    date: "2021.01.18 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -76,13 +76,47 @@ const EventData = [
   },
   {
     id: 6,
-    date: "2020.11.24 19:00 pm",
+    date: "2021.01.21 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
     cost: "Free",
     going: false,
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+  },
+];
+
+const MyPastEvents = [
+  {
+    id: 1,
+    date: "2021.01.06 19:00 pm",
+    title: "Meetup - How to improve your soft skills",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    past: true,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: ["Community cultivator", "Leadership", "Recruiting"],
+  },
+  {
+    id: 2,
+    date: "2021.01.06 19:00 pm",
+    title: "Meetup - Beers and HHRR after work",
+    timezone: "EST",
+    type: "Online event",
+    cost: "Free",
+    going: false,
+    past: true,
+    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    topics: [
+      "Human Resources",
+      "Leadership",
+      "Recruiting",
+      "Design",
+      "Community cultivator",
+      "Technology",
+    ],
   },
 ];
 
@@ -117,7 +151,6 @@ export const reducers = {
 export const initialState = () =>
   Map({
     loading: false,
-    planUpdated: false,
     userProfile: {
       // firstName: "Edgar",
       // lastName: "Davis",
@@ -136,6 +169,7 @@ export const initialState = () =>
     },
     events: EventData || [],
     myEvents: [],
+    myPastEvents: MyPastEvents,
     setting: {
       collapsed: {
         mentor: false,
