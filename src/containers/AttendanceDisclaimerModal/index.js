@@ -24,7 +24,7 @@ const AttendanceDisclaimerModal = ({ isMobile }) => {
 
   const onConfirm = () => {
     setVisible(false);
-    window.location.href = `${INTERNAL_LINKS.CERTIFICATE}/1`;
+    window.open(`${INTERNAL_LINKS.CERTIFICATE}/1`, "_blank");
   };
 
   return (
