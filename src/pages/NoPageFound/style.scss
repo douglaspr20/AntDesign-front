@@ -9,7 +9,7 @@
   align-items: center;
 
   &-title {
-    @include app-font(24px, 24px, bold);
+    @include app-font(32px, 24px, bold);
     margin-bottom: 36px;
   }
 }
