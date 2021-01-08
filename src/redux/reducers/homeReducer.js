@@ -37,7 +37,7 @@ const EventData = [
   },
   {
     id: 3,
-    date: "2020.11.22 19:00 pm",
+    date: "2021.01.12 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -48,7 +48,7 @@ const EventData = [
   },
   {
     id: 4,
-    date: "2020.11.22 19:00 pm",
+    date: "2021.01.13 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -66,7 +66,7 @@ const EventData = [
   },
   {
     id: 5,
-    date: "2020.11.23 19:00 pm",
+    date: "2021.01.18 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",
@@ -76,7 +76,7 @@ const EventData = [
   },
   {
     id: 6,
-    date: "2020.11.24 19:00 pm",
+    date: "2021.01.21 19:00 pm",
     title: "Bay area job seekers and recruiters network skills",
     timezone: "EST",
     type: "Online event",

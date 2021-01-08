@@ -16,7 +16,6 @@ const defaultUserInfo = {
   img: null,
   about: "",
   titleProfessions: "",
-  proficiencyLevel: "",
   topicsOfInterest: [],
   personalLinks: {},
   language: "",

@@ -60,7 +60,7 @@ const EventsPage = ({
   const onFilterChange = (params) => {
     setFilteredEvents((prev) => {
       prev = events.filter((item) => {
-        let flag = false;
+        let flag = true;
 
         if (params.date) {
           const res = moment(item.date, "YYYY.MM.DD h:mm a");

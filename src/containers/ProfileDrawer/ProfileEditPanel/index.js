@@ -5,7 +5,6 @@ import { Checkbox, Modal } from "antd";
 import {
   CustomButton,
   CustomInput,
-  CustomRadio,
   CustomCheckbox,
   CustomSelect,
 } from "components";
@@ -20,7 +19,6 @@ import PhotoUploadForm from "../PhotoUploadForm";
 import "./style.scss";
 
 const Topics = PROFILE_SETTINGS.TOPICS;
-const ProficiencyLevels = PROFILE_SETTINGS.PROFICIENCY_LEVEL;
 const Languages = LANGUAGES.ParsedLanguageData;
 
 class ProfileEditPanel extends React.Component {
@@ -37,7 +35,7 @@ class ProfileEditPanel extends React.Component {
   onFieldChange = (field, value, subField) => {
     if (field === "personalLinks") {
       this.setState((state) => {
-        state.user.personalLinks[subField] = value;
+        state.user.personalLinks[subField] = value ? `https://${value}` : "";
         return state;
       });
     } else {
@@ -149,18 +147,6 @@ class ProfileEditPanel extends React.Component {
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>
-            <h5 className="textfield-label">What is your proficiency level?</h5>
-            <div className="custom-radio-group">
-              {ProficiencyLevels.map((level) => (
-                <CustomRadio
-                  key={level}
-                  checked={level === user.proficiencyLevel}
-                  onClick={() => this.onFieldChange("proficiencyLevel", level)}
-                >
-                  {level}
-                </CustomRadio>
-              ))}
-            </div>
             <h5 className="textfield-label">Personal links</h5>
             <div className="personal-links">
               {Object.keys(CONTACT_ICONS).map((contact) => (
@@ -169,7 +155,7 @@ class ProfileEditPanel extends React.Component {
                     <i className={CONTACT_ICONS[contact]} />
                   </div>
                   <CustomInput
-                    addonBefore="http://"
+                    addonBefore="https://"
                     defaultValue={user.personalLinks[contact]}
                     onChange={(value) =>
                       this.onFieldChange("personalLinks", value, contact)
@@ -180,15 +166,25 @@ class ProfileEditPanel extends React.Component {
             </div>
             <h5 className="textfield-label">Main language</h5>
             <CustomSelect
+              showSearch
               options={Languages}
               value={user.language}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("language", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
             <h5 className="textfield-label">Time zone</h5>
             <CustomSelect
+              showSearch
               options={TIMEZONE_LIST}
               value={user.timezone}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("timezone", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
           </div>
         </div>

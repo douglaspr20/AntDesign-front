@@ -6,7 +6,7 @@ class NoPageFound extends Component {
   render() {
     return (
       <div className="no-page-found">
-        <span className="no-page-found-title">Coming up 2021</span>
+        <span className="no-page-found-title">Coming up in March 2021</span>
       </div>
     );
   }
