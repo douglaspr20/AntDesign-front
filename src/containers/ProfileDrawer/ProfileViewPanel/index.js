@@ -89,14 +89,6 @@ class ProfileViewPanel extends React.Component {
           >
             {user.titleProfessions || "-"}
           </h3>
-          <h5 className="textfield-label">Proficiency level</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.proficiencyLevel,
-            })}
-          >
-            {user.proficiencyLevel || "-"}
-          </h3>
           <h5 className="textfield-label">Topics of interest</h5>
           <h3
             className={clsx("textfield-value", {
@@ -113,15 +105,11 @@ class ProfileViewPanel extends React.Component {
                   <i className={CONTACT_ICONS[contact]} />
                 </div>
                 <h3 className="textfield-value completed">
-                  {user.personalLinks[contact]
-                    ? `http://${user.personalLinks[contact]}`
-                    : ""}
+                  {user.personalLinks[contact] || ""}
                 </h3>
               </div>
             ))}
-          {!personalLinksCompleted && (
-            <h3 className="textfield-value">-</h3>
-          )}
+          {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
           <h5 className="textfield-label">Main language</h5>
           <h3
             className={clsx("textfield-value", {
