@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
 
@@ -11,7 +12,7 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.events;
 const FilterTitles = Object.keys(SearchFilters);
 
-const EventFilterPanel = ({ title, onFilterChange }) => {
+const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
   const onDateChange = (date) => {
     const params = {
       date,
@@ -26,6 +27,7 @@ const EventFilterPanel = ({ title, onFilterChange }) => {
 
   return (
     <div className="event-filter-panel">
+      <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
       <CustomCalendar dateChanged={onDateChange} />
       <CustomButton
         className="event-filter-panel-allevents"
@@ -56,11 +58,13 @@ const EventFilterPanel = ({ title, onFilterChange }) => {
 EventFilterPanel.propTypes = {
   title: PropTypes.string,
   onFilterChange: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 EventFilterPanel.defaultProps = {
   title: "Filters",
   onFilterChange: () => {},
+  onClose: () => {},
 };
 
 export default EventFilterPanel;
