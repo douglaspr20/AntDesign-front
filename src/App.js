@@ -71,10 +71,10 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
-    this.props.upgradePlan({
-      user: this.props.userProfile.id,
-      memberShip: "premium",
-    });
+    // this.props.upgradePlan({
+    //   user: this.props.userProfile.id,
+    //   memberShip: "premium",
+    // });
   };
 
   render() {
