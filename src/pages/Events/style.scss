@@ -4,6 +4,7 @@
   width: 100%;
   background: $color-background;
   display: flex;
+  position: relative;
 
   &-filter {
     width: 266px;
@@ -12,6 +13,18 @@
     box-shadow: 4px 0px 14px #37215714;
 
     @media (max-width: 977.98px) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 99;
+
+      &:not(.visible) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 575.98px) {
       display: none;
     }
   }
@@ -27,7 +40,7 @@
     @media (max-width: 1199.98px) {
       padding: 3rem 3rem;
     }
-  
+
     @media (max-width: 575.98px) {
       padding: 2rem 1rem;
     }

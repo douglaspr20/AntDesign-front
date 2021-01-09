@@ -8,6 +8,7 @@
   padding: 56px 2rem 2rem;
   z-index: 9;
   overflow: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     display: none;
@@ -16,6 +17,18 @@
   &-allevents {
     width: 100%;
     margin-bottom: 2rem;
+  }
+
+  &-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 18px;
+    display: none !important;
+
+    @media (max-width: 977.98px) {
+      display: inline-block !important;
+    }
   }
 
   .custom-calendar {

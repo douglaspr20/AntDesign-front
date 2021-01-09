@@ -4,12 +4,14 @@ import Emitter from "services/emitter";
 import { connect } from "react-redux";
 import moment from "moment";
 import isEqual from "lodash/isEqual";
+import clsx from "clsx";
 
 import { Tabs, EventFilterPanel } from "components";
 import EventList from "./EventList";
 import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { EVENT_TYPES } from "enum";
+import EventFilterDrawer from "./EventFilterDrawer";
 
 import "./style.scss";
 
@@ -21,6 +23,7 @@ const EventsPage = ({
   updateMyEventData,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState(events);
+  const [visibleFilter, setVisibleFilter] = useState(false);
 
   const addMyEvents = (event) => {
     if (event.going) {
@@ -45,15 +48,33 @@ const EventsPage = ({
   const TabData = [
     {
       title: "Upcoming events",
-      content: () => <EventList data={filteredEvents} onAttend={addMyEvents} />,
+      content: () => (
+        <EventList
+          data={filteredEvents}
+          onAttend={addMyEvents}
+          showFilter={() => setVisibleFilter(true)}
+        />
+      ),
     },
     {
       title: "My events",
-      content: () => <EventList data={myEvents} onAttend={addMyEvents} />,
+      content: () => (
+        <EventList
+          data={myEvents}
+          onAttend={addMyEvents}
+          showFilter={() => setVisibleFilter(true)}
+        />
+      ),
     },
     {
       title: "My past events",
-      content: () => <EventList data={myPastEvents} onAttend={addMyEvents} />,
+      content: () => (
+        <EventList
+          data={myPastEvents}
+          onAttend={addMyEvents}
+          showFilter={() => setVisibleFilter(true)}
+        />
+      ),
     },
   ];
 
@@ -88,8 +109,13 @@ const EventsPage = ({
 
   return (
     <div className="events-page">
-      <div className="events-page-filter">
-        <EventFilterPanel title="Categories" onFilterChange={onFilterChange} />
+      <EventFilterDrawer />
+      <div className={clsx("events-page-filter", { visible: visibleFilter })}>
+        <EventFilterPanel
+          title="Categories"
+          onFilterChange={onFilterChange}
+          onClose={() => setVisibleFilter(false)}
+        />
       </div>
       <div className="events-page-wrapper">
         <div className="events-page-container">
