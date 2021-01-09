@@ -22,10 +22,10 @@ const PaymentModal = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     onPay();
-    upgradePlan({
-      user: userProfile.id,
-      memberShip: "premium",
-    });
+    // upgradePlan({
+    //   user: userProfile.id,
+    //   memberShip: "premium",
+    // });
   };
 
   return (
