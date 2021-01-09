@@ -109,7 +109,7 @@ const EventsPage = ({
 
   return (
     <div className="events-page">
-      <EventFilterDrawer />
+      <EventFilterDrawer onFilterChange={onFilterChange} />
       <div className={clsx("events-page-filter", { visible: visibleFilter })}>
         <EventFilterPanel
           title="Categories"

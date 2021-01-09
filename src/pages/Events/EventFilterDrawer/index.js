@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
+import moment from "moment";
 
 import {
   CustomDrawer,
@@ -16,9 +17,15 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.events;
 const FilterTitles = Object.keys(SearchFilters);
 
-const EventFilterDrawer = () => {
+const EventFilterDrawer = ({ onFilterChange }) => {
   const [visible, setVisible] = useState(false);
+  const [date, setDate] = useState(moment());
   const [filterValues, setFilterValues] = useState({});
+
+  const onDone = () => {
+    onFilterChange({ date });
+    onDrawerClose();
+  };
 
   const onDrawerClose = () => {
     setVisible(false);
@@ -28,19 +35,13 @@ const EventFilterDrawer = () => {
     setFilterValues({});
   };
 
-  const onDateChange = (date) => {
-    // const params = {
-    //   date,
-    // };
-    // onFilterChange(params);
-  };
-
-  const onFilterChange = (field, values) => {
+  const onEventFilterChange = (field, values) => {
     setFilterValues({ ...filterValues, [field]: values });
   };
 
   const onShowAllEvent = () => {
-    // onFilterChange({});
+    onFilterChange({});
+    onDrawerClose();
   };
 
   useEffect(() => {
@@ -62,12 +63,12 @@ const EventFilterDrawer = () => {
       <div className="event-filter-drawer-container">
         <div className="event-filter-drawer-header">
           <h2>Filters</h2>
-          <h2 className="done" onClick={onDrawerClose}>
+          <h2 className="done" onClick={onDone}>
             Done
           </h2>
         </div>
         <div className="event-filter-drawer-content">
-          <CustomCalendar dateChanged={onDateChange} />
+          <CustomCalendar dateChanged={setDate} />
           <CustomButton
             className="event-filter-drawer-allevents"
             type="primary"
@@ -81,7 +82,7 @@ const EventFilterDrawer = () => {
               <h4 className="search-filter-title font-bold">{filter}</h4>
               <Checkbox.Group
                 value={filterValues[filter]}
-                onChange={(values) => onFilterChange(filter, values)}
+                onChange={(values) => onEventFilterChange(filter, values)}
               >
                 {SearchFilters[filter].map((item) => (
                   <CustomCheckbox key={item.value} value={item.value} size="md">
@@ -108,10 +109,12 @@ const EventFilterDrawer = () => {
 
 EventFilterDrawer.propTypes = {
   title: PropTypes.string,
+  onFilterChange: PropTypes.func,
 };
 
 EventFilterDrawer.defaultProps = {
   title: "",
+  onFilterChange: () => {},
 };
 
 export default EventFilterDrawer;
