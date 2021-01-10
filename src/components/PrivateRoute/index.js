@@ -9,19 +9,17 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
 const PrivateRoute = ({
-  id,
   loading,
   setLoading,
   isAuthenticated,
-  accessToken,
   userProfile,
   getUser,
   ...props
 }) => {
   const redirect = INTERNAL_LINKS.LOGIN;
 
-  if (isAuthenticated && id && isEmpty(userProfile)) {
-    getUser(id, accessToken);
+  if (isAuthenticated && isEmpty(userProfile)) {
+    getUser();
   }
 
   return isAuthenticated ? (
@@ -39,8 +37,6 @@ const mapStateToProps = (state) => ({
   loading: homeSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
   isAuthenticated: authSelector(state).isAuthenticated,
-  accessToken: authSelector(state).accessToken,
-  id: authSelector(state).id,
 });
 
 const mapDispatchToProps = {

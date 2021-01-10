@@ -22,12 +22,12 @@ const defaultUserInfo = {
   percentOfCompletion: 0,
 };
 
-export function* getUser({ payload }) {
+export function* getUser() {
   yield put(homeActions.updateUserInformation(defaultUserInfo));
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getUserFromId, { ...payload });
+    const response = yield call(getUserFromId);
     const { user } = response.data;
 
     yield put(

@@ -1,29 +1,17 @@
 import httpClient from "./httpClient";
 
-export const getUserFromId = ({ id, token }) => {
-  return httpClient.get(`private/user?id=${id}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
-  });
+export const getUserFromId = () => {
+  return httpClient.get(`private/user`);
 };
 
-export const updateUser = ({ user, token }) => {
-  return httpClient.put(`private/user?id=${user.id}`, {
+export const updateUser = ({ user }) => {
+  return httpClient.put(`private/user`, {
     ...user,
-  }, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
   });
 };
 
-export const upgradePlan = ({ data, token }) => {
-  return httpClient.put(`private/user/upgrade-plan?id=${data.user}`, {
+export const upgradePlan = ({ data }) => {
+  return httpClient.put(`private/user/upgrade-plan`, {
     ...data,
-  }, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
   });
 };
