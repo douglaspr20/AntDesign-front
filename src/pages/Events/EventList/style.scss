@@ -1,12 +1,29 @@
 @import "styles/main.scss";
 
 .event-list {
-  padding-top: 60px;
+  padding-top: 40px;
   height: calc(100vh - 200px);
   overflow: auto;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &-filters {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+
+    @media (max-width: 977.98px) {
+      display: flex;
+    }
+
+    @media (max-width: 575.98px) {
+      .custom-button {
+        width: 100%;
+      }
+    }
   }
 
   &-batch {

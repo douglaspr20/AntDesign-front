@@ -69,8 +69,11 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => (
                 Remember me
               </CustomCheckbox>
             </div>
-            <Button htmlType="submit" className="pay-buttton">
-              Pay $19.99
+            <Button htmlType="submit" className="pay-buttton monthly">
+              Pay $9.99 monthly
+            </Button>
+            <Button onClick={handleSubmit} className="pay-buttton">
+              Pay $99.99 yearly
             </Button>
           </div>
         </form>

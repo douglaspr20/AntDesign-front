@@ -3,9 +3,13 @@ import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
 import moment from "moment";
+import { connect } from "react-redux";
 
-import { DateAvatar, EventCard } from "components";
+import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
+import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
 
@@ -26,7 +30,7 @@ const monthStr = [
 
 const DataFormat = "YYYY.MM.DD hh:mm A";
 
-const EventList = ({ data, onAttend, ...rest }) => {
+const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
   const groupedByEventData = groupBy(data, "date");
 
   const onEventChanged = (event, going) => {
@@ -34,8 +38,25 @@ const EventList = ({ data, onAttend, ...rest }) => {
     onAttend(event);
   };
 
+  const onShowFilter = () => {
+    if (isMobile) {
+      Emitter.emit(EVENT_TYPES.OPEN_EVENT_FILTER_DRAWER);
+    } else {
+      showFilter();
+    }
+  };
+
   return (
     <div {...rest} className="event-list">
+      <div className="event-list-filters">
+        <CustomButton
+          className="event-list-filters-btn"
+          text="Filters"
+          type="primary outlined"
+          size="lg"
+          onClick={onShowFilter}
+        />
+      </div>
       {data && data.length === 0 && <NoEventCard />}
       {Object.keys(groupedByEventData).map((date) => {
         const day = moment(date, DataFormat).date();
@@ -67,11 +88,17 @@ const EventList = ({ data, onAttend, ...rest }) => {
 EventList.propTypes = {
   data: PropTypes.array,
   onAttend: PropTypes.func,
+  showFilter: PropTypes.func,
 };
 
 EventList.defaultProps = {
   data: [],
   onAttend: () => {},
+  showFilter: () => {},
 };
 
-export default EventList;
+const mapStateToProps = (state) => ({
+  isMobile: envSelector(state).isMobile,
+});
+
+export default connect(mapStateToProps)(EventList);

@@ -4,18 +4,28 @@ import { Modal } from "antd";
 import { connect } from "react-redux";
 import { CloseCircleFilled } from "@ant-design/icons";
 
-import { setPlanUpdated } from "redux/actions/home-actions";
+import { upgradePlan } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 import PaymentForm from "../PaymentForm";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const PaymentModal = ({ visible, onPay, setPlanUpdated, ...rest }) => {
+const PaymentModal = ({
+  userProfile,
+  visible,
+  onPay,
+  upgradePlan,
+  ...rest
+}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     onPay();
-    setPlanUpdated(true);
+    // upgradePlan({
+    //   user: userProfile.id,
+    //   memberShip: "premium",
+    // });
   };
 
   return (
@@ -53,10 +63,12 @@ PaymentModal.defaultProps = {
   onPay: () => {},
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
-  setPlanUpdated,
+  upgradePlan,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentModal);

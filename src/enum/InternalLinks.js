@@ -10,4 +10,5 @@ export default {
   FAVORITES: "/favorites",
   READ_LATER: "/read-later",
   ARTICLE: "/article",
+  CERTIFICATE: "/certificate",
 };

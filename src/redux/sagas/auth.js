@@ -16,7 +16,6 @@ const defaultUserInfo = {
   img: null,
   about: "",
   titleProfessions: "",
-  proficiencyLevel: "",
   topicsOfInterest: [],
   personalLinks: {},
   language: "",
@@ -152,7 +151,6 @@ export function* signUpUser({ payload }) {
       yield put(homeActions.updateUserInformation({}));
     }
   } catch (error) {
-    console.log("***** error", error);
     yield put(
       authActions.setAuth({
         isAuthenticated: false,

@@ -5,7 +5,6 @@ import { Checkbox, Modal } from "antd";
 import {
   CustomButton,
   CustomInput,
-  CustomRadio,
   CustomCheckbox,
   CustomSelect,
 } from "components";
@@ -16,12 +15,10 @@ import {
   LANGUAGES,
 } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
-import { getProfileCompletion } from "utils/profile";
 
 import "./style.scss";
 
 const Topics = PROFILE_SETTINGS.TOPICS;
-const ProficiencyLevels = PROFILE_SETTINGS.PROFICIENCY_LEVEL;
 const Languages = LANGUAGES.ParsedLanguageData;
 
 class ProfileEditPanel extends React.Component {
@@ -31,17 +28,14 @@ class ProfileEditPanel extends React.Component {
     this.state = {
       user: props.user ? { ...props.user } : {},
       visibleModal: false,
-      // imageUrl: props.user.img
-      //   ? window.URL.createObjectURL(props.user.img)
-      //   : "",
-      imageUrl: "",
+      editImageUrl: props.user ? props.user.img : "",
     };
   }
 
   onFieldChange = (field, value, subField) => {
     if (field === "personalLinks") {
       this.setState((state) => {
-        state.user.personalLinks[subField] = value;
+        state.user.personalLinks[subField] = value ? `https://${value}` : "";
         return state;
       });
     } else {
@@ -52,11 +46,11 @@ class ProfileEditPanel extends React.Component {
     }
   };
 
-  onPhotoSave = (url, blob) => {
+  onPhotoSave = (url, base64) => {
     this.setState((state) => {
-      state.user["img"] = blob;
+      state.editImageUrl = url;
       state.visibleModal = false;
-      state.imageUrl = url;
+      state.user.imageStr = base64;
       return state;
     });
   };
@@ -71,8 +65,6 @@ class ProfileEditPanel extends React.Component {
 
   onSave = () => {
     let { user } = this.state;
-    user.percentOfCompletion = getProfileCompletion(user);
-    user.completed = user.percentOfCompletion === 100;
     this.props.onSave(user);
   };
 
@@ -81,7 +73,7 @@ class ProfileEditPanel extends React.Component {
   };
 
   render() {
-    const { user, visibleModal, imageUrl } = this.state;
+    const { user, visibleModal, editImageUrl } = this.state;
 
     return (
       <div className="profile-edit-panel">
@@ -89,9 +81,9 @@ class ProfileEditPanel extends React.Component {
           <div className="profile-edit-panel-header">
             <div className="profile-user-img">
               <div className="profile-user-img-container">
-                {user.img ? (
+                {editImageUrl ? (
                   <div className="profile-user-img-wrapper">
-                    <img src={imageUrl} alt="user-avatar" />
+                    <img src={editImageUrl} alt="user-avatar" />
                   </div>
                 ) : (
                   <h1 className="profile-user-img-name">{user.abbrName}</h1>
@@ -155,18 +147,6 @@ class ProfileEditPanel extends React.Component {
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>
-            <h5 className="textfield-label">What is your proficiency level?</h5>
-            <div className="custom-radio-group">
-              {ProficiencyLevels.map((level) => (
-                <CustomRadio
-                  key={level}
-                  checked={level === user.proficiencyLevel}
-                  onClick={() => this.onFieldChange("proficiencyLevel", level)}
-                >
-                  {level}
-                </CustomRadio>
-              ))}
-            </div>
             <h5 className="textfield-label">Personal links</h5>
             <div className="personal-links">
               {Object.keys(CONTACT_ICONS).map((contact) => (
@@ -175,7 +155,7 @@ class ProfileEditPanel extends React.Component {
                     <i className={CONTACT_ICONS[contact]} />
                   </div>
                   <CustomInput
-                    addonBefore="http://"
+                    addonBefore="https://"
                     defaultValue={user.personalLinks[contact]}
                     onChange={(value) =>
                       this.onFieldChange("personalLinks", value, contact)
@@ -186,15 +166,25 @@ class ProfileEditPanel extends React.Component {
             </div>
             <h5 className="textfield-label">Main language</h5>
             <CustomSelect
+              showSearch
               options={Languages}
               value={user.language}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("language", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
             <h5 className="textfield-label">Time zone</h5>
             <CustomSelect
+              showSearch
               options={TIMEZONE_LIST}
               value={user.timezone}
+              optionFilterProp="children"
               onChange={(value) => this.onFieldChange("timezone", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
             />
           </div>
         </div>
@@ -225,7 +215,7 @@ class ProfileEditPanel extends React.Component {
           footer={[]}
           onCancel={this.cancelPhotoUpload}
         >
-          <PhotoUploadForm src={user.img} onSave={this.onPhotoSave} />
+          <PhotoUploadForm onSave={this.onPhotoSave} />
         </Modal>
       </div>
     );
