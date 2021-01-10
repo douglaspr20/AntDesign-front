@@ -9,7 +9,7 @@
   padding: 0.5em;
   position: fixed;
   right: 20px;
-  width: 150px;
+  width: 300px;
 
   @media(max-width: 1024px){
     display: none;
@@ -26,6 +26,7 @@
 
 .feedback-box-container__container--textarea {
   font-size: 12px !important;
+  height: 150px !important;
   line-height: 15px !important;
   max-height: 150px !important;
 }
