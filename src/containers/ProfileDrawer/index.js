@@ -11,6 +11,7 @@ import ProfileEditPanel from "./ProfileEditPanel";
 import ProfileViewPanel from "./ProfileViewPanel";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import { authSelector } from "redux/selectors/authSelector";
 
 class ProfileDrawer extends React.Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class ProfileDrawer extends React.Component {
   };
 
   onSave = (userInfo) => {
-    this.props.updateUser(userInfo);
+    const { accessToken } = this.props;
+    this.props.updateUser(userInfo, accessToken);
     this.setState({ edit: false });
   };
 
@@ -73,6 +75,7 @@ ProfileDrawer.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
+  accessToken: authSelector(state).accessToken,
   userProfile: homeSelector(state).userProfile,
 });
 

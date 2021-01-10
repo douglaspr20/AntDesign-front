@@ -41,9 +41,9 @@ export const setSettingCollapsed = createAction(
   SET_SETTING_COLLAPSED,
   (collapsed) => ({ collapsed })
 );
-export const getUser = createAction(GET_USER, (id) => ({ id }));
-export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
-export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
+export const getUser = createAction(GET_USER, (id, token) => ({ id, token }));
+export const updateUser = createAction(UPDATE_USER, (user, token) => ({ user, token }));
+export const upgradePlan = createAction(UPGRADE_PLAN, (data, token) => ({ data, token }));
 
 export const actions = {
   setLoading,

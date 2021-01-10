@@ -13,6 +13,7 @@ const PrivateRoute = ({
   loading,
   setLoading,
   isAuthenticated,
+  accessToken,
   userProfile,
   getUser,
   ...props
@@ -20,7 +21,7 @@ const PrivateRoute = ({
   const redirect = INTERNAL_LINKS.LOGIN;
 
   if (isAuthenticated && id && isEmpty(userProfile)) {
-    getUser(id);
+    getUser(id, accessToken);
   }
 
   return isAuthenticated ? (
@@ -38,6 +39,7 @@ const mapStateToProps = (state) => ({
   loading: homeSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
   isAuthenticated: authSelector(state).isAuthenticated,
+  accessToken: authSelector(state).accessToken,
   id: authSelector(state).id,
 });
 
