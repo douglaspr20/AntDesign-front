@@ -22,6 +22,10 @@ class TopHeader extends Component {
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
         <PrivateRoute
+          path={INTERNAL_LINKS.HEART}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.LEARNING_LIBRARY}
           render={(props) => <MainHeader {...props} />}
         />

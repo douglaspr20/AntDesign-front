@@ -5,6 +5,7 @@ import { Layout } from "antd";
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
+import HEARTPage from "pages/Heart";
 import LearningLibraryPage from "pages/Library";
 import ArticlePage from "pages/Article";
 import FavouritePage from "pages/Favourites";
@@ -34,6 +35,10 @@ class Content extends Component {
           <Route
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.HEART}
+            render={(props) => <HEARTPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}
