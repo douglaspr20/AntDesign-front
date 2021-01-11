@@ -64,7 +64,7 @@ function HEARTComment({
             <div className="heart-comment__card-action">
               <Rate
                 allowHalf
-                defaultValue={rate}
+                defaultValue={rate && parseFloat(rate)}
                 className="heart-comment__rate"
                 onChange={newRate => rateChange({ id, newRate })}
               />
