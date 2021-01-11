@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CustomButton, CustomInput } from "components";
 
+import IconChevronDown from "images/icon-chevron-down.svg";
+
 import { sendEmail } from 'api/module/feedback';
 import { authSelector } from "redux/selectors/authSelector";
 
@@ -14,6 +16,8 @@ class FeedbackBox extends Component {
       loading: false,
       message: '',
       loadingMessage: 'Sending...',
+      heightFeedbackBox: 'auto',
+      rotateArrow: 'rotate(0deg)',
     };
   }
   onChangeMessage(text) {
@@ -43,12 +47,25 @@ class FeedbackBox extends Component {
       }
     });
   }
+  changeHeightFeedbackBox() {
+    if (this.state.heightFeedbackBox === 'auto') {
+      this.setState({ heightFeedbackBox: '25px', rotateArrow: 'rotate(180deg)' });
+    } else {
+      this.setState({ heightFeedbackBox: 'auto', rotateArrow: 'rotate(0deg)' });
+    }
+  }
   render() {
     return (<>
       { this.props.userId &&
-        <div className="feedback-box-container">
-          <div className="feedback-box-container__header">
-            <h5>Please Provide Feedback!</h5>
+        <div
+          className="feedback-box-container"
+          style={{ height: this.state.heightFeedbackBox }}
+        >
+          <div
+            className="feedback-box-container__header"
+            onClick={() => { this.changeHeightFeedbackBox(); }}
+          >
+            <h5><img src={IconChevronDown} style={{ transform: this.state.rotateArrow }} /> Please Provide Feedback!</h5>
           </div>
           <div className="feedback-box-container__container">
             <CustomInput
