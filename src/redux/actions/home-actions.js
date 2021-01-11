@@ -41,7 +41,7 @@ export const setSettingCollapsed = createAction(
   SET_SETTING_COLLAPSED,
   (collapsed) => ({ collapsed })
 );
-export const getUser = createAction(GET_USER, (id) => ({ id }));
+export const getUser = createAction(GET_USER);
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
 

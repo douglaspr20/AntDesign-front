@@ -1,17 +1,40 @@
 import httpClient from "./httpClient";
+import storage from "store";
 
-export const getUserFromId = ({ id }) => {
-  return httpClient.get(`private/user?id=${id}`);
+const community = storage.get("community");
+
+export const getUserFromId = () => {
+  return httpClient.get(`private/user`, {
+    headers: {
+      Authorization: `Bearer ${community.accessToken}`,
+    },
+  });
 };
 
 export const updateUser = ({ user }) => {
-  return httpClient.put(`private/user?id=${user.id}`, {
-    ...user,
-  });
+  return httpClient.put(
+    `private/user`,
+    {
+      ...user,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${community.accessToken}`,
+      },
+    }
+  );
 };
 
 export const upgradePlan = ({ data }) => {
-  return httpClient.put(`private/user/upgrade-plan?id=${data.user}`, {
-    ...data,
-  });
+  return httpClient.put(
+    `private/user/upgrade-plan`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${community.accessToken}`,
+      },
+    }
+  );
 };
