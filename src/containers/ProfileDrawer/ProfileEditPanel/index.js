@@ -156,7 +156,11 @@ class ProfileEditPanel extends React.Component {
                   </div>
                   <CustomInput
                     addonBefore="https://"
-                    defaultValue={user.personalLinks[contact]}
+                    defaultValue={
+                      user.personalLinks[contact]
+                        ? user.personalLinks[contact].replace("https://", "")
+                        : ""
+                    }
                     onChange={(value) =>
                       this.onFieldChange("personalLinks", value, contact)
                     }
