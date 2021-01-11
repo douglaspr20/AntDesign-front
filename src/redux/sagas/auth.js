@@ -44,7 +44,7 @@ export function* login({ payload }) {
 
     if (response.status === 200) {
       const { token, user } = response.data;
-      axios.defaults.headers.common.Authorization = token;
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       yield put(
         authActions.setAuth({
@@ -120,7 +120,7 @@ export function* signUpUser({ payload }) {
 
     if (response.status === 200) {
       const { token, user } = response.data;
-      axios.defaults.headers.common.Authorization = token;
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       yield put(
         authActions.setAuth({
@@ -131,7 +131,7 @@ export function* signUpUser({ payload }) {
           id: user.id,
         })
       );
-      
+
       yield put(
         homeActions.updateUserInformation({
           ...defaultUserInfo,
