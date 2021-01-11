@@ -29,14 +29,14 @@ class FeedbackBox extends Component {
       }
       let result = await sendEmail(data);
       if (result.status === 200) {
-        this.setState({ 
-          message: '', 
-          loadingMessage: 'Thank you!' 
+        this.setState({
+          message: '',
+          loadingMessage: 'Thank you!'
         }, () => {
           setTimeout(() => {
             this.setState({
               loading: false,
-              loadingMessage: 'Sending...' 
+              loadingMessage: 'Sending...'
             });
           }, 500);
         });
@@ -44,32 +44,34 @@ class FeedbackBox extends Component {
     });
   }
   render() {
-    return (
-      <div className="feedback-box-container">
-        <div className="feedback-box-container__header">
-          <h5>Please Provide Feedback!</h5>
+    return (<>
+      { this.props.userId &&
+        <div className="feedback-box-container">
+          <div className="feedback-box-container__header">
+            <h5>Please Provide Feedback!</h5>
+          </div>
+          <div className="feedback-box-container__container">
+            <CustomInput
+              className="feedback-box-container__container--textarea"
+              multiple={true}
+              value={this.state.message}
+              onChange={(text) => { this.onChangeMessage(text); }}
+            ></CustomInput>
+          </div>
+          <div className="feedback-box-container__button">
+            {this.state.loading
+              ? this.state.loadingMessage
+              : <CustomButton
+                text="Send"
+                type="primary"
+                size="sm"
+                className=""
+                onClick={() => { this.onSend(); }}
+              ></CustomButton>}
+          </div>
         </div>
-        <div className="feedback-box-container__container">
-          <CustomInput
-            className="feedback-box-container__container--textarea"
-            multiple={true}
-            value={this.state.message}
-            onChange={(text) => { this.onChangeMessage(text); }}
-          ></CustomInput>
-        </div>
-        <div className="feedback-box-container__button">
-          {this.state.loading
-            ? this.state.loadingMessage
-            : <CustomButton
-              text="Send"
-              type="primary"
-              size="sm"
-              className=""
-              onClick={() => { this.onSend(); }}
-            ></CustomButton>}
-        </div>
-      </div>
-    );
+      }
+    </>);
   }
 }
 const mapStateToProps = (state) => ({
