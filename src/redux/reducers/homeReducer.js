@@ -90,7 +90,7 @@ const EventData = [
 const MyPastEvents = EventData.filter((event) => {
   const eventDate = moment(event.date, "YYYY.MM.DD h:mm a");
   return eventDate.isBefore(moment());
-}).filter((event) => ({ ...event, status: "past" }));
+}).map((event) => ({ ...event, status: "past" }));
 
 // Home Page's Reducer
 export const reducers = {
