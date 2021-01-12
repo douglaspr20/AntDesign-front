@@ -15,7 +15,7 @@
     .heart-comment__card-content-col {
       width: calc(100% - 64px);
 
-      @media (max-width: 576px) {
+      @media (max-width: 575.98px) {
         width: 100%;
         padding: 0;
       }
@@ -32,7 +32,7 @@
   width: 100%;
   flex-wrap: wrap;
 
-  @media (max-width: 576px) {
+  @media (max-width: 575.98px) {
     padding: 1rem 1rem 1.5rem;
     
     > * + * {
@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 576px) {
+  @media (max-width: 575.98px) {
     width: 100%;
     padding: 0;
   }
@@ -72,7 +72,7 @@
     margin-top: 1rem;
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: 575.98px) {
     width: 100%;
     padding: 0;
   }
@@ -83,7 +83,7 @@
   padding: 0 0.5rem;
   align-self: center;
 
-  @media (max-width: 576px) {
+  @media (max-width: 575.98px) {
     width: 100%;
     padding: 0;
   }
