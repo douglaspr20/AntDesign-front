@@ -98,29 +98,38 @@ const EventsPage = ({
       prev = events.filter((item) => {
         let flag = true;
 
-        if (params.date) {
-          const res = moment(item.date, "YYYY.MM.DD h:mm a");
-          const eventDate = {
-            year: res.year(),
-            month: res.month(),
-            day: res.date(),
-          };
+        Object.keys(params).forEach((key) => {
+          if (key === "all" && params[key]) {
+            const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+            flag = eventDate.isAfter(moment());
+            setCurrentTab("0");
+            return flag;
+          }
 
-          const currentDate = {
-            year: params.date.year(),
-            month: params.date.month(),
-            day: params.date.date(),
-          };
+          if (key === "date") {
+            const res = moment(item.date, "YYYY.MM.DD h:mm a");
+            const eventDate = {
+              year: res.year(),
+              month: res.month(),
+              day: res.date(),
+            };
 
-          flag = isEqual(eventDate, currentDate);
-          setCurrentTab("0");
-        }
+            const currentDate = {
+              year: params.date.year(),
+              month: params.date.month(),
+              day: params.date.date(),
+            };
 
-        if (params.all) {
-          const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
-          flag = eventDate.isAfter(moment());
-          setCurrentTab("0");
-        }
+            flag = isEqual(eventDate, currentDate);
+            setCurrentTab("0");
+          } else if (key === "Topics") {
+            flag =
+              flag &&
+              (params[key] || []).every((tpc) =>
+                item.topics.map((t) => t.toLowerCase()).includes(tpc)
+              );
+          }
+        });
 
         return flag;
       });
