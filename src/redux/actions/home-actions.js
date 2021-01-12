@@ -6,6 +6,7 @@ const SET_PLAN_UPDATED = "SET_PLAN_UPDATED";
 const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 const UPDATE_EVENTS = "UPDATE_EVENTS";
 const UPDATE_MY_EVENTS = "UPDATE_MY_EVENTS";
+const UPDATE_PAST_EVENTS = "UPDATE_PAST_EVENTS";
 const SET_SETTING_COLLAPSED = "SET_SETTING_COLLAPSED";
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
@@ -21,6 +22,7 @@ export const constants = {
   GET_USER,
   UPDATE_USER,
   UPGRADE_PLAN,
+  UPDATE_PAST_EVENTS,
 };
 
 // ------------------------------------
@@ -37,6 +39,12 @@ export const updateEventData = createAction(UPDATE_EVENTS, (events) => ({
 export const updateMyEventData = createAction(UPDATE_MY_EVENTS, (myEvents) => ({
   myEvents,
 }));
+export const updateMyPastEventData = createAction(
+  UPDATE_PAST_EVENTS,
+  (myPastEvents) => ({
+    myPastEvents,
+  })
+);
 export const setSettingCollapsed = createAction(
   SET_SETTING_COLLAPSED,
   (collapsed) => ({ collapsed })
@@ -54,4 +62,5 @@ export const actions = {
   getUser,
   updateUser,
   upgradePlan,
+  updateMyPastEventData,
 };

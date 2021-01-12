@@ -8,7 +8,11 @@ import clsx from "clsx";
 
 import { Tabs, EventFilterPanel } from "components";
 import EventList from "./EventList";
-import { updateEventData, updateMyEventData } from "redux/actions/home-actions";
+import {
+  updateEventData,
+  updateMyEventData,
+  updateMyPastEventData,
+} from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { EVENT_TYPES } from "enum";
 import EventFilterDrawer from "./EventFilterDrawer";
@@ -21,6 +25,7 @@ const EventsPage = ({
   myPastEvents,
   updateEventData,
   updateMyEventData,
+  updateMyPastEventData,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState(events);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -43,6 +48,15 @@ const EventsPage = ({
     }
     updateEventData(newEvents);
     addMyEvents(event);
+  });
+
+  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (event) => {
+    const newEvents = myPastEvents;
+    const index = myPastEvents.findIndex((item) => item.id === event.id);
+    if (index >= 0) {
+      newEvents[index] = event;
+    }
+    updateMyPastEventData(newEvents);
   });
 
   const TabData = [
@@ -143,6 +157,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   updateEventData,
   updateMyEventData,
+  updateMyPastEventData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
