@@ -7,7 +7,7 @@ import { CustomModal, CustomButton } from "components";
 import { envSelector } from "redux/selectors/envSelector";
 import Emitter from "services/emitter";
 
-import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -17,18 +17,24 @@ const Text = `
 
 const AttendanceDisclaimerModal = ({ isMobile }) => {
   const [visible, setVisible] = useState(false);
+  const [event, setEvent] = useState({});
 
   Emitter.on(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, (data) => {
     setVisible(true);
+    setEvent(data);
   });
 
   const onConfirm = () => {
     setVisible(false);
-    window.open(`${INTERNAL_LINKS.CERTIFICATE}/1`, "_blank");
+    Emitter.emit(EVENT_TYPES.MY_PAST_EVENT_CHANGED, {
+      ...event,
+      status: "confirmed",
+    });
   };
 
   return (
     <CustomModal
+      wrapClassName="attendance-confirm-modal-wrap"
       title="Attendance disclaimer"
       subTitle="Must accept to continue"
       visible={visible}

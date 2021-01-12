@@ -11,6 +11,8 @@ import IconLogo from "images/logo-sidebar.svg";
 import "./style.scss";
 
 const CustomModal = ({
+  className,
+  wrapClassName,
   title,
   subTitle,
   visible,
@@ -38,7 +40,8 @@ const CustomModal = ({
     <Modal
       {...rest}
       onCancel={onCancel}
-      className="custom-modal"
+      className={clsx("custom-modal", className)}
+      wrapClassName={clsx("custom-modal-wrap", wrapClassName)}
       title={
         <div className="custom-modal-title">
           <h3>{title}</h3>
@@ -61,6 +64,8 @@ const CustomModal = ({
 };
 
 CustomModal.propTypes = {
+  className: PropTypes.string,
+  wrapClassName: PropTypes.string,
   title: PropTypes.string,
   subTitle: PropTypes.string,
   visible: PropTypes.bool,
@@ -69,6 +74,8 @@ CustomModal.propTypes = {
 };
 
 CustomModal.defaultProps = {
+  className: "",
+  wrapClassName: "",
   title: "",
   subTitle: "",
   visible: false,

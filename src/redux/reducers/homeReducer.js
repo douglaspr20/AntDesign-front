@@ -95,7 +95,7 @@ const MyPastEvents = [
     type: "Online event",
     cost: "Free",
     going: false,
-    past: true,
+    status: 'past',
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     topics: ["Community cultivator", "Leadership", "Recruiting"],
   },
@@ -107,7 +107,7 @@ const MyPastEvents = [
     type: "Online event",
     cost: "Free",
     going: false,
-    past: true,
+    status: 'past',
     img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
     topics: [
       "Human Resources",
@@ -138,6 +138,9 @@ export const reducers = {
   },
   [homeConstants.UPDATE_MY_EVENTS]: (state, { payload }) => {
     return state.merge({ myEvents: cloneDeep(payload.myEvents) });
+  },
+  [homeConstants.UPDATE_PAST_EVENTS]: (state, { payload }) => {
+    return state.merge({ myPastEvents: cloneDeep(payload.myPastEvents) });
   },
   [homeConstants.SET_SETTING_COLLAPSED]: (state, { payload }) => {
     return state.merge({

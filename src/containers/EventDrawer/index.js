@@ -40,6 +40,10 @@ const EventDrawer = () => {
     });
   });
 
+  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (data) => {
+    setEvent(data);
+  });
+
   const onDrawerClose = () => {
     setVisible(false);
   };
@@ -52,8 +56,10 @@ const EventDrawer = () => {
     setEvent((prev) => ({ ...prev, going: false }));
   };
 
-  const onClickClaimDigitalCertificate = (e) => {
-    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER);
+  const onClickClaimDigitalCertificate = (e) => {};
+
+  const onClickConfirm = (e) => {
+    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, event);
   };
 
   const onClickClaimCredits = (e) => {};
@@ -84,7 +90,18 @@ const EventDrawer = () => {
         <div className="event-details-content">
           <div className="event-details-content-actions">
             <DateAvatar day={event.day || 0} month={event.month || ""} />
-            {event.past && (
+            {event.status === "past" && (
+              <div className="claim-buttons">
+                <CustomButton
+                  className="claim-digital-certificate"
+                  text="Confirm I attended this event"
+                  size="md"
+                  type="primary outlined"
+                  onClick={onClickConfirm}
+                />
+              </div>
+            )}
+            {event.status === "confirmed" && (
               <React.Fragment>
                 <CustomButton
                   className="claim-digital-certificate"
@@ -101,7 +118,7 @@ const EventDrawer = () => {
                 />
               </React.Fragment>
             )}
-            {!event.past && !event.going && (
+            {!["past", "confirmed"].includes(event.status) && !event.going && (
               <CustomButton
                 text="Attend"
                 size="lg"
@@ -109,7 +126,7 @@ const EventDrawer = () => {
                 onClick={onAttend}
               />
             )}
-            {!event.past && event.going && (
+            {!["past", "confirmed"].includes(event.status) && event.going && (
               <React.Fragment>
                 <div className="going-label">
                   <CheckOutlined />

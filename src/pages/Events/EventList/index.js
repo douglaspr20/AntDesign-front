@@ -47,7 +47,7 @@ const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
   };
 
   return (
-    <div {...rest} className="event-list">
+    <div className="event-list">
       <div className="event-list-filters">
         <CustomButton
           className="event-list-filters-btn"

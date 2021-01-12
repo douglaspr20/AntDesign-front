@@ -28,11 +28,16 @@ class EventCard extends React.Component {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE, this.props.data);
   };
 
-  onClickClaimDigitalCertificate = (e) => {
+  onClickConfirm = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER);
+    Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, this.props.data);
+  };
+
+  onClickClaimDigitalCertificate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   onClickClaimCredits = (e) => {
@@ -42,7 +47,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { date, title, timezone, type, cost, img, going, topics, past },
+      data: { date, title, timezone, type, cost, img, going, topics, status },
       className,
     } = this.props;
 
@@ -68,7 +73,18 @@ class EventCard extends React.Component {
           )}
           <div className="event-card-content-footer">
             <div className="event-card-content-footer-actions">
-              {past && (
+              {status === "past" && (
+                <div className="claim-buttons">
+                  <CustomButton
+                    className="claim-digital-certificate"
+                    text="Confirm I attended this event"
+                    size="md"
+                    type="primary outlined"
+                    onClick={this.onClickConfirm}
+                  />
+                </div>
+              )}
+              {status === "confirmed" && (
                 <div className="claim-buttons">
                   <CustomButton
                     className="claim-digital-certificate"
@@ -85,7 +101,7 @@ class EventCard extends React.Component {
                   />
                 </div>
               )}
-              {!past && !going && (
+              {!["past", "confirmed"].includes(status) && !going && (
                 <CustomButton
                   text="Attend"
                   size="md"
@@ -93,7 +109,7 @@ class EventCard extends React.Component {
                   onClick={this.onAttend}
                 />
               )}
-              {!past && going && (
+              {!["past", "confirmed"].includes(status) && going && (
                 <div className="going-group-part">
                   <div className="going-label">
                     <CheckOutlined />
