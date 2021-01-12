@@ -27,7 +27,7 @@ const CustomTabs = ({ current, className, data, onChange, ...rest }) => {
     <Tabs
       {...rest}
       className={clsx("custom-tabs", className)}
-      defaultActiveKey={current}
+      activeKey={current}
       onChange={onTabChange}
     >
       {data.map((tab, index) => (

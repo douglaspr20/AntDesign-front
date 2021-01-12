@@ -22,7 +22,7 @@ const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
   };
 
   const onShowAllEvent = () => {
-    onFilterChange({});
+    onFilterChange({ all: true });
   };
 
   return (

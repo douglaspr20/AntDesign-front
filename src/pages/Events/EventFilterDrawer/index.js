@@ -40,7 +40,7 @@ const EventFilterDrawer = ({ onFilterChange }) => {
   };
 
   const onShowAllEvent = () => {
-    onFilterChange({});
+    onFilterChange({ all: true });
     onDrawerClose();
   };
 

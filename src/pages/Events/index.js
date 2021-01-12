@@ -29,6 +29,7 @@ const EventsPage = ({
 }) => {
   const [filteredEvents, setFilteredEvents] = useState(events);
   const [visibleFilter, setVisibleFilter] = useState(false);
+  const [currentTab, setCurrentTab] = useState("0");
 
   const addMyEvents = (event) => {
     if (event.going) {
@@ -112,6 +113,13 @@ const EventsPage = ({
           };
 
           flag = isEqual(eventDate, currentDate);
+          setCurrentTab("0");
+        }
+
+        if (params.all) {
+          const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+          flag = eventDate.isAfter(moment());
+          setCurrentTab("0");
         }
 
         return flag;
@@ -133,7 +141,7 @@ const EventsPage = ({
       </div>
       <div className="events-page-wrapper">
         <div className="events-page-container">
-          <Tabs data={TabData} />
+          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
         </div>
       </div>
     </div>
