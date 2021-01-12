@@ -45,7 +45,7 @@ const HomePage = ({ userProfile }) => {
       <div className="home-page-container">
         <Row gutter={16}>
           <Col lg={{ span: 16, offset: 4 }}>
-            <h3 className="list-label">Recommended of the month</h3>
+            <h3 className="list-label">Our Recommendations</h3>
           </Col>
           {ArticlesData.map((article, index) => (
             <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
@@ -53,34 +53,33 @@ const HomePage = ({ userProfile }) => {
             </Col>
           ))}
         </Row>
-        <Row gutter={16}>
-          <Col lg={{ span: 16, offset: 4 }}>
-            <h3 className="list-label">Recommended For you</h3>
-          </Col>
-          <Col lg={{ span: 16, offset: 4 }}>
-            <div className="recommend-card">
-              <Row gutter={16}>
-                <Col
-                  span={24}
-                  offset={0}
-                  md={{ span: 14, offset: 5 }}
-                  className="d-flex flex-column items-center"
-                >
-                  <h2 className="recommend-card-label">
-                    Access to the best HHRR information library and boost your
-                    potential
-                  </h2>
-                  <CustomButton
-                    text="Upgrade"
-                    type="primary"
-                    size="xl"
-                    className="recommend-card-upgrade"
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
+        {userProfile && userProfile.memberShip === "free" && (
+          <Row gutter={16}>
+            <Col lg={{ span: 16, offset: 4 }}>
+              <div className="recommend-card">
+                <Row gutter={16}>
+                  <Col
+                    span={24}
+                    offset={0}
+                    md={{ span: 14, offset: 5 }}
+                    className="d-flex flex-column items-center"
+                  >
+                    <h2 className="recommend-card-label">
+                      Access to the best HHRR information library and boost your
+                      potential
+                    </h2>
+                    <CustomButton
+                      text="Upgrade"
+                      type="primary"
+                      size="xl"
+                      className="recommend-card-upgrade"
+                    />
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+        )}
       </div>
     </div>
   );

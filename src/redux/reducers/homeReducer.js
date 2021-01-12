@@ -1,6 +1,7 @@
 import { handleActions } from "redux-actions";
 import { Map } from "immutable";
 import cloneDeep from "lodash/cloneDeep";
+import moment from "moment";
 
 // Action Type Imports
 import { constants as homeConstants } from "../actions/home-actions";
@@ -86,39 +87,10 @@ const EventData = [
   },
 ];
 
-const MyPastEvents = [
-  {
-    id: 1,
-    date: "2021.01.06 19:00 pm",
-    title: "Meetup - How to improve your soft skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    status: 'past',
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: ["Community cultivator", "Leadership", "Recruiting"],
-  },
-  {
-    id: 2,
-    date: "2021.01.06 19:00 pm",
-    title: "Meetup - Beers and HHRR after work",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    status: 'past',
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: [
-      "Human Resources",
-      "Leadership",
-      "Recruiting",
-      "Design",
-      "Community cultivator",
-      "Technology",
-    ],
-  },
-];
+const MyPastEvents = EventData.filter((event) => {
+  const eventDate = moment(event.date, "YYYY.MM.DD h:mm a");
+  return eventDate.isBefore(moment());
+}).filter((event) => ({ ...event, status: "past" }));
 
 // Home Page's Reducer
 export const reducers = {

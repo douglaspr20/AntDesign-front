@@ -64,7 +64,7 @@ class ProfilePopupMenu extends React.Component {
     const ContentSection = () => (
       <div className="profile-popover-content">
         <div className="profile-popover-content-membership">
-          {user.membership === "premium" ? (
+          {user.memberShip === "premium" ? (
             <React.Fragment>
               <div>Premium Membership</div>
               <div>(From XX to YY)</div>

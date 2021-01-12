@@ -1,4 +1,5 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
+import { notification } from "antd";
 
 import {
   constants as homeConstants,
@@ -44,7 +45,6 @@ export function* getUser() {
 }
 
 export function* putUser({ payload }) {
-  yield put(homeActions.updateUserInformation(defaultUserInfo));
   yield put(homeActions.setLoading(true));
 
   try {
@@ -62,7 +62,10 @@ export function* putUser({ payload }) {
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
-    console.log(error);
+    notification.error({
+      message: "User profile was not updated",
+      description: error.response.data.msg,
+    });
     yield put(homeActions.setLoading(false));
   }
 }

@@ -19,11 +19,10 @@ const FilterTitles = Object.keys(SearchFilters);
 
 const EventFilterDrawer = ({ onFilterChange }) => {
   const [visible, setVisible] = useState(false);
-  const [date, setDate] = useState(moment());
   const [filterValues, setFilterValues] = useState({});
 
   const onDone = () => {
-    onFilterChange({ date });
+    onFilterChange(filterValues);
     onDrawerClose();
   };
 
@@ -40,8 +39,18 @@ const EventFilterDrawer = ({ onFilterChange }) => {
   };
 
   const onShowAllEvent = () => {
-    onFilterChange({});
+    onFilterChange({ all: true });
+    setFilterValues({ date: moment() });
     onDrawerClose();
+  };
+
+  const onDateChange = (date) => {
+    const newFilters = {
+      ...filterValues,
+      date,
+    };
+
+    setFilterValues(newFilters);
   };
 
   useEffect(() => {
@@ -68,7 +77,7 @@ const EventFilterDrawer = ({ onFilterChange }) => {
           </h2>
         </div>
         <div className="event-filter-drawer-content">
-          <CustomCalendar dateChanged={setDate} />
+          <CustomCalendar value={filterValues.date} onChange={onDateChange} />
           <CustomButton
             className="event-filter-drawer-allevents"
             type="primary"
@@ -76,7 +85,6 @@ const EventFilterDrawer = ({ onFilterChange }) => {
             text="All Events"
             onClick={onShowAllEvent}
           />
-          <h2>Categories</h2>
           {FilterTitles.map((filter, index) => (
             <div className="search-filter" key={`${filter}-${index}`}>
               <h4 className="search-filter-title font-bold">{filter}</h4>

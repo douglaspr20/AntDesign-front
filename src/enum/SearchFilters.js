@@ -42,7 +42,7 @@ export default {
     Topics: [
       { text: "Leadership", value: "leadership" },
       { text: "Recruiting", value: "recruiting" },
-      { text: "Human Resources", value: "human-resources" },
+      { text: "Human Resources", value: "human resources" },
       { text: "Technology", value: "technology" },
       { text: "New reclutants", value: "new-reclutants" },
       { text: "Learning", value: "learning" },

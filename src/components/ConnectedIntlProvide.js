@@ -20,7 +20,7 @@ function mapStateToProps(state) {
         'tr': messages_tr,
         'en': messages_en
     };
-    const { lang } = state.env;
+    const lang = state.env.get("lang");
 
     return { locale: lang, messages: messages[lang]};
 }

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import isEqual from "lodash/isEqual";
 
 import { ProfileAvatar, CustomButton } from "components";
-import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES } from "enum";
+import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
@@ -52,6 +52,9 @@ class ProfileViewPanel extends React.Component {
     const language = (
       Languages.find((item) => item.value === user.language) || {}
     ).text;
+    const location = (
+      COUNTRIES.find((item) => item.value === user.location) || {}
+    ).text;
 
     return (
       <div className="profile-view-panel">
@@ -71,23 +74,53 @@ class ProfileViewPanel extends React.Component {
           />
         </div>
         <div className="profile-view-panel-content">
-          <h5 className="textfield-label">Company</h5>
-          <h3
-            className={clsx("textfield-value", { completed: !!user.company })}
-          >
-            {user.company || "-"}
-          </h3>
-          <h5 className="textfield-label">About you</h5>
-          <h3 className={clsx("textfield-value", { completed: !!user.about })}>
-            {user.about || "-"}
-          </h3>
-          <h5 className="textfield-label">Title / Profession</h5>
+          <h5 className="textfield-label">Email</h5>
+          <h3 className="textfield-value completed">{user.email}</h3>
+          <h5 className="textfield-label">Title</h5>
           <h3
             className={clsx("textfield-value", {
               completed: !!user.titleProfessions,
             })}
           >
             {user.titleProfessions || "-"}
+          </h3>
+          <h5 className="textfield-label">Company</h5>
+          <h3
+            className={clsx("textfield-value", { completed: !!user.company })}
+          >
+            {user.company || "-"}
+          </h3>
+          <h5 className="textfield-label">Location</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!location,
+            })}
+          >
+            {location || "-"}
+          </h3>
+          <h5 className="textfield-label">City</h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.city })}>
+            {user.city || "-"}
+          </h3>
+          <h5 className="textfield-label">Time zone</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.timezone,
+            })}
+          >
+            {timezone || "-"}
+          </h3>
+          <h5 className="textfield-label">Main language</h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.language,
+            })}
+          >
+            {language || "-"}
+          </h3>
+          <h5 className="textfield-label">Tell us more about you</h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.about })}>
+            {user.about || "-"}
           </h3>
           <h5 className="textfield-label">Topics of interest</h5>
           <h3
@@ -110,22 +143,6 @@ class ProfileViewPanel extends React.Component {
               </div>
             ))}
           {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
-          <h5 className="textfield-label">Main language</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.language,
-            })}
-          >
-            {language || "-"}
-          </h3>
-          <h5 className="textfield-label">Time zone</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.timezone,
-            })}
-          >
-            {timezone || "-"}
-          </h3>
         </div>
       </div>
     );
