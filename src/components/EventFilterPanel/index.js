@@ -36,7 +36,6 @@ const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
         text="All Events"
         onClick={onShowAllEvent}
       />
-      <h2 className="font-regular">{title}</h2>
       <div className="event-filter-panel-content">
         {FilterTitles.map((filter, index) => (
           <div className="search-filter" key={`${filter}-${index}`}>

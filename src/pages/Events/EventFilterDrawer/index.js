@@ -76,7 +76,6 @@ const EventFilterDrawer = ({ onFilterChange }) => {
             text="All Events"
             onClick={onShowAllEvent}
           />
-          <h2>Categories</h2>
           {FilterTitles.map((filter, index) => (
             <div className="search-filter" key={`${filter}-${index}`}>
               <h4 className="search-filter-title font-bold">{filter}</h4>
