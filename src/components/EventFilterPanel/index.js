@@ -42,7 +42,7 @@ const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
   return (
     <div className="event-filter-panel">
       <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
-      <CustomCalendar dateChanged={onDateChange} />
+      <CustomCalendar value={filterValues.date} dateChanged={onDateChange} />
       <CustomButton
         className="event-filter-panel-allevents"
         type="primary"

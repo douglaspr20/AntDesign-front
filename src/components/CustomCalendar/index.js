@@ -14,8 +14,8 @@ import IconRight from "images/icon-arrow-right.svg";
 
 import "./style.scss";
 
-const CustomCalendar = ({ events, disabled, dateChanged }) => {
-  const [current, setCurrent] = useState(moment());
+const CustomCalendar = ({ events, value, disabled, onChange }) => {
+  const [current, setCurrent] = useState(value || moment());
   const onDateChange = (date) => {
     if (!disabled) {
       setCurrent(date);
@@ -82,9 +82,20 @@ const CustomCalendar = ({ events, disabled, dateChanged }) => {
   };
 
   useEffect(() => {
-    dateChanged(current);
+    onChange(current);
+
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
+
+  useEffect(() => {
+    if (value && value.isValid()) {
+      setCurrent(value);
+    }
+
+    return () => {};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <div className="custom-calendar">
@@ -110,12 +121,12 @@ const CustomCalendar = ({ events, disabled, dateChanged }) => {
 
 CustomCalendar.propTypes = {
   disabled: PropTypes.bool,
-  dateChanged: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 CustomCalendar.defaultProps = {
   disabled: false,
-  dateChanged: () => {},
+  onChange: () => {},
 };
 
 const mapStateToProps = (state) => ({
