@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox, Modal } from "antd";
+import { Checkbox, Modal, notification } from "antd";
 
 import {
   CustomButton,
@@ -13,8 +13,10 @@ import {
   CONTACT_ICONS,
   TIMEZONE_LIST,
   LANGUAGES,
+  COUNTRIES,
 } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
+import { isValidEmail } from "utils/format";
 
 import "./style.scss";
 
@@ -65,7 +67,21 @@ class ProfileEditPanel extends React.Component {
 
   onSave = () => {
     let { user } = this.state;
-    this.props.onSave(user);
+
+    let error = "";
+    if (!user.email) {
+      error = "Please input your email address.";
+    } else if (!isValidEmail(user.email)) {
+      error = "Please input a valid email address.";
+    }
+
+    if (error) {
+      notification.error({
+        message: error,
+      });
+    } else {
+      this.props.onSave(user);
+    }
   };
 
   onCancel = () => {
@@ -110,22 +126,13 @@ class ProfileEditPanel extends React.Component {
               defaultValue={user.lastName}
               onChange={(value) => this.onFieldChange("lastName", value)}
             />
-            <h5 className="textfield-label">Company</h5>
+            <h5 className="textfield-label">Email</h5>
             <CustomInput
               className="textfield-input"
-              defaultValue={user.company}
-              onChange={(value) => this.onFieldChange("company", value)}
+              defaultValue={user.email}
+              onChange={(value) => this.onFieldChange("email", value)}
             />
-            <h5 className="textfield-label">Tell us something about you</h5>
-            <CustomInput
-              className="textfield-input"
-              multiple={true}
-              defaultValue={user.about}
-              onChange={(value) => this.onFieldChange("about", value)}
-            />
-            <h5 className="textfield-label">
-              What is your title or profession?
-            </h5>
+            <h5 className="textfield-label">Title</h5>
             <CustomInput
               className="textfield-input"
               defaultValue={user.titleProfessions}
@@ -133,7 +140,59 @@ class ProfileEditPanel extends React.Component {
                 this.onFieldChange("titleProfessions", value)
               }
             />
-            <h5 className="textfield-label">Tell us topics of your interest</h5>
+            <h5 className="textfield-label">Company</h5>
+            <CustomInput
+              className="textfield-input"
+              defaultValue={user.company}
+              onChange={(value) => this.onFieldChange("company", value)}
+            />
+            <h5 className="textfield-label">Location</h5>
+            <CustomSelect
+              showSearch
+              options={COUNTRIES}
+              value={user.location}
+              optionFilterProp="location"
+              onChange={(value) => this.onFieldChange("location", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+            <h5 className="textfield-label">City</h5>
+            <CustomInput
+              className="textfield-input"
+              defaultValue={user.city}
+              onChange={(value) => this.onFieldChange("city", value)}
+            />
+            <h5 className="textfield-label">Time zone</h5>
+            <CustomSelect
+              showSearch
+              options={TIMEZONE_LIST}
+              value={user.timezone}
+              optionFilterProp="children"
+              onChange={(value) => this.onFieldChange("timezone", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+            <h5 className="textfield-label">Main language</h5>
+            <CustomSelect
+              showSearch
+              options={Languages}
+              value={user.language}
+              optionFilterProp="children"
+              onChange={(value) => this.onFieldChange("language", value)}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+            <h5 className="textfield-label">Tell us more about you</h5>
+            <CustomInput
+              className="textfield-input"
+              multiple={true}
+              defaultValue={user.about}
+              onChange={(value) => this.onFieldChange("about", value)}
+            />
+            <h5 className="textfield-label">Topics of interest</h5>
             <Checkbox.Group
               defaultValue={user.topicsOfInterest}
               className="custom-checkbox-group"
@@ -168,28 +227,6 @@ class ProfileEditPanel extends React.Component {
                 </div>
               ))}
             </div>
-            <h5 className="textfield-label">Main language</h5>
-            <CustomSelect
-              showSearch
-              options={Languages}
-              value={user.language}
-              optionFilterProp="children"
-              onChange={(value) => this.onFieldChange("language", value)}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            />
-            <h5 className="textfield-label">Time zone</h5>
-            <CustomSelect
-              showSearch
-              options={TIMEZONE_LIST}
-              value={user.timezone}
-              optionFilterProp="children"
-              onChange={(value) => this.onFieldChange("timezone", value)}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            />
           </div>
         </div>
         <div className="profile-edit-panel-footer">
