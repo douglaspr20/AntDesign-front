@@ -34,6 +34,7 @@ const AttendanceDisclaimerModal = ({ isMobile }) => {
 
   return (
     <CustomModal
+      wrapClassName="attendance-confirm-modal-wrap"
       title="Attendance disclaimer"
       subTitle="Must accept to continue"
       visible={visible}

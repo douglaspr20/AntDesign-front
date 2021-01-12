@@ -40,6 +40,10 @@ const EventDrawer = () => {
     });
   });
 
+  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (data) => {
+    setEvent(data);
+  });
+
   const onDrawerClose = () => {
     setVisible(false);
   };
