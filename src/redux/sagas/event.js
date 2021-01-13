@@ -1,5 +1,6 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 import { notification } from "antd";
+import moment from "moment";
 
 import {
   constants as eventConstants,
@@ -18,7 +19,15 @@ export function* getAllEventsSaga() {
     if (response.status === 200) {
       yield put(
         eventActions.setAllEvents(
-          response.data.events.map((item) => ({ ...item, key: item.id }))
+          response.data.events
+            .map((item) => ({
+              ...item,
+              key: item.id,
+              date: moment(item.startDate).format("YYYY.MM.DD h:mm a"),
+            }))
+            .sort((a, b) => {
+              return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
+            })
         )
       );
     }
@@ -43,7 +52,14 @@ export function* getEventSaga({ payload }) {
     const response = yield call(getEvent, { ...payload });
 
     if (response.status === 200) {
-      yield put(eventActions.setEvent(response.data.event));
+      yield put(
+        eventActions.setEvent({
+          ...response.data.event,
+          date: moment(response.data.event.startDate).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+        })
+      );
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {

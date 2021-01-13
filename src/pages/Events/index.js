@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Emitter from "services/emitter";
 import { connect } from "react-redux";
@@ -13,21 +13,24 @@ import {
   updateMyEventData,
   updateMyPastEventData,
 } from "redux/actions/home-actions";
+import { getAllEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 import { EVENT_TYPES } from "enum";
 import EventFilterDrawer from "./EventFilterDrawer";
 
 import "./style.scss";
 
 const EventsPage = ({
-  events,
+  allEvents,
   myEvents,
   myPastEvents,
+  getAllEvent,
   updateEventData,
   updateMyEventData,
   updateMyPastEventData,
 }) => {
-  const [filteredEvents, setFilteredEvents] = useState(events);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
 
@@ -42,8 +45,8 @@ const EventsPage = ({
   };
 
   Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
-    const newEvents = events;
-    const index = events.findIndex((item) => item.id === event.id);
+    const newEvents = allEvents;
+    const index = allEvents.findIndex((item) => item.id === event.id);
     if (index >= 0) {
       newEvents[index] = event;
     }
@@ -95,7 +98,7 @@ const EventsPage = ({
 
   const onFilterChange = (params) => {
     setFilteredEvents((prev) => {
-      prev = events.filter((item) => {
+      prev = allEvents.filter((item) => {
         let flag = true;
 
         Object.keys(params).forEach((key) => {
@@ -138,6 +141,17 @@ const EventsPage = ({
     });
   };
 
+  useEffect(() => {
+    if (!allEvents || allEvents.length === 0) {
+      getAllEvent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setFilteredEvents([...allEvents]);
+  }, [allEvents]);
+
   return (
     <div className="events-page">
       <EventFilterDrawer onFilterChange={onFilterChange} />
@@ -167,7 +181,7 @@ EventsPage.defaultProps = {
 
 const mapStateToProps = (state) => ({
   myEvents: homeSelector(state).myEvents,
-  events: homeSelector(state).events,
+  allEvents: eventSelector(state).allEvents,
   myPastEvents: homeSelector(state).myPastEvents,
 });
 
@@ -175,6 +189,7 @@ const mapDispatchToProps = {
   updateEventData,
   updateMyEventData,
   updateMyPastEventData,
+  getAllEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
