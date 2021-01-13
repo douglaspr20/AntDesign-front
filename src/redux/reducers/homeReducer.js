@@ -1,7 +1,6 @@
 import { handleActions } from "redux-actions";
 import { Map } from "immutable";
 import cloneDeep from "lodash/cloneDeep";
-import moment from "moment";
 
 // Action Type Imports
 import { constants as homeConstants } from "../actions/home-actions";
@@ -87,10 +86,7 @@ const EventData = [
   },
 ];
 
-const MyPastEvents = EventData.filter((event) => {
-  const eventDate = moment(event.date, "YYYY.MM.DD h:mm a");
-  return eventDate.isBefore(moment());
-}).map((event) => ({ ...event, status: "past" }));
+const MyPastEvents = [];
 
 // Home Page's Reducer
 export const reducers = {

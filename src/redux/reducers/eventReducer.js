@@ -26,6 +26,7 @@ export const initialState = () =>
     loading: false,
     error: null,
     allEvents: [],
+    myEvents: [],
     event: {},
   });
 

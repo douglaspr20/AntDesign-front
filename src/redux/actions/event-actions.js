@@ -6,6 +6,8 @@ const SET_ALL_EVENTS = "SET_ALL_EVENTS";
 const SET_EVENT = "SET_EVENT";
 const SET_ERROR = "SET_ERROR";
 const SET_LOADING = "SET_LOADING";
+const ADD_TO_MY_EVENT_LIST = "ADD_TO_MY_EVENT_LIST";
+const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -14,6 +16,8 @@ export const constants = {
   SET_EVENT,
   SET_ERROR,
   SET_LOADING,
+  ADD_TO_MY_EVENT_LIST,
+  REMOVE_FROM_MY_EVENT_LIST,
 };
 
 // ------------------------------------
@@ -27,6 +31,13 @@ export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
 export const setEvent = createAction(SET_EVENT, (event) => ({ event }));
 export const setError = createAction(SET_ERROR, (error) => ({ error }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
+export const addToMyEventList = createAction(ADD_TO_MY_EVENT_LIST, (event) => ({
+  event,
+}));
+export const removeFromMyEventList = createAction(
+  REMOVE_FROM_MY_EVENT_LIST,
+  (event) => ({ event })
+);
 
 export const actions = {
   getAllEvent,
@@ -35,4 +46,6 @@ export const actions = {
   setEvent,
   setError,
   setLoading,
+  addToMyEventList,
+  removeFromMyEventList,
 };

@@ -8,7 +8,12 @@ import {
   actions as eventActions,
 } from "../actions/event-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { getAllEvents, getEvent } from "../../api";
+import {
+  getAllEvents,
+  getEvent,
+  addToMyEventListFromAPI,
+  removeFromMyEventListFromAPI,
+} from "../../api";
 
 export function* getAllEventsSaga() {
   yield put(homeActions.setLoading(true));
@@ -79,9 +84,66 @@ export function* getEventSaga({ payload }) {
   }
 }
 
+export function* addToMyEventList({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addToMyEventListFromAPI, { ...payload });
+
+    if (response.status === 200) {
+      // yield put(
+      //   eventActions.setEvent({
+      //     ...response.data.event,
+      //     date: moment(response.data.event.startDate).format(
+      //       "YYYY.MM.DD h:mm a"
+      //     ),
+      //     date2: moment(response.data.event.endDate).format(
+      //       "YYYY.MM.DD h:mm a"
+      //     ),
+      //   })
+      // );
+    }
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* removeFromMyEventList({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removeFromMyEventListFromAPI, { ...payload });
+
+    if (response.status === 200) {
+      // yield put(
+      //   eventActions.setEvent({
+      //     ...response.data.event,
+      //     date: moment(response.data.event.startDate).format(
+      //       "YYYY.MM.DD h:mm a"
+      //     ),
+      //     date2: moment(response.data.event.endDate).format(
+      //       "YYYY.MM.DD h:mm a"
+      //     ),
+      //   })
+      // );
+    }
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
+  yield takeLatest(eventConstants.ADD_TO_MY_EVENT_LIST, addToMyEventList);
+  yield takeLatest(
+    eventConstants.REMOVE_FROM_MY_EVENT_LIST,
+    removeFromMyEventList
+  );
 }
 
 export const eventSaga = [fork(watchLogin)];

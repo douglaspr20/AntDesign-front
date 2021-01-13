@@ -13,7 +13,11 @@ import {
   updateMyEventData,
   updateMyPastEventData,
 } from "redux/actions/home-actions";
-import { getAllEvent } from "redux/actions/event-actions";
+import {
+  getAllEvent,
+  addToMyEventList,
+  removeFromMyEventList,
+} from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { EVENT_TYPES } from "enum";
@@ -29,6 +33,8 @@ const EventsPage = ({
   updateEventData,
   updateMyEventData,
   updateMyPastEventData,
+  addToMyEventList,
+  removeFromMyEventList,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -36,11 +42,13 @@ const EventsPage = ({
 
   const addMyEvents = (event) => {
     if (event.going) {
-      const oldData = myEvents.filter((e) => e.id !== event.id);
-      updateMyEventData([...oldData, event]);
+      // const oldData = myEvents.filter((e) => e.id !== event.id);
+      // updateMyEventData([...oldData, event]);
+      addToMyEventList(event);
     } else {
-      const newData = myEvents.filter((e) => e.id !== event.id);
-      updateMyEventData(newData);
+      // const newData = myEvents.filter((e) => e.id !== event.id);
+      // updateMyEventData(newData);
+      removeFromMyEventList(event);
     }
   };
 
@@ -193,6 +201,8 @@ const mapDispatchToProps = {
   updateMyEventData,
   updateMyPastEventData,
   getAllEvent,
+  addToMyEventList,
+  removeFromMyEventList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

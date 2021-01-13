@@ -8,6 +8,7 @@ const resultSelector = createSelector(eventDataSelector, (payload) => {
     allEvents: payload.get("allEvents"),
     event: payload.get("event"),
     error: payload.get("error"),
+    myEvents: payload.get("myEvents"),
   };
 });
 
