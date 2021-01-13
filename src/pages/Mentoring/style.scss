@@ -11,6 +11,10 @@
   padding: 3rem 0 0;
   position: relative;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   @media (max-width: 1199.98px) {
     padding: 3rem 3rem;
   }
