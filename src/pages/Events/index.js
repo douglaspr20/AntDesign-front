@@ -128,8 +128,10 @@ const EventsPage = ({
           } else if (key === "Topics") {
             flag =
               flag &&
-              (params[key] || []).every((tpc) =>
-                item.topics.map((t) => t.toLowerCase()).includes(tpc)
+              (params[key] || []).every(
+                (tpc) =>
+                  item.type &&
+                  item.type.map((t) => t.toLowerCase()).includes(tpc)
               );
           }
         });
@@ -149,7 +151,8 @@ const EventsPage = ({
   }, []);
 
   useEffect(() => {
-    setFilteredEvents([...allEvents]);
+    onFilterChange({ date: moment() });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allEvents]);
 
   return (

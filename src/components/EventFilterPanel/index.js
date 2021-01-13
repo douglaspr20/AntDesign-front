@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Checkbox } from "antd";
 import moment from "moment";
 import { CloseOutlined } from "@ant-design/icons";
 
 import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
-
+import { eventSelector } from "redux/selectors/eventSelector";
 import { SEARCH_FILTERS } from "enum";
 
 import "./style.scss";
@@ -13,7 +14,7 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.events;
 const FilterTitles = Object.keys(SearchFilters);
 
-const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
+const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
   const [filterValues, setFilterValues] = useState({});
 
   const onDateChange = (date) => {
@@ -42,7 +43,7 @@ const EventFilterPanel = ({ title, onFilterChange, onClose }) => {
   return (
     <div className="event-filter-panel">
       <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
-      <CustomCalendar value={filterValues.date} onChange={onDateChange} />
+      <CustomCalendar events={allEvents} onChange={onDateChange} />
       <CustomButton
         className="event-filter-panel-allevents"
         type="primary"
@@ -83,4 +84,8 @@ EventFilterPanel.defaultProps = {
   onClose: () => {},
 };
 
-export default EventFilterPanel;
+const mapStateToProps = (state) => ({
+  allEvents: eventSelector(state).allEvents,
+});
+
+export default connect(mapStateToProps)(EventFilterPanel);

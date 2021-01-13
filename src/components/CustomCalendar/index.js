@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import { Calendar } from "antd";
 import moment from "moment";
 import clsx from "clsx";
-import { connect } from "react-redux";
 
-import { homeSelector } from "redux/selectors/homeSelector";
 import { SVG_ICONS } from "enum";
 import { CustomButton } from "components";
 
@@ -15,7 +13,7 @@ import IconRight from "images/icon-arrow-right.svg";
 import "./style.scss";
 
 const CustomCalendar = ({ events, value, disabled, onChange }) => {
-  const [current, setCurrent] = useState(value || moment());
+  const [current, setCurrent] = useState(moment());
   const onDateChange = (date) => {
     if (!disabled) {
       setCurrent(date);
@@ -94,7 +92,7 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
     }
 
     return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (
@@ -121,16 +119,14 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
 
 CustomCalendar.propTypes = {
   disabled: PropTypes.bool,
+  events: PropTypes.array,
   onChange: PropTypes.func,
 };
 
 CustomCalendar.defaultProps = {
   disabled: false,
+  events: [],
   onChange: () => {},
 };
 
-const mapStateToProps = (state) => ({
-  events: homeSelector(state).events,
-});
-
-export default connect(mapStateToProps)(CustomCalendar);
+export default CustomCalendar;

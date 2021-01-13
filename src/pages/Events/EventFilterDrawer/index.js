@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import moment from "moment";
+import { connect } from "react-redux";
 
 import {
   CustomDrawer,
@@ -10,6 +11,7 @@ import {
   CustomCalendar,
 } from "components";
 import { EVENT_TYPES, SEARCH_FILTERS } from "enum";
+import { eventSelector } from "redux/selectors/eventSelector";
 import Emitter from "services/emitter";
 
 import "./style.scss";
@@ -17,7 +19,7 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.events;
 const FilterTitles = Object.keys(SearchFilters);
 
-const EventFilterDrawer = ({ onFilterChange }) => {
+const EventFilterDrawer = ({ allEvents, onFilterChange }) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
@@ -77,7 +79,7 @@ const EventFilterDrawer = ({ onFilterChange }) => {
           </h2>
         </div>
         <div className="event-filter-drawer-content">
-          <CustomCalendar value={filterValues.date} onChange={onDateChange} />
+          <CustomCalendar events={allEvents} onChange={onDateChange} />
           <CustomButton
             className="event-filter-drawer-allevents"
             type="primary"
@@ -125,4 +127,8 @@ EventFilterDrawer.defaultProps = {
   onFilterChange: () => {},
 };
 
-export default EventFilterDrawer;
+const mapStateToProps = (state) => ({
+  allEvents: eventSelector(state).allEvents,
+});
+
+export default connect(mapStateToProps)(EventFilterDrawer);

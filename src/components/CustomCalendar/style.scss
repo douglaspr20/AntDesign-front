@@ -63,11 +63,12 @@
       }
 
       .ant-picker-calendar-date-today {
-        background: $color-primary;
+        border: 1px solid $color-primary;
+        background: transparent;
         border-radius: 4px;
 
         .ant-picker-calendar-date-value {
-          color: $color-white;
+          color: $color-primary;
         }
 
         &::before {
@@ -77,12 +78,12 @@
     }
 
     &.ant-picker-cell-selected .ant-picker-cell-inner {
-      background: transparent;
+      background: $color-primary;
       border: 1px solid $color-primary;
       border-radius: 4px;
 
       .ant-picker-calendar-date-value {
-        color: $color-primary;
+        color: $color-white;
       }
 
       &::before {
