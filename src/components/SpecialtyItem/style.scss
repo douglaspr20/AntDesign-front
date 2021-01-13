@@ -12,6 +12,7 @@
   border: 1px solid $color-text-third;
   color: $color-text-third;
   white-space: nowrap;
+  text-transform: capitalize;
   
   &.active {
     border: 1px solid $color-accent;

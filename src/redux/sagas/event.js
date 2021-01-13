@@ -1,6 +1,7 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 import { notification } from "antd";
 import moment from "moment";
+import { getEventPeriod, getEventDescription } from "utils/format";
 
 import {
   constants as eventConstants,
@@ -25,6 +26,12 @@ export function* getAllEventsSaga() {
               key: item.id,
               date: moment(item.startDate).format("YYYY.MM.DD h:mm a"),
               date2: moment(item.endDate).format("YYYY.MM.DD h:mm a"),
+              period: getEventPeriod(
+                moment(item.startDate).format("YYYY.MM.DD h:mm a"),
+                moment(item.endDate).format("YYYY.MM.DD h:mm a"),
+                item.timezone
+              ),
+              about: getEventDescription(item.description),
             }))
             .sort((a, b) => {
               return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;

@@ -1,4 +1,9 @@
 /* eslint-disable no-useless-escape */
+import moment from "moment";
+import { SETTINGS, TIMEZONE_LIST } from "enum";
+
+const DataFormat = SETTINGS.DATE_FORMAT;
+
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -54,4 +59,35 @@ function isValidEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-export { numberWithCommas, isValidPassword, isValidURL, isValidEmail };
+function getEventPeriod(date, date2, timezone) {
+  let res = "";
+  const startDate = moment(date, DataFormat);
+  const endDate = moment(date2, DataFormat);
+  let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
+  tz = (tz || {}).abbr || "";
+
+  if (
+    startDate.year() === endDate.year() &&
+    startDate.month() === endDate.month() &&
+    startDate.date() === endDate.date()
+  ) {
+    res = `${date} - ${endDate.format("h:mm a")} ${tz}`;
+  } else {
+    res = `${date} - ${date2} ${tz}`;
+  }
+
+  return res;
+}
+
+function getEventDescription(rawData) {
+  return rawData ? rawData.blocks.map((item) => item.text).join(`/n`) : "";
+}
+
+export {
+  numberWithCommas,
+  isValidPassword,
+  isValidURL,
+  isValidEmail,
+  getEventPeriod,
+  getEventDescription,
+};
