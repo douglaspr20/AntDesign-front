@@ -107,6 +107,7 @@
 
     .event-card-cost {
       margin-bottom: 1rem !important;
+      text-transform: capitalize;
 
       @media (max-width: 575.98px) {
         @include app-font(16px, 21px);

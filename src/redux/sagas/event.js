@@ -24,6 +24,7 @@ export function* getAllEventsSaga() {
               ...item,
               key: item.id,
               date: moment(item.startDate).format("YYYY.MM.DD h:mm a"),
+              date2: moment(item.endDate).format("YYYY.MM.DD h:mm a"),
             }))
             .sort((a, b) => {
               return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
@@ -56,6 +57,9 @@ export function* getEventSaga({ payload }) {
         eventActions.setEvent({
           ...response.data.event,
           date: moment(response.data.event.startDate).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          date2: moment(response.data.event.endDate).format(
             "YYYY.MM.DD h:mm a"
           ),
         })

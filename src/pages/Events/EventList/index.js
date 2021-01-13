@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
@@ -28,7 +28,7 @@ const monthStr = [
   "DEC",
 ];
 
-const DataFormat = "YYYY.MM.DD hh:mm A";
+const DataFormat = SETTINGS.DATE_FORMAT;
 
 const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});

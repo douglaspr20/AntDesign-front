@@ -11,3 +11,4 @@ export { default as MONTH_NAMES } from "./MonthNames";
 export { default as USER_ROLES } from "./UserRoles";
 export { default as EVENT_FILTER } from "./EventFilters";
 export { default as COUNTRIES } from "./Countries";
+export { default as SETTINGS } from "./Settings";

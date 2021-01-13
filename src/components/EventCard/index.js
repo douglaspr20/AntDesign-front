@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { CheckOutlined } from "@ant-design/icons";
 import clsx from "clsx";
+import moment from "moment";
 
 import { CustomButton, SpecialtyItem } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 
 import "./style.scss";
+
+const DataFormat = SETTINGS.DATE_FORMAT;
 
 class EventCard extends React.Component {
   onAttend = (e) => {
@@ -45,9 +48,40 @@ class EventCard extends React.Component {
     e.stopPropagation();
   };
 
+  getEventPeriod = (date, date2, timezone) => {
+    let res = "";
+    const startDate = moment(date, DataFormat);
+    const endDate = moment(date2, DataFormat);
+    let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
+    tz = (tz || {}).abbr || "";
+
+    if (
+      startDate.year() === endDate.year() &&
+      startDate.month() === endDate.month() &&
+      startDate.date() === endDate.date()
+    ) {
+      res = `${date} - ${endDate.format("h:mm a")} ${tz}`;
+    } else {
+      res = `${date} - ${date2} ${tz}`;
+    }
+
+    return res;
+  };
+
   render() {
     const {
-      data: { date, title, timezone, type, cost, img, going, topics, status },
+      data: {
+        date,
+        date2,
+        title,
+        timezone,
+        type,
+        ticket,
+        location,
+        image,
+        going,
+        status,
+      },
       className,
     } = this.props;
 
@@ -57,17 +91,17 @@ class EventCard extends React.Component {
         onClick={this.openEventDetails}
       >
         <div className="event-card-img">
-          {img && <img src={img} alt="card-img" />}
+          {image && <img src={image} alt="card-img" />}
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
           <h3>{title}</h3>
-          <h5>{`${date} ${timezone}`}</h5>
-          <h5>{type}</h5>
-          <h6 className="event-card-cost">{cost}</h6>
-          {topics && topics.length > 0 && (
+          <h5>{this.getEventPeriod(date, date2, timezone)}</h5>
+          <h5>{`${location ? location.join(",") : ""} event`}</h5>
+          <h6 className="event-card-cost">{ticket}</h6>
+          {type && type.length > 0 && (
             <div className="event-card-topics">
-              {topics.map((topic, index) => (
-                <SpecialtyItem key={index} title={topic} active={false} />
+              {type.map((ty, index) => (
+                <SpecialtyItem key={index} title={ty} active={false} />
               ))}
             </div>
           )}
