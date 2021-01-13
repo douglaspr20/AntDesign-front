@@ -13,6 +13,10 @@ class Sider extends Component {
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
         <PrivateRoute
+          path={INTERNAL_LINKS.HEART}
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.LEARNING_LIBRARY}
           render={() => <Sidebar />}
         />

@@ -1,0 +1,144 @@
+@import "styles/main.scss";
+
+.heart-page {
+  padding: 4rem 0;
+  height: calc(100vh - 72px);
+  overflow: auto;
+
+  @media (max-width: 575.98px) {
+    padding: 2rem 0;
+  }
+}
+
+.heart-page__container {
+  width: 100%;
+  max-width: 672px;
+  padding: 0 1rem;
+  margin: 0 auto;
+
+  > * + * {
+    margin-top: 1.5rem;
+  }
+}
+
+.heart-page__header {
+  text-align: center;
+}
+
+.heart-categories__row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+
+  @media (min-width: 768px) {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+}
+
+.heart-categories__col {
+  width: 33.333%;
+  padding: 0 0.25rem 0.25rem;
+
+  @media (min-width: 768px) {
+    padding: 0 0.5rem 0.5rem;
+    width: 20%;
+  }
+}
+
+.heart-categories__button {
+  display: block;
+  width: 100%;
+  background-color: $color-white;
+  padding: 10px;
+  border: 0;
+  box-shadow: $shadow-primary;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.3125em;
+  color: $color-text-primary;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: background-color .2s ease-in-out;
+
+  &:hover {
+    background-color: $color-background-dark;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (min-width: 575.98px) {
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.heart-categories__button-ico {
+  display: block;
+  width: 100%;
+  max-width: 2rem;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto 0.5rem;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.heart-truncate {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.heart-cards-list__wrap {
+
+  > * + * {
+    margin-top: 1rem;
+  }
+}
+
+.border-color--primary {
+  border: 1px solid rgba($color-primary, 0.5);
+}
+
+.border-color--success {
+  border: 1px solid rgba($color-success, 0.5);
+}
+
+.border-color--accent {
+  border: 1px solid rgba($color-accent, 0.5);
+}
+
+.border-color--warning {
+  border: 1px solid rgba($color-warning, 0.5);
+}
+
+.border-color--error {
+  border: 1px solid rgba($color-error, 0.5);
+}
+
+.heart-new-comment__cta-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  > * {
+    margin-right: 0.5rem;
+
+    &:nth-last-of-type(1) {
+      margin-right: 0rem;
+    }
+  }
+}
