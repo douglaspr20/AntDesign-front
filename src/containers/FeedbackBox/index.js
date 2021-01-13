@@ -65,7 +65,7 @@ class FeedbackBox extends Component {
             className="feedback-box-container__header"
             onClick={() => { this.changeHeightFeedbackBox(); }}
           >
-            <h5><img src={IconChevronDown} style={{ transform: this.state.rotateArrow }} /> Please Provide Feedback!</h5>
+            <h5><img src={IconChevronDown} style={{ transform: this.state.rotateArrow }} /> Please Help Us Improve The LAB</h5>
           </div>
           <div className="feedback-box-container__container">
             <CustomInput
