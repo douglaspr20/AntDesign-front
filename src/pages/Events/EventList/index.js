@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
@@ -28,10 +28,10 @@ const monthStr = [
   "DEC",
 ];
 
-const DataFormat = "YYYY.MM.DD hh:mm A";
+const DataFormat = SETTINGS.DATE_FORMAT;
 
 const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
-  const groupedByEventData = groupBy(data, "date");
+  const [groupedByEventData, setGroupedByEventData] = useState({});
 
   const onEventChanged = (event, going) => {
     event.going = going;
@@ -45,6 +45,12 @@ const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
       showFilter();
     }
   };
+
+  useEffect(() => {
+    const groupedData = groupBy(data, "date");
+
+    setGroupedByEventData({ ...groupedData });
+  }, [data]);
 
   return (
     <div className="event-list">

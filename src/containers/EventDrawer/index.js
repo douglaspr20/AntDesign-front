@@ -21,17 +21,12 @@ const EventDrawer = () => {
   const [visible, setVisible] = useState(false);
   const [event, setEvent] = useState({});
 
-  Emitter.on(EVENT_TYPES.EVENT_VIEW_ARTICLE, (data) => {
+  Emitter.on(EVENT_TYPES.EVENT_VIEW_DETAIL, (data) => {
     setVisible(true);
     setEvent({
       ...data,
-      dateStr: `${moment(data.date, DataFormat).format("DD MMM . hh:mm A")} ${
-        data.timezone
-      }`,
       day: moment(data.date, DataFormat).date(),
       month: MONTH_NAMES[moment(data.date, DataFormat).month()],
-      about:
-        "Sometimes things don’t go according to plan. Tools break, wires get crossed, the best-laid plans fall apart. And on those occasions, it helps to know exactly what happened—so it doesn’t happen again. Moments like these are when we at Buffer turn to a simple but remarkably effective process: The 5 Whys.",
       Sponsors: [
         "Sometimes things don’t go according to plan. Tools break, wires get crossed, the best-laid plans fall apart. And on those occasions, it helps to know exactly what happened—so it doesn’t happen again. Moments like these are when we at Buffer turn to a simple but remarkably effective process: The 5 Whys.",
         "It’s just as it sounds: A discussion of the unexpected event or challenge that follows one train of thought to its logical conclusion by asking “Why?” five times to get to the root of what happened.",
@@ -85,7 +80,7 @@ const EventDrawer = () => {
     >
       <div className="event-details">
         <div className="event-details-header">
-          <img src={event.img} alt="event-img" />
+          {event.image && <img src={event.image} alt="event-img" />}
         </div>
         <div className="event-details-content">
           <div className="event-details-content-actions">
@@ -146,15 +141,7 @@ const EventDrawer = () => {
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
             <div className="d-flex items-center">
-              <h3 className="event-date">
-                {moment(event.date, DataFormat).format("DD MMM")}
-              </h3>
-              <i className="fas fa-circle" />
-              <h3 className="event-date">
-                {`${moment(event.date, DataFormat).format("hh:mm A")} ${
-                  event.timezone
-                }`}
-              </h3>
+              <h3 className="event-date">{event.period}</h3>
             </div>
             {!event.past && event.going && (
               <Dropdown overlay={menu}>
@@ -164,12 +151,12 @@ const EventDrawer = () => {
               </Dropdown>
             )}
           </div>
-          <h3 className="event-type">{event.type}</h3>
-          <h3 className="event-cost">{event.cost}</h3>
-          {event.topics && event.topics.length > 0 && (
+          <h3 className="event-type">{`${event.location} event`}</h3>
+          <h3 className="event-cost">{event.ticket}</h3>
+          {event.type && event.type.length > 0 && (
             <div className="event-topics">
-              {event.topics.map((topic, index) => (
-                <SpecialtyItem key={index} title={topic} active={false} />
+              {event.type.map((tp, index) => (
+                <SpecialtyItem key={index} title={tp} active={false} />
               ))}
             </div>
           )}

@@ -25,7 +25,7 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    Emitter.emit(EVENT_TYPES.EVENT_VIEW_ARTICLE, this.props.data);
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_DETAIL, this.props.data);
   };
 
   onClickConfirm = (e) => {
@@ -47,7 +47,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { date, title, timezone, type, cost, img, going, topics, status },
+      data: { title, type, ticket, location, image, going, status, period },
       className,
     } = this.props;
 
@@ -57,17 +57,17 @@ class EventCard extends React.Component {
         onClick={this.openEventDetails}
       >
         <div className="event-card-img">
-          {img && <img src={img} alt="card-img" />}
+          {image && <img src={image} alt="card-img" />}
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
           <h3>{title}</h3>
-          <h5>{`${date} ${timezone}`}</h5>
-          <h5>{type}</h5>
-          <h6 className="event-card-cost">{cost}</h6>
-          {topics && topics.length > 0 && (
+          <h5>{period}</h5>
+          <h5>{`${location ? location.join(",") : ""} event`}</h5>
+          <h6 className="event-card-cost">{ticket}</h6>
+          {type && type.length > 0 && (
             <div className="event-card-topics">
-              {topics.map((topic, index) => (
-                <SpecialtyItem key={index} title={topic} active={false} />
+              {type.map((ty, index) => (
+                <SpecialtyItem key={index} title={ty} active={false} />
               ))}
             </div>
           )}
