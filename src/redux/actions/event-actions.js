@@ -10,6 +10,7 @@ const ADD_TO_MY_EVENT_LIST = "ADD_TO_MY_EVENT_LIST";
 const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
 const GET_MY_EVENTS = "GET_MY_EVENTS";
 const SET_MY_EVENTS = "SET_MY_EVENTS";
+const UPDATE_EVENT_STATUS = "UPDATE_EVENT_STATUS";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -22,6 +23,7 @@ export const constants = {
   REMOVE_FROM_MY_EVENT_LIST,
   GET_MY_EVENTS,
   SET_MY_EVENTS,
+  UPDATE_EVENT_STATUS,
 };
 
 // ------------------------------------
@@ -46,6 +48,13 @@ export const getMyEvents = createAction(GET_MY_EVENTS);
 export const setMyEvents = createAction(SET_MY_EVENTS, (myEvents) => ({
   myEvents,
 }));
+export const updateEventStatus = createAction(
+  UPDATE_EVENT_STATUS,
+  (event, status) => ({
+    event,
+    status,
+  })
+);
 
 export const actions = {
   getAllEvent,
@@ -58,4 +67,5 @@ export const actions = {
   removeFromMyEventList,
   getMyEvents,
   setMyEvents,
+  updateEventStatus,
 };

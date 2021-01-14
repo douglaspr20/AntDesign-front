@@ -15,6 +15,7 @@ import {
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
+  updateEventStatusFromAPI,
 } from "../../api";
 
 const community = storage.get("community");
@@ -186,6 +187,28 @@ export function* getAllMyEvents() {
   }
 }
 
+export function* updateEventStatus({ payload }) {
+  try {
+    const response = yield call(updateEventStatusFromAPI, { ...payload });
+
+    if (response.status === 200) {
+      const data = response.data.affectedRows;
+      yield put(
+        eventActions.setEvent({
+          ...data,
+          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          status: getEventStatus(data, userId),
+        })
+      );
+    }
+    // yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    // yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
@@ -195,6 +218,7 @@ function* watchLogin() {
     removeFromMyEventList
   );
   yield takeLatest(eventConstants.GET_MY_EVENTS, getAllMyEvents);
+  yield takeLatest(eventConstants.UPDATE_EVENT_STATUS, updateEventStatus);
 }
 
 export const eventSaga = [fork(watchLogin)];

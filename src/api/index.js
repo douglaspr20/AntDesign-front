@@ -7,7 +7,11 @@ import {
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
 } from "./module/user";
-import { getAllEvents, getEvent } from "./module/event";
+import {
+  getAllEvents,
+  getEvent,
+  updateEventStatusFromAPI,
+} from "./module/event";
 
 export {
   signIn,
@@ -20,4 +24,5 @@ export {
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
+  updateEventStatusFromAPI,
 };

@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import { CustomModal, CustomButton } from "components";
 import { envSelector } from "redux/selectors/envSelector";
+import { updateEventStatus } from "redux/actions/event-actions";
 import Emitter from "services/emitter";
 
 import { EVENT_TYPES } from "enum";
@@ -15,7 +16,7 @@ const Text = `
   Etiam convallis elementum sapien, a aliquam turpis aliquam vitae. Praesent sollicitudin felis vel mi facilisis posuere. Nulla ultrices facilisis justo, non varius nisl semper vel. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus at ante mattis, condimentum velit et, dignissim nunc. Integer quis tincidunt purus. Duis dignissim mauris vel elit commodo, eu hendrerit leo ultrices. Nulla vehicula vestibulum purus at rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur dignissim massa nec libero scelerisque rutrum. Curabitur ac purus id elit hendrerit lacinia. Nullam sit amet sem efficitur, porta diam in, convallis tortor.
 `;
 
-const AttendanceDisclaimerModal = ({ isMobile }) => {
+const AttendanceDisclaimerModal = ({ isMobile, updateEventStatus }) => {
   const [visible, setVisible] = useState(false);
   const [event, setEvent] = useState({});
 
@@ -26,10 +27,7 @@ const AttendanceDisclaimerModal = ({ isMobile }) => {
 
   const onConfirm = () => {
     setVisible(false);
-    Emitter.emit(EVENT_TYPES.MY_PAST_EVENT_CHANGED, {
-      ...event,
-      status: "confirmed",
-    });
+    updateEventStatus(event, "confirmed");
   };
 
   return (
@@ -68,4 +66,11 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
 });
 
-export default connect(mapStateToProps)(AttendanceDisclaimerModal);
+const mapDispatchToProps = {
+  updateEventStatus,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AttendanceDisclaimerModal);
