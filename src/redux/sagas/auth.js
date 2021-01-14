@@ -6,6 +6,7 @@ import {
   actions as authActions,
 } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { actions as eventActions } from "../actions/event-actions";
 import { signIn, signUp } from "../../api";
 
 const defaultUserInfo = {
@@ -100,7 +101,10 @@ export function* logout() {
       id: 0,
     })
   );
+
   yield put(homeActions.updateUserInformation({}));
+  yield put(eventActions.setMyEvents([]));
+  yield put(eventActions.setAllEvents([]));
 }
 
 export function* signUpUser({ payload }) {

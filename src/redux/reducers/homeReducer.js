@@ -5,89 +5,6 @@ import cloneDeep from "lodash/cloneDeep";
 // Action Type Imports
 import { constants as homeConstants } from "../actions/home-actions";
 
-const EventData = [
-  {
-    id: 1,
-    date: "2021.01.06 19:00 pm",
-    title: "Meetup - How to improve your soft skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: ["Community cultivator", "Leadership", "Recruiting"],
-  },
-  {
-    id: 2,
-    date: "2021.01.06 19:00 pm",
-    title: "Meetup - Beers and HHRR after work",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: [
-      "Human Resources",
-      "Leadership",
-      "Recruiting",
-      "Design",
-      "Community cultivator",
-      "Technology",
-    ],
-  },
-  {
-    id: 3,
-    date: "2021.01.12 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: [],
-  },
-  {
-    id: 4,
-    date: "2021.01.13 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    topics: [
-      "Human Resources",
-      "Leadership",
-      "Recruiting",
-      "Design",
-      "Community cultivator",
-      "Technology",
-    ],
-  },
-  {
-    id: 5,
-    date: "2021.01.18 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-  {
-    id: 6,
-    date: "2021.01.21 19:00 pm",
-    title: "Bay area job seekers and recruiters network skills",
-    timezone: "EST",
-    type: "Online event",
-    cost: "Free",
-    going: false,
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  },
-];
-
-const MyPastEvents = [];
-
 // Home Page's Reducer
 export const reducers = {
   [homeConstants.SET_LOADING]: (state, { payload }) => {
@@ -100,15 +17,6 @@ export const reducers = {
     return state.merge({
       userProfile: cloneDeep(payload.userProfile),
     });
-  },
-  [homeConstants.UPDATE_EVENTS]: (state, { payload }) => {
-    return state.merge({ events: cloneDeep(payload.events) });
-  },
-  [homeConstants.UPDATE_MY_EVENTS]: (state, { payload }) => {
-    return state.merge({ myEvents: cloneDeep(payload.myEvents) });
-  },
-  [homeConstants.UPDATE_PAST_EVENTS]: (state, { payload }) => {
-    return state.merge({ myPastEvents: cloneDeep(payload.myPastEvents) });
   },
   [homeConstants.SET_SETTING_COLLAPSED]: (state, { payload }) => {
     return state.merge({
@@ -138,9 +46,6 @@ export const initialState = () =>
       // completed: false,
       // percentOfCompletion: 36,
     },
-    events: EventData || [],
-    myEvents: [],
-    myPastEvents: MyPastEvents,
     setting: {
       collapsed: {
         mentor: false,

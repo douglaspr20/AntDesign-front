@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import Emitter from "services/emitter";
 import { connect } from "react-redux";
 import moment from "moment";
 import isEqual from "lodash/isEqual";
@@ -9,14 +8,12 @@ import clsx from "clsx";
 import { Tabs, EventFilterPanel } from "components";
 import EventList from "./EventList";
 import {
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
-} from "redux/actions/home-actions";
-import { getAllEvent } from "redux/actions/event-actions";
-import { homeSelector } from "redux/selectors/homeSelector";
+  getAllEvent,
+  addToMyEventList,
+  removeFromMyEventList,
+  getMyEvents,
+} from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
-import { EVENT_TYPES } from "enum";
 import EventFilterDrawer from "./EventFilterDrawer";
 
 import "./style.scss";
@@ -24,44 +21,23 @@ import "./style.scss";
 const EventsPage = ({
   allEvents,
   myEvents,
-  myPastEvents,
   getAllEvent,
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
+  getMyEvents,
+  addToMyEventList,
+  removeFromMyEventList,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
+  const [filterParams, setFilterParams] = useState({});
 
   const addMyEvents = (event) => {
     if (event.going) {
-      const oldData = myEvents.filter((e) => e.id !== event.id);
-      updateMyEventData([...oldData, event]);
+      addToMyEventList(event);
     } else {
-      const newData = myEvents.filter((e) => e.id !== event.id);
-      updateMyEventData(newData);
+      removeFromMyEventList(event);
     }
   };
-
-  Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
-    const newEvents = allEvents;
-    const index = allEvents.findIndex((item) => item.id === event.id);
-    if (index >= 0) {
-      newEvents[index] = event;
-    }
-    updateEventData(newEvents);
-    addMyEvents(event);
-  });
-
-  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (event) => {
-    const newEvents = myPastEvents;
-    const index = myPastEvents.findIndex((item) => item.id === event.id);
-    if (index >= 0) {
-      newEvents[index] = event;
-    }
-    updateMyPastEventData(newEvents);
-  });
 
   const TabData = [
     {
@@ -78,7 +54,7 @@ const EventsPage = ({
       title: "My events",
       content: () => (
         <EventList
-          data={myEvents}
+          data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
           showFilter={() => setVisibleFilter(true)}
         />
@@ -88,7 +64,7 @@ const EventsPage = ({
       title: "My past events",
       content: () => (
         <EventList
-          data={myPastEvents}
+          data={myEvents.filter((event) => event.status !== "going")}
           onAttend={addMyEvents}
           showFilter={() => setVisibleFilter(true)}
         />
@@ -97,6 +73,7 @@ const EventsPage = ({
   ];
 
   const onFilterChange = (params) => {
+    setFilterParams(params);
     setFilteredEvents((prev) => {
       prev = allEvents.filter((item) => {
         let flag = true;
@@ -127,12 +104,7 @@ const EventsPage = ({
             setCurrentTab("0");
           } else if (key === "Topics") {
             flag =
-              flag &&
-              (params[key] || []).every(
-                (tpc) =>
-                  item.type &&
-                  item.type.map((t) => t.toLowerCase()).includes(tpc)
-              );
+              flag && (params[key] || []).every((tpc) => item.category === tpc);
           }
         });
 
@@ -147,13 +119,21 @@ const EventsPage = ({
     if (!allEvents || allEvents.length === 0) {
       getAllEvent();
     }
+    if (!myEvents || myEvents.length === 0) {
+      getMyEvents();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [allEvents, myEvents]);
+
+  useEffect(() => {
+    onFilterChange(filterParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allEvents]);
 
   useEffect(() => {
     onFilterChange({ date: moment() });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allEvents]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="events-page">
@@ -183,16 +163,15 @@ EventsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  myEvents: homeSelector(state).myEvents,
+  myEvents: eventSelector(state).myEvents,
   allEvents: eventSelector(state).allEvents,
-  myPastEvents: homeSelector(state).myPastEvents,
 });
 
 const mapDispatchToProps = {
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
   getAllEvent,
+  getMyEvents,
+  addToMyEventList,
+  removeFromMyEventList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

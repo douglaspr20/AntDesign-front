@@ -47,7 +47,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { title, type, ticket, location, image, going, status, period },
+      data: { title, type, ticket, location, status, image, period },
       className,
     } = this.props;
 
@@ -101,7 +101,7 @@ class EventCard extends React.Component {
                   />
                 </div>
               )}
-              {!["past", "confirmed"].includes(status) && !going && (
+              {status === "attend" && (
                 <CustomButton
                   text="Attend"
                   size="md"
@@ -109,7 +109,7 @@ class EventCard extends React.Component {
                   onClick={this.onAttend}
                 />
               )}
-              {!["past", "confirmed"].includes(status) && going && (
+              {status === "going" && (
                 <div className="going-group-part">
                   <div className="going-label">
                     <CheckOutlined />

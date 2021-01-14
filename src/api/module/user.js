@@ -15,3 +15,15 @@ export const upgradePlan = ({ data }) => {
     ...data,
   });
 };
+
+export const addToMyEventListFromAPI = ({ event }) => {
+  return httpClient.put(`private/user/add-event/`, event);
+};
+
+export const removeFromMyEventListFromAPI = ({ event }) => {
+  return httpClient.put(`private/user/remove-event/`, event);
+};
+
+export const getAllMyEventsFromAPI = () => {
+  return httpClient.get(`private/user/my-events/`);
+};

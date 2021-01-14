@@ -1,6 +1,17 @@
 import { signIn, signUp } from "./module/auth";
-import { getUserFromId, updateUser, upgradePlan } from "./module/user";
-import { getAllEvents, getEvent } from "./module/event";
+import {
+  getUserFromId,
+  updateUser,
+  upgradePlan,
+  addToMyEventListFromAPI,
+  removeFromMyEventListFromAPI,
+  getAllMyEventsFromAPI,
+} from "./module/user";
+import {
+  getAllEvents,
+  getEvent,
+  updateEventStatusFromAPI,
+} from "./module/event";
 
 export {
   signIn,
@@ -10,4 +21,8 @@ export {
   upgradePlan,
   getAllEvents,
   getEvent,
+  addToMyEventListFromAPI,
+  removeFromMyEventListFromAPI,
+  getAllMyEventsFromAPI,
+  updateEventStatusFromAPI,
 };

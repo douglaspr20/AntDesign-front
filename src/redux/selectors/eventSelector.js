@@ -6,8 +6,9 @@ const resultSelector = createSelector(eventDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
     allEvents: payload.get("allEvents"),
-    event: payload.get("event"),
+    updatedEvent: payload.get("updatedEvent"),
     error: payload.get("error"),
+    myEvents: payload.get("myEvents"),
   };
 });
 

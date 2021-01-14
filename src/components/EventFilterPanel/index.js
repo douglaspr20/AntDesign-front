@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Checkbox } from "antd";
-import moment from "moment";
 import { CloseOutlined } from "@ant-design/icons";
 
 import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
@@ -29,7 +28,7 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
   };
 
   const onShowAllEvent = () => {
-    setFilterValues({ date: moment() });
+    // setFilterValues({ date: moment() });
     onFilterChange({ all: true });
   };
 
@@ -43,7 +42,7 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
   return (
     <div className="event-filter-panel">
       <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
-      <CustomCalendar events={allEvents} onChange={onDateChange} />
+      <CustomCalendar value={filterValues.date} events={allEvents} onChange={onDateChange} />
       <CustomButton
         className="event-filter-panel-allevents"
         type="primary"
