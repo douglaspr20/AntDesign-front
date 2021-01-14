@@ -6,10 +6,7 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
     userProfile: payload.get("userProfile"),
-    events: payload.get("events"),
-    myEvents: payload.get("myEvents"),
     setting: payload.get("setting"),
-    myPastEvents: payload.get("myPastEvents"),
   };
 });
 
