@@ -2,6 +2,7 @@ import { put, fork, takeLatest, call } from "redux-saga/effects";
 import { notification } from "antd";
 import moment from "moment";
 import { getEventPeriod, getEventDescription } from "utils/format";
+import storage from "store";
 
 import {
   constants as eventConstants,
@@ -13,6 +14,7 @@ import {
   getEvent,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
+  getAllMyEventsFromAPI,
 } from "../../api";
 
 export function* getAllEventsSaga() {
@@ -136,6 +138,45 @@ export function* removeFromMyEventList({ payload }) {
   }
 }
 
+export function* getAllMyEvents() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllMyEventsFromAPI);
+
+    if (response.status === 200) {
+      const community = storage.get("community");
+      const { id: userId } = community || {};
+
+      yield put(
+        eventActions.setMyEvents(
+          response.data.myEvents.map((item) => ({
+            ...item,
+            key: item.id,
+            date: item.startDate
+              ? moment(item.startDate).format("YYYY.MM.DD h:mm a")
+              : "",
+            date2: item.endDate
+              ? moment(item.endDate).format("YYYY.MM.DD h:mm a")
+              : "",
+            period: getEventPeriod(
+              moment(item.startDate).format("YYYY.MM.DD h:mm a"),
+              moment(item.endDate).format("YYYY.MM.DD h:mm a"),
+              item.timezone
+            ),
+            about: getEventDescription(item.description),
+            status: item.status[userId],
+          }))
+        )
+      );
+    }
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
@@ -144,6 +185,7 @@ function* watchLogin() {
     eventConstants.REMOVE_FROM_MY_EVENT_LIST,
     removeFromMyEventList
   );
+  yield takeLatest(eventConstants.GET_MY_EVENTS, getAllMyEvents);
 }
 
 export const eventSaga = [fork(watchLogin)];

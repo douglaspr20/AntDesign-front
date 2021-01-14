@@ -8,6 +8,8 @@ const SET_ERROR = "SET_ERROR";
 const SET_LOADING = "SET_LOADING";
 const ADD_TO_MY_EVENT_LIST = "ADD_TO_MY_EVENT_LIST";
 const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
+const GET_MY_EVENTS = "GET_MY_EVENTS";
+const SET_MY_EVENTS = "SET_MY_EVENTS";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -18,6 +20,8 @@ export const constants = {
   SET_LOADING,
   ADD_TO_MY_EVENT_LIST,
   REMOVE_FROM_MY_EVENT_LIST,
+  GET_MY_EVENTS,
+  SET_MY_EVENTS,
 };
 
 // ------------------------------------
@@ -38,6 +42,10 @@ export const removeFromMyEventList = createAction(
   REMOVE_FROM_MY_EVENT_LIST,
   (event) => ({ event })
 );
+export const getMyEvents = createAction(GET_MY_EVENTS);
+export const setMyEvents = createAction(SET_MY_EVENTS, (myEvents) => ({
+  myEvents,
+}));
 
 export const actions = {
   getAllEvent,
@@ -48,4 +56,6 @@ export const actions = {
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
+  getMyEvents,
+  setMyEvents,
 };

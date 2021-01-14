@@ -19,6 +19,9 @@ export const reducers = {
   [eventConstants.SET_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
+  [eventConstants.SET_MY_EVENTS]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
 };
 
 export const initialState = () =>

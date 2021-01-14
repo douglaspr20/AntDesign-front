@@ -17,6 +17,7 @@ import {
   getAllEvent,
   addToMyEventList,
   removeFromMyEventList,
+  getMyEvents,
 } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
@@ -30,6 +31,7 @@ const EventsPage = ({
   myEvents,
   myPastEvents,
   getAllEvent,
+  getMyEvents,
   updateEventData,
   updateMyEventData,
   updateMyPastEventData,
@@ -52,15 +54,16 @@ const EventsPage = ({
     }
   };
 
-  Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
-    const newEvents = allEvents;
-    const index = allEvents.findIndex((item) => item.id === event.id);
-    if (index >= 0) {
-      newEvents[index] = event;
-    }
-    updateEventData(newEvents);
-    addMyEvents(event);
-  });
+  // Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
+  //   console.log('****** event changed', event)
+  //   const newEvents = allEvents;
+  //   const index = allEvents.findIndex((item) => item.id === event.id);
+  //   if (index >= 0) {
+  //     newEvents[index] = event;
+  //   }
+  //   updateEventData(newEvents);
+  //   addMyEvents(event);
+  // });
 
   Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (event) => {
     const newEvents = myPastEvents;
@@ -155,6 +158,9 @@ const EventsPage = ({
     if (!allEvents || allEvents.length === 0) {
       getAllEvent();
     }
+    if (!myEvents || myEvents.length === 0) {
+      getMyEvents();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,7 +197,7 @@ EventsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  myEvents: homeSelector(state).myEvents,
+  myEvents: eventSelector(state).myEvents,
   allEvents: eventSelector(state).allEvents,
   myPastEvents: homeSelector(state).myPastEvents,
 });
@@ -201,6 +207,7 @@ const mapDispatchToProps = {
   updateMyEventData,
   updateMyPastEventData,
   getAllEvent,
+  getMyEvents,
   addToMyEventList,
   removeFromMyEventList,
 };

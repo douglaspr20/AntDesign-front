@@ -5,6 +5,7 @@ import {
   upgradePlan,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
+  getAllMyEventsFromAPI,
 } from "./module/user";
 import { getAllEvents, getEvent } from "./module/event";
 
@@ -18,4 +19,5 @@ export {
   getEvent,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
+  getAllMyEventsFromAPI,
 };

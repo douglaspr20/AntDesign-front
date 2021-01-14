@@ -23,3 +23,7 @@ export const addToMyEventListFromAPI = ({ event }) => {
 export const removeFromMyEventListFromAPI = ({ event }) => {
   return httpClient.put(`private/user/remove-event/`, event);
 };
+
+export const getAllMyEventsFromAPI = () => {
+  return httpClient.get(`private/user/my-events/`);
+};
