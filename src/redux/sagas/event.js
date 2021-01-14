@@ -91,54 +91,50 @@ export function* getEventSaga({ payload }) {
 }
 
 export function* addToMyEventList({ payload }) {
-  yield put(homeActions.setLoading(true));
+  // yield put(homeActions.setLoading(true));
 
   try {
     const response = yield call(addToMyEventListFromAPI, { ...payload });
 
     if (response.status === 200) {
-      // yield put(
-      //   eventActions.setEvent({
-      //     ...response.data.event,
-      //     date: moment(response.data.event.startDate).format(
-      //       "YYYY.MM.DD h:mm a"
-      //     ),
-      //     date2: moment(response.data.event.endDate).format(
-      //       "YYYY.MM.DD h:mm a"
-      //     ),
-      //   })
-      // );
+      const data = response.data.affectedRows;
+      yield put(
+        eventActions.setEvent({
+          ...data,
+          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          status: data.status[userId],
+        })
+      );
     }
-    yield put(homeActions.setLoading(false));
+    // yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
+    // yield put(homeActions.setLoading(false));
   }
 }
 
 export function* removeFromMyEventList({ payload }) {
-  yield put(homeActions.setLoading(true));
+  // yield put(homeActions.setLoading(true));
 
   try {
     const response = yield call(removeFromMyEventListFromAPI, { ...payload });
 
     if (response.status === 200) {
-      // yield put(
-      //   eventActions.setEvent({
-      //     ...response.data.event,
-      //     date: moment(response.data.event.startDate).format(
-      //       "YYYY.MM.DD h:mm a"
-      //     ),
-      //     date2: moment(response.data.event.endDate).format(
-      //       "YYYY.MM.DD h:mm a"
-      //     ),
-      //   })
-      // );
+      const data = response.data.affectedRows;
+      yield put(
+        eventActions.setEvent({
+          ...data,
+          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          status: data.status[userId],
+        })
+      );
     }
-    yield put(homeActions.setLoading(false));
+    // yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
+    // yield put(homeActions.setLoading(false));
   }
 }
 
