@@ -8,6 +8,7 @@ import IconMedal from "images/icon-medal.svg";
 import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 import IconBookmark from "images/icon-bookmark.svg";
+import IconHeartOutline from "images/icon-heart-outline.svg";
 
 export default {
   TOP_MENUS: [
@@ -15,6 +16,11 @@ export default {
       label: "Home",
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
+    },
+    {
+      label: "Heart",
+      icon: IconHeartOutline,
+      url: INTERNAL_LINKS.HEART,
     },
     {
       label: "Learning library",

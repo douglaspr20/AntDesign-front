@@ -11,4 +11,5 @@ export default {
   READ_LATER: "/read-later",
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
+  HEART: "/heart",
 };
