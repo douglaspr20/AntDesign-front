@@ -102,12 +102,7 @@ const EventsPage = ({
             setCurrentTab("0");
           } else if (key === "Topics") {
             flag =
-              flag &&
-              (params[key] || []).every(
-                (tpc) =>
-                  item.type &&
-                  item.type.map((t) => t.toLowerCase()).includes(tpc)
-              );
+              flag && (params[key] || []).every((tpc) => item.category === tpc);
           }
         });
 
