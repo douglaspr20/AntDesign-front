@@ -89,7 +89,10 @@ const EventDrawer = ({
     >
       <div className="event-details">
         <div className="event-details-header">
-          {event.image && <img src={event.image} alt="event-img" />}
+          {event.image2 && <img src={event.image2} alt="event-img" />}
+          {!event.image2 && event.image && (
+            <img src={event.image} alt="event-img" />
+          )}
         </div>
         <div className="event-details-content">
           <div className="event-details-content-actions">
