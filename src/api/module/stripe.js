@@ -5,3 +5,9 @@ export const getCheckoutSession = async (data) => {
     ...data,
   });
 };
+
+export const getPortalSession = async (data) => {
+  return await httpClient.post(`private/stripe/portal-session/`, {
+    ...data,
+  });
+};
