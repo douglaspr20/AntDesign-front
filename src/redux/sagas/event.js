@@ -17,6 +17,9 @@ import {
   getAllMyEventsFromAPI,
 } from "../../api";
 
+const community = storage.get("community");
+const { id: userId } = community || {};
+
 export function* getAllEventsSaga() {
   yield put(homeActions.setLoading(true));
   yield put(eventActions.setError(""));
@@ -39,6 +42,7 @@ export function* getAllEventsSaga() {
                 item.timezone
               ),
               about: getEventDescription(item.description),
+              status: item.status[userId],
             }))
             .sort((a, b) => {
               return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
@@ -145,9 +149,6 @@ export function* getAllMyEvents() {
     const response = yield call(getAllMyEventsFromAPI);
 
     if (response.status === 200) {
-      const community = storage.get("community");
-      const { id: userId } = community || {};
-
       yield put(
         eventActions.setMyEvents(
           response.data.myEvents.map((item) => ({
