@@ -35,7 +35,11 @@ export const reducers = {
         });
       }
     }
-    return state.merge({ allEvents: [...allEvents], myEvents: [...myEvents] });
+    return state.merge({
+      allEvents: [...allEvents],
+      myEvents: [...myEvents],
+      updatedEvent: { ...payload.event },
+    });
   },
   [eventConstants.SET_ERROR]: (state, { payload }) => {
     return state.merge({ ...payload });
@@ -54,7 +58,7 @@ export const initialState = () =>
     error: null,
     allEvents: [],
     myEvents: [],
-    event: {},
+    updatedEvent: {},
   });
 
 export default handleActions(reducers, initialState());

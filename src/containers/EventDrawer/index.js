@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { CheckOutlined } from "@ant-design/icons";
@@ -12,10 +13,16 @@ import {
 } from "components";
 import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
+import { actions as eventActions } from "redux/actions/event-actions";
+import { eventSelector } from "redux/selectors/eventSelector";
 
 import "./style.scss";
 
-const EventDrawer = () => {
+const EventDrawer = ({
+  updatedEvent,
+  addToMyEventList,
+  removeFromMyEventList,
+}) => {
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const [visible, setVisible] = useState(false);
@@ -44,11 +51,11 @@ const EventDrawer = () => {
   };
 
   const onAttend = () => {
-    setEvent((prev) => ({ ...prev, going: true }));
+    addToMyEventList(event);
   };
 
   const onCancelAttend = () => {
-    setEvent((prev) => ({ ...prev, going: false }));
+    removeFromMyEventList(event);
   };
 
   const onClickClaimDigitalCertificate = (e) => {};
@@ -60,8 +67,10 @@ const EventDrawer = () => {
   const onClickClaimCredits = (e) => {};
 
   useEffect(() => {
-    Emitter.emit(EVENT_TYPES.EVENT_CHANGED, event);
-  }, [event]);
+    if (event && updatedEvent && event.id === updatedEvent.id) {
+      setEvent({ ...updatedEvent });
+    }
+  }, [event, updatedEvent]);
 
   const menu = (
     <Menu>
@@ -182,4 +191,12 @@ EventDrawer.defaultProps = {
   title: "",
 };
 
-export default EventDrawer;
+const mapStateToProps = (state) => ({
+  updatedEvent: eventSelector(state).updatedEvent,
+});
+
+const mapDispatchToProps = {
+  ...eventActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventDrawer);

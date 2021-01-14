@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import Emitter from "services/emitter";
 import { connect } from "react-redux";
 import moment from "moment";
 import isEqual from "lodash/isEqual";
@@ -9,19 +8,12 @@ import clsx from "clsx";
 import { Tabs, EventFilterPanel } from "components";
 import EventList from "./EventList";
 import {
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
-} from "redux/actions/home-actions";
-import {
   getAllEvent,
   addToMyEventList,
   removeFromMyEventList,
   getMyEvents,
 } from "redux/actions/event-actions";
-import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
-import { EVENT_TYPES } from "enum";
 import EventFilterDrawer from "./EventFilterDrawer";
 
 import "./style.scss";
@@ -29,12 +21,8 @@ import "./style.scss";
 const EventsPage = ({
   allEvents,
   myEvents,
-  myPastEvents,
   getAllEvent,
   getMyEvents,
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
   addToMyEventList,
   removeFromMyEventList,
 }) => {
@@ -44,35 +32,11 @@ const EventsPage = ({
 
   const addMyEvents = (event) => {
     if (event.going) {
-      // const oldData = myEvents.filter((e) => e.id !== event.id);
-      // updateMyEventData([...oldData, event]);
       addToMyEventList(event);
     } else {
-      // const newData = myEvents.filter((e) => e.id !== event.id);
-      // updateMyEventData(newData);
       removeFromMyEventList(event);
     }
   };
-
-  // Emitter.on(EVENT_TYPES.EVENT_CHANGED, (event) => {
-  //   console.log('****** event changed', event)
-  //   const newEvents = allEvents;
-  //   const index = allEvents.findIndex((item) => item.id === event.id);
-  //   if (index >= 0) {
-  //     newEvents[index] = event;
-  //   }
-  //   updateEventData(newEvents);
-  //   addMyEvents(event);
-  // });
-
-  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (event) => {
-    const newEvents = myPastEvents;
-    const index = myPastEvents.findIndex((item) => item.id === event.id);
-    if (index >= 0) {
-      newEvents[index] = event;
-    }
-    updateMyPastEventData(newEvents);
-  });
 
   const TabData = [
     {
@@ -199,13 +163,9 @@ EventsPage.defaultProps = {
 const mapStateToProps = (state) => ({
   myEvents: eventSelector(state).myEvents,
   allEvents: eventSelector(state).allEvents,
-  myPastEvents: homeSelector(state).myPastEvents,
 });
 
 const mapDispatchToProps = {
-  updateEventData,
-  updateMyEventData,
-  updateMyPastEventData,
   getAllEvent,
   getMyEvents,
   addToMyEventList,
