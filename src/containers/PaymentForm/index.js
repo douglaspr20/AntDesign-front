@@ -47,12 +47,6 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
       )}
       <div className="plan-ugrade-form-content">
         <Button
-          onClick={() => { requestCheckoutSession(process.env.REACT_APP_STRIPE_MONTHLY_PRICE_ID); }}
-          className="pay-buttton monthly"
-        >
-          Pay $9.99 monthly
-            </Button>
-        <Button
           onClick={() => { requestCheckoutSession(process.env.REACT_APP_STRIPE_YEARLY_PRICE_ID); }}
           className="pay-buttton"
         >

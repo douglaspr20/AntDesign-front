@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
 import { connect } from "react-redux";
+import moment from 'moment';
 
 import { CustomButton } from "components";
 import { EVENT_TYPES } from "enum";
@@ -12,6 +13,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
 
 import "./style.scss";
+import { getPortalSession } from "../../api/module/stripe";
 
 // const ProfileMenus = ["Settings", "Account"];
 const ProfileMenus = [];
@@ -22,7 +24,27 @@ class ProfilePopupMenu extends React.Component {
 
     this.state = {
       visible: false,
+      portalSession: null,
+      subscription: null
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => { this.createPortalSession(); }, 800);
+  }
+
+  createPortalSession = async () => {
+    if(this.props.userProfile.memberShip === 'premium'){
+      try {
+        let response = await getPortalSession();
+        this.setState({
+          portalSession: response.data.session,
+          subscription: response.data.subscription,
+        });
+      } catch(err) {
+        console.log(err);
+      }
+    }
   }
 
   onViewProfile = () => {
@@ -66,8 +88,16 @@ class ProfilePopupMenu extends React.Component {
         <div className="profile-popover-content-membership">
           {user.memberShip === "premium" ? (
             <React.Fragment>
-              <div>Premium Membership</div>
-              <div>(From XX to YY)</div>
+              <div>PREMIUM MEMBER</div>
+              { this.state.subscription != null ?
+                (<>
+                  <div>
+                    { moment.unix(this.state.subscription.current_period_start).format("MMMM DD, yyyy") } - { moment.unix(this.state.subscription.current_period_end).format("MMMM DD, yyyy") }
+                  </div>
+                  <div><a href={ this.state.portalSession.url } rel="noopener noreferrer" target='_blank'>Billing Information</a></div>
+                </>)
+                : null
+              }
             </React.Fragment>
           ) : (
             <div>Free Membership</div>
