@@ -144,7 +144,7 @@ function HEARTPage() {
                   },
                   () => ({
                     validator(_, value) {
-                      if (getWordsCountFromString(value) <= COMMENT_MAX_WORDS_COUNT) {
+                      if (getWordsCountFromString(value) > COMMENT_MAX_WORDS_COUNT) {
                         return Promise.reject(
                           "Comment length should be up to 100 words"
                         );
@@ -169,7 +169,7 @@ function HEARTPage() {
 
                 <CustomButton
                   htmlType="submit"
-                  text="Submit"
+                  text="Post Comment"
                   type="primary"
                   size="lg"
                 />
