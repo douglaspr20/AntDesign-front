@@ -101,7 +101,7 @@ class EventCard extends React.Component {
                   />
                 </div>
               )}
-              {!["past", "confirmed", "going"].includes(status) && (
+              {status === "attend" && (
                 <CustomButton
                   text="Attend"
                   size="md"

@@ -20,6 +20,18 @@ import {
 const community = storage.get("community");
 const { id: userId } = community || {};
 
+const getEventStatus = (data, userId) => {
+  let res = data.status[userId];
+
+  if (res === "going") {
+    res = moment().isBefore(moment(data.startDate)) ? res : "past";
+  } else if (!res) {
+    res = moment().isBefore(moment(data.startDate)) ? "attend" : "";
+  }
+
+  return res;
+};
+
 export function* getAllEventsSaga() {
   yield put(homeActions.setLoading(true));
   yield put(eventActions.setError(""));
@@ -42,7 +54,7 @@ export function* getAllEventsSaga() {
                 item.timezone
               ),
               about: getEventDescription(item.description),
-              status: item.status[userId],
+              status: getEventStatus(item, userId),
             }))
             .sort((a, b) => {
               return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
@@ -103,7 +115,7 @@ export function* addToMyEventList({ payload }) {
           ...data,
           date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-          status: data.status[userId],
+          status: getEventStatus(data, userId),
         })
       );
     }
@@ -127,7 +139,7 @@ export function* removeFromMyEventList({ payload }) {
           ...data,
           date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-          status: data.status[userId],
+          status: getEventStatus(data, userId),
         })
       );
     }
@@ -162,7 +174,7 @@ export function* getAllMyEvents() {
               item.timezone
             ),
             about: getEventDescription(item.description),
-            status: item.status[userId],
+            status: getEventStatus(item, userId),
           }))
         )
       );

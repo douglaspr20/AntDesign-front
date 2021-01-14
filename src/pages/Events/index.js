@@ -89,7 +89,7 @@ const EventsPage = ({
       title: "My events",
       content: () => (
         <EventList
-          data={myEvents}
+          data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
           showFilter={() => setVisibleFilter(true)}
         />
@@ -99,7 +99,7 @@ const EventsPage = ({
       title: "My past events",
       content: () => (
         <EventList
-          data={myPastEvents}
+          data={myEvents.filter((event) => event.status !== "going")}
           onAttend={addMyEvents}
           showFilter={() => setVisibleFilter(true)}
         />

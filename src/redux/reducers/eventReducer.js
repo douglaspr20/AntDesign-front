@@ -18,7 +18,7 @@ export const reducers = {
       allEvents[index] = payload.event;
     }
     let myEvents = state.get("myEvents");
-    if (!payload.event.status) {
+    if (!payload.event.status || payload.event.status === "attend") {
       myEvents = myEvents.filter((item) => item.id !== payload.event.id);
     } else {
       index = myEvents.findIndex((item) => item.id === payload.event.id);

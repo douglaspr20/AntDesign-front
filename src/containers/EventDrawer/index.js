@@ -113,7 +113,7 @@ const EventDrawer = () => {
                 />
               </React.Fragment>
             )}
-            {!["past", "confirmed"].includes(event.status) && !event.going && (
+            {event.status === "attend" && (
               <CustomButton
                 text="Attend"
                 size="lg"
@@ -121,7 +121,7 @@ const EventDrawer = () => {
                 onClick={onAttend}
               />
             )}
-            {!["past", "confirmed"].includes(event.status) && event.going && (
+            {event.status === "going" && (
               <React.Fragment>
                 <div className="going-label">
                   <CheckOutlined />
