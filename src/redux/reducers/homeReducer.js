@@ -1,7 +1,6 @@
 import { handleActions } from "redux-actions";
 import { Map } from "immutable";
 import cloneDeep from "lodash/cloneDeep";
-import moment from "moment";
 
 // Action Type Imports
 import { constants as homeConstants } from "../actions/home-actions";
