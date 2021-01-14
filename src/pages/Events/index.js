@@ -29,6 +29,7 @@ const EventsPage = ({
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
+  const [filterParams, setFilterParams] = useState({});
 
   const addMyEvents = (event) => {
     if (event.going) {
@@ -72,6 +73,7 @@ const EventsPage = ({
   ];
 
   const onFilterChange = (params) => {
+    setFilterParams(params);
     setFilteredEvents((prev) => {
       prev = allEvents.filter((item) => {
         let flag = true;
@@ -121,12 +123,17 @@ const EventsPage = ({
       getMyEvents();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [allEvents, myEvents]);
+
+  useEffect(() => {
+    onFilterChange(filterParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allEvents]);
 
   useEffect(() => {
     onFilterChange({ date: moment() });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allEvents]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="events-page">
