@@ -93,6 +93,7 @@ export function* getEventSaga({ payload }) {
           date2: moment(response.data.event.endDate).format(
             "YYYY.MM.DD h:mm a"
           ),
+          status: getEventStatus(response.data.event, userId),
         })
       );
     }
