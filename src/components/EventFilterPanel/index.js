@@ -23,18 +23,16 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
     };
 
     setFilterValues(newFilters);
-
     onFilterChange(newFilters);
   };
 
   const onShowAllEvent = () => {
-    // setFilterValues({ date: moment() });
-    onFilterChange({ all: true });
+    setFilterValues({});
+    onFilterChange({});
   };
 
   const onEventFilterChange = (field, values) => {
     const newFilters = { ...filterValues, [field]: values };
-
     setFilterValues(newFilters);
     onFilterChange(newFilters);
   };

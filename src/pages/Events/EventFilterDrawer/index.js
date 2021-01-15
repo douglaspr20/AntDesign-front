@@ -41,8 +41,8 @@ const EventFilterDrawer = ({ allEvents, onFilterChange }) => {
   };
 
   const onShowAllEvent = () => {
-    onFilterChange({ all: true });
-    setFilterValues({ date: moment() });
+    onFilterChange({});
+    setFilterValues({});
     onDrawerClose();
   };
 

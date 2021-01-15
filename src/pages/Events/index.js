@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
 import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
 
 import { Tabs, EventFilterPanel } from "components";
@@ -78,41 +79,39 @@ const EventsPage = ({
       prev = allEvents.filter((item) => {
         let flag = true;
 
-        Object.keys(params).forEach((key) => {
-          if (key === "all" && params[key]) {
-            const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
-            flag = eventDate.isAfter(moment());
-            setCurrentTab("0");
-            return flag;
-          }
+        if (params.date) {
+          const res = moment(item.date, "YYYY.MM.DD h:mm a");
+          const eventDate = {
+            year: res.year(),
+            month: res.month(),
+            day: res.date(),
+          };
 
-          if (key === "date") {
-            const res = moment(item.date, "YYYY.MM.DD h:mm a");
-            const eventDate = {
-              year: res.year(),
-              month: res.month(),
-              day: res.date(),
-            };
+          const currentDate = {
+            year: params.date.year(),
+            month: params.date.month(),
+            day: params.date.date(),
+          };
 
-            const currentDate = {
-              year: params.date.year(),
-              month: params.date.month(),
-              day: params.date.date(),
-            };
+          flag = isEqual(eventDate, currentDate);
+        }
 
-            flag = isEqual(eventDate, currentDate);
-            setCurrentTab("0");
-          } else if (key === "Topics") {
-            flag =
-              flag && (params[key] || []).every((tpc) => item.category === tpc);
-          }
-        });
+        if (params["Topics"] && params["Topics"].length > 0) {
+          flag =
+            flag &&
+            (params["Topics"] || []).some((tpc) => item.category === tpc);
+        }
 
+        if (isEmpty(params)) {
+          const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+          flag = eventDate.isAfter(moment());
+        }
+        
         return flag;
       });
-
       return [...prev];
     });
+    setCurrentTab("0");
   };
 
   useEffect(() => {
@@ -132,10 +131,10 @@ const EventsPage = ({
 
   useEffect(() => {
     onFilterChange({ date: moment() });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('****** rendering ******')
+  console.log("****** rendering ******");
 
   return (
     <div className="events-page">

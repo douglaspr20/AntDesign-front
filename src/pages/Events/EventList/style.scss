@@ -36,6 +36,10 @@
       margin-bottom: 28px;
     }
 
+    .ant-row {
+      width: 100%;
+    }
+
     @media (max-width: 575.98px) {
       grid-template-columns: 1fr;
       justify-items: center;
