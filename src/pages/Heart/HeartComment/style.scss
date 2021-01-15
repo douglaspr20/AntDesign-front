@@ -147,9 +147,21 @@
         } 
       }
     }
+
+    .ant-rate-star-half, .ant-rate-star-zero {
+      svg {
+        color: #bfbfbf;
+      } 
+    }
   }
 }
 
 .heart-comment__card-action {
   text-align: center;
+  & a {
+    color: #bfbfbf;
+  }
+  & a:hover {
+    color: $color-primary;
+  }
 }
