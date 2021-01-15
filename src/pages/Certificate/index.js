@@ -1,74 +1,64 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
 import { connect } from "react-redux";
 
 import { CustomButton } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 
-import "./style.scss";
+import LogoSidebar from "images/logo-sidebar.svg";
 
-const Data = {
-  title: "HHR Latin America Conference",
-  event: {
-    date: "November 18 2020",
-    location: "Online event - 5 hours",
-  },
-  content: [
-    "Participated in the HHR Latin America 2019 conferernce",
-    "From October 31 to November 2, 2019",
-    "Medellin - Colombia",
-  ],
-};
+import "./style.scss";
 
 const CertificatePage = ({ userProfile }) => {
   const downloadPdf = () => {};
 
   return (
     <div className="certificate-page">
-      <Row gutter={16}>
-        <Col
-          xs={{ span: 22, offset: 1 }}
-          sm={{ span: 20, offset: 2 }}
-          md={{ span: 16, offset: 4 }}
-          lg={{ span: 12, offset: 6 }}
-        >
-          <Row gutter={64}>
-            <Col lg={{ span: 20, offset: 2 }}>
-              <h2 className="certificate-page-title">{Data.title}</h2>
-              <h3 className="certificate-page-date">{Data.event.date}</h3>
-              <h3 className="certificate-page-location">
-                {Data.event.location}
-              </h3>
-            </Col>
-            <Col span={24}>
-              <h2 className="certificate-page-title">We certify that</h2>
-            </Col>
-            <Col span={24}>
-              <h1 className="certificate-page-name">{`${
-                userProfile.firstName || ""
-              } ${userProfile.lastName || ""}`}</h1>
-            </Col>
-            <Col span={24}>
-              {Data.content.map((data, index) => (
-                <p key={index} className="certificate-page-text">
-                  {data}
-                </p>
-              ))}
-            </Col>
-            <Col span={24}>
-              <div className="certificate-page-actions">
-                <CustomButton
-                  text="Download PDF"
-                  type="primary"
-                  size="lg"
-                  onClick={downloadPdf}
-                />
-              </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+      <div className="certificate-page-wrapper">
+        <div className="certificate">
+          <div className="certificate-top">
+            <div className="certificate-logo">
+              <img src={LogoSidebar} alt="sidebar-logo" />
+            </div>
+            <h3 className="certificate-title">
+              Hacking HR’s Certificate of Participation
+            </h3>
+            <h1 className="certificate-username">Edgar David</h1>
+          </div>
+          <div className="certificate-center">
+            <h5 className="certificate-text1">
+              For Attending The Hacking HR Mumbai Chapter Session:
+            </h5>
+            <h4 className="certificate-text2">
+              Leadership Hacks: Understanding and Leveraging Teams
+            </h4>
+            <h5 className="certificate-text1">Duration: One Hour</h5>
+          </div>
+          <div className="certificate-bottom">
+            <div className="certificate-bottom-sign">
+              <h5 className="certificate-text1 date">December 19, 2020</h5>
+              <div className="certificate-divider" />
+              <h5 className="certificate-text1">Date</h5>
+            </div>
+            <div className="certificate-bottom-image">
+              <img src={LogoSidebar} alt="certificate-img" />
+            </div>
+            <div className="certificate-bottom-sign">
+              <div className="certificate-signature"></div>
+              <div className="certificate-divider" />
+              <h5 className="certificate-text1">HHR director signature</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="certificate-page-actions">
+        <CustomButton
+          text="Download PDF"
+          type="primary"
+          size="lg"
+          onClick={downloadPdf}
+        />
+      </div>
     </div>
   );
 };
