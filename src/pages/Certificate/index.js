@@ -1,20 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import html2canvas from "html2canvas";
+import jsPdf from "jspdf";
 
 import { CustomButton } from "components";
+import { setLoading } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import LogoSidebar from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const CertificatePage = ({ userProfile }) => {
-  const downloadPdf = () => {};
+const CertificatePage = ({ userProfile, setLoading }) => {
+  const downloadPdf = async () => {
+    setLoading(true);
+    const domElement = document.getElementById("certificate-panel");
+    const canvas = await html2canvas(domElement);
+
+    const width = domElement.clientWidth;
+    const height = domElement.clientHeight;
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPdf({
+      orientation: "landscape",
+      format: [width, height],
+      unit: "px",
+    });
+    pdf.addImage(imgData, "PNG", 0, 0, width, height);
+    pdf.save("certificate.pdf");
+    setLoading(false);
+  };
 
   return (
     <div className="certificate-page">
-      <div className="certificate-page-wrapper">
+      <div className="certificate-page-wrapper" id="certificate-panel">
         <div className="certificate">
           <div className="certificate-top">
             <div className="certificate-logo">
@@ -53,6 +73,7 @@ const CertificatePage = ({ userProfile }) => {
       </div>
       <div className="certificate-page-actions">
         <CustomButton
+          id="print-button"
           text="Download PDF"
           type="primary"
           size="lg"
@@ -75,4 +96,8 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(CertificatePage);
+const mapDispatchToProps = {
+  setLoading,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CertificatePage);
