@@ -16,7 +16,7 @@ const CertificateHeader = ({ history }) => {
     <div className="certificate-header">
       <Row gutter={16}>
         <Col span={24} lg={{ span: 12, offset: 6 }}>
-          <div className="certificate-header-content d-flex justify-between items-center">
+          <div className="certificate-header-content d-flex justify-center items-center">
             <div className="d-flex items-center">
               <div className="icon-wrapper">
                 <img src={ImgArticle} alt="article-img" />

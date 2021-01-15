@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { CheckOutlined } from "@ant-design/icons";
 import clsx from "clsx";
+import { withRouter } from "react-router-dom";
 
 import { CustomButton, SpecialtyItem } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 
 import "./style.scss";
@@ -38,6 +39,10 @@ class EventCard extends React.Component {
   onClickClaimDigitalCertificate = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    this.props.history.push(
+      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`
+    );
   };
 
   onClickClaimCredits = (e) => {
@@ -145,4 +150,4 @@ EventCard.defaultProps = {
   onAttend: () => {},
 };
 
-export default EventCard;
+export default withRouter(EventCard);
