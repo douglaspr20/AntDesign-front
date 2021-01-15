@@ -21,3 +21,7 @@ export const put = async (data) => {
     ...data
   });
 };
+
+export const remove = async (id) => {
+  return await httpClient.delete(`private/heart/${id}`);
+};
