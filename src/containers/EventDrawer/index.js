@@ -34,11 +34,6 @@ const EventDrawer = ({
       ...data,
       day: moment(data.date, DataFormat).date(),
       month: MONTH_NAMES[moment(data.date, DataFormat).month()],
-      Sponsors: [
-        "Sometimes things don’t go according to plan. Tools break, wires get crossed, the best-laid plans fall apart. And on those occasions, it helps to know exactly what happened—so it doesn’t happen again. Moments like these are when we at Buffer turn to a simple but remarkably effective process: The 5 Whys.",
-        "It’s just as it sounds: A discussion of the unexpected event or challenge that follows one train of thought to its logical conclusion by asking “Why?” five times to get to the root of what happened.",
-        "But it’s also a lot deeper than that, too. Let’s take a look at the origin and history of this unique process, and I’ll tell you a bit about how it works for us on our remote team at Buffer—and how it could work for you, too.",
-      ],
     });
   });
 
@@ -68,7 +63,11 @@ const EventDrawer = ({
 
   useEffect(() => {
     if (event && updatedEvent && event.id === updatedEvent.id) {
-      setEvent({ ...updatedEvent });
+      setEvent({
+        ...updatedEvent,
+        day: moment(updatedEvent.date, DataFormat).date(),
+        month: MONTH_NAMES[moment(updatedEvent.date, DataFormat).month()],
+      });
     }
   }, [event, updatedEvent]);
 
@@ -174,12 +173,6 @@ const EventDrawer = ({
           )}
           <h3 className="event-details-content-subtitle">About the event</h3>
           <p className="event-details-content-subtext">{event.about}</p>
-          <h3 className="event-details-content-subtitle">Sponsors</h3>
-          {(event["Sponsors"] || []).map((item, index) => (
-            <p key={index} className="event-details-content-subtext">
-              {item}
-            </p>
-          ))}
         </div>
       </div>
     </CustomDrawer>
