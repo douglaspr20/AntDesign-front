@@ -29,7 +29,7 @@ function HEARTPage(props) {
     fetchData();
   }, []);
 
-  async function fetchData() {
+  const fetchData = async () => {
     try {
       let data = await getAll();
       setHeartCards(data.data.heart);
@@ -38,7 +38,7 @@ function HEARTPage(props) {
     }
   }
 
-  function startNewComment({ category }) {
+  const startNewComment = ({ category }) => {
     const commentPlaceholder = createNewCardState === null
       ? ({
         id: generateId(20),
@@ -52,7 +52,7 @@ function HEARTPage(props) {
     setCreateNewCardState(commentPlaceholder);
   }
 
-  function startNewResponse(response) {
+  const startNewResponse = (response) => {
     const { id, category } = response;
     const commentPlaceholder = createNewCardState === null
       ? ({
@@ -67,11 +67,11 @@ function HEARTPage(props) {
     startNewComment(commentPlaceholder);
   }
 
-  function prepareToEdit(comment) {
+  const prepareToEdit = (comment) => {
     setCreateNewCardState(comment);
   }
 
-  async function submitNewComment({ content }) {
+  const submitNewComment = async ({ content }) => {
     let commentToSubmitTemplate = { ...createNewCardState, content, created_at: new Date() }
     try {
       if (parentComment !== null) {
@@ -89,12 +89,12 @@ function HEARTPage(props) {
     }
   }
 
-  function dismissNewComment() {
+  const dismissNewComment = () => {
     setCreateNewCardState(null);
     setParentComment(null);
   }
 
-  async function rateChange({ id, newRate }) {
+  const rateChange = async ({ id, newRate }) => {
     try {
       await put({ id, rate: newRate });
       fetchData();
@@ -104,7 +104,7 @@ function HEARTPage(props) {
     }
   }
 
-  async function removeComment(id) {
+  const removeComment = async (id) => {
     try {
       let result = window.confirm("Are you sure you want to delete this comment?");
       if(result){
