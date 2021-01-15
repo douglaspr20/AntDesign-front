@@ -27,8 +27,8 @@ export const reducers = {
       } else {
         myEvents.push(payload.event);
         myEvents.sort((a, b) => {
-          return moment(a.startDate, "YYYY.MM.DD h:mm a").isBefore(
-            moment(b.startDate, "YYYY.MM.DD h:mm a")
+          return moment(a.date, "YYYY.MM.DD h:mm a").isBefore(
+            moment(b.date, "YYYY.MM.DD h:mm a")
           )
             ? -1
             : 1;
