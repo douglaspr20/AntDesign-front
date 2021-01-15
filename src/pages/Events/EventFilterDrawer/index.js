@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
-import moment from "moment";
 import { connect } from "react-redux";
 
 import {
