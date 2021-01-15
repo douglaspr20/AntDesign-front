@@ -104,7 +104,7 @@ export function* getEventSaga({ payload }) {
 }
 
 export function* addToMyEventList({ payload }) {
-  // yield put(homeActions.setLoading(true));
+  yield put(homeActions.setLoading(true));
 
   try {
     const response = yield call(addToMyEventListFromAPI, { ...payload });
@@ -120,15 +120,15 @@ export function* addToMyEventList({ payload }) {
         })
       );
     }
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   }
 }
 
 export function* removeFromMyEventList({ payload }) {
-  // yield put(homeActions.setLoading(true));
+  yield put(homeActions.setLoading(true));
 
   try {
     const response = yield call(removeFromMyEventListFromAPI, { ...payload });
@@ -144,10 +144,10 @@ export function* removeFromMyEventList({ payload }) {
         })
       );
     }
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -188,6 +188,7 @@ export function* getAllMyEvents() {
 }
 
 export function* updateEventStatus({ payload }) {
+  yield put(homeActions.setLoading(true));
   try {
     const response = yield call(updateEventStatusFromAPI, { ...payload });
 
@@ -202,10 +203,10 @@ export function* updateEventStatus({ payload }) {
         })
       );
     }
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    // yield put(homeActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
   }
 }
 
