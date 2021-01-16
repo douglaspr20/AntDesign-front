@@ -12,7 +12,6 @@ import { getEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 
-import LogoSidebar from "images/logo-sidebar.svg";
 import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-hhr-logo.png";
 import ImgSignature from "images/img-signature.png";
