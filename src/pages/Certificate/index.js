@@ -12,7 +12,9 @@ import { getEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 
-import LogoSidebar from "images/logo-sidebar.svg";
+import ImgCertificateStamp from "images/img-certificate-stamp.png";
+import ImgHHRLogo from "images/img-hhr-logo.png";
+import ImgSignature from "images/img-signature.png";
 
 import "./style.scss";
 
@@ -64,7 +66,7 @@ const CertificatePage = ({
         <div className="certificate">
           <div className="certificate-top">
             <div className="certificate-logo">
-              <img src={LogoSidebar} alt="sidebar-logo" />
+              <img src={ImgHHRLogo} alt="sidebar-logo" />
             </div>
             <h3 className="certificate-title">
               Hacking HR’s Certificate of Participation
@@ -89,10 +91,12 @@ const CertificatePage = ({
               <h5 className="certificate-text1">Date</h5>
             </div>
             <div className="certificate-bottom-image">
-              <img src={LogoSidebar} alt="certificate-img" />
+              <img src={ImgCertificateStamp} alt="certificate-img" />
             </div>
             <div className="certificate-bottom-sign">
-              <div className="certificate-signature"></div>
+              <div className="certificate-signature">
+                <img src={ImgSignature} alt="certificate-signature" />
+              </div>
               <div className="certificate-divider" />
               <h5 className="certificate-text1 signature">
                 Founder | Hacking HR signature

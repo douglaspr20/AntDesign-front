@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import RenderPropsTruncatedString from 'components/RenderPropsTruncatedString.js';
