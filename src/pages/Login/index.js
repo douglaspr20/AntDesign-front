@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "antd";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
 
@@ -10,12 +11,13 @@ import { INTERNAL_LINKS } from "enum";
 
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import AuthAlert from "containers/AuthAlert";
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = ({ isAuthenticated, error, login, signUp, history }) => {
+const Login = ({ isAuthenticated, error, login, signUp, history, match }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
@@ -55,6 +57,14 @@ const Login = ({ isAuthenticated, error, login, signUp, history }) => {
             <img src={IconLogo} alt="login-logo" />
           </div>
         </div>
+
+        { match.params.sentEmail === 'passwordRecoverySent' &&
+            <AuthAlert
+              title="Check your inbox"
+              message="We will send you an email with the instructions on how to reset your password."
+            />
+        }
+
         <Form
           {...layout}
           className="login-dialog-form"
@@ -74,6 +84,9 @@ const Login = ({ isAuthenticated, error, login, signUp, history }) => {
               type="primary"
               size="lg"
             />
+            <Link to={ INTERNAL_LINKS.PASSWORD_RECOVERY } className="forgot-password">
+              Forgot password?
+            </Link>
             <span className="signup-select" onClick={onChangeType}>
               {isLogin ? "Sign up?" : "Log in?"}
             </span>

@@ -1,7 +1,9 @@
 export default {
   HOME: "/",
-  LOGIN: "/login",
+  LOGIN: "/login/:sentEmail?",
   SIGNUP: "/signup",
+  PASSWORD_RECOVERY: "/password-recovery",
+  RESET_PASSWORD: "/reset-password/:token",
   LEARNING_LIBRARY: "/learning-library",
   MENTORING: "/mentoring",
   EVENTS: "/events",

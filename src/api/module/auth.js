@@ -24,3 +24,22 @@ export const signUp = ({
     recaptcha,
   });
 };
+
+export const passwordRecovery = (email) => {
+  return httpClient.post("/public/auth/password-recovery", {
+    email,
+  });
+};
+
+export const verifyToken = (token) => {
+  return httpClient.post("/public/auth/verify-token", {
+    token,
+  });
+};
+
+export const resetPassword = (token, password) => {
+  return httpClient.patch("/public/auth/reset-password", {
+    token,
+    password,
+  });
+};

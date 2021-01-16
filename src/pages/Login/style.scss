@@ -90,6 +90,15 @@
         margin-bottom: 0.5rem;
         color: $color-primary;
       }
+
+      .forgot-password {
+        color: $color-text-secondary;
+        text-align: center;
+        font: normal normal bold 16px/24px;
+        letter-spacing: 0px;
+        color: #697077;
+        opacity: 1;
+      }
     }
   }
 }
