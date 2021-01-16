@@ -8,6 +8,7 @@ import {
   CustomRadio,
   CustomSelect,
   CustomButton,
+  ImageUpload,
 } from "components";
 import { SEARCH_FILTERS, LANGUAGES } from "enum";
 
@@ -18,7 +19,8 @@ const Languages = LANGUAGES.ParsedLanguageData;
 
 const LibraryShareForm = ({ onCancel }) => {
   const onFinish = (values) => {
-    console.log("values");
+    console.log("values", values);
+    onCancel();
   };
 
   const onFinishFailed = () => {};
@@ -68,7 +70,7 @@ const LibraryShareForm = ({ onCancel }) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item name="image" label="Upload image">
-          <CustomInput />
+          <ImageUpload />
         </Form.Item>
         <Form.Item name="language" label="Main language">
           <CustomSelect
