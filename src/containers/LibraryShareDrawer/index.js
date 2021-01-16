@@ -5,6 +5,8 @@ import { CustomDrawer } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
+import LibraryShareForm from "./LibraryShareForm";
+
 class LibraryShareDrawer extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,9 @@ class LibraryShareDrawer extends React.Component {
         title="Share content"
         visible={visible}
         onClose={this.onDrawerClose}
-      ></CustomDrawer>
+      >
+        <LibraryShareForm onCancel={this.onDrawerClose} />
+      </CustomDrawer>
     );
   }
 }
