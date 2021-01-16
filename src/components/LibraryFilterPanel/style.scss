@@ -5,12 +5,17 @@
   height: calc(100vh - 72px);
   background: $color-white;
   box-shadow: 4px 0px 14px #37215714;
-  padding: 56px 2rem 2rem;
+  padding: 44px 2rem 2rem;
   z-index: 9;
   overflow: auto;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  &-share {
+    margin-bottom: 40px;
+    width: 100%;
   }
 
   .custom-calendar {
