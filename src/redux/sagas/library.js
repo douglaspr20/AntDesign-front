@@ -30,7 +30,7 @@ export function* addLibrarySaga({ payload }) {
     const response = yield call(addLibrary, { ...payload });
 
     if (response.status === 200) {
-      console.log("");
+      yield put(libraryActions.setLibrary(response.data.library))
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {

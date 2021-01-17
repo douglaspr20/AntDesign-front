@@ -12,6 +12,21 @@ export const reducers = {
       allLibraries: cloneDeep([...payload.libraries]),
     });
   },
+  [libraryConstants.SET_LIBRARY]: (state, { payload }) => {
+    const allLibraries = state.get("allLibraries");
+    let index = allLibraries.findIndex(
+      (item) => item.id === payload.library.id
+    );
+    if (index >= 0) {
+      allLibraries[index] = payload.library;
+    } else {
+      allLibraries.push(payload.library);
+    }
+    return state.merge({
+      allLibraries: [...allLibraries],
+      selectedLibrary: { ...payload.library },
+    });
+  },
 };
 
 export const initialState = () =>
@@ -19,6 +34,7 @@ export const initialState = () =>
     loading: false,
     error: null,
     allLibraries: [],
+    selectedLibrary: {},
   });
 
 export default handleActions(reducers, initialState());

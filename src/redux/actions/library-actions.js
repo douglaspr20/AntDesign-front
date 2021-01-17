@@ -3,6 +3,7 @@ import { createAction } from "redux-actions";
 const GET_ALL_LIBRARIES = "GET_ALL_LIBRARIES";
 const SET_ALL_LIBRARIES = "SET_ALL_LIBRARIES";
 const ADD_LIBRARY = "ADD_LIBRARY";
+const SET_LIBRARY = "SET_LIBRARY";
 
 export const constants = {
   GET_ALL_LIBRARIES,
@@ -20,9 +21,11 @@ export const setAllLibraries = createAction(SET_ALL_LIBRARIES, (libraries) => ({
   libraries,
 }));
 export const addLibrary = createAction(ADD_LIBRARY, (library) => ({ library }));
+export const setLibrary = createAction(SET_LIBRARY, (library) => ({ library }));
 
 export const actions = {
   getAllLibraries,
   setAllLibraries,
   addLibrary,
+  setLibrary,
 };
