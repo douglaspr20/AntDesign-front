@@ -27,6 +27,11 @@ const FilterDrawer = () => {
     setFilterValues({ ...filterValues, [field]: values });
   };
 
+  const onShareContent = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_SHARE_CONTENT);
+    onDrawerClose();
+  };
+
   useEffect(() => {
     Emitter.on(EVENT_TYPES.OPEN_FILTER_PANEL, () => {
       setVisible(true);
@@ -51,6 +56,13 @@ const FilterDrawer = () => {
           </h2>
         </div>
         <div className="filter-drawer-content">
+          <CustomButton
+            className="filter-drawer-content-share"
+            text="Share content"
+            size="md"
+            type="primary"
+            onClick={onShareContent}
+          />
           {FilterTitles.map((filter, index) => (
             <div className="search-filter" key={`${filter}-${index}`}>
               <h4 className="search-filter-title font-bold">{filter}</h4>

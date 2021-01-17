@@ -9,6 +9,7 @@ import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 import EventDrawer from "containers/EventDrawer";
 import MemberDrawer from "containers/MemberDrawer";
+import LibraryShareDrawer from "containers/LibraryShareDrawer";
 import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
@@ -93,6 +94,7 @@ class App extends Component {
         <ProfileDrawer />
         <EventDrawer />
         <MemberDrawer />
+        <LibraryShareDrawer />
         <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (
           <div className="loading-container">

@@ -1,22 +1,51 @@
 @import "styles/main.scss";
 
 .custom-radio {
-  display: flex;
+  display: flex !important;
   align-items: center;
   cursor: pointer;
   width: fit-content;
 
-  &.md .custom-radio-inner {
+  .ant-radio-inner {
     width: 28px;
     height: 28px;
   }
 
-  &.sm .custom-radio-inner {
-    width: 20px;
-    height: 20px;
+  &.md {
+    .ant-radio-inner {
+      width: 28px;
+      height: 28px;
+    }
+
+    &.ant-radio-wrapper-checked {
+      .ant-radio-inner::after {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: $color-primary;
+      }
+    }
   }
 
-  &-inner {
+  &.sm {
+    .ant-radio-inner {
+      width: 20px;
+      height: 20px;
+    }
+
+    &.ant-radio-wrapper-checked {
+      .ant-radio-inner::after {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: $color-primary;
+        top: 2px;
+        left: 2px;
+      }
+    }
+  }
+
+  .ant-radio-inner {
     border: 2px solid $color-border;
     border-radius: 50%;
     display: flex;
@@ -26,20 +55,26 @@
     color: $color-white;
   }
 
-  &-text {
+  &.primary.ant-radio-wrapper-checked {
+    .ant-radio-inner {
+      background: $color-white;
+      border: 2px solid $color-primary;
+    }
+  }
+
+  &.md > span:last-child {
+    padding-left: 1rem !important;
     @include app-font(20px, 30px);
     color: $color-text-secondary;
-    margin-left: 1rem;
 
     @media (max-width: 575.98px) {
       @include app-font(16px, 30px);
     }
   }
 
-  &.primary.checked {
-    .custom-radio-inner {
-      background: $color-primary;
-      border: 2px solid $color-primary;
-    }
+  &.sm > span:last-child {
+    padding-left: 1rem !important;
+    @include app-font(14px, 30px);
+    color: $color-text-secondary;
   }
 }
