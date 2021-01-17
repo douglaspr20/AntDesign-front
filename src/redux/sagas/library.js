@@ -5,7 +5,12 @@ import {
   actions as libraryActions,
 } from "../actions/library-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { getAllLibraries, addLibrary, getLibrary } from "../../api";
+import {
+  getAllLibraries,
+  addLibrary,
+  getLibrary,
+  searchLibrary,
+} from "../../api";
 
 export function* getAllLibrariesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -55,10 +60,30 @@ export function* getLibrarySaga({ payload }) {
   }
 }
 
+export function* searchLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.setSearchLibraries(response.data.libraries.rows)
+      );
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(libraryConstants.GET_ALL_LIBRARIES, getAllLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
   yield takeLatest(libraryConstants.GET_LIBRARY, getLibrarySaga);
+  yield takeLatest(libraryConstants.SEARCH_LIBRARIES, searchLibrarySaga);
 }
 
 export const librarySaga = [fork(watchLogin)];

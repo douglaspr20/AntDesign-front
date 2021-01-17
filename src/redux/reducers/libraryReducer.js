@@ -27,6 +27,11 @@ export const reducers = {
       selectedLibrary: { ...payload.library },
     });
   },
+  [libraryConstants.SET_SEARCH_LIBRARIES]: (state, { payload }) => {
+    return state.merge({
+      allLibraries: cloneDeep([...payload.libraries]),
+    });
+  },
 };
 
 export const initialState = () =>

@@ -7,7 +7,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomRadio,
-  CustomSelect,
+  // CustomSelect,
   CustomButton,
   ImageUpload,
 } from "components";
@@ -77,7 +77,7 @@ const LibraryShareForm = ({ onCancel, addLibrary }) => {
         <Form.Item name="image" label="Upload image">
           <ImageUpload />
         </Form.Item>
-        <Form.Item name="language" label="Main language">
+        {/* <Form.Item name="language" label="Main language">
           <CustomSelect
             showSearch
             options={Languages}
@@ -86,7 +86,7 @@ const LibraryShareForm = ({ onCancel, addLibrary }) => {
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
           />
-        </Form.Item>
+        </Form.Item> */}
         <div className="library-share-form-footer">
           <CustomButton
             text="Cancel"

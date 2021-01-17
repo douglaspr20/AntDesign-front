@@ -15,25 +15,15 @@ import {
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { getAllLibraries } from "redux/actions/library-actions";
+import {
+  getAllLibraries,
+  searchLibraries,
+} from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
-
-const Library = {
-  title: "How to improve your soft skills",
-  image: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  description:
-    "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis el malesuada velit sollicitudin vehicula sollicitudin libero vel malesuada velit",
-  article: 1,
-};
-
-const LibraryData = Array.from(Array(12).keys()).map((item) => ({
-  id: item,
-  ...Library,
-}));
 
 const SortOptions = [
   {
@@ -58,6 +48,7 @@ const LearningLibraryPage = ({
   userProfile,
   allLibraries,
   getAllLibraries,
+  searchLibraries,
 }) => {
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
@@ -79,6 +70,10 @@ const LearningLibraryPage = ({
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
+  const onFilterChange = (filters) => {
+    searchLibraries(filters);
+  };
+
   useEffect(() => {
     getAllLibraries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +81,7 @@ const LearningLibraryPage = ({
 
   return (
     <div className="learning-library-page">
-      <LibraryFilterPanel />
+      <LibraryFilterPanel onChange={onFilterChange} />
       <FilterDrawer />
       <div className="search-results-container">
         <Row>
@@ -165,6 +160,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = {
   getAllLibraries,
+  searchLibraries,
 };
 
 export default connect(
