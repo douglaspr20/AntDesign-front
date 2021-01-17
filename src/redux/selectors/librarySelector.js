@@ -7,6 +7,7 @@ const resultSelector = createSelector(libraryDataSelector, (payload) => {
     loading: payload.get("loading"),
     allLibraries: payload.get("allLibraries"),
     error: payload.get("error"),
+    selectedLibrary: payload.get("selectedLibrary"),
   };
 });
 

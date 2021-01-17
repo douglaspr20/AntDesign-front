@@ -13,3 +13,7 @@ export const getAllLibraries = ({ filter }) => {
 export const addLibrary = ({ library }) => {
   return httpClient.post(`private/library/`, { ...library });
 };
+
+export const getLibrary = ({ id }) => {
+  return httpClient.get(`private/library/${id}`);
+};
