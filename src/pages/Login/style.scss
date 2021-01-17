@@ -12,17 +12,15 @@
     border-radius: 5px;
     box-shadow: 4px 0px 14px #37215714;
     position: relative;
-    background: $color-background !important;
+    background: $color-white !important;
     border: 1px solid $color-border;
-    width: 350px;
+    width: 472px;
 
     &-header {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: $color-background-dark;
-      padding: 48px 0 16px;
-      border-bottom: 1px solid $color-border;
+      padding: 60px 0 16px;
 
       h3 {
         font-weight: bold !important;
@@ -49,12 +47,21 @@
     }
 
     &-form {
-      padding: 1rem;
+      padding: 2rem;
     }
 
     &-content {
       .ant-form-item-has-error .ant-form-item-explain-error {
         color: $color-primary !important;
+      }
+
+      .ant-form-item-required {
+        @include app-font(14px, 19px, 600);
+        color: $color-text-secondary !important;
+
+        &::before {
+          display: none !important;
+        }
       }
     }
 
@@ -73,13 +80,15 @@
       flex-direction: column;
       align-items: center;
 
+      .custom-button {
+        width: 100%;
+      }
+
       .signup-select {
-        @include app-font(12px, 14px);
-        color: $color-primary;
-        position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
+        @include app-font(16px, 24px, bold);
+        color: $color-accent;
         cursor: pointer;
+        margin-left: 12px;
 
         &:hover {
           text-decoration: underline;
@@ -89,6 +98,28 @@
       &-error {
         margin-bottom: 0.5rem;
         color: $color-primary;
+      }
+
+      .forgot-password {
+        @include app-font(16px, 24px, bold);
+        color: $color-text-secondary !important;
+        text-align: center;
+      }
+
+      &-bottom {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      &-category {
+        margin-top: 1rem;
+
+        .account-desc {
+          @include app-font(16px, 24px);
+          color: $color-text-secondary;
+        }
       }
     }
   }

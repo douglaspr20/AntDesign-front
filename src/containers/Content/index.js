@@ -5,6 +5,8 @@ import { Layout } from "antd";
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
+import PasswordRecoveryPage from "pages/PasswordRecovery";
+import ResetPasswordPage from "pages/ResetPassword";
 import HEARTPage from "pages/Heart";
 import LearningLibraryPage from "pages/Library";
 import ArticlePage from "pages/Article";
@@ -35,6 +37,14 @@ class Content extends Component {
           <Route
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
+          />
+          <Route
+            path={INTERNAL_LINKS.PASSWORD_RECOVERY}
+            render={(props) => <PasswordRecoveryPage {...props} />}
+          />
+          <Route
+            path={INTERNAL_LINKS.RESET_PASSWORD}
+            render={(props) => <ResetPasswordPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.HEART}
