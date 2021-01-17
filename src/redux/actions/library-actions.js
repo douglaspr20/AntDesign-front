@@ -16,7 +16,9 @@ export const constants = {
 export const getAllLibraries = createAction(GET_ALL_LIBRARIES, (filter) => ({
   filter,
 }));
-export const setAllLibraries = createAction(SET_ALL_LIBRARIES);
+export const setAllLibraries = createAction(SET_ALL_LIBRARIES, (libraries) => ({
+  libraries,
+}));
 export const addLibrary = createAction(ADD_LIBRARY, (library) => ({ library }));
 
 export const actions = {

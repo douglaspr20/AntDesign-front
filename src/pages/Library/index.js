@@ -54,8 +54,11 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = ({ userProfile, getAllLibraries }) => {
-  const [data, setData] = useState(LibraryData);
+const LearningLibraryPage = ({
+  userProfile,
+  allLibraries,
+  getAllLibraries,
+}) => {
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
 
@@ -64,7 +67,6 @@ const LearningLibraryPage = ({ userProfile, getAllLibraries }) => {
   const onShowMore = () => {
     setLoading(true);
     setTimeout(() => {
-      setData([...data, ...LibraryData]);
       setLoading(false);
     }, 3000);
   };
@@ -115,7 +117,7 @@ const LearningLibraryPage = ({ userProfile, getAllLibraries }) => {
           </Col>
         </Row>
         <div className="search-results-list">
-          {data.map((item, index) => (
+          {allLibraries.map((item, index) => (
             <LibraryCard
               key={index}
               data={item}

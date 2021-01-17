@@ -1,6 +1,9 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 
-import { constants as libraryConstants, actions as libraryActions } from "../actions/library-actions";
+import {
+  constants as libraryConstants,
+  actions as libraryActions,
+} from "../actions/library-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { getAllLibraries, addLibrary } from "../../api";
 
@@ -11,7 +14,7 @@ export function* getAllLibrariesSaga({ payload }) {
     const response = yield call(getAllLibraries, { ...payload });
 
     if (response.status === 200) {
-
+      yield put(libraryActions.setAllLibraries(response.data.libraries.rows));
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
@@ -27,7 +30,7 @@ export function* addLibrarySaga({ payload }) {
     const response = yield call(addLibrary, { ...payload });
 
     if (response.status === 200) {
-      console.log('')
+      console.log("");
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {

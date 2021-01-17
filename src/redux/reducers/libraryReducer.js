@@ -8,7 +8,9 @@ import { constants as libraryConstants } from "../actions/library-actions";
 // Events's Reducer
 export const reducers = {
   [libraryConstants.SET_ALL_LIBRARIES]: (state, { payload }) => {
-    return state.merge({ allEvents: cloneDeep(payload.libraries) });
+    return state.merge({
+      allLibraries: cloneDeep([...payload.libraries]),
+    });
   },
 };
 
