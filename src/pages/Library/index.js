@@ -25,24 +25,7 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const SortOptions = [
-  {
-    value: "newest-first",
-    text: "Newest first",
-  },
-  {
-    value: "newest-last",
-    text: "Newest last",
-  },
-  {
-    value: "sort-name",
-    text: "Sort by name",
-  },
-  {
-    value: "sort-type",
-    text: "Sort by type",
-  },
-];
+const SortOptions = SETTINGS.SORT_OPTIONS;
 
 const LearningLibraryPage = ({
   userProfile,
@@ -62,6 +45,7 @@ const LearningLibraryPage = ({
     getMoreLibraries({
       ...filters,
       page: currentPage + 1,
+      order: sortValue,
     });
   };
 
@@ -74,12 +58,17 @@ const LearningLibraryPage = ({
   };
 
   const onFilterChange = (filters) => {
-    searchLibraries(filters);
+    searchLibraries(filters, sortValue);
     setFilters(filters);
   };
 
+  const onSortChange = (value) => {
+    setSortValue(value);
+    searchLibraries(filters, value);
+  };
+
   useEffect(() => {
-    searchLibraries({});
+    searchLibraries({}, sortValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,7 +103,7 @@ const LearningLibraryPage = ({
                 bordered={false}
                 options={SortOptions}
                 value={sortValue}
-                onChange={(value) => setSortValue(value)}
+                onChange={(value) => onSortChange(value)}
               />
             </div>
           </Col>

@@ -9,10 +9,11 @@ export const getLibrary = ({ id }) => {
   return httpClient.get(`private/library/${id}`);
 };
 
-export const searchLibrary = ({ filter }) => {
+export const searchLibrary = ({ filter, order }) => {
   let newFilter = {
     page: 1,
     num: SETTINGS.MAX_SEARCH_ROW_NUM,
+    order,
   };
 
   if (filter) {

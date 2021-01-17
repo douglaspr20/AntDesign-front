@@ -23,9 +23,13 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getMoreLibraries = createAction(GET_MORE_LIBRARIES, (filter) => ({
-  filter,
-}));
+export const getMoreLibraries = createAction(
+  GET_MORE_LIBRARIES,
+  (filter, order) => ({
+    filter,
+    order,
+  })
+);
 export const setMoreLibraries = createAction(
   SET_MORE_LIBRARIES,
   (countOfResults, currentPage, libraries) => ({
@@ -37,9 +41,13 @@ export const setMoreLibraries = createAction(
 export const addLibrary = createAction(ADD_LIBRARY, (library) => ({ library }));
 export const setLibrary = createAction(SET_LIBRARY, (library) => ({ library }));
 export const getLibrary = createAction(GET_LIBRARY, (id) => ({ id }));
-export const searchLibraries = createAction(SEARCH_LIBRARIES, (filter) => ({
-  filter,
-}));
+export const searchLibraries = createAction(
+  SEARCH_LIBRARIES,
+  (filter, order) => ({
+    filter,
+    order,
+  })
+);
 export const setSearchLibraries = createAction(
   SET_SEARCH_LIBRARIES,
   (countOfResults, currentPage, libraries) => ({
