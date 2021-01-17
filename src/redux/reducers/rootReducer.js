@@ -4,10 +4,12 @@ import homeReducer from "./homeReducer";
 import envReducer from "./envReducer";
 import authReducer from "./authReducer";
 import eventReducer from "./eventReducer";
+import libraryReducer from "./libraryReducer";
 
 export default combineReducers({
   home: homeReducer,
   env: envReducer,
   auth: authReducer,
   event: eventReducer,
+  library: libraryReducer,
 });

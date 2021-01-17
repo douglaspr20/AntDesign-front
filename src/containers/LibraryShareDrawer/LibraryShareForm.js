@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, Radio } from "antd";
 
@@ -12,15 +13,19 @@ import {
 } from "components";
 import { SEARCH_FILTERS, LANGUAGES } from "enum";
 
+import { addLibrary } from "redux/actions/library-actions";
+import { librarySelector } from "redux/selectors/librarySelector";
+
 import "./style.scss";
 
 const SearchFilters = SEARCH_FILTERS.library;
 const Languages = LANGUAGES.ParsedLanguageData;
 
-const LibraryShareForm = ({ onCancel }) => {
+const LibraryShareForm = ({ onCancel, addLibrary }) => {
   const onFinish = (values) => {
     console.log("values", values);
     onCancel();
+    addLibrary(values);
   };
 
   const onFinishFailed = () => {};
@@ -45,7 +50,7 @@ const LibraryShareForm = ({ onCancel }) => {
         <Form.Item name="title" label="Title">
           <CustomInput />
         </Form.Item>
-        <Form.Item name="url" label="URL">
+        <Form.Item name="link" label="URL">
           <CustomInput addonBefore="https://" />
         </Form.Item>
         <Form.Item name="description" label="Description">
@@ -60,7 +65,7 @@ const LibraryShareForm = ({ onCancel }) => {
             ))}
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="type" label="What is the content type?">
+        <Form.Item name="contentType" label="What is the content type?">
           <Radio.Group className="library-form-types">
             {SearchFilters["Content type"].map((type, index) => (
               <CustomRadio key={index} value={type.value}>
@@ -91,7 +96,7 @@ const LibraryShareForm = ({ onCancel }) => {
           />
           <CustomButton
             htmlType="submit"
-            text="Save"
+            text="Submit"
             type="secondary"
             size="lg"
           />
@@ -109,4 +114,12 @@ LibraryShareForm.defaultProps = {
   onCancel: () => {},
 };
 
-export default LibraryShareForm;
+const mapStateToProps = (state) => ({
+  allLibraries: librarySelector(state).allLibraries,
+});
+
+const mapDispatchToProps = {
+  addLibrary,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LibraryShareForm);

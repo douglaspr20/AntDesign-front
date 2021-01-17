@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
@@ -15,6 +15,8 @@ import {
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { getAllLibraries } from "redux/actions/library-actions";
+import { librarySelector } from "redux/selectors/librarySelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -52,7 +54,7 @@ const SortOptions = [
   },
 ];
 
-const LearningLibraryPage = ({ userProfile }) => {
+const LearningLibraryPage = ({ userProfile, getAllLibraries }) => {
   const [data, setData] = useState(LibraryData);
   const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
@@ -74,6 +76,11 @@ const LearningLibraryPage = ({ userProfile }) => {
   const showFilterPanel = () => {
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
+
+  useEffect(() => {
+    getAllLibraries();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="learning-library-page">
@@ -151,6 +158,14 @@ LearningLibraryPage.defaultProps = {
 
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
+  allLibraries: librarySelector(state).allLibraries,
 });
 
-export default connect(mapStateToProps)(LearningLibraryPage);
+const mapDispatchToProps = {
+  getAllLibraries,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LearningLibraryPage);
