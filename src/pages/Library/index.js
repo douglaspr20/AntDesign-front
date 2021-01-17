@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
@@ -13,58 +13,40 @@ import {
   LibraryFilterPanel,
 } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
+import {
+  getMoreLibraries,
+  searchLibraries,
+} from "redux/actions/library-actions";
+import { librarySelector } from "redux/selectors/librarySelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const Library = {
-  title: "How to improve your soft skills",
-  image: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-  description:
-    "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis el malesuada velit sollicitudin vehicula sollicitudin libero vel malesuada velit",
-  article: 1,
-};
+const SortOptions = SETTINGS.SORT_OPTIONS;
 
-const LibraryData = Array.from(Array(12).keys()).map((item) => ({
-  id: item,
-  ...Library,
-}));
-
-const SortOptions = [
-  {
-    value: "newest-first",
-    text: "Newest first",
-  },
-  {
-    value: "newest-last",
-    text: "Newest last",
-  },
-  {
-    value: "sort-name",
-    text: "Sort by name",
-  },
-  {
-    value: "sort-type",
-    text: "Sort by type",
-  },
-];
-
-const LearningLibraryPage = ({ userProfile }) => {
-  const [data, setData] = useState(LibraryData);
-  const [loading, setLoading] = useState(false);
+const LearningLibraryPage = ({
+  userProfile,
+  loading,
+  countOfResults,
+  currentPage,
+  allLibraries,
+  getMoreLibraries,
+  searchLibraries,
+}) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
+  const [filters, setFilters] = useState({});
 
   const planUpdated = userProfile.memberShip !== "free";
 
   const onShowMore = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setData([...data, ...LibraryData]);
-      setLoading(false);
-    }, 3000);
+    getMoreLibraries({
+      ...filters,
+      page: currentPage + 1,
+      order: sortValue,
+    });
   };
 
   const planUpdate = () => {
@@ -75,9 +57,24 @@ const LearningLibraryPage = ({ userProfile }) => {
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
+  const onFilterChange = (filters) => {
+    searchLibraries(filters, sortValue);
+    setFilters(filters);
+  };
+
+  const onSortChange = (value) => {
+    setSortValue(value);
+    searchLibraries(filters, value);
+  };
+
+  useEffect(() => {
+    searchLibraries({}, sortValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="learning-library-page">
-      <LibraryFilterPanel />
+      <LibraryFilterPanel onChange={onFilterChange} />
       <FilterDrawer />
       <div className="search-results-container">
         <Row>
@@ -89,26 +86,30 @@ const LearningLibraryPage = ({ userProfile }) => {
               >
                 Filters
               </h3>
-              <h3>{`${numberWithCommas(1234)} results`}</h3>
+              <h3>{`${numberWithCommas(countOfResults)} result${
+                countOfResults > 1 ? "s" : ""
+              }`}</h3>
             </div>
           </Col>
         </Row>
         <Row>
           <Col span={24}>
             <div className="search-results-container-header d-flex justify-between items-center">
-              <h3>{`${numberWithCommas(1234)} results`}</h3>
+              <h3>{`${numberWithCommas(countOfResults)} result${
+                countOfResults > 1 ? "s" : ""
+              }`}</h3>
               <CustomSelect
                 className="search-results-container-sort"
                 bordered={false}
                 options={SortOptions}
                 value={sortValue}
-                onChange={(value) => setSortValue(value)}
+                onChange={(value) => onSortChange(value)}
               />
             </div>
           </Col>
         </Row>
         <div className="search-results-list">
-          {data.map((item, index) => (
+          {allLibraries.map((item, index) => (
             <LibraryCard
               key={index}
               data={item}
@@ -117,17 +118,19 @@ const LearningLibraryPage = ({ userProfile }) => {
             />
           ))}
         </div>
-        <div className="search-results-container-footer d-flex justify-center items-center">
-          {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
-          {!loading && (
-            <CustomButton
-              text="Show more"
-              type="primary outlined"
-              size="lg"
-              onClick={onShowMore}
-            />
-          )}
-        </div>
+        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+          <div className="search-results-container-footer d-flex justify-center items-center">
+            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
         {!planUpdated && (
           <div className="upgrade-notification">
             <div className="upgrade-notification-panel">
@@ -151,6 +154,18 @@ LearningLibraryPage.defaultProps = {
 
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
+  loading: librarySelector(state).loading,
+  allLibraries: librarySelector(state).allLibraries,
+  countOfResults: librarySelector(state).countOfResults,
+  currentPage: librarySelector(state).currentPage,
 });
 
-export default connect(mapStateToProps)(LearningLibraryPage);
+const mapDispatchToProps = {
+  getMoreLibraries,
+  searchLibraries,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LearningLibraryPage);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
@@ -14,10 +14,21 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.library;
 const FilterTitles = Object.keys(SearchFilters);
 
-const FilterPanel = ({ title, userProfile }) => {
+const FilterPanel = ({ title, userProfile, onChange }) => {
+  const [filters, setFilters] = useState({});
+
   const onShareContent = () => {
     Emitter.emit(EVENT_TYPES.OPEN_SHARE_CONTENT);
-  }
+  };
+
+  const onFilterChange = (field, values) => {
+    const newFilter = {
+      ...filters,
+      [field.toLowerCase()]: JSON.stringify(values),
+    };
+    setFilters(newFilter);
+    onChange(newFilter);
+  };
 
   return (
     <div className="library-filter-panel">
@@ -33,7 +44,9 @@ const FilterPanel = ({ title, userProfile }) => {
         {FilterTitles.map((filter, index) => (
           <div className="search-filter" key={`${filter}-${index}`}>
             <h5 className="search-filter-title font-bold">{filter}</h5>
-            <Checkbox.Group>
+            <Checkbox.Group
+              onChange={(values) => onFilterChange(filter, values)}
+            >
               {SearchFilters[filter].map((item) => (
                 <CustomCheckbox
                   key={item.value}
@@ -54,10 +67,12 @@ const FilterPanel = ({ title, userProfile }) => {
 
 FilterPanel.propTypes = {
   title: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 FilterPanel.defaultProps = {
   title: "Filters",
+  onChange: () => {},
 };
 
 const mapStateToProps = (state) => ({

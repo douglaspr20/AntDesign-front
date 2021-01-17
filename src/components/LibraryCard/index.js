@@ -11,7 +11,7 @@ import "./style.scss";
 
 const LibraryCard = ({ data, locked, onClickAccess }) => {
   const [lineClamp, setLineClamp] = useState(3);
-  const { title, image, description, article } = data || {};
+  const { title, image, description, id } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
   return (
     <div className="library-card">
       <div className="library-card-header">
-        <img src={image} alt="header-img" />
+        {image && <img src={image} alt="header-img" />}
       </div>
       <div className="library-card-content">
         <h3 className="library-card-title">{title}</h3>
@@ -52,7 +52,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           </p>
         </div>
         <div className="library-card-content-footer">
-          <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${article}`}>
+          <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${id}`}>
             <div className="d-flex items-center">
               <div className="library-card-icon">
                 <img src={IconDocument} alt="doc-icon" />

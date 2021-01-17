@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
+import { connect } from "react-redux";
+
+import { getLibrary } from "redux/actions/library-actions";
+import { librarySelector } from "redux/selectors/librarySelector";
 
 import "./style.scss";
 
@@ -24,7 +28,16 @@ const Data = {
   ],
 };
 
-const ArticlePage = () => {
+const ArticlePage = ({ match, selectedLibrary, getLibrary }) => {
+  useEffect(() => {
+    const {
+      params: { id },
+    } = match;
+
+    getLibrary(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="article-page">
       <Row gutter={16}>
@@ -36,8 +49,10 @@ const ArticlePage = () => {
         >
           <Row gutter={64}>
             <Col lg={{ span: 20, offset: 2 }}>
-              <h1 className="article-page-title">{Data.title}</h1>
-              <h3 className="article-page-desc">{Data.description}</h3>
+              <h1 className="article-page-title">{selectedLibrary.title}</h1>
+              <h3 className="article-page-desc">
+                {selectedLibrary.description}
+              </h3>
               <h3 className="view-original">View Original</h3>
             </Col>
             <Col span={24}>
@@ -75,4 +90,12 @@ ArticlePage.defaultProps = {
   title: "",
 };
 
-export default ArticlePage;
+const mapStateToProps = (state, props) => ({
+  selectedLibrary: librarySelector(state).selectedLibrary,
+});
+
+const mapDispatchToProps = {
+  getLibrary,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);

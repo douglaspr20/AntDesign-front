@@ -23,20 +23,20 @@ export default {
         value: "slides",
       },
     ],
-    Language: [
-      {
-        text: "English",
-        value: "english",
-      },
-      {
-        text: "Spanish",
-        value: "spanish",
-      },
-      {
-        text: "Portuguese",
-        value: "portuguese",
-      },
-    ],
+    // Language: [
+    //   {
+    //     text: "English",
+    //     value: "english",
+    //   },
+    //   {
+    //     text: "Spanish",
+    //     value: "spanish",
+    //   },
+    //   {
+    //     text: "Portuguese",
+    //     value: "portuguese",
+    //   },
+    // ],
   },
   events: {
     Topics: [
