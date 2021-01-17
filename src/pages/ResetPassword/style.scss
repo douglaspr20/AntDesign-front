@@ -27,6 +27,7 @@
       object-fit: cover;
     }
   }
+
   &__form-container {
     padding: 2em;
     width: 472px;
@@ -58,7 +59,7 @@
       height: 42px !important;
       border-radius: 8px !important;
     }
-    .spinner-container{
+    .spinner-container {
       margin-top: 2em;
       text-align: center;
       width: 100%;
@@ -83,6 +84,15 @@
         opacity: 1;
         margin-top: 1em;
         font-weight: 700;
+      }
+    }
+
+    .ant-form-item-required {
+      @include app-font(14px, 19px, 600);
+      color: $color-text-secondary !important;
+
+      &::before {
+        display: none !important;
       }
     }
   }

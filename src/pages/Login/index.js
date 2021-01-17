@@ -58,12 +58,12 @@ const Login = ({ isAuthenticated, error, login, signUp, history, match }) => {
           </div>
         </div>
 
-        { match.params.sentEmail === 'passwordRecoverySent' &&
-            <AuthAlert
-              title="Check your inbox"
-              message="We will send you an email with the instructions on how to reset your password."
-            />
-        }
+        {match.params.sentEmail === "passwordRecoverySent" && (
+          <AuthAlert
+            title="Check your inbox"
+            message="We will send you an email with the instructions on how to reset your password."
+          />
+        )}
 
         <Form
           {...layout}
@@ -84,12 +84,24 @@ const Login = ({ isAuthenticated, error, login, signUp, history, match }) => {
               type="primary"
               size="lg"
             />
-            <Link to={ INTERNAL_LINKS.PASSWORD_RECOVERY } className="forgot-password">
-              Forgot password?
-            </Link>
-            <span className="signup-select" onClick={onChangeType}>
-              {isLogin ? "Sign up?" : "Log in?"}
-            </span>
+            <div className="login-dialog-footer-bottom">
+              <Link
+                to={INTERNAL_LINKS.PASSWORD_RECOVERY}
+                className="forgot-password"
+              >
+                Forgot password?
+              </Link>
+              <div className="login-dialog-footer-category">
+                <span className="account-desc">
+                  {isLogin
+                    ? "Don't have an account?"
+                    : "Alreay have an account?"}
+                </span>
+                <span className="signup-select" onClick={onChangeType}>
+                  {isLogin ? "Sign up?" : "Log in?"}
+                </span>
+              </div>
+            </div>
           </div>
         </Form>
       </div>

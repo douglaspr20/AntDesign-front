@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Spin } from "antd";
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { CustomInput, CustomButton } from "components";
@@ -21,6 +21,7 @@ const ResetPasswordPage = ({ match, history }) => {
 
   useEffect(() => {
     execVerifyPassword();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const execVerifyPassword = async () => {
@@ -50,18 +51,18 @@ const ResetPasswordPage = ({ match, history }) => {
       setLoading(false);
       setIsValid(false);
     }
-  }
+  };
 
-  return (<>
-    <section className="reset-password-layout">
-      <div className="reset-password-layout__form-container">
-        <div className="reset-password-layout__logo">
-          <img src={IconLogo} alt="login-logo" />
-        </div>
-        <h3>Reset password</h3>
-        {
-          !loading ?
-            isValid ?
+  return (
+    <>
+      <section className="reset-password-layout">
+        <div className="reset-password-layout__form-container">
+          <div className="reset-password-layout__logo">
+            <img src={IconLogo} alt="login-logo" />
+          </div>
+          <h3>Reset password</h3>
+          {!loading ? (
+            isValid ? (
               <Form
                 layout="vertical"
                 onFinish={(data) => {
@@ -72,27 +73,43 @@ const ResetPasswordPage = ({ match, history }) => {
                   label="New password"
                   name="new_password"
                   rules={[
-                    { required: true, message: 'Please enter your new password!' },
+                    {
+                      required: true,
+                      message: "Please enter your new password!",
+                    },
                   ]}
                 >
-                  <CustomInput type="password" placeholder="New Password" size="sm" />
+                  <CustomInput
+                    type="password"
+                    placeholder="New Password"
+                    size="sm"
+                  />
                 </Form.Item>
                 <Form.Item
                   label="Confirm password"
                   name="confirm_password"
                   rules={[
-                    { required: true, message: 'Please enter your confirm password!' },
+                    {
+                      required: true,
+                      message: "Please enter your confirm password!",
+                    },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (!value || getFieldValue('new_password') === value) {
+                        if (!value || getFieldValue("new_password") === value) {
                           return Promise.resolve();
                         }
-                        return Promise.reject('The two passwords that you entered do not match!');
+                        return Promise.reject(
+                          "The two passwords that you entered do not match!"
+                        );
                       },
                     }),
                   ]}
                 >
-                  <CustomInput type="password" placeholder="Confirm Password" size="sm" />
+                  <CustomInput
+                    type="password"
+                    placeholder="Confirm Password"
+                    size="sm"
+                  />
                 </Form.Item>
                 <Form.Item>
                   <CustomButton
@@ -103,15 +120,19 @@ const ResetPasswordPage = ({ match, history }) => {
                   />
                 </Form.Item>
               </Form>
-              :
+            ) : (
               <>
                 <AuthAlert
                   title="Sorry!"
                   message={
                     <>
-                      We have problems to reset password,
-                      try again process from beginning or
-                    contact us via email <a href='mailto:hackinghrlab@gmail.com'> hackinghrlab@gmail.com</a>.
+                      We have problems to reset password, try again process from
+                      beginning or contact us via email{" "}
+                      <a href="mailto:hackinghrlab@gmail.com">
+                        {" "}
+                        hackinghrlab@gmail.com
+                      </a>
+                      .
                     </>
                   }
                 />
@@ -120,15 +141,16 @@ const ResetPasswordPage = ({ match, history }) => {
                   <Link to={INTERNAL_LINKS.HOME}>Log In</Link>
                 </div>
               </>
-            :
+            )
+          ) : (
             <div className="spinner-container">
-              <Spin indicator={spinIcon} ></Spin>
+              <Spin indicator={spinIcon}></Spin>
             </div>
-        }
-
-      </div>
-    </section>
-  </>);
+          )}
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default ResetPasswordPage;

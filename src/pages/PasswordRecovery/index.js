@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Spin } from "antd";
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { CustomInput, CustomButton } from "components";
@@ -33,65 +33,67 @@ const PasswordRecoveryPage = ({ history }) => {
       setLoading(false);
       setShowError(true);
     }
-  }
-  return (<>
-    <section className="password-recovery-layout">
-      <div className="password-recovery-layout__form-container">
-        <div className="password-recovery-layout__logo">
-          <img src={IconLogo} alt="login-logo" />
-        </div>
-        <h3>Password recovery</h3>
-        <p className="password-recovery-layout__form-container--p">
-          We will send you an email with the instructions on how to reset your password.
-        </p>
-        <Form
-          layout="vertical"
-          onFinish={(data) => {
-            sendPasswordRecovery(data);
-          }}
-        >
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: 'Please enter your email!' },
-              { type: 'email', message: 'Please enter the valid email!' }
-            ]}
+  };
+  return (
+    <>
+      <section className="password-recovery-layout">
+        <div className="password-recovery-layout__form-container">
+          <div className="password-recovery-layout__logo">
+            <img src={IconLogo} alt="login-logo" />
+          </div>
+          <h3>Password recovery</h3>
+          <p className="password-recovery-layout__form-container--p">
+            We will send you an email with the instructions on how to reset your
+            password.
+          </p>
+          <Form
+            layout="vertical"
+            onFinish={(data) => {
+              sendPasswordRecovery(data);
+            }}
           >
-            <CustomInput size="sm" />
-          </Form.Item>
-          <Form.Item>
-            {
-              loading ?
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Please enter your email!" },
+                { type: "email", message: "Please enter the valid email!" },
+              ]}
+            >
+              <CustomInput size="sm" />
+            </Form.Item>
+            <Form.Item>
+              {loading ? (
                 <div className="spinner-container">
-                  <Spin indicator={spinIcon} ></Spin>
+                  <Spin indicator={spinIcon}></Spin>
                 </div>
-                :
+              ) : (
                 <CustomButton
                   htmlType="submit"
                   text="Recover password"
                   type="primary"
                   size="md"
                 />
-            }
-          </Form.Item>
-        </Form>
-        {showError &&
-          <>
-            <br />
-            <AuthAlert
-              title="Error"
-              message="Email don't match with any user."
-            />
-          </>
-        }
-        <div className="form-container__footer">
-          <Link to={INTERNAL_LINKS.HOME}>Log In</Link>
-          <Link to={INTERNAL_LINKS.HOME}>Sign Up</Link>
+              )}
+            </Form.Item>
+          </Form>
+          {showError && (
+            <>
+              <br />
+              <AuthAlert
+                title="Error"
+                message="Email don't match with any user."
+              />
+            </>
+          )}
+          <div className="form-container__footer">
+            <Link to={INTERNAL_LINKS.HOME}>Log In</Link>
+            <Link to={INTERNAL_LINKS.HOME}>Sign Up</Link>
+          </div>
         </div>
-      </div>
-    </section>
-  </>);
+      </section>
+    </>
+  );
 };
 
 export default PasswordRecoveryPage;
