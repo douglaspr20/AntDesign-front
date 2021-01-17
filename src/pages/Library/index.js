@@ -16,7 +16,7 @@ import Emitter from "services/emitter";
 import { EVENT_TYPES, SETTINGS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
-  getAllLibraries,
+  getMoreLibraries,
   searchLibraries,
 } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
@@ -50,14 +50,20 @@ const LearningLibraryPage = ({
   countOfResults,
   currentPage,
   allLibraries,
-  getAllLibraries,
+  getMoreLibraries,
   searchLibraries,
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
+  const [filters, setFilters] = useState({});
 
   const planUpdated = userProfile.memberShip !== "free";
 
-  const onShowMore = () => {};
+  const onShowMore = () => {
+    getMoreLibraries({
+      ...filters,
+      page: currentPage + 1,
+    });
+  };
 
   const planUpdate = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -69,6 +75,7 @@ const LearningLibraryPage = ({
 
   const onFilterChange = (filters) => {
     searchLibraries(filters);
+    setFilters(filters);
   };
 
   useEffect(() => {
@@ -165,7 +172,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = {
-  getAllLibraries,
+  getMoreLibraries,
   searchLibraries,
 };
 

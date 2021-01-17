@@ -11,7 +11,7 @@ import {
   CustomButton,
   ImageUpload,
 } from "components";
-import { SEARCH_FILTERS, LANGUAGES } from "enum";
+import { SEARCH_FILTERS } from "enum";
 
 import { addLibrary } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
@@ -19,7 +19,7 @@ import { librarySelector } from "redux/selectors/librarySelector";
 import "./style.scss";
 
 const SearchFilters = SEARCH_FILTERS.library;
-const Languages = LANGUAGES.ParsedLanguageData;
+// const Languages = LANGUAGES.ParsedLanguageData;
 
 const LibraryShareForm = ({ onCancel, addLibrary }) => {
   const onFinish = (values) => {

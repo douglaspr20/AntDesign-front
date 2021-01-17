@@ -7,9 +7,12 @@ import { constants as libraryConstants } from "../actions/library-actions";
 
 // Events's Reducer
 export const reducers = {
-  [libraryConstants.SET_ALL_LIBRARIES]: (state, { payload }) => {
+  [libraryConstants.SET_MORE_LIBRARIES]: (state, { payload }) => {
+    const allLibraries = state.get("allLibraries");
     return state.merge({
-      allLibraries: cloneDeep([...payload.libraries]),
+      allLibraries: cloneDeep([...allLibraries, ...payload.libraries]),
+      currentPage: payload.currentPage,
+      countOfResults: payload.countOfResults,
     });
   },
   [libraryConstants.SET_LIBRARY]: (state, { payload }) => {
@@ -19,8 +22,6 @@ export const reducers = {
     );
     if (index >= 0) {
       allLibraries[index] = payload.library;
-    } else {
-      allLibraries.push(payload.library);
     }
     return state.merge({
       allLibraries: [...allLibraries],
@@ -32,6 +33,11 @@ export const reducers = {
       allLibraries: cloneDeep([...payload.libraries]),
       currentPage: payload.currentPage,
       countOfResults: payload.countOfResults,
+    });
+  },
+  [libraryConstants.SET_LOADING]: (state, { payload }) => {
+    return state.merge({
+      loading: payload.loading,
     });
   },
 };

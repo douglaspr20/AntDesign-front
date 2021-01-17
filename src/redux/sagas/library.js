@@ -7,19 +7,25 @@ import {
 import { actions as homeActions } from "../actions/home-actions";
 import { addLibrary, getLibrary, searchLibrary } from "../../api";
 
-export function* getAllLibrariesSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+export function* getMoreLibrariesSaga({ payload }) {
+  yield put(libraryActions.setLoading(true));
 
   try {
     const response = yield call(searchLibrary, { ...payload });
 
     if (response.status === 200) {
-      yield put(libraryActions.setAllLibraries(response.data.libraries.rows));
+      yield put(
+        libraryActions.setMoreLibraries(
+          response.data.libraries.count,
+          payload.filter.page,
+          response.data.libraries.rows
+        )
+      );
     }
-    yield put(homeActions.setLoading(false));
+    yield put(libraryActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
+    yield put(libraryActions.setLoading(false));
   }
 }
 
@@ -79,7 +85,7 @@ export function* searchLibrarySaga({ payload }) {
 }
 
 function* watchLogin() {
-  yield takeLatest(libraryConstants.GET_ALL_LIBRARIES, getAllLibrariesSaga);
+  yield takeLatest(libraryConstants.GET_MORE_LIBRARIES, getMoreLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
   yield takeLatest(libraryConstants.GET_LIBRARY, getLibrarySaga);
   yield takeLatest(libraryConstants.SEARCH_LIBRARIES, searchLibrarySaga);
