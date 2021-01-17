@@ -1,14 +1,5 @@
 import httpClient from "./httpClient";
-
-export const getAllLibraries = ({ filter }) => {
-  if (filter) {
-    const parsedFilter = Object.keys(filter)
-      .map((item) => `${item}=${filter[item]}`)
-      .join("&");
-    return httpClient.get(`private/library/all?${parsedFilter}`);
-  }
-  return httpClient.get("private/library/all?page=1&num=20");
-};
+import { SETTINGS } from "enum";
 
 export const addLibrary = ({ library }) => {
   return httpClient.post(`private/library/`, { ...library });
@@ -21,7 +12,7 @@ export const getLibrary = ({ id }) => {
 export const searchLibrary = ({ filter }) => {
   let newFilter = {
     page: 1,
-    num: 20,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
   };
 
   if (filter) {

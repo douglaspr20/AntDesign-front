@@ -13,7 +13,7 @@ import {
   LibraryFilterPanel,
 } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
   getAllLibraries,
@@ -46,21 +46,18 @@ const SortOptions = [
 
 const LearningLibraryPage = ({
   userProfile,
+  loading,
+  countOfResults,
+  currentPage,
   allLibraries,
   getAllLibraries,
   searchLibraries,
 }) => {
-  const [loading, setLoading] = useState(false);
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
 
   const planUpdated = userProfile.memberShip !== "free";
 
-  const onShowMore = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  };
+  const onShowMore = () => {};
 
   const planUpdate = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -75,7 +72,7 @@ const LearningLibraryPage = ({
   };
 
   useEffect(() => {
-    getAllLibraries();
+    searchLibraries({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -93,14 +90,18 @@ const LearningLibraryPage = ({
               >
                 Filters
               </h3>
-              <h3>{`${numberWithCommas(1234)} results`}</h3>
+              <h3>{`${numberWithCommas(countOfResults)} result${
+                countOfResults > 1 ? "s" : ""
+              }`}</h3>
             </div>
           </Col>
         </Row>
         <Row>
           <Col span={24}>
             <div className="search-results-container-header d-flex justify-between items-center">
-              <h3>{`${numberWithCommas(1234)} results`}</h3>
+              <h3>{`${numberWithCommas(countOfResults)} result${
+                countOfResults > 1 ? "s" : ""
+              }`}</h3>
               <CustomSelect
                 className="search-results-container-sort"
                 bordered={false}
@@ -121,17 +122,19 @@ const LearningLibraryPage = ({
             />
           ))}
         </div>
-        <div className="search-results-container-footer d-flex justify-center items-center">
-          {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
-          {!loading && (
-            <CustomButton
-              text="Show more"
-              type="primary outlined"
-              size="lg"
-              onClick={onShowMore}
-            />
-          )}
-        </div>
+        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+          <div className="search-results-container-footer d-flex justify-center items-center">
+            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
         {!planUpdated && (
           <div className="upgrade-notification">
             <div className="upgrade-notification-panel">
@@ -155,7 +158,10 @@ LearningLibraryPage.defaultProps = {
 
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
+  loading: librarySelector(state).loading,
   allLibraries: librarySelector(state).allLibraries,
+  countOfResults: librarySelector(state).countOfResults,
+  currentPage: librarySelector(state).currentPage,
 });
 
 const mapDispatchToProps = {

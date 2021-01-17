@@ -35,7 +35,11 @@ export const searchLibraries = createAction(SEARCH_LIBRARIES, (filter) => ({
 }));
 export const setSearchLibraries = createAction(
   SET_SEARCH_LIBRARIES,
-  (libraries) => ({ libraries })
+  (countOfResults, currentPage, libraries) => ({
+    countOfResults,
+    currentPage,
+    libraries,
+  })
 );
 
 export const actions = {

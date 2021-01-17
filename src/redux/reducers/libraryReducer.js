@@ -30,6 +30,8 @@ export const reducers = {
   [libraryConstants.SET_SEARCH_LIBRARIES]: (state, { payload }) => {
     return state.merge({
       allLibraries: cloneDeep([...payload.libraries]),
+      currentPage: payload.currentPage,
+      countOfResults: payload.countOfResults,
     });
   },
 };
@@ -39,6 +41,8 @@ export const initialState = () =>
     loading: false,
     error: null,
     allLibraries: [],
+    countOfResults: 0,
+    currentPage: 1,
     selectedLibrary: {},
   });
 

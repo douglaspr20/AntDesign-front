@@ -5,18 +5,13 @@ import {
   actions as libraryActions,
 } from "../actions/library-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import {
-  getAllLibraries,
-  addLibrary,
-  getLibrary,
-  searchLibrary,
-} from "../../api";
+import { addLibrary, getLibrary, searchLibrary } from "../../api";
 
 export function* getAllLibrariesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAllLibraries, { ...payload });
+    const response = yield call(searchLibrary, { ...payload });
 
     if (response.status === 200) {
       yield put(libraryActions.setAllLibraries(response.data.libraries.rows));
@@ -68,7 +63,11 @@ export function* searchLibrarySaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        libraryActions.setSearchLibraries(response.data.libraries.rows)
+        libraryActions.setSearchLibraries(
+          response.data.libraries.count,
+          1,
+          response.data.libraries.rows
+        )
       );
     }
 

@@ -8,6 +8,8 @@ const resultSelector = createSelector(libraryDataSelector, (payload) => {
     allLibraries: payload.get("allLibraries"),
     error: payload.get("error"),
     selectedLibrary: payload.get("selectedLibrary"),
+    countOfResults: payload.get("countOfResults"),
+    currentPage: payload.get("currentPage"),
   };
 });
 
