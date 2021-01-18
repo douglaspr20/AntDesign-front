@@ -65,7 +65,9 @@ const EventsPage = ({
       title: "My past events",
       content: () => (
         <EventList
-          data={myEvents.filter((event) => event.status !== "going")}
+          data={myEvents.filter(
+            (event) => !["going", "attend"].includes(event.status)
+          )}
           onAttend={addMyEvents}
           showFilter={() => setVisibleFilter(true)}
         />
@@ -106,7 +108,7 @@ const EventsPage = ({
           const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
           flag = eventDate.isAfter(moment());
         }
-        
+
         return flag;
       });
       return [...prev];
