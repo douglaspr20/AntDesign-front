@@ -1,6 +1,6 @@
 export default {
   DATE_FORMAT: "YYYY.MM.DD hh:mm A",
-  MAX_SEARCH_ROW_NUM: 20,
+  MAX_SEARCH_ROW_NUM: 12,
   SORT_OPTIONS: [
     {
       value: "newest-first",

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
-import IconDocument from "images/icon-document.svg";
-
 import { SvgIcon } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, SEARCH_FILTERS } from "enum";
 
 import "./style.scss";
 
+let ContentTypes = SEARCH_FILTERS.library["Content type"];
+ContentTypes = ContentTypes.reduce(
+  (res, item) => ({ ...res, [item.value]: item }),
+  {}
+);
+
 const LibraryCard = ({ data, locked, onClickAccess }) => {
   const [lineClamp, setLineClamp] = useState(3);
-  const { title, image, description, id } = data || {};
+  const { title, image, description, id, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -55,9 +59,12 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${id}`}>
             <div className="d-flex items-center">
               <div className="library-card-icon">
-                <img src={IconDocument} alt="doc-icon" />
+                <img
+                  src={(ContentTypes[contentType || "article"] || {}).icon}
+                  alt="doc-icon"
+                />
               </div>
-              <h6>{`Article`}</h6>
+              <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
             </div>
           </NavLink>
           <div className="d-flex items-center">

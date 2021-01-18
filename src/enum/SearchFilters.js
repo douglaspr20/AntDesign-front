@@ -1,3 +1,7 @@
+import IconArticle from "images/icon-document.svg";
+import IconVideo from "images/icon-video.svg";
+import IconSlides from "images/icon-slides.svg";
+
 export default {
   library: {
     Topics: [
@@ -13,14 +17,17 @@ export default {
       {
         text: "Article",
         value: "article",
+        icon: IconArticle,
       },
       {
         text: "Video",
         value: "video",
+        icon: IconVideo,
       },
       {
         text: "Slides",
         value: "slides",
+        icon: IconSlides,
       },
     ],
     // Language: [
