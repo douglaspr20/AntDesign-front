@@ -12,7 +12,12 @@ import {
   getEvent,
   updateEventStatusFromAPI,
 } from "./module/event";
-import { addLibrary, getLibrary, searchLibrary } from "./module/library";
+import {
+  addLibrary,
+  getLibrary,
+  searchLibrary,
+  getRecommendations,
+} from "./module/library";
 
 export {
   signIn,
@@ -29,4 +34,5 @@ export {
   addLibrary,
   getLibrary,
   searchLibrary,
+  getRecommendations,
 };

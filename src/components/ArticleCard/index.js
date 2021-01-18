@@ -2,12 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 
-import IconDocument from "images/icon-document.svg";
-
 import { SvgIcon } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, SEARCH_FILTERS } from "enum";
 
 import "./style.scss";
+
+let ContentTypes = SEARCH_FILTERS.library["Content type"];
+ContentTypes = ContentTypes.reduce(
+  (res, item) => ({ ...res, [item.value]: item }),
+  {}
+);
 
 class ArticleCard extends React.Component {
   constructor(props) {
@@ -37,7 +41,7 @@ class ArticleCard extends React.Component {
 
   render() {
     const {
-      data: { img, title, desc, article },
+      data: { image, title, description, id, contentType },
       className,
     } = this.props;
     const { randomId, lineClamp } = this.state;
@@ -46,7 +50,7 @@ class ArticleCard extends React.Component {
     return (
       <div className={newClassName}>
         <div className="article-card-img">
-          {img && <img src={img} alt="article-card-img" />}
+          {image && <img src={image} alt="article-card-img" />}
         </div>
         <div className="article-card-content">
           <h3>{title}</h3>
@@ -57,16 +61,19 @@ class ArticleCard extends React.Component {
                 maxHeight: 23 * lineClamp,
               }}
             >
-              {desc}
+              {description}
             </p>
           </div>
           <div className="article-card-content-file">
-            <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${article}`}>
+            <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${id}`}>
               <div className="d-flex items-center">
                 <div className="article-card-icon">
-                  <img src={IconDocument} alt="doc-icon" />
+                  <img
+                    src={(ContentTypes[contentType || "article"] || {}).icon}
+                    alt="doc-icon"
+                  />
                 </div>
-                <h6>{`Article`}</h6>
+                <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
               </div>
             </NavLink>
             <div className="d-flex items-center">

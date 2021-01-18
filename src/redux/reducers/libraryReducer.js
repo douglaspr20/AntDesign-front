@@ -40,6 +40,11 @@ export const reducers = {
       loading: payload.loading,
     });
   },
+  [libraryConstants.SET_RECOMMENDATIONS]: (state, { payload }) => {
+    return state.merge({
+      recommendations: cloneDeep([...payload.libraries]),
+    });
+  },
 };
 
 export const initialState = () =>
@@ -50,6 +55,7 @@ export const initialState = () =>
     countOfResults: 0,
     currentPage: 1,
     selectedLibrary: {},
+    recommendations: [],
   });
 
 export default handleActions(reducers, initialState());

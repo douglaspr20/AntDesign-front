@@ -1,34 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "antd";
 import { connect } from "react-redux";
 
 import ProfileStatusBar from "./ProfileStatusBar";
 import { ArticleCard, CustomButton } from "components";
+import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { librarySelector } from "redux/selectors/librarySelector";
 
 import "./style.scss";
 
-const ArticlesData = [
-  {
-    title: "We want to show you the most relevan information for you",
-    desc:
-      "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    file: "",
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    article: 1,
-  },
-  {
-    title:
-      "We want to show you the most relevan information for you the most relevan information for you",
-    desc:
-      "Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    file: "",
-    img: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-    articl: 1,
-  },
-];
+const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
+  useEffect(() => {
+    getRecommendations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-const HomePage = ({ userProfile }) => {
   return (
     <div className="home-page">
       {userProfile && userProfile.percentOfCompletion !== 100 && (
@@ -47,7 +34,7 @@ const HomePage = ({ userProfile }) => {
           <Col lg={{ span: 16, offset: 4 }}>
             <h3 className="list-label">Our Recommendations</h3>
           </Col>
-          {ArticlesData.map((article, index) => (
+          {recommendations.map((article, index) => (
             <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
               <ArticleCard data={article} />
             </Col>
@@ -87,8 +74,11 @@ const HomePage = ({ userProfile }) => {
 
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
+  recommendations: librarySelector(state).recommendations,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getRecommendations,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

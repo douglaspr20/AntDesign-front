@@ -26,3 +26,7 @@ export const searchLibrary = ({ filter, order }) => {
 
   return httpClient.get(`private/library/all?${parsedFilter}`);
 };
+
+export const getRecommendations = () => {
+  return httpClient.get("private/library/recommendations");
+};
