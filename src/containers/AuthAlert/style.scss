@@ -12,12 +12,15 @@
     letter-spacing: 0px;
     opacity: 1;
     text-align: center;
+    margin-bottom: 24px !important;
   }
 
   p {
+    @include app-font(14px, 21px);
     color: $color-text-secondary;
     letter-spacing: 0px;
     opacity: 1;
     text-align: left;
+    margin: 0;
   }
 }
