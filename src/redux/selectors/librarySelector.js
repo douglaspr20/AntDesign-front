@@ -10,6 +10,7 @@ const resultSelector = createSelector(libraryDataSelector, (payload) => {
     selectedLibrary: payload.get("selectedLibrary"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    recommendations: payload.get("recommendations"),
   };
 });
 

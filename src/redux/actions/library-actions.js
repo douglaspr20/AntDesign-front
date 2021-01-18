@@ -8,6 +8,8 @@ const GET_LIBRARY = "GET_LIBRARY";
 const SEARCH_LIBRARIES = "SEARCH_LIBRARIES";
 const SET_SEARCH_LIBRARIES = "SET_SEARCH_LIBRARIES";
 const SET_LOADING = "SET_LOADING";
+const GET_RECOMMENDATIONS = "GET_RECOMMENDATIONS";
+const SET_RECOMMENDATIONS = "SET_RECOMMENDATIONS";
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -18,6 +20,8 @@ export const constants = {
   SEARCH_LIBRARIES,
   SET_SEARCH_LIBRARIES,
   SET_LOADING,
+  GET_RECOMMENDATIONS,
+  SET_RECOMMENDATIONS,
 };
 
 // ------------------------------------
@@ -57,6 +61,11 @@ export const setSearchLibraries = createAction(
   })
 );
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
+export const getRecommendations = createAction(GET_RECOMMENDATIONS);
+export const setRecommendations = createAction(
+  SET_RECOMMENDATIONS,
+  (libraries) => ({ libraries })
+);
 
 export const actions = {
   getMoreLibraries,
@@ -67,4 +76,6 @@ export const actions = {
   searchLibraries,
   setSearchLibraries,
   setLoading,
+  getRecommendations,
+  setRecommendations,
 };
