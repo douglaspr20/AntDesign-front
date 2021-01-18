@@ -36,14 +36,16 @@ const MenteeSetting = ({ setting, onCancel, onSave }) => {
           onChange={setReason}
         />
         <h5 className="mentee-setting-sublabel">
-          What is your current title / profession?
+          What is your current or most recent job title?
         </h5>
         <CustomInput
           className="mentee-setting-input"
           defaultValue={title}
           onChange={setTitle}
         />
-        <h5 className="mentee-setting-sublabel">What do you want to learn?</h5>
+        <h5 className="mentee-setting-sublabel">
+          In what areas are you looking for a mentor?
+        </h5>
         <Checkbox.Group
           defaultValue={specialties}
           className="mentee-setting-specialties"

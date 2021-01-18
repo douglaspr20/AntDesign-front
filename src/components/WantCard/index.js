@@ -9,15 +9,13 @@ const TextData = {
   mentor: {
     buttonLabel: "Yes, I want to be a mentor",
     description: [
-      "Give something to the community, share what you already know.",
-      "Do you want to be a mentor for the community?",
+      "Click Below and Become a Mentor to Other Members of the Hacking HR Community",
     ],
   },
   mentee: {
     buttonLabel: "Yes, I want to be a mentee",
     description: [
-      "Being part of the community means you can ask for help.",
-      "Do you want to be an apprentice with mentors inside the community?",
+      "Click Below and Find Mentors That Can Help You Achieve Your Professional Goals.",
     ],
   },
 };

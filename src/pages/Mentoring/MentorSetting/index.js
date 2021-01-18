@@ -36,14 +36,16 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
           onChange={setReason}
         />
         <h5 className="mentor-setting-sublabel">
-          What is your title or profession?
+          What is your current or most recent job title?
         </h5>
         <CustomInput
           className="mentor-setting-input"
           defaultValue={title}
           onChange={setTitle}
         />
-        <h5 className="mentor-setting-sublabel">What are your specialties?</h5>
+        <h5 className="mentor-setting-sublabel">
+          In what areas do you want to be a mentor?
+        </h5>
         <Checkbox.Group
           defaultValue={specialties}
           className="mentor-setting-specialties"
