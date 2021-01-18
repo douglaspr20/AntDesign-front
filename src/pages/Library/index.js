@@ -75,7 +75,7 @@ const LearningLibraryPage = ({
   return (
     <div className="learning-library-page">
       <LibraryFilterPanel onChange={onFilterChange} />
-      <FilterDrawer />
+      <FilterDrawer onChange={onFilterChange} />
       <div className="search-results-container">
         <Row>
           <Col span={24}>

@@ -45,6 +45,11 @@ const FilterPanel = ({ title, userProfile, onChange }) => {
           <div className="search-filter" key={`${filter}-${index}`}>
             <h5 className="search-filter-title font-bold">{filter}</h5>
             <Checkbox.Group
+              value={
+                filters[filter.toLowerCase()]
+                  ? JSON.parse(filters[filter.toLowerCase()])
+                  : []
+              }
               onChange={(values) => onFilterChange(filter, values)}
             >
               {SearchFilters[filter].map((item) => (

@@ -33,6 +33,7 @@ const EventFilterDrawer = ({ allEvents, onFilterChange }) => {
 
   const clearAllFilters = () => {
     setFilterValues({});
+    onDrawerClose();
   };
 
   const onEventFilterChange = (field, values) => {
