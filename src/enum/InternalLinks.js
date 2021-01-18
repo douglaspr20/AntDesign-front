@@ -1,6 +1,6 @@
 export default {
   HOME: "/",
-  LOGIN: "/login/:sentEmail?",
+  LOGIN: "/login",
   SIGNUP: "/signup",
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",

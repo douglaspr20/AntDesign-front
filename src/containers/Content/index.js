@@ -31,7 +31,12 @@ class Content extends Component {
             render={(props) => <HomePage {...props} />}
           />
           <Route
+            exact
             path={INTERNAL_LINKS.LOGIN}
+            render={(props) => <LoginPage {...props} />}
+          />
+          <Route
+            path={`${INTERNAL_LINKS.LOGIN}/:sentEmail`}
             render={(props) => <LoginPage {...props} />}
           />
           <Route
