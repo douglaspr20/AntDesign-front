@@ -201,8 +201,8 @@ class ProfileEditPanel extends React.Component {
               }
             >
               {Topics.map((topic) => (
-                <CustomCheckbox key={topic} value={topic}>
-                  {topic}
+                <CustomCheckbox key={topic.value} value={topic.value}>
+                  {topic.text}
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>

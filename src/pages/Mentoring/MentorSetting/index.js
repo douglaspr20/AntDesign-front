@@ -7,7 +7,7 @@ import { PROFILE_SETTINGS } from "enum";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.SPECIALTIES;
+const Specialties = PROFILE_SETTINGS.TOPICS;
 
 const MentorSetting = ({ setting, onCancel, onSave }) => {
   const [reason, setReason] = useState(setting.reason);
@@ -50,8 +50,8 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
           onChange={setSpecialties}
         >
           {Specialties.map((spec, index) => (
-            <CustomCheckbox key={`specialty-${index}`} value={spec}>
-              {spec}
+            <CustomCheckbox key={`specialty-${index}`} value={spec.value}>
+              {spec.text}
             </CustomCheckbox>
           ))}
         </Checkbox.Group>

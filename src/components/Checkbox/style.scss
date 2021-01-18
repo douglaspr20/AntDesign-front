@@ -1,7 +1,7 @@
 @import "styles/main.scss";
 
 .custom-checkbox {
-  display: flex;
+  display: flex !important;
   align-items: center;
   width: fit-content;
 

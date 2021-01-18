@@ -1,5 +1,35 @@
 export default {
-  TOPICS: ["Leadership", "Human Resources", "Recruiting"],
+  TOPICS: [
+    { text: "Agility", value: "agility" },
+    { text: "Culture", value: "culture" },
+    { text: "Design Thinking", value: "design-thinking" },
+    {
+      text: "Diversity, Equity, Inclusion and Belonging",
+      value: "diversity-equity-inclusion-belonging",
+    },
+    {
+      text: "Employee Experience and Engagement",
+      value: "employee-experience-and-engagement",
+    },
+    { text: "Future of Work", value: "future-of-work" },
+    { text: "Innovation", value: "innovation" },
+    { text: "Job seekers", value: "job-seekers" },
+    { text: "Leadership", value: "leadership" },
+    { text: "Learning and Development", value: "learning-and-development" },
+    { text: "Marketing and Branding", value: "marketing-and-branding" },
+    {
+      text: "People Science and People Analytics ",
+      value: "people-science-analytics",
+    },
+    { text: "Performance Management", value: "performance-management" },
+    { text: "Recruitment and Talent", value: "recruitment-and-talent" },
+    {
+      text: "Strategy and Transformation",
+      value: "strategy-and-transformation",
+    },
+    { text: "Technology", value: "technology" },
+    { text: "Wellness and Wellbeing", value: "wellness-and-wellbeing" },
+  ],
   PROFICIENCY_LEVEL: ["Beginner", "Intermediate", "Export"],
   SPECIALTIES: [
     "Leadership",
