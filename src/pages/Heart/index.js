@@ -77,7 +77,7 @@ function HEARTPage(props) {
       if (parentComment !== null) {
         commentToSubmitTemplate['parentId'] = parentComment;
       }
-      if(!isNaN(commentToSubmitTemplate.id)){
+      if (!isNaN(commentToSubmitTemplate.id)) {
         await put(commentToSubmitTemplate);
       } else {
         await post(commentToSubmitTemplate);
@@ -107,7 +107,7 @@ function HEARTPage(props) {
   const removeComment = async (id) => {
     try {
       let result = window.confirm("Are you sure you want to delete this comment?");
-      if(result){
+      if (result) {
         await remove(id);
         fetchData();
       }
@@ -119,89 +119,90 @@ function HEARTPage(props) {
   return (
     <div className="heart-page">
       <div className="heart-page__container">
-        <div className="heart-controls__fix">
-          <header className="heart-page__header">
-            <h2 className="text-center">
-              There will be some explaining text
+        <header className="heart-page__header">
+          <h2 className="text-center">
+            There will be some explaining text
             </h2>
-          </header>
-          <section className="heart-categories__row">
-            {Object.keys(HEART_COMMENT_CATEGORIES).map((catKey, i) => (
-              <div className="heart-categories__col"
-                key={catKey}
-              >
-                <button
-                  className={`
+        </header>
+        <div className="heart-categories__container">
+          <div className="heart-categories__container-col">
+            <section className="heart-categories__row">
+              {Object.keys(HEART_COMMENT_CATEGORIES).map((catKey, i) => (
+                <div className="heart-categories__col"
+                  key={catKey}
+                >
+                  <button
+                    className={`
                     heart-categories__button
                     border-color--${MAP_HEART_CATEGORY_TO_COLOR[HEART_COMMENT_CATEGORIES[catKey].name]}
                   `}
-                  onClick={() => startNewComment({ category: HEART_COMMENT_CATEGORIES[catKey].name })}
-                >
-                  <span
-                    className="heart-categories__button-ico"
-                    style={{
-                      backgroundImage: `url(${HEART_COMMENT_CATEGORIES[catKey].icon})`,
-                    }}
-                  ></span>
-                  <span className="heart-truncate">
-                    {HEART_COMMENT_CATEGORIES[catKey].title}
-                  </span>
-                </button>
-              </div>
-            ))}
-          </section>
-
-          {(createNewCardState && createNewCardState.id) &&
-            <section className="heart-new-comment__wrap">
-              <Form
-                initialValues={ createNewCardState }
-                onFinish={submitNewComment}
-              >
-                <Form.Item
-                  name="content"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter your comment",
-                    },
-                    () => ({
-                      validator(_, value) {
-                        if (getWordsCountFromString(value) > COMMENT_MAX_WORDS_COUNT) {
-                          return Promise.reject(
-                            "Comment length should be up to 100 words"
-                          );
-                        }
-                        return Promise.resolve();
-                        
-                      },
-                    }),
-                  ]}
-                >
-                  <CustomInput multiple placeholder="Please enter your comment" />
-                </Form.Item>
-
-                <div className="heart-new-comment__cta-wrap">
-                  <CustomButton
-                    htmlType="button"
-                    text="Cancel"
-                    type="default"
-                    size="md"
-                    onClick={dismissNewComment}
-                  />
-
-                  <CustomButton
-                    htmlType="submit"
-                    text="Post Comment"
-                    type="primary"
-                    size="lg"
-                  />
+                    onClick={() => startNewComment({ category: HEART_COMMENT_CATEGORIES[catKey].name })}
+                  >
+                    <span
+                      className="heart-categories__button-ico"
+                      style={{
+                        backgroundImage: `url(${HEART_COMMENT_CATEGORIES[catKey].icon})`,
+                      }}
+                    ></span>
+                    <span className="heart-truncate">
+                      {HEART_COMMENT_CATEGORIES[catKey].title}
+                    </span>
+                  </button>
                 </div>
-
-              </Form>
-
+              ))}
             </section>
-          }
+          </div>
         </div>
+        {(createNewCardState && createNewCardState.id) &&
+          <section className="heart-new-comment__wrap">
+            <Form
+              initialValues={createNewCardState}
+              onFinish={submitNewComment}
+            >
+              <Form.Item
+                name="content"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your comment",
+                  },
+                  () => ({
+                    validator(_, value) {
+                      if (getWordsCountFromString(value) > COMMENT_MAX_WORDS_COUNT) {
+                        return Promise.reject(
+                          "Comment length should be up to 100 words"
+                        );
+                      }
+                      return Promise.resolve();
+
+                    },
+                  }),
+                ]}
+              >
+                <CustomInput multiple placeholder="Please enter your comment" />
+              </Form.Item>
+
+              <div className="heart-new-comment__cta-wrap">
+                <CustomButton
+                  htmlType="button"
+                  text="Cancel"
+                  type="default"
+                  size="md"
+                  onClick={dismissNewComment}
+                />
+
+                <CustomButton
+                  htmlType="submit"
+                  text="Post Comment"
+                  type="primary"
+                  size="lg"
+                />
+              </div>
+
+            </Form>
+
+          </section>
+        }
         <section className="heart-cards-list__wrap">
           {heartCards.map(item => (
             <HEARTComment
