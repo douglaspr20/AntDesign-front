@@ -40,8 +40,9 @@ class EventCard extends React.Component {
     e.preventDefault();
     e.stopPropagation();
 
-    this.props.history.push(
-      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`
+    window.open(
+      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`,
+      "_blank"
     );
   };
 
