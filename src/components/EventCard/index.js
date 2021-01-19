@@ -26,7 +26,7 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    Emitter.emit(EVENT_TYPES.EVENT_VIEW_DETAIL, this.props.data);
+    this.props.onClick(this.props.data);
   };
 
   onClickConfirm = (e) => {
@@ -141,12 +141,14 @@ class EventCard extends React.Component {
 EventCard.propTypes = {
   data: PropTypes.object,
   className: PropTypes.string,
+  onClick: PropTypes.func,
   onAttend: PropTypes.func,
 };
 
 EventCard.defaultProps = {
   data: {},
   className: "",
+  onClick: () => {},
   onAttend: () => {},
 };
 
