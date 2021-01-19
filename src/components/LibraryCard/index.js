@@ -14,7 +14,7 @@ ContentTypes = ContentTypes.reduce(
 
 const LibraryCard = ({ data, locked, onClickAccess }) => {
   const [lineClamp, setLineClamp] = useState(3);
-  const { title, image, description, id, contentType } = data || {};
+  const { title, image, description, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
