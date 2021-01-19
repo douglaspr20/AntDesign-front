@@ -7,7 +7,7 @@ import { PROFILE_SETTINGS } from "enum";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.SPECIALTIES;
+const Specialties = PROFILE_SETTINGS.TOPICS;
 
 const MentorSetting = ({ setting, onCancel, onSave }) => {
   const [reason, setReason] = useState(setting.reason);
@@ -36,22 +36,24 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
           onChange={setReason}
         />
         <h5 className="mentor-setting-sublabel">
-          What is your title or profession?
+          What is your current or most recent job title?
         </h5>
         <CustomInput
           className="mentor-setting-input"
           defaultValue={title}
           onChange={setTitle}
         />
-        <h5 className="mentor-setting-sublabel">What are your specialties?</h5>
+        <h5 className="mentor-setting-sublabel">
+          In what areas do you want to be a mentor?
+        </h5>
         <Checkbox.Group
           defaultValue={specialties}
           className="mentor-setting-specialties"
           onChange={setSpecialties}
         >
           {Specialties.map((spec, index) => (
-            <CustomCheckbox key={`specialty-${index}`} value={spec}>
-              {spec}
+            <CustomCheckbox key={`specialty-${index}`} value={spec.value}>
+              {spec.text}
             </CustomCheckbox>
           ))}
         </Checkbox.Group>

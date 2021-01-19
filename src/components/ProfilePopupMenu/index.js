@@ -78,7 +78,7 @@ class ProfilePopupMenu extends React.Component {
           <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
             user ? user.lastName || "" : ""
           }`}</p>
-          <p className="user-info-view">View profile</p>
+          <p className="user-info-view">View / Update Profile</p>
         </div>
       </div>
     );
