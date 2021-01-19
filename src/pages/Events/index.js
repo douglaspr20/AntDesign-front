@@ -132,7 +132,7 @@ const EventsPage = ({
   }, [allEvents]);
 
   useEffect(() => {
-    onFilterChange({ date: moment() });
+    onFilterChange({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
