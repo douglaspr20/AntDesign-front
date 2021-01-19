@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
 
 import { SvgIcon } from "components";
-import { INTERNAL_LINKS, SEARCH_FILTERS } from "enum";
+import { SEARCH_FILTERS } from "enum";
 
 import "./style.scss";
 
@@ -39,16 +38,24 @@ class ArticleCard extends React.Component {
     }
   };
 
+  onCardClick = () => {
+    const { data } = this.props;
+
+    if (data.link) {
+      window.open(data.link);
+    }
+  };
+
   render() {
     const {
-      data: { image, title, description, id, contentType },
+      data: { image, title, description, contentType },
       className,
     } = this.props;
     const { randomId, lineClamp } = this.state;
     const newClassName = `article-card ${className || ""}`;
 
     return (
-      <div className={newClassName}>
+      <div className={newClassName} onClick={this.onCardClick}>
         <div className="article-card-img">
           {image && <img src={image} alt="article-card-img" />}
         </div>
@@ -65,17 +72,15 @@ class ArticleCard extends React.Component {
             </p>
           </div>
           <div className="article-card-content-file">
-            <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${id}`}>
-              <div className="d-flex items-center">
-                <div className="article-card-icon">
-                  <img
-                    src={(ContentTypes[contentType || "article"] || {}).icon}
-                    alt="doc-icon"
-                  />
-                </div>
-                <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
+            <div className="d-flex items-center">
+              <div className="article-card-icon">
+                <img
+                  src={(ContentTypes[contentType || "article"] || {}).icon}
+                  alt="doc-icon"
+                />
               </div>
-            </NavLink>
+              <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
+            </div>
             <div className="d-flex items-center">
               <SvgIcon name="star" className="article-card-icon" />
               <SvgIcon name="bookmark" className="article-card-icon" />

@@ -30,7 +30,7 @@ const monthStr = [
 
 const DataFormat = SETTINGS.DATE_FORMAT;
 
-const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
+const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
 
   const onEventChanged = (event, going) => {
@@ -80,6 +80,7 @@ const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
                   <EventCard
                     data={event}
                     onAttend={(going) => onEventChanged(event, going)}
+                    onClick={onClick}
                   />
                 </Col>
               ))}
@@ -94,12 +95,14 @@ const EventList = ({ data, isMobile, onAttend, showFilter, ...rest }) => {
 EventList.propTypes = {
   data: PropTypes.array,
   onAttend: PropTypes.func,
+  onClick: PropTypes.func,
   showFilter: PropTypes.func,
 };
 
 EventList.defaultProps = {
   data: [],
   onAttend: () => {},
+  onClick: () => {},
   showFilter: () => {},
 };
 

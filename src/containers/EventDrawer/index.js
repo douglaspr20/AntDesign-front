@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { CheckOutlined } from "@ant-design/icons";
 import { Menu, Dropdown } from "antd";
 
@@ -11,38 +10,21 @@ import {
   CustomDrawer,
   SpecialtyItem,
 } from "components";
-import { EVENT_TYPES, MONTH_NAMES } from "enum";
+import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
-import { eventSelector } from "redux/selectors/eventSelector";
 
 import "./style.scss";
 
 const EventDrawer = ({
-  updatedEvent,
   addToMyEventList,
   removeFromMyEventList,
+  visible,
+  event,
+  onClose,
 }) => {
-  const DataFormat = "YYYY.MM.DD hh:mm A";
-
-  const [visible, setVisible] = useState(false);
-  const [event, setEvent] = useState({});
-
-  Emitter.on(EVENT_TYPES.EVENT_VIEW_DETAIL, (data) => {
-    setVisible(true);
-    setEvent({
-      ...data,
-      day: moment(data.date, DataFormat).date(),
-      month: MONTH_NAMES[moment(data.date, DataFormat).month()],
-    });
-  });
-
-  Emitter.on(EVENT_TYPES.MY_PAST_EVENT_CHANGED, (data) => {
-    setEvent(data);
-  });
-
   const onDrawerClose = () => {
-    setVisible(false);
+    onClose();
   };
 
   const onAttend = () => {
@@ -60,16 +42,6 @@ const EventDrawer = ({
   };
 
   const onClickClaimCredits = (e) => {};
-
-  useEffect(() => {
-    if (event && updatedEvent && event.id === updatedEvent.id) {
-      setEvent({
-        ...updatedEvent,
-        day: moment(updatedEvent.date, DataFormat).date(),
-        month: MONTH_NAMES[moment(updatedEvent.date, DataFormat).month()],
-      });
-    }
-  }, [event, updatedEvent]);
 
   const menu = (
     <Menu>
@@ -181,15 +153,19 @@ const EventDrawer = ({
 
 EventDrawer.propTypes = {
   title: PropTypes.string,
+  visible: PropTypes.bool,
+  event: PropTypes.object,
+  onClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
   title: "",
+  visible: false,
+  event: {},
+  onClose: () => {},
 };
 
-const mapStateToProps = (state) => ({
-  updatedEvent: eventSelector(state).updatedEvent,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {
   ...eventActions,

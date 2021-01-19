@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
 
 import { SvgIcon } from "components";
-import { INTERNAL_LINKS, SEARCH_FILTERS } from "enum";
+import { SEARCH_FILTERS } from "enum";
 
 import "./style.scss";
 
@@ -37,8 +36,14 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
     }
   };
 
+  const onCardClick = () => {
+    if (data.link) {
+      window.open(data.link);
+    }
+  };
+
   return (
-    <div className="library-card">
+    <div className="library-card" onClick={onCardClick}>
       <div className="library-card-header">
         {image && <img src={image} alt="header-img" />}
       </div>
@@ -56,17 +61,16 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
           </p>
         </div>
         <div className="library-card-content-footer">
-          <NavLink to={`${INTERNAL_LINKS.ARTICLE}/${id}`}>
-            <div className="d-flex items-center">
-              <div className="library-card-icon">
-                <img
-                  src={(ContentTypes[contentType || "article"] || {}).icon}
-                  alt="doc-icon"
-                />
-              </div>
-              <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
+          <div className="d-flex items-center">
+            <div className="library-card-icon">
+              <img
+                src={(ContentTypes[contentType || "article"] || {}).icon}
+                alt="doc-icon"
+              />
             </div>
-          </NavLink>
+            <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
+          </div>
+
           <div className="d-flex items-center">
             <SvgIcon name="star" className="library-card-icon" />
             <SvgIcon name="bookmark" className="library-card-icon" />

@@ -38,8 +38,10 @@ const CertificatePage = ({
       orientation: "landscape",
       format: [width, height],
       unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
     });
-    pdf.addImage(imgData, "PNG", 0, 0, width, height);
+    pdf.addImage(imgData, "jpeg", 0, 0, width, height, "", "FAST");
     pdf.save("certificate.pdf");
     setLoading(false);
   };
