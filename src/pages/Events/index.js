@@ -120,7 +120,9 @@ const EventsPage = ({
         if (params["Topics"] && params["Topics"].length > 0) {
           flag =
             flag &&
-            (params["Topics"] || []).some((tpc) => item.category === tpc);
+            (params["Topics"] || []).some((tpc) =>
+              item.categories.includes(tpc)
+            );
         }
 
         if (isEmpty(params)) {

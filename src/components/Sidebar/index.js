@@ -16,7 +16,7 @@ import "./style.scss";
 
 const { Sider } = Layout;
 const TopMenuList = SIDEBAR_MENU_LIST.TOP_MENUS;
-const BottomMenuList = SIDEBAR_MENU_LIST.BOTTOM_MENUS;
+// const BottomMenuList = SIDEBAR_MENU_LIST.BOTTOM_MENUS;
 
 class NavBar extends Component {
   onCloseSidebar = () => {
@@ -72,7 +72,7 @@ class NavBar extends Component {
             </Menu.Item>
           ))}
         </Menu>
-        <Menu
+        {/* <Menu
           theme={navBarTheme}
           selectedKeys={[this.props.location.pathname]}
           mode="inline"
@@ -86,7 +86,7 @@ class NavBar extends Component {
               </Link>
             </Menu.Item>
           ))}
-        </Menu>
+        </Menu> */}
         {isMobile && (
           <div className="layout-sidebar-close">
             <CloseOutlined onClick={this.onCloseSidebar} />
