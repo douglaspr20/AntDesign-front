@@ -14,4 +14,6 @@ export default {
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
   HEART: "/heart",
+  PODCAST: "/podcast",
+  PODCAST_ADMIN: "/podcast-admin/:id?",
 };
