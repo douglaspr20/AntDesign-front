@@ -126,7 +126,7 @@ const EventDrawer = ({
             <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div>
-            {!event.past && event.going && (
+            {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>
                 <h3 className="add-to-calendar ant-dropdown-link">
                   Add to calendar
