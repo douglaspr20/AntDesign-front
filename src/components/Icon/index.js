@@ -20,7 +20,9 @@ class CustomIcon extends React.Component {
     };
   }
 
-  onClick = () => {
+  onClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState({ active: !this.state.active });
     this.setState(
       (state) => {
