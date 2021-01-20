@@ -43,14 +43,18 @@ class ProfileViewPanel extends React.Component {
     return empty;
   };
 
+  getLanguage = (value) => {
+    const language = (Languages.find((item) => item.value === value) || {})
+      .text;
+
+    return language;
+  };
+
   render() {
     const { user } = this.state;
     const personalLinksCompleted = !isEmptyPersonalLinks(user.personalLinks);
     const timezone = (
       TIMEZONE_LIST.find((item) => item.value === user.timezone) || {}
-    ).text;
-    const language = (
-      Languages.find((item) => item.value === user.language) || {}
     ).text;
     const location = (
       COUNTRIES.find((item) => item.value === user.location) || {}
@@ -111,13 +115,15 @@ class ProfileViewPanel extends React.Component {
             {timezone || "-"}
           </h3>
           <h5 className="textfield-label">Main language</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.language,
-            })}
-          >
-            {language || "-"}
-          </h3>
+          {user.languages && user.languages.length > 0 ? (
+            user.languages.map((lang, index) => (
+              <h3 key={index} className="textfield-value completed">
+                {this.getLanguage(lang)}
+              </h3>
+            ))
+          ) : (
+            <h3 className="textfield-value">-</h3>
+          )}
           <h5 className="textfield-label">Tell us more about you</h5>
           <h3 className={clsx("textfield-value", { completed: !!user.about })}>
             {user.about || "-"}
