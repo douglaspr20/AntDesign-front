@@ -6,8 +6,9 @@ import { get, post, put } from "api/module/podcast";
 
 import './style.scss';
 
-function PodcastAdminPage({ match }) {
+function PodcastAdminPage({ history, match }) {
   const [podcast, setPodcast] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getPodcast();
@@ -17,7 +18,6 @@ function PodcastAdminPage({ match }) {
     if(match.params.id){
       let response = await get(match.params);
       if(response.data.podcast.dateEpisode !== null){
-        console.log(response.data.podcast.dateEpisode);
         response.data.podcast.dateEpisode = moment(response.data.podcast.dateEpisode);
       }
       setPodcast(response.data.podcast);
@@ -27,10 +27,16 @@ function PodcastAdminPage({ match }) {
   }
 
   const save = async (data) => {
+    setLoading(true);
+    let response = null;
     if(match.params.id){
-      await put({...data, id: match.params.id});
+      response = await put({...data, id: match.params.id});
     } else {
-      await post(data);
+      response = await post(data);
+    }
+    setLoading(false);
+    if([200, 201, 204].indexOf(response.status) > -1){
+      history.push('/podcast');
     }
   }
   return (
@@ -42,7 +48,7 @@ function PodcastAdminPage({ match }) {
           </h2>
         </header>
         {
-          podcast && <PodcastForm initialValues={podcast} onFinish={(data) => { save(data) }} />
+          podcast && <PodcastForm loading={loading} initialValues={podcast} onFinish={(data) => { save(data) }} />
         }
       </div>
     </div>

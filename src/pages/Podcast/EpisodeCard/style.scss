@@ -29,6 +29,12 @@
   > * + * {
     margin-top: 0.5rem;
   }
+
+  .podcast-episode__card-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .podcast-episode__card-body-data {

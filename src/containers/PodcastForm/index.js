@@ -10,7 +10,8 @@ const { Item } = Form;
 
 const PodcastForm = ({
   initialValues = {},
-  onFinish = () => {},
+  onFinish = () => { },
+  loading = false
 }) => {
   return (<div className="podcast-form-container">
     <Form
@@ -19,10 +20,16 @@ const PodcastForm = ({
       scrollToFirstError="true"
       onFinish={onFinish}
     >
+      {
+        initialValues.imageUrl &&
+        <div className="previewImage">
+          <img src={initialValues.imageUrl} alt="Preview Image" />
+        </div>
+      }
       <Item
         label="Title"
         name="title"
-        rules={[{required: true, message: "Title is required"}]}
+        rules={[{ required: true, message: "Title is required" }]}
       >
         <CustomInput size='sm' />
       </Item>
@@ -37,7 +44,7 @@ const PodcastForm = ({
           <Item
             label="Order"
             name="order"
-            rules={[{required: true, message: "Order is required"}]}
+            rules={[{ required: true, message: "Order is required" }]}
           >
             <InputNumber />
           </Item>
@@ -46,7 +53,7 @@ const PodcastForm = ({
           <Item
             label="Date"
             name="dateEpisode"
-            rules={[{required: true, message: "Date is required"}]}
+            rules={[{ required: true, message: "Date is required" }]}
           >
             <DatePicker />
           </Item>
@@ -54,7 +61,7 @@ const PodcastForm = ({
       </Row>
       <Item
         label="Image"
-        name="imageUrl"
+        name="imageData"
       >
         <ImageUpload />
       </Item>
@@ -121,12 +128,17 @@ const PodcastForm = ({
         <CustomInput size='sm' />
       </Item>
       <Item>
-        <CustomButton
-          size='md'
-          text='Save'
-          htmlType="submit"
-          type="primary"
-        />
+        {
+          !loading ?
+            <CustomButton
+              size='md'
+              text='Save'
+              htmlType="submit"
+              type="primary"
+            />
+            :
+            <span>Saving...</span>
+        }
       </Item>
     </Form>
   </div>);
@@ -134,12 +146,14 @@ const PodcastForm = ({
 
 PodcastForm.propTypes = {
   initialValues: PropTypes.object,
-  onPay: PropTypes.func,
+  onFinish: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 PodcastForm.defaultProps = {
   initialValues: {},
-  onFinish: () => {},
+  onFinish: () => { },
+  loading: false,
 };
 
 export default PodcastForm;

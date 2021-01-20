@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tooltip, } from 'antd';
+import { connect } from "react-redux";
+import moment from 'moment';
+
+import { homeSelector } from "redux/selectors/homeSelector";
+import { getAll, remove } from 'api/module/podcast';
+import { CustomButton } from "components";
 import EpisodeCard from './EpisodeCard';
-import generateId from 'utils/generateId.js';
+import { INTERNAL_LINKS } from "enum";
 
 import IconAnchorFm from 'images/icon-anchor-fm.svg';
 import IconApplePodcast from 'images/icon-apple-podcast.svg';
@@ -64,151 +70,89 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   },
 }
 
-const HARDCODED_LIST_OF_EPISODES = [
-  {
-    id: generateId(20),
-    created_at: new Date('10/5/20'),
-    episode_number: 999,
-    episode_cover: '',
-    links: [
-      {
-        icon: IconAnchorFm,
-        label: 'Anchor FM',
-        link: 'https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak',
-      },
-      { 
+function PodcastPage({ history, userProfile }) {
+  const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
+  const [episodes, setEpisodes] = useState([]);
+  const getPodcast = async () => {
+    let podcastResponse = await getAll();
+    setEpisodes(podcastResponse.data.podcast);
+  };
+
+  useEffect(() => {
+    getPodcast();
+  }, []);
+
+  const getLinks = (episode) => {
+    let links = [];
+    if (episode.vimeoLink) {
+      links.push({
         icon: IconVimeo,
         label: 'Vimeo',
-        link: 'https://vimeo.com/hackinghr',
-      },
-      {
+        link: episode.vimeoLink,
+      });
+    }
+    if (episode.anchorLink) {
+      links.push({
+        icon: IconAnchorFm,
+        label: 'Anchor FM',
+        link: episode.anchorLink,
+      });
+    }
+    if (episode.appleLink) {
+      links.push({
         icon: IconApplePodcast,
         label: 'Apple Podcasts',
-        link: 'https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4',
-      },
-    ],
-  },
-
-  {
-    id: generateId(20),
-    created_at: new Date('9/5/20'),
-    episode_number: 998,
-    episode_cover: '',
-    links: [
-      {
+        link: episode.appleLink,
+      });
+    }
+    if (episode.breakerLink) {
+      links.push({
         icon: IconBreakerPodcast,
         label: 'Breaker',
-        link: 'https://www.breaker.audio/the-hacking-hr-podcast',
-      },
-      { 
-        icon: IconVimeo,
-        label: 'Vimeo',
-        link: 'https://vimeo.com/hackinghr',
-      },
-    ],
-  },
-
-  {
-    id: generateId(20),
-    created_at: new Date('8/5/20'),
-    episode_number: 997,
-    episode_cover: '',
-    links: [
-      {
-        icon: IconAnchorFm,
-        label: 'Anchor FM',
-        link: 'https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak',
-      },
-      {
+        link: episode.breakerLink,
+      });
+    }
+    if (episode.pocketLink) {
+      links.push({
         icon: IconPocketCasts,
         label: 'Pocket Casts',
-        link: 'https://pca.st/ydlfya8v',
-      },
-      {
-        icon: IconIheartradio,
-        label: 'iHeart Radio',
-        link: 'https://www.iheart.com/podcast/269-the-hacking-hr-podcast-70571765/',
-      },
-      {
-        icon: IconSpotify,
-        label: 'Spotify',
-        link: 'https://open.spotify.com/show/1Vgm72AyxLwQplesLQv0TN',
-      },
-    ],
-  },
-
-  {
-    id: generateId(20),
-    created_at: new Date('7/5/20'),
-    episode_number: 996,
-    episode_cover: '',
-    links: [
-      {
-        icon: IconIheartradio,
-        label: 'iHeart Radio',
-        link: 'https://www.iheart.com/podcast/269-the-hacking-hr-podcast-70571765/',
-      },
-      { 
-        icon: IconVimeo,
-        label: 'Vimeo',
-        link: 'https://vimeo.com/hackinghr',
-      },
-    ],
-  },
-
-  {
-    id: generateId(20),
-    created_at: new Date('6/5/20'),
-    episode_number: 995,
-    episode_cover: '',
-    links: [
-      {
-        icon: IconAnchorFm,
-        label: 'Anchor FM',
-        link: 'https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak',
-      },
-      {
-        icon: IconApplePodcast,
-        label: 'Apple Podcasts',
-        link: 'https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4',
-      },
-      {
-        icon: IconBreakerPodcast,
-        label: 'Breaker',
-        link: 'https://www.breaker.audio/the-hacking-hr-podcast',
-      },
-      {
-        icon: IconIheartradio,
-        label: 'iHeart Radio',
-        link: 'https://www.iheart.com/podcast/269-the-hacking-hr-podcast-70571765/',
-      },
-      {
-        icon: IconPocketCasts,
-        label: 'Pocket Casts',
-        link: 'https://pca.st/ydlfya8v',
-      },
-      {
+        link: episode.pocketLink,
+      });
+    }
+    if (episode.radioPublicLink) {
+      links.push({
         icon: IconRadiopublic,
         label: 'Radio Public',
-        link: 'https://radiopublic.com/the-hacking-hr-podcast-GOKyBz',
-      },
-      {
+        link: episode.radioPublicLink,
+      });
+    }
+    if (episode.spotifyLink) {
+      links.push({
         icon: IconSpotify,
         label: 'Spotify',
-        link: 'https://open.spotify.com/show/1Vgm72AyxLwQplesLQv0TN',
-      },
-      {
-        icon: IconVimeo,
-        label: 'Vimeo',
-        link: 'https://vimeo.com/hackinghr',
-      },
-    ],
-  },
-];
+        link: episode.spotifyLink,
+      });
+    }
+    if (episode.iHeartRadioLink) {
+      links.push({
+        icon: IconIheartradio,
+        label: 'iHeart Radio',
+        link: episode.iHeartRadioLink,
+      });
+    }
+    return links;
+  };
 
-function PodcastPage() {
-  const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
-  const [episodes] = useState(HARDCODED_LIST_OF_EPISODES);
+  const onEdit = (e, id) => {
+    e.preventDefault();
+    history.push(`${INTERNAL_LINKS.PODCAST_ADMIN}/${id}`);
+  }
+
+  const onRemove = async (e, id) => {
+    e.preventDefault();
+    await remove(id);
+    getPodcast();
+  }
 
   return (
     <div className="podcast-page">
@@ -234,7 +178,7 @@ function PodcastPage() {
                   rel="noopener noreferrer"
                   className="podcast-page__host-link"
                   atia-label={`Link to ${host.label}`}
-                > 
+                >
                   <span
                     className="podcast-page__host-link-icon"
                     style={{
@@ -255,25 +199,39 @@ function PodcastPage() {
             Latest podcasts:
           </h2>
         </header>
-
+        {
+          userProfile.role == 'admin' &&
+          <CustomButton text="Add Episode" size="sm" onClick={() => { history.push(INTERNAL_LINKS.PODCAST_ADMIN); }} />
+        }
         <section className="podcast-page__episodes-row">
-          {episodes.map(episode => (
-            <div className="podcast-page__episodes-col"
-              key={episode.id}
-            >
-              <EpisodeCard
-                id={episode.id}
-                created_at={episode.created_at}
-                episode_number={episode.episode_number}
-                episode_cover={episode.episode_cover}
-                links={episode.links}
-              />
-            </div>
-          ))}
+          {episodes.map(episode => {
+
+            return (
+              <div className="podcast-page__episodes-col"
+                key={episode.id}
+              >
+                <EpisodeCard
+                  id={episode.id}
+                  created_at={moment(episode.dateEpisode)}
+                  episode_number={episode.order}
+                  episode_cover={episode.imageUrl}
+                  links={getLinks(episode)}
+                  onEdit={(e) => { onEdit(e, episode.id); }}
+                  onRemove={(e) => { onRemove(e, episode.id); }}
+                  isAdmin={userProfile.role == 'admin'}
+                />
+              </div>);
+          })}
         </section>
       </div>
     </div>
   );
 }
 
-export default PodcastPage;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastPage);

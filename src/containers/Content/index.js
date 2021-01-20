@@ -78,7 +78,7 @@ class Content extends Component {
             render={(props) => <PodcastPage {...props} />}
           />
           <PrivateRoute
-            path={INTERNAL_LINKS.PODCAST_ADMIN}
+            path={`${INTERNAL_LINKS.PODCAST_ADMIN}/:id?`}
             render={(props) => <PodcastAdminPage {...props} />}
           />
           <PrivateRoute
