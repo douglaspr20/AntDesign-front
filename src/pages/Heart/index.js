@@ -152,57 +152,58 @@ function HEARTPage(props) {
               ))}
             </section>
           </div>
-        </div>
-        {(createNewCardState && createNewCardState.id) &&
-          <section className="heart-new-comment__wrap">
-            <Form
-              initialValues={createNewCardState}
-              onFinish={submitNewComment}
-            >
-              <Form.Item
-                name="content"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter your comment",
-                  },
-                  () => ({
-                    validator(_, value) {
-                      if (getWordsCountFromString(value) > COMMENT_MAX_WORDS_COUNT) {
-                        return Promise.reject(
-                          "Comment length should be up to 100 words"
-                        );
-                      }
-                      return Promise.resolve();
-
-                    },
-                  }),
-                ]}
+          {(createNewCardState && createNewCardState.id) &&
+            <section className="heart-new-comment__wrap">
+              <Form
+                initialValues={createNewCardState}
+                onFinish={submitNewComment}
               >
-                <CustomInput multiple placeholder="Please enter your comment" />
-              </Form.Item>
+                <Form.Item
+                  name="content"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your comment",
+                    },
+                    () => ({
+                      validator(_, value) {
+                        if (getWordsCountFromString(value) > COMMENT_MAX_WORDS_COUNT) {
+                          return Promise.reject(
+                            "Comment length should be up to 100 words"
+                          );
+                        }
+                        return Promise.resolve();
 
-              <div className="heart-new-comment__cta-wrap">
-                <CustomButton
-                  htmlType="button"
-                  text="Cancel"
-                  type="default"
-                  size="md"
-                  onClick={dismissNewComment}
-                />
+                      },
+                    }),
+                  ]}
+                >
+                  <CustomInput multiple placeholder="Please enter your comment" />
+                </Form.Item>
 
-                <CustomButton
-                  htmlType="submit"
-                  text="Post Comment"
-                  type="primary"
-                  size="lg"
-                />
-              </div>
+                <div className="heart-new-comment__cta-wrap">
+                  <CustomButton
+                    htmlType="button"
+                    text="Cancel"
+                    type="default"
+                    size="md"
+                    onClick={dismissNewComment}
+                  />
 
-            </Form>
+                  <CustomButton
+                    htmlType="submit"
+                    text="Post Comment"
+                    type="primary"
+                    size="lg"
+                  />
+                </div>
 
-          </section>
-        }
+              </Form>
+
+            </section>
+          }
+        </div>
+
         <section className="heart-cards-list__wrap">
           {heartCards.map(item => (
             <HEARTComment
