@@ -10,16 +10,21 @@ import MentorSetting from "./MentorSetting";
 import MentorList from "./MentorList";
 import MenteeList from "./MenteeList";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { mentoringSelector } from "redux/selectors/mentoringSelector";
+import { setMentoringInfo } from "redux/actions/mentoring-actions";
 
 import "./style.scss";
 
-const Mentoring = ({ userProfile }) => {
+const Mentoring = ({
+  userProfile,
+  isMentor,
+  mentorInfo,
+  isMentee,
+  menteeInfo,
+  setMentoringInfo,
+}) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
-  const [isMentor, setIsMentor] = useState(false);
-  const [isMentee, setIsMentee] = useState(false);
-  const [mentorSetting, setMentorSetting] = useState({});
-  const [menteeSetting, setMenteeSetting] = useState({});
 
   const showSetting = (type) => {
     setOpenSetting(true);
@@ -28,14 +33,22 @@ const Mentoring = ({ userProfile }) => {
 
   const onSaveMentorSetting = (data) => {
     setOpenSetting(false);
-    setIsMentor(true);
-    setMentorSetting(data);
+    setMentoringInfo({
+      title: data.title,
+      about: data.reason,
+      areas: data.specialties,
+      isMentor: true,
+    });
   };
 
   const onSaveMenteeSetting = (data) => {
     setOpenSetting(false);
-    setIsMentee(true);
-    setMenteeSetting(data);
+    setMentoringInfo({
+      title: data.title,
+      about: data.reason,
+      areas: data.specialties,
+      isMentor: false,
+    });
   };
 
   const TabData = [
@@ -43,7 +56,7 @@ const Mentoring = ({ userProfile }) => {
       title: "Mentor",
       content: () => (
         <MentorPanel
-          setting={mentorSetting}
+          setting={mentorInfo}
           isMentor={isMentor}
           openSetting={() => showSetting("mentor")}
           onEdit={() => showSetting("mentor")}
@@ -54,7 +67,7 @@ const Mentoring = ({ userProfile }) => {
       title: "Mentee",
       content: () => (
         <MenteePanel
-          setting={menteeSetting}
+          setting={menteeInfo}
           isMentee={isMentee}
           openSetting={() => showSetting("mentee")}
           onEdit={() => showSetting("mentee")}
@@ -89,14 +102,14 @@ const Mentoring = ({ userProfile }) => {
         )}
         {openSetting && selectedType === "mentor" && (
           <MentorSetting
-            setting={mentorSetting}
+            setting={mentorInfo}
             onCancel={() => setOpenSetting(false)}
             onSave={onSaveMentorSetting}
           />
         )}
         {openSetting && selectedType === "mentee" && (
           <MenteeSetting
-            setting={menteeSetting}
+            setting={menteeInfo}
             onCancel={() => setOpenSetting(false)}
             onSave={onSaveMenteeSetting}
           />
@@ -105,14 +118,14 @@ const Mentoring = ({ userProfile }) => {
       {!openSetting && selectedType === "mentor" && isMentor && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MenteeList user={mentorSetting} />
+            <MenteeList user={mentorInfo} />
           </div>
         </div>
       )}
       {!openSetting && selectedType === "mentee" && isMentee && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MentorList user={menteeSetting} />
+            <MentorList user={menteeInfo} />
           </div>
         </div>
       )}
@@ -130,6 +143,13 @@ Mentoring.defaultProps = {
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  isMentor: !!homeSelector(state).userProfile.mentor,
+  isMentee: !!homeSelector(state).userProfile.mentee,
+  ...mentoringSelector(state),
 });
 
-export default connect(mapStateToProps)(Mentoring);
+const mapDispatchToProps = {
+  setMentoringInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Mentoring);

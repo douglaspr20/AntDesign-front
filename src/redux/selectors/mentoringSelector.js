@@ -1,0 +1,19 @@
+import { createSelector } from "reselect";
+
+const mentoringDataSelector = (state) => state.mentoring;
+
+const resultSelector = createSelector(mentoringDataSelector, (payload) => {
+  return {
+    loading: payload.get("loading"),
+    allMentors: payload.get("allMentors"),
+    allMentees: payload.get("allMentees"),
+    countOfResults1: payload.get("countOfResults1"),
+    currentPage1: payload.get("currentPage1"),
+    countOfResults2: payload.get("countOfResults2"),
+    currentPage2: payload.get("currentPage2"),
+  };
+});
+
+export const mentoringSelector = (state) => ({
+  ...resultSelector,
+});

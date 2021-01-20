@@ -131,7 +131,7 @@ MentorList.propTypes = {
 };
 
 MentorList.defaultProps = {
-  user: "",
+  user: {},
 };
 
 const mapStateToProps = (state) => ({
