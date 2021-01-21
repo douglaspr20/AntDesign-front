@@ -108,7 +108,7 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
       <CustomButton
         className="custom-calendar-today"
         text="Today"
-        type="primary outlined"
+        type="primary"
         size="xs"
         disabled={disabled}
         onClick={onSelectToday}
