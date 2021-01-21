@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import Emitter from "services/emitter";
+
 import { Tabs } from "components";
 import MentorPanel from "./Mentor";
 import MenteePanel from "./Mentee";
@@ -10,6 +12,7 @@ import MentorSetting from "./MentorSetting";
 import MentorList from "./MentorList";
 import MenteeList from "./MenteeList";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -69,11 +72,15 @@ const Mentoring = ({ userProfile }) => {
     setSelectedType(tab === "1" ? "mentee" : "mentor");
   };
 
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   return (
     <div className="mentoring-page">
       {!isPremium && (
         <div className="mentoring-page-firewall">
-          <div className="upgrade-notification-panel">
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
             <h3>UPGRADE TO PREMIUM</h3>
             <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
           </div>
