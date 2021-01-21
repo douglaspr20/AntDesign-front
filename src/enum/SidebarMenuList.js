@@ -9,6 +9,7 @@ import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 import IconBookmark from "images/icon-bookmark.svg";
 import IconHeartOutline from "images/icon-heart-outline.svg";
+import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 export default {
   TOP_MENUS: [
@@ -46,6 +47,11 @@ export default {
       label: "Hub",
       icon: IconReader,
       url: INTERNAL_LINKS.HUB,
+    },
+    {
+      label: "Podcast",
+      icon: IconHeadsetOutline,
+      url: INTERNAL_LINKS.PODCAST,
     },
   ],
   BOTTOM_MENUS: [

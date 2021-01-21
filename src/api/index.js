@@ -18,6 +18,7 @@ import {
   searchLibrary,
   getRecommendations,
 } from "./module/library";
+import { getAllPodcasts } from "./module/podcast";
 
 export {
   signIn,
@@ -35,4 +36,5 @@ export {
   getLibrary,
   searchLibrary,
   getRecommendations,
+  getAllPodcasts,
 };
