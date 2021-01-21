@@ -1,5 +1,5 @@
 import httpClient from "./httpClient";
 
-export const getAll = async (data) => {
+export const getAllPodcasts = async (data) => {
   return await httpClient.get(`private/podcast`);
 };

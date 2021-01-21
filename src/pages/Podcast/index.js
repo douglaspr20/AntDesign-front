@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Tooltip } from "antd";
 import moment from "moment";
+import { connect } from "react-redux";
 
-import { getAll } from "api/module/podcast";
+import { getAllPodcasts } from "redux/actions/podcast-actions";
+import { podcastSelector } from "redux/selectors/podcastSelector";
+
 import EpisodeCard from "./EpisodeCard";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
@@ -68,16 +71,12 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   },
 };
 
-function PodcastPage() {
+const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
   const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
-  const [episodes, setEpisodes] = useState([]);
-  const getPodcast = async () => {
-    let podcastResponse = await getAll();
-    setEpisodes(podcastResponse.data.podcast);
-  };
 
   useEffect(() => {
-    getPodcast();
+    getAllPodcasts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getLinks = (episode) => {
@@ -179,7 +178,7 @@ function PodcastPage() {
         </header>
 
         <section className="podcast-page__episodes-row">
-          {episodes.map((episode) => {
+          {allEpisodes.map((episode) => {
             return (
               <div className="podcast-page__episodes-col" key={episode.id}>
                 <EpisodeCard
@@ -196,6 +195,14 @@ function PodcastPage() {
       </div>
     </div>
   );
-}
+};
 
-export default PodcastPage;
+const mapStateToProps = (state) => ({
+  allEpisodes: podcastSelector(state).allEpisodes,
+});
+
+const mapDispatchToProps = {
+  getAllPodcasts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastPage);
