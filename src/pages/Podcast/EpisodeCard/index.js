@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Tooltip, } from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Tooltip } from "antd";
 import moment from "moment";
 
-import './style.scss';
+import "./style.scss";
 
-const HARDCODED_COVER_PLACEHOLDER = 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png';
+const HARDCODED_COVER_PLACEHOLDER =
+  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 const DATE_FORMAT = "MMMM DD, YYYY";
 
 function EpisodeCard({
@@ -14,12 +15,14 @@ function EpisodeCard({
   episode_cover = HARDCODED_COVER_PLACEHOLDER,
   links = [],
 }) {
-
   return (
     <div className="podcast-episode__card">
-      <div className="podcast-episode__card-cover"
+      <div
+        className="podcast-episode__card-cover"
         style={{
-          backgroundImage: `url(${episode_cover ? episode_cover : HARDCODED_COVER_PLACEHOLDER})`,
+          backgroundImage: `url(${
+            episode_cover ? episode_cover : HARDCODED_COVER_PLACEHOLDER
+          })`,
         }}
       ></div>
       <div className="podcast-episode__card-body">
@@ -31,19 +34,18 @@ function EpisodeCard({
             {moment(created_at).format(DATE_FORMAT)}
           </span>
         </div>
-        
-        {links.length > 0 &&
+
+        {links.length > 0 && (
           <div className="podcast-episode__card-body-links">
-            <span className="podcast-episode__card-body-links-heading" style={{width: '100%'}}>
+            <span
+              className="podcast-episode__card-body-links-heading"
+              style={{ width: "100%" }}
+            >
               Listen on:
             </span>
             {links.map((link, i) => (
-              <Tooltip
-                key={i}
-                placement="top"
-                title={link.label}
-              >
-                <a  
+              <Tooltip key={i} placement="top" title={link.label}>
+                <a
                   className="podcast-episode__card-body-link"
                   href={link.link}
                   target="_blank"
@@ -60,7 +62,7 @@ function EpisodeCard({
               </Tooltip>
             ))}
           </div>
-        }
+        )}
       </div>
     </div>
   );
