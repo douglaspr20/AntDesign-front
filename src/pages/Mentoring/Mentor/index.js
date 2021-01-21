@@ -4,9 +4,12 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 
 import { SpecialtyItem, WantCard, CustomButton } from "components";
+import { PROFILE_SETTINGS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
+
+const Specialties = PROFILE_SETTINGS.TOPICS;
 
 const MentorPanel = ({
   setting,
@@ -36,9 +39,19 @@ const MentorPanel = ({
               {setting.reason || ""}
             </p>
             <div className="mentor-panel-description-specialties">
-              {(setting.specialties || []).map((spec, index) => (
-                <SpecialtyItem key={`specialty-${index}`} title={spec} />
-              ))}
+              {(setting.specialties || []).map((spec, index) => {
+                const specialty = Specialties.find(
+                  (item) => item.value === spec
+                );
+                return specialty ? (
+                  <SpecialtyItem
+                    key={`specialty-${index}`}
+                    title={specialty.text}
+                  />
+                ) : (
+                  ""
+                );
+              })}
             </div>
             <span className="edit-information" onClick={onEdit}>
               Edit mentor information

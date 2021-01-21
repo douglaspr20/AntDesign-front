@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { CheckOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import { CustomButton, SpecialtyItem } from "components";
 import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
@@ -26,7 +28,7 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    Emitter.emit(EVENT_TYPES.EVENT_VIEW_DETAIL, this.props.data);
+    this.props.onClick(this.props.data);
   };
 
   onClickConfirm = (e) => {
@@ -40,8 +42,9 @@ class EventCard extends React.Component {
     e.preventDefault();
     e.stopPropagation();
 
-    this.props.history.push(
-      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`
+    window.open(
+      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`,
+      "_blank"
     );
   };
 
@@ -50,10 +53,17 @@ class EventCard extends React.Component {
     e.stopPropagation();
   };
 
+  planUpgrade = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   render() {
     const {
       data: { title, type, ticket, location, status, image, period },
       className,
+      userProfile: { memberShip },
     } = this.props;
 
     return (
@@ -91,19 +101,30 @@ class EventCard extends React.Component {
               )}
               {status === "confirmed" && (
                 <div className="claim-buttons">
-                  <CustomButton
-                    className="claim-digital-certificate"
-                    text="Claim digital certificate"
-                    size="md"
-                    type="primary outlined"
-                    onClick={this.onClickClaimDigitalCertificate}
-                  />
-                  <CustomButton
-                    text="Claim credits"
-                    size="md"
-                    type="primary"
-                    onClick={this.onClickClaimCredits}
-                  />
+                  {memberShip === "premium" ? (
+                    <React.Fragment>
+                      <CustomButton
+                        className="claim-digital-certificate"
+                        text="Claim digital certificate"
+                        size="md"
+                        type="primary outlined"
+                        onClick={this.onClickClaimDigitalCertificate}
+                      />
+                      <CustomButton
+                        text="Claim credits"
+                        size="md"
+                        type="primary"
+                        onClick={this.onClickClaimCredits}
+                      />
+                    </React.Fragment>
+                  ) : (
+                    <CustomButton
+                      text="Upgrade to premium"
+                      size="md"
+                      type="primary"
+                      onClick={this.planUpgrade}
+                    />
+                  )}
                 </div>
               )}
               {status === "attend" && (
@@ -141,13 +162,19 @@ class EventCard extends React.Component {
 EventCard.propTypes = {
   data: PropTypes.object,
   className: PropTypes.string,
+  onClick: PropTypes.func,
   onAttend: PropTypes.func,
 };
 
 EventCard.defaultProps = {
   data: {},
   className: "",
+  onClick: () => {},
   onAttend: () => {},
 };
 
-export default withRouter(EventCard);
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default withRouter(connect(mapStateToProps)(EventCard));

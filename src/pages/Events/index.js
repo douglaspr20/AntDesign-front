@@ -7,6 +7,8 @@ import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
 
 import { Tabs, EventFilterPanel } from "components";
+import EventDrawer from "containers/EventDrawer";
+import { MONTH_NAMES } from "enum";
 import EventList from "./EventList";
 import {
   getAllEvent,
@@ -22,6 +24,7 @@ import "./style.scss";
 const EventsPage = ({
   allEvents,
   myEvents,
+  updatedEvent,
   getAllEvent,
   getMyEvents,
   addToMyEventList,
@@ -31,6 +34,10 @@ const EventsPage = ({
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
   const [filterParams, setFilterParams] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [event, setEvent] = useState({});
+
+  const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
     if (event.going) {
@@ -40,6 +47,15 @@ const EventsPage = ({
     }
   };
 
+  const onEventClick = (event) => {
+    setVisible(true);
+    setEvent({
+      ...event,
+      day: moment(event.date, DataFormat).date(),
+      month: MONTH_NAMES[moment(event.date, DataFormat).month()],
+    });
+  };
+
   const TabData = [
     {
       title: "Upcoming events",
@@ -47,6 +63,7 @@ const EventsPage = ({
         <EventList
           data={filteredEvents}
           onAttend={addMyEvents}
+          onClick={onEventClick}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -57,6 +74,7 @@ const EventsPage = ({
         <EventList
           data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
+          onClick={onEventClick}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -69,6 +87,7 @@ const EventsPage = ({
             (event) => !["going", "attend"].includes(event.status)
           )}
           onAttend={addMyEvents}
+          onClick={onEventClick}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -101,7 +120,9 @@ const EventsPage = ({
         if (params["Topics"] && params["Topics"].length > 0) {
           flag =
             flag &&
-            (params["Topics"] || []).some((tpc) => item.category === tpc);
+            (params["Topics"] || []).some((tpc) =>
+              item.categories.includes(tpc)
+            );
         }
 
         if (isEmpty(params)) {
@@ -114,6 +135,10 @@ const EventsPage = ({
       return [...prev];
     });
     setCurrentTab("0");
+  };
+
+  const onEventDrawerClose = () => {
+    setVisible(false);
   };
 
   useEffect(() => {
@@ -132,7 +157,18 @@ const EventsPage = ({
   }, [allEvents]);
 
   useEffect(() => {
-    onFilterChange({ date: moment() });
+    if (event && updatedEvent && event.id === updatedEvent.id) {
+      setEvent({
+        ...updatedEvent,
+        day: moment(updatedEvent.date, DataFormat).date(),
+        month: MONTH_NAMES[moment(updatedEvent.date, DataFormat).month()],
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedEvent]);
+
+  useEffect(() => {
+    onFilterChange({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -153,6 +189,11 @@ const EventsPage = ({
           <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
         </div>
       </div>
+      <EventDrawer
+        visible={visible}
+        event={event}
+        onClose={onEventDrawerClose}
+      />
     </div>
   );
 };
@@ -168,6 +209,7 @@ EventsPage.defaultProps = {
 const mapStateToProps = (state) => ({
   myEvents: eventSelector(state).myEvents,
   allEvents: eventSelector(state).allEvents,
+  updatedEvent: eventSelector(state).updatedEvent,
 });
 
 const mapDispatchToProps = {

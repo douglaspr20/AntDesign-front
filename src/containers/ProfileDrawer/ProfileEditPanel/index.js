@@ -18,6 +18,9 @@ import {
 import PhotoUploadForm from "../PhotoUploadForm";
 import { isValidEmail } from "utils/format";
 
+import IconPlus from "images/icon-plus.svg";
+import IconDelete from "images/icon-delete.svg";
+
 import "./style.scss";
 
 const Topics = PROFILE_SETTINGS.TOPICS;
@@ -28,7 +31,9 @@ class ProfileEditPanel extends React.Component {
     super(props);
 
     this.state = {
-      user: props.user ? { ...props.user } : {},
+      user: props.user
+        ? { ...props.user, languages: props.user.languages || [""] }
+        : { languages: [""] },
       visibleModal: false,
       editImageUrl: props.user ? props.user.img : "",
     };
@@ -38,6 +43,11 @@ class ProfileEditPanel extends React.Component {
     if (field === "personalLinks") {
       this.setState((state) => {
         state.user.personalLinks[subField] = value ? `https://${value}` : "";
+        return state;
+      });
+    } else if (field === "languages") {
+      this.setState((state) => {
+        state.user.languages[subField] = value;
         return state;
       });
     } else {
@@ -80,12 +90,34 @@ class ProfileEditPanel extends React.Component {
         message: error,
       });
     } else {
-      this.props.onSave(user);
+      this.props.onSave({
+        ...user,
+        languages: user.languages
+          ? user.languages.filter((item) => !!item)
+          : [],
+      });
     }
   };
 
   onCancel = () => {
     this.props.onCancel();
+  };
+
+  onAddLanguage = () => {
+    const { user } = this.state;
+    if (user.languages) {
+      user.languages.push("");
+    } else {
+      user.languages = [""];
+    }
+
+    this.setState({ user });
+  };
+
+  onRemoveLanguage = () => {
+    const { user } = this.state;
+    user.languages = user.languages.slice(0, user.languages.length - 1);
+    this.setState({ user });
   };
 
   render() {
@@ -175,16 +207,42 @@ class ProfileEditPanel extends React.Component {
               }
             />
             <h5 className="textfield-label">Main language</h5>
-            <CustomSelect
-              showSearch
-              options={Languages}
-              value={user.language}
-              optionFilterProp="children"
-              onChange={(value) => this.onFieldChange("language", value)}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            />
+            <div className="language-list">
+              {user.languages.map((lang, index) => (
+                <div className="language-list-item" key={index}>
+                  <CustomSelect
+                    showSearch
+                    options={Languages}
+                    value={lang}
+                    optionFilterProp="children"
+                    onChange={(value) =>
+                      this.onFieldChange("languages", value, index)
+                    }
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  />
+                </div>
+              ))}
+              <div className="language-list-actions">
+                <div
+                  className="language-list-actions-action"
+                  onClick={this.onAddLanguage}
+                >
+                  <img src={IconPlus} alt="icon-plus" />
+                </div>
+                {user.languages.length > 1 && (
+                  <div
+                    className="language-list-actions-action"
+                    onClick={this.onRemoveLanguage}
+                  >
+                    <img src={IconDelete} alt="icon-delete" />
+                  </div>
+                )}
+              </div>
+            </div>
             <h5 className="textfield-label">Tell us more about you</h5>
             <CustomInput
               className="textfield-input"
@@ -201,8 +259,8 @@ class ProfileEditPanel extends React.Component {
               }
             >
               {Topics.map((topic) => (
-                <CustomCheckbox key={topic} value={topic}>
-                  {topic}
+                <CustomCheckbox key={topic.value} value={topic.value}>
+                  {topic.text}
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>

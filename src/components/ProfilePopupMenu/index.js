@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
 import { connect } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -15,8 +16,16 @@ import { actions as authActions } from "redux/actions/auth-actions";
 import "./style.scss";
 import { getPortalSession } from "../../api/module/stripe";
 
-// const ProfileMenus = ["Settings", "Account"];
-const ProfileMenus = [];
+const ProfileMenus = [
+  {
+    label: "Read Later",
+    link: INTERNAL_LINKS.READ_LATER,
+  },
+  {
+    label: "Favorites",
+    link: INTERNAL_LINKS.FAVORITES,
+  },
+];
 
 class ProfilePopupMenu extends React.Component {
   constructor(props) {
@@ -25,27 +34,29 @@ class ProfilePopupMenu extends React.Component {
     this.state = {
       visible: false,
       portalSession: null,
-      subscription: null
+      subscription: null,
     };
   }
 
   componentDidMount() {
-    setTimeout(() => { this.createPortalSession(); }, 800);
+    setTimeout(() => {
+      this.createPortalSession();
+    }, 800);
   }
 
   createPortalSession = async () => {
-    if(this.props.userProfile.memberShip === 'premium'){
+    if (this.props.userProfile.memberShip === "premium") {
       try {
         let response = await getPortalSession();
         this.setState({
           portalSession: response.data.session,
           subscription: response.data.subscription,
         });
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }
-  }
+  };
 
   onViewProfile = () => {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
@@ -78,7 +89,7 @@ class ProfilePopupMenu extends React.Component {
           <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
             user ? user.lastName || "" : ""
           }`}</p>
-          <p className="user-info-view">View profile</p>
+          <p className="user-info-view">View / Update Profile</p>
         </div>
       </div>
     );
@@ -89,24 +100,42 @@ class ProfilePopupMenu extends React.Component {
           {user.memberShip === "premium" ? (
             <React.Fragment>
               <div>PREMIUM MEMBER</div>
-              { this.state.subscription != null ?
-                (<>
+              {this.state.subscription != null ? (
+                <>
                   <div>
-                    { moment.unix(this.state.subscription.current_period_start).format("MMMM DD, yyyy") } - { moment.unix(this.state.subscription.current_period_end).format("MMMM DD, yyyy") }
+                    {moment
+                      .unix(this.state.subscription.current_period_start)
+                      .format("MMMM DD, yyyy")}{" "}
+                    -{" "}
+                    {moment
+                      .unix(this.state.subscription.current_period_end)
+                      .format("MMMM DD, yyyy")}
                   </div>
-                  <div><a href={ this.state.portalSession.url } rel="noopener noreferrer" target='_blank'>Billing Information</a></div>
-                </>)
-                : null
-              }
+                  <div>
+                    <a
+                      href={this.state.portalSession.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Billing Information
+                    </a>
+                  </div>
+                </>
+              ) : null}
             </React.Fragment>
           ) : (
             <div>Free Membership</div>
           )}
         </div>
         {ProfileMenus.map((menu, index) => (
-          <div key={index} className="profile-popover-content-menu">
-            {menu}
-          </div>
+          <Link
+            key={index}
+            className="profile-popover-content-menu"
+            to={menu.link}
+            onClick={() => this.onVisibleChange(false)}
+          >
+            {menu.label}
+          </Link>
         ))}
         <div className="profile-popover-content-footer">
           <CustomButton

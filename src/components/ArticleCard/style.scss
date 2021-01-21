@@ -8,6 +8,8 @@
   border: 1px solid $color-border;
   border-radius: 0.5rem;
   height: 195px;
+  cursor: pointer;
+  width: 100%;
 
   @media (max-width: 575.98px) {
     grid-template-columns: 1fr;
@@ -21,6 +23,7 @@
     border: 1px solid $color-border;
     border-radius: 0.5rem;
     background: $color-background-dark;
+    overflow: hidden;
 
     @media (max-width: 575.98px) {
       height: 100%;

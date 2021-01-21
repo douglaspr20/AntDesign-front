@@ -22,6 +22,10 @@
     padding: 0 2rem 150px;
     background: $color-background;
 
+    .ant-col {
+      width: 100%;
+    }
+
     .view_all_events {
       cursor: pointer;
     }
