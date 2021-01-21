@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Tooltip, } from 'antd';
-import { connect } from "react-redux";
 import moment from 'moment';
 
-import { homeSelector } from "redux/selectors/homeSelector";
-import { getAll, remove } from 'api/module/podcast';
-import { CustomButton } from "components";
+import { getAll } from 'api/module/podcast';
 import EpisodeCard from './EpisodeCard';
-import { INTERNAL_LINKS } from "enum";
 
 import IconAnchorFm from 'images/icon-anchor-fm.svg';
 import IconApplePodcast from 'images/icon-apple-podcast.svg';
@@ -70,7 +66,7 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   },
 }
 
-function PodcastPage({ history, userProfile }) {
+function PodcastPage() {
   const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
   const [episodes, setEpisodes] = useState([]);
   const getPodcast = async () => {
@@ -143,17 +139,6 @@ function PodcastPage({ history, userProfile }) {
     return links;
   };
 
-  const onEdit = (e, id) => {
-    e.preventDefault();
-    history.push(`${INTERNAL_LINKS.PODCAST_ADMIN}/${id}`);
-  }
-
-  const onRemove = async (e, id) => {
-    e.preventDefault();
-    await remove(id);
-    getPodcast();
-  }
-
   return (
     <div className="podcast-page">
       <div className="podcast-page__container">
@@ -199,10 +184,7 @@ function PodcastPage({ history, userProfile }) {
             Latest podcasts:
           </h2>
         </header>
-        {
-          userProfile.role == 'admin' &&
-          <CustomButton text="Add Episode" size="sm" onClick={() => { history.push(INTERNAL_LINKS.PODCAST_ADMIN); }} />
-        }
+
         <section className="podcast-page__episodes-row">
           {episodes.map(episode => {
 
@@ -216,9 +198,6 @@ function PodcastPage({ history, userProfile }) {
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}
                   links={getLinks(episode)}
-                  onEdit={(e) => { onEdit(e, episode.id); }}
-                  onRemove={(e) => { onRemove(e, episode.id); }}
-                  isAdmin={userProfile.role == 'admin'}
                 />
               </div>);
           })}
@@ -228,10 +207,4 @@ function PodcastPage({ history, userProfile }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  userProfile: homeSelector(state).userProfile,
-});
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PodcastPage);
+export default PodcastPage;

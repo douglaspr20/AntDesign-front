@@ -13,9 +13,6 @@ function EpisodeCard({
   episode_number,
   episode_cover = HARDCODED_COVER_PLACEHOLDER,
   links = [],
-  onEdit = () => {},
-  onRemove = () => {},
-  isAdmin = false,
 }) {
 
   return (
@@ -64,13 +61,6 @@ function EpisodeCard({
             ))}
           </div>
         }
-        {
-          isAdmin &&
-          <div className="podcast-episode__card-actions">
-            <a onClick={onEdit}>Edit</a>
-            <a onClick={onRemove}>Remove</a>
-          </div>
-        }
       </div>
     </div>
   );
@@ -81,9 +71,6 @@ EpisodeCard.propTypes = {
   episode_number: PropTypes.number.isRequired,
   episode_cover: PropTypes.string,
   links: PropTypes.array,
-  onEdit: PropTypes.func,
-  onRemove: PropTypes.func,
-  isAdmin: PropTypes.bool
 };
 
 export default EpisodeCard;

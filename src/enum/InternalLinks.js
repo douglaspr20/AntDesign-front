@@ -15,5 +15,4 @@ export default {
   CERTIFICATE: "/certificate",
   HEART: "/heart",
   PODCAST: "/podcast",
-  PODCAST_ADMIN: "/podcast-admin",
 };
