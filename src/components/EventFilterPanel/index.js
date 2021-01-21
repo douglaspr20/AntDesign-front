@@ -32,7 +32,7 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
   };
 
   const onEventFilterChange = (field, values) => {
-    const newFilters = { ...filterValues, [field]: values };
+    const newFilters = { ...filterValues, [field]: values, date: null };
     setFilterValues(newFilters);
     onFilterChange(newFilters);
   };
@@ -40,7 +40,11 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
   return (
     <div className="event-filter-panel">
       <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
-      <CustomCalendar value={filterValues.date} events={allEvents} onChange={onDateChange} />
+      <CustomCalendar
+        value={filterValues.date}
+        events={allEvents}
+        onChange={onDateChange}
+      />
       <CustomButton
         className="event-filter-panel-allevents"
         type="primary"
