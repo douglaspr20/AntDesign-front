@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -13,7 +13,10 @@ import MentorList from "./MentorList";
 import MenteeList from "./MenteeList";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { mentoringSelector } from "redux/selectors/mentoringSelector";
-import { setMentoringInfo } from "redux/actions/mentoring-actions";
+import {
+  setMentoringInfo,
+  getMentoringInfo,
+} from "redux/actions/mentoring-actions";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
@@ -25,6 +28,7 @@ const Mentoring = ({
   isMentee,
   menteeInfo,
   setMentoringInfo,
+  getMentoringInfo,
 }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
@@ -89,6 +93,11 @@ const Mentoring = ({
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  useEffect(() => {
+    getMentoringInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="mentoring-page">
       {!isPremium && (
@@ -148,15 +157,17 @@ Mentoring.defaultProps = {
   title: "",
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+  return ({
   userProfile: homeSelector(state).userProfile,
   isMentor: !!homeSelector(state).userProfile.mentor,
   isMentee: !!homeSelector(state).userProfile.mentee,
   ...mentoringSelector(state),
-});
+})};
 
 const mapDispatchToProps = {
   setMentoringInfo,
+  getMentoringInfo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Mentoring);

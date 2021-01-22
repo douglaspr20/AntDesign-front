@@ -5,6 +5,8 @@ const mentoringDataSelector = (state) => state.mentoring;
 const resultSelector = createSelector(mentoringDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
+    mentorInfo: payload.get("mentorInfo"),
+    menteeInfo: payload.get("menteeInfo"),
     allMentors: payload.get("allMentors"),
     allMentees: payload.get("allMentees"),
     countOfResults1: payload.get("countOfResults1"),
@@ -15,5 +17,5 @@ const resultSelector = createSelector(mentoringDataSelector, (payload) => {
 });
 
 export const mentoringSelector = (state) => ({
-  ...resultSelector,
+  ...resultSelector(state),
 });

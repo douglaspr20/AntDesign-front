@@ -8,9 +8,10 @@ import { constants as mentoringConstants } from "../actions/mentoring-actions";
 // Events's Reducer
 export const reducers = {
   [mentoringConstants.SAVE_MENTORING_INFO]: (state, { payload }) => {
-    return state.merge({
-      [payload.info.isMentor ? "mentorInfo" : "menteeInfo"]: payload.info,
-    });
+    const updates = payload.info.reduce((res, item) => {
+      return { ...res, [item.isMentor ? "mentorInfo" : "menteeInfo"]: item };
+    }, {});
+    return state.merge(updates);
   },
   [mentoringConstants.SET_MENTORING_LOADING]: (state, { payload }) => {
     return state.merge({
