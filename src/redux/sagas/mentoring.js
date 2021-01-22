@@ -1,4 +1,4 @@
-import { put, fork, takeLatest, call, all } from "redux-saga/effects";
+import { put, fork, takeLatest, call } from "redux-saga/effects";
 
 import {
   constants as mentoringConstants,
@@ -6,7 +6,7 @@ import {
 } from "../actions/mentoring-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import { setMentorInfo, getMentoringInfo } from "../../api";
+import { setMentorInfo, getMentoringInfo, updateMentorInfo } from "../../api";
 
 export function* setMentoringInfoSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -17,6 +17,22 @@ export function* setMentoringInfoSaga({ payload }) {
     if (response.status === 200) {
       yield put(mentoringActions.saveMentoringInfo([response.data.mentorInfo]));
       yield put(homeActions.updateUserInformation(response.data.user));
+    }
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* updateMentoringInfoSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateMentorInfo, { ...payload });
+
+    if (response.status === 200) {
+      yield put(mentoringActions.saveMentoringInfo(response.data.mentorInfo));
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
@@ -53,6 +69,10 @@ export function* getMenteeListSaga({ payload }) {
 
 function* watchMentoring() {
   yield takeLatest(mentoringConstants.SET_MENTORING_INFO, setMentoringInfoSaga);
+  yield takeLatest(
+    mentoringConstants.UPDATE_MENTORING_INFO,
+    updateMentoringInfoSaga
+  );
   yield takeLatest(mentoringConstants.GET_MENTOR_LIST, getMentorListSaga);
   yield takeLatest(mentoringConstants.GET_MENTEE_LIST, getMenteeListSaga);
   yield takeLatest(mentoringConstants.GET_MENTORING_INFO, getMentoringInfoSaga);

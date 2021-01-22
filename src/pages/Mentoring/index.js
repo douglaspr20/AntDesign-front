@@ -16,6 +16,7 @@ import { mentoringSelector } from "redux/selectors/mentoringSelector";
 import {
   setMentoringInfo,
   getMentoringInfo,
+  updateMentoringInfo,
 } from "redux/actions/mentoring-actions";
 import { EVENT_TYPES } from "enum";
 
@@ -28,6 +29,7 @@ const Mentoring = ({
   isMentee,
   menteeInfo,
   setMentoringInfo,
+  updateMentoringInfo,
   getMentoringInfo,
 }) => {
   const [openSetting, setOpenSetting] = useState(false);
@@ -40,22 +42,42 @@ const Mentoring = ({
 
   const onSaveMentorSetting = (data) => {
     setOpenSetting(false);
-    setMentoringInfo({
-      title: data.title,
-      about: data.reason,
-      areas: data.specialties,
-      isMentor: true,
-    });
+    if (isMentor) {
+      updateMentoringInfo({
+        id: mentorInfo.id,
+        title: data.title,
+        about: data.reason,
+        areas: data.specialties,
+        isMentor: true,
+      });
+    } else {
+      setMentoringInfo({
+        title: data.title,
+        about: data.reason,
+        areas: data.specialties,
+        isMentor: true,
+      });
+    }
   };
 
   const onSaveMenteeSetting = (data) => {
     setOpenSetting(false);
-    setMentoringInfo({
-      title: data.title,
-      about: data.reason,
-      areas: data.specialties,
-      isMentor: false,
-    });
+    if (isMentee) {
+      updateMentoringInfo({
+        id: menteeInfo.id,
+        title: data.title,
+        about: data.reason,
+        areas: data.specialties,
+        isMentor: false,
+      });
+    } else {
+      setMentoringInfo({
+        title: data.title,
+        about: data.reason,
+        areas: data.specialties,
+        isMentor: false,
+      });
+    }
   };
 
   const TabData = [
@@ -158,16 +180,18 @@ Mentoring.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-  return ({
-  userProfile: homeSelector(state).userProfile,
-  isMentor: !!homeSelector(state).userProfile.mentor,
-  isMentee: !!homeSelector(state).userProfile.mentee,
-  ...mentoringSelector(state),
-})};
+  return {
+    userProfile: homeSelector(state).userProfile,
+    isMentor: !!homeSelector(state).userProfile.mentor,
+    isMentee: !!homeSelector(state).userProfile.mentee,
+    ...mentoringSelector(state),
+  };
+};
 
 const mapDispatchToProps = {
   setMentoringInfo,
   getMentoringInfo,
+  updateMentoringInfo,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Mentoring);

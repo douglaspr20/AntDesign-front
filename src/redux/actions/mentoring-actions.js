@@ -1,6 +1,7 @@
 import { createAction } from "redux-actions";
 
 const SET_MENTORING_INFO = "SET_MENTORING_INFO";
+const UPDATE_MENTORING_INFO = "UPDATE_MENTORING_INFO";
 const SAVE_MENTORING_INFO = "SAVE_MENTORING_INFO";
 const SET_MENTORING_LOADING = "SET_MENTORING_LOADING";
 const GET_MENTORING_INFO = "GET_MENTORING_INFO";
@@ -18,6 +19,7 @@ export const constants = {
   GET_MENTEE_LIST,
   SET_MENTEE_LIST,
   GET_MENTORING_INFO,
+  UPDATE_MENTORING_INFO,
 };
 
 // ------------------------------------
@@ -26,6 +28,10 @@ export const constants = {
 export const setMentoringInfo = createAction(SET_MENTORING_INFO, (info) => ({
   info,
 }));
+export const updateMentoringInfo = createAction(
+  UPDATE_MENTORING_INFO,
+  (info) => ({ info })
+);
 export const saveMentoringInfo = createAction(SAVE_MENTORING_INFO, (info) => ({
   info,
 }));
@@ -58,4 +64,5 @@ export const actions = {
   getMenteeList,
   setMenteeList,
   getMentoringInfo,
+  updateMentoringInfo,
 };

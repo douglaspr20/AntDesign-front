@@ -18,7 +18,7 @@ import {
   searchLibrary,
   getRecommendations,
 } from "./module/library";
-import { setMentorInfo, getMentoringInfo } from "./module/mentoring";
+import { setMentorInfo, getMentoringInfo, updateMentorInfo } from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
 
 export {
@@ -40,4 +40,5 @@ export {
   setMentorInfo,
   getAllPodcasts,
   getMentoringInfo,
+  updateMentorInfo,
 };
