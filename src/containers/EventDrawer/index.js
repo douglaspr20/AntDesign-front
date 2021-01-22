@@ -13,6 +13,7 @@ import {
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -21,6 +22,7 @@ const EventDrawer = ({
   removeFromMyEventList,
   visible,
   event,
+  userProfile,
   onClose,
 }) => {
   const onDrawerClose = () => {
@@ -50,6 +52,10 @@ const EventDrawer = ({
       <Menu.Item>Google</Menu.Item>
     </Menu>
   );
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
 
   return (
     <CustomDrawer
@@ -81,19 +87,30 @@ const EventDrawer = ({
             )}
             {event.status === "confirmed" && (
               <React.Fragment>
-                <CustomButton
-                  className="claim-digital-certificate"
-                  text="Claim digital certificate"
-                  size="lg"
-                  type="primary outlined"
-                  onClick={onClickClaimDigitalCertificate}
-                />
-                <CustomButton
-                  text="Claim credits"
-                  size="lg"
-                  type="primary"
-                  onClick={onClickClaimCredits}
-                />
+                {(userProfile || {}).memberShip === "premium" ? (
+                  <React.Fragment>
+                    <CustomButton
+                      className="claim-digital-certificate"
+                      text="Claim digital certificate"
+                      size="lg"
+                      type="primary outlined"
+                      onClick={onClickClaimDigitalCertificate}
+                    />
+                    <CustomButton
+                      text="Claim credits"
+                      size="lg"
+                      type="primary"
+                      onClick={onClickClaimCredits}
+                    />
+                  </React.Fragment>
+                ) : (
+                  <CustomButton
+                    text="Upgrade to premium"
+                    size="md"
+                    type="primary"
+                    onClick={planUpgrade}
+                  />
+                )}
               </React.Fragment>
             )}
             {event.status === "attend" && (
@@ -165,7 +182,9 @@ EventDrawer.defaultProps = {
   onClose: () => {},
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
   ...eventActions,

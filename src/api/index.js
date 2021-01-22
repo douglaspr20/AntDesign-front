@@ -19,6 +19,7 @@ import {
   getRecommendations,
 } from "./module/library";
 import { setMentorInfo } from "./module/mentoring";
+import { getAllPodcasts } from "./module/podcast";
 
 export {
   signIn,
@@ -37,4 +38,5 @@ export {
   searchLibrary,
   getRecommendations,
   setMentorInfo,
+  getAllPodcasts,
 };

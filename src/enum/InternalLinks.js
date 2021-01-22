@@ -14,4 +14,5 @@ export default {
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
   HEART: "/heart",
+  PODCAST: "/podcast",
 };

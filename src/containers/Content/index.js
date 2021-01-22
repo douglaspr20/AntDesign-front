@@ -12,6 +12,7 @@ import LearningLibraryPage from "pages/Library";
 import ArticlePage from "pages/Article";
 import FavouritePage from "pages/Favourites";
 import EventsPage from "pages/Events";
+import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
 import NoPageFound from "pages/NoPageFound";
@@ -70,6 +71,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.EVENTS}
             render={(props) => <EventsPage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.PODCAST}
+            render={(props) => <PodcastPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.MENTORING}

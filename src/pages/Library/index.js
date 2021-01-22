@@ -67,6 +67,10 @@ const LearningLibraryPage = ({
     searchLibraries(filters, value);
   };
 
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   useEffect(() => {
     searchLibraries({}, sortValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,7 +137,7 @@ const LearningLibraryPage = ({
         )}
         {!planUpdated && (
           <div className="upgrade-notification">
-            <div className="upgrade-notification-panel">
+            <div className="upgrade-notification-panel" onClick={planUpgrade}>
               <h3>UPGRADE TO PREMIUM</h3>
               <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
             </div>
