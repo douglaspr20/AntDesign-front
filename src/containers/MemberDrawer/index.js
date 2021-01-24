@@ -7,7 +7,7 @@ import {
   ProfileAvatar,
   SpecialtyItem,
 } from "components";
-import { EVENT_TYPES, PROFILE_SETTINGS, LANGUAGES } from "enum";
+import { EVENT_TYPES, PROFILE_SETTINGS, LANGUAGES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 
 import "./style.scss";
@@ -45,6 +45,10 @@ const MemberDrawer = () => {
 
     return language;
   };
+
+  const timezone = TIMEZONE_LIST.find(
+    (item) => member && item.value === member.timezone
+  );
 
   return (
     <CustomDrawer
@@ -112,7 +116,9 @@ const MemberDrawer = () => {
             <p className="member-details-content-text">-</p>
           )}
           <h5 className="member-details-content-label">Time zone</h5>
-          <p className="member-details-content-text">{member.timezone || ""}</p>
+          <p className="member-details-content-text">
+            {timezone ? timezone.text : ""}
+          </p>
         </div>
       </div>
     </CustomDrawer>
