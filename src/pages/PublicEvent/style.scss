@@ -44,10 +44,15 @@
         color: $color-white !important;
         margin-bottom: 40px !important;
         text-align: center;
+        text-shadow: 0 0 $color-text-primary;
 
         &.no-image {
           color: $color-text-primary !important;
         }
+      }
+
+      @media (max-width: 977.98px) {
+        width: 100%;
       }
     }
   }
@@ -73,6 +78,7 @@
       @include app-font(20px, 21px);
       color: $color-text-third !important;
       margin-bottom: 20px !important;
+      text-transform: capitalize;
     }
 
     .event-topics {
@@ -94,5 +100,19 @@
       @include app-font(20px, 30px);
       color: $color-text-secondary !important;
     }
+
+    @media (max-width: 977.98px) {
+      width: calc(100% - 4rem);
+      margin: 0 2rem;
+    }
+
+    @media (max-width: 977.98px) {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 977.98px) {
+    padding-bottom: 0;
   }
 }
