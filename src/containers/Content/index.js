@@ -15,6 +15,7 @@ import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
+import PublicEventPage from "pages/PublicEvent";
 import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -41,12 +42,20 @@ class Content extends Component {
             render={(props) => <LoginPage {...props} />}
           />
           <Route
+            path={INTERNAL_LINKS.JOIN}
+            render={(props) => <LoginPage signup={true} {...props} />}
+          />
+          <Route
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
           <Route
             path={INTERNAL_LINKS.PASSWORD_RECOVERY}
             render={(props) => <PasswordRecoveryPage {...props} />}
+          />
+          <Route
+            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+            render={(props) => <PublicEventPage {...props} />}
           />
           <Route
             path={INTERNAL_LINKS.RESET_PASSWORD}

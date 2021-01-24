@@ -6,6 +6,7 @@ import {
   ArticleHeader,
   PrivateRoute,
   CertificateHeader,
+  PublicHeader,
 } from "components";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -21,6 +22,10 @@ class TopHeader extends Component {
         />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
+        <Route
+          path={INTERNAL_LINKS.PUBLIC_EVENT}
+          render={(props) => <PublicHeader {...props} />}
+        />
         <PrivateRoute
           path={INTERNAL_LINKS.HEART}
           render={(props) => <MainHeader {...props} />}

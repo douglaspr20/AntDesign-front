@@ -93,6 +93,12 @@ export function* getEventSaga({ payload }) {
           date2: moment(response.data.event.endDate).format(
             "YYYY.MM.DD h:mm a"
           ),
+          period: getEventPeriod(
+            moment(response.data.event.startDate).format("YYYY.MM.DD h:mm a"),
+            moment(response.data.event.endDate).format("YYYY.MM.DD h:mm a"),
+            response.data.event.timezone
+          ),
+          about: getEventDescription(response.data.event.description),
           status: getEventStatus(response.data.event, userId),
         })
       );

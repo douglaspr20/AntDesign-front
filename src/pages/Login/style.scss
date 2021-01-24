@@ -127,5 +127,22 @@
         }
       }
     }
+
+    @media (max-width: 575.98px) {
+      height: calc(100% - 96px);
+      margin-top: 96px;
+      border: none;
+      box-shadow: none;
+
+      .login-dialog-logo {
+        width: 92px;
+        height: 92px;
+        top: -46px;
+      }
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    background: $color-background-dark;
   }
 }

@@ -15,4 +15,6 @@ export default {
   CERTIFICATE: "/certificate",
   HEART: "/heart",
   PODCAST: "/podcast",
+  PUBLIC_EVENT: "/public-event",
+  JOIN: "/join",
 };

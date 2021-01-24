@@ -5,7 +5,7 @@ export const getAllEvents = () => {
 };
 
 export const getEvent = ({ id }) => {
-  return httpClient.get(`private/event/${id}`);
+  return httpClient.get(`public/event/${id}`);
 };
 
 export const updateEventStatusFromAPI = ({ event, status }) => {

@@ -1,0 +1,75 @@
+@import "styles/main.scss";
+
+.public-header {
+  width: 100%;
+  height: 92px;
+  position: fixed;
+  box-shadow: 0px 1px 3px #37215729;
+  background: $color-white;
+  padding: 0 134px 0 158px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .hr-logo {
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .public-header-menu {
+    @include app-font(20px, 26px, 600);
+    color: $color-text-primary;
+    padding: 0 23px;
+    display: inline-block;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .public-header-bar {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    color: $color-text-primary;
+    margin-right: 0.75rem;
+    font-size: 24px;
+  }
+
+  @media (max-width: 1299.98px) {
+    padding: 0 44px 0 60px;
+
+    .public-header-menu {
+      @include app-font(16px, 26px, 600);
+      padding: 0 16px;
+    }
+  }
+
+  @media (max-width: 977.98px) {
+    padding: 0 16px 0 32px;
+
+    .public-header-menu {
+      @include app-font(16px, 26px, 600);
+      padding: 0 16px;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .public-header-menu {
+      display: none;
+    }
+
+    .public-header-bar {
+      display: flex;
+    }
+  }
+}
