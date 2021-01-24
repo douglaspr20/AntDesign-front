@@ -5,6 +5,7 @@ import envReducer from "./envReducer";
 import authReducer from "./authReducer";
 import eventReducer from "./eventReducer";
 import libraryReducer from "./libraryReducer";
+import mentoringReducer from "./mentoringReducer";
 import podcastReducer from "./podcastReducer";
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
   auth: authReducer,
   event: eventReducer,
   library: libraryReducer,
+  mentoring: mentoringReducer,
   podcast: podcastReducer,
 });

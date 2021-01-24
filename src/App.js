@@ -7,7 +7,6 @@ import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
-import MemberDrawer from "containers/MemberDrawer";
 import LibraryShareDrawer from "containers/LibraryShareDrawer";
 import Emitter from "services/emitter";
 
@@ -91,7 +90,6 @@ class App extends Component {
           </Layout>
         </Layout>
         <ProfileDrawer />
-        <MemberDrawer />
         <LibraryShareDrawer />
         <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (

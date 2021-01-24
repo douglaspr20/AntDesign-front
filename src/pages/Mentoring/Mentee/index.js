@@ -36,10 +36,10 @@ const MenteePanel = ({
               Why do you want to be a mentee?
             </h5>
             <p className="mentee-panel-description-reason">
-              {setting.reason || ""}
+              {setting.about || ""}
             </p>
             <div className="mentee-panel-description-specialties">
-              {(setting.specialties || []).map((spec, index) => {
+              {(setting.areas || []).map((spec, index) => {
                 const specialty = Specialties.find(
                   (item) => item.value === spec
                 );

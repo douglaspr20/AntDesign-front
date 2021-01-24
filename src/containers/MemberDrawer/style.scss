@@ -69,6 +69,7 @@
 
     &-specialties {
       display: flex;
+      flex-wrap: wrap;
 
       .specialty-item {
         margin-top: 12px;

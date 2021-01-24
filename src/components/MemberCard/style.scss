@@ -2,7 +2,7 @@
 
 .member-card {
   width: 100%;
-  height: 262px;
+  min-height: 262px;
   border: 1px solid $color-border;
   border-radius: 0.5rem;
   background: $color-white;
@@ -90,7 +90,7 @@
 
     .member-specialties {
       display: flex;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       overflow: hidden;
 
       .specialty-item {

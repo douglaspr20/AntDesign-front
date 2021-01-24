@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useStateWithCallbackLazy } from "use-state-with-callback";
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   CustomButton,
@@ -7,41 +7,31 @@ import {
   ProfileAvatar,
   SpecialtyItem,
 } from "components";
-import { EVENT_TYPES } from "enum";
-import Emitter from "services/emitter";
+import { PROFILE_SETTINGS, LANGUAGES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
-const MemberDrawer = () => {
-  const [visible, setVisible] = useState(false);
-  const [member, setMember] = useStateWithCallbackLazy({});
-  const [match, setMatch] = useState([]);
+const Specialties = PROFILE_SETTINGS.TOPICS;
+const Languages = LANGUAGES.ParsedLanguageData;
 
-  Emitter.on(EVENT_TYPES.OPEN_MEMBER_PANEL, ({ member, match }) => {
-    setVisible(true);
-    setMember(member);
-    setMatch(match);
-  });
+const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
+  const getLanguage = (value) => {
+    const language = (Languages.find((item) => item.value === value) || {})
+      .text;
 
-  const onDrawerClose = () => {
-    setVisible(false);
+    return language;
   };
 
-  const onClickMatch = () => {
-    setMember(
-      (prev) => ({ ...prev, connected: true }),
-      (current) => {
-        Emitter.emit(EVENT_TYPES.MEMBER_CHANGED, current);
-      }
-    );
-  };
+  const timezone = TIMEZONE_LIST.find(
+    (item) => member && item.value === member.timezone
+  );
 
   return (
     <CustomDrawer
       title={"Mentor profile"}
       width={772}
       visible={visible}
-      onClose={onDrawerClose}
+      onClose={onClose}
     >
       <div className="member-details">
         <div className="member-details-header">
@@ -58,43 +48,73 @@ const MemberDrawer = () => {
             type="primary"
             size="lg"
             disabled={member.connected}
-            onClick={(event) => !member.connected && onClickMatch(event)}
+            onClick={() => !member.connected && onMatch()}
           />
         </div>
         <div className="member-details-content">
           <h5 className="member-details-content-label">
-            {`Why do you I to be a ${member.type}?`}
+            {`Why do I to be a ${member.ismentor ? "mentor" : "mentee"}?`}
           </h5>
-          <p className="member-details-content-text">{member.reason || ""}</p>
-          <h5 className="member-details-content-label">Title / Profession</h5>
           <p className="member-details-content-text">
-            {member.titleProfessions || ""}
+            {member.mentorabout || ""}
           </p>
+          <h5 className="member-details-content-label">Title / Profession</h5>
+          <p className="member-details-content-text">{member.title || ""}</p>
           <h5 className="member-details-content-label">My specialties</h5>
           <div className="member-details-content-specialties">
-            {(member.topicsOfInterest || [])
+            {(member.areas || [])
               .sort((x, y) => {
                 const first = (match || []).includes(x);
                 const second = (match || []).includes(y);
 
                 return !first && second ? 1 : first && second ? 0 : -1;
               })
-              .map((spec, index) => (
-                <SpecialtyItem
-                  key={`specialty-${index}`}
-                  title={spec}
-                  active={(match || []).includes(spec)}
-                />
-              ))}
+              .map((spec, index) => {
+                const specialty = Specialties.find(
+                  (item) => item.value === spec
+                );
+
+                return (
+                  <SpecialtyItem
+                    key={`specialty-${index}`}
+                    title={specialty.text}
+                    active={(match || []).includes(spec)}
+                  />
+                );
+              })}
           </div>
           <h5 className="member-details-content-label">Main language</h5>
-          <p className="member-details-content-text">{member.language || ""}</p>
+          {member.languages && member.languages.length > 0 ? (
+            member.languages.map((lang, index) => (
+              <p className="member-details-content-text">{getLanguage(lang)}</p>
+            ))
+          ) : (
+            <p className="member-details-content-text">-</p>
+          )}
           <h5 className="member-details-content-label">Time zone</h5>
-          <p className="member-details-content-text">{member.timezone || ""}</p>
+          <p className="member-details-content-text">
+            {timezone ? timezone.text : ""}
+          </p>
         </div>
       </div>
     </CustomDrawer>
   );
+};
+
+MemberDrawer.propTypes = {
+  member: PropTypes.object,
+  match: PropTypes.array,
+  visible: PropTypes.bool,
+  onClose: PropTypes.func,
+  onMatch: PropTypes.func,
+};
+
+MemberDrawer.defaultProps = {
+  member: {},
+  match: [],
+  visible: false,
+  onClose: () => {},
+  onMatch: () => {},
 };
 
 export default MemberDrawer;

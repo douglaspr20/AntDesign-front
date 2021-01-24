@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 
@@ -22,6 +22,12 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
     });
   };
 
+  useEffect(() => {
+    setReason(setting.about);
+    setTitle(setting.title);
+    setSpecialties(setting.areas);
+  }, [setting]);
+
   return (
     <div className="mentor-setting">
       <div className="mentor-setting-container">
@@ -32,7 +38,7 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
         <CustomInput
           className="mentor-setting-input"
           multiple={true}
-          defaultValue={reason}
+          value={reason}
           onChange={setReason}
         />
         <h5 className="mentor-setting-sublabel">
@@ -40,14 +46,14 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
         </h5>
         <CustomInput
           className="mentor-setting-input"
-          defaultValue={title}
+          value={title}
           onChange={setTitle}
         />
         <h5 className="mentor-setting-sublabel">
           In what areas do you want to be a mentor?
         </h5>
         <Checkbox.Group
-          defaultValue={specialties}
+          value={specialties}
           className="mentor-setting-specialties"
           onChange={setSpecialties}
         >

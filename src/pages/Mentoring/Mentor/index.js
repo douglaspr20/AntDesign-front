@@ -36,10 +36,10 @@ const MentorPanel = ({
               Why do you want to be a mentor?
             </h5>
             <p className="mentor-panel-description-reason">
-              {setting.reason || ""}
+              {setting.about || ""}
             </p>
             <div className="mentor-panel-description-specialties">
-              {(setting.specialties || []).map((spec, index) => {
+              {(setting.areas || []).map((spec, index) => {
                 const specialty = Specialties.find(
                   (item) => item.value === spec
                 );

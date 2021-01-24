@@ -18,6 +18,14 @@ import {
   searchLibrary,
   getRecommendations,
 } from "./module/library";
+import {
+  setMentorInfo,
+  getMentoringInfo,
+  updateMentorInfo,
+  getMentorList,
+  getMenteeList,
+  setMatch,
+} from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
 
 export {
@@ -36,5 +44,11 @@ export {
   getLibrary,
   searchLibrary,
   getRecommendations,
+  setMentorInfo,
   getAllPodcasts,
+  getMentoringInfo,
+  updateMentorInfo,
+  getMentorList,
+  getMenteeList,
+  setMatch,
 };
