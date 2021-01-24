@@ -12,7 +12,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
-const MenteeList = ({ user, setting, setSettingCollapsed }) => {
+const MenteeList = ({ user, data, total, setting, setSettingCollapsed }) => {
   const entry = {
     firstName: "Andryi",
     lastName: "Shevchenko",
@@ -44,7 +44,6 @@ const MenteeList = ({ user, setting, setSettingCollapsed }) => {
   const collapsed = setting.collapsed.mentor;
 
   const [menteeList, setMenteeList] = useState(Data);
-  const [total] = useState(234);
   const [match] = useState(8);
 
   const onShowMore = () => {
@@ -59,7 +58,7 @@ const MenteeList = ({ user, setting, setSettingCollapsed }) => {
   const onMemberCardClick = (member) => {
     Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
       member,
-      match: (user || {}).specialties || [],
+      match: (user || {}).areas || [],
     });
   };
 
@@ -104,11 +103,11 @@ const MenteeList = ({ user, setting, setSettingCollapsed }) => {
         </span>
       </div>
       <div className="mentee-list-items">
-        {(menteeList || []).map((mentee, index) => (
+        {(data || []).map((mentee, index) => (
           <MemberCard
             key={`mentor-${index}`}
             user={mentee}
-            match={user ? user.specialties : []}
+            match={user ? user.areas : []}
             onClick={() => onMemberCardClick(mentee)}
             onMatchClicked={() => onMatchClicked(index)}
           />
@@ -128,10 +127,14 @@ const MenteeList = ({ user, setting, setSettingCollapsed }) => {
 
 MenteeList.propTypes = {
   user: PropTypes.object,
+  data: PropTypes.array,
+  total: PropTypes.number,
 };
 
 MenteeList.defaultProps = {
   user: {},
+  data: [],
+  total: 0,
 };
 
 const mapStateToProps = (state) => ({

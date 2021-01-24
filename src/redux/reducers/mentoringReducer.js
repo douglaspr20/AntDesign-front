@@ -28,8 +28,8 @@ export const reducers = {
     }
     return state.merge({
       allMentors: cloneDeep(allMentors),
-      currentPage,
-      countOfResults,
+      currentPage1: parseInt(currentPage, 10),
+      countOfResults1: parseInt(countOfResults, 10),
     });
   },
   [mentoringConstants.SET_MENTEE_LIST]: (state, { payload }) => {
@@ -42,8 +42,8 @@ export const reducers = {
     }
     return state.merge({
       allMentees: cloneDeep(allMentees),
-      currentPage,
-      countOfResults,
+      currentPage2: parseInt(currentPage, 10),
+      countOfResults2: parseInt(countOfResults, 10),
     });
   },
 };

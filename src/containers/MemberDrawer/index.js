@@ -7,10 +7,13 @@ import {
   ProfileAvatar,
   SpecialtyItem,
 } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, PROFILE_SETTINGS, LANGUAGES } from "enum";
 import Emitter from "services/emitter";
 
 import "./style.scss";
+
+const Specialties = PROFILE_SETTINGS.TOPICS;
+const Languages = LANGUAGES.ParsedLanguageData;
 
 const MemberDrawer = () => {
   const [visible, setVisible] = useState(false);
@@ -34,6 +37,13 @@ const MemberDrawer = () => {
         Emitter.emit(EVENT_TYPES.MEMBER_CHANGED, current);
       }
     );
+  };
+
+  const getLanguage = (value) => {
+    const language = (Languages.find((item) => item.value === value) || {})
+      .text;
+
+    return language;
   };
 
   return (
@@ -63,32 +73,44 @@ const MemberDrawer = () => {
         </div>
         <div className="member-details-content">
           <h5 className="member-details-content-label">
-            {`Why do you I to be a ${member.type}?`}
+            {`Why do I to be a ${member.ismentor ? "mentor" : "mentee"}?`}
           </h5>
-          <p className="member-details-content-text">{member.reason || ""}</p>
-          <h5 className="member-details-content-label">Title / Profession</h5>
           <p className="member-details-content-text">
-            {member.titleProfessions || ""}
+            {member.mentorabout || ""}
           </p>
+          <h5 className="member-details-content-label">Title / Profession</h5>
+          <p className="member-details-content-text">{member.title || ""}</p>
           <h5 className="member-details-content-label">My specialties</h5>
           <div className="member-details-content-specialties">
-            {(member.topicsOfInterest || [])
+            {(member.areas || [])
               .sort((x, y) => {
                 const first = (match || []).includes(x);
                 const second = (match || []).includes(y);
 
                 return !first && second ? 1 : first && second ? 0 : -1;
               })
-              .map((spec, index) => (
-                <SpecialtyItem
-                  key={`specialty-${index}`}
-                  title={spec}
-                  active={(match || []).includes(spec)}
-                />
-              ))}
+              .map((spec, index) => {
+                const specialty = Specialties.find(
+                  (item) => item.value === spec
+                );
+
+                return (
+                  <SpecialtyItem
+                    key={`specialty-${index}`}
+                    title={specialty.text}
+                    active={(match || []).includes(spec)}
+                  />
+                );
+              })}
           </div>
           <h5 className="member-details-content-label">Main language</h5>
-          <p className="member-details-content-text">{member.language || ""}</p>
+          {member.languages && member.languages.length > 0 ? (
+            member.languages.map((lang, index) => (
+              <p className="member-details-content-text">{getLanguage(lang)}</p>
+            ))
+          ) : (
+            <p className="member-details-content-text">-</p>
+          )}
           <h5 className="member-details-content-label">Time zone</h5>
           <p className="member-details-content-text">{member.timezone || ""}</p>
         </div>

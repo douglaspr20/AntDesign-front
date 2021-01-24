@@ -32,6 +32,10 @@ const Mentoring = ({
   menteeInfo,
   allMentors,
   allMentees,
+  countOfResults1,
+  countOfResults2,
+  currentPage1,
+  currentPage2,
   setMentoringInfo,
   updateMentoringInfo,
   getMentoringInfo,
@@ -164,14 +168,22 @@ const Mentoring = ({
       {!openSetting && selectedType === "mentor" && isMentor && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MenteeList user={mentorInfo} />
+            <MenteeList
+              user={mentorInfo}
+              total={countOfResults2}
+              data={allMentees}
+            />
           </div>
         </div>
       )}
       {!openSetting && selectedType === "mentee" && isMentee && (
         <div className="mentoring-page-list">
           <div className="mentoring-page-container">
-            <MentorList user={menteeInfo} />
+            <MentorList
+              user={menteeInfo}
+              total={countOfResults1}
+              data={allMentors}
+            />
           </div>
         </div>
       )}

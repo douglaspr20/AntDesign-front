@@ -2,8 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { CustomButton, SpecialtyItem } from "components";
+import { PROFILE_SETTINGS } from "enum";
 
 import "./style.scss";
+
+const Specialties = PROFILE_SETTINGS.TOPICS;
 
 const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
   const onClickMatch = (event) => {
@@ -38,23 +41,27 @@ const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
             onClick={onClickMatch}
           />
         </div>
-        <h5 className="member-title">{user.titleProfessions}</h5>
-        <p className="member-about">{user.about}</p>
+        <h5 className="member-title">{user.title}</h5>
+        <p className="member-about">{user.mentorabout}</p>
         <div className="member-specialties">
-          {(user.topicsOfInterest || [])
+          {(user.areas || [])
             .sort((x, y) => {
               const first = (match || []).includes(x);
               const second = (match || []).includes(y);
 
               return !first && second ? 1 : first && second ? 0 : -1;
             })
-            .map((spec, index) => (
-              <SpecialtyItem
-                key={`specialty-${randomId}-${index}`}
-                title={spec}
-                active={(match || []).includes(spec)}
-              />
-            ))}
+            .map((spec, index) => {
+              const specialty = Specialties.find((item) => item.value === spec);
+
+              return (
+                <SpecialtyItem
+                  key={`specialty-${randomId}-${index}`}
+                  title={specialty.text}
+                  active={(match || []).includes(spec)}
+                />
+              );
+            })}
         </div>
       </div>
       <CustomButton

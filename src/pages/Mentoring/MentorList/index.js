@@ -12,7 +12,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
-const MentorList = ({ user, setting, setSettingCollapsed }) => {
+const MentorList = ({ user, data, total, setting, setSettingCollapsed }) => {
   const entry = {
     firstName: "Edgar",
     lastName: "Davis",
@@ -44,7 +44,6 @@ const MentorList = ({ user, setting, setSettingCollapsed }) => {
   const collapsed = setting.collapsed.mentee;
 
   const [mentorList, setMentorList] = useState(Data);
-  const [total] = useState(1234);
   const [match] = useState(8);
 
   const onShowMore = () => {
@@ -59,7 +58,7 @@ const MentorList = ({ user, setting, setSettingCollapsed }) => {
   const onMemberCardClick = (member) => {
     Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
       member,
-      match: (user || {}).specialties || [],
+      match: (user || {}).areas || [],
     });
   };
 
@@ -97,18 +96,18 @@ const MentorList = ({ user, setting, setSettingCollapsed }) => {
       <div className="mentor-list-header">
         <div className="mentor-list-header-left">
           <span>{`${numberWithCommas(total)}`}</span>
-          <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
+          <span>{` ${total === 1 ? "mentor" : "mentors"} match with you`}</span>
         </div>
         <span className="mentor-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
         </span>
       </div>
       <div className="mentor-list-items">
-        {(mentorList || []).map((mentor, index) => (
+        {(data || []).map((mentor, index) => (
           <MemberCard
             key={`mentor-${index}`}
             user={mentor}
-            match={user ? user.specialties : []}
+            match={user ? user.areas : []}
             onClick={() => onMemberCardClick(mentor)}
             onMatchClicked={() => onMatchClicked(index)}
           />
@@ -128,10 +127,14 @@ const MentorList = ({ user, setting, setSettingCollapsed }) => {
 
 MentorList.propTypes = {
   user: PropTypes.object,
+  data: PropTypes.array,
+  total: PropTypes.number,
 };
 
 MentorList.defaultProps = {
   user: {},
+  data: [],
+  total: 0,
 };
 
 const mapStateToProps = (state) => ({
