@@ -27,3 +27,5 @@ export { default as EventFilterPanel } from "./EventFilterPanel";
 export { default as LibraryFilterPanel } from "./LibraryFilterPanel";
 export { default as CustomModal } from "./Modal";
 export { default as ImageUpload } from "./ImageUpload";
+export { default as PublicHeader } from "./Headers/PublicHeader";
+export { default as PublicMenuPopup } from "./PublicMenuPopup";

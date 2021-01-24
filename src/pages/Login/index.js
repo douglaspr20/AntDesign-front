@@ -17,7 +17,15 @@ import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const Login = ({ isAuthenticated, error, login, signUp, history, match }) => {
+const Login = ({
+  isAuthenticated,
+  error,
+  login,
+  signUp,
+  history,
+  match,
+  signup,
+}) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
     labelCol: { span: 0 },
@@ -47,6 +55,12 @@ const Login = ({ isAuthenticated, error, login, signUp, history, match }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    setIsLogin(!signup);
+
+    return () => {};
+  }, [signup]);
 
   return (
     <div className="login-page">
