@@ -46,6 +46,12 @@ export const reducers = {
       countOfResults2: parseInt(countOfResults, 10),
     });
   },
+  [mentoringConstants.SET_MENTOR_LOADING]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
+  [mentoringConstants.SET_MENTEE_LOADING]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
 };
 
 export const initialState = () =>
@@ -59,6 +65,8 @@ export const initialState = () =>
     currentPage1: 1,
     countOfResults2: 0,
     currentPage2: 1,
+    mentorLoading: false,
+    menteeLoading: false,
   });
 
 export default handleActions(reducers, initialState());

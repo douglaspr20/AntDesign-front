@@ -19,8 +19,10 @@ import {
   updateMentoringInfo,
   getMentorList,
   getMenteeList,
+  getMoreMentorList,
+  getMoreMenteeList,
 } from "redux/actions/mentoring-actions";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 
 import "./style.scss";
 
@@ -36,11 +38,15 @@ const Mentoring = ({
   countOfResults2,
   currentPage1,
   currentPage2,
+  mentorLoading,
+  menteeLoading,
   setMentoringInfo,
   updateMentoringInfo,
   getMentoringInfo,
   getMentorList,
   getMenteeList,
+  getMoreMentorList,
+  getMoreMenteeList,
 }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
@@ -125,6 +131,20 @@ const Mentoring = ({
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  const onShowMore = (who) => {
+    if (who) {
+      // in case of mentee
+      getMoreMenteeList({
+        page: currentPage2 + 1,
+      });
+    } else {
+      // in case of mentor
+      getMoreMentorList({
+        page: currentPage1 + 1,
+      });
+    }
+  };
+
   useEffect(() => {
     getMentoringInfo();
     getMentorList();
@@ -172,6 +192,11 @@ const Mentoring = ({
               user={mentorInfo}
               total={countOfResults2}
               data={allMentees}
+              loading={menteeLoading}
+              hideMore={
+                currentPage2 * SETTINGS.MAX_SEARCH_ROW_NUM >= countOfResults2
+              }
+              onShowMore={() => onShowMore(true)}
             />
           </div>
         </div>
@@ -183,6 +208,11 @@ const Mentoring = ({
               user={menteeInfo}
               total={countOfResults1}
               data={allMentors}
+              loading={mentorLoading}
+              hideMore={
+                currentPage1 * SETTINGS.MAX_SEARCH_ROW_NUM >= countOfResults1
+              }
+              onShowMore={() => onShowMore(false)}
             />
           </div>
         </div>
@@ -214,6 +244,8 @@ const mapDispatchToProps = {
   updateMentoringInfo,
   getMentorList,
   getMenteeList,
+  getMoreMentorList,
+  getMoreMenteeList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Mentoring);

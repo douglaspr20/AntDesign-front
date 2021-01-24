@@ -13,6 +13,8 @@ const resultSelector = createSelector(mentoringDataSelector, (payload) => {
     currentPage1: payload.get("currentPage1"),
     countOfResults2: payload.get("countOfResults2"),
     currentPage2: payload.get("currentPage2"),
+    mentorLoading: payload.get("mentorLoading"),
+    menteeLoading: payload.get("menteeLoading"),
   };
 });
 

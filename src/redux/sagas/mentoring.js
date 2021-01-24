@@ -90,25 +90,26 @@ export function* getMentorListSaga({ payload }) {
 }
 
 export function* getMoreMentorListSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+  yield put(mentoringActions.setMentorLoading(true));
 
   try {
     const response = yield call(getMentorList, { ...payload });
 
     if (response.status === 200) {
+      const data = response.data.mentorList;
       yield put(
         mentoringActions.setMentorList(
-          response.data.mentorList.count,
+          data && data.length > 0 ? data[0].total : 0,
           payload.filter.page,
-          response.data.mentorList.rows
+          data
         )
       );
     }
 
-    yield put(homeActions.setLoading(false));
+    yield put(mentoringActions.setMentorLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
+    yield put(mentoringActions.setMentorLoading(false));
   }
 }
 
@@ -137,25 +138,26 @@ export function* getMenteeListSaga({ payload }) {
 }
 
 export function* getMoreMenteeListSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+  yield put(mentoringActions.setMenteeLoading(true));
 
   try {
     const response = yield call(getMenteeList, { ...payload });
 
     if (response.status === 200) {
+      const data = response.data.menteeList;
       yield put(
         mentoringActions.setMenteeList(
-          response.data.menteeList.count,
+          data && data.length > 0 ? data[0].total : 0,
           payload.filter.page,
-          response.data.menteeList.rows
+          data
         )
       );
     }
 
-    yield put(homeActions.setLoading(false));
+    yield put(mentoringActions.setMenteeLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
+    yield put(mentoringActions.setMenteeLoading(false));
   }
 }
 

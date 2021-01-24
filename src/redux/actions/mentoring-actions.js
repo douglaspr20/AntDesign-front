@@ -13,6 +13,8 @@ const GET_MENTEE_LIST = "GET_MENTEE_LIST";
 const SET_MENTEE_LIST = "SET_MENTEE_LIST";
 const GET_MORE_MENTEE_LIST = "GET_MORE_MENTEE_LIST";
 const SET_MORE_MENTEE_LIST = "SET_MORE_MENTEE_LIST";
+const SET_MENTOR_LOADING = "SET_MENTOR_LOADING";
+const SET_MENTEE_LOADING = "SET_MENTEE_LOADING";
 
 export const constants = {
   SET_MENTORING_INFO,
@@ -28,6 +30,8 @@ export const constants = {
   SET_MORE_MENTOR_LIST,
   GET_MORE_MENTEE_LIST,
   SET_MORE_MENTEE_LIST,
+  SET_MENTOR_LOADING,
+  SET_MENTEE_LOADING,
 };
 
 // ------------------------------------
@@ -102,6 +106,14 @@ export const setMoreMenteeList = createAction(
     menteeList,
   })
 );
+export const setMentorLoading = createAction(
+  SET_MENTOR_LOADING,
+  (mentorLoading) => ({ mentorLoading })
+);
+export const setMenteeLoading = createAction(
+  SET_MENTEE_LOADING,
+  (menteeLoading) => ({ menteeLoading })
+);
 
 export const actions = {
   setMentoringInfo,
@@ -117,4 +129,6 @@ export const actions = {
   setMoreMenteeList,
   getMentoringInfo,
   updateMentoringInfo,
+  setMentorLoading,
+  setMenteeLoading,
 };

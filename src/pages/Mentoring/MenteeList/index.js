@@ -10,9 +10,20 @@ import { EVENT_TYPES } from "enum";
 import { setSettingCollapsed } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
+import IconLoadingMore from "images/icon-loading-more.gif";
+
 import "./style.scss";
 
-const MenteeList = ({ user, data, total, setting, setSettingCollapsed }) => {
+const MenteeList = ({
+  user,
+  data,
+  total,
+  setting,
+  setSettingCollapsed,
+  loading,
+  hideMore,
+  onShowMore,
+}) => {
   const entry = {
     firstName: "Andryi",
     lastName: "Shevchenko",
@@ -45,15 +56,6 @@ const MenteeList = ({ user, data, total, setting, setSettingCollapsed }) => {
 
   const [menteeList, setMenteeList] = useState(Data);
   const [match] = useState(8);
-
-  const onShowMore = () => {
-    setMenteeList((prev) =>
-      [...prev, ...Data].map((item, index) => ({
-        ...item,
-        id: index,
-      }))
-    );
-  };
 
   const onMemberCardClick = (member) => {
     Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
@@ -112,14 +114,19 @@ const MenteeList = ({ user, data, total, setting, setSettingCollapsed }) => {
             onMatchClicked={() => onMatchClicked(index)}
           />
         ))}
-        <div className="mentee-list-items-more">
-          <CustomButton
-            text="Show more"
-            type="primary outlined"
-            size="lg"
-            onClick={onShowMore}
-          />
-        </div>
+        {!hideMore && (
+          <div className="mentee-list-items-more">
+            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -129,12 +136,18 @@ MenteeList.propTypes = {
   user: PropTypes.object,
   data: PropTypes.array,
   total: PropTypes.number,
+  loading: PropTypes.bool,
+  hideMore: PropTypes.bool,
+  onShowMore: PropTypes.func,
 };
 
 MenteeList.defaultProps = {
   user: {},
   data: [],
   total: 0,
+  loading: false,
+  hideMore: false,
+  onShowMore: () => {},
 };
 
 const mapStateToProps = (state) => ({
