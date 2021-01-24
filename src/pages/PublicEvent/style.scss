@@ -2,6 +2,97 @@
 
 .public-event-page {
   width: 100%;
+  margin-top: 92px;
+  padding-bottom: 100px;
+  height: calc(100vh - 92px);
   background: $color-background;
-  display: flex;
+  overflow: auto;
+
+  &-header {
+    width: 100%;
+    height: 506px;
+    position: relative;
+    background-color: $color-background-dark;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &-title {
+      width: 772px;
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .date-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        max-width: 80px;
+        min-width: 80px;
+        margin-bottom: 36px;
+      }
+
+      .event-title {
+        @include app-font(32px, 48px, bold);
+        color: $color-white !important;
+        margin-bottom: 40px !important;
+        text-align: center;
+
+        &.no-image {
+          color: $color-text-primary !important;
+        }
+      }
+    }
+  }
+
+  &-content {
+    width: 772px;
+    margin: 0 auto;
+    background-color: $color-white;
+    box-shadow: 4px 0px 14px #37215714;
+    border-color: $color-border;
+    border-radius: 0 0 8px 8px;
+    border: 1px solid $color-border;
+    padding: 60px 2rem 120px;
+
+    .event-date,
+    .event-type {
+      @include app-font(20px, 26px);
+      color: $color-text-secondary !important;
+      margin-bottom: 20px !important;
+    }
+
+    .event-cost {
+      @include app-font(20px, 21px);
+      color: $color-text-third !important;
+      margin-bottom: 20px !important;
+    }
+
+    .event-topics {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+
+      .specialty-item {
+        margin: 0 20px 1rem 0;
+      }
+    }
+
+    .event-subtitle {
+      @include app-font(20px, 48px, bold);
+      color: $color-text-primary !important;
+    }
+
+    .event-subtext {
+      @include app-font(20px, 30px);
+      color: $color-text-secondary !important;
+    }
+  }
 }
