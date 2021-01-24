@@ -17,6 +17,8 @@ import {
   setMentoringInfo,
   getMentoringInfo,
   updateMentoringInfo,
+  getMentorList,
+  getMenteeList,
 } from "redux/actions/mentoring-actions";
 import { EVENT_TYPES } from "enum";
 
@@ -28,9 +30,13 @@ const Mentoring = ({
   mentorInfo,
   isMentee,
   menteeInfo,
+  allMentors,
+  allMentees,
   setMentoringInfo,
   updateMentoringInfo,
   getMentoringInfo,
+  getMentorList,
+  getMenteeList,
 }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
@@ -48,14 +54,14 @@ const Mentoring = ({
         title: data.title,
         about: data.reason,
         areas: data.specialties,
-        isMentor: true,
+        isMentor: 1,
       });
     } else {
       setMentoringInfo({
         title: data.title,
         about: data.reason,
         areas: data.specialties,
-        isMentor: true,
+        isMentor: 1,
       });
     }
   };
@@ -68,14 +74,14 @@ const Mentoring = ({
         title: data.title,
         about: data.reason,
         areas: data.specialties,
-        isMentor: false,
+        isMentor: 0,
       });
     } else {
       setMentoringInfo({
         title: data.title,
         about: data.reason,
         areas: data.specialties,
-        isMentor: false,
+        isMentor: 0,
       });
     }
   };
@@ -117,6 +123,8 @@ const Mentoring = ({
 
   useEffect(() => {
     getMentoringInfo();
+    getMentorList();
+    getMenteeList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -192,6 +200,8 @@ const mapDispatchToProps = {
   setMentoringInfo,
   getMentoringInfo,
   updateMentoringInfo,
+  getMentorList,
+  getMenteeList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Mentoring);

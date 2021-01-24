@@ -19,41 +19,31 @@ export const reducers = {
     });
   },
   [mentoringConstants.SET_MENTOR_LIST]: (state, { payload }) => {
-    const { page, mentors } = payload;
+    const { currentPage, countOfResults, mentorList } = payload;
     let allMentors = state.get("allMentors");
-    if (page !== 1) {
-      mentors.forEach((item) => {
-        let index = allMentors.findIndex((mnt) => mnt.id === item.id);
-        if (index >= 0) {
-          allMentors[index] = item;
-        } else {
-          allMentors.push(item);
-        }
-      });
+    if (currentPage !== 1) {
+      allMentors = [...allMentors, ...mentorList];
     } else {
-      allMentors = mentors;
+      allMentors = mentorList;
     }
     return state.merge({
       allMentors: cloneDeep(allMentors),
+      currentPage,
+      countOfResults,
     });
   },
   [mentoringConstants.SET_MENTEE_LIST]: (state, { payload }) => {
-    const { page, mentees } = payload;
+    const { currentPage, countOfResults, menteeList } = payload;
     let allMentees = state.get("allMentees");
-    if (page !== 1) {
-      mentees.forEach((item) => {
-        let index = allMentees.findIndex((mnt) => mnt.id === item.id);
-        if (index >= 0) {
-          allMentees[index] = item;
-        } else {
-          allMentees.push(item);
-        }
-      });
+    if (currentPage !== 1) {
+      allMentees = [...allMentees, ...menteeList];
     } else {
-      allMentees = mentees;
+      allMentees = menteeList;
     }
     return state.merge({
       allMentees: cloneDeep(allMentees),
+      currentPage,
+      countOfResults,
     });
   },
 };

@@ -7,8 +7,12 @@ const SET_MENTORING_LOADING = "SET_MENTORING_LOADING";
 const GET_MENTORING_INFO = "GET_MENTORING_INFO";
 const GET_MENTOR_LIST = "GET_MENTOR_LIST";
 const SET_MENTOR_LIST = "SET_MENTOR_LIST";
+const GET_MORE_MENTOR_LIST = "GET_MORE_MENTOR_LIST";
+const SET_MORE_MENTOR_LIST = "SET_MORE_MENTOR_LIST";
 const GET_MENTEE_LIST = "GET_MENTEE_LIST";
 const SET_MENTEE_LIST = "SET_MENTEE_LIST";
+const GET_MORE_MENTEE_LIST = "GET_MORE_MENTEE_LIST";
+const SET_MORE_MENTEE_LIST = "SET_MORE_MENTEE_LIST";
 
 export const constants = {
   SET_MENTORING_INFO,
@@ -20,6 +24,10 @@ export const constants = {
   SET_MENTEE_LIST,
   GET_MENTORING_INFO,
   UPDATE_MENTORING_INFO,
+  GET_MORE_MENTOR_LIST,
+  SET_MORE_MENTOR_LIST,
+  GET_MORE_MENTEE_LIST,
+  SET_MORE_MENTEE_LIST,
 };
 
 // ------------------------------------
@@ -40,29 +48,73 @@ export const setMentoringLoading = createAction(
   (loading) => ({ loading })
 );
 export const getMentoringInfo = createAction(GET_MENTORING_INFO);
-export const getMentorList = createAction(GET_MENTOR_LIST, (params) => ({
-  params,
+export const getMentorList = createAction(GET_MENTOR_LIST, (filter, order) => ({
+  filter,
+  order,
 }));
-export const setMentorList = createAction(SET_MENTOR_LIST, (page, mentors) => ({
-  page,
-  mentors,
+export const getMoreMentorList = createAction(
+  GET_MORE_MENTOR_LIST,
+  (filter, order) => ({
+    filter,
+    order,
+  })
+);
+export const setMentorList = createAction(
+  SET_MENTOR_LIST,
+  (countOfResults, currentPage, mentorList) => ({
+    countOfResults,
+    currentPage,
+    mentorList,
+  })
+);
+export const setMoreMentorList = createAction(
+  SET_MORE_MENTOR_LIST,
+  (countOfResults, currentPage, mentorList) => ({
+    countOfResults,
+    currentPage,
+    mentorList,
+  })
+);
+export const getMenteeList = createAction(GET_MENTEE_LIST, (filter, order) => ({
+  filter,
+  order,
 }));
-export const getMenteeList = createAction(GET_MENTEE_LIST, (params) => ({
-  params,
-}));
-export const setMenteeList = createAction(SET_MENTEE_LIST, (page, mentees) => ({
-  page,
-  mentees,
-}));
+export const getMoreMenteeList = createAction(
+  GET_MORE_MENTEE_LIST,
+  (filter, order) => ({
+    filter,
+    order,
+  })
+);
+export const setMenteeList = createAction(
+  SET_MENTEE_LIST,
+  (countOfResults, currentPage, menteeList) => ({
+    countOfResults,
+    currentPage,
+    menteeList,
+  })
+);
+export const setMoreMenteeList = createAction(
+  SET_MORE_MENTEE_LIST,
+  (countOfResults, currentPage, menteeList) => ({
+    countOfResults,
+    currentPage,
+    menteeList,
+  })
+);
 
 export const actions = {
   setMentoringInfo,
   saveMentoringInfo,
   setMentoringLoading,
   getMentorList,
+  getMoreMentorList,
   setMentorList,
+  setMoreMentorList,
   getMenteeList,
+  getMoreMenteeList,
   setMenteeList,
+  setMoreMenteeList,
   getMentoringInfo,
   updateMentoringInfo,
 };
