@@ -48,3 +48,9 @@ export const getMenteeList = ({ filter, order }) => {
 
   return httpClient.get(`private/mentee/all?${parsedFilter}`);
 };
+
+export const setMatch = ({ source, match, target }) => {
+  return httpClient.put(
+    `private/mentoring/match?source=${source}&match=${match}&target=${target}`
+  );
+};

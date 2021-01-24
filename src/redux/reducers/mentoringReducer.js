@@ -21,10 +21,14 @@ export const reducers = {
   [mentoringConstants.SET_MENTOR_LIST]: (state, { payload }) => {
     const { currentPage, countOfResults, mentorList } = payload;
     let allMentors = state.get("allMentors");
+    const menteeInfo = state.get("menteeInfo");
     if (currentPage !== 1) {
       allMentors = [...allMentors, ...mentorList];
     } else {
-      allMentors = mentorList;
+      allMentors = mentorList.map((item) => ({
+        ...item,
+        connected: (menteeInfo.connectedMembers || []).includes(item.mid),
+      }));
     }
     return state.merge({
       allMentors: cloneDeep(allMentors),
@@ -35,10 +39,20 @@ export const reducers = {
   [mentoringConstants.SET_MENTEE_LIST]: (state, { payload }) => {
     const { currentPage, countOfResults, menteeList } = payload;
     let allMentees = state.get("allMentees");
+    const mentorInfo = state.get("mentorInfo");
     if (currentPage !== 1) {
-      allMentees = [...allMentees, ...menteeList];
+      allMentees = [
+        ...allMentees,
+        ...menteeList.map((item) => ({
+          ...item,
+          connected: (mentorInfo.connectedMembers || []).includes(item.mid),
+        })),
+      ];
     } else {
-      allMentees = menteeList;
+      allMentees = menteeList.map((item) => ({
+        ...item,
+        connected: (mentorInfo.connectedMembers || []).includes(item.mid),
+      }));
     }
     return state.merge({
       allMentees: cloneDeep(allMentees),
@@ -51,6 +65,16 @@ export const reducers = {
   },
   [mentoringConstants.SET_MENTEE_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
+  },
+  [mentoringConstants.UPDATE_MATCH]: (state, { payload }) => {
+    const { member } = payload;
+    let list = state.get(member.isMentor ? "allMentees" : "allMentors");
+    list.forEach((item) => {
+      item.connected = (member.connectedMembers || []).includes(item.mid);
+    });
+    return state.merge({
+      [member.isMentor ? "allMentees" : "allMentors"]: cloneDeep(list),
+    });
   },
 };
 

@@ -12,6 +12,7 @@ import {
   updateMentorInfo,
   getMentorList,
   getMenteeList,
+  setMatch,
 } from "../../api";
 
 export function* setMentoringInfoSaga({ payload }) {
@@ -24,9 +25,9 @@ export function* setMentoringInfoSaga({ payload }) {
       yield put(mentoringActions.saveMentoringInfo([response.data.mentorInfo]));
       yield put(homeActions.updateUserInformation(response.data.user));
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -40,9 +41,9 @@ export function* updateMentoringInfoSaga({ payload }) {
     if (response.status === 200) {
       yield put(mentoringActions.saveMentoringInfo(response.data.mentorInfo));
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -58,9 +59,9 @@ export function* getMentoringInfoSaga() {
         mentoringActions.saveMentoringInfo(response.data.mentoringInfo)
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -81,10 +82,9 @@ export function* getMentorListSaga({ payload }) {
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -105,10 +105,9 @@ export function* getMoreMentorListSaga({ payload }) {
         )
       );
     }
-
-    yield put(mentoringActions.setMentorLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(mentoringActions.setMentorLoading(false));
   }
 }
@@ -129,10 +128,9 @@ export function* getMenteeListSaga({ payload }) {
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -153,11 +151,29 @@ export function* getMoreMenteeListSaga({ payload }) {
         )
       );
     }
-
-    yield put(mentoringActions.setMenteeLoading(false));
   } catch (error) {
     console.log(error);
+  } finally {
     yield put(mentoringActions.setMenteeLoading(false));
+  }
+}
+
+export function* setMatchSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(setMatch, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        mentoringActions.saveMentoringInfo([response.data.affectedRows])
+      );
+      yield put(mentoringActions.updateMatch(response.data.affectedRows));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -178,6 +194,7 @@ function* watchMentoring() {
     getMoreMenteeListSaga
   );
   yield takeLatest(mentoringConstants.GET_MENTORING_INFO, getMentoringInfoSaga);
+  yield takeLatest(mentoringConstants.SET_MATCH, setMatchSaga);
 }
 
 export const mentoringSaga = [fork(watchMentoring)];

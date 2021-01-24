@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 
 import { CustomButton, MemberCard } from "components";
 import { numberWithCommas } from "utils/format";
-import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
 import { setSettingCollapsed } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -23,62 +21,18 @@ const MenteeList = ({
   loading,
   hideMore,
   onShowMore,
+  onSetMatch,
+  onMemberClick,
 }) => {
-  const entry = {
-    firstName: "Andryi",
-    lastName: "Shevchenko",
-    abbrName: "AS",
-    img: null,
-    about: `Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.`,
-    titleProfessions: "HR Management & Coaching",
-    proficiencyLevel: "",
-    topicsOfInterest: [
-      "Leadership",
-      "Recruiting",
-      "Human Resources",
-      "Technologies",
-    ],
-    personalLinks: {},
-    language: "English EN - United States",
-    timezone: "(GMT -12:00) Eniwetok, Kwajalein",
-    completed: false,
-    percentOfCompletion: 75,
-    role: "mentee",
-    reason:
-      "HHRR leader, community cultivator, speaker, mentor, & advisor. Founder at @CraftAndRigor. Curator of HHRSeattle.org. Formerly HHRR leadership FB & AWS",
-    connected: false,
-  };
-  const Data = Array.from(Array(10).keys()).map((item) => ({
-    id: item,
-    ...entry,
-  }));
   const collapsed = setting.collapsed.mentor;
 
-  const [menteeList, setMenteeList] = useState(Data);
   const [match] = useState(8);
 
-  const onMemberCardClick = (member) => {
-    Emitter.emit(EVENT_TYPES.OPEN_MEMBER_PANEL, {
-      member,
-      match: (user || {}).areas || [],
-    });
-  };
-
   const onMatchClicked = (index) => {
-    if (!menteeList[index].connected) {
-      setMenteeList((prev) => {
-        prev[index].connected = true;
-        return [...prev];
-      });
+    if (!data[index].connected) {
+      onSetMatch(true, data[index].mid);
     }
   };
-
-  Emitter.on(EVENT_TYPES.MEMBER_CHANGED, (member) => {
-    setMenteeList((prev) => {
-      prev[member.id] = member;
-      return [...prev];
-    });
-  });
 
   const onCollapseClick = () => {
     setSettingCollapsed({ mentor: !collapsed });
@@ -110,7 +64,7 @@ const MenteeList = ({
             key={`mentor-${index}`}
             user={mentee}
             match={user ? user.areas : []}
-            onClick={() => onMemberCardClick(mentee)}
+            onClick={() => onMemberClick(mentee)}
             onMatchClicked={() => onMatchClicked(index)}
           />
         ))}
@@ -139,6 +93,8 @@ MenteeList.propTypes = {
   loading: PropTypes.bool,
   hideMore: PropTypes.bool,
   onShowMore: PropTypes.func,
+  onSetMatch: PropTypes.func,
+  onMemberClick: PropTypes.func,
 };
 
 MenteeList.defaultProps = {
@@ -148,6 +104,8 @@ MenteeList.defaultProps = {
   loading: false,
   hideMore: false,
   onShowMore: () => {},
+  onSetMatch: () => {},
+  onMemberClick: () => {},
 };
 
 const mapStateToProps = (state) => ({

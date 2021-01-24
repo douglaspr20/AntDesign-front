@@ -24,6 +24,7 @@ import {
   updateMentorInfo,
   getMentorList,
   getMenteeList,
+  setMatch,
 } from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
 
@@ -49,4 +50,5 @@ export {
   updateMentorInfo,
   getMentorList,
   getMenteeList,
+  setMatch,
 };

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useStateWithCallbackLazy } from "use-state-with-callback";
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   CustomButton,
@@ -7,38 +7,14 @@ import {
   ProfileAvatar,
   SpecialtyItem,
 } from "components";
-import { EVENT_TYPES, PROFILE_SETTINGS, LANGUAGES, TIMEZONE_LIST } from "enum";
-import Emitter from "services/emitter";
+import { PROFILE_SETTINGS, LANGUAGES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
 const Specialties = PROFILE_SETTINGS.TOPICS;
 const Languages = LANGUAGES.ParsedLanguageData;
 
-const MemberDrawer = () => {
-  const [visible, setVisible] = useState(false);
-  const [member, setMember] = useStateWithCallbackLazy({});
-  const [match, setMatch] = useState([]);
-
-  Emitter.on(EVENT_TYPES.OPEN_MEMBER_PANEL, ({ member, match }) => {
-    setVisible(true);
-    setMember(member);
-    setMatch(match);
-  });
-
-  const onDrawerClose = () => {
-    setVisible(false);
-  };
-
-  const onClickMatch = () => {
-    setMember(
-      (prev) => ({ ...prev, connected: true }),
-      (current) => {
-        Emitter.emit(EVENT_TYPES.MEMBER_CHANGED, current);
-      }
-    );
-  };
-
+const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
   const getLanguage = (value) => {
     const language = (Languages.find((item) => item.value === value) || {})
       .text;
@@ -55,7 +31,7 @@ const MemberDrawer = () => {
       title={"Mentor profile"}
       width={772}
       visible={visible}
-      onClose={onDrawerClose}
+      onClose={onClose}
     >
       <div className="member-details">
         <div className="member-details-header">
@@ -72,7 +48,7 @@ const MemberDrawer = () => {
             type="primary"
             size="lg"
             disabled={member.connected}
-            onClick={(event) => !member.connected && onClickMatch(event)}
+            onClick={() => !member.connected && onMatch()}
           />
         </div>
         <div className="member-details-content">
@@ -123,6 +99,22 @@ const MemberDrawer = () => {
       </div>
     </CustomDrawer>
   );
+};
+
+MemberDrawer.propTypes = {
+  member: PropTypes.object,
+  match: PropTypes.array,
+  visible: PropTypes.bool,
+  onClose: PropTypes.func,
+  onMatch: PropTypes.func,
+};
+
+MemberDrawer.defaultProps = {
+  member: {},
+  match: [],
+  visible: false,
+  onClose: () => {},
+  onMatch: () => {},
 };
 
 export default MemberDrawer;
