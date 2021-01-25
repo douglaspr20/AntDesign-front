@@ -101,7 +101,7 @@ const CertificatePage = ({
               </div>
               <div className="certificate-divider" />
               <h5 className="certificate-text1 signature">
-                Founder | Hacking HR signature
+                Founder at Hacking HR
               </h5>
             </div>
           </div>

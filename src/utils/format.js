@@ -1,8 +1,6 @@
 /* eslint-disable no-useless-escape */
-import moment from "moment";
-import { SETTINGS, TIMEZONE_LIST } from "enum";
-
-const DataFormat = SETTINGS.DATE_FORMAT;
+import moment from "moment-timezone";
+import { TIMEZONE_LIST } from "enum";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -59,10 +57,27 @@ function isValidEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
+function getEventDescription(rawData) {
+  return rawData ? rawData.blocks.map((item) => item.text).join(`/n`) : "";
+}
+
+function convertToCertainTime(date, tz) {
+  let res = moment();
+  const timezone = TIMEZONE_LIST.find((item) => item.value === tz);
+
+  if (timezone) {
+    res = moment.utc(date).tz(timezone.utc[0]);
+  } else {
+    res = moment(date);
+  }
+
+  return res;
+}
+
 function getEventPeriod(date, date2, timezone) {
   let res = "";
-  const startDate = moment(date, DataFormat);
-  const endDate = moment(date2, DataFormat);
+  const startDate = convertToCertainTime(date, timezone);
+  const endDate = convertToCertainTime(date2, timezone);
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
   tz = (tz || {}).abbr || "";
 
@@ -71,16 +86,16 @@ function getEventPeriod(date, date2, timezone) {
     startDate.month() === endDate.month() &&
     startDate.date() === endDate.date()
   ) {
-    res = `${date} - ${endDate.format("h:mm a")} ${tz}`;
+    res = `${startDate.format("YYYY-MM-DD h:mm a")} - ${endDate.format(
+      "h:mm a"
+    )} ${tz}`;
   } else {
-    res = `${date} - ${date2} ${tz}`;
+    res = `${date.format("YYYY-MM-DD h:mm a")} - ${date2.format(
+      "YYYY-MM-DD h:mm a"
+    )} ${tz}`;
   }
 
   return res;
-}
-
-function getEventDescription(rawData) {
-  return rawData ? rawData.blocks.map((item) => item.text).join(`/n`) : "";
 }
 
 export {
@@ -90,4 +105,5 @@ export {
   isValidEmail,
   getEventPeriod,
   getEventDescription,
+  convertToCertainTime,
 };

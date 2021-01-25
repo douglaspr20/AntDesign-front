@@ -1,7 +1,11 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 import { notification } from "antd";
 import moment from "moment";
-import { getEventPeriod, getEventDescription } from "utils/format";
+import {
+  getEventPeriod,
+  getEventDescription,
+  convertToCertainTime,
+} from "utils/format";
 import storage from "store";
 
 import {
@@ -47,11 +51,15 @@ export function* getAllEventsSaga() {
             .map((item) => ({
               ...item,
               key: item.id,
-              date: moment(item.startDate).format("YYYY.MM.DD h:mm a"),
-              date2: moment(item.endDate).format("YYYY.MM.DD h:mm a"),
+              date: convertToCertainTime(item.startDate, item.timezone).format(
+                "YYYY.MM.DD h:mm a"
+              ),
+              date2: convertToCertainTime(item.endDate, item.timezone).format(
+                "YYYY.MM.DD h:mm a"
+              ),
               period: getEventPeriod(
-                moment(item.startDate).format("YYYY.MM.DD h:mm a"),
-                moment(item.endDate).format("YYYY.MM.DD h:mm a"),
+                item.startDate,
+                item.endDate,
                 item.timezone
               ),
               about: getEventDescription(item.description),
@@ -84,22 +92,23 @@ export function* getEventSaga({ payload }) {
     const response = yield call(getEvent, { ...payload });
 
     if (response.status === 200) {
+      const { event } = response.data;
       yield put(
         eventActions.setEvent({
-          ...response.data.event,
-          date: moment(response.data.event.startDate).format(
+          ...event,
+          date: convertToCertainTime(event.startDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          date2: moment(response.data.event.endDate).format(
+          date2: convertToCertainTime(event.endDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(
-            moment(response.data.event.startDate).format("YYYY.MM.DD h:mm a"),
-            moment(response.data.event.endDate).format("YYYY.MM.DD h:mm a"),
-            response.data.event.timezone
+            event.startDate,
+            event.endDate,
+            event.timezone
           ),
-          about: getEventDescription(response.data.event.description),
-          status: getEventStatus(response.data.event, userId),
+          about: getEventDescription(event.description),
+          status: getEventStatus(event, userId),
         })
       );
     }
@@ -121,13 +130,13 @@ export function* addToMyEventList({ payload }) {
       yield put(
         eventActions.setEvent({
           ...data,
-          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-          period: getEventPeriod(
-            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-            data.timezone
+          date: convertToCertainTime(data.startDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
           ),
+          date2: convertToCertainTime(data.endDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -151,13 +160,13 @@ export function* removeFromMyEventList({ payload }) {
       yield put(
         eventActions.setEvent({
           ...data,
-          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-          period: getEventPeriod(
-            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-            data.timezone
+          date: convertToCertainTime(data.startDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
           ),
+          date2: convertToCertainTime(data.endDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -182,17 +191,13 @@ export function* getAllMyEvents() {
           response.data.myEvents.map((item) => ({
             ...item,
             key: item.id,
-            date: item.startDate
-              ? moment(item.startDate).format("YYYY.MM.DD h:mm a")
-              : "",
-            date2: item.endDate
-              ? moment(item.endDate).format("YYYY.MM.DD h:mm a")
-              : "",
-            period: getEventPeriod(
-              moment(item.startDate).format("YYYY.MM.DD h:mm a"),
-              moment(item.endDate).format("YYYY.MM.DD h:mm a"),
-              item.timezone
+            date: convertToCertainTime(item.startDate, item.timezone).format(
+              "YYYY.MM.DD h:mm a"
             ),
+            date2: convertToCertainTime(item.endDate, item.timezone).format(
+              "YYYY.MM.DD h:mm a"
+            ),
+            period: getEventPeriod(item.startDate, item.endDate, item.timezone),
             about: getEventDescription(item.description),
             status: getEventStatus(item, userId),
           }))
@@ -216,13 +221,13 @@ export function* updateEventStatus({ payload }) {
       yield put(
         eventActions.setEvent({
           ...data,
-          date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-          date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-          period: getEventPeriod(
-            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
-            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
-            data.timezone
+          date: convertToCertainTime(data.startDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
           ),
+          date2: convertToCertainTime(data.endDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
