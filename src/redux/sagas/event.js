@@ -123,6 +123,12 @@ export function* addToMyEventList({ payload }) {
           ...data,
           date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          period: getEventPeriod(
+            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+            data.timezone
+          ),
+          about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
       );
@@ -147,6 +153,12 @@ export function* removeFromMyEventList({ payload }) {
           ...data,
           date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          period: getEventPeriod(
+            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+            data.timezone
+          ),
+          about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
       );
@@ -206,6 +218,12 @@ export function* updateEventStatus({ payload }) {
           ...data,
           date: moment(data.startDate).format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+          period: getEventPeriod(
+            moment(data.startDate).format("YYYY.MM.DD h:mm a"),
+            moment(data.endDate).format("YYYY.MM.DD h:mm a"),
+            data.timezone
+          ),
+          about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
       );
