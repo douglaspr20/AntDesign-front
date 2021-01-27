@@ -16,6 +16,7 @@ import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
 import PublicEventPage from "pages/PublicEvent";
+import MarketplacePage from "../../pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -92,6 +93,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.MARKETPLACE}
+            render={(props) => <MarketplacePage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>

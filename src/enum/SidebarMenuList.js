@@ -53,6 +53,11 @@ export default {
       icon: IconHeadsetOutline,
       url: INTERNAL_LINKS.PODCAST,
     },
+    {
+      label: "Marketplace",
+      icon: IconHeadsetOutline,
+      url: INTERNAL_LINKS.MARKETPLACE,
+    },
   ],
   BOTTOM_MENUS: [
     {
