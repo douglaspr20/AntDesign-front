@@ -53,6 +53,15 @@
 
 .heart-page__header {
   text-align: center;
+
+  h3 {
+    margin-top: 2rem !important;
+  }
+
+  p {
+    margin-top: 1rem;
+    text-align: justify;
+  }
 }
 
 .heart-categories__row {

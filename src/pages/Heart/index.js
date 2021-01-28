@@ -121,8 +121,18 @@ function HEARTPage(props) {
       <div className="heart-page__container">
         <header className="heart-page__header">
           <h2 className="text-center">
-            There will be some explaining text
-            </h2>
+            Peer-To-Peer Emotional and Wellness Support
+          </h2>
+          <h3>
+            This tool provides Hacking HR LAB members the opportunity to provide each other emotional, mental health, wellness and wellbeing support.
+          </h3>
+          <p>
+            How to it works: share stories, examples, tips, resources or questions.
+            This forum is anonymous. Click on the icon of to select what kind of 
+            content you want to share, enter the text in the comment box and click 
+            "Post Comment". You can also respond to other users' comments and also 
+            rate the comments by how relevant they are.
+          </p>
         </header>
         <div className="heart-categories__container">
           <div className="heart-categories__container-col">
