@@ -37,7 +37,7 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
   };
 
   const onCardClick = () => {
-    if (data.link) {
+    if (data.link && !locked) {
       window.open(data.link);
     }
   };
