@@ -29,3 +29,4 @@ export { default as CustomModal } from "./Modal";
 export { default as ImageUpload } from "./ImageUpload";
 export { default as PublicHeader } from "./Headers/PublicHeader";
 export { default as PublicMenuPopup } from "./PublicMenuPopup";
+export { default as RichEdit } from "./RichEdit";
