@@ -54,9 +54,9 @@ const MenteeList = ({
           <span>{`${numberWithCommas(total)}`}</span>
           <span>{` ${total === 1 ? "mentee" : "mentees"} match with you`}</span>
         </div>
-        <span className="mentee-list-header-right">
+        {/* <span className="mentee-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
-        </span>
+        </span> */}
       </div>
       <div className="mentee-list-items">
         {(data || []).map((mentee, index) => (

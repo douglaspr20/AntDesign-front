@@ -54,9 +54,9 @@ const MentorList = ({
           <span>{`${numberWithCommas(total)}`}</span>
           <span>{` ${total === 1 ? "mentor" : "mentors"} match with you`}</span>
         </div>
-        <span className="mentor-list-header-right">
+        {/* <span className="mentor-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
-        </span>
+        </span> */}
       </div>
       <div className="mentor-list-items">
         {(data || []).map((mentor, index) => (
