@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { SvgIcon } from "components";
 import { CustomButton } from 'components';
 
+import DefaultMarketplaceLogo from "images/img-default-marketplace-logo.png";
 import IconMailOutline from "images/icon-mail-outline.svg";
 import IconBriefCaseOutLine from "images/icon-briefcase-outline.svg";
 import IconCallOutLine from "images/icon-call-outline.svg";
@@ -10,27 +10,33 @@ import IconUser from "images/icon-person-outline.svg";
 
 import './style.scss';
 
-const MarketplaceCard = () => {
+const MarketplaceCard = ({
+  name='',
+  description='',
+  url='',
+  logoUrl='',
+  contact_name='',
+  contact_position='',
+  contact_email='',
+  contact_phone='',
+  category=''
+}) => {
   return (<div className="marketplace-card">
     <div className="marketplace-card__container">
       <div className="marketplace-card__container__logo">
-        <img />
+        <img src={logoUrl != null && logoUrl !='' ? logoUrl : DefaultMarketplaceLogo} />
       </div>
       <div className="marketplace-card__container__content">
         <div className="marketplace-card__content__header">
-          <h3>The new company name</h3>
-          <CustomButton text="Visit website" size="sm" />
+          <h3>{name}</h3>
+          <CustomButton text={<a target="_blank" href={url}>Visit website</a>} size="sm" />
         </div>
         <div className="marketplace-card__content__subtitle">
-          <h5>Software and technology</h5>
+          <h5>{category}</h5>
         </div>
         <div className="marketplace-card__content__paragraph">
           <p>
-            Developing Talent & Leadership behaviors.
-            Positive Design Thinking & Strategy through Positive
-            Leadership Strategy and POSITIVE & AGILE coaching |
-            2 hack habits, goal achievement, and behavior transformation
-            in organizations, sports clubs, PYMES, and corporations.
+            {description}
           </p>
         </div>
         <p className="marketplace-card__content__label" >Contact information</p>
@@ -42,7 +48,7 @@ const MarketplaceCard = () => {
                 backgroundImage: `url(${IconUser})`,
               }}
             ></span> 
-            Susan Mercedes
+            {contact_name}
           </div>
           <div className="marketplace-card__content__information--item">
             <span
@@ -51,7 +57,7 @@ const MarketplaceCard = () => {
                 backgroundImage: `url(${IconMailOutline})`,
               }}
             ></span> 
-            susanmercedes@thenewcompany.com
+            {contact_email}
           </div>
         </div>
         <div className="marketplace-card__content__information">
@@ -62,7 +68,7 @@ const MarketplaceCard = () => {
                 backgroundImage: `url(${IconBriefCaseOutLine})`,
               }}
             ></span> 
-            VP of Human resources
+            {contact_position}
           </div>
           <div className="marketplace-card__content__information--item">
             <span
@@ -71,7 +77,7 @@ const MarketplaceCard = () => {
                 backgroundImage: `url(${IconCallOutLine})`,
               }}
             ></span> 
-            (536) 564 - 5608 / (345) 435 - 3457
+            {contact_phone}
           </div>
         </div>
       </div>

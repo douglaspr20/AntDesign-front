@@ -27,11 +27,11 @@ const MarketplaceFilterPanel = ({
                     >
                         {searchFilters[filter].map((item) => (
                             <CustomCheckbox
-                                key={item.value}
-                                value={item.value}
+                                key={item.id}
+                                value={item.id}
                                 size="sm"
                             >
-                                {item.text}
+                                {item.name}
                             </CustomCheckbox>
                         ))}
                     </Checkbox.Group>
