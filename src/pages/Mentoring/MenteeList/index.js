@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -26,7 +26,7 @@ const MenteeList = ({
 }) => {
   const collapsed = setting.collapsed.mentor;
 
-  const [match] = useState(8);
+  // const [match] = useState(8);
 
   const onMatchClicked = (index) => {
     if (!data[index].connected) {

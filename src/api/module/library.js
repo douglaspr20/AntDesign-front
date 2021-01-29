@@ -24,7 +24,7 @@ export const searchLibrary = ({ filter, order }) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/library/all?${parsedFilter}`);
+  return httpClient.get(`private/library/approved?${parsedFilter}`);
 };
 
 export const getRecommendations = () => {
