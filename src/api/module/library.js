@@ -2,7 +2,7 @@ import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
 export const addLibrary = ({ library }) => {
-  return httpClient.post(`private/library/`, { ...library });
+  return httpClient.post(`private/library/share`, { ...library });
 };
 
 export const getLibrary = ({ id }) => {
@@ -24,7 +24,7 @@ export const searchLibrary = ({ filter, order }) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/library/all?${parsedFilter}`);
+  return httpClient.get(`private/library/approved?${parsedFilter}`);
 };
 
 export const getRecommendations = () => {

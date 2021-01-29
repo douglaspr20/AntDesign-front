@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { connect } from "react-redux";
@@ -26,7 +26,7 @@ const MentorList = ({
 }) => {
   const collapsed = setting.collapsed.mentee;
 
-  const [match] = useState(8);
+  // const [match] = useState(8);
 
   const onMatchClicked = (index) => {
     if (!data[index].connected) {
@@ -54,9 +54,9 @@ const MentorList = ({
           <span>{`${numberWithCommas(total)}`}</span>
           <span>{` ${total === 1 ? "mentor" : "mentors"} match with you`}</span>
         </div>
-        <span className="mentor-list-header-right">
+        {/* <span className="mentor-list-header-right">
           {`You have ${numberWithCommas(match)} match left this month`}
-        </span>
+        </span> */}
       </div>
       <div className="mentor-list-items">
         {(data || []).map((mentor, index) => (

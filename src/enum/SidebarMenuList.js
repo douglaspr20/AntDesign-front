@@ -39,7 +39,7 @@ export default {
       url: INTERNAL_LINKS.EVENTS,
     },
     {
-      label: "Certifications",
+      label: "Classes",
       icon: IconMedal,
       url: INTERNAL_LINKS.CERTIFICATIONS,
     },

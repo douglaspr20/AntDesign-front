@@ -13,7 +13,6 @@ import "./style.scss";
 
 const SearchFilters = SEARCH_FILTERS.library;
 const FilterTitles = Object.keys(SearchFilters);
-const ADMIN_USER = "enrique@hackinghr.io";
 
 const FilterPanel = ({ title, userProfile, onChange }) => {
   const [filters, setFilters] = useState({});
@@ -33,15 +32,13 @@ const FilterPanel = ({ title, userProfile, onChange }) => {
 
   return (
     <div className="library-filter-panel">
-      {userProfile.email === ADMIN_USER && (
-        <CustomButton
-          className="library-filter-panel-share"
-          text="Share content"
-          size="md"
-          type="primary"
-          onClick={onShareContent}
-        />
-      )}
+      <CustomButton
+        className="library-filter-panel-share"
+        text="Share content"
+        size="md"
+        type="primary"
+        onClick={onShareContent}
+      />
       <h2 className="font-regular">{title}</h2>
       <div className="library-filter-panel-content">
         {FilterTitles.map((filter, index) => (
