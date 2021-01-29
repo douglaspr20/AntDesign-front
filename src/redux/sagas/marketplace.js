@@ -12,7 +12,7 @@ export function* getAllMarketplaceSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAllMarketplace,payload.orderParam);
+    const response = yield call(getAllMarketplace, payload);
 
     if (response.status === 200) {
       yield put(marketplaceActions.setAllMarketplace(response.data));

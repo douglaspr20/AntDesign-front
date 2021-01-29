@@ -13,8 +13,9 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllMarketplace = createAction(GET_ALL_MARKETPLACE, (orderParam) => ({
+export const getAllMarketplace = createAction(GET_ALL_MARKETPLACE, (orderParam, filter) => ({
   orderParam,
+  filter
 }));
 export const setAllMarketplace = createAction(SET_ALL_MARKETPLACE, (marketplace) => ({
   marketplace,

@@ -14,7 +14,7 @@ export const constants = {
 // Actions
 // ------------------------------------
 export const getAllMarketplaceCategories = createAction(GET_ALL_MARKETPLACE_CATEGORIES);
-export const setAllMarketplaceCategories = createAction(GET_ALL_MARKETPLACE_CATEGORIES, (marketplaceCategories) => ({
+export const setAllMarketplaceCategories = createAction(SET_ALL_MARKETPLACE_CATEGORIES, (marketplaceCategories) => ({
   marketplaceCategories,
 }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));

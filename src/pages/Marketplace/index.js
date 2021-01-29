@@ -18,32 +18,42 @@ const MarketplacePage = ({
   getAllMarketplace
 }) => {
   const [sortValue, setSortValue] = useState('ASC');
+  const [categoryFilter, setCategoryFilter] = useState(null);
   const SortOptions = [
     { text: 'Alphabetical (A to Z)', value: 'ASC' },
     { text: 'Alphabetical (Z to A)', value: 'DESC' },
   ];
+  const filterTitles = ['Categories'];
 
   useEffect(() => {
-      getAllMarketplaceCategories();
+    getAllMarketplaceCategories();
   }, []);
 
   useEffect(() => {
-    getAllMarketplace(sortValue);
+    getAllMarketplace(sortValue, categoryFilter);
   }, []);
 
   const onSortChange = (value) => {
     setSortValue(value);
-    getAllMarketplace(value);
+    getAllMarketplace(value, categoryFilter);
+  }
+
+  const onChangeFilter = (values) => {
+    getAllMarketplace(sortValue, JSON.stringify(values));
   }
 
   return (<div className="marketplace-page">
-    <MarketplaceFilterPanel />
+    <MarketplaceFilterPanel
+      filterTitles={filterTitles}
+      searchFilters={allMarketplaceCategories}
+      onChange={onChangeFilter}
+    />
     <div className="search-results-container">
       <Row>
         <Col span={24}>
           <div className="search-results-container-header d-flex justify-between items-center">
             <h3>
-              {`${numberWithCommas(allMarketplace.length)} result${allMarketplace.length > 1  ? "s" : "" }`}</h3>
+              {`${numberWithCommas(allMarketplace.length)} result${allMarketplace.length > 1 ? "s" : ""}`}</h3>
             <CustomSelect
               className="search-results-container-sort"
               bordered={false}
@@ -63,6 +73,7 @@ const MarketplacePage = ({
           contact_name={item.contact_name}
           contact_email={item.contact_email}
           contact_phone={item.contact_phone}
+          contact_position={item.contact_position}
           category={item.MarketplaceCategory.name}
         />;
       })}
