@@ -9,6 +9,7 @@ import {
   CustomButton,
   CustomDrawer,
   SpecialtyItem,
+  RichEdit,
 } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
@@ -161,7 +162,7 @@ const EventDrawer = ({
             </div>
           )}
           <h3 className="event-details-content-subtitle">About the event</h3>
-          <p className="event-details-content-subtext">{event.about}</p>
+          <RichEdit data={event.description} />
         </div>
       </div>
     </CustomDrawer>
