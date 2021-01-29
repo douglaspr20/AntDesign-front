@@ -2,7 +2,7 @@ import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
 export const addLibrary = ({ library }) => {
-  return httpClient.post(`private/library/`, { ...library });
+  return httpClient.post(`private/library/share`, { ...library });
 };
 
 export const getLibrary = ({ id }) => {
