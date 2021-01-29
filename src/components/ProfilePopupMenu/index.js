@@ -7,7 +7,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -16,16 +16,18 @@ import { actions as authActions } from "redux/actions/auth-actions";
 import "./style.scss";
 import { getPortalSession } from "../../api/module/stripe";
 
-const ProfileMenus = [
-  {
-    label: "Read Later",
-    link: INTERNAL_LINKS.READ_LATER,
-  },
-  {
-    label: "Favorites",
-    link: INTERNAL_LINKS.FAVORITES,
-  },
-];
+// const ProfileMenus = [
+//   {
+//     label: "Read Later",
+//     link: INTERNAL_LINKS.READ_LATER,
+//   },
+//   {
+//     label: "Favorites",
+//     link: INTERNAL_LINKS.FAVORITES,
+//   },
+// ];
+
+const ProfileMenus = [];
 
 class ProfilePopupMenu extends React.Component {
   constructor(props) {
