@@ -4,12 +4,19 @@ import PropTypes from "prop-types";
 import isEqual from "lodash/isEqual";
 
 import { ProfileAvatar, CustomButton } from "components";
-import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
+import {
+  CONTACT_ICONS,
+  TIMEZONE_LIST,
+  LANGUAGES,
+  COUNTRIES,
+  PROFILE_SETTINGS,
+} from "enum";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
 
 const Languages = LANGUAGES.ParsedLanguageData;
+const Topics = PROFILE_SETTINGS.TOPICS;
 
 class ProfileViewPanel extends React.Component {
   constructor(props) {
@@ -134,7 +141,15 @@ class ProfileViewPanel extends React.Component {
               completed: user.topicsOfInterest && user.topicsOfInterest.length,
             })}
           >
-            {user.topicsOfInterest.join(", ") || "-"}
+            {user.topicsOfInterest
+              .map((item) => {
+                const index = Topics.findIndex((t) => t.value === item);
+                if (index >= 0) {
+                  return Topics[index].text;
+                }
+                return item;
+              })
+              .join(", ") || "-"}
           </h3>
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&

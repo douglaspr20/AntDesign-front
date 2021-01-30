@@ -124,6 +124,26 @@ class ProfilePopupMenu extends React.Component {
                   </div>
                 </>
               ) : null}
+              {user.external_payment === 1 && (
+                <>
+                  <div>
+                    {moment(user.subscription_startdate).format(
+                      "MMMM DD, yyyy"
+                    )}{" "}
+                    -{" "}
+                    {moment(user.subscription_enddate).format("MMMM DD, yyyy")}
+                  </div>
+                  {/* <div>
+                    <a
+                      href={this.state.portalSession.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Billing Information
+                    </a>
+                  </div> */}
+                </>
+              )}
             </React.Fragment>
           ) : (
             <div>Free Membership</div>
