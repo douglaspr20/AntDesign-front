@@ -4,7 +4,7 @@ import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 
-import { DateAvatar, CustomButton, SpecialtyItem } from "components";
+import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
 import { getEvent } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
@@ -85,7 +85,7 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
           </div>
         )}
         <h3 className="event-subtitle">About the event</h3>
-        <p className="event-subtext">{updatedEvent.about}</p>
+        <RichEdit data={updatedEvent.description} />
       </div>
     </div>
   );
