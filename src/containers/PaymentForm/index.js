@@ -1,18 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { envSelector } from "redux/selectors/envSelector";
 import { getCheckoutSession } from "api/module/stripe";
+import { STRIPE_PRICES } from 'enum';
 
 import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
 const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
+  const [price, setPrice] = useState(0);
+  const [prices] = useState(STRIPE_PRICES);
+
   let stripe = null;
   useEffect(() => {
     instanceStripe();
@@ -22,8 +26,8 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
     stripe = await loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
   };
 
-  const requestCheckoutSession = async (priceId) => {
-    let sessionData = await getCheckoutSession({ priceId });
+  const requestCheckoutSession = async () => {
+    let sessionData = await getCheckoutSession({ priceId: prices[price].priceId });
     return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
   };
   return (
@@ -47,15 +51,21 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
           </>
         )}
         <div className="plan-ugrade-form-content">
+          <h4>Select your country:</h4>
+          <Select className="pay-select" defaultValue={price} onChange={(value) => { setPrice(value) }}>
+            {
+              prices.map((item, index) => {
+                return (<Select.Option key={`price${index}`} value={index}>{item.country}</Select.Option>)
+              })
+            }
+          </Select>
           <Button
             onClick={() => {
-              requestCheckoutSession(
-                process.env.REACT_APP_STRIPE_YEARLY_PRICE_ID
-              );
+              requestCheckoutSession();
             }}
             className="pay-buttton"
           >
-            Subscribe $99.99 yearly
+            Subscribe ${prices[price].price} yearly
           </Button>
         </div>
       </form>
@@ -69,8 +79,8 @@ PaymentForm.propTypes = {
 };
 
 PaymentForm.defaultProps = {
-  handleSubmit: () => {},
-  hidePanel: () => {},
+  handleSubmit: () => { },
+  hidePanel: () => { },
 };
 
 const mapStateToProps = (state) => ({
