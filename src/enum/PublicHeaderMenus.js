@@ -14,10 +14,6 @@ export default [
     url: "/",
   },
   {
-    text: "About us",
-    url: "/",
-  },
-  {
     text: "Become a member",
     url: INTERNAL_LINKS.JOIN,
   },
