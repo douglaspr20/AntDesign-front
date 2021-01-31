@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import Helmet from "react-helmet";
 
 import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
 import { getEvent } from "redux/actions/event-actions";
