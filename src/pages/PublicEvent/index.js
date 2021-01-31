@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
 import { getEvent } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { authSelector } from "redux/selectors/authSelector";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
@@ -27,7 +29,12 @@ const monthStr = [
 ];
 const DataFormat = SETTINGS.DATE_FORMAT;
 
-const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
+const PublicEventPage = ({
+  match,
+  updatedEvent,
+  isAuthenticated,
+  getEvent,
+}) => {
   useEffect(() => {
     if (match.params.id) {
       getEvent(match.params.id);
@@ -39,6 +46,16 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
 
   return (
     <div className="public-event-page">
+      <Helmet>
+        <title>{updatedEvent.title}</title>
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={updatedEvent.title} />
+        <meta property="og:description" content={updatedEvent.about} />
+        <meta
+          property="og:image"
+          content={updatedEvent.image || updatedEvent.image2}
+        />
+      </Helmet>
       <div className="public-event-page-header">
         {updatedEvent.image2 && (
           <img src={updatedEvent.image2} alt="updatedEvent-img" />
@@ -66,7 +83,9 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
           >
             {updatedEvent.title}
           </h1>
-          <Link to={INTERNAL_LINKS.JOIN}>
+          <Link
+            to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
+          >
             <CustomButton text="Attend" size="lg" type="primary" />
           </Link>
         </div>
@@ -93,6 +112,7 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
 
 const mapStateToProps = (state) => ({
   updatedEvent: eventSelector(state).updatedEvent,
+  isAuthenticated: authSelector(state).isAuthenticated,
 });
 
 const mapDispatchToProps = {
