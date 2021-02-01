@@ -40,7 +40,7 @@ const PublicEventPage = ({
   useEffect(() => {
     if (match.params.id) {
       setCanonicalUrl(
-        `${process.env.DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
+        `${process.env.REACT_APP_DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
       );
       getEvent(match.params.id);
     }
