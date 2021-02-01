@@ -30,4 +30,39 @@
     }
   }
 
+  @media (max-width: 1023.98px) {
+    display: block;
+
+    .marketplace-filter-panel {
+      display: none;
+    }
+
+    .search-results-container {
+      padding: 0 0 54px;
+
+      &-header {
+        justify-content: center !important;
+        margin-bottom: 50px;
+
+        h3 {
+          display: none;
+        }
+      }
+
+      &-mobile-header {
+        display: flex;
+      }
+
+      &-sort {
+        .ant-select-selection-item {
+          @include app-font(20px, 30px);
+        }
+      }
+    }
+
+    .search-results-list {
+      margin: 0 4rem 44px;
+      justify-items: center;
+    }
+  }
 }
