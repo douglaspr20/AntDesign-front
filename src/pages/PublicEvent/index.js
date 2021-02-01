@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import clsx from "clsx";
@@ -35,8 +35,13 @@ const PublicEventPage = ({
   isAuthenticated,
   getEvent,
 }) => {
+  const [canonicalUrl, setCanonicalUrl] = useState("");
+
   useEffect(() => {
     if (match.params.id) {
+      setCanonicalUrl(
+        `${process.env.DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
+      );
       getEvent(match.params.id);
     }
 
@@ -55,6 +60,7 @@ const PublicEventPage = ({
           property="og:image"
           content={updatedEvent.image || updatedEvent.image2}
         />
+        <link rel="canonical" href={canonicalUrl} />
       </Helmet>
       <div className="public-event-page-header">
         {updatedEvent.image2 && (
