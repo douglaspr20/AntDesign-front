@@ -200,8 +200,10 @@ const Mentoring = ({
       {!isPremium && (
         <div className="mentoring-page-firewall">
           <div className="upgrade-notification-panel" onClick={planUpgrade}>
-            <h3>UPGRADE TO PREMIUM</h3>
-            <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
+            <h3>
+              Access to the best HHRR information library and boost your
+              potential
+            </h3>
           </div>
         </div>
       )}
