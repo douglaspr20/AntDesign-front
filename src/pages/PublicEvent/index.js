@@ -53,7 +53,7 @@ const PublicEventPage = ({
     <div className="public-event-page">
       <Helmet>
         <title>{updatedEvent.title}</title>
-        <meta property="og:url" content={window.location.href} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={updatedEvent.title} />
         <meta property="og:description" content={updatedEvent.about} />
         <meta
