@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { numberWithCommas } from "utils/format";
 import { Row, Col } from 'antd';
 import { connect } from "react-redux";
+import clsx from "clsx";
 
 import { getAllMarketplaceCategories } from "redux/actions/marketplaceCategories-actions";
 import { getAllMarketplace } from "redux/actions/marketplace-actions";
@@ -49,6 +50,19 @@ const MarketplacePage = ({
       onChange={onChangeFilter}
     />
     <div className="search-results-container">
+      <Row>
+        <Col span={24}>
+          <div className="search-results-container-mobile-header">
+            <h3
+              className={clsx("filters-btn")}
+            >
+              Filters
+              </h3>
+            <h3>{`${numberWithCommas(allMarketplace.length)} result${allMarketplace.length > 1 ? "s" : ""
+              }`}</h3>
+          </div>
+        </Col>
+      </Row>
       <Row>
         <Col span={24}>
           <div className="search-results-container-header d-flex justify-between items-center">
