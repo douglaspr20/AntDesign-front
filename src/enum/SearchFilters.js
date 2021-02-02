@@ -17,6 +17,7 @@ export default {
         value: "employee-experience-and-engagement",
       },
       { text: "Future of Work", value: "future-of-work" },
+      { text: "HR Strategy", value: "hr-strategy" },
       { text: "Innovation", value: "innovation" },
       { text: "Job seekers", value: "job-seekers" },
       { text: "Leadership", value: "leadership" },
@@ -28,6 +29,7 @@ export default {
       },
       { text: "Performance Management", value: "performance-management" },
       { text: "Recruitment and Talent", value: "recruitment-and-talent" },
+      { text: "Remote Work", value: "remote-work" },
       {
         text: "Strategy and Transformation",
         value: "strategy-and-transformation",
@@ -81,6 +83,7 @@ export default {
         value: "employee-experience-and-engagement",
       },
       { text: "Future of Work", value: "future-of-work" },
+      { text: "HR Strategy", value: "hr-strategy" },
       { text: "Innovation", value: "innovation" },
       { text: "Job seekers", value: "job-seekers" },
       { text: "Leadership", value: "leadership" },
@@ -92,6 +95,7 @@ export default {
       },
       { text: "Performance Management", value: "performance-management" },
       { text: "Recruitment and Talent", value: "recruitment-and-talent" },
+      { text: "Remote Work", value: "remote-work" },
       {
         text: "Strategy and Transformation",
         value: "strategy-and-transformation",

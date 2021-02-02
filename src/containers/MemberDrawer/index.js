@@ -86,7 +86,9 @@ const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
           <h5 className="member-details-content-label">Main language</h5>
           {member.languages && member.languages.length > 0 ? (
             member.languages.map((lang, index) => (
-              <p className="member-details-content-text">{getLanguage(lang)}</p>
+              <p key={index} className="member-details-content-text">
+                {getLanguage(lang)}
+              </p>
             ))
           ) : (
             <p className="member-details-content-text">-</p>
