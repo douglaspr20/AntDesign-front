@@ -12,8 +12,8 @@
   align-items: center;
 
   &-wrapper {
-    width: 750px;
-    height: 450px;
+    width: 1000px;
+    min-height: 600px;
     padding: 0 84px;
     border: 1px solid $color-border;
     background: $color-dark-purple;
@@ -49,15 +49,15 @@
       }
 
       &-title {
-        @include app-font(20px, 48px, 600);
+        @include app-font(28px, 48px, 600);
         color: $color-white !important;
-        margin: 24px 0 20px;
+        margin: 24px 0 20px !important;
       }
 
       &-username {
-        @include app-font(32px, 48px, bold);
+        @include app-font(40px, 48px, bold);
         color: $color-white !important;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem !important;
       }
 
       &-center {
@@ -69,8 +69,9 @@
       }
 
       &-text1 {
-        @include app-font(14px, 19px);
+        @include app-font(22px, 19px);
         color: $color-white !important;
+        margin-bottom: 1rem !important;
 
         &.duration {
           text-transform: capitalize;
@@ -82,8 +83,9 @@
       }
 
       &-text2 {
-        @include app-font(16px, 24px, bold);
+        @include app-font(24px, 24px, bold);
         color: $color-white !important;
+        margin-bottom: 1rem !important;
       }
 
       &-bottom {
