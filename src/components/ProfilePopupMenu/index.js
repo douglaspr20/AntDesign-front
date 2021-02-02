@@ -40,19 +40,21 @@ class ProfilePopupMenu extends React.Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.createPortalSession();
-    }, 800);
+  componentWillReceiveProps() {
+    this.createPortalSession();
   }
 
-  createPortalSession = async () => {
+  createPortalSession = async (accessToPortal=false) => {
     if (this.props.userProfile.memberShip === "premium") {
       try {
         let response = await getPortalSession();
         this.setState({
           portalSession: response.data.session,
           subscription: response.data.subscription,
+        }, () => {
+          if(accessToPortal===true){
+            window.open(this.state.portalSession.url, "_blank")
+          }
         });
       } catch (err) {
         console.log(err);
@@ -115,7 +117,10 @@ class ProfilePopupMenu extends React.Component {
                   </div>
                   <div>
                     <a
-                      href={this.state.portalSession.url}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.createPortalSession(true);
+                      }}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
