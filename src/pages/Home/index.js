@@ -15,7 +15,7 @@ import "./style.scss";
 const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
-  }
+  };
 
   useEffect(() => {
     getRecommendations();
@@ -58,8 +58,8 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
                     className="d-flex flex-column items-center"
                   >
                     <h2 className="recommend-card-label">
-                      Access to the best HHRR information library and boost your
-                      potential
+                      Upgrade to a PREMIUM Membership and get unlimited access
+                      to the LAB features
                     </h2>
                     <CustomButton
                       text="Upgrade"
