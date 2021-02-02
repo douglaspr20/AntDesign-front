@@ -149,4 +149,15 @@
     }
   }
 
+  &__content__mobile--button{
+    button {
+      display: none;
+
+    @media (max-width: 1023.98px) {
+      margin-top: 1.5rem;
+      display: block;
+      width: 100%;
+    }
+    }
+  }
 }

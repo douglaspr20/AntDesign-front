@@ -80,6 +80,9 @@ const MarketplaceCard = ({
             {contact_phone}
           </div>
         </div>
+        <div class="marketplace-card__content__mobile--button">
+          <CustomButton text={<a target="_blank" href={url}>Visit website</a>} size="sm" />
+        </div>
       </div>
     </div>
   </div>);

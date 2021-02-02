@@ -4,11 +4,16 @@ import { Row, Col } from 'antd';
 import { connect } from "react-redux";
 import clsx from "clsx";
 
+import Emitter from "services/emitter";
+import FilterDrawer from "./FilterDrawer";
 import { getAllMarketplaceCategories } from "redux/actions/marketplaceCategories-actions";
 import { getAllMarketplace } from "redux/actions/marketplace-actions";
 import { marketplaceSelector } from "redux/selectors/marketplaceSelector";
 import { marketplaceCategoriesSelector } from "redux/selectors/marketplaceCategoriesSelector";
 import { CustomSelect, MarketplaceFilterPanel, MarketplaceCard } from 'components';
+import { INTERNAL_LINKS, MARKETPLACE_TYPES } from "enum";
+
+import IconStorefrontOutline from "images/icon-storefront-outline.svg";
 
 import "./style.scss";
 
@@ -16,15 +21,17 @@ const MarketplacePage = ({
   allMarketplaceCategories,
   getAllMarketplaceCategories,
   allMarketplace,
-  getAllMarketplace
+  getAllMarketplace,
+  history
 }) => {
   const [sortValue, setSortValue] = useState('ASC');
-  const [categoryFilter, setCategoryFilter] = useState(null);
+  const [categoryFilter] = useState(null);
   const SortOptions = [
     { text: 'Alphabetical (A to Z)', value: 'ASC' },
     { text: 'Alphabetical (Z to A)', value: 'DESC' },
   ];
   const filterTitles = ['Categories'];
+  const [isPublic] = useState(history.location.pathname === INTERNAL_LINKS.MARKETPLACE);
 
   useEffect(() => {
     getAllMarketplaceCategories();
@@ -43,9 +50,18 @@ const MarketplacePage = ({
     getAllMarketplace(sortValue, JSON.stringify(values));
   }
 
-  return (<div className="marketplace-page">
+  const showFilterPanel = () => {
+    Emitter.emit(MARKETPLACE_TYPES.OPEN_FILTER_PANEL);
+  };
+
+  return (<div
+            className={isPublic ? "marketplace-page" : "public-marketplace-page" }>
     <MarketplaceFilterPanel
       filterTitles={filterTitles}
+      searchFilters={allMarketplaceCategories}
+      onChange={onChangeFilter}
+    />
+    <FilterDrawer
       searchFilters={allMarketplaceCategories}
       onChange={onChangeFilter}
     />
@@ -55,6 +71,7 @@ const MarketplacePage = ({
           <div className="search-results-container-mobile-header">
             <h3
               className={clsx("filters-btn")}
+              onClick={() => showFilterPanel()}
             >
               Filters
               </h3>
@@ -63,6 +80,10 @@ const MarketplacePage = ({
           </div>
         </Col>
       </Row>
+      <div class="public-title">
+        <img src={IconStorefrontOutline} alt="Marketplace Icon" />
+        <h1>Marketplace</h1>
+      </div>
       <Row>
         <Col span={24}>
           <div className="search-results-container-header d-flex justify-between items-center">

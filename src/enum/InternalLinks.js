@@ -18,4 +18,5 @@ export default {
   PUBLIC_EVENT: "/public-event",
   JOIN: "/join",
   MARKETPLACE: "/marketplace",
+  PUBLIC_MARKETPLACE: "/public-marketplace",
 };
