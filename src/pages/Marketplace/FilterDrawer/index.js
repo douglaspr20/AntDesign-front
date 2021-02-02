@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Checkbox } from "antd";
 
-import { CustomDrawer, CustomButton, CustomCheckbox } from "components";
-import { MARKETPLACE_TYPES } from "enum";
 import Emitter from "services/emitter";
+
+import { CustomDrawer, CustomButton, CustomCheckbox } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { MARKETPLACE_TYPES } from "enum";
 
 import "./style.scss";
 
-const FilterDrawer = ({ userProfile, onChange, searchFilters }) => {
+const FilterDrawer = ({ onChange, searchFilters }) => {
   const [visible, setVisible] = useState(false);
   const [filters, setFilters] = useState([]);
 

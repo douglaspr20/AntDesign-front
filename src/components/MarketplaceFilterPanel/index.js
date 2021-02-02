@@ -55,11 +55,3 @@ MarketplaceFilterPanel.defaultProps = {
 };
 
 export default MarketplaceFilterPanel;
-
-/*
-value={
-            filters[filter.toLowerCase()]
-              ? JSON.parse(filters[filter.toLowerCase()])
-              : []
-          }
- */
