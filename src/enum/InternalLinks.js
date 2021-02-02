@@ -17,4 +17,5 @@ export default {
   PODCAST: "/podcast",
   PUBLIC_EVENT: "/public-event",
   JOIN: "/join",
+  TERMSOFUSE: "/terms-of-use",
 };
