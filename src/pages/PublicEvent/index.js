@@ -53,6 +53,9 @@ const PublicEventPage = ({
     <div className="public-event-page">
       <Helmet>
         <title>{updatedEvent.title}</title>
+        <meta name="description" content={updatedEvent.about} />
+        <meta name="twitter:creator" />
+        <meta name="twitter:image" content={updatedEvent.image || updatedEvent.image2} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={updatedEvent.title} />
         <meta property="og:description" content={updatedEvent.about} />

@@ -7,10 +7,16 @@ import { ArticleCard, CustomButton } from "components";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
 const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
+  const onUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  }
+
   useEffect(() => {
     getRecommendations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,6 +66,7 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
                       type="primary"
                       size="xl"
                       className="recommend-card-upgrade"
+                      onClick={onUpgrade}
                     />
                   </Col>
                 </Row>
