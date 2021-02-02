@@ -61,6 +61,10 @@ const PublicEventPage = ({
           content={updatedEvent.image || updatedEvent.image2}
         />
         <link rel="canonical" href={canonicalUrl} />
+        <link
+          rel="image_src"
+          href={updatedEvent.image || updatedEvent.image2}
+        />
       </Helmet>
       <div className="public-event-page-header">
         {updatedEvent.image2 && (
