@@ -5,8 +5,15 @@ import { connect } from "react-redux";
 
 import { getAllPodcasts } from "redux/actions/podcast-actions";
 import { podcastSelector } from "redux/selectors/podcastSelector";
+import { CustomButton } from "components";
 
+import FilterDrawer from "./FilterDrawer";
 import EpisodeCard from "./EpisodeCard";
+import {
+  PodcastFilterPanel,
+} from "components";
+import Emitter from "services/emitter";
+import { EVENT_TYPES, SETTINGS } from "enum";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
 import IconApplePodcast from "images/icon-apple-podcast.svg";
@@ -140,9 +147,22 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
     return links;
   };
 
+  const onFilterChange = (filter) => {
+    getAllPodcasts(filter);
+  }
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
+  };
+
   return (
     <div className="podcast-page">
+      <PodcastFilterPanel onChange={onFilterChange} />
+      <FilterDrawer onChange={onFilterChange} />
       <div className="podcast-page__container">
+        <div className="podcast-page__filters--button">
+          <CustomButton text="Filters" onClick={() => { showFilterPanel(); }}></CustomButton>
+        </div>
         <header className="podcast-page__header">
           <h2>Subscribe:</h2>
         </header>
