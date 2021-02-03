@@ -76,8 +76,8 @@ const CertificatePage = ({
             <h1 className="certificate-username">{`${user.firstName} ${user.lastName}`}</h1>
           </div>
           <div className="certificate-center">
-            <h5 className="certificate-text1">
-              For Attending The Hacking HR Mumbai Chapter Session:
+            <h5 className="certificate-text1 organizer">
+              {`For Attending ${updatedEvent.organizer} Session:`}
             </h5>
             <h4 className="certificate-text2">{updatedEvent.title}</h4>
             <h5 className="certificate-text1 duration">{`Duration: ${converter.toWords(
