@@ -80,6 +80,10 @@
         &.signature {
           white-space: nowrap;
         }
+
+        &.organizer {
+          text-transform: capitalize;
+        }
       }
 
       &-text2 {
