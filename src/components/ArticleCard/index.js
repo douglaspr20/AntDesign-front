@@ -48,7 +48,7 @@ class ArticleCard extends React.Component {
 
   render() {
     const {
-      data: { image, title, description, contentType },
+      data: { image2, title, description, contentType },
       className,
     } = this.props;
     const { randomId, lineClamp } = this.state;
@@ -57,7 +57,7 @@ class ArticleCard extends React.Component {
     return (
       <div className={newClassName} onClick={this.onCardClick}>
         <div className="article-card-img">
-          {image && <img src={image} alt="article-card-img" />}
+          {image2 && <img src={image2} alt="article-card-img" />}
         </div>
         <div className="article-card-content">
           <h3>{title}</h3>
