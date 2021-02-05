@@ -6,15 +6,13 @@ import Emitter from "services/emitter";
 
 import { CustomCheckbox, CustomButton } from "components";
 
-import { SEARCH_FILTERS, EVENT_TYPES } from "enum";
+import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const SearchFilters = SEARCH_FILTERS.library;
-const FilterTitles = Object.keys(SearchFilters);
-
-const FilterPanel = ({ title, userProfile, onChange }) => {
+const FilterPanel = ({ title, userProfile, allCategories, onChange }) => {
   const [filters, setFilters] = useState({});
 
   const onShareContent = () => {
@@ -41,30 +39,24 @@ const FilterPanel = ({ title, userProfile, onChange }) => {
       />
       <h2 className="font-regular">{title}</h2>
       <div className="library-filter-panel-content">
-        {FilterTitles.map((filter, index) => (
-          <div className="search-filter" key={`${filter}-${index}`}>
-            <h5 className="search-filter-title font-bold">{filter}</h5>
-            <Checkbox.Group
-              value={
-                filters[filter.toLowerCase()]
-                  ? JSON.parse(filters[filter.toLowerCase()])
-                  : []
-              }
-              onChange={(values) => onFilterChange(filter, values)}
-            >
-              {SearchFilters[filter].map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={userProfile.memberShip === "free"}
-                >
-                  {item.text}
-                </CustomCheckbox>
-              ))}
-            </Checkbox.Group>
-          </div>
-        ))}
+        <div className="search-filter">
+          <h5 className="search-filter-title font-bold">Topics</h5>
+          <Checkbox.Group
+            value={filters["topics"] ? JSON.parse(filters["topics"]) : []}
+            onChange={(values) => onFilterChange("Topics", values)}
+          >
+            {allCategories.map((item) => (
+              <CustomCheckbox
+                key={item.value}
+                value={item.value}
+                size="sm"
+                disabled={userProfile.memberShip === "free"}
+              >
+                {item.title}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+        </div>
       </div>
     </div>
   );
@@ -82,6 +74,7 @@ FilterPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(FilterPanel);

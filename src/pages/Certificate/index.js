@@ -36,12 +36,13 @@ const CertificatePage = ({
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPdf({
       orientation: "landscape",
-      format: [width, height],
+      format: [2000, 2000 / width * height],
       unit: "px",
       hotfixes: ["px_scaling"],
       precision: 32,
     });
-    pdf.addImage(imgData, "jpeg", 0, 0, width, height, "", "FAST");
+
+    pdf.addImage(imgData, "jpeg", 0, 0, 2000, 2000 / width * height, "", "SLOW");
     pdf.save("certificate.pdf");
     setLoading(false);
   };
@@ -76,8 +77,8 @@ const CertificatePage = ({
             <h1 className="certificate-username">{`${user.firstName} ${user.lastName}`}</h1>
           </div>
           <div className="certificate-center">
-            <h5 className="certificate-text1">
-              For Attending The Hacking HR Mumbai Chapter Session:
+            <h5 className="certificate-text1 organizer">
+              {`For Attending ${updatedEvent.organizer} Session:`}
             </h5>
             <h4 className="certificate-text2">{updatedEvent.title}</h4>
             <h5 className="certificate-text1 duration">{`Duration: ${converter.toWords(

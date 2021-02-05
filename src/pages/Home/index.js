@@ -7,10 +7,16 @@ import { ArticleCard, CustomButton } from "components";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
 const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
+  const onUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   useEffect(() => {
     getRecommendations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,14 +58,15 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
                     className="d-flex flex-column items-center"
                   >
                     <h2 className="recommend-card-label">
-                      Access to the best HHRR information library and boost your
-                      potential
+                      Upgrade to a PREMIUM Membership and get unlimited access
+                      to the LAB features
                     </h2>
                     <CustomButton
                       text="Upgrade"
                       type="primary"
                       size="xl"
                       className="recommend-card-upgrade"
+                      onClick={onUpgrade}
                     />
                   </Col>
                 </Row>

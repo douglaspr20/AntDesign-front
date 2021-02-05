@@ -139,8 +139,8 @@ const LearningLibraryPage = ({
           <div className="upgrade-notification">
             <div className="upgrade-notification-panel" onClick={planUpgrade}>
               <h3>
-                Access to the best HHRR information library and boost your
-                potential
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
               </h3>
             </div>
           </div>

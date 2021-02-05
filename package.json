@@ -26,7 +26,7 @@
     "number-to-words": "^1.2.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-app-rewired": "^2.1.1",
+    "react-app-rewired": "^2.1.8",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.14.5",
     "react-google-recaptcha": "^2.1.0",
