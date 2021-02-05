@@ -26,6 +26,10 @@ class TopHeader extends Component {
           path={INTERNAL_LINKS.PUBLIC_EVENT}
           render={(props) => <PublicHeader {...props} />}
         />
+        <Route
+          path={INTERNAL_LINKS.PUBLIC_MARKETPLACE}
+          render={(props) => <PublicHeader {...props} />}
+        />
         <PrivateRoute
           path={INTERNAL_LINKS.HEART}
           render={(props) => <MainHeader {...props} />}
@@ -60,6 +64,10 @@ class TopHeader extends Component {
         />
         <PrivateRoute
           path={INTERNAL_LINKS.READ_LATER}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.MARKETPLACE}
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute

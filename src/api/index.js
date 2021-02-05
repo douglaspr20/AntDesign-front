@@ -27,6 +27,8 @@ import {
   setMatch,
 } from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
+import { getAllMarketplace } from "./module/marketplace";
+import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
 import { getCategories } from "./module/category";
 
 export {
@@ -47,6 +49,8 @@ export {
   getRecommendations,
   setMentorInfo,
   getAllPodcasts,
+  getAllMarketplace,
+  getAllMarketplaceCategories,
   getMentoringInfo,
   updateMentorInfo,
   getMentorList,

@@ -17,4 +17,6 @@ export default {
   PODCAST: "/podcast",
   PUBLIC_EVENT: "/public-event",
   JOIN: "/join",
+  MARKETPLACE: "/marketplace",
+  PUBLIC_MARKETPLACE: "/public-marketplace",
 };

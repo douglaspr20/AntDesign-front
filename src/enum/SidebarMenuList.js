@@ -10,6 +10,7 @@ import IconStar from "images/icon-star.svg";
 import IconBookmark from "images/icon-bookmark.svg";
 import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
+import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 
 export default {
   TOP_MENUS: [
@@ -52,6 +53,11 @@ export default {
       label: "Podcast",
       icon: IconHeadsetOutline,
       url: INTERNAL_LINKS.PODCAST,
+    },
+    {
+      label: "Marketplace",
+      icon: IconStoreFrontOutline,
+      url: INTERNAL_LINKS.MARKETPLACE,
     },
   ],
   BOTTOM_MENUS: [
