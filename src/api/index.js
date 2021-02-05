@@ -29,6 +29,7 @@ import {
 import { getAllPodcasts } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
+import { getCategories } from "./module/category";
 
 export {
   signIn,
@@ -55,4 +56,5 @@ export {
   getMentorList,
   getMenteeList,
   setMatch,
+  getCategories,
 };

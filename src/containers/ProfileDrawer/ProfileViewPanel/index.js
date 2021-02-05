@@ -2,9 +2,11 @@ import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import isEqual from "lodash/isEqual";
+import { connect } from "react-redux";
 
 import { ProfileAvatar, CustomButton } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
@@ -134,7 +136,17 @@ class ProfileViewPanel extends React.Component {
               completed: user.topicsOfInterest && user.topicsOfInterest.length,
             })}
           >
-            {user.topicsOfInterest.join(", ") || "-"}
+            {user.topicsOfInterest
+              .map((item) => {
+                const index = this.props.allCategories.findIndex(
+                  (t) => t.value === item
+                );
+                if (index >= 0) {
+                  return this.props.allCategories[index].title;
+                }
+                return item;
+              })
+              .join(", ") || "-"}
           </h3>
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
@@ -165,4 +177,8 @@ ProfileViewPanel.defaultProps = {
   onEdit: () => {},
 };
 
-export default ProfileViewPanel;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(ProfileViewPanel);

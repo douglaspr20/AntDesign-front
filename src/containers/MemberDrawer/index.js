@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import {
   CustomButton,
@@ -7,14 +8,21 @@ import {
   ProfileAvatar,
   SpecialtyItem,
 } from "components";
-import { PROFILE_SETTINGS, LANGUAGES, TIMEZONE_LIST } from "enum";
+import { LANGUAGES, TIMEZONE_LIST } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.TOPICS;
 const Languages = LANGUAGES.ParsedLanguageData;
 
-const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
+const MemberDrawer = ({
+  visible,
+  member,
+  allCategories,
+  match,
+  onClose,
+  onMatch,
+}) => {
   const getLanguage = (value) => {
     const language = (Languages.find((item) => item.value === value) || {})
       .text;
@@ -70,14 +78,14 @@ const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
                 return !first && second ? 1 : first && second ? 0 : -1;
               })
               .map((spec, index) => {
-                const specialty = Specialties.find(
+                const specialty = allCategories.find(
                   (item) => item.value === spec
                 );
 
                 return (
                   <SpecialtyItem
                     key={`specialty-${index}`}
-                    title={specialty.text}
+                    title={specialty ? specialty.title : ""}
                     active={(match || []).includes(spec)}
                   />
                 );
@@ -86,7 +94,9 @@ const MemberDrawer = ({ visible, member, match, onClose, onMatch }) => {
           <h5 className="member-details-content-label">Main language</h5>
           {member.languages && member.languages.length > 0 ? (
             member.languages.map((lang, index) => (
-              <p className="member-details-content-text">{getLanguage(lang)}</p>
+              <p key={index} className="member-details-content-text">
+                {getLanguage(lang)}
+              </p>
             ))
           ) : (
             <p className="member-details-content-text">-</p>
@@ -117,4 +127,8 @@ MemberDrawer.defaultProps = {
   onMatch: () => {},
 };
 
-export default MemberDrawer;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(MemberDrawer);

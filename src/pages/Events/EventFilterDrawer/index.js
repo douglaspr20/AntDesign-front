@@ -9,16 +9,14 @@ import {
   CustomCheckbox,
   CustomCalendar,
 } from "components";
-import { EVENT_TYPES, SEARCH_FILTERS } from "enum";
+import { EVENT_TYPES } from "enum";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 import Emitter from "services/emitter";
 
 import "./style.scss";
 
-const SearchFilters = SEARCH_FILTERS.events;
-const FilterTitles = Object.keys(SearchFilters);
-
-const EventFilterDrawer = ({ allEvents, onFilterChange }) => {
+const EventFilterDrawer = ({ allEvents, allCategories, onFilterChange }) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
@@ -87,21 +85,19 @@ const EventFilterDrawer = ({ allEvents, onFilterChange }) => {
             text="All Events"
             onClick={onShowAllEvent}
           />
-          {FilterTitles.map((filter, index) => (
-            <div className="search-filter" key={`${filter}-${index}`}>
-              <h4 className="search-filter-title font-bold">{filter}</h4>
-              <Checkbox.Group
-                value={filterValues[filter]}
-                onChange={(values) => onEventFilterChange(filter, values)}
-              >
-                {SearchFilters[filter].map((item) => (
-                  <CustomCheckbox key={item.value} value={item.value} size="md">
-                    {item.text}
-                  </CustomCheckbox>
-                ))}
-              </Checkbox.Group>
-            </div>
-          ))}
+          <div className="search-filter">
+            <h4 className="search-filter-title font-bold">Topics</h4>
+            <Checkbox.Group
+              value={filterValues["Topics"]}
+              onChange={(values) => onEventFilterChange("Topics", values)}
+            >
+              {allCategories.map((item) => (
+                <CustomCheckbox key={item.value} value={item.value} size="md">
+                  {item.title}
+                </CustomCheckbox>
+              ))}
+            </Checkbox.Group>
+          </div>
         </div>
         <div className="event-filter-drawer-footer">
           <CustomButton
@@ -129,6 +125,7 @@ EventFilterDrawer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allEvents: eventSelector(state).allEvents,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(EventFilterDrawer);

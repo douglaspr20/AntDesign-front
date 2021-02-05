@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import Helmet from "react-helmet";
 
-import { DateAvatar, CustomButton, SpecialtyItem } from "components";
+import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
 import { getEvent } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { authSelector } from "redux/selectors/authSelector";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
@@ -27,9 +29,19 @@ const monthStr = [
 ];
 const DataFormat = SETTINGS.DATE_FORMAT;
 
-const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
+const PublicEventPage = ({
+  match,
+  updatedEvent,
+  isAuthenticated,
+  getEvent,
+}) => {
+  const [canonicalUrl, setCanonicalUrl] = useState("");
+
   useEffect(() => {
     if (match.params.id) {
+      setCanonicalUrl(
+        `${process.env.REACT_APP_DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
+      );
       getEvent(match.params.id);
     }
 
@@ -39,6 +51,24 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
 
   return (
     <div className="public-event-page">
+      <Helmet>
+        <title>{updatedEvent.title}</title>
+        <meta name="description" content={updatedEvent.about} />
+        <meta name="twitter:creator" />
+        <meta name="twitter:image" content={updatedEvent.image || updatedEvent.image2} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={updatedEvent.title} />
+        <meta property="og:description" content={updatedEvent.about} />
+        <meta
+          property="og:image"
+          content={updatedEvent.image || updatedEvent.image2}
+        />
+        <link rel="canonical" href={canonicalUrl} />
+        <link
+          rel="image_src"
+          href={updatedEvent.image || updatedEvent.image2}
+        />
+      </Helmet>
       <div className="public-event-page-header">
         {updatedEvent.image2 && (
           <img src={updatedEvent.image2} alt="updatedEvent-img" />
@@ -66,7 +96,9 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
           >
             {updatedEvent.title}
           </h1>
-          <Link to={INTERNAL_LINKS.JOIN}>
+          <Link
+            to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
+          >
             <CustomButton text="Attend" size="lg" type="primary" />
           </Link>
         </div>
@@ -85,7 +117,7 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
           </div>
         )}
         <h3 className="event-subtitle">About the event</h3>
-        <p className="event-subtext">{updatedEvent.about}</p>
+        <RichEdit data={updatedEvent.description} />
       </div>
     </div>
   );
@@ -93,6 +125,7 @@ const PublicEventPage = ({ match, updatedEvent, getEvent }) => {
 
 const mapStateToProps = (state) => ({
   updatedEvent: eventSelector(state).updatedEvent,
+  isAuthenticated: authSelector(state).isAuthenticated,
 });
 
 const mapDispatchToProps = {

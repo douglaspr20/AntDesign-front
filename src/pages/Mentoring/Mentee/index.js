@@ -4,17 +4,16 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 
 import { SpecialtyItem, WantCard, CustomButton } from "components";
-import { PROFILE_SETTINGS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
-
-const Specialties = PROFILE_SETTINGS.TOPICS;
 
 const MenteePanel = ({
   setting,
   isMentee,
   mobileSetting,
+  allCategories,
   openSetting,
   onEdit,
 }) => {
@@ -40,13 +39,13 @@ const MenteePanel = ({
             </p>
             <div className="mentee-panel-description-specialties">
               {(setting.areas || []).map((spec, index) => {
-                const specialty = Specialties.find(
+                const specialty = allCategories.find(
                   (item) => item.value === spec
                 );
                 return specialty ? (
                   <SpecialtyItem
                     key={`specialty-${index}`}
-                    title={specialty.text}
+                    title={specialty ? specialty.title : ""}
                   />
                 ) : (
                   ""
@@ -83,6 +82,7 @@ MenteePanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   mobileSetting: homeSelector(state).setting,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(MenteePanel);

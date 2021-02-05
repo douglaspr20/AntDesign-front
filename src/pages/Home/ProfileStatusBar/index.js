@@ -15,7 +15,7 @@ const ProfileStatusBar = ({ percent }) => {
   return (
     <div className="profile-status-bar">
       <div className="section-left">
-        <span>We want to show you the most relevan information for you</span>
+        <span>We want to show you the most relevant information for you</span>
         <CustomButton
           text="Complete your profile"
           type="primary"
