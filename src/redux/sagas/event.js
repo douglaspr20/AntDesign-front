@@ -3,6 +3,7 @@ import { notification } from "antd";
 import moment from "moment";
 import {
   getEventPeriod,
+  getEventPeriodText,
   getEventDescription,
   convertToCertainTime,
 } from "utils/format";
@@ -102,7 +103,7 @@ export function* getEventSaga({ payload }) {
           date2: convertToCertainTime(event.endDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          period: getEventPeriod(
+          period: getEventPeriodText(
             event.startDate,
             event.endDate,
             event.timezone
