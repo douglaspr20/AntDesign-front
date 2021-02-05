@@ -84,7 +84,7 @@ const MarketplacePage = ({
           </div>
         </Col>
       </Row>
-      <div class="public-title">
+      <div className="public-title">
         <img src={IconStorefrontOutline} alt="Marketplace Icon" />
         <h1>Marketplace</h1>
       </div>
@@ -105,6 +105,7 @@ const MarketplacePage = ({
       </Row>
       {allMarketplace.map((item) => {
         return <MarketplaceCard
+          key={item.id}
           name={item.name}
           description={item.description}
           url={item.url}

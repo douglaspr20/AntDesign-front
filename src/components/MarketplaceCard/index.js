@@ -21,15 +21,19 @@ const MarketplaceCard = ({
   contact_phone='',
   category=''
 }) => {
+  const onVisitWebSite = (url) => {
+    window.open(url, "_blank");
+  }
+
   return (<div className="marketplace-card">
     <div className="marketplace-card__container">
       <div className="marketplace-card__container__logo">
-        <img src={logoUrl != null && logoUrl !='' ? logoUrl : DefaultMarketplaceLogo} />
+        <img src={logoUrl != null && logoUrl !== '' ? logoUrl : DefaultMarketplaceLogo} alt="logo-img"/>
       </div>
       <div className="marketplace-card__container__content">
         <div className="marketplace-card__content__header">
           <h3>{name}</h3>
-          <CustomButton text={<a target="_blank" href={url}>Visit website</a>} size="sm" />
+          <CustomButton text="Visit website" size="sm" onClick={() => onVisitWebSite(url)} />
         </div>
         <div className="marketplace-card__content__subtitle">
           <h5>{category}</h5>
@@ -80,8 +84,8 @@ const MarketplaceCard = ({
             {contact_phone}
           </div>
         </div>
-        <div class="marketplace-card__content__mobile--button">
-          <CustomButton text={<a target="_blank" href={url}>Visit website</a>} size="sm" />
+        <div className="marketplace-card__content__mobile--button">
+          <CustomButton text="Visit website" size="sm" onClick={() => onVisitWebSite(url)} />
         </div>
       </div>
     </div>
