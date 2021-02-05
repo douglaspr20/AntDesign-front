@@ -160,7 +160,6 @@ const EventDrawer = ({
               ))}
             </div>
           )}
-          <h3 className="event-details-content-subtitle">About the event</h3>
           <RichEdit data={event.description} />
         </div>
       </div>

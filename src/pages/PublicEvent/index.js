@@ -77,25 +77,6 @@ const PublicEventPage = ({
           <img src={updatedEvent.image} alt="event-img" />
         )}
         <div className="public-event-page-header-title">
-          <DateAvatar
-            day={
-              updatedEvent.startDate
-                ? moment(updatedEvent.date, DataFormat).date()
-                : 0
-            }
-            month={
-              updatedEvent.startDate
-                ? monthStr[moment(updatedEvent.date, DataFormat).month()]
-                : ""
-            }
-          />
-          <h1
-            className={clsx("event-title", {
-              "no-image": !updatedEvent.image2 && !updatedEvent.image,
-            })}
-          >
-            {updatedEvent.title}
-          </h1>
           <Link
             to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
           >
@@ -104,7 +85,16 @@ const PublicEventPage = ({
         </div>
       </div>
       <div className="public-event-page-content">
-        <h3 className="event-date">{updatedEvent.period}</h3>
+        <h1
+          className={clsx("event-title", {
+            "no-image": !updatedEvent.image2 && !updatedEvent.image,
+          })}
+        >
+          {updatedEvent.title}
+        </h1>
+        <h3 className="event-date">
+          {updatedEvent.period}
+        </h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
         )} event`}</h3>
@@ -116,7 +106,14 @@ const PublicEventPage = ({
             ))}
           </div>
         )}
-        <h3 className="event-subtitle">About the event</h3>
+        <h5>Event Topics:</h5>
+        {updatedEvent.categories && updatedEvent.categories.length > 0 && (
+          <div className="event-topics">
+            {updatedEvent.categories.map((tp, index) => (
+              <SpecialtyItem key={index} title={tp} active={false} />
+            ))}
+          </div>
+        )}
         <RichEdit data={updatedEvent.description} />
       </div>
     </div>
