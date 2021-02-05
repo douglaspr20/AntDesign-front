@@ -7,6 +7,7 @@ import eventReducer from "./eventReducer";
 import libraryReducer from "./libraryReducer";
 import mentoringReducer from "./mentoringReducer";
 import podcastReducer from "./podcastReducer";
+import categoryReducer from "./categoryReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   library: libraryReducer,
   mentoring: mentoringReducer,
   podcast: podcastReducer,
+  category: categoryReducer,
 });
