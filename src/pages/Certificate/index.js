@@ -36,12 +36,13 @@ const CertificatePage = ({
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPdf({
       orientation: "landscape",
-      format: [width, height],
+      format: [2000, 2000 / width * height],
       unit: "px",
       hotfixes: ["px_scaling"],
       precision: 32,
     });
-    pdf.addImage(imgData, "jpeg", 0, 0, width, height, "", "FAST");
+
+    pdf.addImage(imgData, "jpeg", 0, 0, 2000, 2000 / width * height, "", "SLOW");
     pdf.save("certificate.pdf");
     setLoading(false);
   };
