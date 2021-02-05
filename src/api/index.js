@@ -27,6 +27,7 @@ import {
   setMatch,
 } from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
+import { getCategories } from "./module/category";
 
 export {
   signIn,
@@ -51,4 +52,5 @@ export {
   getMentorList,
   getMenteeList,
   setMatch,
+  getCategories,
 };

@@ -6,14 +6,17 @@ import { CloseOutlined } from "@ant-design/icons";
 
 import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
 import { eventSelector } from "redux/selectors/eventSelector";
-import { SEARCH_FILTERS } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const SearchFilters = SEARCH_FILTERS.events;
-const FilterTitles = Object.keys(SearchFilters);
-
-const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
+const EventFilterPanel = ({
+  title,
+  allEvents,
+  allCategories,
+  onFilterChange,
+  onClose,
+}) => {
   const [filterValues, setFilterValues] = useState({});
 
   const onDateChange = (date) => {
@@ -53,21 +56,19 @@ const EventFilterPanel = ({ title, allEvents, onFilterChange, onClose }) => {
         onClick={onShowAllEvent}
       />
       <div className="event-filter-panel-content">
-        {FilterTitles.map((filter, index) => (
-          <div className="search-filter" key={`${filter}-${index}`}>
-            <h5 className="search-filter-title font-bold">{filter}</h5>
-            <Checkbox.Group
-              value={filterValues[filter]}
-              onChange={(values) => onEventFilterChange(filter, values)}
-            >
-              {SearchFilters[filter].map((item) => (
-                <CustomCheckbox key={item.value} value={item.value} size="sm">
-                  {item.text}
-                </CustomCheckbox>
-              ))}
-            </Checkbox.Group>
-          </div>
-        ))}
+        <div className="search-filter">
+          <h5 className="search-filter-title font-bold">Topics</h5>
+          <Checkbox.Group
+            value={filterValues["Topics"]}
+            onChange={(values) => onEventFilterChange("Topics", values)}
+          >
+            {allCategories.map((item) => (
+              <CustomCheckbox key={item.value} value={item.value} size="sm">
+                {item.title}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+        </div>
       </div>
     </div>
   );
@@ -87,6 +88,7 @@ EventFilterPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allEvents: eventSelector(state).allEvents,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(EventFilterPanel);

@@ -5,6 +5,7 @@ import { eventSaga } from "./event";
 import { librarySaga } from "./library";
 import { mentoringSaga } from "./mentoring";
 import { podcastSaga } from "./podcast";
+import { categorySaga } from "./category";
 
 export default function* sagas() {
   yield all([
@@ -14,5 +15,6 @@ export default function* sagas() {
     ...librarySaga,
     ...mentoringSaga,
     ...podcastSaga,
+    ...categorySaga,
   ]);
 }

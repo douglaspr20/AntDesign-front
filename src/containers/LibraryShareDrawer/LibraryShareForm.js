@@ -15,13 +15,14 @@ import { SEARCH_FILTERS } from "enum";
 
 import { addLibrary } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
 const SearchFilters = SEARCH_FILTERS.library;
 // const Languages = LANGUAGES.ParsedLanguageData;
 
-const LibraryShareForm = ({ onCancel, addLibrary }) => {
+const LibraryShareForm = ({ allCategories, onCancel, addLibrary }) => {
   const onFinish = (values) => {
     console.log("values", values);
     onCancel();
@@ -58,9 +59,9 @@ const LibraryShareForm = ({ onCancel, addLibrary }) => {
         </Form.Item>
         <Form.Item name="topics" label="What are the content topics?">
           <Checkbox.Group className="d-flex flex-column library-form-topics">
-            {SearchFilters.Topics.map((topic, index) => (
+            {allCategories.map((topic, index) => (
               <CustomCheckbox key={index} value={topic.value}>
-                {topic.text}
+                {topic.title}
               </CustomCheckbox>
             ))}
           </Checkbox.Group>
@@ -116,6 +117,7 @@ LibraryShareForm.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allLibraries: librarySelector(state).allLibraries,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {
