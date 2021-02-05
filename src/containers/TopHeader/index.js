@@ -27,6 +27,10 @@ class TopHeader extends Component {
           render={(props) => <PublicHeader {...props} />}
         />
         <Route
+          path={INTERNAL_LINKS.TERMSOFUSE}
+          render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
           path={INTERNAL_LINKS.PUBLIC_MARKETPLACE}
           render={(props) => <PublicHeader {...props} />}
         />

@@ -16,6 +16,7 @@ import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
 import PublicEventPage from "pages/PublicEvent";
+import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
 // Enum
@@ -65,6 +66,10 @@ class Content extends Component {
           <Route
             path={INTERNAL_LINKS.RESET_PASSWORD}
             render={(props) => <ResetPasswordPage {...props} />}
+          />
+          <Route
+            path={INTERNAL_LINKS.TERMSOFUSE}
+            render={(props) => <TermsOfUsePage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.HEART}
