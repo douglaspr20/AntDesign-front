@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
+import { connect } from "react-redux";
 
 import { CustomButton, CustomInput, CustomCheckbox } from "components";
-import { PROFILE_SETTINGS } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.TOPICS;
-
-const MenteeSetting = ({ setting, onCancel, onSave }) => {
+const MenteeSetting = ({ setting, allCategories, onCancel, onSave }) => {
   const [reason, setReason] = useState(setting.reason);
   const [title, setTitle] = useState(setting.title);
   const [specialties, setSpecialties] = useState(setting.specialties || []);
@@ -57,9 +56,9 @@ const MenteeSetting = ({ setting, onCancel, onSave }) => {
           className="mentee-setting-specialties"
           onChange={setSpecialties}
         >
-          {Specialties.map((spec, index) => (
+          {allCategories.map((spec, index) => (
             <CustomCheckbox key={`specialty-${index}`} value={spec.value}>
-              {spec.text}
+              {spec.title}
             </CustomCheckbox>
           ))}
         </Checkbox.Group>
@@ -94,4 +93,8 @@ MenteeSetting.defaultProps = {
   onSave: () => {},
 };
 
-export default MenteeSetting;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(MenteeSetting);
