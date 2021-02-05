@@ -8,11 +8,11 @@ import { actions as homeActions } from "../actions/home-actions";
 
 import { getAllPodcasts } from "../../api";
 
-export function* getAllPodcastsSaga() {
+export function* getAllPodcastsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAllPodcasts);
+    const response = yield call(getAllPodcasts, payload);
 
     if (response.status === 200) {
       yield put(podcastActions.setAllPodcasts(response.data.podcast));
