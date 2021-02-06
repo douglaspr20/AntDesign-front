@@ -99,6 +99,8 @@ const PublicEventPage = ({
           ", "
         )} event`}</h3>
         <h3 className="event-cost">{updatedEvent.ticket}</h3>
+
+        <h5>Event Type:</h5>
         {updatedEvent.type && updatedEvent.type.length > 0 && (
           <div className="event-topics">
             {updatedEvent.type.map((tp, index) => (
