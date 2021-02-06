@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
-import Emitter from "services/emitter";
 
-import { CustomCheckbox, CustomButton } from "components";
+import { CustomCheckbox } from "components";
 
-import { SEARCH_FILTERS, EVENT_TYPES } from "enum";
+import { SEARCH_FILTERS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
