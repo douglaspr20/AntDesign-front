@@ -20,6 +20,7 @@ const FilterDrawer = ({ onChange, searchFilters }) => {
   };
 
   const onDrawerClose = () => {
+    onChange(filters);
     setVisible(false);
   };
 
@@ -32,7 +33,6 @@ const FilterDrawer = ({ onChange, searchFilters }) => {
   const onFilterChange = (values) => {
     let newFilter = values;
     setFilters(newFilter);
-    onChange(newFilter);
   };
 
   useEffect(() => {
