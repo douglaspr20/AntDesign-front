@@ -1,7 +1,8 @@
 @import "styles/main.scss";
 
 .marketplace-card {
-  width: 904px;
+  width: 100%;
+  max-width: 904px;
   height: 350px;
 
   background: $color-white;
