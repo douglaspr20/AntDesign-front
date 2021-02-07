@@ -90,7 +90,7 @@ function getEventPeriod(date, date2, timezone) {
       "h:mm a"
     )} ${tz}`;
   } else {
-    res = `${date.format("YYYY-MM-DD h:mm a")} - ${date2.format(
+    res = `${startDate.format("YYYY-MM-DD h:mm a")} - ${endDate.format(
       "YYYY-MM-DD h:mm a"
     )} ${tz}`;
   }
@@ -114,7 +114,7 @@ function getEventPeriodText(date, date2, timezone) {
       "h:mm a"
     )} ${tz}`;
   } else {
-    res = `${date.format("MMMM DD, yyyy | h:mm a")} - ${date2.format(
+    res = `${startDate.format("MMMM DD, yyyy | h:mm a")} - ${endDate.format(
       "MMMM DD, yyyy h:mm a"
     )} ${tz}`;
   }
