@@ -13,7 +13,7 @@ import {
   PodcastFilterPanel,
 } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES } from "enum";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
 import IconApplePodcast from "images/icon-apple-podcast.svg";
