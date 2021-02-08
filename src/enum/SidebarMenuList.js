@@ -55,7 +55,7 @@ export default {
       url: INTERNAL_LINKS.PODCAST,
     },
     {
-      label: "Marketplace",
+      label: "HR Marketplace",
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.MARKETPLACE,
     },
