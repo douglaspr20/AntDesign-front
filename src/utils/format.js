@@ -86,30 +86,6 @@ function getEventPeriod(date, date2, timezone) {
     startDate.month() === endDate.month() &&
     startDate.date() === endDate.date()
   ) {
-    res = `${startDate.format("YYYY-MM-DD h:mm a")} - ${endDate.format(
-      "h:mm a"
-    )} ${tz}`;
-  } else {
-    res = `${startDate.format("YYYY-MM-DD h:mm a")} - ${endDate.format(
-      "YYYY-MM-DD h:mm a"
-    )} ${tz}`;
-  }
-
-  return res;
-}
-
-function getEventPeriodText(date, date2, timezone) {
-  let res = "";
-  const startDate = convertToCertainTime(date, timezone);
-  const endDate = convertToCertainTime(date2, timezone);
-  let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
-  tz = (tz || {}).abbr || "";
-
-  if (
-    startDate.year() === endDate.year() &&
-    startDate.month() === endDate.month() &&
-    startDate.date() === endDate.date()
-  ) {
     res = `${startDate.format("MMMM DD, yyyy | h:mm a")} - ${endDate.format(
       "h:mm a"
     )} ${tz}`;
@@ -128,7 +104,6 @@ export {
   isValidURL,
   isValidEmail,
   getEventPeriod,
-  getEventPeriodText,
   getEventDescription,
   convertToCertainTime,
 };
