@@ -3,7 +3,6 @@ import { notification } from "antd";
 import moment from "moment";
 import {
   getEventPeriod,
-  getEventPeriodText,
   getEventDescription,
   convertToCertainTime,
 } from "utils/format";
@@ -58,7 +57,7 @@ export function* getAllEventsSaga() {
               date2: convertToCertainTime(item.endDate, item.timezone).format(
                 "YYYY.MM.DD h:mm a"
               ),
-              period: getEventPeriodText(
+              period: getEventPeriod(
                 item.startDate,
                 item.endDate,
                 item.timezone
@@ -103,7 +102,7 @@ export function* getEventSaga({ payload }) {
           date2: convertToCertainTime(event.endDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          period: getEventPeriodText(
+          period: getEventPeriod(
             event.startDate,
             event.endDate,
             event.timezone
@@ -137,7 +136,7 @@ export function* addToMyEventList({ payload }) {
           date2: convertToCertainTime(data.endDate, data.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          period: getEventPeriodText(data.startDate, data.endDate, data.timezone),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -167,7 +166,7 @@ export function* removeFromMyEventList({ payload }) {
           date2: convertToCertainTime(data.endDate, data.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          period: getEventPeriodText(data.startDate, data.endDate, data.timezone),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -198,7 +197,7 @@ export function* getAllMyEvents() {
             date2: convertToCertainTime(item.endDate, item.timezone).format(
               "YYYY.MM.DD h:mm a"
             ),
-            period: getEventPeriodText(item.startDate, item.endDate, item.timezone),
+            period: getEventPeriod(item.startDate, item.endDate, item.timezone),
             about: getEventDescription(item.description),
             status: getEventStatus(item, userId),
           }))
@@ -228,7 +227,7 @@ export function* updateEventStatus({ payload }) {
           date2: convertToCertainTime(data.endDate, data.timezone).format(
             "YYYY.MM.DD h:mm a"
           ),
-          period: getEventPeriodText(data.startDate, data.endDate, data.timezone),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
