@@ -9,9 +9,7 @@ import { CustomButton } from "components";
 
 import FilterDrawer from "./FilterDrawer";
 import EpisodeCard from "./EpisodeCard";
-import {
-  PodcastFilterPanel,
-} from "components";
+import { PodcastFilterPanel } from "components";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 
@@ -149,7 +147,7 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
 
   const onFilterChange = (filter) => {
     getAllPodcasts(filter);
-  }
+  };
 
   const showFilterPanel = () => {
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
@@ -161,7 +159,12 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
       <FilterDrawer onChange={onFilterChange} />
       <div className="podcast-page__container">
         <div className="podcast-page__filters--button">
-          <CustomButton text="Filters" onClick={() => { showFilterPanel(); }}></CustomButton>
+          <CustomButton
+            text="Filters"
+            onClick={() => {
+              showFilterPanel();
+            }}
+          ></CustomButton>
         </div>
         <header className="podcast-page__header">
           <h2>Subscribe:</h2>
@@ -206,6 +209,7 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
                   created_at={moment(episode.dateEpisode)}
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}
+                  categories={episode.topics}
                   links={getLinks(episode)}
                 />
               </div>
