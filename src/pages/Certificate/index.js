@@ -13,7 +13,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 
 import ImgCertificateStamp from "images/img-certificate-stamp.png";
-import ImgHHRLogo from "images/img-hhr-logo.png";
+import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 
 import "./style.scss";
@@ -28,7 +28,7 @@ const CertificatePage = ({
   const downloadPdf = async () => {
     setLoading(true);
     const domElement = document.getElementById("certificate-panel");
-    const canvas = await html2canvas(domElement);
+    const canvas = await html2canvas(domElement, { scale: 4 });
 
     const width = domElement.clientWidth;
     const height = domElement.clientHeight;
