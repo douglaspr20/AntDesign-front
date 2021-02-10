@@ -21,6 +21,7 @@ import IconPocketCasts from "images/icon-pocket-casts.svg";
 import IconRadiopublic from "images/icon-radiopublic.svg";
 import IconSpotify from "images/icon-spotify.svg";
 import IconVimeo from "images/icon-vimeo.svg";
+import IconGoogle from "images/icon-google.svg";
 
 import "./style.scss";
 
@@ -73,6 +74,12 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
     icon: IconVimeo,
     label: "Vimeo",
     link: "https://vimeo.com/hackinghr",
+  },
+
+  google: {
+    icon: IconGoogle,
+    label: "Google Podcast",
+    link: "https://bit.ly/3kATo8S",
   },
 };
 
@@ -140,6 +147,13 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
         icon: IconIheartradio,
         label: "iHeart Radio",
         link: episode.iHeartRadioLink,
+      });
+    }
+    if (episode.googleLink) {
+      links.push({
+        icon: IconGoogle,
+        label: "Google Podcast",
+        link: episode.googleLink,
       });
     }
     return links;
