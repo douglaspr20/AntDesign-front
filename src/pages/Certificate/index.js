@@ -74,7 +74,12 @@ const CertificatePage = ({
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(user) && !isEmpty(updatedEvent)) {
+    if (
+      !isEmpty(user) &&
+      user.id &&
+      !isEmpty(updatedEvent) &&
+      updatedEvent.id
+    ) {
       let allow = false;
       if (
         user.events &&
