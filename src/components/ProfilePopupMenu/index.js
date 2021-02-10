@@ -117,6 +117,7 @@ class ProfilePopupMenu extends React.Component {
                   </div>
                   <div>
                     <a
+                      href="/#"
                       onClick={(e) => {
                         e.preventDefault();
                         this.createPortalSession(true);

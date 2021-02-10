@@ -1,33 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 
-import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
+import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import { getEvent } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
-import { SETTINGS, INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
-
-const monthStr = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
-const DataFormat = SETTINGS.DATE_FORMAT;
 
 const PublicEventPage = ({
   match,
