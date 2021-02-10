@@ -5,12 +5,14 @@ import html2canvas from "html2canvas";
 import jsPdf from "jspdf";
 import moment from "moment";
 import converter from "number-to-words";
+import isEmpty from "lodash/isEmpty";
 
 import { CustomButton } from "components";
 import { setLoading } from "redux/actions/home-actions";
 import { getEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { INTERNAL_LINKS } from "enum";
 
 import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
@@ -24,6 +26,7 @@ const CertificatePage = ({
   getEvent,
   match,
   setLoading,
+  history,
 }) => {
   const downloadPdf = async () => {
     setLoading(true);
@@ -36,13 +39,22 @@ const CertificatePage = ({
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPdf({
       orientation: "landscape",
-      format: [2000, 2000 / width * height],
+      format: [2000, (2000 / width) * height],
       unit: "px",
       hotfixes: ["px_scaling"],
       precision: 32,
     });
 
-    pdf.addImage(imgData, "jpeg", 0, 0, 2000, 2000 / width * height, "", "SLOW");
+    pdf.addImage(
+      imgData,
+      "jpeg",
+      0,
+      0,
+      2000,
+      (2000 / width) * height,
+      "",
+      "SLOW"
+    );
     pdf.save("certificate.pdf");
     setLoading(false);
   };
@@ -60,6 +72,25 @@ const CertificatePage = ({
     getEvent(eventId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isEmpty(user) && !isEmpty(updatedEvent)) {
+      let allow = false;
+      if (
+        user.events &&
+        user.events.includes(updatedEvent.id) &&
+        updatedEvent.users.includes(user.id) &&
+        updatedEvent.status === "confirmed"
+      ) {
+        allow = true;
+      }
+
+      if (!allow) {
+        history.push(INTERNAL_LINKS.LOGIN);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, updatedEvent]);
 
   const period = getPerodOfEvent(updatedEvent.startDate, updatedEvent.endDate);
 
