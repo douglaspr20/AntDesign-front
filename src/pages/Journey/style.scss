@@ -1,7 +1,14 @@
 @import "styles/main.scss";
 
 .learning-journey-page {
-    width: 100%;
-    max-width: 904px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 904px;
+  margin: 0 auto;
+  padding-top: 3rem;
+
+  button {
+    span {
+      font-weight: normal !important;
+    }
+  }
 }

@@ -8,11 +8,14 @@ import {
 import "./style.scss";
 
 const JourneyHomeMessage = () => {
-  return (<div class="learning-journey-message">
+  return (<div className="learning-journey-message">
     <h3>
-      Start a journey and learn together with HHR Do you want to create your first learning journey?
-      </h3>
-    <CustomButton text="Yes, I want create a journey" size="sm" />
+      Start a journey and learn together with HHR
+    </h3>
+    <h3>
+      Do you want to create your first learning journey?
+    </h3>
+    <CustomButton text="Yes, I want create a journey" size="md" />
   </div>);
 };
 
