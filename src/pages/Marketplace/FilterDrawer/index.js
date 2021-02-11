@@ -69,11 +69,11 @@ const FilterDrawer = ({ onChange, searchFilters }) => {
             >
               {searchFilters.map((item) => (
                 <CustomCheckbox
-                  key={item.id}
-                  value={item.id}
+                  key={item.value}
+                  value={item.value}
                   size="sm"
                 >
-                  {item.name}
+                  {item.title}
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>

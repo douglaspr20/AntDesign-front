@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CustomButton } from 'components';
+import { CustomButton, SpecialtyItem } from 'components';
 
 import DefaultMarketplaceLogo from "images/img-default-marketplace-logo.png";
 import IconMailOutline from "images/icon-mail-outline.svg";
@@ -19,7 +19,8 @@ const MarketplaceCard = ({
   contact_position='',
   contact_email='',
   contact_phone='',
-  category=''
+  categories=[],
+  allCategories=[]
 }) => {
   const onVisitWebSite = (url) => {
     window.open(url, "_blank");
@@ -36,7 +37,15 @@ const MarketplaceCard = ({
           <CustomButton text="Visit website" size="sm" onClick={() => onVisitWebSite(url)} />
         </div>
         <div className="marketplace-card__content__subtitle">
-          <h5>{category}</h5>
+          {(categories || []).map((item, index) => {
+            const category = allCategories.find((cat) => cat.value === item);
+            return (
+              <SpecialtyItem
+                key={index}
+                title={category ? category.title : item}
+              />
+            );
+          })}
         </div>
         <div className="marketplace-card__content__paragraph">
           <p>

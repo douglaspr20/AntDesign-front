@@ -114,7 +114,8 @@ const MarketplacePage = ({
           contact_email={item.contact_email}
           contact_phone={item.contact_phone}
           contact_position={item.contact_position}
-          category={item.MarketplaceCategory.name}
+          categories={item.topics}
+          allCategories={allMarketplaceCategories}
         />;
       })}
     </div>
