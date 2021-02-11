@@ -13,7 +13,7 @@ import { EVENT_TYPES } from "enum";
 import "./style.scss";
 
 const Text = `
-  By clicking on "Yes, I Confirm" you are certifying that you actually participated in the event.
+  By clicking on "Yes, I Confirm", you are certifying that you actually participated in the event.
 `;
 
 const AttendanceDisclaimerModal = ({ isMobile, updateEventStatus }) => {
