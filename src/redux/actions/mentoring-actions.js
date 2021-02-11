@@ -37,12 +37,16 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const setMentoringInfo = createAction(SET_MENTORING_INFO, (info) => ({
-  info,
-}));
+export const setMentoringInfo = createAction(
+  SET_MENTORING_INFO,
+  (info, callback) => ({
+    info,
+    callback,
+  })
+);
 export const updateMentoringInfo = createAction(
   UPDATE_MENTORING_INFO,
-  (info) => ({ info })
+  (info, callback) => ({ info, callback })
 );
 export const saveMentoringInfo = createAction(SAVE_MENTORING_INFO, (info) => ({
   info,
