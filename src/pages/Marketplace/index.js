@@ -6,10 +6,9 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import Emitter from "services/emitter";
 
-import { getAllMarketplaceCategories } from "redux/actions/marketplaceCategories-actions";
 import { getAllMarketplace } from "redux/actions/marketplace-actions";
 import { marketplaceSelector } from "redux/selectors/marketplaceSelector";
-import { marketplaceCategoriesSelector } from "redux/selectors/marketplaceCategoriesSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 import { CustomSelect, MarketplaceFilterPanel, MarketplaceCard } from 'components';
 import { INTERNAL_LINKS, MARKETPLACE_TYPES } from "enum";
 
@@ -20,8 +19,7 @@ import IconStorefrontOutline from "images/icon-storefront-outline.svg";
 import "./style.scss";
 
 const MarketplacePage = ({
-  allMarketplaceCategories,
-  getAllMarketplaceCategories,
+  allCategories,
   allMarketplace,
   getAllMarketplace,
   history
@@ -35,12 +33,7 @@ const MarketplacePage = ({
   const filterTitles = ['Categories'];
   const [isPublic] = useState(history.location.pathname === INTERNAL_LINKS.MARKETPLACE);
 
-  useEffect(() => {
-    getAllMarketplaceCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
+    useEffect(() => {
     getAllMarketplace(sortValue, categoryFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -62,11 +55,11 @@ const MarketplacePage = ({
             className={isPublic ? "marketplace-page" : "public-marketplace-page" }>
     <MarketplaceFilterPanel
       filterTitles={filterTitles}
-      searchFilters={allMarketplaceCategories}
+      searchFilters={allCategories}
       onChange={onChangeFilter}
     />
     <FilterDrawer
-      searchFilters={allMarketplaceCategories}
+      searchFilters={allCategories}
       onChange={onChangeFilter}
     />
     <div className="search-results-container">
@@ -114,19 +107,19 @@ const MarketplacePage = ({
           contact_email={item.contact_email}
           contact_phone={item.contact_phone}
           contact_position={item.contact_position}
-          category={item.MarketplaceCategory.name}
+          categories={item.topics}
+          allCategories={allCategories}
         />;
       })}
     </div>
   </div>);
 };
 const mapStateToProps = (state) => ({
-  allMarketplaceCategories: marketplaceCategoriesSelector(state).allMarketplaceCategories,
+  allCategories: categorySelector(state).categories,
   allMarketplace: marketplaceSelector(state).allMarketplace,
 });
 
 const mapDispatchToProps = {
-  getAllMarketplaceCategories,
   getAllMarketplace,
 };
 
