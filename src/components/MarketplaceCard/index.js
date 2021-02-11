@@ -12,16 +12,16 @@ import IconUser from "images/icon-person-outline.svg";
 import './style.scss';
 
 const MarketplaceCard = ({
-  name='',
-  description='',
-  url='',
-  logoUrl='',
-  contact_name='',
-  contact_position='',
-  contact_email='',
-  contact_phone='',
-  categories=[],
-  allCategories=[],
+  name,
+  description,
+  url,
+  logoUrl,
+  contact_name,
+  contact_position,
+  contact_email,
+  contact_phone,
+  categories,
+  allCategories,
 }) => {
   const onVisitWebSite = (url) => {
     window.open(url, "_blank");
@@ -126,4 +126,5 @@ MarketplaceCard.defaultProps = {
   categories: [],
   allCategories: [],
 };
+
 export default MarketplaceCard;
