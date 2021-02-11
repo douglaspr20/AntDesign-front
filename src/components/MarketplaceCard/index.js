@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 import { CustomButton, SpecialtyItem } from 'components';
 
@@ -20,7 +21,7 @@ const MarketplaceCard = ({
   contact_email='',
   contact_phone='',
   categories=[],
-  allCategories=[]
+  allCategories=[],
 }) => {
   const onVisitWebSite = (url) => {
     window.open(url, "_blank");
@@ -100,5 +101,29 @@ const MarketplaceCard = ({
     </div>
   </div>);
 };
+MarketplaceCard.propTypes = {
+  name: PropTypes.string,
+  description: PropTypes.string,
+  url: PropTypes.string,
+  logoUrl: PropTypes.string,
+  contact_name: PropTypes.string,
+  contact_position: PropTypes.string,
+  contact_email: PropTypes.string,
+  contact_phone: PropTypes.string,
+  categories: PropTypes.array,
+  allCategories: PropTypes.array,
+};
 
+MarketplaceCard.defaultProps = {
+  name: '',
+  description: '',
+  url: '',
+  logoUrl: '',
+  contact_name: '',
+  contact_position: '',
+  contact_email: '',
+  contact_phone: '',
+  categories: [],
+  allCategories: [],
+};
 export default MarketplaceCard;

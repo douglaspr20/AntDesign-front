@@ -6,16 +6,16 @@ import {
 } from "../actions/marketplaceCategories-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import { getCategories } from "../../api";
+import { getAllMarketplaceCategories } from "../../api";
 
 export function* getAllMarketplaceCategoriesSaga() {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getCategories);
+    const response = yield call(getAllMarketplaceCategories);
 
     if (response.status === 200) {
-      yield put(marketplaceCategoriesActions.setAllMarketplaceCategories(response.data.categories));
+      yield put(marketplaceCategoriesActions.setAllMarketplaceCategories(response.data));
     }
 
     yield put(homeActions.setLoading(false));
