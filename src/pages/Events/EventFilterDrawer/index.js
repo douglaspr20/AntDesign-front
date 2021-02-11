@@ -54,9 +54,18 @@ const EventFilterDrawer = ({ allEvents, allCategories, onFilterChange }) => {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     Emitter.on(EVENT_TYPES.OPEN_EVENT_FILTER_DRAWER, () => {
-      setVisible(true);
+      if (isMounted) {
+        setVisible(true);
+      }
     });
+
+    return () => {
+      isMounted = false;
+      Emitter.off(EVENT_TYPES.OPEN_EVENT_FILTER_DRAWER);
+    };
   }, []);
 
   return (

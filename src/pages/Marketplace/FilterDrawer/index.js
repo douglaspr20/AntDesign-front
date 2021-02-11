@@ -39,6 +39,10 @@ const FilterDrawer = ({ onChange, searchFilters }) => {
     Emitter.on(MARKETPLACE_TYPES.OPEN_FILTER_PANEL, () => {
       setVisible(true);
     });
+
+    return () => {
+      Emitter.off(MARKETPLACE_TYPES.OPEN_FILTER_PANEL)
+    }
   }, []);
 
   return (
