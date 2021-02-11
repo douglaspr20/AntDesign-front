@@ -44,6 +44,10 @@ const FilterDrawer = ({ userProfile, onChange }) => {
     Emitter.on(EVENT_TYPES.OPEN_FILTER_PANEL, () => {
       setVisible(true);
     });
+
+    return () => {
+      Emitter.off(EVENT_TYPES.OPEN_FILTER_PANEL);
+    }
   }, []);
 
   return (
