@@ -256,7 +256,9 @@ const Mentoring = ({
             <MenteeList
               user={mentorInfo}
               total={
-                allMentees && allMentees.length > 0 ? allMentees[0].matchnum : 0
+                allMentees && allMentees.length > 0
+                  ? parseInt(allMentees[0].matchnum, 10)
+                  : 0
               }
               data={allMentees}
               loading={menteeLoading}
@@ -278,7 +280,9 @@ const Mentoring = ({
             <MentorList
               user={menteeInfo}
               total={
-                allMentors && allMentors.length > 0 ? allMentors[0].matchnum : 0
+                allMentors && allMentors.length > 0
+                  ? parseInt(allMentors[0].matchnum, 10)
+                  : 0
               }
               data={allMentors}
               loading={mentorLoading}
