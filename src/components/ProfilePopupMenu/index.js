@@ -14,7 +14,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
 
 import "./style.scss";
-import { getPortalSession } from "../../api/module/stripe";
+import { getPortalSession, getSubscription } from "../../api/module/stripe";
 
 // const ProfileMenus = [
 //   {
@@ -40,25 +40,33 @@ class ProfilePopupMenu extends React.Component {
     };
   }
 
-  componentWillReceiveProps() {
-    this.createPortalSession();
+  componentWillMount() {
+    this.loadSubscription();
   }
 
-  createPortalSession = async (accessToPortal=false) => {
-    if (this.props.userProfile.memberShip === "premium") {
+  loadSubscription = async () => {
+    if(this.state.subscription === null) {
       try {
-        let response = await getPortalSession();
+        let response = await getSubscription();
         this.setState({
-          portalSession: response.data.session,
           subscription: response.data.subscription,
-        }, () => {
-          if(accessToPortal===true){
-            window.open(this.state.portalSession.url, "_blank")
-          }
         });
       } catch (err) {
         console.log(err);
       }
+    }
+  }
+
+  createPortalSession = async () => {
+    try {
+      let response = await getPortalSession();
+      this.setState({
+        portalSession: response.data.session,
+      }, () => {
+        window.open(this.state.portalSession.url, "_blank")
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -119,7 +127,7 @@ class ProfilePopupMenu extends React.Component {
                     <a
                       onClick={(e) => {
                         e.preventDefault();
-                        this.createPortalSession(true);
+                        this.createPortalSession();
                       }}
                       rel="noopener noreferrer"
                       target="_blank"
