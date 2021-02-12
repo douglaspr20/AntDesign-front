@@ -31,11 +31,11 @@ const MarketplaceCard = ({
     <div className="marketplace-card__container">
       <div className="marketplace-card__container__logo">
         <img src={logoUrl != null && logoUrl !== '' ? logoUrl : DefaultMarketplaceLogo} alt="logo-img"/>
+        <CustomButton text="Visit website" size="sm" onClick={() => onVisitWebSite(url)} />
       </div>
       <div className="marketplace-card__container__content">
         <div className="marketplace-card__content__header">
           <h3>{name}</h3>
-          <CustomButton text="Visit website" size="sm" onClick={() => onVisitWebSite(url)} />
         </div>
         <div className="marketplace-card__content__subtitle">
           {(categories || []).map((item, index) => {
