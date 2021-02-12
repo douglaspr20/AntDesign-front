@@ -2,7 +2,6 @@ import React from "react";
 
 import {
   CustomButton,
-  CustomDrawer,
 } from "components";
 import JourneyCard from "pages/Journey/JourneyCard";
 
