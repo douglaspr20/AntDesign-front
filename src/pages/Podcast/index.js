@@ -35,7 +35,7 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
 
   apple: {
     icon: IconApplePodcast,
-    label: "Apple Podcasts",
+    label: "Apple Podcast",
     link:
       "https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4",
   },
@@ -110,7 +110,7 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
     if (episode.appleLink) {
       links.push({
         icon: IconApplePodcast,
-        label: "Apple Podcasts",
+        label: "Apple Podcast",
         link: episode.appleLink,
       });
     }

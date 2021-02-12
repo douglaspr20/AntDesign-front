@@ -6,8 +6,10 @@ export const getCheckoutSession = async (data) => {
   });
 };
 
-export const getPortalSession = async (data) => {
-  return await httpClient.post(`private/stripe/portal-session/`, {
-    ...data,
-  });
+export const getPortalSession = async () => {
+  return await httpClient.get(`private/stripe/portal-session/`);
+};
+
+export const getSubscription = async () => {
+  return await httpClient.get(`private/stripe/subscription/`);
 };

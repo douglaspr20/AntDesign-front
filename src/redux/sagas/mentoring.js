@@ -24,6 +24,9 @@ export function* setMentoringInfoSaga({ payload }) {
     if (response.status === 200) {
       yield put(mentoringActions.saveMentoringInfo([response.data.mentorInfo]));
       yield put(homeActions.updateUserInformation(response.data.user));
+      if (payload.callback) {
+        payload.callback();
+      }
     }
   } catch (error) {
     console.log(error);
@@ -40,6 +43,9 @@ export function* updateMentoringInfoSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(mentoringActions.saveMentoringInfo(response.data.mentorInfo));
+      if (payload.callback) {
+        payload.callback();
+      }
     }
   } catch (error) {
     console.log(error);

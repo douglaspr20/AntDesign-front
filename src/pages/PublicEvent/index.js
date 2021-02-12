@@ -1,41 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
+import { CheckOutlined } from "@ant-design/icons";
 
-import { DateAvatar, CustomButton, SpecialtyItem, RichEdit } from "components";
-import { getEvent } from "redux/actions/event-actions";
+import { CustomButton, SpecialtyItem, RichEdit } from "components";
+import { getEvent, addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
-import { SETTINGS, INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
-
-const monthStr = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
-const DataFormat = SETTINGS.DATE_FORMAT;
 
 const PublicEventPage = ({
   match,
   updatedEvent,
   isAuthenticated,
   getEvent,
+  addToMyEventList,
 }) => {
   const [canonicalUrl, setCanonicalUrl] = useState("");
+
+  const onAttend = () => {
+    if (isAuthenticated) {
+      addToMyEventList(updatedEvent);
+    }
+  };
 
   useEffect(() => {
     if (match.params.id) {
@@ -55,7 +46,10 @@ const PublicEventPage = ({
         <title>{updatedEvent.title}</title>
         <meta name="description" content={updatedEvent.about} />
         <meta name="twitter:creator" />
-        <meta name="twitter:image" content={updatedEvent.image || updatedEvent.image2} />
+        <meta
+          name="twitter:image"
+          content={updatedEvent.image || updatedEvent.image2}
+        />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={updatedEvent.title} />
         <meta property="og:description" content={updatedEvent.about} />
@@ -77,11 +71,24 @@ const PublicEventPage = ({
           <img src={updatedEvent.image} alt="event-img" />
         )}
         <div className="public-event-page-header-title">
-          <Link
-            to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
-          >
-            <CustomButton text="Attend" size="lg" type="primary" />
-          </Link>
+          {updatedEvent.status === "attend" && (
+            <Link
+              to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
+            >
+              <CustomButton
+                text="Attend"
+                size="lg"
+                type="primary"
+                onClick={onAttend}
+              />
+            </Link>
+          )}
+          {updatedEvent.status === "going" && (
+            <div className="going-label">
+              <CheckOutlined />
+              <span>I'm going</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="public-event-page-content">
@@ -92,9 +99,7 @@ const PublicEventPage = ({
         >
           {updatedEvent.title}
         </h1>
-        <h3 className="event-date">
-          {updatedEvent.period}
-        </h3>
+        <h3 className="event-date">{updatedEvent.period}</h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
         )} event`}</h3>
@@ -129,6 +134,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getEvent,
+  addToMyEventList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicEventPage);

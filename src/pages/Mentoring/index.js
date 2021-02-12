@@ -63,40 +63,60 @@ const Mentoring = ({
   const onSaveMentorSetting = (data) => {
     setOpenSetting(false);
     if (isMentor) {
-      updateMentoringInfo({
-        id: mentorInfo.id,
-        title: data.title,
-        about: data.reason,
-        areas: data.specialties,
-        isMentor: 1,
-      });
+      updateMentoringInfo(
+        {
+          id: mentorInfo.id,
+          title: data.title,
+          about: data.reason,
+          areas: data.specialties,
+          isMentor: 1,
+        },
+        () => {
+          getMenteeList();
+        }
+      );
     } else {
-      setMentoringInfo({
-        title: data.title,
-        about: data.reason,
-        areas: data.specialties,
-        isMentor: 1,
-      });
+      setMentoringInfo(
+        {
+          title: data.title,
+          about: data.reason,
+          areas: data.specialties,
+          isMentor: 1,
+        },
+        () => {
+          getMenteeList();
+        }
+      );
     }
   };
 
   const onSaveMenteeSetting = (data) => {
     setOpenSetting(false);
     if (isMentee) {
-      updateMentoringInfo({
-        id: menteeInfo.id,
-        title: data.title,
-        about: data.reason,
-        areas: data.specialties,
-        isMentor: 0,
-      });
+      updateMentoringInfo(
+        {
+          id: menteeInfo.id,
+          title: data.title,
+          about: data.reason,
+          areas: data.specialties,
+          isMentor: 0,
+        },
+        () => {
+          getMentorList();
+        }
+      );
     } else {
-      setMentoringInfo({
-        title: data.title,
-        about: data.reason,
-        areas: data.specialties,
-        isMentor: 0,
-      });
+      setMentoringInfo(
+        {
+          title: data.title,
+          about: data.reason,
+          areas: data.specialties,
+          isMentor: 0,
+        },
+        () => {
+          getMentorList();
+        }
+      );
     }
   };
 
@@ -235,7 +255,11 @@ const Mentoring = ({
           <div className="mentoring-page-container">
             <MenteeList
               user={mentorInfo}
-              total={countOfResults2}
+              total={
+                allMentees && allMentees.length > 0
+                  ? parseInt(allMentees[0].total, 10)
+                  : 0
+              }
               data={allMentees}
               loading={menteeLoading}
               hideMore={
@@ -255,7 +279,11 @@ const Mentoring = ({
           <div className="mentoring-page-container">
             <MentorList
               user={menteeInfo}
-              total={countOfResults1}
+              total={
+                allMentors && allMentors.length > 0
+                  ? parseInt(allMentors[0].total, 10)
+                  : 0
+              }
               data={allMentors}
               loading={mentorLoading}
               hideMore={

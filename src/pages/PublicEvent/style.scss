@@ -16,7 +16,6 @@
     img {
       width: 100%;
       height: 100%;
-      min-height: 300px;
     }
 
     &-title {
@@ -47,6 +46,32 @@
 
         &.no-image {
           color: $color-text-primary !important;
+        }
+      }
+
+      .going-label {
+        color: $color-success;
+        @include app-font(16px, 19px, normal);
+        white-space: nowrap;
+        height: 40px;
+        padding: 0 20px 0 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        background: $color-white;
+        border: 1px solid $color-border;
+  
+        span {
+          margin-left: 0.5rem;
+        }
+  
+        @media (max-width: 575.98px) {
+          height: 36px;
+  
+          .anticon.anticon-check {
+            margin-right: 0.5rem;
+          }
         }
       }
 
