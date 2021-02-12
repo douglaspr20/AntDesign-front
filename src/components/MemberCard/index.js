@@ -38,15 +38,13 @@ const MemberCard = ({
       <div className="member-card-right">
         <div className="member-card-right-header">
           <h3 className="member-name">{`${user.firstName} ${user.lastName}`}</h3>
-          {user.ismatch > 0 && (
-            <CustomButton
-              text={user.connected ? "Connected" : "Match"}
-              size="sm"
-              type="primary"
-              disabled={user.connected}
-              onClick={onClickMatch}
-            />
-          )}
+          <CustomButton
+            text={user.connected ? "Connected" : "Match"}
+            size="sm"
+            type="primary"
+            disabled={user.connected}
+            onClick={onClickMatch}
+          />
         </div>
         <h5 className="member-title">{user.title}</h5>
         <p className="member-about">{user.mentorabout}</p>
