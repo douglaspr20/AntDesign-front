@@ -8,6 +8,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomSelect,
+  CustomSwitch,
 } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
@@ -280,6 +281,19 @@ class ProfileEditPanel extends React.Component {
                 </div>
               ))}
             </div>
+            <h5 className="textfield-label">
+              Are open to receiving information/being contacted via email about
+              open job positions?
+            </h5>
+            <CustomSwitch
+              className="open-receive-email"
+              checkedChildren="Yes"
+              unCheckedChildren="No"
+              checked={user.isOpenReceivingEmail === 1}
+              onChange={(checked) =>
+                this.onFieldChange("isOpenReceivingEmail", checked ? 1 : 0)
+              }
+            />
           </div>
         </div>
         <div className="profile-edit-panel-footer">
