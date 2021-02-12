@@ -50,14 +50,16 @@ const MemberDrawer = ({
             percent={member.percentOfCompletion}
           />
           <h1 className="user-info-name">{`${member.firstName} ${member.lastName}`}</h1>
-          <CustomButton
-            className="profile-complete-btn"
-            text={member.connected ? "Connected" : "Match"}
-            type="primary"
-            size="lg"
-            disabled={member.connected}
-            onClick={() => !member.connected && onMatch()}
-          />
+          {member.ismatch > 0 && (
+            <CustomButton
+              className="profile-complete-btn"
+              text={member.connected ? "Connected" : "Match"}
+              type="primary"
+              size="lg"
+              disabled={member.connected}
+              onClick={() => !member.connected && onMatch()}
+            />
+          )}
         </div>
         <div className="member-details-content">
           <h5 className="member-details-content-label">
