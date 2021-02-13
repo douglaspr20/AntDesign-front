@@ -12,12 +12,17 @@ import {
 
 import "./style.scss";
 
-const JourneyForm = ({ allCategories }) => {
-  return (<div class="learning-journey-form">
+const JourneyForm = ({
+  allCategories,
+  onSave,
+  onCancel,
+}) => {
+  return (<div className="learning-journey-form">
     <h3>Create learning journey</h3>
 
     <Form
       layout="vertical"
+      onFinish={onSave}
     >
       <Form.Item
         label="Journey name"
@@ -96,11 +101,13 @@ const JourneyForm = ({ allCategories }) => {
             text="Cancel"
             type="third outlined"
             size="xl"
+            onClick={onCancel}
           />
           <CustomButton
             text="Save"
             type="secondary"
             size="lg"
+            htmlType="submit"
           />
         </div>
       </Form.Item>

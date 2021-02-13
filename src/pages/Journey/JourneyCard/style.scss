@@ -2,7 +2,7 @@
 
 .learning-journey-card {
   width: 100%;
-  height: 238px;
+  min-height: 238px;
   background-color: $color-white;
   border: 1px solid $color-border;
   border-radius: 8px;
@@ -11,9 +11,10 @@
   padding: 1rem;
   display: flex;
   flex-direction: row;
+  margin-bottom: 2rem;
 
   &__info {
-    width: 100%;
+    width: 100%;    
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -23,6 +24,18 @@
     span {
       margin-top: 1rem;
       color: $color-text-secondary;
+    }
+  }
+
+  &__info--topics {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+
+    .specialty-item {
+      margin-right: 1rem;
+      margin-bottom: 1rem;
     }
   }
 
