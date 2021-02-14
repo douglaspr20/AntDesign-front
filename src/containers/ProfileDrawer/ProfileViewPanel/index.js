@@ -167,10 +167,14 @@ class ProfileViewPanel extends React.Component {
           </h5>
           <h3
             className={clsx("textfield-value", {
-              completed: user.isOpenReceivingEmail === 1,
+              completed: user.isOpenReceivingEmail !== -1,
             })}
           >
-            {user.isOpenReceivingEmail === 1 ? "Yes" : "No"}
+            {user.isOpenReceivingEmail === 1
+              ? "Yes"
+              : user.isOpenReceivingEmail === 0
+              ? "No"
+              : "-"}
           </h3>
         </div>
       </div>
