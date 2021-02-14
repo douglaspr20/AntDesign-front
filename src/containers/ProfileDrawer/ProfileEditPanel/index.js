@@ -36,7 +36,6 @@ class ProfileEditPanel extends React.Component {
   }
 
   onFieldChange = (field, value, subField) => {
-    console.log("*****", field, value);
     if (field === "personalLinks") {
       this.setState((state) => {
         state.user.personalLinks[subField] = value ? `https://${value}` : "";
