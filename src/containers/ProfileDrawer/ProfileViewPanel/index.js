@@ -161,6 +161,21 @@ class ProfileViewPanel extends React.Component {
               </div>
             ))}
           {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
+          <h5 className="textfield-label">
+            Are open to receiving information/being contacted via email about
+            open job positions?
+          </h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: user.isOpenReceivingEmail !== -1,
+            })}
+          >
+            {user.isOpenReceivingEmail === 1
+              ? "Yes"
+              : user.isOpenReceivingEmail === 0
+              ? "No"
+              : "-"}
+          </h3>
         </div>
       </div>
     );
