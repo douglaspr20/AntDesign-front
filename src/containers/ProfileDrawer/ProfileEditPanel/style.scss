@@ -167,6 +167,10 @@
 
     .open-receive-email {
       margin-top: 1.5rem;
+
+      .ant-radio-wrapper:first-child {
+        margin-bottom: 0.75rem;
+      }
     }
 
     @media (max-width: 575.98px) {

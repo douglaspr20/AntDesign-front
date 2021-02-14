@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox, Modal, notification } from "antd";
+import { Checkbox, Modal, notification, Radio } from "antd";
 import { connect } from "react-redux";
 
 import {
@@ -8,7 +8,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomSelect,
-  CustomSwitch,
+  CustomRadio,
 } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
@@ -36,6 +36,7 @@ class ProfileEditPanel extends React.Component {
   }
 
   onFieldChange = (field, value, subField) => {
+    console.log("*****", field, value);
     if (field === "personalLinks") {
       this.setState((state) => {
         state.user.personalLinks[subField] = value ? `https://${value}` : "";
@@ -285,15 +286,16 @@ class ProfileEditPanel extends React.Component {
               Are open to receiving information/being contacted via email about
               open job positions?
             </h5>
-            <CustomSwitch
+            <Radio.Group
               className="open-receive-email"
-              checkedChildren="Yes"
-              unCheckedChildren="No"
-              checked={user.isOpenReceivingEmail === 1}
-              onChange={(checked) =>
-                this.onFieldChange("isOpenReceivingEmail", checked ? 1 : 0)
+              value={user.isOpenReceivingEmail}
+              onChange={(e) =>
+                this.onFieldChange("isOpenReceivingEmail", e.target.value)
               }
-            />
+            >
+              <CustomRadio value={1}>Yes</CustomRadio>
+              <CustomRadio value={0}>No</CustomRadio>
+            </Radio.Group>
           </div>
         </div>
         <div className="profile-edit-panel-footer">
