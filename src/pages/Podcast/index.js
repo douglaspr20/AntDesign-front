@@ -220,6 +220,7 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
               <div className="podcast-page__episodes-col" key={episode.id}>
                 <EpisodeCard
                   id={episode.id}
+                  title={episode.title}
                   created_at={moment(episode.dateEpisode)}
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}

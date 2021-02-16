@@ -29,7 +29,7 @@
   padding: 1rem;
   flex: 1;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
 
   > * + * {
     margin-top: 0.5rem;
@@ -53,6 +53,11 @@
     & > * {
       margin: 0 0.5rem 0.5rem 0;
     }
+  }
+
+  &-title {
+    color: $color-text-secondary;
+    @include app-font(20px, 22px, 500);
   }
 }
 
