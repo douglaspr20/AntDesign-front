@@ -15,6 +15,8 @@ import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
+import ClassesPage from "pages/Classes";
+import MicroClassPage from "pages/MicroClass";
 import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
@@ -74,6 +76,14 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.HEART}
             render={(props) => <HEARTPage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.CLASSES}
+            render={(props) => <ClassesPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.MICRO_CLASS}/:id`}
+            render={(props) => <MicroClassPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}

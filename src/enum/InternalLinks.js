@@ -14,6 +14,8 @@ export default {
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
   HEART: "/heart",
+  CLASSES: "/classes",
+  MICRO_CLASS: "/micro-class",
   PODCAST: "/podcast",
   PUBLIC_EVENT: "/public-event",
   JOIN: "/join",

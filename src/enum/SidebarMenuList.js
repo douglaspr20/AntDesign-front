@@ -40,11 +40,6 @@ export default {
       url: INTERNAL_LINKS.EVENTS,
     },
     {
-      label: "Classes",
-      icon: IconMedal,
-      url: INTERNAL_LINKS.CERTIFICATIONS,
-    },
-    {
       label: "Hub",
       icon: IconReader,
       url: INTERNAL_LINKS.HUB,
