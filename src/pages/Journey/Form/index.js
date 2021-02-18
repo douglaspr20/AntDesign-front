@@ -76,11 +76,11 @@ const JourneyForm = ({
             </Col>
             <Col span={8}>
               <CustomCheckbox
-                key={'slides'}
-                value={'slides'}
+                key={'event'}
+                value={'event'}
                 size="sm"
               >
-                Slides
+                Event
               </CustomCheckbox>
             </Col>
             <Col span={8}>

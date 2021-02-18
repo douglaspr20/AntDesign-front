@@ -21,7 +21,7 @@ const JourneyPage = ({
   allJourneys,
 }) => {
   const [showForm, setShowForm] = useState(false);
-  const [journeyId, setJourneyId] = useState(1);
+  const [journeyId, setJourneyId] = useState(0);
 
   useEffect(() => {
     getAllJourneys();
