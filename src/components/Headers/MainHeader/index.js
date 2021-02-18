@@ -1,9 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  withRouter 
-} from "react-router-dom";
 
 import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS_ADDITIONAL_DATA_FOR_HEADER } from "enum";
 import CustomButton from "../../Button";
