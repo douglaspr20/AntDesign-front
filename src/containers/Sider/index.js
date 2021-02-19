@@ -27,6 +27,7 @@ class Sider extends Component {
           render={() => <Sidebar />}
         />
         <PrivateRoute path={INTERNAL_LINKS.JOURNEY} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.JOURNEY_FORM} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.HUB} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.PODCAST} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.FAVORITES} render={() => <Sidebar />} />

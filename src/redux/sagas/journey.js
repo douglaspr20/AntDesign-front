@@ -7,6 +7,7 @@ import {
 import { actions as homeActions } from "../actions/home-actions";
 import {
   getAllJourneys,
+  get,
   post,
 } from "../../api/module/journey";
 
@@ -18,6 +19,23 @@ export function* getAllJourneysSaga() {
 
     if (response.status === 200) {
       yield put(journeyActions.setAllJourneys(response.data.journeys));
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getJourneySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(get, payload.id);
+
+    if (response.status === 200) {
+      yield put(journeyActions.setJourney(response.data.journey));
     }
 
     yield put(homeActions.setLoading(false));
@@ -46,6 +64,7 @@ export function* addJourneySaga({ payload }) {
 function* watchLogin() {
   yield takeLatest(journeyConstants.GET_ALL_JOURNEYS, getAllJourneysSaga);
   yield takeLatest(journeyConstants.ADD_JOURNEY, addJourneySaga);
+  yield takeLatest(journeyConstants.GET_JOURNEY, getJourneySaga);
 }
 
 export const journeySaga = [fork(watchLogin)];

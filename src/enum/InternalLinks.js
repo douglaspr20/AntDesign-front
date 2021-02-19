@@ -14,6 +14,7 @@ export default {
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
   JOURNEY: "/journey",
+  JOURNEY_FORM: "/journey-form",
   HEART: "/heart",
   PODCAST: "/podcast",
   PUBLIC_EVENT: "/public-event",

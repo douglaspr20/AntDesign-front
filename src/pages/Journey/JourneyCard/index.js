@@ -16,6 +16,7 @@ const JourneyCard = ({
   started,
   categories,
   allCategories,
+  onClick,
 }) => {
   return (<div className="learning-journey-card">
     <div className="learning-journey-card__info">
@@ -34,7 +35,7 @@ const JourneyCard = ({
       </div>
     </div>
     <div className="learning-journey-card__actions">
-      <CustomButton text="Go to journey" size="sm" />
+      <CustomButton text="Go to journey" onClick={onClick} size="sm" />
       <span className="learning-journey-card__actions--progress"><span>0</span>% completed</span>
       <Progress percent={0} size="small" showInfo={false} strokeColor="#438cef" />
     </div>

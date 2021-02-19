@@ -1,10 +1,20 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Typography, Button } from 'antd';
+
+import { ReactComponent as IconMenuOutline } from 'images/icon-menu-outline.svg';
+
+const { Paragraph } = Typography;
 
 const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
-const JourneyDetailsCard = () => {
+const JourneyDetailsCard = ({
+  title,
+  description,
+  link,
+  type,
+  image,
+}) => {
   return (<>
     <div className="journey-details-container__card__container">
       <div className="journey-details-container__card__container--check">
@@ -13,20 +23,27 @@ const JourneyDetailsCard = () => {
       </div>
       <div className="journey-details-container__card__container--content">
         <div className="journey-details-container__card__container--content--order">
-          --<br></br>
-          --<br></br>
-          --<br></br>
+          <IconMenuOutline />
         </div>
         <div className="journey-details-container__card__container--content--card">
-          <img
-            src={HARDCODED_COVER_PLACEHOLDER}
-            alt="header-img"
-          />
+          <div className="card-image">
+            <img
+              src={image || HARDCODED_COVER_PLACEHOLDER}
+              alt="header-img"
+            />
+          </div>
           <div className="card-information">
-            <h3>We want to show you the most relevan information for you the most relevan information for you</h3>
-            <p>Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit…</p>
+            <h3>{title}</h3>
+            <Paragraph
+               ellipsis={{
+                rows: 3,
+                expandable: false,
+              }}
+            >
+              {description}
+            </Paragraph>
             <div className="card-information-footer">
-              <span className="content-type">Article</span>
+              <span className="content-type">{type}</span>
               <div className="card--actions" >
                 <Button type="primary">Mark as viewed</Button>
                 <Button danger>Remove</Button>

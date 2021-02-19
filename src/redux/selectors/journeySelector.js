@@ -6,6 +6,7 @@ const resultSelector = createSelector(journeyDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
     allJourneys: payload.get("allJourneys"),
+    journey: payload.get("journey"),
   };
 });
 

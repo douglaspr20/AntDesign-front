@@ -1,4 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
+
+import {
+  getJourney,
+} from "redux/actions/journey-actions";
+import {
+  getAllJourneyItems,
+} from "redux/actions/journeyItem-actions";
 
 import {
   CustomButton,
@@ -10,11 +18,19 @@ import "./style.scss";
 const JourneyCardList = ({
   allJourneys,
   showForm,
+  getAllJourneyItems,
+  getJourney,
 }) => {
-  return (<div class="learning-journey-card-list">
+
+  const getJourneyDetails = (id) => {
+    getJourney(id);
+    getAllJourneyItems(id);
+  };
+
+  return (<div className="learning-journey-card-list">
     <div className="learning-journey-card-list__header">
-        <h3>Learning journey list</h3>
-        <CustomButton onClick={showForm} text="Create journey" size="sm" />
+      <h3>Learning journey list</h3>
+      <CustomButton onClick={showForm} text="Create journey" size="sm" />
     </div>
     <div className="learning-journey-card-list__results">
       {
@@ -24,11 +40,22 @@ const JourneyCardList = ({
             name={item.name}
             started={item.createdAt}
             categories={item.topics}
+            onClick={() => { getJourneyDetails(item.id); }}
           />);
         })
       }
     </div>
   </div>);
 };
+const mapStateToProps = (state, props) => ({ 
+});
 
-export default JourneyCardList
+const mapDispatchToProps = {
+  getAllJourneyItems,
+  getJourney,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JourneyCardList);
