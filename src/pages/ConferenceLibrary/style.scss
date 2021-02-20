@@ -6,7 +6,6 @@
   width: 100%;
 
   &-about {
-    background: $color-white;
     height: 100%;
 
     .about-title {
@@ -114,6 +113,7 @@
 
     .conference-library-page-about {
       padding: 60px 4rem 0;
+      background: $color-white;
     }
 
     .conference-library-filter-panel {
