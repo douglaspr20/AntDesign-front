@@ -11,6 +11,7 @@ import IconBookmark from "images/icon-bookmark.svg";
 import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
+import IconConferenceVideo from "images/icon-sidebar-video.svg";
 
 export default {
   TOP_MENUS: [
@@ -18,6 +19,11 @@ export default {
       label: "Home",
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
+    },
+    {
+      label: "Conference library",
+      icon: IconConferenceVideo,
+      url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
     {
       label: "Heart",
@@ -45,7 +51,7 @@ export default {
       url: INTERNAL_LINKS.CERTIFICATIONS,
     },
     {
-      label: "Hub",
+      label: "Annual Conference",
       icon: IconReader,
       url: INTERNAL_LINKS.HUB,
     },
