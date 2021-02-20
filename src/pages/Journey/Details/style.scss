@@ -20,6 +20,7 @@
         height: 23px;
         margin-right: 1em;
         color: $color-accent;
+        cursor: pointer;
       }
     }
 
@@ -67,7 +68,7 @@
 
   &__list {
     margin-top: 1em;
-    margin-bottom: 1em;
+    padding-bottom: 1em;
   }
 
   &__card__container {
@@ -97,6 +98,30 @@
         margin-left: -18px;
         opacity: 1;
         background-color: $color-white;
+        
+        svg{
+          display: none;
+        }
+      }
+      &--blue-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
+        background-color: $color-accent;
+        margin-left: -18px;
+        opacity: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg{
+          width: 85%;
+          margin: 0 auto;
+          path{
+            stroke: $color-white;
+            stroke-width: 60px;
+          }
+        }
       }
     }
 
@@ -178,5 +203,19 @@
         }
       }
     }
+  }
+}
+
+.removed {
+  .card-image {
+    opacity: 0.5;
+  }
+  .card-information {
+    h3, .ant-typography {
+      opacity: 0.5;
+    }
+  }
+  .journey-details-container__card__container--check--blue-circle {
+    opacity: 0;
   }
 }

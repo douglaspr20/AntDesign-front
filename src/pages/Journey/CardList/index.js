@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import {
@@ -24,7 +25,7 @@ const JourneyCardList = ({
 
   const getJourneyDetails = (id) => {
     getJourney(id);
-    getAllJourneyItems(id);
+    getAllJourneyItems({id});
   };
 
   return (<div className="learning-journey-card-list">
@@ -47,6 +48,21 @@ const JourneyCardList = ({
     </div>
   </div>);
 };
+
+JourneyCardList.propTypes = {
+  allJourneys: PropTypes.array,
+  showForm: PropTypes.func,
+  getAllJourneyItems: PropTypes.func,
+  getJourney: PropTypes.func,
+};
+
+JourneyCardList.defaultProps = {
+  allJourneys: [],
+  showForm: () => {},
+  getAllJourneyItems: () => {},
+  getJourney: () => {},
+};
+
 const mapStateToProps = (state, props) => ({ 
 });
 

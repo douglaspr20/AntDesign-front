@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import {
   getAllJourneys,
   addJourney,
+  updateJourney,
+  setShowForm,
 } from "redux/actions/journey-actions";
 
 
 import { journeySelector } from "redux/selectors/journeySelector";
-import { journeyItemSelector } from "redux/selectors/journeyItemSelector";
 
 import JourneyHomeMessage from "./Message";
 import JourneyCardList from "./CardList";
@@ -20,17 +21,23 @@ import "./style.scss";
 const JourneyPage = ({
   getAllJourneys,
   addJourney,
+  updateJourney,
   allJourneys,
   journey,
+  setShowForm,
+  showForm,
 }) => {
-  const [showForm, setShowForm] = useState(false);
-
   useEffect(() => {
     getAllJourneys();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFinish = (data) => {
-    addJourney(data);
+    if(journey == null) {
+      addJourney(data);
+    } else {
+      updateJourney(journey.id ,data);
+    }
     closeForm();
   };
 
@@ -61,8 +68,10 @@ const JourneyPage = ({
       />
     }
     {
-      journey != null &&
-      <JourneyDetails />
+      journey != null && !showForm &&
+      <JourneyDetails
+        showForm={() => { setShowForm(true); }}
+      />
     }
   </div>);
 };
@@ -70,11 +79,14 @@ const JourneyPage = ({
 const mapStateToProps = (state, props) => ({
   allJourneys: journeySelector(state).allJourneys,
   journey: journeySelector(state).journey,
+  showForm: journeySelector(state).showForm,
 });
 
 const mapDispatchToProps = {
   addJourney,
+  updateJourney,
   getAllJourneys,
+  setShowForm,
 };
 
 export default connect(

@@ -1,8 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Form, Checkbox, Row, Col } from 'antd';
 
 import { categorySelector } from "redux/selectors/categorySelector";
+import { journeySelector } from "redux/selectors/journeySelector";
 
 import {
   CustomInput,
@@ -16,13 +18,15 @@ const JourneyForm = ({
   allCategories,
   onSave,
   onCancel,
+  journey,
 }) => {
   return (<div className="learning-journey-form">
-    <h3>Create learning journey</h3>
+    <h3>{ journey != null ? 'Update' : 'Create' } learning journey</h3>
 
     <Form
       layout="vertical"
       onFinish={onSave}
+      initialValues={journey}
     >
       <Form.Item
         label="Journey name"
@@ -37,7 +41,7 @@ const JourneyForm = ({
         <Checkbox.Group>
           <Row>
             {allCategories.map((item) => (
-              <Col span={8}>
+              <Col key={`column-${item.value}`} span={8}>
                 <CustomCheckbox
                   key={item.value}
                   value={item.value}
@@ -115,8 +119,24 @@ const JourneyForm = ({
 
   </div>);
 };
+
+JourneyForm.propTypes = {
+  allCategories: PropTypes.array,
+  onSave: PropTypes.func,
+  onCancel: PropTypes.func,
+  journey: PropTypes.object,
+};
+
+JourneyForm.defaultProps = {
+  allCategories: [],
+  onSave: () => {},
+  onCancel: () => {},
+  journey: null,
+};
+
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  journey: journeySelector(state).journey,
 });
 
 export default connect(mapStateToProps)(JourneyForm);

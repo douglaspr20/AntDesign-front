@@ -9,6 +9,7 @@ import {
   getAllJourneys,
   get,
   post,
+  put as updateJourney
 } from "../../api/module/journey";
 
 export function* getAllJourneysSaga() {
@@ -52,7 +53,24 @@ export function* addJourneySaga({ payload }) {
     const response = yield call(post, payload.journey);
 
     if (response.status === 200) {
-      
+      yield put(journeyActions.setShowForm(false));
+    }
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* updateJourneySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateJourney, payload);
+
+    if (response.status === 200) {
+      yield put(journeyActions.setShowForm(false));
+      yield put(journeyActions.unsetJourney());
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
@@ -64,6 +82,7 @@ export function* addJourneySaga({ payload }) {
 function* watchLogin() {
   yield takeLatest(journeyConstants.GET_ALL_JOURNEYS, getAllJourneysSaga);
   yield takeLatest(journeyConstants.ADD_JOURNEY, addJourneySaga);
+  yield takeLatest(journeyConstants.UPDATE_JOURNEY, updateJourneySaga);
   yield takeLatest(journeyConstants.GET_JOURNEY, getJourneySaga);
 }
 

@@ -11,3 +11,8 @@ export const get = async (id) => {
 export const post = async (data) => {
   return await httpClient.post(`private/journey/`, data);
 };
+
+export const put = async (data) => {
+  console.log(data);
+  return await httpClient.put(`private/journey/${data.id}`, data.journey);
+};

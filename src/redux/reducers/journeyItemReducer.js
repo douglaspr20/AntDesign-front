@@ -8,7 +8,6 @@ import { constants as journeyItemConstants } from "../actions/journeyItem-action
 // Events's Reducer
 export const reducers = {
   [journeyItemConstants.SET_JOURNEY_ITEMS]: (state, { payload }) => {
-    console.log(payload);
     return state.merge({ allJourneyItems: cloneDeep(payload.journeyItems) });
   },
   [journeyItemConstants.SET_JOURNEY_ID]: (state, { payload }) => {

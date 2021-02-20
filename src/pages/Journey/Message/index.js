@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import {
   CustomButton,
@@ -18,6 +19,14 @@ const JourneyHomeMessage = ({
     </h3>
     <CustomButton onClick={onClick} text="Yes, I want create a journey" size="md" />
   </div>);
+};
+
+JourneyHomeMessage.propTypes = {
+  onClick: PropTypes.func,
+};
+
+JourneyHomeMessage.defaultProps = {
+  onClick: () => {},
 };
 
 export default JourneyHomeMessage;

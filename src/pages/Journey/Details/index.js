@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { Switch, Progress } from 'antd';
 import { connect } from "react-redux";
 import moment from 'moment';
@@ -6,6 +7,10 @@ import moment from 'moment';
 import {
   unsetJourney,
 } from "redux/actions/journey-actions";
+import {
+  updateJourneyItem,
+  getAllJourneyItems,
+} from "redux/actions/journeyItem-actions";
 import { journeySelector } from "redux/selectors/journeySelector";
 import { journeyItemSelector } from "redux/selectors/journeyItemSelector";
 
@@ -21,13 +26,10 @@ const JourneyDetails = ({
   journey,
   allJourneyItems,
   unsetJourney,
+  updateJourneyItem,
+  getAllJourneyItems,
+  showForm,
 }) => {
-  const contentType = {
-    'article': "Article",
-    'event': "Event",
-    'podcast': "Podcast",
-    'video': "Video",
-  };
   const getDescription = (item) => {
     if(item.contentType === 'event'){
       const description = JSON.parse(item.description);
@@ -36,6 +38,55 @@ const JourneyDetails = ({
       return item.description;
     }
   };
+
+  const markAsViewed = (id) => {
+    const data = {
+      id,
+      journeyId: journey.id,
+      viewed: true,
+    };
+    updateJourneyItem(data);
+  }
+
+  const viewed = (id) => {
+    const data = {
+      id,
+      journeyId: journey.id,
+      viewed: false,
+    };
+    updateJourneyItem(data);
+  }
+
+  const remove = (id) => {
+    const data = {
+      id,
+      journeyId: journey.id,
+      removed: true,
+    };
+    updateJourneyItem(data);
+  }
+
+  const addItem = (id) => {
+    const data = {
+      id,
+      journeyId: journey.id,
+      removed: false,
+    };
+    updateJourneyItem(data);
+  }
+
+  const switchChange = (checked) => {
+    if(checked){
+      getAllJourneyItems({
+        id: journey.id,
+        removed: true,
+      });
+    } else{
+      getAllJourneyItems({
+        id: journey.id,
+      });
+    }
+  }
   return (<div className="journey-details-container">
     <div className="journey-details-container__header">
       <div className="journey-details-container__header--back">
@@ -48,9 +99,9 @@ const JourneyDetails = ({
       </div>
     </div>
     <div className="journey-details-container__actions">
-      <CustomButton text="Edit journey" size="sm" type="primary outlined" />
+      <CustomButton onClick={showForm} text="Edit journey" size="sm" type="primary outlined" />
       <div className="journey-details-container__actions--switch">
-        View removed items <Switch unCheckedChildren="No" checkedChildren="Yes" />
+        View removed items <Switch onChange={(checked) => { switchChange(checked); }} unCheckedChildren="No" checkedChildren="Yes" />
       </div>
     </div>
     <div className="journey-details-container__date">
@@ -60,16 +111,37 @@ const JourneyDetails = ({
       { 
         allJourneyItems.map((item) => {
           return(<JourneyDetailsCard
-            title={item.title}
-            image={item.image}
+            key={`joruney-card-${item.id}`}
+            element={item}
             description={getDescription(item)}
-            type={contentType[item.contentType]}
+            markAsViewed={() => { markAsViewed(item.id); }}
+            viewed={() => { viewed(item.id); }}
+            remove={() => { remove(item.id); }}
+            addItem={() => { addItem(item.id); }}
           />);
         })
       }
     </div>
   </div>);
-}
+};
+
+JourneyDetails.propTypes = {
+  journey: PropTypes.object,
+  allJourneyItems: PropTypes.array,
+  unsetJourney: PropTypes.func,
+  updateJourneyItem: PropTypes.func,
+  getAllJourneyItems: PropTypes.func,
+  showForm: PropTypes.func,
+};
+
+JourneyDetails.defaultProps = {
+  journey: null,
+  allJourneyItems: [],
+  unsetJourney: () => {},
+  updateJourneyItem: () => {},
+  getAllJourneyItems: () => {},
+  showForm: () => {},
+};
 
 const mapStateToProps = (state, props) => ({
   journey: journeySelector(state).journey,
@@ -78,6 +150,8 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = {
   unsetJourney,
+  updateJourneyItem,
+  getAllJourneyItems,
 };
 
 export default connect(

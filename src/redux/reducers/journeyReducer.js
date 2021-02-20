@@ -16,6 +16,9 @@ export const reducers = {
   [journeyConstants.UNSET_JOURNEY]: (state, { payload }) => {
     return state.merge({ journey: null });
   },
+  [journeyConstants.SHOW_FORM]: (state, { payload }) => {
+    return state.merge({ showForm: payload.value });
+  },
   [journeyConstants.SET_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
@@ -25,7 +28,8 @@ export const initialState = () =>
   Map({
     loading: false,
     allJourneys: [],
-    journey: null
+    journey: null,
+    showForm: false,
   });
 
 export default handleActions(reducers, initialState());
