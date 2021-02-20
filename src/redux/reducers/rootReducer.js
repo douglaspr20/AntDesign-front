@@ -10,6 +10,7 @@ import podcastReducer from "./podcastReducer";
 import marketplaceReducer from "./marketplaceReducer";
 import marketplaceCategoriesReducer from "./marketplaceCategoriesReducer";
 import categoryReducer from "./categoryReducer";
+import conferenceReducer from "./conferenceReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -22,4 +23,5 @@ export default combineReducers({
   marketplace: marketplaceReducer,
   marketplaceCategories: marketplaceCategoriesReducer,
   category: categoryReducer,
+  conference: conferenceReducer,
 });
