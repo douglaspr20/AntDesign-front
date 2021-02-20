@@ -6,6 +6,9 @@
   width: 100%;
 
   &-about {
+    background: $color-white;
+    height: 100%;
+
     .about-title {
       font-weight: 400 !important;
     }
@@ -40,6 +43,7 @@
 
       .filters-btn {
         color: $color-primary !important;
+        cursor: pointer;
 
         &.disabled {
           color: $color-disabled !important;
@@ -108,6 +112,10 @@
   @media (max-width: 1023.98px) {
     display: block;
 
+    .conference-library-page-about {
+      padding: 60px 4rem 0;
+    }
+
     .conference-library-filter-panel {
       display: none;
     }
@@ -142,6 +150,18 @@
   }
 
   @media (max-width: 767.98px) {
+    .conference-library-page-about {
+      padding: 24px 1rem 0;
+
+      .about-title {
+        text-align: center;
+      }
+
+      .about-content {
+        margin-bottom: 24px;
+      }
+    }
+
     .search-results-list {
       margin: 0 1rem 44px;
       grid-row-gap: 42px;

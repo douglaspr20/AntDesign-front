@@ -45,8 +45,8 @@ const ConferenceLibraryFilterPanel = ({ title, allCategories, onChange }) => {
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Year</h5>
           <Checkbox.Group
-            value={filters["topics"] ? JSON.parse(filters["topics"]) : []}
-            onChange={(values) => onFilterChange("Topics", values)}
+            value={filters["year"] ? JSON.parse(filters["year"]) : []}
+            onChange={(values) => onFilterChange("year", values)}
           >
             {YearOptions.map((item) => (
               <CustomCheckbox key={item} value={item} size="sm">

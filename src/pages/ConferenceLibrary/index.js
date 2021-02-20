@@ -31,6 +31,7 @@ const ConferenceLibrary = ({
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [filters, setFilters] = useState({});
+  const [visible, setVisible] = useState(false);
 
   const onShowMore = () => {
     getMoreLibraries({
@@ -38,10 +39,6 @@ const ConferenceLibrary = ({
       page: currentPage + 1,
       order: sortValue,
     });
-  };
-
-  const showFilterPanel = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
   const onFilterChange = (filters) => {
@@ -62,7 +59,11 @@ const ConferenceLibrary = ({
   return (
     <div className="conference-library-page">
       <ConferenceLibraryFilterPanel onChange={onFilterChange} />
-      {/* <ConferenceLibraryFilterDrawer onChange={onFilterChange} /> */}
+      <ConferenceLibraryFilterDrawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        onChange={onFilterChange}
+      />
       <div className="search-results-container">
         <Row>
           <Col span={24}>
@@ -81,10 +82,7 @@ const ConferenceLibrary = ({
         <Row>
           <Col span={24}>
             <div className="search-results-container-mobile-header">
-              <h3
-                className="filters-btn"
-                onClick={showFilterPanel}
-              >
+              <h3 className="filters-btn" onClick={() => setVisible(true)}>
                 Filters
               </h3>
               <h3>{`${numberWithCommas(countOfResults)} video${
