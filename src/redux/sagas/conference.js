@@ -3,7 +3,7 @@ import { put, fork, takeLatest, call } from "redux-saga/effects";
 import {
   constants as conferenceConstants,
   actions as conferenceActions,
-} from "../actions/library-actions";
+} from "../actions/conference-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { searchConferenceLibrary } from "../../api";
 
@@ -52,15 +52,15 @@ export function* searchConferenceLibrarySaga({ payload }) {
   }
 }
 
-function* watchLogin() {
+function* watchConference() {
   yield takeLatest(
-    conferenceConstants.GET_MORE_LIBRARIES,
+    conferenceConstants.GET_MORE_CONFERENCE_LIBRARIES,
     getMoreConferenceLibrariesSaga
   );
   yield takeLatest(
-    conferenceConstants.SEARCH_LIBRARIES,
+    conferenceConstants.SEARCH_CONFERENCE_LIBRARIES,
     searchConferenceLibrarySaga
   );
 }
 
-export const librarySaga = [fork(watchLogin)];
+export const conferenceSaga = [fork(watchConference)];

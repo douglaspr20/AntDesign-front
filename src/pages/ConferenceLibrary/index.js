@@ -7,13 +7,12 @@ import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
 import { CustomSelect, ConferenceCard, CustomButton } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
-import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { SETTINGS } from "enum";
 import {
-  getMoreLibraries,
-  searchLibraries,
-} from "redux/actions/library-actions";
-import { librarySelector } from "redux/selectors/librarySelector";
+  getMoreConferenceLibraries,
+  searchConferenceLibraries,
+} from "redux/actions/conference-actions";
+import { conferenceSelector } from "redux/selectors/conferenceSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -25,16 +24,16 @@ const ConferenceLibrary = ({
   loading,
   countOfResults,
   currentPage,
-  allLibraries,
-  getMoreLibraries,
-  searchLibraries,
+  allConferenceLibraries,
+  getMoreConferenceLibraries,
+  searchConferenceLibraries,
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
 
   const onShowMore = () => {
-    getMoreLibraries({
+    getMoreConferenceLibraries({
       ...filters,
       page: currentPage + 1,
       order: sortValue,
@@ -42,17 +41,17 @@ const ConferenceLibrary = ({
   };
 
   const onFilterChange = (filters) => {
-    searchLibraries(filters, sortValue);
+    searchConferenceLibraries(filters, sortValue);
     setFilters(filters);
   };
 
   const onSortChange = (value) => {
     setSortValue(value);
-    searchLibraries(filters, value);
+    searchConferenceLibraries(filters, value);
   };
 
   useEffect(() => {
-    searchLibraries({}, sortValue);
+    searchConferenceLibraries({}, sortValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,7 +107,7 @@ const ConferenceLibrary = ({
           </Col>
         </Row>
         <div className="search-results-list">
-          {allLibraries.map((item, index) => (
+          {allConferenceLibraries.map((item, index) => (
             <ConferenceCard key={index} data={item} />
           ))}
         </div>
@@ -139,15 +138,15 @@ ConferenceLibrary.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  loading: librarySelector(state).loading,
-  allLibraries: librarySelector(state).allLibraries,
-  countOfResults: librarySelector(state).countOfResults,
-  currentPage: librarySelector(state).currentPage,
+  loading: conferenceSelector(state).loading,
+  allConferenceLibraries: conferenceSelector(state).allConferenceLibraries,
+  countOfResults: conferenceSelector(state).countOfResults,
+  currentPage: conferenceSelector(state).currentPage,
 });
 
 const mapDispatchToProps = {
-  getMoreLibraries,
-  searchLibraries,
+  getMoreConferenceLibraries,
+  searchConferenceLibraries,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceLibrary);
