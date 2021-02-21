@@ -31,6 +31,7 @@ class Sider extends Component {
         <PrivateRoute path={INTERNAL_LINKS.FAVORITES} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.READ_LATER} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.MARKETPLACE} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CONFERENCE_LIBRARY} render={() => <Sidebar />} />
       </Switch>
     );
   }
