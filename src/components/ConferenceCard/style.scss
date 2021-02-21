@@ -32,12 +32,31 @@
     display: grid;
     grid-template-rows: auto auto 1fr auto;
     grid-row-gap: 0.5rem;
+    align-items: flex-start;
     padding: 1.5rem 1rem 1rem;
     overflow: hidden;
   }
 
   &-title {
     font-weight: 500 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  &-year {
+    @include app-font(12px, 16px);
+    color: $color-text-third !important;
+    margin-bottom: 1rem !important;
+  }
+
+  &-categories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow: hidden;
+
+    .specialty-item {
+      margin: 0 20px 1rem 0;
+    }
   }
 
   &-content-footer {

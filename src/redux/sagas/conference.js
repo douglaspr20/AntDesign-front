@@ -16,9 +16,9 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         conferenceActions.setMoreConferenceLibraries(
-          response.data.libraries.count,
+          response.data.conferences.count,
           payload.filter.page,
-          response.data.libraries.rows
+          response.data.conferences.rows
         )
       );
     }
@@ -38,9 +38,9 @@ export function* searchConferenceLibrarySaga({ payload }) {
     if (response.status === 200) {
       yield put(
         conferenceActions.setSearchConferenceLibraries(
-          response.data.libraries.count,
+          response.data.conferences.count,
           1,
-          response.data.libraries.rows
+          response.data.conferences.rows
         )
       );
     }

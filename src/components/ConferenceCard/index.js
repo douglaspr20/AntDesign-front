@@ -1,28 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import { SvgIcon } from "components";
+import { SvgIcon, SpecialtyItem } from "components";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import IconVideo from "images/icon-video.svg";
 
 import "./style.scss";
 
-const ConferenceCard = ({ data }) => {
-  const { title, image } = data || {};
+const ConferenceCard = ({ data, allCategories }) => {
+  const { title, year, categories } = data || {};
 
   const onCardClick = () => {
     if (data.link) {
-      // window.open(data.link);
+      window.open(data.link);
     }
   };
 
   return (
     <div className="conference-card" onClick={onCardClick}>
-      <div className="conference-card-header">
-        {image && <img src={image} alt="header-img" />}
-      </div>
+      <div className="conference-card-header"></div>
       <div className="conference-card-content">
         <h3 className="conference-card-title">{title}</h3>
+        <h6 className="conference-card-year">{year}</h6>
+        <div className="conference-card-categories">
+          {(categories || []).map((item, index) => {
+            const category = allCategories.find((cat) => cat.value === item);
+            return (
+              <SpecialtyItem
+                key={index}
+                title={category ? category.title : item}
+                active={false}
+              />
+            );
+          })}
+        </div>
         <div className="conference-card-content-footer">
           <div className="d-flex items-center">
             <div className="conference-card-icon">
@@ -49,4 +62,8 @@ ConferenceCard.defaultProps = {
   data: {},
 };
 
-export default ConferenceCard;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(ConferenceCard);

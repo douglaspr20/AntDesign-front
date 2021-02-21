@@ -1,11 +1,10 @@
 import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
-export const searchConferenceLibrary = ({ filter, order }) => {
+export const searchConferenceLibrary = ({ filter }) => {
   let newFilter = {
     page: 1,
     num: SETTINGS.MAX_SEARCH_ROW_NUM,
-    order,
   };
 
   if (filter) {

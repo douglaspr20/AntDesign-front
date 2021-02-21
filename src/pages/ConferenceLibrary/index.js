@@ -5,7 +5,7 @@ import { Row, Col } from "antd";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { CustomSelect, ConferenceCard, CustomButton } from "components";
+import { ConferenceCard, CustomButton } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { SETTINGS } from "enum";
 import {
@@ -18,8 +18,6 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const SortOptions = SETTINGS.SORT_OPTIONS;
-
 const ConferenceLibrary = ({
   loading,
   countOfResults,
@@ -28,7 +26,6 @@ const ConferenceLibrary = ({
   getMoreConferenceLibraries,
   searchConferenceLibraries,
 }) => {
-  const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
 
@@ -36,22 +33,16 @@ const ConferenceLibrary = ({
     getMoreConferenceLibraries({
       ...filters,
       page: currentPage + 1,
-      order: sortValue,
     });
   };
 
   const onFilterChange = (filters) => {
-    searchConferenceLibraries(filters, sortValue);
+    searchConferenceLibraries(filters);
     setFilters(filters);
   };
 
-  const onSortChange = (value) => {
-    setSortValue(value);
-    searchConferenceLibraries(filters, value);
-  };
-
   useEffect(() => {
-    searchConferenceLibraries({}, sortValue);
+    searchConferenceLibraries({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -96,13 +87,6 @@ const ConferenceLibrary = ({
               <h3>{`${numberWithCommas(countOfResults)} video${
                 countOfResults > 1 ? "s" : ""
               }`}</h3>
-              <CustomSelect
-                className="search-results-container-sort"
-                bordered={false}
-                options={SortOptions}
-                value={sortValue}
-                onChange={(value) => onSortChange(value)}
-              />
             </div>
           </Col>
         </Row>

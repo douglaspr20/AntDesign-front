@@ -19,9 +19,8 @@ export const constants = {
 // ------------------------------------
 export const getMoreConferenceLibraries = createAction(
   GET_MORE_CONFERENCE_LIBRARIES,
-  (filter, order) => ({
+  (filter) => ({
     filter,
-    order,
   })
 );
 export const setMoreConferenceLibraries = createAction(
@@ -34,9 +33,8 @@ export const setMoreConferenceLibraries = createAction(
 );
 export const searchConferenceLibraries = createAction(
   SEARCH_CONFERENCE_LIBRARIES,
-  (filter, order) => ({
+  (filter) => ({
     filter,
-    order,
   })
 );
 export const setSearchConferenceLibraries = createAction(
