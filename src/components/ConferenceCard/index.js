@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import ReactPlayer from "react-player";
 import { SvgIcon, SpecialtyItem } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 
@@ -20,7 +21,13 @@ const ConferenceCard = ({ data, allCategories }) => {
 
   return (
     <div className="conference-card" onClick={onCardClick}>
-      <div className="conference-card-header"></div>
+      <div className="conference-card-header">
+        <ReactPlayer
+          className="conference-card-player"
+          controls={false}
+          url={data.link}
+        />
+      </div>
       <div className="conference-card-content">
         <h3 className="conference-card-title">{title}</h3>
         <h6 className="conference-card-year">{year}</h6>
