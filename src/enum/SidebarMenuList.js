@@ -21,11 +21,6 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
-      label: "Conference library",
-      icon: IconConferenceVideo,
-      url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
-    },
-    {
       label: "Heart",
       icon: IconHeartOutline,
       url: INTERNAL_LINKS.HEART,
@@ -34,6 +29,11 @@ export default {
       label: "Learning library",
       icon: IconLibrary,
       url: INTERNAL_LINKS.LEARNING_LIBRARY,
+    },
+    {
+      label: "Conference library",
+      icon: IconConferenceVideo,
+      url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
     {
       label: "Mentoring",

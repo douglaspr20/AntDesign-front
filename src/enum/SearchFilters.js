@@ -105,6 +105,6 @@ export default {
     ],
   },
   ConferenceLibrary: {
-    year: ["2019", "2020", "2021"],
+    year: ["2020", "2021"],
   }
 };
