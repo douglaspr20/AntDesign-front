@@ -55,7 +55,7 @@ const ConferenceLibrary = ({
         onChange={onFilterChange}
       />
       <div className="search-results-container">
-        <Row>
+        {/* <Row>
           <Col span={24}>
             <div className="conference-library-page-about">
               <h2 className="about-title">About the conference library</h2>
@@ -68,7 +68,7 @@ const ConferenceLibrary = ({
               </p>
             </div>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col span={24}>
             <div className="search-results-container-mobile-header">
