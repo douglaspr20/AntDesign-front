@@ -17,7 +17,7 @@ const JourneyHomeMessage = ({
     <h3>
       Do you want to create your first learning journey?
     </h3>
-    <CustomButton onClick={onClick} text="Yes, I want create a journey" size="md" />
+    <CustomButton onClick={onClick} text="Yes, I want to create a journey" size="md" />
   </div>);
 };
 

@@ -58,7 +58,7 @@ const JourneyDetailsCard = ({
             />
           </div>
           <div className="card-information">
-            <h3><a href={element.link} target="_blank">{element.title}</a></h3>
+            <h3><a href={element.link} rel="noopener noreferrer" target="_blank">{element.title}</a></h3>
             <Paragraph
               ellipsis={{
                 rows: 3,

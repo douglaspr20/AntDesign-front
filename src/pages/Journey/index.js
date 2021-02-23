@@ -33,10 +33,10 @@ const JourneyPage = ({
   }, []);
 
   const onFinish = (data) => {
-    if(journey == null) {
+    if (journey == null) {
       addJourney(data);
     } else {
-      updateJourney(journey.id ,data);
+      updateJourney(journey.id, data);
     }
     closeForm();
   };
@@ -46,33 +46,35 @@ const JourneyPage = ({
   };
 
   return (<div className="learning-journey-page">
-    { 
-      showForm &&
-      <JourneyForm
-        key='form-journey'
-        onSave={onFinish}
-        onCancel={() => { 
-          closeForm();
-        }}
-      />
-    }
-    {
-      allJourneys.length === 0 && !showForm && journey == null &&
-      <JourneyHomeMessage onClick={() => { setShowForm(true); }} />
-    }
-    {
-      allJourneys.length > 0 && !showForm && journey == null &&
-      <JourneyCardList
-        showForm={() => { setShowForm(true); }}
-        allJourneys={allJourneys}
-      />
-    }
-    {
-      journey != null && !showForm &&
-      <JourneyDetails
-        showForm={() => { setShowForm(true); }}
-      />
-    }
+    <div className="learning-journey-page--content">
+      {
+        showForm &&
+        <JourneyForm
+          key='form-journey'
+          onSave={onFinish}
+          onCancel={() => {
+            closeForm();
+          }}
+        />
+      }
+      {
+        allJourneys.length === 0 && !showForm && journey == null &&
+        <JourneyHomeMessage onClick={() => { setShowForm(true); }} />
+      }
+      {
+        allJourneys.length > 0 && !showForm && journey == null &&
+        <JourneyCardList
+          showForm={() => { setShowForm(true); }}
+          allJourneys={allJourneys}
+        />
+      }
+      {
+        journey != null && !showForm &&
+        <JourneyDetails
+          showForm={() => { setShowForm(true); }}
+        />
+      }
+    </div>
   </div>);
 };
 

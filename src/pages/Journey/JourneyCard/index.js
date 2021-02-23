@@ -22,7 +22,7 @@ const JourneyCard = ({
   return (<div className="learning-journey-card">
     <div className="learning-journey-card__info">
       <h2>{name}</h2>
-      <span>Started: { moment(started).format("MMMM D - yyyy") }</span>
+      <span className="started">Started: { moment(started).format("MMMM D - yyyy") }</span>
       <div className="learning-journey-card__info--topics">
         {(categories || []).map((item, index) => {
           const category = allCategories.find((cat) => cat.value === item);

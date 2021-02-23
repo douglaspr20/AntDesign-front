@@ -2,9 +2,14 @@
 
 .learning-journey-page {
   width: 100%;
-  max-width: 904px;
-  margin: 0 auto;
   padding-top: 3rem;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+
+  &--content {
+    margin: 0 auto;
+    max-width: 904px;
+  }
 
   button {
     span {

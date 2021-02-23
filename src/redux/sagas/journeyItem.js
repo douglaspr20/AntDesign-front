@@ -1,6 +1,9 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 
 import {
+  actions as journeyActions,
+} from "../actions/journey-actions";
+import {
   constants as journeyItemConstants,
   actions as journeyItemActions,
 } from "../actions/journeyItem-actions";
@@ -34,7 +37,11 @@ export function* updateJourneyItemSaga({ payload }) {
   try {
     const response = yield call(updateJourneyItem, payload.data);
     if (response.status === 200) {
-      yield put(journeyItemActions.getAllJourneyItems({ id: payload.data.journeyId }));
+      yield put(journeyItemActions.getAllJourneyItems({
+        id: payload.data.journeyId,
+        removed: payload.data.loadRemovedItems,
+      }));
+      yield put(journeyActions.getJourney(payload.data.journeyId));
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {

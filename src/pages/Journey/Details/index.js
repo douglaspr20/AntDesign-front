@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import { Switch, Progress } from 'antd';
 import { connect } from "react-redux";
@@ -31,6 +31,7 @@ const JourneyDetails = ({
   getAllJourneyItems,
   showForm,
 }) => {
+  const [switchValue, setSwitchValue] = useState(false);
   const getDescription = (item) => {
     if(item.contentType === 'event'){
       const description = JSON.parse(item.description);
@@ -45,6 +46,7 @@ const JourneyDetails = ({
       id,
       journeyId: journey.id,
       viewed: true,
+      loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
   }
@@ -54,6 +56,7 @@ const JourneyDetails = ({
       id,
       journeyId: journey.id,
       viewed: false,
+      loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
   }
@@ -63,6 +66,7 @@ const JourneyDetails = ({
       id,
       journeyId: journey.id,
       removed: true,
+      loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
   }
@@ -72,11 +76,13 @@ const JourneyDetails = ({
       id,
       journeyId: journey.id,
       removed: false,
+      loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
   }
 
   const switchChange = (checked) => {
+    setSwitchValue(checked);
     if(checked){
       getAllJourneyItems({
         id: journey.id,

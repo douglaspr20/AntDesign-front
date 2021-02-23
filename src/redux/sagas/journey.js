@@ -54,6 +54,7 @@ export function* addJourneySaga({ payload }) {
 
     if (response.status === 200) {
       yield put(journeyActions.setShowForm(false));
+      yield put(journeyActions.getAllJourneys());
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
