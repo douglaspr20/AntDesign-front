@@ -30,7 +30,7 @@ export const constants = {
 // Actions
 // ------------------------------------
 export const getAllEvent = createAction(GET_ALL_EVENTS);
-export const getEvent = createAction(GET_EVENT, (id) => ({ id }));
+export const getEvent = createAction(GET_EVENT, (id, callback) => ({ id, callback }));
 export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
   events,
 }));

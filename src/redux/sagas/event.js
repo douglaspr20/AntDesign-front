@@ -116,6 +116,9 @@ export function* getEventSaga({ payload }) {
   } catch (error) {
     console.log(error);
     yield put(homeActions.setLoading(false));
+    if (payload.callback) {
+      payload.callback(true);
+    }
   }
 }
 

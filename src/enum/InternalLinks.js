@@ -15,10 +15,11 @@ export default {
   CERTIFICATE: "/certificate",
   HEART: "/heart",
   PODCAST: "/podcast",
-  PUBLIC_EVENT: "/public-event",
+  PUBLIC_EVENT: "",
   JOIN: "/join",
   TERMSOFUSE: "/terms-of-use",
   MARKETPLACE: "/marketplace",
   PUBLIC_MARKETPLACE: "/public-marketplace",
   CONFERENCE_LIBRARY: "/conference-library",
+  NOT_FOUND: "/not-found",
 };

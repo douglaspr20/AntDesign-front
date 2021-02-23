@@ -19,6 +19,7 @@ const PublicEventPage = ({
   isAuthenticated,
   getEvent,
   addToMyEventList,
+  history,
 }) => {
   const [canonicalUrl, setCanonicalUrl] = useState("");
 
@@ -29,14 +30,21 @@ const PublicEventPage = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
     if (match.params.id) {
       setCanonicalUrl(
         `${process.env.REACT_APP_DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
       );
-      getEvent(match.params.id);
+      getEvent(match.params.id, (error) => {
+        if (isMounted && error) {
+          history.push(INTERNAL_LINKS.NOT_FOUND);
+        }
+      });
     }
 
-    return () => {};
+    return () => {
+      isMounted = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
