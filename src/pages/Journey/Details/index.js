@@ -19,6 +19,7 @@ import {
 } from "components";
 import JourneyDetailsCard from './Card';
 import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
+import { ReactComponent as IconDoubleCheckmark } from 'images/icon-double-checkmark.svg';
 
 import './style.scss';
 
@@ -94,8 +95,8 @@ const JourneyDetails = ({
         <h3>{ journey ? journey.name : '' }</h3>
       </div>
       <div className="journey-details-container__header--progress">
-        <span><span>0</span>% completed</span>
-        <Progress percent={0} size="small" showInfo={false} strokeColor="#438cef" />
+        <span className="learning-journey-card__actions--progress"><span><IconDoubleCheckmark />{journey.progress != null ? journey.progress : 0}</span>% completed</span>
+        <Progress percent={journey.progress != null ? journey.progress : 0} size="small" showInfo={false} strokeColor="#438cef" />
       </div>
     </div>
     <div className="journey-details-container__actions">

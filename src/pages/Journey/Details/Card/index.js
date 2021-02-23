@@ -4,6 +4,10 @@ import { Typography, Button } from 'antd';
 
 import { ReactComponent as IconMenuOutline } from 'images/icon-menu-outline.svg';
 import { ReactComponent as IconCheckmark } from  'images/icon-checkmark.svg';
+import { ReactComponent as IconCalendar } from  'images/icon-calendar.svg';
+import { ReactComponent as IconHeadsetOutline } from "images/icon-headset-outline.svg";
+import { ReactComponent as IconDocument } from "images/icon-document.svg";
+import { ReactComponent as IconVideo } from "images/icon-video.svg";
 
 const { Paragraph } = Typography;
 
@@ -19,10 +23,10 @@ const JourneyDetailsCard = ({
   viewed
 }) => {
   const contentType = {
-    'article': "Article",
-    'event': "Event",
-    'podcast': "Podcast",
-    'video': "Video",
+    'article': { text: "Article", icon: <IconDocument />},
+    'event': { text: "Event", icon: <IconCalendar />},
+    'podcast': { text: "Podcast", icon: <IconHeadsetOutline />},
+    'video': { text: "Video", icon: <IconVideo />},
   };
   return (<>
     <div className={`journey-details-container__card__container ${element.removed ? "removed" : ''}`}>
@@ -54,7 +58,7 @@ const JourneyDetailsCard = ({
             />
           </div>
           <div className="card-information">
-            <h3>{element.title}</h3>
+            <h3><a href={element.link} target="_blank">{element.title}</a></h3>
             <Paragraph
               ellipsis={{
                 rows: 3,
@@ -64,7 +68,7 @@ const JourneyDetailsCard = ({
               {description}
             </Paragraph>
             <div className="card-information-footer">
-              <span className="content-type">{contentType[element.contentType]}</span>
+              <span className="content-type">{contentType[element.contentType].icon} {contentType[element.contentType].text}</span>
               <div className="card--actions" >
                 {
                   element.removed === false && element.viewed === true ?

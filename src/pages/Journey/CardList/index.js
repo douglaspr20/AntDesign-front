@@ -41,6 +41,7 @@ const JourneyCardList = ({
             name={item.name}
             started={item.createdAt}
             categories={item.topics}
+            progress={item.progress}
             onClick={() => { getJourneyDetails(item.id); }}
           />);
         })
