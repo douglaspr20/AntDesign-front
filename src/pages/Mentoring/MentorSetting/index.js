@@ -28,7 +28,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
       return false;
     }
 
-    if (specialties.length === 0) {
+    if (!specialties || specialties.length === 0) {
       notification.error({
         message: "Please select at least one area you want.",
       });

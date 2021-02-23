@@ -33,3 +33,5 @@ export { default as PublicMenuPopup } from "./PublicMenuPopup";
 export { default as MarketplaceFilterPanel } from "./MarketplaceFilterPanel";
 export { default as MarketplaceCard } from  "./MarketplaceCard";
 export { default as RichEdit } from "./RichEdit";
+export { default as CustomSwitch } from "./Switch";
+export { default as ConferenceCard } from "./ConferenceCard";

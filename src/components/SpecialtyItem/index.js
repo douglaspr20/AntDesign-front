@@ -6,7 +6,9 @@ import "./style.scss";
 
 const SpecialtyItem = ({ active, title }) => {
   return (
-    <div className={clsx("specialty-item", { active: active })}>{title}</div>
+    <div className={clsx("specialty-item", { active: active })}>
+      <span>{title}</span>
+    </div>
   );
 };
 

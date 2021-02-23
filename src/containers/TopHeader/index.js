@@ -86,6 +86,10 @@ class TopHeader extends Component {
           path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
           render={(props) => <CertificateHeader {...props} />}
         />
+        <PrivateRoute
+          path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
+          render={(props) => <MainHeader {...props} />}
+        />
       </Switch>
     );
   }

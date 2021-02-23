@@ -20,6 +20,7 @@ function EpisodeCard({
   categories,
   links,
   allCategories,
+  title,
 }) {
   return (
     <div className="podcast-episode__card">
@@ -38,7 +39,9 @@ function EpisodeCard({
             {moment(created_at).format(DATE_FORMAT)}
           </span>
         </div>
-
+        <div className="podcast-episode__card-body-title">
+          {title}
+        </div>
         <div className="podcast-episode__card-body-links">
           {links.length > 0 && (
             <>
@@ -90,6 +93,7 @@ EpisodeCard.propTypes = {
   episode_cover: PropTypes.string,
   categories: PropTypes.array,
   links: PropTypes.array,
+  title: PropTypes.string,
 };
 
 EpisodeCard.defaultProps = {
@@ -98,6 +102,7 @@ EpisodeCard.defaultProps = {
   episode_cover: HARDCODED_COVER_PLACEHOLDER,
   categories: [],
   links: [],
+  title: "",
 };
 
 const mapStateToProps = (state) => ({

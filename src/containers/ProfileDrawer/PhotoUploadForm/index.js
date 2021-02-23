@@ -124,11 +124,6 @@ class PhotoUploadForm extends PureComponent {
               src={src}
               crop={crop}
               circularCrop={true}
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
               ruleOfThirds
               onImageLoaded={this.onImageLoaded}
               onComplete={this.onCropComplete}

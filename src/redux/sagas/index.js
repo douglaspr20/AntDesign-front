@@ -10,6 +10,7 @@ import { marketplaceCategoriesSaga } from "./marketplaceCategories";
 import { categorySaga } from "./category";
 import { journeySaga } from "./journey";
 import { journeyItemSaga } from "./journeyItem";
+import { conferenceSaga } from "./conference";
 
 export default function* sagas() {
   yield all([
@@ -24,5 +25,6 @@ export default function* sagas() {
     ...categorySaga,
     ...journeySaga,
     ...journeyItemSaga,
+    ...conferenceSaga,
   ]);
 }

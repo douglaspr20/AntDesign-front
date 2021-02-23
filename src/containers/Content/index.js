@@ -20,6 +20,7 @@ import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
+import ConferenceLibrary from "pages/ConferenceLibrary"
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -111,6 +112,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.MARKETPLACE}
             render={(props) => <MarketplacePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
+            render={(props) => <ConferenceLibrary {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>

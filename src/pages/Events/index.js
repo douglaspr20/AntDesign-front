@@ -94,7 +94,7 @@ const EventsPage = ({
     },
   ];
 
-  const onFilterChange = (params) => {
+  const onFilterChange = (params, redirect = false) => {
     setFilterParams(params);
     setFilteredEvents((prev) => {
       prev = allEvents.filter((item) => {
@@ -134,7 +134,9 @@ const EventsPage = ({
       });
       return [...prev];
     });
-    setCurrentTab("0");
+    if (redirect) {
+      setCurrentTab("0");
+    }
   };
 
   const onEventDrawerClose = () => {
@@ -176,11 +178,11 @@ const EventsPage = ({
 
   return (
     <div className="events-page">
-      <EventFilterDrawer onFilterChange={onFilterChange} />
+      <EventFilterDrawer onFilterChange={(data) => onFilterChange(data, true)} />
       <div className={clsx("events-page-filter", { visible: visibleFilter })}>
         <EventFilterPanel
           title="Categories"
-          onFilterChange={onFilterChange}
+          onFilterChange={(data) => onFilterChange(data, true)}
           onClose={() => setVisibleFilter(false)}
         />
       </div>

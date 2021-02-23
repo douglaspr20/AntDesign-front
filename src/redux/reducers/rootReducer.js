@@ -12,6 +12,7 @@ import marketplaceCategoriesReducer from "./marketplaceCategoriesReducer";
 import categoryReducer from "./categoryReducer";
 import journeyReducer from "./journeyReducer";
 import journeyItemReducer from "./journeyItemReducer";
+import conferenceReducer from "./conferenceReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -26,4 +27,5 @@ export default combineReducers({
   category: categoryReducer,
   journey: journeyReducer,
   journeyItem: journeyItemReducer,
+  conference: conferenceReducer,
 });

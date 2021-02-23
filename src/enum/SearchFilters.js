@@ -104,4 +104,7 @@ export default {
       { text: "Wellness and Wellbeing", value: "wellness-and-wellbeing" },
     ],
   },
+  ConferenceLibrary: {
+    year: ["2020", "2021"],
+  }
 };

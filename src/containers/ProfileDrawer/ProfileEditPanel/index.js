@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox, Modal, notification } from "antd";
+import { Checkbox, Modal, notification, Radio } from "antd";
 import { connect } from "react-redux";
 
 import {
@@ -8,6 +8,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomSelect,
+  CustomRadio,
 } from "components";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
@@ -280,6 +281,20 @@ class ProfileEditPanel extends React.Component {
                 </div>
               ))}
             </div>
+            <h5 className="textfield-label">
+              Are open to receiving information/being contacted via email about
+              open job positions?
+            </h5>
+            <Radio.Group
+              className="open-receive-email"
+              value={user.isOpenReceivingEmail}
+              onChange={(e) =>
+                this.onFieldChange("isOpenReceivingEmail", e.target.value)
+              }
+            >
+              <CustomRadio value={1}>Yes</CustomRadio>
+              <CustomRadio value={0}>No</CustomRadio>
+            </Radio.Group>
           </div>
         </div>
         <div className="profile-edit-panel-footer">

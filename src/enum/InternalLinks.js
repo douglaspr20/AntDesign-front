@@ -21,4 +21,5 @@ export default {
   TERMSOFUSE: "/terms-of-use",
   MARKETPLACE: "/marketplace",
   PUBLIC_MARKETPLACE: "/public-marketplace",
+  CONFERENCE_LIBRARY: "/conference-library",
 };

@@ -30,6 +30,7 @@ import { getAllPodcasts } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
 import { getCategories } from "./module/category";
+import { searchConferenceLibrary } from "./module/conference";
 
 export {
   signIn,
@@ -57,4 +58,5 @@ export {
   getMenteeList,
   setMatch,
   getCategories,
+  searchConferenceLibrary,
 };
