@@ -7,6 +7,7 @@ import IconCalendar from "images/icon-calendar.svg";
 import IconMedal from "images/icon-medal.svg";
 import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
+import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
 import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
@@ -49,6 +50,11 @@ export default {
       label: "Classes",
       icon: IconMedal,
       url: INTERNAL_LINKS.CERTIFICATIONS,
+    },
+    {
+      label: "Journey",
+      icon: IconJourney,
+      url: INTERNAL_LINKS.JOURNEY,
     },
     {
       label: "Annual Conference",
