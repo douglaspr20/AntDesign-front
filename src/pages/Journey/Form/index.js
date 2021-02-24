@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Form, Checkbox, Row, Col } from 'antd';
@@ -20,6 +20,19 @@ const JourneyForm = ({
   onCancel,
   journey,
 }) => {
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [checkGroupDisabled, setCheckGroupDisabled] = useState(false);
+  const validLimit = (data) => {
+    if(data.hasOwnProperty("topics")){
+      setSelectedTopics(data.topics);
+      if(data.topics.length === 3) {
+        setCheckGroupDisabled(true);
+      } else {
+        setCheckGroupDisabled(false);
+      }
+    }
+  };
+
   return (<div className="learning-journey-form">
     <h3>{journey != null ? 'Update' : 'Create'} learning journey</h3>
 
@@ -27,6 +40,7 @@ const JourneyForm = ({
       layout="vertical"
       onFinish={onSave}
       initialValues={journey}
+      onValuesChange={(data) => { validLimit(data); }}
     >
       <Form.Item
         label="Journey name"
@@ -55,6 +69,9 @@ const JourneyForm = ({
                       key={item.value}
                       value={item.value}
                       size="sm"
+                      disabled={
+                        checkGroupDisabled && selectedTopics.indexOf(item.value) === -1
+                      }
                     >
                       {item.title}
                     </CustomCheckbox>
