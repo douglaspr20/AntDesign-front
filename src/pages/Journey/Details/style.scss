@@ -172,6 +172,11 @@
       &--order{
         width: 24px;
         height: 195px;
+        margin-right: 0.5rem;
+
+        svg path {
+          stroke: $color-text-third;
+        }
       }
       &--card{
         background-color: $color-white;
