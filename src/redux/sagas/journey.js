@@ -72,6 +72,7 @@ export function* updateJourneySaga({ payload }) {
     if (response.status === 200) {
       yield put(journeyActions.setShowForm(false));
       yield put(journeyActions.unsetJourney());
+      yield put(journeyActions.getAllJourneys());
     }
     yield put(homeActions.setLoading(false));
   } catch (error) {
@@ -80,11 +81,16 @@ export function* updateJourneySaga({ payload }) {
   }
 }
 
+export function* unSetJourneySaga(){
+  yield put(journeyActions.getAllJourneys());
+}
+
 function* watchLogin() {
   yield takeLatest(journeyConstants.GET_ALL_JOURNEYS, getAllJourneysSaga);
   yield takeLatest(journeyConstants.ADD_JOURNEY, addJourneySaga);
   yield takeLatest(journeyConstants.UPDATE_JOURNEY, updateJourneySaga);
   yield takeLatest(journeyConstants.GET_JOURNEY, getJourneySaga);
+  yield takeLatest(journeyConstants.UNSET_JOURNEY, unSetJourneySaga);
 }
 
 export const journeySaga = [fork(watchLogin)];

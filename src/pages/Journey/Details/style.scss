@@ -14,7 +14,10 @@
     &--back{
       display: flex;
       flex-direction: row;
-      
+      justify-content: center;      
+      align-content: center;
+      justify-items: center;
+      align-items: center;
       svg {
         width: 23px;
         height: 23px;
@@ -44,6 +47,15 @@
         height: 20px;
         margin-right: 5px;
       }
+      .learning-details--progress {
+        width: 100%;
+        text-align: center;
+        color: $color-accent;
+
+        span {
+          font-weight: 600;
+        }
+      }
     }
   }
 
@@ -51,7 +63,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 4em;
+    margin-top: 3em;
 
     &--switch {
       display: flex;
@@ -232,6 +244,12 @@
                   stroke: $color-text-third;
                 }
               }
+            }
+
+            .button-viewed {
+              background-color: $color-white;
+              border-color: 1px solid $color-accent;
+              color: $color-accent;
             }
 
             button {

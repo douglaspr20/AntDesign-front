@@ -45,7 +45,7 @@ const JourneyPage = ({
     setShowForm(false);
   };
 
-  return (<div className="learning-journey-page">
+  return (<div className="learning-journey-page" style={{ background: showForm === true || journey != null ? "#fff" : 'none' }}>
     <div className="learning-journey-page--content">
       {
         showForm &&

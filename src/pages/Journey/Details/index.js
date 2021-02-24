@@ -101,7 +101,7 @@ const JourneyDetails = ({
         <h3>{ journey ? journey.name : '' }</h3>
       </div>
       <div className="journey-details-container__header--progress">
-        <span className="learning-journey-card__actions--progress"><span><IconDoubleCheckmark />{journey.progress != null ? journey.progress : 0}</span>% completed</span>
+        <span className="learning-details--progress"><span><IconDoubleCheckmark />{journey.progress != null ? journey.progress : 0}</span>% completed</span>
         <Progress percent={journey.progress != null ? journey.progress : 0} size="small" showInfo={false} strokeColor="#438cef" />
       </div>
     </div>

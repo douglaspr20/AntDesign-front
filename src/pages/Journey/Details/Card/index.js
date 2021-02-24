@@ -72,7 +72,7 @@ const JourneyDetailsCard = ({
               <div className="card--actions" >
                 {
                   element.removed === false && element.viewed === true ?
-                    <Button type="primary" onClick={viewed}>Viewed</Button>
+                    <Button className="button-viewed" type="primary" onClick={viewed}>Viewed</Button>
                     :
                   element.removed === false &&
                     <Button type="primary" onClick={markAsViewed}>Mark as viewed</Button>
