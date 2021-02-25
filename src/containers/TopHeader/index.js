@@ -22,6 +22,7 @@ class TopHeader extends Component {
         />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
+        <Route path={INTERNAL_LINKS.JOIN} />
         <Route
           path={INTERNAL_LINKS.TERMSOFUSE}
           render={(props) => <PublicHeader {...props} />}
