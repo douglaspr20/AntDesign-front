@@ -52,6 +52,10 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.JOURNEY}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.HUB}
           render={(props) => <MainHeader {...props} />}
         />

@@ -15,6 +15,7 @@ import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
+import JourneyPage from "pages/Journey";
 import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
@@ -99,6 +100,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.JOURNEY}
+            render={(props) => <JourneyPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.MARKETPLACE}

@@ -13,6 +13,7 @@ export default {
   READ_LATER: "/read-later",
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
+  JOURNEY: "/journey",
   HEART: "/heart",
   PODCAST: "/podcast",
   PUBLIC_EVENT: "",
