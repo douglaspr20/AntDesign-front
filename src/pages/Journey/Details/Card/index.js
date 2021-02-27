@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { Typography, Button } from 'antd';
 
 import { ReactComponent as IconMenuOutline } from 'images/icon-menu-outline.svg';
-import { ReactComponent as IconCheckmark } from  'images/icon-checkmark.svg';
-import { ReactComponent as IconCalendar } from  'images/icon-calendar.svg';
+import { ReactComponent as IconCheckmark } from 'images/icon-checkmark.svg';
+import { ReactComponent as IconCalendar } from 'images/icon-calendar.svg';
 import { ReactComponent as IconHeadsetOutline } from "images/icon-headset-outline.svg";
 import { ReactComponent as IconDocument } from "images/icon-document.svg";
 import { ReactComponent as IconVideo } from "images/icon-video.svg";
@@ -23,10 +23,10 @@ const JourneyDetailsCard = ({
   viewed
 }) => {
   const contentType = {
-    'article': { text: "Article", icon: <IconDocument />},
-    'event': { text: "Event", icon: <IconCalendar />},
-    'podcast': { text: "Podcast", icon: <IconHeadsetOutline />},
-    'video': { text: "Video", icon: <IconVideo />},
+    'article': { text: "Article", icon: <IconDocument /> },
+    'event': { text: "Event", icon: <IconCalendar /> },
+    'podcast': { text: "Podcast", icon: <IconHeadsetOutline /> },
+    'video': { text: "Video", icon: <IconVideo /> },
   };
   return (<>
     <div className={`journey-details-container__card__container ${element.removed ? "removed" : ''}`}>
@@ -47,9 +47,9 @@ const JourneyDetailsCard = ({
           <IconMenuOutline />
         </div>
         <div
-        className={ 
-          `journey-details-container__card__container--content--card`
-        }
+          className={
+            `journey-details-container__card__container--content--card`
+          }
         >
           <div className="card-image">
             <img
@@ -58,6 +58,11 @@ const JourneyDetailsCard = ({
             />
           </div>
           <div className="card-information">
+            { element.isNew &&
+              <div className="card-new-flag-container">
+                <span>NEW</span>
+              </div>
+            }
             <h3><a href={element.link} rel="noopener noreferrer" target="_blank">{element.title}</a></h3>
             <Paragraph
               ellipsis={{
@@ -74,7 +79,7 @@ const JourneyDetailsCard = ({
                   element.removed === false && element.viewed === true ?
                     <Button className="button-viewed" type="primary" onClick={viewed}>Viewed</Button>
                     :
-                  element.removed === false &&
+                    element.removed === false &&
                     <Button type="primary" onClick={markAsViewed}>Mark as viewed</Button>
                 }
                 {
@@ -104,10 +109,10 @@ JourneyDetailsCard.propTypes = {
 JourneyDetailsCard.defaultProps = {
   element: null,
   description: "",
-  markAsViewed: () => {},
-  remove: () => {},
-  addItem: () => {},
-  viewed: () => {},
+  markAsViewed: () => { },
+  remove: () => { },
+  addItem: () => { },
+  viewed: () => { },
 };
 
 export default JourneyDetailsCard;

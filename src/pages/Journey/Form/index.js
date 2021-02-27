@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Form, Checkbox, Row, Col } from 'antd';
+import { Form, Checkbox, Row, Col, Select } from 'antd';
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { journeySelector } from "redux/selectors/journeySelector";
@@ -13,6 +13,8 @@ import {
 } from "components";
 
 import "./style.scss";
+
+const { Option } = Select;
 
 const JourneyForm = ({
   allCategories,
@@ -61,24 +63,22 @@ const JourneyForm = ({
             label="What do you want to focus on?"
             name="topics"
           >
-            <Checkbox.Group>
-              <Row>
-                {allCategories.map((item) => (
-                  <Col key={`column-${item.value}`} span={8}>
-                    <CustomCheckbox
-                      key={item.value}
-                      value={item.value}
-                      size="sm"
-                      disabled={
-                        checkGroupDisabled && selectedTopics.indexOf(item.value) === -1
-                      }
-                    >
-                      {item.title}
-                    </CustomCheckbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
+            <Select
+              allowClear
+              mode="multiple"
+            >
+              {allCategories.map((item) => (
+                <Option
+                  key={`option-${item.value}`}
+                  value={item.value}
+                  disabled={
+                    checkGroupDisabled && selectedTopics.indexOf(item.value) === -1
+                  }
+                >
+                  {item.title}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="What content type you like to learn more?"
