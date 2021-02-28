@@ -22,10 +22,7 @@ class TopHeader extends Component {
         />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
-        <Route
-          path={INTERNAL_LINKS.PUBLIC_EVENT}
-          render={(props) => <PublicHeader {...props} />}
-        />
+        <Route path={INTERNAL_LINKS.JOIN} />
         <Route
           path={INTERNAL_LINKS.TERMSOFUSE}
           render={(props) => <PublicHeader {...props} />}
@@ -89,6 +86,15 @@ class TopHeader extends Component {
         <PrivateRoute
           path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
           render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.NOT_FOUND}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+          render={(props) => <PublicHeader {...props} />}
         />
       </Switch>
     );

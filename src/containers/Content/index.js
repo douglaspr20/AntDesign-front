@@ -58,10 +58,6 @@ class Content extends Component {
             render={(props) => <PasswordRecoveryPage {...props} />}
           />
           <Route
-            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
-            render={(props) => <PublicEventPage {...props} />}
-          />
-          <Route
             path={INTERNAL_LINKS.PUBLIC_MARKETPLACE}
             render={(props) => <MarketplacePage {...props} />}
           />
@@ -116,6 +112,15 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
             render={(props) => <ConferenceLibrary {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.NOT_FOUND}
+            render={(props) => <NoPageFound {...props} />}
+          />
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+            render={(props) => <PublicEventPage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>
