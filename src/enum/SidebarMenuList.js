@@ -46,11 +46,11 @@ export default {
       icon: IconCalendar,
       url: INTERNAL_LINKS.EVENTS,
     },
-    {
-      label: "Classes",
-      icon: IconMedal,
-      url: INTERNAL_LINKS.CERTIFICATIONS,
-    },
+    // {
+    //   label: "Classes",
+    //   icon: IconMedal,
+    //   url: INTERNAL_LINKS.CERTIFICATIONS,
+    // },
     {
       label: "Learning Journeys",
       icon: IconJourney,
