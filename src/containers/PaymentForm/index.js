@@ -51,7 +51,7 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
           </>
         )}
         <div className="plan-ugrade-form-content">
-          <h4>Select your country:</h4>
+          <h4>Select:</h4>
           <Select className="pay-select" defaultValue={price} onChange={(value) => { setPrice(value) }}>
             {
               prices.map((item, index) => {
@@ -65,7 +65,7 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
             }}
             className="pay-buttton"
           >
-            Subscribe ${prices[price].price} yearly
+            Subscribe $ {prices[price].price} yearly
           </Button>
         </div>
       </form>
