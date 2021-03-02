@@ -138,8 +138,10 @@ const LearningLibraryPage = ({
         {!planUpdated && (
           <div className="upgrade-notification">
             <div className="upgrade-notification-panel" onClick={planUpgrade}>
-              <h3>UPGRADE TO PREMIUM</h3>
-              <h3>TO GET ACCESS TO THE LEARNING LIBRARY</h3>
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
             </div>
           </div>
         )}

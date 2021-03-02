@@ -18,9 +18,16 @@ const LibraryCard = ({ data, locked, onClickAccess }) => {
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
+    let isMounted = true;
     setTimeout(() => {
-      getRowNum();
+      if (isMounted) {
+        getRowNum();
+      }
     }, 500);
+
+    return () => {
+      isMounted = false;
+    };
     // eslint-disable-next-line
   }, []);
 

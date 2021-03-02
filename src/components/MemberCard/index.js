@@ -1,14 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { CustomButton, SpecialtyItem } from "components";
-import { PROFILE_SETTINGS } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.TOPICS;
-
-const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
+const MemberCard = ({
+  user,
+  match,
+  allCategories,
+  onClick,
+  onMatchClicked,
+}) => {
   const onClickMatch = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -52,12 +57,14 @@ const MemberCard = ({ user, match, onClick, onMatchClicked }) => {
               return !first && second ? 1 : first && second ? 0 : -1;
             })
             .map((spec, index) => {
-              const specialty = Specialties.find((item) => item.value === spec);
+              const specialty = allCategories.find(
+                (item) => item.value === spec
+              );
 
               return (
                 <SpecialtyItem
                   key={`specialty-${randomId}-${index}`}
-                  title={specialty.text}
+                  title={specialty ? specialty.title : ""}
                   active={(match || []).includes(spec)}
                 />
               );
@@ -90,4 +97,8 @@ MemberCard.defaultProps = {
   onMatchClicked: () => {},
 };
 
-export default MemberCard;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(MemberCard);

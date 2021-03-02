@@ -27,6 +27,10 @@ import {
   setMatch,
 } from "./module/mentoring";
 import { getAllPodcasts } from "./module/podcast";
+import { getAllMarketplace } from "./module/marketplace";
+import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
+import { getCategories } from "./module/category";
+import { searchConferenceLibrary } from "./module/conference";
 
 export {
   signIn,
@@ -46,9 +50,13 @@ export {
   getRecommendations,
   setMentorInfo,
   getAllPodcasts,
+  getAllMarketplace,
+  getAllMarketplaceCategories,
   getMentoringInfo,
   updateMentorInfo,
   getMentorList,
   getMenteeList,
   setMatch,
+  getCategories,
+  searchConferenceLibrary,
 };

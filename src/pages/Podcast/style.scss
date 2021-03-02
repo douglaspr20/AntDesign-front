@@ -1,20 +1,29 @@
 @import "styles/main.scss";
 
 .podcast-page {
-  padding: 4rem 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
 
   @media (max-width: 576px) {
     padding: 2rem 0;
   }
+
+  @media (max-width: 1023.98px) {
+    .podcast-filter-panel {
+      display: none;
+    }
+  }
 }
 
 .podcast-page__container {
   width: 100%;
-  max-width: 1040px;
-  padding: 0 1rem;
+  padding: 1rem;
   margin: 0 auto;
+  padding-top: 4rem;
+  overflow: auto;
 
   > * + * {
     margin-top: 1.5rem;
@@ -125,5 +134,15 @@
 
   @media (min-width: 1200px) {
     width: 33.3333%;
+  }
+}
+
+.podcast-page__filters--button {
+  display: none;
+  button {
+    width: 100%;
+  }
+  @media (max-width: 1023.98px) {
+    display: block;
   }
 }

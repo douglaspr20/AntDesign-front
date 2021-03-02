@@ -86,12 +86,12 @@ function getEventPeriod(date, date2, timezone) {
     startDate.month() === endDate.month() &&
     startDate.date() === endDate.date()
   ) {
-    res = `${startDate.format("YYYY-MM-DD h:mm a")} - ${endDate.format(
+    res = `${startDate.format("MMMM DD, yyyy | h:mm a")} - ${endDate.format(
       "h:mm a"
     )} ${tz}`;
   } else {
-    res = `${date.format("YYYY-MM-DD h:mm a")} - ${date2.format(
-      "YYYY-MM-DD h:mm a"
+    res = `${startDate.format("MMMM DD, yyyy | h:mm a")} - ${endDate.format(
+      "MMMM DD, yyyy h:mm a"
     )} ${tz}`;
   }
 

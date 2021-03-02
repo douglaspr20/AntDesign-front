@@ -1,29 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox, Modal, notification } from "antd";
+import { Checkbox, Modal, notification, Radio } from "antd";
+import { connect } from "react-redux";
 
 import {
   CustomButton,
   CustomInput,
   CustomCheckbox,
   CustomSelect,
+  CustomRadio,
 } from "components";
-import {
-  PROFILE_SETTINGS,
-  CONTACT_ICONS,
-  TIMEZONE_LIST,
-  LANGUAGES,
-  COUNTRIES,
-} from "enum";
+import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
 import { isValidEmail } from "utils/format";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import IconPlus from "images/icon-plus.svg";
 import IconDelete from "images/icon-delete.svg";
 
 import "./style.scss";
 
-const Topics = PROFILE_SETTINGS.TOPICS;
 const Languages = LANGUAGES.ParsedLanguageData;
 
 class ProfileEditPanel extends React.Component {
@@ -258,9 +254,9 @@ class ProfileEditPanel extends React.Component {
                 this.onFieldChange("topicsOfInterest", values)
               }
             >
-              {Topics.map((topic) => (
+              {this.props.allCategories.map((topic) => (
                 <CustomCheckbox key={topic.value} value={topic.value}>
-                  {topic.text}
+                  {topic.title}
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>
@@ -285,6 +281,20 @@ class ProfileEditPanel extends React.Component {
                 </div>
               ))}
             </div>
+            <h5 className="textfield-label">
+              Are open to receiving information/being contacted via email about
+              open job positions?
+            </h5>
+            <Radio.Group
+              className="open-receive-email"
+              value={user.isOpenReceivingEmail}
+              onChange={(e) =>
+                this.onFieldChange("isOpenReceivingEmail", e.target.value)
+              }
+            >
+              <CustomRadio value={1}>Yes</CustomRadio>
+              <CustomRadio value={0}>No</CustomRadio>
+            </Radio.Group>
           </div>
         </div>
         <div className="profile-edit-panel-footer">
@@ -333,4 +343,8 @@ ProfileEditPanel.defaultProps = {
   onCancel: () => {},
 };
 
-export default ProfileEditPanel;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(ProfileEditPanel);

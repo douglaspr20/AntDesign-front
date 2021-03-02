@@ -1,25 +1,51 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Checkbox, notification } from "antd";
+import { connect } from "react-redux";
 
 import { CustomButton, CustomInput, CustomCheckbox } from "components";
-import { PROFILE_SETTINGS } from "enum";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const Specialties = PROFILE_SETTINGS.TOPICS;
-
-const MentorSetting = ({ setting, onCancel, onSave }) => {
+const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
   const [reason, setReason] = useState(setting.reason);
   const [title, setTitle] = useState(setting.title);
   const [specialties, setSpecialties] = useState(setting.specialties || []);
 
+  const checkValidation = () => {
+    if (!reason) {
+      notification.error({
+        message: "Please type why you want to be a mentor.",
+      });
+      return false;
+    }
+
+    if (!title) {
+      notification.error({
+        message: "Please type your job title.",
+      });
+      return false;
+    }
+
+    if (!specialties || specialties.length === 0) {
+      notification.error({
+        message: "Please select at least one area you want.",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const onClickSave = () => {
-    onSave({
-      reason,
-      title,
-      specialties,
-    });
+    if (checkValidation()) {
+      onSave({
+        reason,
+        title,
+        specialties,
+      });
+    }
   };
 
   useEffect(() => {
@@ -57,9 +83,9 @@ const MentorSetting = ({ setting, onCancel, onSave }) => {
           className="mentor-setting-specialties"
           onChange={setSpecialties}
         >
-          {Specialties.map((spec, index) => (
+          {allCategories.map((spec, index) => (
             <CustomCheckbox key={`specialty-${index}`} value={spec.value}>
-              {spec.text}
+              {spec.title}
             </CustomCheckbox>
           ))}
         </Checkbox.Group>
@@ -94,4 +120,8 @@ MentorSetting.defaultProps = {
   onSave: () => {},
 };
 
-export default MentorSetting;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(MentorSetting);

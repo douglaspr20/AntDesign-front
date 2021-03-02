@@ -13,7 +13,7 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllPodcasts = createAction(GET_ALL_PODCASTS);
+export const getAllPodcasts = createAction(GET_ALL_PODCASTS, (filter) => ({ filter }));
 export const setAllPodcasts = createAction(SET_ALL_PODCASTS, (podcasts) => ({
   podcasts,
 }));

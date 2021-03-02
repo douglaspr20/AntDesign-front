@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { CheckOutlined } from "@ant-design/icons";
-import { Menu, Dropdown } from "antd";
 
 import {
   DateAvatar,
   CustomButton,
   CustomDrawer,
   SpecialtyItem,
+  RichEdit,
 } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
@@ -45,13 +45,13 @@ const EventDrawer = ({
 
   const onClickClaimCredits = (e) => {};
 
-  const menu = (
-    <Menu>
-      <Menu.Item>Google</Menu.Item>
-      <Menu.Item>Google</Menu.Item>
-      <Menu.Item>Google</Menu.Item>
-    </Menu>
-  );
+  // const menu = (
+  //   <Menu>
+  //     <Menu.Item>Google</Menu.Item>
+  //     <Menu.Item>Google</Menu.Item>
+  //     <Menu.Item>Google</Menu.Item>
+  //   </Menu>
+  // );
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -143,13 +143,13 @@ const EventDrawer = ({
             <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div>
-            {event.status === "going" && event.status !== "past" && (
+            {/* {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>
                 <h3 className="add-to-calendar ant-dropdown-link">
                   Add to calendar
                 </h3>
               </Dropdown>
-            )}
+            )} */}
           </div>
           <h3 className="event-type">{`${event.location} event`}</h3>
           <h3 className="event-cost">{event.ticket}</h3>
@@ -160,8 +160,7 @@ const EventDrawer = ({
               ))}
             </div>
           )}
-          <h3 className="event-details-content-subtitle">About the event</h3>
-          <p className="event-details-content-subtext">{event.about}</p>
+          <RichEdit data={event.description} />
         </div>
       </div>
     </CustomDrawer>

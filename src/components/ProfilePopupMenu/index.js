@@ -7,25 +7,27 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
 
 import "./style.scss";
-import { getPortalSession } from "../../api/module/stripe";
+import { getPortalSession, getSubscription } from "../../api/module/stripe";
 
-const ProfileMenus = [
-  {
-    label: "Read Later",
-    link: INTERNAL_LINKS.READ_LATER,
-  },
-  {
-    label: "Favorites",
-    link: INTERNAL_LINKS.FAVORITES,
-  },
-];
+// const ProfileMenus = [
+//   {
+//     label: "Read Later",
+//     link: INTERNAL_LINKS.READ_LATER,
+//   },
+//   {
+//     label: "Favorites",
+//     link: INTERNAL_LINKS.FAVORITES,
+//   },
+// ];
+
+const ProfileMenus = [];
 
 class ProfilePopupMenu extends React.Component {
   constructor(props) {
@@ -38,23 +40,33 @@ class ProfilePopupMenu extends React.Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.createPortalSession();
-    }, 800);
+  componentWillMount() {
+    this.loadSubscription();
   }
 
-  createPortalSession = async () => {
-    if (this.props.userProfile.memberShip === "premium") {
+  loadSubscription = async () => {
+    if(this.state.subscription === null) {
       try {
-        let response = await getPortalSession();
+        let response = await getSubscription();
         this.setState({
-          portalSession: response.data.session,
           subscription: response.data.subscription,
         });
       } catch (err) {
         console.log(err);
       }
+    }
+  }
+
+  createPortalSession = async () => {
+    try {
+      let response = await getPortalSession();
+      this.setState({
+        portalSession: response.data.session,
+      }, () => {
+        window.open(this.state.portalSession.url, "_blank")
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -113,7 +125,11 @@ class ProfilePopupMenu extends React.Component {
                   </div>
                   <div>
                     <a
-                      href={this.state.portalSession.url}
+                      href="/#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.createPortalSession();
+                      }}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -122,6 +138,26 @@ class ProfilePopupMenu extends React.Component {
                   </div>
                 </>
               ) : null}
+              {user.external_payment === 1 && (
+                <>
+                  <div>
+                    {moment(user.subscription_startdate).format(
+                      "MMMM DD, yyyy"
+                    )}{" "}
+                    -{" "}
+                    {moment(user.subscription_enddate).format("MMMM DD, yyyy")}
+                  </div>
+                  {/* <div>
+                    <a
+                      href={this.state.portalSession.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Billing Information
+                    </a>
+                  </div> */}
+                </>
+              )}
             </React.Fragment>
           ) : (
             <div>Free Membership</div>

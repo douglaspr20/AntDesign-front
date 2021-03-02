@@ -3,31 +3,57 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
 
-import { CustomModal, CustomButton } from "components";
+import { CustomModal, CustomButton, CustomInput } from "components";
 import { envSelector } from "redux/selectors/envSelector";
 import { updateEventStatus } from "redux/actions/event-actions";
 import Emitter from "services/emitter";
+import { Form } from "antd";
 
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
 const Text = `
-  Etiam convallis elementum sapien, a aliquam turpis aliquam vitae. Praesent sollicitudin felis vel mi facilisis posuere. Nulla ultrices facilisis justo, non varius nisl semper vel. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus at ante mattis, condimentum velit et, dignissim nunc. Integer quis tincidunt purus. Duis dignissim mauris vel elit commodo, eu hendrerit leo ultrices. Nulla vehicula vestibulum purus at rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur dignissim massa nec libero scelerisque rutrum. Curabitur ac purus id elit hendrerit lacinia. Nullam sit amet sem efficitur, porta diam in, convallis tortor.
+  By clicking on "Yes, I Confirm", you are certifying that you actually participated in the event.
 `;
 
 const AttendanceDisclaimerModal = ({ isMobile, updateEventStatus }) => {
   const [visible, setVisible] = useState(false);
   const [event, setEvent] = useState({});
+  const [codeValid, setCodeValid] = useState({
+    validateStatus: "success",
+    help: "",
+  });
 
   Emitter.on(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, (data) => {
     setVisible(true);
     setEvent(data);
   });
 
-  const onConfirm = () => {
+  const onFinish = (values) => {
+    if (values.code !== event.code) {
+      setCodeValid({
+        validateStatus: "error",
+        help: "Invalid code",
+      });
+      return;
+    }
     setVisible(false);
     updateEventStatus(event, "confirmed");
+  };
+
+  const onValuesChange = (values) => {
+    if (values.code) {
+      setCodeValid({
+        validateStatus: "success",
+        help: "",
+      });
+    } else {
+      setCodeValid({
+        validateStatus: "error",
+        help: "Please enter your code.",
+      });
+    }
   };
 
   return (
@@ -41,14 +67,29 @@ const AttendanceDisclaimerModal = ({ isMobile, updateEventStatus }) => {
     >
       <div className={clsx("attendance-disclaimer", { mobile: isMobile })}>
         <p className="attendance-disclaimer-content">{Text}</p>
-        <div className="attendance-disclaimer-footer">
-          <CustomButton
-            text="Yes, I confirm"
-            type="primary"
-            size="md"
-            onClick={onConfirm}
-          />
-        </div>
+        <Form
+          className="attendance-disclaimer-form"
+          name="basic"
+          onFinish={onFinish}
+          onValuesChange={onValuesChange}
+        >
+          <Form.Item
+            name="code"
+            label="Code"
+            validateStatus={codeValid.validateStatus}
+            help={codeValid.help}
+          >
+            <CustomInput size="sm" />
+          </Form.Item>
+          <div className="attendance-disclaimer-footer">
+            <CustomButton
+              text="Yes, I confirm"
+              type="primary"
+              size="md"
+              htmlType="submit"
+            />
+          </div>
+        </Form>
       </div>
     </CustomModal>
   );

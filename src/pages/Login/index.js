@@ -115,6 +115,9 @@ const Login = ({
                   {isLogin ? "Sign up?" : "Log in?"}
                 </span>
               </div>
+              <div className="term-and-conditions">
+                <Link to={INTERNAL_LINKS.TERMSOFUSE}>Terms and Conditions</Link>
+              </div>
             </div>
           </div>
         </Form>

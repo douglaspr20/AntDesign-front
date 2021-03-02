@@ -22,8 +22,13 @@ class TopHeader extends Component {
         />
         <Route path={INTERNAL_LINKS.LOGIN} />
         <Route path={INTERNAL_LINKS.SIGNUP} />
+        <Route path={INTERNAL_LINKS.JOIN} />
         <Route
-          path={INTERNAL_LINKS.PUBLIC_EVENT}
+          path={INTERNAL_LINKS.TERMSOFUSE}
+          render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          path={INTERNAL_LINKS.PUBLIC_MARKETPLACE}
           render={(props) => <PublicHeader {...props} />}
         />
         <PrivateRoute
@@ -47,6 +52,10 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.JOURNEY}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.HUB}
           render={(props) => <MainHeader {...props} />}
         />
@@ -63,12 +72,29 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.MARKETPLACE}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={`${INTERNAL_LINKS.ARTICLE}/:id`}
           render={(props) => <ArticleHeader {...props} />}
         />
         <PrivateRoute
           path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
           render={(props) => <CertificateHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.NOT_FOUND}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+          render={(props) => <PublicHeader {...props} />}
         />
       </Switch>
     );
