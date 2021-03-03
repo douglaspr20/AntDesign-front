@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 import { CheckOutlined } from "@ant-design/icons";
+import { Modal } from 'antd'
 
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
+import Login from "pages/Login";
 import { getEvent, addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -22,10 +23,14 @@ const PublicEventPage = ({
   history,
 }) => {
   const [canonicalUrl, setCanonicalUrl] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onAttend = () => {
     if (isAuthenticated) {
       addToMyEventList(updatedEvent);
+      history.push(INTERNAL_LINKS.EVENTS);
+    } else {
+      setModalVisible(true);
     }
   };
 
@@ -47,6 +52,10 @@ const PublicEventPage = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onCancelModal = () => {
+    setModalVisible(false);
+  }
 
   return (
     <div className="public-event-page">
@@ -79,17 +88,28 @@ const PublicEventPage = ({
           <img src={updatedEvent.image} alt="event-img" />
         )}
         <div className="public-event-page-header-title">
+          <Modal
+            visible={modalVisible}
+            footer={null}
+            width={400}
+            bodyStyle={{ overflow: 'auto', padding: '20px' }}
+            className="modal-container-login"
+            onCancel={() => { onCancelModal(); }}
+          >
+            <Login
+              login={true}
+              signUp={false}
+              history={null}
+              match={{params: {}}}
+            />
+          </Modal>
           {updatedEvent.status === "attend" && (
-            <Link
-              to={isAuthenticated ? INTERNAL_LINKS.EVENTS : INTERNAL_LINKS.JOIN}
-            >
-              <CustomButton
-                text="Attend"
-                size="lg"
-                type="primary"
-                onClick={onAttend}
-              />
-            </Link>
+            <CustomButton
+              text="Attend"
+              size="lg"
+              type="primary"
+              onClick={onAttend}
+            />
           )}
           {updatedEvent.status === "going" && (
             <div className="going-label">
