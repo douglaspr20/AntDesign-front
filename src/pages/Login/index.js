@@ -52,7 +52,7 @@ const Login = ({
   useEffect(() => {
       if (isAuthenticated) {
         if(history != null) {
-        history.push(INTERNAL_LINKS.HOME);
+          history.push(INTERNAL_LINKS.HOME);
         } else {
           window.location.reload();
         }
