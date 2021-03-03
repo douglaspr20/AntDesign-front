@@ -13,6 +13,8 @@ import IconLogo from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
   const [price, setPrice] = useState(0);
   const [prices] = useState(STRIPE_PRICES);
@@ -23,7 +25,7 @@ const PaymentForm = ({ isMobile, handleSubmit, hidePanel }) => {
   });
 
   const instanceStripe = async () => {
-    stripe = await loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+    stripe = await stripePromise;
   };
 
   const requestCheckoutSession = async () => {
