@@ -50,9 +50,13 @@ const Login = ({
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push(INTERNAL_LINKS.HOME);
-    }
+      if (isAuthenticated) {
+        if(history != null) {
+          history.push(INTERNAL_LINKS.HOME);
+        } else {
+          window.location.reload();
+        }
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 

@@ -4,7 +4,7 @@ import IconHome from "images/icon-home.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
-import IconMedal from "images/icon-medal.svg";
+// import IconMedal from "images/icon-medal.svg";
 // import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 import IconJourney from "images/icon-learning-journey.svg";
