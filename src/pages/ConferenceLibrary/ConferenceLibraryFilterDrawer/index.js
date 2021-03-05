@@ -58,6 +58,21 @@ const ConferenceLibraryFilterDrawer = ({
         </div>
         <div className="conference-filter-drawer-content">
           <div className="search-filter">
+            <h4 className="search-filter-title font-bold">Year</h4>
+            <Checkbox.Group
+              value={
+                filterValues["year"] ? JSON.parse(filterValues["year"]) : []
+              }
+              onChange={(values) => onFilterChange("year", values)}
+            >
+              {YearOptions.map((item) => (
+                <CustomCheckbox key={item} value={item} size="sm">
+                  {item}
+                </CustomCheckbox>
+              ))}
+            </Checkbox.Group>
+          </div>
+          <div className="search-filter">
             <h4 className="search-filter-title font-bold">Topics</h4>
             <Checkbox.Group
               value={
@@ -68,21 +83,6 @@ const ConferenceLibraryFilterDrawer = ({
               {allCategories.map((item) => (
                 <CustomCheckbox key={item.value} value={item.value} size="md">
                   {item.title}
-                </CustomCheckbox>
-              ))}
-            </Checkbox.Group>
-          </div>
-          <div className="search-filter">
-            <h4 className="search-filter-title font-bold">Topics</h4>
-            <Checkbox.Group
-              value={
-                filterValues["year"] ? JSON.parse(filterValues["year"]) : []
-              }
-              onChange={(values) => onFilterChange("year", values)}
-            >
-              {YearOptions.map((item) => (
-                <CustomCheckbox key={item} value={item} size="sm">
-                  {item}
                 </CustomCheckbox>
               ))}
             </Checkbox.Group>
