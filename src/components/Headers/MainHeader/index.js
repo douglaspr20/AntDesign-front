@@ -60,7 +60,7 @@ class MainHeader extends React.Component {
             text="Invite friend"
             type="primary"
             size="lg"
-            className="btn-upgrade"
+            className="btn-invite"
             onClick={this.inviteFriend}
           />
           {user.memberShip === "free" && (

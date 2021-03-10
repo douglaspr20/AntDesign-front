@@ -13,7 +13,7 @@ import Emitter from "services/emitter";
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
 import InviteFriendModal from "./containers/InviteFriendModal";
-import InviteFriendForm from "./containers/InviteFriendModal";
+import InviteFriendForm from "./containers/InviteFriendForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES } from "enum";
@@ -58,6 +58,7 @@ class App extends Component {
     });
 
     Emitter.on(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL, () => {
+      console.log(this.props.isMobile);
       if (this.props.isMobile) {
         this.setState({ openInviteFriendPanel: true });
       } else {
