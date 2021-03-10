@@ -113,7 +113,7 @@ const Login = ({
                 <span className="account-desc">
                   {isLogin
                     ? "Don't have an account?"
-                    : "Alreay have an account?"}
+                    : "Already have an account?"}
                 </span>
                 <span className="signup-select" onClick={onChangeType}>
                   {isLogin ? "Sign up?" : "Log in?"}
