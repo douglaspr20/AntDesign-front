@@ -3,6 +3,7 @@ import {
   getUserFromId,
   updateUser,
   upgradePlan,
+  inviteFriend,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
@@ -59,4 +60,5 @@ export {
   setMatch,
   getCategories,
   searchConferenceLibrary,
+  inviteFriend,
 };

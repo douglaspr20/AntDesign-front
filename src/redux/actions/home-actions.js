@@ -8,6 +8,7 @@ const SET_SETTING_COLLAPSED = "SET_SETTING_COLLAPSED";
 const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
 const UPGRADE_PLAN = "UPGRADE_PLAN";
+const INVITE_FRIEND = "INVITE_FRIEND";
 
 export const constants = {
   SET_LOADING,
@@ -17,6 +18,7 @@ export const constants = {
   GET_USER,
   UPDATE_USER,
   UPGRADE_PLAN,
+  INVITE_FRIEND,
 };
 
 // ------------------------------------
@@ -34,6 +36,7 @@ export const setSettingCollapsed = createAction(
 export const getUser = createAction(GET_USER);
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
+export const inviteFriend = createAction(INVITE_FRIEND, (email) => ({ email }));
 
 export const actions = {
   setLoading,
@@ -42,4 +45,5 @@ export const actions = {
   getUser,
   updateUser,
   upgradePlan,
+  inviteFriend,
 };
