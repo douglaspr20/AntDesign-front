@@ -16,6 +16,7 @@ export default {
   JOURNEY: "/journey",
   HEART: "/heart",
   PODCAST: "/podcast",
+  CHANNELS: "/channels",
   PUBLIC_EVENT: "",
   JOIN: "/join",
   TERMSOFUSE: "/terms-of-use",
