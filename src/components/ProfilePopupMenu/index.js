@@ -7,7 +7,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, USER_ROLES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -45,7 +45,7 @@ class ProfilePopupMenu extends React.Component {
   }
 
   loadSubscription = async () => {
-    if(this.state.subscription === null) {
+    if (this.state.subscription === null) {
       try {
         let response = await getSubscription();
         this.setState({
@@ -55,16 +55,19 @@ class ProfilePopupMenu extends React.Component {
         console.log(err);
       }
     }
-  }
+  };
 
   createPortalSession = async () => {
     try {
       let response = await getPortalSession();
-      this.setState({
-        portalSession: response.data.session,
-      }, () => {
-        window.open(this.state.portalSession.url, "_blank")
-      });
+      this.setState(
+        {
+          portalSession: response.data.session,
+        },
+        () => {
+          window.open(this.state.portalSession.url, "_blank");
+        }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -111,7 +114,11 @@ class ProfilePopupMenu extends React.Component {
         <div className="profile-popover-content-membership">
           {user.memberShip === "premium" ? (
             <React.Fragment>
-              <div>PREMIUM MEMBER</div>
+              <div>
+                {user.role === USER_ROLES.CHANNEL_ADMIN
+                  ? "Channel Administration"
+                  : "PREMIUM MEMBER"}
+              </div>
               {this.state.subscription != null ? (
                 <>
                   <div>
