@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.3.0",
     "@stripe/stripe-js": "^1.11.0",
     "antd": "^4.1.4",
+    "antd-img-crop": "^3.14.1",
     "axios": "^0.21.1",
     "babel-plugin-import": "^1.11.0",
     "clsx": "^1.1.1",

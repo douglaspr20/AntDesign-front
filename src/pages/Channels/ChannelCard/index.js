@@ -1,63 +1,71 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 import { SvgIcon } from "components";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
-import RenderPropsTruncatedString from 'components/RenderPropsTruncatedString.js';
+import RenderPropsTruncatedString from "components/RenderPropsTruncatedString.js";
 
-import './style.scss';
+import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import "./style.scss";
 
 const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
-function ChannelCard({
-  id,
-  title,
-  description, 
-  image,
-}) {
-
+const ChannelCard = ({ id, title, description, image, add, onClick }) => {
   return (
-    <Link className="channel-card"
-      to={`${INTERNAL_LINKS.CHANNELS}/${id}`}
+    <Link
+      className={clsx("channel-card", { add })}
+      to={add ? "#" : `${INTERNAL_LINKS.CHANNELS}/${id}`}
+      onClick={onClick}
     >
-      <div className="channel-card-header">
-        {image && <img src={image} alt={title || 'cover image'} />}
-      </div>
-      <div className="channel-card-content">
-        <h3 className="channel-card-title">{title}</h3>
-        <div className="d-flex items-center">
-          <p className="channel-card-desc">
-            <RenderPropsTruncatedString text={description} threshold={250}>
-              {({ truncatedText, }) => (
-                <>{truncatedText}</>
-              )}
-            </RenderPropsTruncatedString>
-          </p>
+      {add ? (
+        <div className="channel-card-container">
+          <IconPlus />
         </div>
-        <div className="channel-card-content-footer">
-          <div className="d-flex items-center"></div>
-          <div className="d-flex items-center">
-            <SvgIcon name="star" className="channel-card-icon" />
-            <SvgIcon name="bookmark" className="channel-card-icon" />
+      ) : (
+        <>
+          <div className="channel-card-header">
+            {image && <img src={image} alt={title || "cover image"} />}
           </div>
-        </div>
-      </div>
+          <div className="channel-card-content">
+            <h3 className="channel-card-title">{title}</h3>
+            <div className="d-flex items-center">
+              <p className="channel-card-desc">
+                <RenderPropsTruncatedString text={description} threshold={250}>
+                  {({ truncatedText }) => <>{truncatedText}</>}
+                </RenderPropsTruncatedString>
+              </p>
+            </div>
+            <div className="channel-card-content-footer">
+              <div className="d-flex items-center"></div>
+              <div className="d-flex items-center">
+                <SvgIcon name="star" className="channel-card-icon" />
+                <SvgIcon name="bookmark" className="channel-card-icon" />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </Link>
-  )
-}
+  );
+};
 
 ChannelCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   title: PropTypes.string,
+  add: PropTypes.bool,
   description: PropTypes.string,
   image: PropTypes.string,
-}
+  onClick: PropTypes.func,
+};
 
 ChannelCard.defaultProps = {
-  title: '',
-  description: '',
+  title: "",
+  description: "",
+  add: false,
   image: HARDCODED_COVER_PLACEHOLDER,
-}
+  onClick: () => {},
+};
 
 export default ChannelCard;
