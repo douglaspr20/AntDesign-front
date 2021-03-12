@@ -1,0 +1,54 @@
+import { put, fork, takeLatest, call } from "redux-saga/effects";
+
+import {
+  constants as channelConstants,
+  actions as channelActions,
+} from "../actions/channel-actions";
+import { actions as homeActions } from "../actions/home-actions";
+
+import {
+  createChannel,
+} from "../../api";
+
+export function* createChannelSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(createChannel, { ...payload });
+
+    if (response.status === 200) {
+      
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getChannelSaga({ payload }) {}
+
+export function* updateChannelSaga({ payload }) {}
+
+export function* deleteChannelSaga({ payload }) {}
+
+export function* getFirstChannelListSaga({ payload }) {}
+
+export function* getMoreChannelListSaga({ payload }) {}
+
+function* watchChannel() {
+  yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
+  yield takeLatest(channelConstants.GET_CHANNEL, getChannelSaga);
+  yield takeLatest(channelConstants.UPDATE_CHANNEL, updateChannelSaga);
+  yield takeLatest(channelConstants.DELETE_CHANNEL, deleteChannelSaga);
+  yield takeLatest(
+    channelConstants.GET_FIRST_CHANNEL_LIST,
+    getFirstChannelListSaga
+  );
+  yield takeLatest(
+    channelConstants.GET_MORE_CHANNEL_LIST,
+    getMoreChannelListSaga
+  );
+}
+
+export const channelSaga = [fork(watchChannel)];

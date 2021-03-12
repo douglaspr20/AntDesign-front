@@ -25,7 +25,7 @@ const ChannelForm = ({ channel, onSubmit, onCancel }) => {
       <Form.Item
         name="name"
         label="Channel Name"
-        rules={[
+        rules={[            
           { required: true, message: "Please enter the channel name.    " },
         ]}
       >
