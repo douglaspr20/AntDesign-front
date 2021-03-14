@@ -35,6 +35,7 @@ const Channels = ({
 
   const onSortChange = (value) => {
     setSortValue(value);
+    getFirstChannelList({ order: value });
   };
 
   const onCreateChannel = () => {
