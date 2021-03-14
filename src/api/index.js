@@ -31,10 +31,8 @@ import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
 import { getCategories } from "./module/category";
 import { searchConferenceLibrary } from "./module/conference";
-import {
-  createChannel,
-  searchChannels,
-} from "./module/channel";
+import { createChannel, searchChannels } from "./module/channel";
+import { getChannelCategories } from "./module/channel-category";
 
 export {
   signIn,
@@ -65,4 +63,5 @@ export {
   searchConferenceLibrary,
   createChannel,
   searchChannels,
+  getChannelCategories,
 };
