@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
-import { CustomSelect } from "components";
+import { CustomSelect, CustomButton } from "components";
 import { SETTINGS, USER_ROLES } from "enum";
 import ChannelDrawer from "containers/ChannelDrawer";
 
@@ -10,10 +10,15 @@ import ChannelsFilterPanel from "./ChannelsFilterPanel";
 import ChannelCard from "./ChannelCard";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { getFirstChannelList } from "redux/actions/channel-actions";
+import {
+  getFirstChannelList,
+  getMoreChannelList,
+} from "redux/actions/channel-actions";
 import { getUser } from "redux/actions/home-actions";
 
 import { numberWithCommas } from "utils/format";
+
+import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
@@ -22,8 +27,11 @@ const SortOptions = SETTINGS.SORT_OPTIONS;
 const Channels = ({
   allChannels,
   countOfResults,
+  currentPage,
+  loading,
   userProfile,
   getFirstChannelList,
+  getMoreChannelList,
   getUser,
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
@@ -46,6 +54,13 @@ const Channels = ({
     setOpenChannelDrawer(false);
     getUser();
     getFirstChannelList({ order: sortValue });
+  };
+
+  const onShowMore = () => {
+    getMoreChannelList({
+      page: currentPage + 1,
+      order: sortValue,
+    });
   };
 
   useEffect(() => {
@@ -105,6 +120,19 @@ const Channels = ({
               />
             ))}
           </div>
+          {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+            <div className="search-results-container-footer d-flex justify-center items-center">
+              {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+              {!loading && (
+                <CustomButton
+                  text="Show more"
+                  type="primary outlined"
+                  size="lg"
+                  onClick={onShowMore}
+                />
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -118,6 +146,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getFirstChannelList,
+  getMoreChannelList,
   getUser,
 };
 

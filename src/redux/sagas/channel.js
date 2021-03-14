@@ -53,7 +53,27 @@ export function* getFirstChannelListSaga({ payload }) {
   }
 }
 
-export function* getMoreChannelListSaga({ payload }) {}
+export function* getMoreChannelListSaga({ payload }) {
+  yield put(channelActions.setChannelLoading(true));
+
+  try {
+    const response = yield call(searchChannels, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        channelActions.setMoreChannelList(
+          response.data.channels.rows,
+          payload.page,
+          response.data.channels.count
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(channelActions.setChannelLoading(false));
+  }
+}
 
 function* watchChannel() {
   yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
