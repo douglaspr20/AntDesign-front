@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Form } from "antd";
+import { Form, Checkbox } from "antd";
+import { connect } from "react-redux";
 
-import { CustomInput, CustomButton, ImageUpload2 } from "components";
+import {
+  CustomInput,
+  CustomButton,
+  ImageUpload2,
+  CustomCheckbox,
+} from "components";
+
+import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
+import { getCategories } from "redux/actions/channel-category-actions";
 
 import "./style.scss";
 
-const ChannelForm = ({ channel, onSubmit, onCancel }) => {
+const ChannelForm = ({
+  channel,
+  channelCategories,
+  onSubmit,
+  onCancel,
+  getCategories,
+}) => {
   const onFinish = (values) => {
     console.log("values", values);
     onSubmit(values);
   };
 
   const onFinishFailed = () => {};
+
+  useEffect(() => {
+    getCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form
@@ -25,7 +45,7 @@ const ChannelForm = ({ channel, onSubmit, onCancel }) => {
       <Form.Item
         name="name"
         label="Channel Name"
-        rules={[            
+        rules={[
           { required: true, message: "Please enter the channel name.    " },
         ]}
       >
@@ -36,6 +56,15 @@ const ChannelForm = ({ channel, onSubmit, onCancel }) => {
       </Form.Item>
       <Form.Item name="image" label="Upload image">
         <ImageUpload2 width="400px" height="152px" aspect={400 / 152} />
+      </Form.Item>
+      <Form.Item name="categories" label="What are the content topics?">
+        <Checkbox.Group className="d-flex flex-column channel-form-topics">
+          {channelCategories.map((topic, index) => (
+            <CustomCheckbox key={index} value={topic.value}>
+              {topic.title}
+            </CustomCheckbox>
+          ))}
+        </Checkbox.Group>
       </Form.Item>
       <div className="channel-form-footer">
         <CustomButton
@@ -67,4 +96,12 @@ ChannelForm.defaultProps = {
   onCancel: () => {},
 };
 
-export default ChannelForm;
+const mapStateToProps = (state) => ({
+  channelCategories: channelCategorySelector(state).categories,
+});
+
+const mapDispatchToProps = {
+  getCategories,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChannelForm);

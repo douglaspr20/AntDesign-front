@@ -1,6 +1,8 @@
 @import "styles/main.scss";
 
 .channel-form {
+  margin-bottom: 6rem !important;
+
   .ant-form-item-label {
     @include app-font(14px, 19px, bold);
     margin: 1rem 0 12px !important;
@@ -8,6 +10,13 @@
 
     label {
       color: $color-text-primary !important;
+    }
+  }
+
+  &-topics {
+    .custom-checkbox {
+      margin-left: 0 !important;
+      margin-bottom: 1rem;
     }
   }
 
