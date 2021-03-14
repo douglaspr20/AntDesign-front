@@ -28,9 +28,13 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const createChannel = createAction(CREATE_CHANNEL, (channel) => ({
-  channel,
-}));
+export const createChannel = createAction(
+  CREATE_CHANNEL,
+  (channel, callback) => ({
+    channel,
+    callback,
+  })
+);
 export const getChannel = createAction(GET_CHANNEL, (id) => ({ id }));
 export const setChannel = createAction(SET_CHANNEL, (channel) => ({ channel }));
 export const updateChannel = createAction(UPDATE_CHANNEL, (channel) => ({
@@ -39,7 +43,7 @@ export const updateChannel = createAction(UPDATE_CHANNEL, (channel) => ({
 export const deleteChannel = createAction(DELETE_CHANNEL, (id) => ({ id }));
 export const getFirstChannelList = createAction(
   GET_FIRST_CHANNEL_LIST,
-  (filter, order, page, num) => ({ filter, order, page, num })
+  ({ filter, order, page, num }) => ({ filter, order, page, num })
 );
 export const setFirstChannelList = createAction(
   SET_FIRST_CHANNEL_LIST,
@@ -47,7 +51,7 @@ export const setFirstChannelList = createAction(
 );
 export const getMoreChannelList = createAction(
   GET_MORE_CHANNEL_LIST,
-  (filter, order, page, num) => ({ filter, order, page, num })
+  ({ filter, order, page, num }) => ({ filter, order, page, num })
 );
 export const setMoreChannelList = createAction(
   SET_MORE_CHANNEL_LIST,

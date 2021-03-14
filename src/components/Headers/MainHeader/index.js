@@ -32,7 +32,6 @@ class MainHeader extends React.Component {
   render() {
     const { userProfile: user } = this.props;
     const { pathname } = this.props.history.location || {};
-    console.log('***** pathname ', pathname);
     const pathInfo = MenuList.find((item) => item.url.includes(pathname));
 
     return (

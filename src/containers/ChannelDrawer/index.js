@@ -3,11 +3,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { CustomDrawer, ChannelForm } from "components";
+import { createChannel } from "redux/actions/channel-actions";
 
-const ChannelDrawer = ({ visible, onClose }) => {
+const ChannelDrawer = ({ visible, onClose, createChannel, onCreated }) => {
   const onCreateChannel = (values) => {
-    console.log("**** vlaues ", values);
-    onClose();
+    createChannel(values, () => {
+      onCreated();
+    });
   };
 
   return (
@@ -20,15 +22,19 @@ const ChannelDrawer = ({ visible, onClose }) => {
 ChannelDrawer.propTypes = {
   visible: PropTypes.bool,
   onClose: PropTypes.func,
+  onCreated: PropTypes.func,
 };
 
 ChannelDrawer.defaultProps = {
   visible: false,
   onClose: () => {},
+  onCreated: () => {},
 };
 
 const mapStateToProps = (state, props) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  createChannel,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChannelDrawer);

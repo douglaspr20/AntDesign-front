@@ -52,7 +52,7 @@ const ChannelCard = ({ id, title, description, image, add, onClick }) => {
 };
 
 ChannelCard.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.number,
   title: PropTypes.string,
   add: PropTypes.bool,
   description: PropTypes.string,

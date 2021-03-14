@@ -6,9 +6,7 @@ import {
 } from "../actions/channel-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import {
-  createChannel,
-} from "../../api";
+import { createChannel, searchChannels } from "../../api";
 
 export function* createChannelSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -16,8 +14,8 @@ export function* createChannelSaga({ payload }) {
   try {
     const response = yield call(createChannel, { ...payload });
 
-    if (response.status === 200) {
-      
+    if (response.status === 200 && payload.callback) {
+      payload.callback();
     }
   } catch (error) {
     console.log(error);
@@ -32,7 +30,28 @@ export function* updateChannelSaga({ payload }) {}
 
 export function* deleteChannelSaga({ payload }) {}
 
-export function* getFirstChannelListSaga({ payload }) {}
+export function* getFirstChannelListSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannels, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        channelActions.setFirstChannelList(
+          response.data.channels.rows,
+          1,
+          response.data.channels.count
+        )
+      );
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
 
 export function* getMoreChannelListSaga({ payload }) {}
 
