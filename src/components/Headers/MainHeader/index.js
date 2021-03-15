@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
+import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
 import { setCollapsed } from "redux/actions/env-actions";
 
@@ -21,6 +22,14 @@ const MenuList = [
 ];
 
 class MainHeader extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visiblePremiumAlert: false,
+    };
+  }
+
   planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
@@ -29,8 +38,17 @@ class MainHeader extends React.Component {
     this.props.setCollapsed(false);
   };
 
+  onHideAlert = () => {
+    this.setState({ visiblePremiumAlert: false });
+  };
+
+  showPremiumAlert = () => {
+    this.setState({ visiblePremiumAlert: true });
+  };
+
   render() {
     const { userProfile: user } = this.props;
+    const { visiblePremiumAlert } = this.state;
     const { pathname } = this.props.history.location || {};
     const pathInfo = MenuList.find((item) => item.url === pathname);
 
@@ -61,7 +79,7 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
-          <ProfilePopupMenu>
+          <ProfilePopupMenu showPremiumAlert={this.showPremiumAlert}>
             <div className="user-avatar">
               {user.img ? (
                 <img src={user.img} alt="user-avatar" />
@@ -77,6 +95,10 @@ class MainHeader extends React.Component {
             </div>
           </ProfilePopupMenu>
         </div>
+        <PremiumAlert
+          visible={visiblePremiumAlert}
+          onCancel={() => this.onHideAlert()}
+        />
       </div>
     );
   }
