@@ -35,3 +35,4 @@ export { default as MarketplaceCard } from  "./MarketplaceCard";
 export { default as RichEdit } from "./RichEdit";
 export { default as CustomSwitch } from "./Switch";
 export { default as ConferenceCard } from "./ConferenceCard";
+export { default as PremiumAlert } from "./PremiumAlert";
