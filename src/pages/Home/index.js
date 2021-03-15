@@ -3,6 +3,7 @@ import { Row, Col } from "antd";
 import { connect } from "react-redux";
 
 import ProfileStatusBar from "./ProfileStatusBar";
+import HomeRecommendationsColumn from "./Column";
 import { ArticleCard, CustomButton } from "components";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -35,17 +36,13 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
           </Row>
         </div>
       )}
+      <div className="home-page-container-recommendations">
+        <HomeRecommendationsColumn items={ recommendations.podcasts } type="podcast" columnTitle="Podcast" />
+        <HomeRecommendationsColumn items={ recommendations.conferenceLibrary } type="conference" columnTitle="Conference Library" />
+        <HomeRecommendationsColumn items={ recommendations.libraries } type="library" columnTitle="Learning Library" />
+        <HomeRecommendationsColumn items={ recommendations.events } type="event" columnTitle="Upcoming Events" />
+      </div>
       <div className="home-page-container">
-        <Row gutter={16}>
-          <Col lg={{ span: 16, offset: 4 }}>
-            <h3 className="list-label">Our Recommendations</h3>
-          </Col>
-          {recommendations.map((article, index) => (
-            <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
-              <ArticleCard data={article} />
-            </Col>
-          ))}
-        </Row>
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
             <Col lg={{ span: 16, offset: 4 }}>

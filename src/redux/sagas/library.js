@@ -96,7 +96,7 @@ export function* getRecommendationsSaga() {
     const response = yield call(getRecommendations);
 
     if (response.status === 200) {
-      yield put(libraryActions.setRecommendations(response.data.libraries));
+      yield put(libraryActions.setRecommendations(response.data));
     }
 
     yield put(homeActions.setLoading(false));
