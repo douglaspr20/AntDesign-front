@@ -180,7 +180,7 @@ class ProfilePopupMenu extends React.Component {
           className="profile-popover-content-menu"
           onClick={this.onClaimCredits}
         >
-          Claim Credits for Hacking HR 2021 Conference
+          Claim Conference Credits
         </div>
         {ProfileMenus.map((menu, index) => (
           <Link
