@@ -16,14 +16,12 @@ class EventCard extends React.Component {
   onAttend = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ going: true });
     this.props.onAttend(true);
   };
 
   onCancelAttend = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ going: false });
     this.props.onAttend(false);
   };
 

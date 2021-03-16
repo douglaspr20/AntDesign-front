@@ -30,7 +30,14 @@ const monthStr = [
 
 const DataFormat = SETTINGS.DATE_FORMAT;
 
-const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) => {
+const EventList = ({
+  data,
+  isMobile,
+  onAttend,
+  showFilter,
+  onClick,
+  ...rest
+}) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
 
   const onEventChanged = (event, going) => {
@@ -46,8 +53,13 @@ const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) =
     }
   };
 
+  const getRandomNumber = () => Math.floor(Math.random() * 1000);
+
   useEffect(() => {
-    const groupedData = groupBy(data, "date");
+    const groupedData = groupBy(
+      data.map((item) => ({ ...item, groupKey: item.date.slice(0, 10) })),
+      "groupKey"
+    );
 
     setGroupedByEventData({ ...groupedData });
   }, [data]);
@@ -68,12 +80,15 @@ const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) =
         const day = moment(date, DataFormat).date();
         const month = moment(date, DataFormat).month();
         return (
-          <div className="event-list-batch" key={date}>
+          <div
+            className="event-list-batch"
+            key={`${date}-${getRandomNumber()}`}
+          >
             <DateAvatar day={day} month={monthStr[month]} />
             <Row gutter={[0, 36]}>
               {groupedByEventData[date].map((event, index) => (
                 <Col
-                  key={`${date}-${index}`}
+                  key={`col-${date}-${getRandomNumber()}`}
                   span={24}
                   className="event-list-item"
                 >
