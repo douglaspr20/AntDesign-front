@@ -86,6 +86,16 @@ class ProfilePopupMenu extends React.Component {
     this.props.logout();
   };
 
+  onClaimCredits = () => {
+    const { userProfile } = this.props;
+    if (userProfile.memberShip === "premium") {
+      window.open(process.env.REACT_APP_CLAIM_CREDITS_LINK, "_blank");
+    } else {
+      this.props.showPremiumAlert();
+    }
+    this.onVisibleChange(false);
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
@@ -111,7 +121,7 @@ class ProfilePopupMenu extends React.Component {
 
     const ContentSection = () => (
       <div className="profile-popover-content">
-        <div className="profile-popover-content-membership">
+        <div className="profile-popover-content-menu">
           {user.memberShip === "premium" ? (
             <React.Fragment>
               <div>
@@ -170,6 +180,12 @@ class ProfilePopupMenu extends React.Component {
             <div>Free Membership</div>
           )}
         </div>
+        <div
+          className="profile-popover-content-menu"
+          onClick={this.onClaimCredits}
+        >
+          Claim Conference Credits
+        </div>
         {ProfileMenus.map((menu, index) => (
           <Link
             key={index}
@@ -212,11 +228,13 @@ class ProfilePopupMenu extends React.Component {
 ProfilePopupMenu.propTypes = {
   title: PropTypes.string,
   logout: PropTypes.func,
+  showPremiumAlert: PropTypes.func,
 };
 
 ProfilePopupMenu.defaultProps = {
   title: "",
   logout: () => {},
+  showPremiumAlert: () => {},
 };
 
 const mapStateToProps = (state) => homeSelector(state);
