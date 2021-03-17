@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Form, Checkbox } from "antd";
 import { connect } from "react-redux";
@@ -11,28 +11,16 @@ import {
 } from "components";
 
 import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
-import { getCategories } from "redux/actions/channel-category-actions";
 
 import "./style.scss";
 
-const ChannelForm = ({
-  channel,
-  channelCategories,
-  onSubmit,
-  onCancel,
-  getCategories,
-}) => {
+const ChannelForm = ({ channel, channelCategories, onSubmit, onCancel }) => {
   const onFinish = (values) => {
     console.log("values", values);
     onSubmit(values);
   };
 
   const onFinishFailed = () => {};
-
-  useEffect(() => {
-    getCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Form
@@ -100,8 +88,6 @@ const mapStateToProps = (state) => ({
   channelCategories: channelCategorySelector(state).categories,
 });
 
-const mapDispatchToProps = {
-  getCategories,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChannelForm);

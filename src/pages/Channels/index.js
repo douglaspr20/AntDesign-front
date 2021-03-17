@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
 import { CustomSelect, CustomButton } from "components";
-import { SETTINGS, USER_ROLES } from "enum";
+import { SETTINGS, USER_ROLES, EVENT_TYPES } from "enum";
 import ChannelDrawer from "containers/ChannelDrawer";
 
 import ChannelsFilterPanel from "./ChannelsFilterPanel";
@@ -15,8 +15,10 @@ import {
   getMoreChannelList,
 } from "redux/actions/channel-actions";
 import { getUser } from "redux/actions/home-actions";
+import FilterDrawer from "./FilterDrawer";
 
 import { numberWithCommas } from "utils/format";
+import Emitter from "services/emitter";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -67,6 +69,10 @@ const Channels = ({
     });
   };
 
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_CHANNELS_FILTER_PANEL);
+  };
+
   useEffect(() => {
     getFirstChannelList({ order: sortValue });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,6 +81,7 @@ const Channels = ({
   return (
     <div className="channels-page">
       <ChannelsFilterPanel onChange={onFilterChange} />
+      <FilterDrawer onChange={onFilterChange} />
       <ChannelDrawer
         visible={openCannelDrawer}
         onClose={() => setOpenChannelDrawer(false)}
@@ -85,7 +92,9 @@ const Channels = ({
           <Row>
             <Col span={24}>
               <div className="search-results-container-mobile-header">
-                <h3 className="filters-btn">Filters</h3>
+                <h3 className="filters-btn" onClick={() => showFilterPanel()}>
+                  Filters
+                </h3>
                 <h3>
                   {allChannels.length} result
                   {allChannels.length > 1 ? "s" : ""}

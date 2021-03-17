@@ -21,6 +21,7 @@ import IconLoading from "images/icon-loading.gif";
 import { actions as envActions } from "redux/actions/env-actions";
 import { upgradePlan } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
+import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -54,6 +55,7 @@ class App extends Component {
     });
 
     this.props.getCategories();
+    this.props.getChannelCategories();
   }
 
   updateDimensions() {
@@ -127,6 +129,7 @@ const mapDispatchToProps = {
   ...envActions,
   upgradePlan,
   getCategories,
+  getChannelCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { CustomCheckbox } from "components";
 
 import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
-import { getCategories } from "redux/actions/channel-category-actions";
 
 import "./style.scss";
 
@@ -14,24 +13,16 @@ const ChannelsFilterPanel = ({
   title = "Filters",
   channelCategories,
   onChange,
-  getCategories,
 }) => {
-  const [filters, setFilters] = useState({
-    category: [],
-  });
+  const [filters, setFilters] = useState({});
   const onFilterChange = (field, values) => {
     let newFilter = {
       ...filters,
       [field]: JSON.stringify(values),
     };
-    setFilters({ ...filters, [field]: values });
+    setFilters(newFilter);
     onChange(newFilter);
   };
-
-  useEffect(() => {
-    getCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="channels-filter-panel">
@@ -40,7 +31,7 @@ const ChannelsFilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group
-            value={filters.category}
+            value={filters.category ? JSON.parse(filters.category) : []}
             onChange={(values) => onFilterChange("category", values)}
           >
             {channelCategories.map((item) => (
@@ -69,9 +60,7 @@ const mapStateToProps = (state) => ({
   channelCategories: channelCategorySelector(state).categories,
 });
 
-const mapDispatchToProps = {
-  getCategories,
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,
