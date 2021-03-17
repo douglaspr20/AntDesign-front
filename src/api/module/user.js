@@ -27,3 +27,9 @@ export const removeFromMyEventListFromAPI = ({ event }) => {
 export const getAllMyEventsFromAPI = () => {
   return httpClient.get(`private/user/my-events/`);
 };
+
+export const inviteFriend = (email) => {
+  return httpClient.post(`private/user/invite-friend`, {
+    email,
+  });
+};
