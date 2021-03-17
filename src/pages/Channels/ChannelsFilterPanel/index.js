@@ -16,10 +16,15 @@ const ChannelsFilterPanel = ({
   onChange,
   getCategories,
 }) => {
-  const [filters, setFilters] = useState([]);
-  const onFilterChange = (values) => {
-    let newFilter = values;
-    setFilters(newFilter);
+  const [filters, setFilters] = useState({
+    category: [],
+  });
+  const onFilterChange = (field, values) => {
+    let newFilter = {
+      ...filters,
+      [field]: JSON.stringify(values),
+    };
+    setFilters({ ...filters, [field]: values });
     onChange(newFilter);
   };
 
@@ -35,8 +40,8 @@ const ChannelsFilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group
-            value={filters.length > 0 && filters}
-            onChange={(values) => onFilterChange(values)}
+            value={filters.category}
+            onChange={(values) => onFilterChange("category", values)}
           >
             {channelCategories.map((item) => (
               <CustomCheckbox key={item.value} value={item.value} size="sm">

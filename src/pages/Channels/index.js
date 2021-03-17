@@ -36,14 +36,17 @@ const Channels = ({
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
+  const [filters, setFilters] = useState({});
 
   const onFilterChange = (filter) => {
     console.log("Filter Change", filter);
+    setFilters(filter);
+    getFirstChannelList({ filter, order: sortValue });
   };
 
   const onSortChange = (value) => {
     setSortValue(value);
-    getFirstChannelList({ order: value });
+    getFirstChannelList({ filter: filters, order: value });
   };
 
   const onCreateChannel = () => {
@@ -53,12 +56,13 @@ const Channels = ({
   const onChannelCreated = () => {
     setOpenChannelDrawer(false);
     getUser();
-    getFirstChannelList({ order: sortValue });
+    getFirstChannelList({ filter: filters, order: sortValue });
   };
 
   const onShowMore = () => {
     getMoreChannelList({
       page: currentPage + 1,
+      filter: filters,
       order: sortValue,
     });
   };
