@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import ProfileStatusBar from "./ProfileStatusBar";
 import HomeRecommendationsColumn from "./Column";
-import { ArticleCard, CustomButton } from "components";
+import { CustomButton } from "components";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
