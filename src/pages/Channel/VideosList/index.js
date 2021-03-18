@@ -16,10 +16,12 @@ function VideosList({ videos }) {
 
 VideosList.propTypes = {
   videos: PropTypes.array,
+  isOwner: PropTypes.bool,
 };
 
 VideosList.defaultProps = {
   videos: [],
+  isOwner: false,
 };
 
 export default VideosList;

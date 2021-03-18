@@ -2,20 +2,28 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { Tabs, CustomButton } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, USER_ROLES } from "enum";
 import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
 import VideosList from "./VideosList";
 import EventsList from "./EventsList";
 
+import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { getChannel } from "redux/actions/channel-actions";
 
 import "./style.scss";
 
-const Channel = ({ match, history, selectedChannel, getChannel }) => {
+const Channel = ({
+  match,
+  history,
+  selectedChannel,
+  userProfile,
+  getChannel,
+}) => {
   const [currentTab, setCurrentTab] = useState("0");
+  const [isChannelOwner, setIsChannelOwner] = useState(true);
 
   const onFilterChange = (filter) => {
     console.log("Filter Change", filter);
@@ -28,21 +36,45 @@ const Channel = ({ match, history, selectedChannel, getChannel }) => {
   const TabData = [
     {
       title: "Resources",
-      content: () => <ResourcesList resources={selectedChannel.resources} />,
+      content: () => (
+        <ResourcesList
+          isOwner={isChannelOwner}
+          resources={selectedChannel.resources}
+        />
+      ),
     },
     {
       title: "Podcasts",
-      content: () => <PodcastsList podcasts={selectedChannel.podcasts} />,
+      content: () => (
+        <PodcastsList
+          isOwner={isChannelOwner}
+          podcasts={selectedChannel.podcasts}
+        />
+      ),
     },
     {
       title: "Videos",
-      content: () => <VideosList videos={selectedChannel.videos} />,
+      content: () => (
+        <VideosList isOwner={isChannelOwner} videos={selectedChannel.videos} />
+      ),
     },
     {
       title: "Events",
-      content: () => <EventsList events={selectedChannel.events} />,
+      content: () => (
+        <EventsList isOwner={isChannelOwner} events={selectedChannel.events} />
+      ),
     },
   ];
+
+  useEffect(() => {
+    if (userProfile && selectedChannel) {
+      setIsChannelOwner(
+        userProfile.role === USER_ROLES.CHANNEL_ADMIN &&
+          !!userProfile.channel &&
+          userProfile.channel === selectedChannel.id
+      );
+    }
+  }, [userProfile, selectedChannel]);
 
   useEffect(() => {
     let isMounted = true;
@@ -69,7 +101,9 @@ const Channel = ({ match, history, selectedChannel, getChannel }) => {
         <div className="channel-page__results">
           <div className="channel-page__row">
             <div className="channel-page__info-column">
-              <div style={{ textAlign: "center" }}>
+              {isChannelOwner ? (
+                <div className="channel-page__space" />
+              ) : (
                 <CustomButton
                   htmlType="button"
                   text="Follow Channel"
@@ -77,8 +111,7 @@ const Channel = ({ match, history, selectedChannel, getChannel }) => {
                   size="md"
                   onClick={followChannel}
                 />
-              </div>
-
+              )}
               {User && (
                 <>
                   <div className="channel-info__user">
@@ -115,6 +148,7 @@ const Channel = ({ match, history, selectedChannel, getChannel }) => {
 
 const mapStateToProps = (state, props) => ({
   selectedChannel: channelSelector(state).selectedChannel,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
