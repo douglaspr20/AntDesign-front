@@ -1,23 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
+
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { EpisodeCard } from "components";
-import moment from "moment";
+import { CARD_TYPE } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
-function PodcastsList({ podcasts }) {
+function PodcastsList({ podcasts, isOwner }) {
   return (
     <div className="channel-page__list-wrap">
-      {podcasts.length === 0 ? (
+      {!isOwner && podcasts.length === 0 ? (
         <NoItemsMessageCard
           message={"There are no podcasts for you at the moment"}
         />
       ) : (
         <div className="channels__list">
+          {isOwner && <EpisodeCard type={CARD_TYPE.ADD} />}
           {podcasts.map((episode) => (
             <EpisodeCard
               key={episode.id}
               id={episode.id}
+              type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
               title={episode.title}
               created_at={moment(episode.dateEpisode)}
               episode_number={episode.order}
