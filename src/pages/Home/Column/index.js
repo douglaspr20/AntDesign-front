@@ -3,23 +3,34 @@ import { CustomButton } from "components";
 
 import HomeRecommendationsItem from './Item';
 
+import { INTERNAL_LINKS } from "enum";
+
 import "./style.scss";
 
 const HomeRecommendationsColumn = ({
   columnTitle,
   type,
   items = [],
+  history,
 }) => {
   const [buttonText, setButtonText] = useState("View more");
+  const [buttonLink, setButtonLink] = useState(null);
+
   useEffect(() => {
     switch (type) {
       case "podcast":
+        setButtonLink(INTERNAL_LINKS.PODCAST);
         setButtonText("Listen more podcast");
         break;
+      case "library":
+          setButtonLink(INTERNAL_LINKS.LEARNING_LIBRARY);
+          break;
       case "conference":
+        setButtonLink(INTERNAL_LINKS.CONFERENCE_LIBRARY);
         setButtonText("More videos");
         break;
       case "event":
+        setButtonLink(INTERNAL_LINKS.EVENTS);
         setButtonText("More events");
         break;
       default:
@@ -27,6 +38,11 @@ const HomeRecommendationsColumn = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onMore = () => {
+    history.push(buttonLink);
+  }
+
   return (<div className="column-container">
     <div className="column-container__title-container">
       <h3>{columnTitle}</h3>
@@ -37,7 +53,7 @@ const HomeRecommendationsColumn = ({
       }
     </div>
     <div className="column-container__button-container">
-      <CustomButton type="primary outlined" size="md" text={buttonText} />
+      <CustomButton onClick={() => { onMore(); }} type="primary outlined" size="md" text={buttonText} />
     </div>
   </div>);
 };

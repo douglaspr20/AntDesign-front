@@ -32,10 +32,15 @@
     }
   
     .image-podcast, .image-conference {
-      width: 279px;
-      height: 120px;
+      width: 279px !important;
+      height: 120px !important;
+      
+      iframe {
+        border-radius: 8px;
+      }
+
       @media (max-width: 826.98px) {
-        width: 100%;
+        width: 100% !important;
       }
     }
   
@@ -58,6 +63,10 @@
     color: $color-text-primary !important;
     opacity: 1;
     font-weight: normal !important;
+
+    a, a:hover {
+      color: $color-text-primary !important;
+    }
   }
   .item-circle-date {
     width: 64px;

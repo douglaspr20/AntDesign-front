@@ -13,7 +13,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
+const HomePage = ({ history, userProfile, recommendations, getRecommendations }) => {
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
@@ -37,10 +37,10 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
         </div>
       )}
       <div className="home-page-container-recommendations">
-        <HomeRecommendationsColumn items={ recommendations.podcasts } type="podcast" columnTitle="Podcast" />
-        <HomeRecommendationsColumn items={ recommendations.conferenceLibrary } type="conference" columnTitle="Conference Library" />
-        <HomeRecommendationsColumn items={ recommendations.libraries } type="library" columnTitle="Learning Library" />
-        <HomeRecommendationsColumn items={ recommendations.events } type="event" columnTitle="Upcoming Events" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.podcasts } type="podcast" columnTitle="Podcast" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.conferenceLibrary } type="conference" columnTitle="Conference Library" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.libraries } type="library" columnTitle="Learning Library" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.events } type="event" columnTitle="Upcoming Events" />
       </div>
       <div className="home-page-container">
         {userProfile && userProfile.memberShip === "free" && (

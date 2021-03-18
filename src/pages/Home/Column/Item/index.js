@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { CheckOutlined } from "@ant-design/icons";
+import ReactPlayer from "react-player";
 import moment from 'moment';
 
 import { SpecialtyItem, CustomButton } from "components";
@@ -71,21 +72,31 @@ const HomeRecommendationsItem = ({
       </div>
     }
     <div className="img-container">
-    {
-      type !== "conference" ?
-        <img src={image} className={`image-${type}`} alt={`${type}-${element.id}`} />
-        :
-        <img src={HARDCODED_COVER_PLACEHOLDER} className={`image-${type}`} alt={`${type}-${element.id}`} />
-    }
+      {
+        type !== "conference" ?
+          <img src={image} className={`image-${type}`} alt={`${type}-${element.id}`} />
+          :
+          <ReactPlayer
+            className={`image-${type}`}
+            controls={false}
+            url={element.link}
+          />
+      }
     </div>
-    <h3>{element.title}</h3>
+    <h3>
+      {type !== "event" ?
+        <a href={type === "podcast" ? element.appleLink : element.link} target="_blank" rel="noopener noreferrer">{element.title}</a>
+        :
+        element.title
+      }
+    </h3>
     { type === "library" &&
       <p className="item-description">{element.description}</p>
     }
     {
       type !== "library" &&
         type === "event" ?
-        <span className="item-date">{moment(element.createdAt).format("DD MMM - HH:MM A ")}</span>
+        <span className="item-date">{moment(element.startDate).format("DD MMM - HH:MM A ")}</span>
         :
         type !== "library" &&
         <span className="item-date">{moment(element.createdAt).format("DD MMM")}</span>
