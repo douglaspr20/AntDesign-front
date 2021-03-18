@@ -35,7 +35,10 @@ export const createChannel = createAction(
     callback,
   })
 );
-export const getChannel = createAction(GET_CHANNEL, (id) => ({ id }));
+export const getChannel = createAction(GET_CHANNEL, (id, callback) => ({
+  id,
+  callback,
+}));
 export const setChannel = createAction(SET_CHANNEL, (channel) => ({ channel }));
 export const updateChannel = createAction(UPDATE_CHANNEL, (channel) => ({
   channel,

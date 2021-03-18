@@ -19,3 +19,7 @@ export const searchChannels = ({ filter = {}, order, page, num }) => {
 
   return httpClient.get(`private/channel?${parsedFilter}`);
 };
+
+export const getChannel = ({ id }) => {
+  return httpClient.get(`private/channel/${id}`);
+};

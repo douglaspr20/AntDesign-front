@@ -42,6 +42,9 @@
 .channel-page__info-column {
   width: 240px;
   padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > * + * {
     margin-top: 15px;
@@ -69,22 +72,23 @@
   }
 }
 
-.channel-info__icon {
-  display: block;
-  width: 100%;
-  max-width: 150px;
-  background-position: center;
-  background-size: cover;
-  border-radius: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 4px 0px 14px #37215714;
-  border: 1px solid #e1e2ee;
+.channel-info__user {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: $color-text-third;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-white;
+  @include app-font(14px, 19px, bold);
+  text-align: center;
+  overflow: hidden;
 
-  &::before {
-    content: '';
-    display: block;
-    padding-top: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
