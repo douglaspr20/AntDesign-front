@@ -12,6 +12,31 @@
   cursor: pointer;
   width: 100%;
 
+  &.add {
+    border: 1px dashed $color-border;
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: 4px 0px 14px #37215714;
+    }
+  }
+
+  &-plus {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
   &-header {
     width: 100%;
     min-height: 100px;
