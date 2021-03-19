@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -6,9 +6,9 @@ import { LibraryCard, CustomButton } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { CARD_TYPE } from "enum";
 
-import { EVENT_TYPES, SETTINGS } from "enum";
-import Emitter from "services/emitter";
+import { SETTINGS } from "enum";
 
+import LibraryAddDrawer from "containers/LibraryAddDrawer";
 import {
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
@@ -26,11 +26,15 @@ const ResourcesList = ({
   channel,
   isOwner,
   loading,
+  type,
+  refresh,
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
 }) => {
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
+
   const onShowResourceModal = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_ADD_LIBRARY_FORM, "resource");
+    setVisibleDrawer(true);
   };
 
   const onShowMore = () => {
@@ -38,7 +42,7 @@ const ResourcesList = ({
       {
         ...filter,
         channel: channel.id,
-        contentType: "article",
+        contentType: type,
         page: page + 1,
       },
       "newest-first"
@@ -48,22 +52,32 @@ const ResourcesList = ({
   const getFirstBunchOfResources = () => {
     if (channel && channel.id) {
       getFirstChannelLibraryList(
-        { ...filter, channel: channel.id, contentType: "article" },
+        { ...filter, channel: channel.id, contentType: type },
         "newest-first"
       );
     }
   };
 
   useEffect(() => {
-    getFirstBunchOfResources();
+    if (refresh) {
+      getFirstBunchOfResources();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channel, filter]);
+  }, [channel, filter, refresh]);
 
   return (
     <div className="channel-page__list-wrap">
+      <LibraryAddDrawer
+        visible={visibleDrawer}
+        type={type}
+        onAdded={getFirstBunchOfResources}
+        onClose={() => setVisibleDrawer(false)}
+      />
       {!isOwner && resources.length === 0 ? (
         <NoItemsMessageCard
-          message={"There are no resources for you at the moment"}
+          message={`There are no ${
+            type === "article" ? "resources" : "videos"
+          } for you at the moment`}
         />
       ) : (
         <>
@@ -101,13 +115,17 @@ const ResourcesList = ({
 ResourcesList.propTypes = {
   resources: PropTypes.array,
   isOwner: PropTypes.bool,
+  refresh: PropTypes.bool,
   filter: PropTypes.object,
+  type: PropTypes.string,
 };
 
 ResourcesList.defaultProps = {
   resources: [],
   isOwner: false,
+  refresh: false,
   filter: {},
+  type: "article",
 };
 
 const mapStateToProps = (state) => ({

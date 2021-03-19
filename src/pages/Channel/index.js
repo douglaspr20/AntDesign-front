@@ -6,7 +6,6 @@ import { INTERNAL_LINKS, USER_ROLES } from "enum";
 import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
-import VideosList from "./VideosList";
 import EventsList from "./EventsList";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -37,7 +36,14 @@ const Channel = ({
   const TabData = [
     {
       title: "Resources",
-      content: () => <ResourcesList filter={filter} isOwner={isChannelOwner} />,
+      content: () => (
+        <ResourcesList
+          type="article"
+          refresh={currentTab === "0"}
+          filter={filter}
+          isOwner={isChannelOwner}
+        />
+      ),
     },
     {
       title: "Podcasts",
@@ -51,7 +57,12 @@ const Channel = ({
     {
       title: "Videos",
       content: () => (
-        <VideosList isOwner={isChannelOwner} videos={selectedChannel.videos} />
+        <ResourcesList
+          refresh={currentTab === "2"}
+          type="video"
+          filter={filter}
+          isOwner={isChannelOwner}
+        />
       ),
     },
     {

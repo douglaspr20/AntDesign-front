@@ -9,29 +9,23 @@ import {
   CustomButton,
   ImageUpload,
 } from "components";
-import { SETTINGS, SEARCH_FILTERS } from "enum";
+import { SETTINGS } from "enum";
 
-import {
-  addChannelLibrary,
-  getFirstChannelLibraryList,
-} from "redux/actions/library-actions";
+import { addChannelLibrary } from "redux/actions/library-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
 import "./style.scss";
 
 const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
-const ContentType = SEARCH_FILTERS.library["Content type"].reduce(
-  (res, item) => ({ ...res, [item.text]: item.value }),
-  {}
-);
 
 const LibraryForm = ({
   allCategories,
   selectedChannel,
+  type,
+  onAdded,
   onCancel,
   addChannelLibrary,
-  getFirstChannelLibraryList,
 }) => {
   const onFinish = (values) => {
     console.log("values", values);
@@ -41,16 +35,13 @@ const LibraryForm = ({
         ...values,
         channel: selectedChannel.id,
         level: VisibleLevel.CHANNEL,
-        contentType: ContentType.Article,
+        contentType: type,
       },
       () => {
         notification.info({
           message: "New resource was successfully created.",
         });
-        getFirstChannelLibraryList(
-          { channel: selectedChannel.id },
-          "newest-first"
-        );
+        onAdded();
       }
     );
   };
@@ -109,11 +100,13 @@ const LibraryForm = ({
 LibraryForm.propTypes = {
   type: PropTypes.string,
   onCancel: PropTypes.func,
+  onAdded: PropTypes.func,
 };
 
 LibraryForm.defaultProps = {
-  type: "resource",
+  type: "article",
   onCancel: () => {},
+  onAdded: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -123,7 +116,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addChannelLibrary,
-  getFirstChannelLibraryList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryForm);
