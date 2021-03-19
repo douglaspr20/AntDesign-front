@@ -191,6 +191,17 @@
       @include app-font(14px, 19px, normal);
       white-space: nowrap;
 
+      @media (max-width: 826.98px) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+        justify-content: center;
+        padding-top: 2rem;
+        width: 100% !important;
+      }      
+
       span:first-child {
         margin-right: 5px;
       }

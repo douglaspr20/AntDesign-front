@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from "prop-types";
 import { CustomButton } from "components";
 
 import HomeRecommendationsItem from './Item';
@@ -10,7 +11,7 @@ import "./style.scss";
 const HomeRecommendationsColumn = ({
   columnTitle,
   type,
-  items = [],
+  items,
   history,
 }) => {
   const [buttonText, setButtonText] = useState("View more");
@@ -34,7 +35,7 @@ const HomeRecommendationsColumn = ({
         setButtonText("More events");
         break;
       default:
-          // do nothing
+        // do nothing
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -56,6 +57,20 @@ const HomeRecommendationsColumn = ({
       <CustomButton onClick={() => { onMore(); }} type="primary outlined" size="md" text={buttonText} />
     </div>
   </div>);
+};
+
+HomeRecommendationsColumn.propTypes = {  
+  columnTitle: PropTypes.string,
+  history: PropTypes.object,
+  items: PropTypes.array,
+  type: PropTypes.string,
+};
+
+HomeRecommendationsColumn.defaultProps = {
+  columnTitle: "",
+  history: {},
+  items: [],
+  type: "",
 };
 
 export default HomeRecommendationsColumn;

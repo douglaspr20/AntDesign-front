@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CheckOutlined } from "@ant-design/icons";
 import ReactPlayer from "react-player";
@@ -162,6 +163,22 @@ const HomeRecommendationsItem = ({
     }
   </div>);
 }
+
+HomeRecommendationsItem.propTypes = {
+  element: PropTypes.object,
+  allCategories: PropTypes.array,
+  type: PropTypes.string,
+  addToMyEventList: PropTypes.func,
+  removeFromMyEventList: PropTypes.func,
+};
+
+HomeRecommendationsItem.defaultProps = {
+  element: {},
+  allCategories: [],
+  type: "",
+  addToMyEventList: () => {},
+  removeFromMyEventList: () => {},
+};
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
