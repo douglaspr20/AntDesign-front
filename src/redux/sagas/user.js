@@ -100,11 +100,16 @@ export function* sendInvitationEmail({ payload }) {
     const response = yield call(inviteFriend, payload.email);
 
     if (response.status === 200) {
-      
+      if (payload.callback) {
+        payload.callback(false);
+      }
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+    if (payload.callback) {
+      payload.callback(true);
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }

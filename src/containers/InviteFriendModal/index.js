@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal } from "antd";
+import { Modal, notification } from "antd";
 import { connect } from "react-redux";
 import { CloseCircleFilled } from "@ant-design/icons";
 
@@ -20,8 +20,18 @@ const InviteFriendModal = ({
   ...rest
 }) => {
   const handleSubmit = (data) => {
-    inviteFriend(data.email);
-    onInvite();
+    inviteFriend(data.email, (error) => {
+      if (error) {
+        notification.error({
+          message: "Invitation was not sent to your friend. Please try again.",
+        });
+      } else {
+        notification.info({
+          message: "Invitation was successfully sent to your friend.",
+        });
+        onInvite();
+      }
+    });
   };
 
   return (
@@ -64,7 +74,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  inviteFriend
+  inviteFriend,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InviteFriendModal);
