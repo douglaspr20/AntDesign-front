@@ -7,6 +7,10 @@
   width: 100%;
   overflow: hidden;
 
+  &-loading {
+    margin-top: 1rem;
+  }
+
   @media (max-width: 1260px) {
     display: block;
   }

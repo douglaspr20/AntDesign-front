@@ -149,22 +149,24 @@ export function* getFirstChannelLibraryList({ payload }) {
 }
 
 export function* getMoreChannelLibraryList({ payload }) {
-  yield put(homeActions.setLoading(true));
+  yield put(libraryActions.setLoading(true));
 
   try {
     const response = yield call(searchChannelLibrary, { ...payload });
 
     if (response.status === 200) {
-      libraryActions.setMoreChannelLibraryList(
-        response.data.libraries.count,
-        payload.filter.page,
-        response.data.libraries.rows
+      yield put(
+        libraryActions.setMoreChannelLibraryList(
+          response.data.libraries.count,
+          payload.filter.page,
+          response.data.libraries.rows
+        )
       );
     }
   } catch (error) {
     console.log(error);
   } finally {
-    yield put(homeActions.setLoading(false));
+    yield put(libraryActions.setLoading(false));
   }
 }
 

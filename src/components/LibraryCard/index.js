@@ -27,15 +27,14 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd }) => {
       }
     }, 500);
 
+    window.addEventListener("resize", getRowNum);
+
     return () => {
       isMounted = false;
+      window.removeEventListener("resize", getRowNum);
     };
     // eslint-disable-next-line
   }, []);
-
-  window.addEventListener("resize", () => {
-    getRowNum();
-  });
 
   const getRowNum = () => {
     const descElement = document.querySelector(`#${randomId}`);
