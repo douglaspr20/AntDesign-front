@@ -24,9 +24,10 @@ const Channel = ({
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
+  const [filter, setFilter] = useState({});
 
-  const onFilterChange = (filter) => {
-    console.log("Filter Change", filter);
+  const onFilterChange = (values) => {
+    setFilter(values);
   };
 
   const followChannel = () => {
@@ -36,7 +37,7 @@ const Channel = ({
   const TabData = [
     {
       title: "Resources",
-      content: () => <ResourcesList isOwner={isChannelOwner} />,
+      content: () => <ResourcesList filter={filter} isOwner={isChannelOwner} />,
     },
     {
       title: "Podcasts",

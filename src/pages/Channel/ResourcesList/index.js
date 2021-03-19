@@ -22,6 +22,7 @@ const ResourcesList = ({
   resources,
   total,
   page,
+  filter,
   channel,
   isOwner,
   loading,
@@ -34,17 +35,29 @@ const ResourcesList = ({
 
   const onShowMore = () => {
     getMoreChannelLibraryList(
-      { channel: channel.id, page: page + 1 },
+      {
+        ...filter,
+        channel: channel.id,
+        contentType: "article",
+        page: page + 1,
+      },
       "newest-first"
     );
   };
 
-  useEffect(() => {
+  const getFirstBunchOfResources = () => {
     if (channel && channel.id) {
-      getFirstChannelLibraryList({ channel: channel.id }, "newest-first");
+      getFirstChannelLibraryList(
+        { ...filter, channel: channel.id, contentType: "article" },
+        "newest-first"
+      );
     }
+  };
+
+  useEffect(() => {
+    getFirstBunchOfResources();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channel]);
+  }, [channel, filter]);
 
   return (
     <div className="channel-page__list-wrap">
@@ -88,11 +101,13 @@ const ResourcesList = ({
 ResourcesList.propTypes = {
   resources: PropTypes.array,
   isOwner: PropTypes.bool,
+  filter: PropTypes.object,
 };
 
 ResourcesList.defaultProps = {
   resources: [],
   isOwner: false,
+  filter: {},
 };
 
 const mapStateToProps = (state) => ({

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Checkbox } from "antd";
+import { connect } from "react-redux";
 
 import { CustomCheckbox } from "components";
 
+import { categorySelector } from "redux/selectors/categorySelector";
+
 import "./style.scss";
 
-const ChannelFilterPanel = ({
-  title = 'Filters',
-  searchFilters = [],
-  onChange
-}) => {
-  const [filters, setFilters] = useState([]);
-  const onFilterChange = (values) => {
-    let newFilter = values;
+const ChannelFilterPanel = ({ title = "Filters", allCategories, onChange }) => {
+  const [filters, setFilters] = useState({});
+
+  const onFilterChange = (field, values) => {
+    let newFilter = { ...filters, [field]: JSON.stringify(values) };
     setFilters(newFilter);
     onChange(newFilter);
   };
@@ -23,19 +23,13 @@ const ChannelFilterPanel = ({
       <h2 className="font-regular">{title}</h2>
       <div className="channel-filter-panel-content">
         <div className="search-filter">
-          <h5 className="search-filter-title font-bold">Topics</h5>
+          <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group
-            value={
-              filters.length > 0 && filters
-            }
-            onChange={(values) => onFilterChange(values)}
+            value={filters.topics ? JSON.parse(filters.topics) : []}
+            onChange={(values) => onFilterChange("topics", values)}
           >
-            {searchFilters.map((item) => (
-              <CustomCheckbox
-                key={item.value}
-                value={item.value}
-                size="sm"
-              >
+            {allCategories.map((item) => (
+              <CustomCheckbox key={item.value} value={item.value} size="sm">
                 {item.title}
               </CustomCheckbox>
             ))}
@@ -53,7 +47,11 @@ ChannelFilterPanel.propTypes = {
 
 ChannelFilterPanel.defaultProps = {
   title: "Filters",
-  onChange: () => { },
+  onChange: () => {},
 };
 
-export default ChannelFilterPanel;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(ChannelFilterPanel);
