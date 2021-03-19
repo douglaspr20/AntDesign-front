@@ -17,6 +17,8 @@ import {
   getLibrary,
   searchLibrary,
   getRecommendations,
+  addChannelLibrary,
+  searchChannelLibrary,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -65,4 +67,6 @@ export {
   searchChannels,
   getChannelCategories,
   getChannel,
+  addChannelLibrary,
+  searchChannelLibrary,
 };

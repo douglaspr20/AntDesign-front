@@ -10,6 +10,11 @@ const SET_SEARCH_LIBRARIES = "SET_SEARCH_LIBRARIES";
 const SET_LOADING = "SET_LIBRARY_LOADING";
 const GET_RECOMMENDATIONS = "GET_RECOMMENDATIONS";
 const SET_RECOMMENDATIONS = "SET_RECOMMENDATIONS";
+const ADD_CHANNEL_LIBRARY = "ADD_CHANNEL_LIBRARY";
+const GET_FIRST_CHANNEL_LIBRARY_LIST = "GET_FIRST_CHANNEL_LIBRARY_LIST";
+const SET_FIRST_CHANNEL_LIBRARY_LIST = "SET_FIRST_CHANNEL_LIBRARY_LIST";
+const GET_MORE_CHANNEL_LIBRARY_LIST = "GET_MORE_CHANNEL_LIBRARY_LIST";
+const SET_MORE_CHANNEL_LIBRARY_LIST = "SET_MORE_CHANNEL_LIBRARY_LIST";
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -22,6 +27,11 @@ export const constants = {
   SET_LOADING,
   GET_RECOMMENDATIONS,
   SET_RECOMMENDATIONS,
+  ADD_CHANNEL_LIBRARY,
+  GET_FIRST_CHANNEL_LIBRARY_LIST,
+  SET_FIRST_CHANNEL_LIBRARY_LIST,
+  GET_MORE_CHANNEL_LIBRARY_LIST,
+  SET_MORE_CHANNEL_LIBRARY_LIST,
 };
 
 // ------------------------------------
@@ -66,6 +76,26 @@ export const setRecommendations = createAction(
   SET_RECOMMENDATIONS,
   (libraries) => ({ libraries })
 );
+export const addChannelLibrary = createAction(
+  ADD_CHANNEL_LIBRARY,
+  (library, callback) => ({ library, callback })
+);
+export const getFirstChannelLibraryList = createAction(
+  GET_FIRST_CHANNEL_LIBRARY_LIST,
+  (filter, order) => ({ filter, order })
+);
+export const setFirstChannelLibraryList = createAction(
+  SET_FIRST_CHANNEL_LIBRARY_LIST,
+  (total, page, channelLibraries) => ({ total, page, channelLibraries })
+);
+export const getMoreChannelLibraryList = createAction(
+  GET_MORE_CHANNEL_LIBRARY_LIST,
+  (filter, order) => ({ filter, order })
+);
+export const setMoreChannelLibraryList = createAction(
+  SET_MORE_CHANNEL_LIBRARY_LIST,
+  (total, page, channelLibraries) => ({ total, page, channelLibraries })
+);
 
 export const actions = {
   getMoreLibraries,
@@ -78,4 +108,9 @@ export const actions = {
   setLoading,
   getRecommendations,
   setRecommendations,
+  addChannelLibrary,
+  getFirstChannelLibraryList,
+  setFirstChannelLibraryList,
+  getMoreChannelLibraryList,
+  setMoreChannelLibraryList,
 };

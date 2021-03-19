@@ -36,12 +36,7 @@ const Channel = ({
   const TabData = [
     {
       title: "Resources",
-      content: () => (
-        <ResourcesList
-          isOwner={isChannelOwner}
-          resources={selectedChannel.resources}
-        />
-      ),
+      content: () => <ResourcesList isOwner={isChannelOwner} />,
     },
     {
       title: "Podcasts",

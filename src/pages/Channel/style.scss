@@ -5,6 +5,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   width: 100%;
+  overflow: hidden;
 
   @media (max-width: 1260px) {
     display: block;
@@ -18,7 +19,6 @@
 .channel-page__results {
   height: calc(100vh - 72px);
   background: $color-background;
-  overflow: auto;
   padding: 2rem;
   position: relative;
 
@@ -32,7 +32,6 @@
   flex-wrap: wrap;
 
   @media (max-width: 1023.98px) {
-
     > * + * {
       margin-top: 15px;
     }
@@ -62,6 +61,10 @@
 
 .channel-page__content {
   width: calc(100% - 240px);
+
+  .custom-tabs > .ant-tabs-nav {
+    box-shadow: 4px 0px 14px #37215714;
+  }
 
   @media (max-width: 1023.98px) {
     width: 100%;
@@ -99,7 +102,6 @@
 }
 
 .channel-info__general-info {
-
   > * + * {
     margin-top: 10px;
   }
@@ -107,6 +109,12 @@
 
 .channel-page__list-wrap {
   padding-top: 1rem;
+  overflow: auto;
+  height: calc(100vh - 200px);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .channels__list {
@@ -116,7 +124,6 @@
 }
 
 .channels-page__events-list-wrap {
-
   .event-list {
     height: auto;
   }

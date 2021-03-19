@@ -45,6 +45,21 @@ export const reducers = {
       recommendations: cloneDeep([...payload.libraries]),
     });
   },
+  [libraryConstants.SET_FIRST_CHANNEL_LIBRARY_LIST]: (state, { payload }) => {
+    return state.merge({
+      allLibraries: cloneDeep([...payload.channelLibraries]),
+      currentPage: payload.page,
+      countOfResults: payload.total,
+    });
+  },
+  [libraryConstants.SET_MORE_CHANNEL_LIBRARY_LIST]: (state, { payload }) => {
+    const allLibraries = state.get("allLibraries");
+    return state.merge({
+      allLibraries: cloneDeep([...allLibraries, ...payload.channelLibraries]),
+      currentPage: payload.page,
+      countOfResults: payload.total,
+    });
+  },
 };
 
 export const initialState = () =>

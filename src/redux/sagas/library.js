@@ -9,7 +9,9 @@ import {
   addLibrary,
   getLibrary,
   searchLibrary,
+  searchChannelLibrary,
   getRecommendations,
+  addChannelLibrary,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -106,6 +108,66 @@ export function* getRecommendationsSaga() {
   }
 }
 
+export function* addChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getFirstChannelLibraryList({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.setFirstChannelLibraryList(
+          response.data.libraries.count,
+          1,
+          response.data.libraries.rows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getMoreChannelLibraryList({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      libraryActions.setMoreChannelLibraryList(
+        response.data.libraries.count,
+        payload.filter.page,
+        response.data.libraries.rows
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(libraryConstants.GET_MORE_LIBRARIES, getMoreLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
@@ -114,6 +176,15 @@ function* watchLogin() {
   yield takeLatest(
     libraryConstants.GET_RECOMMENDATIONS,
     getRecommendationsSaga
+  );
+  yield takeLatest(libraryConstants.ADD_CHANNEL_LIBRARY, addChannelLibrarySaga);
+  yield takeLatest(
+    libraryConstants.GET_FIRST_CHANNEL_LIBRARY_LIST,
+    getFirstChannelLibraryList
+  );
+  yield takeLatest(
+    libraryConstants.GET_MORE_CHANNEL_LIBRARY_LIST,
+    getMoreChannelLibraryList
   );
 }
 
