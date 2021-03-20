@@ -3,7 +3,8 @@ import { Row, Col } from "antd";
 import { connect } from "react-redux";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import { ArticleCard, CustomButton } from "components";
+import HomeRecommendationsColumn from "./Column";
+import { CustomButton } from "components";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
@@ -12,7 +13,7 @@ import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
-const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
+const HomePage = ({ history, userProfile, recommendations, getRecommendations }) => {
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
@@ -35,17 +36,13 @@ const HomePage = ({ userProfile, recommendations, getRecommendations }) => {
           </Row>
         </div>
       )}
+      <div className="home-page-container-recommendations">
+        <HomeRecommendationsColumn history={history} items={ recommendations.podcasts } type="podcast" columnTitle="Podcast" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.conferenceLibrary } type="conference" columnTitle="Conference Library" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.libraries } type="library" columnTitle="Learning Library" />
+        <HomeRecommendationsColumn history={history} items={ recommendations.events } type="event" columnTitle="Upcoming Events" />
+      </div>
       <div className="home-page-container">
-        <Row gutter={16}>
-          <Col lg={{ span: 16, offset: 4 }}>
-            <h3 className="list-label">Our Recommendations</h3>
-          </Col>
-          {recommendations.map((article, index) => (
-            <Col key={`article-${index}`} lg={{ span: 16, offset: 4 }}>
-              <ArticleCard data={article} />
-            </Col>
-          ))}
-        </Row>
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
             <Col lg={{ span: 16, offset: 4 }}>

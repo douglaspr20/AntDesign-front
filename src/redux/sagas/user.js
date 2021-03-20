@@ -5,7 +5,7 @@ import {
   constants as homeConstants,
   actions as homeActions,
 } from "../actions/home-actions";
-import { getUserFromId, updateUser, upgradePlan } from "../../api";
+import { getUserFromId, updateUser, upgradePlan, inviteFriend } from "../../api";
 
 const defaultUserInfo = {
   firstName: "",
@@ -93,10 +93,32 @@ export function* upgradeUserPlan({ payload }) {
   }
 }
 
+export function* sendInvitationEmail({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(inviteFriend, payload.email);
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback(false);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(true);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
   yield takeLatest(homeConstants.UPGRADE_PLAN, upgradeUserPlan);
+  yield takeLatest(homeConstants.INVITE_FRIEND, sendInvitationEmail);
 }
 
 export const userSaga = [fork(watchLogin)];

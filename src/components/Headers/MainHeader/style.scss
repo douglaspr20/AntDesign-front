@@ -72,6 +72,20 @@
       align-items: center;
     }
 
+    .btn-invite {
+      margin-right: 2rem;
+
+      @media (max-width: 767.98px) {
+        width: 100px;
+        margin-right: 10px;
+        padding: 5px;
+        
+        span {
+          font-size: 1rem;
+        }
+      }
+    }
+
     .btn-upgrade {
       margin-right: 2rem;
 

@@ -42,7 +42,7 @@ export const reducers = {
   },
   [libraryConstants.SET_RECOMMENDATIONS]: (state, { payload }) => {
     return state.merge({
-      recommendations: cloneDeep([...payload.libraries]),
+      recommendations: payload.libraries,
     });
   },
   [libraryConstants.SET_FIRST_CHANNEL_LIBRARY_LIST]: (state, { payload }) => {
@@ -70,7 +70,7 @@ export const initialState = () =>
     countOfResults: 0,
     currentPage: 1,
     selectedLibrary: {},
-    recommendations: [],
+    recommendations: {},
   });
 
 export default handleActions(reducers, initialState());

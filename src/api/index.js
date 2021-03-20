@@ -3,6 +3,7 @@ import {
   getUserFromId,
   updateUser,
   upgradePlan,
+  inviteFriend,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
@@ -69,4 +70,5 @@ export {
   getChannel,
   addChannelLibrary,
   searchChannelLibrary,
+  inviteFriend,
 };

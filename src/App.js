@@ -12,6 +12,8 @@ import Emitter from "services/emitter";
 
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
+import InviteFriendModal from "./containers/InviteFriendModal";
+import InviteFriendForm from "./containers/InviteFriendForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES } from "enum";
@@ -19,7 +21,7 @@ import { EVENT_TYPES } from "enum";
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
-import { upgradePlan } from "redux/actions/home-actions";
+import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { envSelector } from "redux/selectors/envSelector";
@@ -40,6 +42,8 @@ class App extends Component {
     this.state = {
       openPaymentModal: false,
       openPaymentPanel: false,
+      openInviteFriendModal: false,
+      openInviteFriendPanel: false,
     };
   }
 
@@ -51,6 +55,15 @@ class App extends Component {
         this.setState({ openPaymentPanel: true });
       } else {
         this.setState({ openPaymentModal: true });
+      }
+    });
+
+    Emitter.on(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL, () => {
+      console.log(this.props.isMobile);
+      if (this.props.isMobile) {
+        this.setState({ openInviteFriendPanel: true });
+      } else {
+        this.setState({ openInviteFriendModal: true });
       }
     });
 
@@ -72,6 +85,14 @@ class App extends Component {
     this.setState({ openPaymentPanel: false });
   };
 
+  onHideInviteFriendModal = () => {
+    this.setState({ openInviteFriendModal: false });
+  };
+
+  onHideInviteFriendPanel = () => {
+    this.setState({ openInviteFriendPanel: false });
+  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
@@ -81,8 +102,18 @@ class App extends Component {
     // });
   };
 
+  handleInviteFriend = (data) => {
+    this.props.inviteFriend(data.email);
+    this.onHideInviteFriendPanel();
+  };
+
   render() {
-    const { openPaymentModal, openPaymentPanel } = this.state;
+    const {
+      openPaymentModal,
+      openPaymentPanel,
+      openInviteFriendModal,
+      openInviteFriendPanel,
+    } = this.state;
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
@@ -113,6 +144,17 @@ class App extends Component {
             hidePanel={this.onHidePaymentPanel}
           />
         )}
+        <InviteFriendModal
+          visible={openInviteFriendModal}
+          onInvite={this.onHideInviteFriendModal}
+          onCancel={this.onHideInviteFriendModal}
+        />
+        {openInviteFriendPanel && (
+          <InviteFriendForm
+            handleSubmit={this.handleInviteFriend}
+            hidePanel={this.onHideInviteFriendPanel}
+          />
+        )}
       </div>
     );
   }
@@ -128,6 +170,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   ...envActions,
   upgradePlan,
+  inviteFriend,
   getCategories,
   getChannelCategories,
 };
