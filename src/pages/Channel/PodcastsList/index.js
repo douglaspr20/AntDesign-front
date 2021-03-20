@@ -7,7 +7,9 @@ import { EpisodeCard } from "components";
 import { CARD_TYPE } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
-function PodcastsList({ podcasts, isOwner }) {
+const PodcastsList = ({ podcasts, isOwner }) => {
+  const onShowPodcastModal = () => {};
+
   return (
     <div className="channel-page__list-wrap">
       {!isOwner && podcasts.length === 0 ? (
@@ -16,7 +18,9 @@ function PodcastsList({ podcasts, isOwner }) {
         />
       ) : (
         <div className="channels__list">
-          {isOwner && <EpisodeCard type={CARD_TYPE.ADD} />}
+          {isOwner && (
+            <EpisodeCard type={CARD_TYPE.ADD} onAdd={onShowPodcastModal} />
+          )}
           {podcasts.map((episode) => (
             <EpisodeCard
               key={episode.id}
@@ -34,7 +38,7 @@ function PodcastsList({ podcasts, isOwner }) {
       )}
     </div>
   );
-}
+};
 
 PodcastsList.propTypes = {
   podcasts: PropTypes.array,

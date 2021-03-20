@@ -76,7 +76,7 @@ const LibraryForm = ({
           </Checkbox.Group>
         </Form.Item>
         <Form.Item name="image" label="Upload image">
-          <ImageUpload />
+          <ImageUpload aspect={400 / 152} />
         </Form.Item>
         <div className="library-form-panel-footer">
           <CustomButton

@@ -5,6 +5,11 @@
   margin-bottom: 72px;
 
   .library-form {
+    .image-upload {
+      width: 400px;
+      height: 152px;
+    }
+
     .ant-form-item-label {
       @include app-font(14px, 19px, bold);
       margin: 0.5rem 0 12px !important;
