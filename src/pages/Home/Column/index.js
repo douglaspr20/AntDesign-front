@@ -21,7 +21,7 @@ const HomeRecommendationsColumn = ({
     switch (type) {
       case "podcast":
         setButtonLink(INTERNAL_LINKS.PODCAST);
-        setButtonText("Listen more podcast");
+        setButtonText("More podcasts");
         break;
       case "library":
           setButtonLink(INTERNAL_LINKS.LEARNING_LIBRARY);
