@@ -1,17 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { connect } from "react-redux";
 
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { EpisodeCard } from "components";
+import PodcastDrawer from "containers/PodcastDrawer";
 import { CARD_TYPE } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
-const PodcastsList = ({ podcasts, isOwner }) => {
-  const onShowPodcastModal = () => {};
+import {
+  getFirstChannelPodcastList,
+  getMoreChannelPodcastList,
+} from "redux/actions/podcast-actions";
+import { podcastSelector } from "redux/selectors/podcastSelector";
+import { channelSelector } from "redux/selectors/channelSelector";
+
+const PodcastsList = ({
+  podcasts,
+  isOwner,
+  loading,
+  total,
+  page,
+  filter,
+  channel,
+  getFirstChannelPodcastList,
+  getMoreChannelPodcastList,
+}) => {
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
+
+  const onShowPodcastModal = () => {
+    setVisibleDrawer(true);
+  };
+
+  const getFirstBunchOfResources = () => {
+    if (channel && channel.id) {
+      getFirstChannelPodcastList({ ...filter, channel: channel.id });
+    }
+  };
+
+  useEffect(() => {
+    getFirstBunchOfResources();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [channel]);
 
   return (
     <div className="channel-page__list-wrap">
+      <PodcastDrawer
+        visible={visibleDrawer}
+        onAdded={getFirstBunchOfResources}
+        onClose={() => setVisibleDrawer(false)}
+      />
       {!isOwner && podcasts.length === 0 ? (
         <NoItemsMessageCard
           message={"There are no podcasts for you at the moment"}
@@ -43,11 +82,26 @@ const PodcastsList = ({ podcasts, isOwner }) => {
 PodcastsList.propTypes = {
   podcasts: PropTypes.array,
   isOwner: PropTypes.bool,
+  filter: PropTypes.object,
 };
 
 PodcastsList.defaultProps = {
   podcasts: [],
   isOwner: false,
+  filter: {},
 };
 
-export default PodcastsList;
+const mapStateToProps = (state) => ({
+  podcasts: podcastSelector(state).allEpisodes,
+  total: podcastSelector(state).countOfResults,
+  page: podcastSelector(state).currentPage,
+  loading: podcastSelector(state).loading,
+  channel: channelSelector(state).selectedChannel,
+});
+
+const mapDispatchToProps = {
+  getFirstChannelPodcastList,
+  getMoreChannelPodcastList,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastsList);
