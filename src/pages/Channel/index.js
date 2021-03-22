@@ -47,12 +47,7 @@ const Channel = ({
     },
     {
       title: "Podcasts",
-      content: () => (
-        <PodcastsList
-          isOwner={isChannelOwner}
-          podcasts={selectedChannel.podcasts}
-        />
-      ),
+      content: () => <PodcastsList isOwner={isChannelOwner} filter={filter} />,
     },
     {
       title: "Videos",

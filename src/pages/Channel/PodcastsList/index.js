@@ -4,9 +4,9 @@ import moment from "moment";
 import { connect } from "react-redux";
 
 import NoItemsMessageCard from "components/NoItemsMessageCard";
-import { EpisodeCard } from "components";
+import { EpisodeCard, CustomButton } from "components";
 import PodcastDrawer from "containers/PodcastDrawer";
-import { CARD_TYPE } from "enum";
+import { CARD_TYPE, SETTINGS } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import {
@@ -15,6 +15,8 @@ import {
 } from "redux/actions/podcast-actions";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+
+import IconLoadingMore from "images/icon-loading-more.gif";
 
 const PodcastsList = ({
   podcasts,
@@ -39,10 +41,20 @@ const PodcastsList = ({
     }
   };
 
+  const onShowMore = () => {
+    getMoreChannelPodcastList(
+      {
+        ...filter,
+        channel: channel.id,
+        page: page + 1,
+      }
+    );
+  };
+
   useEffect(() => {
     getFirstBunchOfResources();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channel]);
+  }, [channel, filter]);
 
   return (
     <div className="channel-page__list-wrap">
@@ -56,6 +68,7 @@ const PodcastsList = ({
           message={"There are no podcasts for you at the moment"}
         />
       ) : (
+        <>
         <div className="channels__list">
           {isOwner && (
             <EpisodeCard type={CARD_TYPE.ADD} onAdd={onShowPodcastModal} />
@@ -74,6 +87,20 @@ const PodcastsList = ({
             />
           ))}
         </div>
+        {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
+            <div className="channel-page-loading d-flex justify-center items-center">
+              {loading ? (
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              ) : (
+                <CustomButton
+                  text="Show More"
+                  type="primary outlined"
+                  onClick={onShowMore}
+                />
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
