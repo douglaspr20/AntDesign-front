@@ -41,7 +41,7 @@ const InviteFriendModal = ({
       title={
         <div className="invite-modal-title">
           <h3>Invite a Friend</h3>
-          <h5>Send and invitation email to join</h5>
+          <h5>Send an invitation email to join</h5>
           <div className="invite-modal-logo">
             <img src={IconLogo} alt="invite-logo" />
           </div>
