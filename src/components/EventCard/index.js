@@ -80,16 +80,18 @@ class EventCard extends React.Component {
           <h3>{title}</h3>
           <h5>{period}</h5>
           <h5>{`${location ? location.join(",") : ""} event`}</h5>
-          <CustomButton
-            onClick={(e) => { 
-              e.preventDefault();
-              e.stopPropagation();
-              this.onCLickDownloadCalendar(id);
-            }}
-            text="Download Calendar"
-            size="sm"
-            className="event-card-download-button"
-          />
+          { status !== "past" && (
+            <CustomButton
+              onClick={(e) => { 
+                e.preventDefault();
+                e.stopPropagation();
+                this.onCLickDownloadCalendar(id);
+              }}
+              text="Download Calendar"
+              size="sm"
+              className="event-card-download-button"
+            />
+          )}
           <h6 className="event-card-cost">{ticket}</h6>
           {type && type.length > 0 && (
             <div className="event-card-topics">
