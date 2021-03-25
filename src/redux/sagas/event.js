@@ -22,9 +22,6 @@ import {
   updateEventStatusFromAPI,
 } from "../../api";
 
-const community = storage.get("community");
-const { id: userId } = community || {};
-
 const getEventStatus = (data, userId) => {
   let res = data.status[userId];
 
@@ -45,6 +42,9 @@ export function* getAllEventsSaga() {
     const response = yield call(getAllEvents);
 
     if (response.status === 200) {
+      const community = storage.get("community");
+      const { id: userId } = community || {};
+
       yield put(
         eventActions.setAllEvents(
           response.data.events
@@ -92,6 +92,8 @@ export function* getEventSaga({ payload }) {
     const response = yield call(getEvent, { ...payload });
 
     if (response.status === 200) {
+      const community = storage.get("community");
+      const { id: userId } = community || {};
       const { event } = response.data;
       yield put(
         eventActions.setEvent({
@@ -130,6 +132,8 @@ export function* addToMyEventList({ payload }) {
 
     if (response.status === 200) {
       const data = response.data.affectedRows;
+      const community = storage.get("community");
+      const { id: userId } = community || {};
       yield put(
         eventActions.setEvent({
           ...data,
@@ -160,6 +164,8 @@ export function* removeFromMyEventList({ payload }) {
 
     if (response.status === 200) {
       const data = response.data.affectedRows;
+      const community = storage.get("community");
+      const { id: userId } = community || {};
       yield put(
         eventActions.setEvent({
           ...data,
@@ -189,6 +195,8 @@ export function* getAllMyEvents() {
     const response = yield call(getAllMyEventsFromAPI);
 
     if (response.status === 200) {
+      const community = storage.get("community");
+      const { id: userId } = community || {};
       yield put(
         eventActions.setMyEvents(
           response.data.myEvents.map((item) => ({
@@ -221,6 +229,8 @@ export function* updateEventStatus({ payload }) {
 
     if (response.status === 200) {
       const data = response.data.affectedRows;
+      const community = storage.get("community");
+      const { id: userId } = community || {};
       yield put(
         eventActions.setEvent({
           ...data,
