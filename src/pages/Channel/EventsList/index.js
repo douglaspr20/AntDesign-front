@@ -1,30 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
-import EventList from "pages/Events/EventList";
-import NoItemsMessageCard from "components/NoItemsMessageCard";
 
-function EventsList({ events }) {
+import EventList from "pages/Events/EventList";
+import { CustomButton } from "components";
+
+const EventsList = ({ events, isOwner, filter }) => {
+  const onAddEvent = () => {};
+
   return (
     <div className="channel-page__list-wrap channels-page__events-list-wrap">
-      {events.length === 0 ? (
-        <NoItemsMessageCard
-          message={"There are no events for you at the moment"}
-        />
-      ) : (
-        <EventList data={events} />
-      )}
+      {isOwner && <CustomButton text="Add Event" onClick={onAddEvent} />}
+      <EventList data={events} />
     </div>
   );
-}
+};
 
 EventsList.propTypes = {
   events: PropTypes.array,
   isOwner: PropTypes.bool,
+  filter: PropTypes.object,
 };
 
 EventsList.defaultProps = {
   events: [],
   isOwner: false,
+  filter: {},
 };
 
 export default EventsList;

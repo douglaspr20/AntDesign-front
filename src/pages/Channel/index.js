@@ -63,7 +63,7 @@ const Channel = ({
     {
       title: "Events",
       content: () => (
-        <EventsList isOwner={isChannelOwner} events={selectedChannel.events} />
+        <EventsList isOwner={isChannelOwner} filter={filter} />
       ),
     },
   ];
