@@ -147,7 +147,7 @@ const EventDrawer = ({
             <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div>
-            { event.status !== "past" && (
+            { event.status !== "past" && event.status !== "confirmed" && (
               <CustomButton onClick={() => { onCLickDownloadCalendar(); }} text="Download Calendar" size="sm" />
             )}
             {/* {event.status === "going" && event.status !== "past" && (
