@@ -58,7 +58,10 @@ class EventCard extends React.Component {
   };
 
   onCLickDownloadCalendar = (id) => {
-    window.open(`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${id}`,"_blank");
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${id}`,
+      "_blank"
+    );
   };
 
   render() {
@@ -80,9 +83,9 @@ class EventCard extends React.Component {
           <h3>{title}</h3>
           <h5>{period}</h5>
           <h5>{`${location ? location.join(",") : ""} event`}</h5>
-          { status !== "past" && status !== "confirmed" && (
+          {status !== "past" && status !== "confirmed" && (
             <CustomButton
-              onClick={(e) => { 
+              onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 this.onCLickDownloadCalendar(id);
