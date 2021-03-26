@@ -27,6 +27,12 @@
       font-weight: bold !important;
     }
 
+    .event-info {
+      button {
+        margin-left: 1rem;
+      }
+    }
+
     .event-date {
       @include app-font(20px, 26px, 500);
       color: $color-text-secondary !important;
@@ -141,6 +147,10 @@
       .event-info {
         flex-direction: column;
         align-items: flex-start !important;
+
+        button {
+          margin: 1rem auto;
+        }
 
         .add-to-calendar {
           margin-left: 0 !important;

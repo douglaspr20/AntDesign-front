@@ -45,6 +45,10 @@ const EventDrawer = ({
 
   const onClickClaimCredits = (e) => {};
 
+  const onCLickDownloadCalendar = () => {
+    window.open(`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,"_blank");
+  };
+
   // const menu = (
   //   <Menu>
   //     <Menu.Item>Google</Menu.Item>
@@ -143,6 +147,9 @@ const EventDrawer = ({
             <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div>
+            { event.status !== "past" && event.status !== "confirmed" && (
+              <CustomButton onClick={() => { onCLickDownloadCalendar(); }} text="Download Calendar" size="sm" />
+            )}
             {/* {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>
                 <h3 className="add-to-calendar ant-dropdown-link">
