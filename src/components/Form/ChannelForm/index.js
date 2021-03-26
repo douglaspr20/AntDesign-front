@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form, Checkbox } from "antd";
 import { connect } from "react-redux";
@@ -14,7 +14,11 @@ import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
+const MAX_DESCRIPTION = 50;
+
 const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
+  const [description, setDescription] = useState("");
+
   const refForm = React.useRef(null);
   const onFinish = (values) => {
     console.log("values", values);
@@ -29,6 +33,24 @@ const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
         refForm.current.setFieldsValue({
           categories: values.categories.slice(0, 5),
         });
+      }
+    }
+
+    if (values.description !== undefined) {
+      const words = values.description.replaceAll("\n", " ").split(" ");
+      const length = words.length;
+      let value = values.description;
+      if (length > MAX_DESCRIPTION) {
+        const lastWord = words[words.length - 1];
+        value = values.description.slice(
+          0,
+          values.description.length - lastWord.length
+        );
+      }
+
+      setDescription(value);
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({ description: value });
       }
     }
   };
@@ -52,7 +74,13 @@ const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
       >
         <CustomInput />
       </Form.Item>
-      <Form.Item name="description" label="Description">
+      <Form.Item
+        name="description"
+        label={`Description (${Math.min(
+          description ? description.replaceAll("\n", " ").split(" ").length : 0,
+          MAX_DESCRIPTION
+        )}/${MAX_DESCRIPTION})`}
+      >
         <CustomInput multiple={true} />
       </Form.Item>
       <Form.Item name="image" label="Upload image">
