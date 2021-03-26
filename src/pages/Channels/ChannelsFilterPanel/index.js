@@ -5,13 +5,13 @@ import { connect } from "react-redux";
 
 import { CustomCheckbox } from "components";
 
-import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
 const ChannelsFilterPanel = ({
   title = "Filters",
-  channelCategories,
+  allCategories,
   onChange,
 }) => {
   const [filters, setFilters] = useState({});
@@ -34,7 +34,7 @@ const ChannelsFilterPanel = ({
             value={filters.category ? JSON.parse(filters.category) : []}
             onChange={(values) => onFilterChange("category", values)}
           >
-            {channelCategories.map((item) => (
+            {allCategories.map((item) => (
               <CustomCheckbox key={item.value} value={item.value} size="sm">
                 {item.title}
               </CustomCheckbox>
@@ -57,7 +57,7 @@ ChannelsFilterPanel.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  channelCategories: channelCategorySelector(state).categories,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {};

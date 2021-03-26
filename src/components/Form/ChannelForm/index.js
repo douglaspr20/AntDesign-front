@@ -10,17 +10,28 @@ import {
   CustomCheckbox,
 } from "components";
 
-import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const ChannelForm = ({ channel, channelCategories, onSubmit, onCancel }) => {
+const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
+  const refForm = React.useRef(null);
   const onFinish = (values) => {
     console.log("values", values);
     onSubmit(values);
   };
 
   const onFinishFailed = () => {};
+
+  const onFormValuesChange = (values) => {
+    if (values.categories && values.categories.length > 5) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          categories: values.categories.slice(0, 5),
+        });
+      }
+    }
+  };
 
   return (
     <Form
@@ -29,6 +40,8 @@ const ChannelForm = ({ channel, channelCategories, onSubmit, onCancel }) => {
       name="basic"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
+      onValuesChange={onFormValuesChange}
+      ref={refForm}
     >
       <Form.Item
         name="name"
@@ -47,7 +60,7 @@ const ChannelForm = ({ channel, channelCategories, onSubmit, onCancel }) => {
       </Form.Item>
       <Form.Item name="categories" label="What are the content topics?">
         <Checkbox.Group className="d-flex flex-column channel-form-topics">
-          {channelCategories.map((topic, index) => (
+          {allCategories.map((topic, index) => (
             <CustomCheckbox key={index} value={topic.value}>
               {topic.title}
             </CustomCheckbox>
@@ -85,7 +98,7 @@ ChannelForm.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  channelCategories: channelCategorySelector(state).categories,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {};

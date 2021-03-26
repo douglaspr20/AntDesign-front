@@ -68,7 +68,6 @@ class App extends Component {
     });
 
     this.props.getCategories();
-    this.props.getChannelCategories();
   }
 
   updateDimensions() {

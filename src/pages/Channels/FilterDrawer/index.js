@@ -7,11 +7,11 @@ import { CustomDrawer, CustomButton, CustomCheckbox } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 
-import { channelCategorySelector } from "redux/selectors/channelCategorySelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const FilterDrawer = ({ channelCategories, onChange }) => {
+const FilterDrawer = ({ allCategories, onChange }) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
@@ -76,7 +76,7 @@ const FilterDrawer = ({ channelCategories, onChange }) => {
               }
               onChange={(values) => onFilterChange("category", values)}
             >
-              {channelCategories.map((item) => (
+              {allCategories.map((item) => (
                 <CustomCheckbox key={item.value} value={item.value} size="md">
                   {item.title}
                 </CustomCheckbox>
@@ -109,7 +109,7 @@ FilterDrawer.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  channelCategories: channelCategorySelector(state).categories,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(FilterDrawer);
