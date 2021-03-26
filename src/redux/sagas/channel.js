@@ -15,10 +15,14 @@ export function* createChannelSaga({ payload }) {
     const response = yield call(createChannel, { ...payload });
 
     if (response.status === 200 && payload.callback) {
-      payload.callback();
+      payload.callback("");
     }
   } catch (error) {
     console.log(error);
+    if (payload.callback) {
+      const { msg } = error.response.data || {};
+      payload.callback(msg || "Something went wrong, please try again.");
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
