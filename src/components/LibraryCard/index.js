@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import ReactPlayer from "react-player";
 
 import { SvgIcon } from "components";
 import { SEARCH_FILTERS, CARD_TYPE } from "enum";
@@ -64,7 +65,16 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd }) => {
       ) : (
         <>
           <div className="library-card-header">
-            {image && <img src={image} alt="header-img" />}
+            {contentType === "video" && (
+              <ReactPlayer
+                className="library-card-player"
+                controls={false}
+                url={data.link}
+              />
+            )}
+            {contentType !== "video" && image && (
+              <img src={image} alt="header-img" />
+            )}
           </div>
           <div className="library-card-content">
             <h3 className="library-card-title">{title}</h3>

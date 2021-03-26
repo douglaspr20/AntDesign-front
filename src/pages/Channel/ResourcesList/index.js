@@ -90,6 +90,7 @@ const ResourcesList = ({
                 type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                 key={index}
                 data={item}
+                locked={false}
               />
             ))}
           </div>
