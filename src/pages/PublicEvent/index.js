@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import Helmet from "react-helmet";
 import { CheckOutlined } from "@ant-design/icons";
-import { Modal } from 'antd'
+import { Modal } from "antd";
 
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
@@ -55,7 +55,7 @@ const PublicEventPage = ({
 
   const onCancelModal = () => {
     setModalVisible(false);
-  }
+  };
 
   return (
     <div className="public-event-page">
@@ -92,15 +92,16 @@ const PublicEventPage = ({
             visible={modalVisible}
             footer={null}
             width={400}
-            bodyStyle={{ overflow: 'auto', padding: '20px' }}
+            bodyStyle={{ overflow: "auto", padding: "20px" }}
             className="modal-container-login"
-            onCancel={() => { onCancelModal(); }}
+            onCancel={onCancelModal}
           >
             <Login
               login={true}
               signUp={false}
               history={null}
-              match={{params: {}}}
+              match={{ params: {} }}
+              onClose={onCancelModal}
             />
           </Modal>
           {updatedEvent.status === "attend" && (
