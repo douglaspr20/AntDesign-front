@@ -12,6 +12,8 @@ import {
   getAllEvents,
   getEvent,
   updateEventStatusFromAPI,
+  createChannelEvent,
+  getChannelEvents,
 } from "./module/event";
 import {
   addLibrary,
@@ -77,4 +79,6 @@ export {
   inviteFriend,
   addPodcastToChannel,
   searchChannelPodcast,
+  createChannelEvent,
+  getChannelEvents,
 };

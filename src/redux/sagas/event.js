@@ -20,6 +20,8 @@ import {
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
   updateEventStatusFromAPI,
+  createChannelEvent,
+  getChannelEvents,
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -253,6 +255,71 @@ export function* updateEventStatus({ payload }) {
   }
 }
 
+export function* createChannelEventSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(createChannelEvent, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getChannelEventsSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getChannelEvents, { ...payload });
+
+    if (response.status === 200) {
+      const community = storage.get("community");
+      const { id: userId } = community || {};
+      const { channelEvents } = response.data;
+
+      yield put(
+        eventActions.setChannelEvents(
+          channelEvents
+            .map((item) => ({
+              ...item,
+              key: item.id,
+              date: convertToCertainTime(item.startDate, item.timezone).format(
+                "YYYY.MM.DD h:mm a"
+              ),
+              date2: convertToCertainTime(item.endDate, item.timezone).format(
+                "YYYY.MM.DD h:mm a"
+              ),
+              period: getEventPeriod(
+                item.startDate,
+                item.endDate,
+                item.timezone
+              ),
+              about: getEventDescription(item.description),
+              status: getEventStatus(item, userId),
+            }))
+            .sort((a, b) => {
+              return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
+            })
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
@@ -263,6 +330,8 @@ function* watchLogin() {
   );
   yield takeLatest(eventConstants.GET_MY_EVENTS, getAllMyEvents);
   yield takeLatest(eventConstants.UPDATE_EVENT_STATUS, updateEventStatus);
+  yield takeLatest(eventConstants.CREATE_CHANNEL_EVENT, createChannelEventSaga);
+  yield takeLatest(eventConstants.GET_CHANNEL_EVENTS, getChannelEventsSaga);
 }
 
 export const eventSaga = [fork(watchLogin)];

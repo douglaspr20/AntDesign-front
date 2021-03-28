@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
+import omit from 'lodash/omit';
 
 import {
   CustomInput,
@@ -16,7 +17,7 @@ import {
 } from "components";
 import { SETTINGS, TIMEZONE_LIST } from "enum";
 
-import { addChannelLibrary } from "redux/actions/library-actions";
+import { createChannelEvent } from "redux/actions/event-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -56,32 +57,30 @@ const EventAddEditForm = ({
   selectedChannel,
   onAdded,
   onCancel,
-  addChannelLibrary,
+  createChannelEvent,
 }) => {
   const onFinish = (values) => {
     let params = {
-      ...values,
+      ...omit(values, 'startAndEndDate'),
       startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
       endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
     };
-    console.log("params", params);
-
     onCancel();
-    // addChannelLibrary(
-    //   {
-    //     ...values,
-    //     channel: selectedChannel.id,
-    //     level: VisibleLevel.CHANNEL,
-    //   },
-    //   () => {
-    //     notification.info({
-    //       message: "New resource was successfully created.",
-    //     });
-    //     onAdded();
-    //   }
-    // );
+    createChannelEvent(
+      {
+        ...params,
+        channel: selectedChannel.id,
+        level: VisibleLevel.CHANNEL,
+      },
+      () => {
+        notification.info({
+          message: "New event was successfully created.",
+        });
+        onAdded();
+      }
+    );
   };
 
   const onFinishFailed = () => {};
@@ -216,7 +215,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  addChannelLibrary,
+  createChannelEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventAddEditForm);
