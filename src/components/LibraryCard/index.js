@@ -17,7 +17,7 @@ ContentTypes = ContentTypes.reduce(
   {}
 );
 
-const LibraryCard = ({ data, locked, type, onClickAccess, onAdd }) => {
+const LibraryCard = ({ data, locked, type, onClickAccess, onAdd, onMenuClick }) => {
   const [lineClamp, setLineClamp] = useState(3);
   const { title, image, description, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
@@ -108,7 +108,7 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd }) => {
               </div>
             </div>
             {type === CARD_TYPE.EDIT && (
-              <CardMenu menus={CARD_MENUS} onClick={() => {}}>
+              <CardMenu menus={CARD_MENUS} onClick={onMenuClick}>
                 <div className="library-card-menu">
                   <img src={IconMenu} alt="icon-menu" />
                 </div>
@@ -127,6 +127,7 @@ LibraryCard.propTypes = {
   type: PropTypes.string,
   onClickAccess: PropTypes.func,
   onAdd: PropTypes.func,
+  onMenuClick: PropTypes.func,
 };
 
 LibraryCard.defaultProps = {
@@ -135,6 +136,7 @@ LibraryCard.defaultProps = {
   type: CARD_TYPE.VIEW,
   onClickAccess: () => {},
   onAdd: () => {},
+  onMenuClick: () => {},
 };
 
 export default LibraryCard;

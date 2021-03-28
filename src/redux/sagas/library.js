@@ -12,6 +12,7 @@ import {
   searchChannelLibrary,
   getRecommendations,
   addChannelLibrary,
+  deleteChannelLibrary,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -170,6 +171,25 @@ export function* getMoreChannelLibraryList({ payload }) {
   }
 }
 
+export function* deleteChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(deleteChannelLibrary, { ...payload });
+
+    if (response.status === 200 && payload.callback) {
+      payload.callback("");
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(libraryConstants.GET_MORE_LIBRARIES, getMoreLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
@@ -187,6 +207,10 @@ function* watchLogin() {
   yield takeLatest(
     libraryConstants.GET_MORE_CHANNEL_LIBRARY_LIST,
     getMoreChannelLibraryList
+  );
+  yield takeLatest(
+    libraryConstants.DELETE_CHANNEL_LIBRARY,
+    deleteChannelLibrarySaga
   );
 }
 

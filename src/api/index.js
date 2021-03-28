@@ -22,6 +22,7 @@ import {
   getRecommendations,
   addChannelLibrary,
   searchChannelLibrary,
+  deleteChannelLibrary,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -81,4 +82,5 @@ export {
   searchChannelPodcast,
   createChannelEvent,
   getChannelEvents,
+  deleteChannelLibrary,
 };

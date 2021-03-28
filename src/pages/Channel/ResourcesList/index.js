@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { notification } from "antd";
 
 import { LibraryCard, CustomButton } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
@@ -12,6 +13,7 @@ import LibraryAddDrawer from "containers/LibraryAddDrawer";
 import {
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
+  deleteChannelLibrary,
 } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -30,6 +32,7 @@ const ResourcesList = ({
   refresh,
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
+  deleteChannelLibrary,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
@@ -55,6 +58,31 @@ const ResourcesList = ({
         { ...filter, channel: channel.id, contentType: type },
         "newest-first"
       );
+    }
+  };
+
+  const handleLibrary = (menu, library) => {
+    switch (menu) {
+      case "edit":
+        break;
+      case "delete":
+        deleteChannelLibrary(library, (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Library was successfully deleted.",
+            });
+            getFirstBunchOfResources();
+          }
+        });
+        break;
+      case "share":
+        break;
+      default:
+        break;
     }
   };
 
@@ -91,6 +119,7 @@ const ResourcesList = ({
                 key={index}
                 data={item}
                 locked={false}
+                onMenuClick={(menu) => handleLibrary(menu, item)}
               />
             ))}
           </div>
@@ -140,6 +169,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
+  deleteChannelLibrary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesList);

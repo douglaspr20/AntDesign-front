@@ -15,6 +15,7 @@ const GET_FIRST_CHANNEL_LIBRARY_LIST = "GET_FIRST_CHANNEL_LIBRARY_LIST";
 const SET_FIRST_CHANNEL_LIBRARY_LIST = "SET_FIRST_CHANNEL_LIBRARY_LIST";
 const GET_MORE_CHANNEL_LIBRARY_LIST = "GET_MORE_CHANNEL_LIBRARY_LIST";
 const SET_MORE_CHANNEL_LIBRARY_LIST = "SET_MORE_CHANNEL_LIBRARY_LIST";
+const DELETE_CHANNEL_LIBRARY = "DELETE_CHANNEL_LIBRARY";
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -32,6 +33,7 @@ export const constants = {
   SET_FIRST_CHANNEL_LIBRARY_LIST,
   GET_MORE_CHANNEL_LIBRARY_LIST,
   SET_MORE_CHANNEL_LIBRARY_LIST,
+  DELETE_CHANNEL_LIBRARY,
 };
 
 // ------------------------------------
@@ -96,6 +98,10 @@ export const setMoreChannelLibraryList = createAction(
   SET_MORE_CHANNEL_LIBRARY_LIST,
   (total, page, channelLibraries) => ({ total, page, channelLibraries })
 );
+export const deleteChannelLibrary = createAction(
+  DELETE_CHANNEL_LIBRARY,
+  (library, callback) => ({ library, callback })
+);
 
 export const actions = {
   getMoreLibraries,
@@ -113,4 +119,5 @@ export const actions = {
   setFirstChannelLibraryList,
   getMoreChannelLibraryList,
   setMoreChannelLibraryList,
+  deleteChannelLibrary,
 };

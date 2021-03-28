@@ -52,3 +52,9 @@ export const searchChannelLibrary = ({ filter, order }) => {
 
   return httpClient.get(`private/library/channel?${parsedFilter}`);
 };
+
+export const deleteChannelLibrary = ({ library }) => {
+  return httpClient.delete(
+    `private/library/channel/${library.id}?channel=${library.channel}`
+  );
+};
