@@ -5,9 +5,14 @@
   margin-bottom: 72px;
 
   .event-addedit-form {
-    .image-upload {
-      width: 400px;
-      height: 152px;
+    .event-pic-1 {
+      width: 200px;
+      height: 280px;
+    }
+
+    .event-pic-2 {
+      width: 500px;
+      height: 200px;
     }
 
     .ant-form-item-label {
@@ -31,6 +36,23 @@
       .custom-radio {
         margin-bottom: 1rem;
       }
+    }
+
+    &-cbgrp {
+      .custom-checkbox {
+        margin: 0 0 0.5rem !important;
+      }
+    }
+
+    &-radiogrp {
+      .custom-radio {
+        margin: 0 0 0.5rem !important;
+      }
+    }
+
+    .rich-edit-editor {
+      border: 1px solid #dddddd;
+      padding: 1rem;
     }
   }
 

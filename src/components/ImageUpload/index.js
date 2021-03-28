@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Upload } from "antd";
 import ImgCrop from "antd-img-crop";
+import clsx from "clsx";
 
 import { CustomButton } from "components";
 
@@ -16,7 +17,7 @@ function getBase64(file) {
   });
 }
 
-const ImageUpload = ({ value, aspect, onChange }) => {
+const ImageUpload = ({ className, value, aspect, onChange }) => {
   const [fileList, setFileList] = useState([]);
   const [src, setSrc] = useState("");
 
@@ -40,7 +41,7 @@ const ImageUpload = ({ value, aspect, onChange }) => {
 
   return (
     <div
-      className="image-upload"
+      className={clsx(className, "image-upload")}
       style={src ? { backgroundImage: `url("${src}")` } : {}}
     >
       <ImgCrop rotate aspect={aspect}>
@@ -60,12 +61,14 @@ const ImageUpload = ({ value, aspect, onChange }) => {
 };
 
 ImageUpload.propTypes = {
+  className: PropTypes.string,
   value: PropTypes.string,
   aspect: PropTypes.number,
   onChange: PropTypes.func,
 };
 
 ImageUpload.defaultProps = {
+  className: "",
   value: "",
   aspect: 1 / 1,
   onChange: () => {},

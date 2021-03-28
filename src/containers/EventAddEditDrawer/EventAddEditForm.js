@@ -1,14 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, notification, RangePicker } from "antd";
+import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
 
 import {
   CustomInput,
   CustomCheckbox,
   CustomButton,
   CustomSelect,
+  CustomRadio,
   ImageUpload,
+  RichEdit,
+  CreditSelect,
+  EventCodeGenerator,
 } from "components";
 import { SETTINGS, TIMEZONE_LIST } from "enum";
 
@@ -16,9 +20,36 @@ import { addChannelLibrary } from "redux/actions/library-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
+import { isValidURL, convertToUTCTime } from "utils/format";
+
 import "./style.scss";
 
 const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
+
+const { RangePicker } = DatePicker;
+
+const EventTypes = [
+  {
+    text: "Presentation",
+    value: "presentation",
+  },
+  {
+    text: "Workshop",
+    value: "workshop",
+  },
+  {
+    text: "Panel",
+    value: "panel",
+  },
+  {
+    text: "Peer-to-Peer Conversation",
+    value: "peer-to-peer",
+  },
+  {
+    text: "Conference",
+    value: "conference",
+  },
+];
 
 const EventAddEditForm = ({
   allCategories,
@@ -28,21 +59,29 @@ const EventAddEditForm = ({
   addChannelLibrary,
 }) => {
   const onFinish = (values) => {
-    console.log("values", values);
+    let params = {
+      ...values,
+      startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
+      endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
+      level: VisibleLevel.CHANNEL,
+      channel: selectedChannel.id,
+    };
+    console.log("params", params);
+
     onCancel();
-    addChannelLibrary(
-      {
-        ...values,
-        channel: selectedChannel.id,
-        level: VisibleLevel.CHANNEL,
-      },
-      () => {
-        notification.info({
-          message: "New resource was successfully created.",
-        });
-        onAdded();
-      }
-    );
+    // addChannelLibrary(
+    //   {
+    //     ...values,
+    //     channel: selectedChannel.id,
+    //     level: VisibleLevel.CHANNEL,
+    //   },
+    //   () => {
+    //     notification.info({
+    //       message: "New resource was successfully created.",
+    //     });
+    //     onAdded();
+    //   }
+    // );
   };
 
   const onFinishFailed = () => {};
@@ -73,7 +112,6 @@ const EventAddEditForm = ({
             showSearch
             options={TIMEZONE_LIST}
             optionFilterProp="children"
-            onChange={(value) => this.onFieldChange("timezone", value)}
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
@@ -88,9 +126,60 @@ const EventAddEditForm = ({
             ))}
           </Checkbox.Group>
         </Form.Item>
-        
-        <Form.Item name="image" label="Upload image">
-          <ImageUpload aspect={400 / 152} />
+        <Form.Item name="ticket" label="Tickets">
+          <Radio.Group className="d-flex flex-column event-addedit-form-radiogrp">
+            <CustomRadio value="free">Free</CustomRadio>
+            <CustomRadio value="priced">Priced</CustomRadio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item name="type" label="Type">
+          <Checkbox.Group className="d-flex flex-column event-addedit-form-cbgrp">
+            {EventTypes.map((type) => (
+              <CustomCheckbox key={type.value} value={type.value}>
+                {type.text}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+        </Form.Item>
+        <Form.Item name="location" label="Location">
+          <Checkbox.Group className="d-flex flex-column event-addedit-form-cbgrp">
+            <CustomCheckbox value="online">Online</CustomCheckbox>
+            <CustomCheckbox value="priced">Venue</CustomCheckbox>
+          </Checkbox.Group>
+        </Form.Item>
+        <Form.Item name="description" label="Description">
+          <RichEdit readOnly={false} />
+        </Form.Item>
+        <Form.Item
+          name="link"
+          label="Link to connect"
+          rules={[
+            {
+              required: false,
+            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || isValidURL(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject("This is not a valid URL!");
+              },
+            }),
+          ]}
+        >
+          <CustomInput size="sm" />
+        </Form.Item>
+        <Form.Item name="credit" label="Apply for credits">
+          <CreditSelect />
+        </Form.Item>
+        <Form.Item name="code" label="Event Code">
+          <EventCodeGenerator />
+        </Form.Item>
+        <Form.Item name="image" label="Image">
+          <ImageUpload className="event-pic-1" aspect={220 / 280} />
+        </Form.Item>
+        <Form.Item name="image2" label="Image2">
+          <ImageUpload className="event-pic-2" aspect={755 / 305} />
         </Form.Item>
         <div className="event-addedit-form-panel-footer">
           <CustomButton

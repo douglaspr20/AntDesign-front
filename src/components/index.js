@@ -39,3 +39,5 @@ export { default as ConferenceCard } from "./ConferenceCard";
 export { default as ImageUpload2 } from "./ImageUpload2";
 export { default as PremiumAlert } from "./PremiumAlert";
 export { default as ChannelForm } from "./Form/ChannelForm";
+export { default as CreditSelect } from "./CreditSelect";
+export { default as EventCodeGenerator } from "./EventCodeGenerator";
