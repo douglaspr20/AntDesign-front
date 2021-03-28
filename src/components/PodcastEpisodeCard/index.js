@@ -9,6 +9,8 @@ import { SpecialtyItem } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { CARD_TYPE } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import CardMenu from "../CardMenu";
+import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
 
@@ -102,6 +104,13 @@ function EpisodeCard({
                 );
               })}
             </div>
+            {type === CARD_TYPE.EDIT && (
+              <CardMenu onClick={() => {}}>
+                <div className="podcast-episode__card-menu">
+                  <img src={IconMenu} alt="icon-menu" />
+                </div>
+              </CardMenu>
+            )}
           </div>
         </>
       )}
