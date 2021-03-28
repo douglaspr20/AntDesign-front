@@ -4,8 +4,10 @@ import clsx from "clsx";
 import ReactPlayer from "react-player";
 
 import { SvgIcon } from "components";
-import { SEARCH_FILTERS, CARD_TYPE } from "enum";
+import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import CardMenu from "../CardMenu";
+import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
 
@@ -105,6 +107,13 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd }) => {
                 <SvgIcon name="bookmark" className="library-card-icon" />
               </div>
             </div>
+            {type === CARD_TYPE.EDIT && (
+              <CardMenu menus={CARD_MENUS} onClick={() => {}}>
+                <div className="library-card-menu">
+                  <img src={IconMenu} alt="icon-menu" />
+                </div>
+              </CardMenu>
+            )}
           </div>
         </>
       )}

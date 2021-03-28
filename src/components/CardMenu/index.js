@@ -3,21 +3,19 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
 
-import "./style.scss";
+import { CARD_MENUS } from "enum";
 
-const Menus = [
-  {
-    label: "Edit",
-    value: "edit",
-  },
-  {
-    label: "Delete",
-    value: "delete",
-  },
-];
+import "./style.scss";
 
 const CardMenu = ({ menus, className, children, onClick, ...rest }) => {
   const [visible, setVisible] = useState(false);
+
+  const onMenuClick = (e, menu) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setVisible(false);
+    onClick(menu.value);
+  };
 
   const ContentSection = () => (
     <div className="card-menu-dropdown-content">
@@ -25,7 +23,7 @@ const CardMenu = ({ menus, className, children, onClick, ...rest }) => {
         <div
           className="card-menu-dropdown-menu"
           key={menu.value}
-          onClick={() => setVisible(false) && onClick(menu.value)}
+          onClick={(e) => onMenuClick(e, menu)}
         >
           {menu.label}
         </div>
@@ -42,6 +40,10 @@ const CardMenu = ({ menus, className, children, onClick, ...rest }) => {
       visible={visible}
       content={<ContentSection />}
       onVisibleChange={setVisible}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       {children}
     </Popover>
@@ -55,7 +57,7 @@ CardMenu.propTypes = {
 };
 
 CardMenu.defaultProps = {
-  menus: Menus,
+  menus: CARD_MENUS.slice(0, 2),
   className: "",
   onClick: () => {},
 };

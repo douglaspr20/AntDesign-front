@@ -57,6 +57,14 @@
     }
   }
 
+  &-menu {
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+  }
+
   &-content {
     flex: 1;
     display: grid;
@@ -64,6 +72,7 @@
     grid-row-gap: 0.5rem;
     padding: 1.5rem 1rem 1rem;
     overflow: hidden;
+    position: relative;
   }
 
   &-title {
