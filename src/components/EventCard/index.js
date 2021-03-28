@@ -9,6 +9,8 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { CustomButton, SpecialtyItem } from "components";
 import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
+import CardMenu from "../CardMenu";
+import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
 
@@ -69,6 +71,7 @@ class EventCard extends React.Component {
       data: { id, title, type, ticket, location, status, image, period },
       className,
       userProfile: { memberShip },
+      edit,
     } = this.props;
 
     return (
@@ -171,6 +174,13 @@ class EventCard extends React.Component {
             </div>
           </div>
         </div>
+        {edit && (
+          <CardMenu onClick={() => {}}>
+            <div className="event-card-menu">
+              <img src={IconMenu} alt="icon-menu" />
+            </div>
+          </CardMenu>
+        )}
       </div>
     );
   }
@@ -179,6 +189,7 @@ class EventCard extends React.Component {
 EventCard.propTypes = {
   data: PropTypes.object,
   className: PropTypes.string,
+  edit: PropTypes.bool,
   onClick: PropTypes.func,
   onAttend: PropTypes.func,
 };
@@ -186,6 +197,7 @@ EventCard.propTypes = {
 EventCard.defaultProps = {
   data: {},
   className: "",
+  edit: false,
   onClick: () => {},
   onAttend: () => {},
 };

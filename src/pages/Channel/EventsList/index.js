@@ -38,7 +38,7 @@ const EventsList = ({
         onClose={() => setVisibleDrawer(false)}
       />
       {isOwner && <CustomButton text="Add Event" onClick={onAddEvent} />}
-      <EventList data={channelEvents} />
+      <EventList edit={isOwner} data={channelEvents} />
     </div>
   );
 };

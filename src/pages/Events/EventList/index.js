@@ -36,6 +36,7 @@ const EventList = ({
   onAttend,
   showFilter,
   onClick,
+  edit,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
@@ -93,6 +94,7 @@ const EventList = ({
                   className="event-list-item"
                 >
                   <EventCard
+                    edit={edit}
                     data={event}
                     onAttend={(going) => onEventChanged(event, going)}
                     onClick={onClick}
@@ -109,6 +111,7 @@ const EventList = ({
 
 EventList.propTypes = {
   data: PropTypes.array,
+  edit: PropTypes.bool,
   onAttend: PropTypes.func,
   onClick: PropTypes.func,
   showFilter: PropTypes.func,
@@ -116,6 +119,7 @@ EventList.propTypes = {
 
 EventList.defaultProps = {
   data: [],
+  edit: false,
   onAttend: () => {},
   onClick: () => {},
   showFilter: () => {},

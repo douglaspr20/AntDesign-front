@@ -34,6 +34,7 @@
   &-content {
     padding: 1.5rem 28px;
     flex: 1;
+    position: relative;
 
     @media (max-width: 575.98px) {
       padding: 28px 1.5rem;
@@ -207,5 +208,13 @@
         }
       }
     }
+  }
+
+  &-menu {
+    position: absolute;
+    top: 2rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
   }
 }
