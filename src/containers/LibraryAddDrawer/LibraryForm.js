@@ -38,18 +38,28 @@ const LibraryForm = ({
   const refForm = useRef(null);
   const onFinish = (values) => {
     if (edit) {
-      updateChannelLibrary({ ...values, id: selectedLibrary.id }, (err) => {
-        if (err) {
-          notification.error({
-            message: err,
-          });
-        } else {
-          notification.info({
-            message: "Resource was successfully update.",
-          });
-          onAdded();
+      updateChannelLibrary(
+        {
+          ...values,
+          link:
+            values.link && values.link.includes("https://")
+              ? values.link
+              : `https://${values.link}`,
+          id: selectedLibrary.id,
+        },
+        (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Resource was successfully update.",
+            });
+            onAdded();
+          }
         }
-      });
+      );
     } else {
       addChannelLibrary(
         {
