@@ -67,7 +67,6 @@ const EventAddEditForm = ({
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
     };
-    onCancel();
     createChannelEvent(
       {
         ...params,

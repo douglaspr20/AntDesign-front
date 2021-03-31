@@ -37,6 +37,7 @@ const EventList = ({
   showFilter,
   onClick,
   edit,
+  onMenuClick,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
@@ -98,6 +99,7 @@ const EventList = ({
                     data={event}
                     onAttend={(going) => onEventChanged(event, going)}
                     onClick={onClick}
+                    onMenuClick={(menu) => onMenuClick(menu, event)}
                   />
                 </Col>
               ))}
@@ -115,6 +117,7 @@ EventList.propTypes = {
   onAttend: PropTypes.func,
   onClick: PropTypes.func,
   showFilter: PropTypes.func,
+  onMenuClick: PropTypes.func,
 };
 
 EventList.defaultProps = {
@@ -123,6 +126,7 @@ EventList.defaultProps = {
   onAttend: () => {},
   onClick: () => {},
   showFilter: () => {},
+  onMenuClick: () => {},
 };
 
 const mapStateToProps = (state) => ({

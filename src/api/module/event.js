@@ -14,12 +14,18 @@ export const updateEventStatusFromAPI = ({ event, status }) => {
 
 export const createChannelEvent = ({ data }) => {
   return httpClient.post("private/event/channel", { ...data });
-}
+};
 
 export const getChannelEvents = ({ filter }) => {
   const parsedFilter = Object.keys(filter)
     .map((item) => `${item}=${filter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/event/channel?${parsedFilter}`)
-}
+  return httpClient.get(`private/event/channel?${parsedFilter}`);
+};
+
+export const deleteEvent = ({ event }) => {
+  return httpClient.delete(
+    `private/event/channel/${event.id}?channel=${event.channel}`
+  );
+};

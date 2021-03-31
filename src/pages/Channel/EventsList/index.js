@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { notification } from "antd";
 
 import EventList from "pages/Events/EventList";
 import { CustomButton } from "components";
 import EventAddEditDrawer from "containers/EventAddEditDrawer";
 
-import { getChannelEvents } from "redux/actions/event-actions";
+import {
+  getChannelEvents,
+  deleteEvent,
+} from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -16,11 +20,38 @@ const EventsList = ({
   channelEvents,
   channel,
   getChannelEvents,
+  deleteEvent,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   const onAddEvent = () => {
     setVisibleDrawer(true);
+  };
+
+  const handleEvent = (menu, event) => {
+    switch (menu) {
+      case "edit":
+        // setEditMode(true);
+        // setLibrary(library);
+        // setVisibleDrawer(true);
+        break;
+      case "delete":
+        deleteEvent(event, (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Event was successfully deleted.",
+            });
+            getChannelEvents({ ...filter, channel: channel.id });
+          }
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -34,11 +65,18 @@ const EventsList = ({
     <div className="channel-page__list-wrap channels-page__events-list-wrap">
       <EventAddEditDrawer
         visible={visibleDrawer}
-        onAdded={() => {}}
+        onAdded={() => {
+          setVisibleDrawer(false);
+          getChannelEvents({ ...filter, channel: channel.id });
+        }}
         onClose={() => setVisibleDrawer(false)}
       />
       {isOwner && <CustomButton text="Add Event" onClick={onAddEvent} />}
-      <EventList edit={isOwner} data={channelEvents} />
+      <EventList
+        edit={isOwner}
+        data={channelEvents}
+        onMenuClick={handleEvent}
+      />
     </div>
   );
 };
@@ -60,6 +98,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getChannelEvents,
+  deleteEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsList);

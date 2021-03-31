@@ -72,6 +72,7 @@ class EventCard extends React.Component {
       className,
       userProfile: { memberShip },
       edit,
+      onMenuClick,
     } = this.props;
 
     return (
@@ -175,7 +176,7 @@ class EventCard extends React.Component {
           </div>
         </div>
         {edit && (
-          <CardMenu onClick={() => {}}>
+          <CardMenu onClick={onMenuClick}>
             <div className="event-card-menu">
               <img src={IconMenu} alt="icon-menu" />
             </div>
@@ -192,6 +193,7 @@ EventCard.propTypes = {
   edit: PropTypes.bool,
   onClick: PropTypes.func,
   onAttend: PropTypes.func,
+  onMenuClick: PropTypes.func,
 };
 
 EventCard.defaultProps = {
@@ -200,6 +202,7 @@ EventCard.defaultProps = {
   edit: false,
   onClick: () => {},
   onAttend: () => {},
+  onMenuClick: () => {},
 };
 
 const mapStateToProps = (state) => ({
