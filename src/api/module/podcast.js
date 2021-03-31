@@ -35,3 +35,9 @@ export const searchChannelPodcast = ({ filter }) => {
 
   return httpClient.get(`private/podcast/channel?${parsedFilter}`);
 };
+
+export const deleteChannelPodcast = ({ episode }) => {
+  return httpClient.delete(
+    `private/podcast/channel/${episode.id}?channel=${episode.channel}`
+  );
+};

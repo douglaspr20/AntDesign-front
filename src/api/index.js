@@ -38,6 +38,7 @@ import {
   getAllPodcasts,
   addPodcastToChannel,
   searchChannelPodcast,
+  deleteChannelPodcast,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -87,4 +88,5 @@ export {
   deleteChannelLibrary,
   updateChannelLibrary,
   shareChannelLibrary,
+  deleteChannelPodcast,
 };

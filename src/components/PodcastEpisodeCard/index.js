@@ -28,6 +28,7 @@ function EpisodeCard({
   title,
   type,
   onAdd,
+  onMenuClick,
 }) {
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
@@ -105,7 +106,7 @@ function EpisodeCard({
               })}
             </div>
             {type === CARD_TYPE.EDIT && (
-              <CardMenu onClick={() => {}}>
+              <CardMenu onClick={onMenuClick}>
                 <div className="podcast-episode__card-menu">
                   <img src={IconMenu} alt="icon-menu" />
                 </div>
@@ -127,6 +128,7 @@ EpisodeCard.propTypes = {
   title: PropTypes.string,
   type: PropTypes.string,
   onAdd: PropTypes.func,
+  onMenuClick: PropTypes.func,
 };
 
 EpisodeCard.defaultProps = {
@@ -138,6 +140,7 @@ EpisodeCard.defaultProps = {
   title: "",
   type: CARD_TYPE.VIEW,
   onAdd: () => {},
+  onMenuClick: () => {},
 };
 
 const mapStateToProps = (state) => ({

@@ -10,6 +10,7 @@ import {
   getAllPodcasts,
   addPodcastToChannel,
   searchChannelPodcast,
+  deleteChannelPodcast,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
@@ -90,6 +91,25 @@ export function* getMoreChannelPodcastList({ payload }) {
   }
 }
 
+export function* deleteChannelPodcastSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(deleteChannelPodcast, { ...payload });
+
+    if (response.status === 200 && payload.callback) {
+      payload.callback("");
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchPodcast() {
   yield takeLatest(podcastConstants.GET_ALL_PODCASTS, getAllPodcastsSaga);
   yield takeLatest(
@@ -103,6 +123,10 @@ function* watchPodcast() {
   yield takeLatest(
     podcastConstants.GET_MORE_CHANNEL_PODCAST_LIST,
     getMoreChannelPodcastList
+  );
+  yield takeLatest(
+    podcastConstants.DELETE_CHANNEL_PODCAST,
+    deleteChannelPodcastSaga
   );
 }
 

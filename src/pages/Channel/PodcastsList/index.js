@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
+import { notification } from "antd";
 
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { EpisodeCard, CustomButton } from "components";
@@ -12,6 +13,7 @@ import getPodcastLinks from "utils/getPodcastLinks.js";
 import {
   getFirstChannelPodcastList,
   getMoreChannelPodcastList,
+  deleteChannelPodcast,
 } from "redux/actions/podcast-actions";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -28,6 +30,7 @@ const PodcastsList = ({
   channel,
   getFirstChannelPodcastList,
   getMoreChannelPodcastList,
+  deleteChannelPodcast,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
@@ -42,13 +45,37 @@ const PodcastsList = ({
   };
 
   const onShowMore = () => {
-    getMoreChannelPodcastList(
-      {
-        ...filter,
-        channel: channel.id,
-        page: page + 1,
-      }
-    );
+    getMoreChannelPodcastList({
+      ...filter,
+      channel: channel.id,
+      page: page + 1,
+    });
+  };
+
+  const handlePodcast = (menu, episode) => {
+    switch (menu) {
+      case "edit":
+        // setEditMode(true);
+        // setLibrary(library);
+        // setVisibleDrawer(true);
+        break;
+      case "delete":
+        deleteChannelPodcast(episode, (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Podcast was successfully deleted.",
+            });
+            getFirstBunchOfResources();
+          }
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -69,25 +96,26 @@ const PodcastsList = ({
         />
       ) : (
         <>
-        <div className="channels__list">
-          {isOwner && (
-            <EpisodeCard type={CARD_TYPE.ADD} onAdd={onShowPodcastModal} />
-          )}
-          {podcasts.map((episode) => (
-            <EpisodeCard
-              key={episode.id}
-              id={episode.id}
-              type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-              title={episode.title}
-              created_at={moment(episode.dateEpisode)}
-              episode_number={episode.order}
-              episode_cover={episode.imageUrl}
-              categories={episode.topics}
-              links={getPodcastLinks(episode)}
-            />
-          ))}
-        </div>
-        {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
+          <div className="channels__list">
+            {isOwner && (
+              <EpisodeCard type={CARD_TYPE.ADD} onAdd={onShowPodcastModal} />
+            )}
+            {podcasts.map((episode) => (
+              <EpisodeCard
+                key={episode.id}
+                id={episode.id}
+                type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                title={episode.title}
+                created_at={moment(episode.dateEpisode)}
+                episode_number={episode.order}
+                episode_cover={episode.imageUrl}
+                categories={episode.topics}
+                links={getPodcastLinks(episode)}
+                onMenuClick={(menu) => handlePodcast(menu, episode)}
+              />
+            ))}
+          </div>
+          {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
             <div className="channel-page-loading d-flex justify-center items-center">
               {loading ? (
                 <img src={IconLoadingMore} alt="loading-more-img" />
@@ -129,6 +157,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getFirstChannelPodcastList,
   getMoreChannelPodcastList,
+  deleteChannelPodcast,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastsList);
