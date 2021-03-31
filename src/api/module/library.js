@@ -66,8 +66,9 @@ export const updateChannelLibrary = ({ library }) => {
 };
 
 export const shareChannelLibrary = ({ library }) => {
-  return httpClient.put(`private/library/channel/${library}`, {
+  return httpClient.put(`private/library/channel/${library.id}`, {
     level: VisibleLevel.ALL,
+    image: library.image,
     approvalStatus: "approved",
   });
 };

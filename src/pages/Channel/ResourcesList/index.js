@@ -89,7 +89,7 @@ const ResourcesList = ({
         });
         break;
       case "share":
-        shareChannelLibrary(library.id, (err) => {
+        shareChannelLibrary(library, (err) => {
           if (err) {
             notification.error({
               message: err,
