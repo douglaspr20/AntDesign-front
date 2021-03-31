@@ -24,6 +24,7 @@ import {
   searchChannelLibrary,
   deleteChannelLibrary,
   updateChannelLibrary,
+  shareChannelLibrary,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -85,4 +86,5 @@ export {
   getChannelEvents,
   deleteChannelLibrary,
   updateChannelLibrary,
+  shareChannelLibrary,
 };

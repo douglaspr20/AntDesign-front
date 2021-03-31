@@ -15,6 +15,7 @@ import {
   getMoreChannelLibraryList,
   deleteChannelLibrary,
   setLibrary,
+  shareChannelLibrary,
 } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -35,6 +36,7 @@ const ResourcesList = ({
   getMoreChannelLibraryList,
   deleteChannelLibrary,
   setLibrary,
+  shareChannelLibrary,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -87,6 +89,18 @@ const ResourcesList = ({
         });
         break;
       case "share":
+        shareChannelLibrary(library.id, (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message:
+                "Your library was successfully added to Learning Library.",
+            });
+          }
+        });
         break;
       default:
         break;
@@ -182,6 +196,7 @@ const mapDispatchToProps = {
   getMoreChannelLibraryList,
   deleteChannelLibrary,
   setLibrary,
+  shareChannelLibrary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesList);

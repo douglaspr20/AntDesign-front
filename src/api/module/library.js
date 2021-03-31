@@ -1,6 +1,8 @@
 import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
+const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
+
 export const addLibrary = ({ library }) => {
   return httpClient.post(`private/library/share`, { ...library });
 };
@@ -61,4 +63,11 @@ export const deleteChannelLibrary = ({ library }) => {
 
 export const updateChannelLibrary = ({ library }) => {
   return httpClient.put(`private/library/channel/${library.id}`, library);
+};
+
+export const shareChannelLibrary = ({ library }) => {
+  return httpClient.put(`private/library/channel/${library}`, {
+    level: VisibleLevel.ALL,
+    approvalStatus: "approved",
+  });
 };
