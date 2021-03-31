@@ -33,8 +33,11 @@ const PodcastsList = ({
   deleteChannelPodcast,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [podcast, setPodcast] = useState({});
 
   const onShowPodcastModal = () => {
+    setEditMode(false);
     setVisibleDrawer(true);
   };
 
@@ -55,9 +58,9 @@ const PodcastsList = ({
   const handlePodcast = (menu, episode) => {
     switch (menu) {
       case "edit":
-        // setEditMode(true);
-        // setLibrary(library);
-        // setVisibleDrawer(true);
+        setEditMode(true);
+        setPodcast(episode);
+        setVisibleDrawer(true);
         break;
       case "delete":
         deleteChannelPodcast(episode, (err) => {
@@ -87,7 +90,12 @@ const PodcastsList = ({
     <div className="channel-page__list-wrap">
       <PodcastDrawer
         visible={visibleDrawer}
-        onAdded={getFirstBunchOfResources}
+        edit={editMode}
+        podcast={podcast}
+        onAdded={() => {
+          setVisibleDrawer(false);
+          getFirstBunchOfResources();
+        }}
         onClose={() => setVisibleDrawer(false)}
       />
       {!isOwner && podcasts.length === 0 ? (

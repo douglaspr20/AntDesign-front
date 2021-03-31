@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, notification } from "antd";
+import isEmpty from "lodash/isEmpty";
+import moment from "moment";
 
 import {
   CustomInput,
@@ -12,7 +14,10 @@ import {
 } from "components";
 import { SETTINGS } from "enum";
 
-import { addPodcastToChannel } from "redux/actions/podcast-actions";
+import {
+  addPodcastToChannel,
+  updateChannelPodcast,
+} from "redux/actions/podcast-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -23,29 +28,66 @@ const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
 const PodcastForm = ({
   allCategories,
   selectedChannel,
+  podcast,
+  edit,
   onAdded,
   onCancel,
   addPodcastToChannel,
+  updateChannelPodcast,
 }) => {
+  const refForm = useRef(null);
+
   const onFinish = (values) => {
     console.log("values", values);
-    addPodcastToChannel(
-      {
-        ...values,
-        channel: selectedChannel.id,
-        level: VisibleLevel.CHANNEL,
-      },
-      () => {
-        onAdded();
-        onCancel();
-        notification.info({
-          message: "New podcast was successfully created.",
-        });
-      }
-    );
+    if (edit) {
+      updateChannelPodcast(
+        {
+          ...values,
+          id: podcast.id,
+        },
+        (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Podcast was successfully updated.",
+            });
+            onAdded();
+          }
+        }
+      );
+    } else {
+      addPodcastToChannel(
+        {
+          ...values,
+          channel: selectedChannel.id,
+          level: VisibleLevel.CHANNEL,
+        },
+        () => {
+          onAdded();
+          notification.info({
+            message: "New podcast was successfully created.",
+          });
+        }
+      );
+    }
   };
 
   const onFinishFailed = () => {};
+
+  useEffect(() => {
+    if (edit && !isEmpty(podcast)) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          ...podcast,
+          imageData: podcast.imageUrl,
+          dateEpisode: moment(podcast.dateEpisode),
+        });
+      }
+    }
+  }, [podcast, edit]);
 
   return (
     <div className="podcast-form-panel">
@@ -53,6 +95,7 @@ const PodcastForm = ({
         className="podcast-form"
         layout="vertical"
         name="basic"
+        ref={refForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -65,9 +108,11 @@ const PodcastForm = ({
         <Form.Item name="order" label="Order">
           <CustomInput />
         </Form.Item>
-        <Form.Item name="dateEpisode" label="Date">
-          <CustomCalendar />
-        </Form.Item>
+        {!edit && (
+          <Form.Item name="dateEpisode" label="Date">
+            <CustomCalendar />
+          </Form.Item>
+        )}
         <Form.Item name="topics" label="Topics?">
           <Checkbox.Group className="d-flex flex-column podcast-form-topics">
             {allCategories.map((topic, index) => (
@@ -127,11 +172,15 @@ const PodcastForm = ({
 };
 
 PodcastForm.propTypes = {
+  podcast: PropTypes.object,
+  edit: PropTypes.bool,
   onCancel: PropTypes.func,
   onAdded: PropTypes.func,
 };
 
 PodcastForm.defaultProps = {
+  podcast: {},
+  edit: false,
   onCancel: () => {},
   onAdded: () => {},
 };
@@ -143,6 +192,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addPodcastToChannel,
+  updateChannelPodcast,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastForm);

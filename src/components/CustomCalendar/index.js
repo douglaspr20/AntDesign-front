@@ -87,7 +87,7 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
   }, [current]);
 
   useEffect(() => {
-    if (value && value.isValid()) {
+    if (value && value.isValid && value.isValid()) {
       setCurrent(value);
     }
 

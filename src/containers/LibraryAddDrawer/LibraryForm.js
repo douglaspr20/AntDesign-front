@@ -54,7 +54,7 @@ const LibraryForm = ({
             });
           } else {
             notification.info({
-              message: "Resource was successfully update.",
+              message: "Resource was successfully updated.",
             });
             onAdded();
           }
