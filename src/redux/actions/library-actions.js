@@ -11,6 +11,7 @@ const SET_LOADING = "SET_LIBRARY_LOADING";
 const GET_RECOMMENDATIONS = "GET_RECOMMENDATIONS";
 const SET_RECOMMENDATIONS = "SET_RECOMMENDATIONS";
 const ADD_CHANNEL_LIBRARY = "ADD_CHANNEL_LIBRARY";
+const UPDATE_CHANNEL_LIBRARY = "UPDATE_CHANNEL_LIBRARY";
 const GET_FIRST_CHANNEL_LIBRARY_LIST = "GET_FIRST_CHANNEL_LIBRARY_LIST";
 const SET_FIRST_CHANNEL_LIBRARY_LIST = "SET_FIRST_CHANNEL_LIBRARY_LIST";
 const GET_MORE_CHANNEL_LIBRARY_LIST = "GET_MORE_CHANNEL_LIBRARY_LIST";
@@ -29,6 +30,7 @@ export const constants = {
   GET_RECOMMENDATIONS,
   SET_RECOMMENDATIONS,
   ADD_CHANNEL_LIBRARY,
+  UPDATE_CHANNEL_LIBRARY,
   GET_FIRST_CHANNEL_LIBRARY_LIST,
   SET_FIRST_CHANNEL_LIBRARY_LIST,
   GET_MORE_CHANNEL_LIBRARY_LIST,
@@ -80,6 +82,10 @@ export const setRecommendations = createAction(
 );
 export const addChannelLibrary = createAction(
   ADD_CHANNEL_LIBRARY,
+  (library, callback) => ({ library, callback })
+);
+export const updateChannelLibrary = createAction(
+  UPDATE_CHANNEL_LIBRARY,
   (library, callback) => ({ library, callback })
 );
 export const getFirstChannelLibraryList = createAction(

@@ -13,6 +13,7 @@ import {
   getRecommendations,
   addChannelLibrary,
   deleteChannelLibrary,
+  updateChannelLibrary,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -127,6 +128,28 @@ export function* addChannelLibrarySaga({ payload }) {
   }
 }
 
+export function* updateChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* getFirstChannelLibraryList({ payload }) {
   yield put(homeActions.setLoading(true));
 
@@ -200,6 +223,10 @@ function* watchLogin() {
     getRecommendationsSaga
   );
   yield takeLatest(libraryConstants.ADD_CHANNEL_LIBRARY, addChannelLibrarySaga);
+  yield takeLatest(
+    libraryConstants.UPDATE_CHANNEL_LIBRARY,
+    updateChannelLibrarySaga
+  );
   yield takeLatest(
     libraryConstants.GET_FIRST_CHANNEL_LIBRARY_LIST,
     getFirstChannelLibraryList

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, notification } from "antd";
+import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
@@ -11,9 +12,13 @@ import {
 } from "components";
 import { SETTINGS } from "enum";
 
-import { addChannelLibrary } from "redux/actions/library-actions";
+import {
+  addChannelLibrary,
+  updateChannelLibrary,
+} from "redux/actions/library-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { librarySelector } from "redux/selectors/librarySelector";
 
 import "./style.scss";
 
@@ -23,30 +28,58 @@ const LibraryForm = ({
   allCategories,
   selectedChannel,
   type,
+  edit,
+  selectedLibrary,
   onAdded,
   onCancel,
   addChannelLibrary,
+  updateChannelLibrary,
 }) => {
+  const refForm = useRef(null);
   const onFinish = (values) => {
-    console.log("values", values);
-    onCancel();
-    addChannelLibrary(
-      {
-        ...values,
-        channel: selectedChannel.id,
-        level: VisibleLevel.CHANNEL,
-        contentType: type,
-      },
-      () => {
-        notification.info({
-          message: "New resource was successfully created.",
-        });
-        onAdded();
-      }
-    );
+    if (edit) {
+      updateChannelLibrary({ ...values, id: selectedLibrary.id }, (err) => {
+        if (err) {
+          notification.error({
+            message: err,
+          });
+        } else {
+          notification.info({
+            message: "Resource was successfully update.",
+          });
+          onAdded();
+        }
+      });
+    } else {
+      addChannelLibrary(
+        {
+          ...values,
+          channel: selectedChannel.id,
+          level: VisibleLevel.CHANNEL,
+          contentType: type,
+        },
+        () => {
+          notification.info({
+            message: "New resource was successfully created.",
+          });
+          onAdded();
+        }
+      );
+    }
   };
 
   const onFinishFailed = () => {};
+
+  useEffect(() => {
+    if (edit && !isEmpty(selectedLibrary)) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          ...selectedLibrary,
+          link: selectedLibrary.link ? selectedLibrary.link.slice(8) : "",
+        });
+      }
+    }
+  }, [selectedLibrary, edit]);
 
   return (
     <div className="library-form-panel">
@@ -54,6 +87,7 @@ const LibraryForm = ({
         className="library-form"
         layout="vertical"
         name="basic"
+        ref={refForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -101,12 +135,14 @@ const LibraryForm = ({
 
 LibraryForm.propTypes = {
   type: PropTypes.string,
+  edit: PropTypes.bool,
   onCancel: PropTypes.func,
   onAdded: PropTypes.func,
 };
 
 LibraryForm.defaultProps = {
   type: "article",
+  edit: false,
   onCancel: () => {},
   onAdded: () => {},
 };
@@ -114,10 +150,12 @@ LibraryForm.defaultProps = {
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
   selectedChannel: channelSelector(state).selectedChannel,
+  selectedLibrary: librarySelector(state).selectedLibrary,
 });
 
 const mapDispatchToProps = {
   addChannelLibrary,
+  updateChannelLibrary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryForm);

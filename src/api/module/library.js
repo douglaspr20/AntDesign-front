@@ -58,3 +58,7 @@ export const deleteChannelLibrary = ({ library }) => {
     `private/library/channel/${library.id}?channel=${library.channel}`
   );
 };
+
+export const updateChannelLibrary = ({ library }) => {
+  return httpClient.put(`private/library/channel/${library.id}`, library);
+};

@@ -14,6 +14,7 @@ import {
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
   deleteChannelLibrary,
+  setLibrary,
 } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -33,10 +34,13 @@ const ResourcesList = ({
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
   deleteChannelLibrary,
+  setLibrary,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const onShowResourceModal = () => {
+    setEditMode(false);
     setVisibleDrawer(true);
   };
 
@@ -64,6 +68,9 @@ const ResourcesList = ({
   const handleLibrary = (menu, library) => {
     switch (menu) {
       case "edit":
+        setEditMode(true);
+        setLibrary(library);
+        setVisibleDrawer(true);
         break;
       case "delete":
         deleteChannelLibrary(library, (err) => {
@@ -98,7 +105,11 @@ const ResourcesList = ({
       <LibraryAddDrawer
         visible={visibleDrawer}
         type={type}
-        onAdded={getFirstBunchOfResources}
+        edit={editMode}
+        onAdded={() => {
+          setVisibleDrawer(false);
+          getFirstBunchOfResources();
+        }}
         onClose={() => setVisibleDrawer(false)}
       />
       {!isOwner && resources.length === 0 ? (
@@ -170,6 +181,7 @@ const mapDispatchToProps = {
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
   deleteChannelLibrary,
+  setLibrary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesList);
