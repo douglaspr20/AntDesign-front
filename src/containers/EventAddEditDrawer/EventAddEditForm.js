@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
-import omit from 'lodash/omit';
+import omit from "lodash/omit";
+import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
@@ -17,11 +18,12 @@ import {
 } from "components";
 import { SETTINGS, TIMEZONE_LIST } from "enum";
 
-import { createChannelEvent } from "redux/actions/event-actions";
+import { createChannelEvent, updateChannelEvent } from "redux/actions/event-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 
-import { isValidURL, convertToUTCTime } from "utils/format";
+import { isValidURL, convertToUTCTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
 
@@ -55,34 +57,72 @@ const EventTypes = [
 const EventAddEditForm = ({
   allCategories,
   selectedChannel,
+  edit,
+  selectedEvent,
   onAdded,
   onCancel,
   createChannelEvent,
+  updateChannelEvent,
 }) => {
+  const refForm = useRef(null);
+
   const onFinish = (values) => {
     let params = {
-      ...omit(values, 'startAndEndDate'),
+      ...omit(values, "startAndEndDate"),
       startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
       endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
     };
-    createChannelEvent(
-      {
+    if (edit) {
+      console.log("**** params ", params);
+      updateChannelEvent({
         ...params,
-        channel: selectedChannel.id,
-        level: VisibleLevel.CHANNEL,
-      },
-      () => {
-        notification.info({
-          message: "New event was successfully created.",
-        });
-        onAdded();
-      }
-    );
+        id: selectedEvent.id,
+      }, (err) => {
+        if (err) {
+          notification.error({
+            message: err,
+          });
+        } else {
+          notification.info({
+            message: "Event was successfully updated.",
+          });
+          onAdded();
+        }
+      })
+    } else {
+      createChannelEvent(
+        {
+          ...params,
+          channel: selectedChannel.id,
+          level: VisibleLevel.CHANNEL,
+        },
+        () => {
+          notification.info({
+            message: "New event was successfully created.",
+          });
+          onAdded();
+        }
+      );
+    }
   };
 
   const onFinishFailed = () => {};
+
+  useEffect(() => {
+    if (edit && !isEmpty(selectedEvent)) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          ...selectedEvent,
+          startAndEndDate: [
+            convertToCertainTime(selectedEvent.startDate, selectedEvent.timezone),
+            convertToCertainTime(selectedEvent.endDate, selectedEvent.timezone),
+          ],
+        });
+      }
+    }
+  }, [selectedEvent, edit]);
 
   return (
     <div className="event-addedit-form-panel">
@@ -90,6 +130,7 @@ const EventAddEditForm = ({
         className="event-addedit-form"
         layout="vertical"
         name="basic"
+        ref={refForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -146,7 +187,7 @@ const EventAddEditForm = ({
           </Checkbox.Group>
         </Form.Item>
         <Form.Item name="description" label="Description">
-          <RichEdit readOnly={false} />
+          <RichEdit readOnly={false} data={selectedEvent.description} />
         </Form.Item>
         <Form.Item
           name="link"
@@ -171,7 +212,7 @@ const EventAddEditForm = ({
           <CreditSelect />
         </Form.Item>
         <Form.Item name="code" label="Event Code">
-          <EventCodeGenerator />
+          <EventCodeGenerator disabled={edit} />
         </Form.Item>
         <Form.Item name="image" label="Image">
           <ImageUpload className="event-pic-1" aspect={220 / 280} />
@@ -199,11 +240,13 @@ const EventAddEditForm = ({
 };
 
 EventAddEditForm.propTypes = {
+  edit: PropTypes.bool,
   onAdded: PropTypes.func,
   onCancel: PropTypes.func,
 };
 
 EventAddEditForm.defaultProps = {
+  edit: false,
   onAdded: () => {},
   onCancel: () => {},
 };
@@ -211,10 +254,12 @@ EventAddEditForm.defaultProps = {
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
   selectedChannel: channelSelector(state).selectedChannel,
+  selectedEvent: eventSelector(state).updatedEvent,
 });
 
 const mapDispatchToProps = {
   createChannelEvent,
+  updateChannelEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventAddEditForm);

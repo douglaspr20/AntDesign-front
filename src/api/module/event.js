@@ -29,3 +29,7 @@ export const deleteEvent = ({ event }) => {
     `private/event/channel/${event.id}?channel=${event.channel}`
   );
 };
+
+export const updateChannelEvent = ({ event }) => {
+  return httpClient.put(`private/event/channel/${event.id}`, event);
+};

@@ -5,22 +5,28 @@ import { CustomDrawer } from "components";
 
 import EventAddEditForm from "./EventAddEditForm";
 
-const EventAddEditDrawer = ({ visible, onAdded, onClose }) => {
+const EventAddEditDrawer = ({ visible, edit, onAdded, onClose }) => {
   return (
-    <CustomDrawer title="Add Events" visible={visible} onClose={onClose}>
-      <EventAddEditForm onAdded={onAdded} onCancel={onClose} />
+    <CustomDrawer
+      title={`${edit ? "Edit" : "Add"} Event`}
+      visible={visible}
+      onClose={onClose}
+    >
+      <EventAddEditForm edit={edit} onAdded={onAdded} onCancel={onClose} />
     </CustomDrawer>
   );
 };
 
 EventAddEditDrawer.propTypes = {
   visible: PropTypes.bool,
+  edit: PropTypes.bool,
   onAdded: PropTypes.func,
   onClose: PropTypes.func,
 };
 
 EventAddEditDrawer.defaultProps = {
   visible: false,
+  edit: false,
   onAdded: () => {},
   onClose: () => {},
 };

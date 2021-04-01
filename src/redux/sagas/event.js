@@ -23,6 +23,7 @@ import {
   createChannelEvent,
   getChannelEvents,
   deleteEvent,
+  updateChannelEvent,
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -340,6 +341,28 @@ export function* deleteEventSaga({ payload }) {
   }
 }
 
+export function* updateChannelEventSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateChannelEvent, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
@@ -353,6 +376,10 @@ function* watchLogin() {
   yield takeLatest(eventConstants.CREATE_CHANNEL_EVENT, createChannelEventSaga);
   yield takeLatest(eventConstants.GET_CHANNEL_EVENTS, getChannelEventsSaga);
   yield takeLatest(eventConstants.DELETE_EVENT, deleteEventSaga);
+  yield takeLatest(
+    eventConstants.UPDATE_CHANNEL_EVENT,
+    updateChannelEventSaga
+  );
 }
 
 export const eventSaga = [fork(watchLogin)];

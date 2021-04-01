@@ -15,6 +15,7 @@ import {
   createChannelEvent,
   getChannelEvents,
   deleteEvent,
+  updateChannelEvent,
 } from "./module/event";
 import {
   addLibrary,
@@ -93,4 +94,5 @@ export {
   deleteChannelPodcast,
   updateChannelPodcast,
   deleteEvent,
+  updateChannelEvent,
 };

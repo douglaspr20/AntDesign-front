@@ -10,6 +10,7 @@ import EventAddEditDrawer from "containers/EventAddEditDrawer";
 import {
   getChannelEvents,
   deleteEvent,
+  setEvent,
 } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -21,19 +22,22 @@ const EventsList = ({
   channel,
   getChannelEvents,
   deleteEvent,
+  setEvent,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const onAddEvent = () => {
+    setEditMode(false);
     setVisibleDrawer(true);
   };
 
   const handleEvent = (menu, event) => {
     switch (menu) {
       case "edit":
-        // setEditMode(true);
-        // setLibrary(library);
-        // setVisibleDrawer(true);
+        setEditMode(true);
+        setEvent(event);
+        setVisibleDrawer(true);
         break;
       case "delete":
         deleteEvent(event, (err) => {
@@ -65,6 +69,7 @@ const EventsList = ({
     <div className="channel-page__list-wrap channels-page__events-list-wrap">
       <EventAddEditDrawer
         visible={visibleDrawer}
+        edit={editMode}
         onAdded={() => {
           setVisibleDrawer(false);
           getChannelEvents({ ...filter, channel: channel.id });
@@ -99,6 +104,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getChannelEvents,
   deleteEvent,
+  setEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsList);

@@ -15,6 +15,7 @@ const CREATE_CHANNEL_EVENT = "CREATE_CHANNEL_EVENT";
 const GET_CHANNEL_EVENTS = "GET_CHANNEL_EVENTS";
 const SET_CHANNEL_EVENTS = "SET_CHANNEL_EVENTS";
 const DELETE_EVENT = "DELETE_EVENT";
+const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -32,6 +33,7 @@ export const constants = {
   GET_CHANNEL_EVENTS,
   SET_CHANNEL_EVENTS,
   DELETE_EVENT,
+  UPDATE_CHANNEL_EVENT,
 };
 
 // ------------------------------------
@@ -81,6 +83,10 @@ export const deleteEvent = createAction(DELETE_EVENT, (event, callback) => ({
   event,
   callback,
 }));
+export const updateChannelEvent = createAction(
+  UPDATE_CHANNEL_EVENT,
+  (event, callback) => ({ event, callback })
+);
 
 export const actions = {
   getAllEvent,
@@ -98,4 +104,5 @@ export const actions = {
   getChannelEvents,
   setChannelEvents,
   deleteEvent,
+  updateChannelEvent,
 };
