@@ -23,3 +23,7 @@ export const searchChannels = ({ filter = {}, order, page, num }) => {
 export const getChannel = ({ id }) => {
   return httpClient.get(`private/channel/${id}`);
 };
+
+export const setFollowChannel = ({ channel }) => {
+  return httpClient.put(`private/channel/follow/${channel.id}`);
+};

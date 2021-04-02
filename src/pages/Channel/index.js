@@ -10,7 +10,7 @@ import EventsList from "./EventsList";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { getChannel } from "redux/actions/channel-actions";
+import { getChannel, setFollowChannel } from "redux/actions/channel-actions";
 
 import "./style.scss";
 
@@ -18,19 +18,22 @@ const Channel = ({
   match,
   history,
   selectedChannel,
+  channelLoading,
   userProfile,
   getChannel,
+  setFollowChannel,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
   const [filter, setFilter] = useState({});
+  const [followed, setFollowed] = useState(false);
 
   const onFilterChange = (values) => {
     setFilter(values);
   };
 
   const followChannel = () => {
-    console.log("Follow Channel");
+    setFollowChannel(selectedChannel);
   };
 
   const TabData = [
@@ -62,9 +65,7 @@ const Channel = ({
     },
     {
       title: "Events",
-      content: () => (
-        <EventsList isOwner={isChannelOwner} filter={filter} />
-      ),
+      content: () => <EventsList isOwner={isChannelOwner} filter={filter} />,
     },
   ];
 
@@ -74,6 +75,9 @@ const Channel = ({
         userProfile.role === USER_ROLES.CHANNEL_ADMIN &&
           !!userProfile.channel &&
           userProfile.channel === selectedChannel.id
+      );
+      setFollowed(
+        (selectedChannel.followedUsers || []).includes(userProfile.id)
       );
     }
   }, [userProfile, selectedChannel]);
@@ -108,9 +112,11 @@ const Channel = ({
               ) : (
                 <CustomButton
                   htmlType="button"
-                  text="Follow Channel"
+                  text={followed ? "Followed" : "Follow Channel"}
                   type="primary"
                   size="md"
+                  disabled={followed}
+                  loading={channelLoading}
                   onClick={followChannel}
                 />
               )}
@@ -150,11 +156,13 @@ const Channel = ({
 
 const mapStateToProps = (state, props) => ({
   selectedChannel: channelSelector(state).selectedChannel,
+  channelLoading: channelSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   getChannel,
+  setFollowChannel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

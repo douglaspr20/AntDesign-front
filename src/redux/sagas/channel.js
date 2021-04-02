@@ -6,7 +6,12 @@ import {
 } from "../actions/channel-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import { createChannel, searchChannels, getChannel } from "../../api";
+import {
+  createChannel,
+  searchChannels,
+  getChannel,
+  setFollowChannel,
+} from "../../api";
 
 export function* createChannelSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -100,6 +105,30 @@ export function* getMoreChannelListSaga({ payload }) {
   }
 }
 
+export function* setFollowChannelSaga({ payload }) {
+  yield put(channelActions.setChannelLoading(true));
+
+  try {
+    const response = yield call(setFollowChannel, { ...payload });
+
+    if (response.status === 200) {
+      yield put(channelActions.setChannel(response.data.channel));
+      yield put(homeActions.updateUserInformation(response.data.user));
+
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wront. Please try again.");
+    }
+  } finally {
+    yield put(channelActions.setChannelLoading(false));
+  }
+}
+
 function* watchChannel() {
   yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
   yield takeLatest(channelConstants.GET_CHANNEL, getChannelSaga);
@@ -113,6 +142,7 @@ function* watchChannel() {
     channelConstants.GET_MORE_CHANNEL_LIST,
     getMoreChannelListSaga
   );
+  yield takeLatest(channelConstants.SET_FOLLOW_CHANNEL, setFollowChannelSaga);
 }
 
 export const channelSaga = [fork(watchChannel)];
