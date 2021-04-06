@@ -5,7 +5,7 @@ import { Row, Col } from "antd";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { ConferenceCard, CustomButton } from "components";
+import { ConferenceCard, CustomButton, SearchInput } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { SETTINGS } from "enum";
 import {
@@ -28,17 +28,30 @@ const ConferenceLibrary = ({
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
+  const [meta, setMeta] = useState("");
 
   const onShowMore = () => {
     getMoreConferenceLibraries({
       ...filters,
       page: currentPage + 1,
+      meta,
     });
   };
 
   const onFilterChange = (filters) => {
-    searchConferenceLibraries(filters);
+    searchConferenceLibraries({
+      ...filters,
+      meta,
+    });
     setFilters(filters);
+  };
+
+  const onSearch = (value) => {
+    searchConferenceLibraries({
+      ...filters,
+      meta: value,
+    });
+    setMeta(value);
   };
 
   useEffect(() => {
@@ -87,6 +100,7 @@ const ConferenceLibrary = ({
               <h3>{`${numberWithCommas(countOfResults)} video${
                 countOfResults > 1 ? "s" : ""
               }`}</h3>
+              <SearchInput onSearch={onSearch} />
             </div>
           </Col>
         </Row>
