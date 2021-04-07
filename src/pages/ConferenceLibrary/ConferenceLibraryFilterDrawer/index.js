@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Checkbox } from "antd";
 
-import { CustomDrawer, CustomButton, CustomCheckbox } from "components";
+import {
+  CustomDrawer,
+  CustomButton,
+  CustomCheckbox,
+  SearchInput,
+} from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import { SEARCH_FILTERS } from "enum";
@@ -17,6 +22,7 @@ const ConferenceLibraryFilterDrawer = ({
   allCategories,
   onChange,
   onClose,
+  onSearch,
 }) => {
   const [filterValues, setFilterValues] = useState({});
 
@@ -58,6 +64,8 @@ const ConferenceLibraryFilterDrawer = ({
         </div>
         <div className="conference-filter-drawer-content">
           <div className="search-filter">
+            <h5 className="search-filter-title font-bold">Keywords</h5>
+            <SearchInput onChange={onSearch} />
             <h4 className="search-filter-title font-bold">Year</h4>
             <Checkbox.Group
               value={
@@ -107,6 +115,7 @@ ConferenceLibraryFilterDrawer.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
   onClose: PropTypes.func,
+  onSearch: PropTypes.func,
 };
 
 ConferenceLibraryFilterDrawer.defaultProps = {
@@ -114,6 +123,7 @@ ConferenceLibraryFilterDrawer.defaultProps = {
   title: "",
   onChange: () => {},
   onClose: () => {},
+  onSearch: () => {},
 };
 
 const mapStateToProps = (state) => ({

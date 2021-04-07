@@ -5,7 +5,7 @@ import { Row, Col } from "antd";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { ConferenceCard, CustomButton, SearchInput } from "components";
+import { ConferenceCard, CustomButton } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { SETTINGS } from "enum";
 import {
@@ -61,11 +61,15 @@ const ConferenceLibrary = ({
 
   return (
     <div className="conference-library-page">
-      <ConferenceLibraryFilterPanel onChange={onFilterChange} />
+      <ConferenceLibraryFilterPanel
+        onChange={onFilterChange}
+        onSearch={onSearch}
+      />
       <ConferenceLibraryFilterDrawer
         visible={visible}
         onClose={() => setVisible(false)}
         onChange={onFilterChange}
+        onSearch={setMeta}
       />
       <div className="search-results-container">
         {/* <Row>
@@ -100,7 +104,6 @@ const ConferenceLibrary = ({
               <h3>{`${numberWithCommas(countOfResults)} video${
                 countOfResults > 1 ? "s" : ""
               }`}</h3>
-              <SearchInput onSearch={onSearch} />
             </div>
           </Col>
         </Row>

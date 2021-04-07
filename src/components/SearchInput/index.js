@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import CustomInput from "../Input";
@@ -7,8 +7,13 @@ import IconSearch from "images/icon-search.svg";
 
 import "./style.scss";
 
-const SearchInput = ({ onSearch }) => {
+const SearchInput = ({ onSearch, onChange }) => {
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    onChange(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <div className="search-input">
@@ -27,10 +32,12 @@ const SearchInput = ({ onSearch }) => {
 };
 
 SearchInput.propTypes = {
+  onChange: PropTypes.func,
   onSearch: PropTypes.func,
 };
 
 SearchInput.defaultProps = {
+  onChange: () => {},
   onSearch: () => {},
 };
 

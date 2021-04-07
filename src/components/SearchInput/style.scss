@@ -6,9 +6,11 @@
   align-items: center;
   border: 1px solid $color-border;
   border-radius: 0.25rem;
+  background: white;
 
   &-text {
     border: none !important;
+    height: 36px;
 
     &:focus {
       box-shadow: none !important;
@@ -17,8 +19,8 @@
 
   &-icon {
     margin: 0 0.5rem;
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
