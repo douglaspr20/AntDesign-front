@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { SvgIcon } from "components";
+import { connect } from "react-redux";
+import { SvgIcon, SpecialtyItem } from "components";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import RenderPropsTruncatedString from "components/RenderPropsTruncatedString.js";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import "./style.scss";
@@ -12,7 +14,16 @@ import "./style.scss";
 const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
-const ChannelCard = ({ id, title, description, image, add, onClick }) => {
+const ChannelCard = ({
+  id,
+  title,
+  description,
+  image,
+  add,
+  allCategories,
+  categories,
+  onClick,
+}) => {
   return (
     <Link
       className={clsx("channel-card", { add })}
@@ -37,6 +48,20 @@ const ChannelCard = ({ id, title, description, image, add, onClick }) => {
                 </RenderPropsTruncatedString>
               </p>
             </div>
+            <div className="channel-card-content-categories">
+              {(categories || []).map((item, index) => {
+                const category = allCategories.find(
+                  (cat) => cat.value === item
+                );
+                return (
+                  <SpecialtyItem
+                    key={index}
+                    title={category ? category.title : item}
+                    active={false}
+                  />
+                );
+              })}
+            </div>
             <div className="channel-card-content-footer">
               <div className="d-flex items-center"></div>
               <div className="d-flex items-center">
@@ -57,6 +82,7 @@ ChannelCard.propTypes = {
   add: PropTypes.bool,
   description: PropTypes.string,
   image: PropTypes.string,
+  categories: PropTypes.array,
   onClick: PropTypes.func,
 };
 
@@ -65,7 +91,12 @@ ChannelCard.defaultProps = {
   description: "",
   add: false,
   image: HARDCODED_COVER_PLACEHOLDER,
+  categories: [],
   onClick: () => {},
 };
 
-export default ChannelCard;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(ChannelCard);

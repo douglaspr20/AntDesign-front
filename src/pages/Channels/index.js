@@ -130,6 +130,7 @@ const Channels = ({
                 title={chnl.name}
                 description={chnl.description}
                 image={chnl.image}
+                categories={chnl.categories}
               />
             ))}
           </div>

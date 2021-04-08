@@ -57,6 +57,16 @@
     grid-row-gap: 0.5rem;
     padding: 1.5rem 1rem 1rem;
     overflow: hidden;
+
+    &-categories {
+      display: flex;
+      flex-wrap: wrap;
+      overflow: hidden;
+
+      & > * {
+        margin: 0 0.5rem 0.5rem 0;
+      }
+    }
   }
 
   &-title {
