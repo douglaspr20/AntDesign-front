@@ -28,17 +28,30 @@ const ConferenceLibrary = ({
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
+  const [meta, setMeta] = useState("");
 
   const onShowMore = () => {
     getMoreConferenceLibraries({
       ...filters,
       page: currentPage + 1,
+      meta,
     });
   };
 
   const onFilterChange = (filters) => {
-    searchConferenceLibraries(filters);
+    searchConferenceLibraries({
+      ...filters,
+      meta,
+    });
     setFilters(filters);
+  };
+
+  const onSearch = (value) => {
+    searchConferenceLibraries({
+      ...filters,
+      meta: value,
+    });
+    setMeta(value);
   };
 
   useEffect(() => {
@@ -48,11 +61,15 @@ const ConferenceLibrary = ({
 
   return (
     <div className="conference-library-page">
-      <ConferenceLibraryFilterPanel onChange={onFilterChange} />
+      <ConferenceLibraryFilterPanel
+        onChange={onFilterChange}
+        onSearch={onSearch}
+      />
       <ConferenceLibraryFilterDrawer
         visible={visible}
         onClose={() => setVisible(false)}
         onChange={onFilterChange}
+        onSearch={setMeta}
       />
       <div className="search-results-container">
         {/* <Row>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox } from "components";
+import { CustomCheckbox, SearchInput } from "components";
 
 import { SEARCH_FILTERS } from "enum";
 
@@ -13,7 +13,12 @@ import "./style.scss";
 
 const YearOptions = SEARCH_FILTERS.ConferenceLibrary.year;
 
-const ConferenceLibraryFilterPanel = ({ title, allCategories, onChange }) => {
+const ConferenceLibraryFilterPanel = ({
+  title,
+  allCategories,
+  onChange,
+  onSearch,
+}) => {
   const [filters, setFilters] = useState({});
 
   const onFilterChange = (field, values) => {
@@ -30,6 +35,8 @@ const ConferenceLibraryFilterPanel = ({ title, allCategories, onChange }) => {
       <h2 className="font-regular">{title}</h2>
       <div className="conference-library-filter-panel-content">
         <div className="search-filter">
+          <h5 className="search-filter-title font-bold">Keywords</h5>
+          <SearchInput onSearch={onSearch} />
           <h5 className="search-filter-title font-bold">Year</h5>
           <Checkbox.Group
             value={filters["year"] ? JSON.parse(filters["year"]) : []}
@@ -63,11 +70,13 @@ const ConferenceLibraryFilterPanel = ({ title, allCategories, onChange }) => {
 ConferenceLibraryFilterPanel.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
+  onSearch: PropTypes.func,
 };
 
 ConferenceLibraryFilterPanel.defaultProps = {
   title: "Filters",
   onChange: () => {},
+  onSearch: () => {},
 };
 
 const mapStateToProps = (state) => ({

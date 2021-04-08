@@ -48,8 +48,7 @@ const HomeRecommendationsItem = ({
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [element, type]);
 
   const onAttend = () => {
     setEventStatus("going")
