@@ -28,7 +28,7 @@
     }
 
     .event-info {
-      button {
+      .ant-dropdown-link {
         margin-left: 1rem;
       }
     }
@@ -148,7 +148,7 @@
         flex-direction: column;
         align-items: flex-start !important;
 
-        button {
+        .ant-dropdown-link {
           margin: 1rem auto;
         }
 
