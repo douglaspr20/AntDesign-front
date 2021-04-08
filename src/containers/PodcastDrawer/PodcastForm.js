@@ -122,7 +122,7 @@ const PodcastForm = ({
             ))}
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="imageData" label="Upload image">
+        <Form.Item name="imageData" label="Upload image (400 / 152)">
           <ImageUpload aspect={400 / 152} />
         </Form.Item>
         <Form.Item label="Vimeo Link" name="vimeoLink">

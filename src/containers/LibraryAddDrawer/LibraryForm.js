@@ -120,7 +120,7 @@ const LibraryForm = ({
           </Checkbox.Group>
         </Form.Item>
         {type !== "video" && (
-          <Form.Item name="image" label="Upload image">
+          <Form.Item name="image" label="Upload image (400 / 152)">
             <ImageUpload aspect={400 / 152} />
           </Form.Item>
         )}

@@ -83,7 +83,7 @@ const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
       >
         <CustomInput multiple={true} />
       </Form.Item>
-      <Form.Item name="image" label="Upload image">
+      <Form.Item name="image" label="Upload image (400 / 152)">
         <ImageUpload2 width="400px" height="152px" aspect={400 / 152} />
       </Form.Item>
       <Form.Item name="categories" label="What are the content topics?">

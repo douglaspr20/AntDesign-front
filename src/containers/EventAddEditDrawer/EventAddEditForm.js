@@ -214,10 +214,10 @@ const EventAddEditForm = ({
         <Form.Item name="code" label="Event Code">
           <EventCodeGenerator disabled={edit} />
         </Form.Item>
-        <Form.Item name="image" label="Image">
+        <Form.Item name="image" label="Image (220 / 280)">
           <ImageUpload className="event-pic-1" aspect={220 / 280} />
         </Form.Item>
-        <Form.Item name="image2" label="Image2">
+        <Form.Item name="image2" label="Image2 (755 / 305)">
           <ImageUpload className="event-pic-2" aspect={755 / 305} />
         </Form.Item>
         <div className="event-addedit-form-panel-footer">
