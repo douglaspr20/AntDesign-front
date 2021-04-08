@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { Tabs, CustomButton } from "components";
 import { INTERNAL_LINKS, USER_ROLES } from "enum";
@@ -11,6 +12,8 @@ import EventsList from "./EventsList";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { getChannel, setFollowChannel } from "redux/actions/channel-actions";
+
+import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
 
@@ -141,6 +144,14 @@ const Channel = ({
               )}
             </div>
             <div className="channel-page__content">
+              <Link to={INTERNAL_LINKS.CHANNELS}>
+                <div className="channel-page__content-top">
+                  <div className="channel-page__content-top-back">
+                    <img src={IconBack} alt="icon-back" />
+                  </div>
+                  <h4>Back to Channels</h4>
+                </div>
+              </Link>
               <Tabs
                 data={TabData}
                 current={currentTab}
