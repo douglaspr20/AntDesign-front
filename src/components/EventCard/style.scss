@@ -72,13 +72,8 @@
       font-weight: 500 !important;
     }
 
-    .event-card-download-button {
-      width: auto !important;
-      padding: 0 31px !important;
+    .ant-dropdown-link {
       margin-bottom: 1rem;
-      @media (max-width: 575.98px) {
-        width: 100% !important;
-      }
     }
 
     .going-label {

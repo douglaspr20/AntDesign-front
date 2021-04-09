@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { CheckOutlined } from "@ant-design/icons";
+import { Dropdown, Menu } from 'antd';
+import { CheckOutlined, DownOutlined } from "@ant-design/icons";
+
+import moment from 'moment';
 
 import {
   DateAvatar,
@@ -45,9 +48,38 @@ const EventDrawer = ({
 
   const onClickClaimCredits = (e) => {};
 
-  const onCLickDownloadCalendar = () => {
-    window.open(`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,"_blank");
+  const onCLickDownloadCalendar = (e) => {
+    e.preventDefault();
+    window.open(`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}` ,"_blank");
   };
+
+  const onCLickAddGoogleCalendar = (e) => {
+    e.preventDefault();
+    const description = event.description.blocks[0].text.replace(/(\r\n|\n|\r)/gm, "");
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${event.title}&dates=${moment(event.startDate).format('YYYYMMDDTHHmm')}/${moment(event.endDate).format('YYYYMMDDTHHmmss')}&details=${description}&location=${event.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    window.open(googleCalendarUrl ,"_blank");
+  };
+
+  const onCLickAddYahooCalendar = (e) => {
+    e.preventDefault();
+    const description = event.description.blocks[0].text.replace(/(\r\n|\n|\r)/gm, "");
+    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${event.title}&st=${moment(event.startDate).format('YYYYMMDDTHHmm')}&dur${moment(event.endDate).format('HHmmss')}&desc=${description}&in_loc=${event.location}`;
+    window.open(yahooCalendarUrl ,"_blank");
+  };
+
+  const downloadDropdownOptions = () => (
+    <Menu>
+      <Menu.Item key="1">
+        <a href="/#" onClick={onCLickDownloadCalendar}>Download ICS File</a>
+      </Menu.Item>
+      <Menu.Item key="2" >
+        <a href="/#" onClick={onCLickAddGoogleCalendar}>Add to Google Calendar</a>
+      </Menu.Item>
+      <Menu.Item key="3">
+        <a href="/#" onClick={onCLickAddYahooCalendar}>Add to Yahoo Calendar</a>
+      </Menu.Item>
+    </Menu>
+  );
 
   // const menu = (
   //   <Menu>
@@ -148,7 +180,11 @@ const EventDrawer = ({
               <h3 className="event-date">{event.period}</h3>
             </div>
             { event.status !== "past" && event.status !== "confirmed" && (
-              <CustomButton onClick={() => { onCLickDownloadCalendar(); }} text="Download Calendar" size="sm" />
+              <Dropdown overlay={downloadDropdownOptions}>
+                <a href="/#" className="ant-dropdown-link" onClick={(e) => {e.preventDefault(); }}>
+                  Download calendar <DownOutlined />
+                </a>
+              </Dropdown>
             )}
             {/* {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>

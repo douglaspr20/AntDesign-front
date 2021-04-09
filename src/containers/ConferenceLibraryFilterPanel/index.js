@@ -35,7 +35,7 @@ const ConferenceLibraryFilterPanel = ({
       <h2 className="font-regular">{title}</h2>
       <div className="conference-library-filter-panel-content">
         <div className="search-filter">
-          <h5 className="search-filter-title font-bold">Keywords</h5>
+          <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
           <h5 className="search-filter-title font-bold">Year</h5>
           <Checkbox.Group

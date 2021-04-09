@@ -64,7 +64,7 @@ const ConferenceLibraryFilterDrawer = ({
         </div>
         <div className="conference-filter-drawer-content">
           <div className="search-filter">
-            <h5 className="search-filter-title font-bold">Keywords</h5>
+            <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />
             <h4 className="search-filter-title font-bold">Year</h4>
             <Checkbox.Group
