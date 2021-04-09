@@ -51,10 +51,10 @@ const ConferenceCard = ({ data, allCategories }) => {
             <h6>Video</h6>
           </div>
 
-          <div className="d-flex items-center">
+          {/* <div className="d-flex items-center">
             <SvgIcon name="star" className="conference-card-icon" />
             <SvgIcon name="bookmark" className="conference-card-icon" />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
