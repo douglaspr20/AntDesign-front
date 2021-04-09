@@ -102,10 +102,10 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd, onMenuClick }) 
                 <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
               </div>
 
-              <div className="d-flex items-center">
+              {/* <div className="d-flex items-center">
                 <SvgIcon name="star" className="library-card-icon" />
                 <SvgIcon name="bookmark" className="library-card-icon" />
-              </div>
+              </div> */}
             </div>
             {type === CARD_TYPE.EDIT && (
               <CardMenu menus={CARD_MENUS} onClick={onMenuClick}>

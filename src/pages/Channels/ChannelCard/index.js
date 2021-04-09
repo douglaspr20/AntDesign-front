@@ -67,13 +67,13 @@ const ChannelCard = ({
                 );
               })}
             </div>
-            <div className="channel-card-content-footer">
+            {/* <div className="channel-card-content-footer">
               <div className="d-flex items-center"></div>
               <div className="d-flex items-center">
                 <SvgIcon name="star" className="channel-card-icon" />
                 <SvgIcon name="bookmark" className="channel-card-icon" />
               </div>
-            </div>
+            </div> */}
             {isOwner && (
               <CardMenu menus={CARD_MENUS.slice(0, 1)} onClick={onMenuClick}>
                 <div className="library-card-menu">
