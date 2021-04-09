@@ -13,6 +13,7 @@ import { channelSelector } from "redux/selectors/channelSelector";
 import {
   getFirstChannelList,
   getMoreChannelList,
+  setChannel,
 } from "redux/actions/channel-actions";
 import { getUser } from "redux/actions/home-actions";
 import FilterDrawer from "./FilterDrawer";
@@ -35,10 +36,12 @@ const Channels = ({
   getFirstChannelList,
   getMoreChannelList,
   getUser,
+  setChannel,
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
   const [filters, setFilters] = useState({});
+  const [editMode, setEditMode] = useState(false);
 
   const onFilterChange = (filter) => {
     console.log("Filter Change", filter);
@@ -52,6 +55,7 @@ const Channels = ({
   };
 
   const onCreateChannel = () => {
+    setEditMode(false);
     setOpenChannelDrawer(true);
   };
 
@@ -73,6 +77,18 @@ const Channels = ({
     Emitter.emit(EVENT_TYPES.OPEN_CHANNELS_FILTER_PANEL);
   };
 
+  const handleChannel = (menu, channel) => {
+    switch (menu) {
+      case "edit":
+        setEditMode(true);
+        setOpenChannelDrawer(true);
+        setChannel(channel);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     getFirstChannelList({ order: sortValue });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +100,7 @@ const Channels = ({
       <FilterDrawer onChange={onFilterChange} />
       <ChannelDrawer
         visible={openCannelDrawer}
+        edit={editMode}
         onClose={() => setOpenChannelDrawer(false)}
         onCreated={onChannelCreated}
       />
@@ -123,16 +140,24 @@ const Channels = ({
               !userProfile.channel && (
                 <ChannelCard add={true} onClick={onCreateChannel} />
               )}
-            {allChannels.map((chnl) => (
-              <ChannelCard
-                key={chnl.id}
-                id={chnl.id}
-                title={chnl.name}
-                description={chnl.description}
-                image={chnl.image}
-                categories={chnl.categories}
-              />
-            ))}
+            {allChannels.map((chnl) => {
+              const isChannelOwner =
+                userProfile &&
+                userProfile.role === USER_ROLES.CHANNEL_ADMIN &&
+                userProfile.channel === chnl.id;
+              return (
+                <ChannelCard
+                  key={chnl.id}
+                  id={chnl.id}
+                  title={chnl.name}
+                  description={chnl.description}
+                  image={chnl.image}
+                  categories={chnl.categories}
+                  isOwner={isChannelOwner}
+                  onMenuClick={(menu) => handleChannel(menu, chnl)}
+                />
+              );
+            })}
           </div>
           {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
             <div className="search-results-container-footer d-flex justify-center items-center">
@@ -162,6 +187,7 @@ const mapDispatchToProps = {
   getFirstChannelList,
   getMoreChannelList,
   getUser,
+  setChannel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Channels);

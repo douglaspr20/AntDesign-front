@@ -111,7 +111,7 @@
   justify-content: center;
   align-items: center;
   color: $color-white;
-  @include app-font(14px, 19px, bold);
+  @include app-font(2rem, 19px, bold);
   text-align: center;
   overflow: hidden;
   border: 2px solid $color-primary;

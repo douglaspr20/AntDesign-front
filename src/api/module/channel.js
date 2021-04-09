@@ -27,3 +27,7 @@ export const getChannel = ({ id }) => {
 export const setFollowChannel = ({ channel }) => {
   return httpClient.put(`private/channel/follow/${channel.id}`);
 };
+
+export const updateChannel = ({ channel }) => {
+  return httpClient.put(`private/channel/${channel.id}`, channel);
+};

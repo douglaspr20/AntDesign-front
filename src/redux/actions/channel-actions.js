@@ -42,9 +42,13 @@ export const getChannel = createAction(GET_CHANNEL, (id, callback) => ({
   callback,
 }));
 export const setChannel = createAction(SET_CHANNEL, (channel) => ({ channel }));
-export const updateChannel = createAction(UPDATE_CHANNEL, (channel) => ({
-  channel,
-}));
+export const updateChannel = createAction(
+  UPDATE_CHANNEL,
+  (channel, callback) => ({
+    channel,
+    callback,
+  })
+);
 export const deleteChannel = createAction(DELETE_CHANNEL, (id) => ({ id }));
 export const getFirstChannelList = createAction(
   GET_FIRST_CHANNEL_LIST,

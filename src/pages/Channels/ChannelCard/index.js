@@ -4,11 +4,14 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { SvgIcon, SpecialtyItem } from "components";
 import { Link } from "react-router-dom";
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, CARD_MENUS } from "enum";
 import RenderPropsTruncatedString from "components/RenderPropsTruncatedString.js";
 import { categorySelector } from "redux/selectors/categorySelector";
+import CardMenu from "components/CardMenu";
 
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import IconMenu from "images/icon-menu.svg";
+
 import "./style.scss";
 
 const HARDCODED_COVER_PLACEHOLDER =
@@ -22,7 +25,9 @@ const ChannelCard = ({
   add,
   allCategories,
   categories,
+  isOwner,
   onClick,
+  onMenuClick,
 }) => {
   return (
     <Link
@@ -69,6 +74,13 @@ const ChannelCard = ({
                 <SvgIcon name="bookmark" className="channel-card-icon" />
               </div>
             </div>
+            {isOwner && (
+              <CardMenu menus={CARD_MENUS.slice(0, 1)} onClick={onMenuClick}>
+                <div className="library-card-menu">
+                  <img src={IconMenu} alt="icon-menu" />
+                </div>
+              </CardMenu>
+            )}
           </div>
         </>
       )}
@@ -83,7 +95,9 @@ ChannelCard.propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   categories: PropTypes.array,
+  isOwner: PropTypes.bool,
   onClick: PropTypes.func,
+  onMenuClick: PropTypes.func,
 };
 
 ChannelCard.defaultProps = {
@@ -92,7 +106,9 @@ ChannelCard.defaultProps = {
   add: false,
   image: HARDCODED_COVER_PLACEHOLDER,
   categories: [],
+  isOwner: false,
   onClick: () => {},
+  onMenuClick: () => {},
 };
 
 const mapStateToProps = (state) => ({

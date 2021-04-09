@@ -11,6 +11,7 @@ import {
   searchChannels,
   getChannel,
   setFollowChannel,
+  updateChannel,
 } from "../../api";
 
 export function* createChannelSaga({ payload }) {
@@ -56,7 +57,26 @@ export function* getChannelSaga({ payload }) {
   }
 }
 
-export function* updateChannelSaga({ payload }) {}
+export function* updateChannelSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateChannel, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again!");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
 
 export function* deleteChannelSaga({ payload }) {}
 

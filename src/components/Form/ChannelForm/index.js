@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form, Checkbox } from "antd";
 import { connect } from "react-redux";
+import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
@@ -11,18 +12,32 @@ import {
 } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
+import { channelSelector } from "redux/selectors/channelSelector";
 
 import "./style.scss";
 
 const MAX_DESCRIPTION = 50;
 
-const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
+const ChannelForm = ({
+  selectedChannel,
+  edit,
+  allCategories,
+  onSubmit,
+  onCancel,
+}) => {
   const [description, setDescription] = useState("");
 
   const refForm = React.useRef(null);
   const onFinish = (values) => {
     console.log("values", values);
-    onSubmit(values);
+    if (edit) {
+      onSubmit({
+        id: selectedChannel.id,
+        ...values,
+      });
+    } else {
+      onSubmit(values);
+    }
   };
 
   const onFinishFailed = () => {};
@@ -54,6 +69,17 @@ const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (edit && !isEmpty(selectedChannel)) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          ...selectedChannel,
+        });
+        setDescription(selectedChannel.description);
+      }
+    }
+  }, [selectedChannel, edit]);
 
   return (
     <Form
@@ -114,19 +140,20 @@ const ChannelForm = ({ channel, allCategories, onSubmit, onCancel }) => {
 };
 
 ChannelForm.propTypes = {
-  channel: PropTypes.object,
+  edit: PropTypes.bool,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
 };
 
 ChannelForm.defaultProps = {
-  channel: {},
+  edit: false,
   onSubmit: () => {},
   onCancel: () => {},
 };
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  selectedChannel: channelSelector(state).selectedChannel,
 });
 
 const mapDispatchToProps = {};
