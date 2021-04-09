@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Form, Checkbox } from "antd";
+import { Form, Checkbox, notification } from "antd";
 import { connect } from "react-redux";
 import isEmpty from "lodash/isEmpty";
 
@@ -49,6 +49,9 @@ const ChannelForm = ({
           categories: values.categories.slice(0, 5),
         });
       }
+      notification.info({
+        message: "You can only select five categories."
+      })
     }
 
     if (values.description !== undefined) {
