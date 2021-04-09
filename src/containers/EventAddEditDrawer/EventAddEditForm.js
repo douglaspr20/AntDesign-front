@@ -18,12 +18,19 @@ import {
 } from "components";
 import { SETTINGS, TIMEZONE_LIST } from "enum";
 
-import { createChannelEvent, updateChannelEvent } from "redux/actions/event-actions";
+import {
+  createChannelEvent,
+  updateChannelEvent,
+} from "redux/actions/event-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 
-import { isValidURL, convertToUTCTime, convertToCertainTime } from "utils/format";
+import {
+  isValidURL,
+  convertToUTCTime,
+  convertToCertainTime,
+} from "utils/format";
 
 import "./style.scss";
 
@@ -76,21 +83,24 @@ const EventAddEditForm = ({
     };
     if (edit) {
       console.log("**** params ", params);
-      updateChannelEvent({
-        ...params,
-        id: selectedEvent.id,
-      }, (err) => {
-        if (err) {
-          notification.error({
-            message: err,
-          });
-        } else {
-          notification.info({
-            message: "Event was successfully updated.",
-          });
-          onAdded();
+      updateChannelEvent(
+        {
+          ...params,
+          id: selectedEvent.id,
+        },
+        (err) => {
+          if (err) {
+            notification.error({
+              message: err,
+            });
+          } else {
+            notification.info({
+              message: "Event was successfully updated.",
+            });
+            onAdded();
+          }
         }
-      })
+      );
     } else {
       createChannelEvent(
         {
@@ -116,7 +126,10 @@ const EventAddEditForm = ({
         refForm.current.setFieldsValue({
           ...selectedEvent,
           startAndEndDate: [
-            convertToCertainTime(selectedEvent.startDate, selectedEvent.timezone),
+            convertToCertainTime(
+              selectedEvent.startDate,
+              selectedEvent.timezone
+            ),
             convertToCertainTime(selectedEvent.endDate, selectedEvent.timezone),
           ],
         });
@@ -131,6 +144,7 @@ const EventAddEditForm = ({
         layout="vertical"
         name="basic"
         ref={refForm}
+        initialValues={{ ticket: "free" }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -168,7 +182,6 @@ const EventAddEditForm = ({
         <Form.Item name="ticket" label="Tickets">
           <Radio.Group className="d-flex flex-column event-addedit-form-radiogrp">
             <CustomRadio value="free">Free</CustomRadio>
-            <CustomRadio value="priced">Priced</CustomRadio>
           </Radio.Group>
         </Form.Item>
         <Form.Item name="type" label="Type">
