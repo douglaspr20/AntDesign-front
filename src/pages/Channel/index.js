@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import isEmpty from "lodash/isEmpty";
 
 import { Tabs, CustomButton } from "components";
 import { INTERNAL_LINKS, USER_ROLES } from "enum";
@@ -101,8 +102,6 @@ const Channel = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { User } = selectedChannel || {};
-
   return (
     <div className="channel-page">
       <ChannelFilterPanel onChange={onFilterChange} />
@@ -123,18 +122,18 @@ const Channel = ({
                   onClick={followChannel}
                 />
               )}
-              {User && (
+              {!isEmpty(selectedChannel) && (
                 <>
                   <div className="channel-info__user">
-                    {User.img ? (
-                      <img src={User.img} alt="user-icon" />
+                    {selectedChannel.image ? (
+                      <img src={selectedChannel.image} alt="user-icon" />
                     ) : (
-                      <span>{User.abbrName}</span>
+                      <div />
                     )}
                   </div>
                   <div className="channel-info__general-info">
                     <h3 className="channel-info__name text-center">
-                      {`${selectedChannel.User.firstName} ${selectedChannel.User.lastName}`}
+                      {selectedChannel.name}
                     </h3>
                     <p className="channel-info__description text-center">
                       {selectedChannel.description}

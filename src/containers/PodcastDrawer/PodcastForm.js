@@ -105,7 +105,7 @@ const PodcastForm = ({
         <Form.Item name="description" label="Description">
           <CustomInput multiple={true} />
         </Form.Item>
-        <Form.Item name="order" label="Order">
+        <Form.Item name="order" label="Order (the highest number shows on top)">
           <CustomInput />
         </Form.Item>
         {!edit && (
