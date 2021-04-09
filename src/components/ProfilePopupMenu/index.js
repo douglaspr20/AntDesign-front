@@ -124,11 +124,7 @@ class ProfilePopupMenu extends React.Component {
         <div className="profile-popover-content-menu">
           {user.memberShip === "premium" ? (
             <React.Fragment>
-              <div>
-                {user.role === USER_ROLES.CHANNEL_ADMIN
-                  ? "Channel Administration"
-                  : "PREMIUM MEMBER"}
-              </div>
+              <div>PREMIUM MEMBER</div>
               {this.state.subscription != null ? (
                 <>
                   <div>
@@ -180,6 +176,9 @@ class ProfilePopupMenu extends React.Component {
             <div>Free Membership</div>
           )}
         </div>
+        {user.role !== USER_ROLES.CHANNEL_ADMIN && (
+          <div className="profile-popover-content-menu">Become a CREATOR</div>
+        )}
         <div
           className="profile-popover-content-menu"
           onClick={this.onClaimCredits}
