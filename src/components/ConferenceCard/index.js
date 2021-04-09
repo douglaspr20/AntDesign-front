@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import ReactPlayer from "react-player";
-import { SvgIcon, SpecialtyItem } from "components";
+import { SpecialtyItem } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import IconVideo from "images/icon-video.svg";

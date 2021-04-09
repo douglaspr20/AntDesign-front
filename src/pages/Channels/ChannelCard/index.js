@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { connect } from "react-redux";
-import { SvgIcon, SpecialtyItem } from "components";
+import { SpecialtyItem } from "components";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS, CARD_MENUS } from "enum";
 import RenderPropsTruncatedString from "components/RenderPropsTruncatedString.js";

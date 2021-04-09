@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 
-import { CustomSelect, CustomButton } from "components";
+import { CustomButton } from "components";
 import { SETTINGS, USER_ROLES, EVENT_TYPES } from "enum";
 import ChannelDrawer from "containers/ChannelDrawer";
 
@@ -25,8 +25,6 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const SortOptions = SETTINGS.SORT_OPTIONS;
-
 const Channels = ({
   allChannels,
   countOfResults,
@@ -38,7 +36,6 @@ const Channels = ({
   getUser,
   setChannel,
 }) => {
-  const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
   const [filters, setFilters] = useState({});
   const [editMode, setEditMode] = useState(false);
@@ -46,12 +43,7 @@ const Channels = ({
   const onFilterChange = (filter) => {
     console.log("Filter Change", filter);
     setFilters(filter);
-    getFirstChannelList({ filter, order: sortValue });
-  };
-
-  const onSortChange = (value) => {
-    setSortValue(value);
-    getFirstChannelList({ filter: filters, order: value });
+    getFirstChannelList({ filter });
   };
 
   const onCreateChannel = () => {
@@ -62,14 +54,13 @@ const Channels = ({
   const onChannelCreated = () => {
     setOpenChannelDrawer(false);
     getUser();
-    getFirstChannelList({ filter: filters, order: sortValue });
+    getFirstChannelList({ filter: filters });
   };
 
   const onShowMore = () => {
     getMoreChannelList({
       page: currentPage + 1,
       filter: filters,
-      order: sortValue,
     });
   };
 
@@ -90,7 +81,7 @@ const Channels = ({
   };
 
   useEffect(() => {
-    getFirstChannelList({ order: sortValue });
+    getFirstChannelList({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -125,13 +116,6 @@ const Channels = ({
                 <h3>{`${numberWithCommas(countOfResults)} result${
                   countOfResults > 1 ? "s" : ""
                 }`}</h3>
-                <CustomSelect
-                  className="search-results-container-sort"
-                  bordered={false}
-                  options={SortOptions}
-                  value={sortValue}
-                  onChange={(value) => onSortChange(value)}
-                />
               </div>
             </Col>
           </Row>

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
 
-import { SvgIcon } from "components";
 import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
