@@ -50,6 +50,9 @@ export const reducers = {
   [eventConstants.SET_MY_EVENTS]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
+  [eventConstants.SET_CHANNEL_EVENTS]: (state, { payload }) => {
+    return state.merge({ ...payload })
+  },
 };
 
 export const initialState = () =>
@@ -59,6 +62,7 @@ export const initialState = () =>
     allEvents: [],
     myEvents: [],
     updatedEvent: {},
+    channelEvents: [],
   });
 
 export default handleActions(reducers, initialState());

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST, EVENT_TYPES } from "enum";
+import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
@@ -10,9 +10,11 @@ import Emitter from "services/emitter";
 import { setCollapsed } from "redux/actions/env-actions";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
+import IconTvOutline from "images/icon-tv-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
+import { channelSelector } from "redux/selectors/channelSelector";
 
 import "./style.scss";
 
@@ -54,7 +56,15 @@ class MainHeader extends React.Component {
     const { userProfile: user } = this.props;
     const { visiblePremiumAlert } = this.state;
     const { pathname } = this.props.history.location || {};
-    const pathInfo = MenuList.find((item) => item.url === pathname);
+    let pathInfo = MenuList.find((item) => item.url.includes(pathname));
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
+      const { selectedChannel } = this.props;
+      pathInfo = {
+        icon: IconTvOutline,
+        label: (selectedChannel || {}).name || "",
+      };
+    }
 
     return (
       <div className="main-header">
@@ -126,6 +136,7 @@ MainHeader.defaultProps = {
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   isMobile: envSelector(state).isMobile,
+  selectedChannel: channelSelector(state).selectedChannel,
 });
 
 const mapDispatchToProps = {

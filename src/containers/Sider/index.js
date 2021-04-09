@@ -22,6 +22,8 @@ class Sider extends Component {
         />
         <PrivateRoute path={INTERNAL_LINKS.MENTORING} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CHANNELS} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CHANNELS} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.CERTIFICATIONS}
           render={() => <Sidebar />}

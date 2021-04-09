@@ -11,6 +11,11 @@ const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
 const GET_MY_EVENTS = "GET_MY_EVENTS";
 const SET_MY_EVENTS = "SET_MY_EVENTS";
 const UPDATE_EVENT_STATUS = "UPDATE_EVENT_STATUS";
+const CREATE_CHANNEL_EVENT = "CREATE_CHANNEL_EVENT";
+const GET_CHANNEL_EVENTS = "GET_CHANNEL_EVENTS";
+const SET_CHANNEL_EVENTS = "SET_CHANNEL_EVENTS";
+const DELETE_EVENT = "DELETE_EVENT";
+const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -24,13 +29,21 @@ export const constants = {
   GET_MY_EVENTS,
   SET_MY_EVENTS,
   UPDATE_EVENT_STATUS,
+  CREATE_CHANNEL_EVENT,
+  GET_CHANNEL_EVENTS,
+  SET_CHANNEL_EVENTS,
+  DELETE_EVENT,
+  UPDATE_CHANNEL_EVENT,
 };
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const getAllEvent = createAction(GET_ALL_EVENTS);
-export const getEvent = createAction(GET_EVENT, (id, callback) => ({ id, callback }));
+export const getEvent = createAction(GET_EVENT, (id, callback) => ({
+  id,
+  callback,
+}));
 export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
   events,
 }));
@@ -55,6 +68,25 @@ export const updateEventStatus = createAction(
     status,
   })
 );
+export const createChannelEvent = createAction(
+  CREATE_CHANNEL_EVENT,
+  (data, callback) => ({ data, callback })
+);
+export const getChannelEvents = createAction(GET_CHANNEL_EVENTS, (filter) => ({
+  filter,
+}));
+export const setChannelEvents = createAction(
+  SET_CHANNEL_EVENTS,
+  (channelEvents) => ({ channelEvents })
+);
+export const deleteEvent = createAction(DELETE_EVENT, (event, callback) => ({
+  event,
+  callback,
+}));
+export const updateChannelEvent = createAction(
+  UPDATE_CHANNEL_EVENT,
+  (event, callback) => ({ event, callback })
+);
 
 export const actions = {
   getAllEvent,
@@ -68,4 +100,9 @@ export const actions = {
   getMyEvents,
   setMyEvents,
   updateEventStatus,
+  createChannelEvent,
+  getChannelEvents,
+  setChannelEvents,
+  deleteEvent,
+  updateChannelEvent,
 };

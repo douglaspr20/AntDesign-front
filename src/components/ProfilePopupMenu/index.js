@@ -7,7 +7,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, USER_ROLES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -176,6 +176,9 @@ class ProfilePopupMenu extends React.Component {
             <div>Free Membership</div>
           )}
         </div>
+        {user.role !== USER_ROLES.CHANNEL_ADMIN && (
+          <div className="profile-popover-content-menu">Become a CREATOR</div>
+        )}
         <div
           className="profile-popover-content-menu"
           onClick={this.onClaimCredits}

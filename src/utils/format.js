@@ -98,6 +98,20 @@ function getEventPeriod(date, date2, timezone) {
   return res;
 }
 
+// date:moment, tz:string
+function convertToUTCTime(date, tz) {
+  let res = moment(date).format("YYYY-MM-DD h:mm a");
+
+  const timezone = TIMEZONE_LIST.find((item) => item.value === tz);
+  if (timezone) {
+    res = moment.tz(res, "YYYY-MM-DD h:mm a", timezone.utc[0]).utc().format();
+  } else {
+    res = moment.tz(res, "YYYY-MM-DD h:mm a").format();
+  }
+
+  return res;
+}
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -106,4 +120,5 @@ export {
   getEventPeriod,
   getEventDescription,
   convertToCertainTime,
+  convertToUTCTime,
 };

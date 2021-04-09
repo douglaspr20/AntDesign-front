@@ -20,7 +20,9 @@ import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
-import ConferenceLibrary from "pages/ConferenceLibrary"
+import ConferenceLibrary from "pages/ConferenceLibrary";
+import ChannelsPage from "pages/Channels";
+import ChannelPage from "pages/Channel";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -72,6 +74,15 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.HEART}
             render={(props) => <HEARTPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.CHANNELS}
+            render={(props) => <ChannelsPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+            render={(props) => <ChannelPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}

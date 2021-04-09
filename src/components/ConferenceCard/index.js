@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import ReactPlayer from "react-player";
-import { SvgIcon, SpecialtyItem } from "components";
+import { SpecialtyItem } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import IconVideo from "images/icon-video.svg";
@@ -51,10 +51,10 @@ const ConferenceCard = ({ data, allCategories }) => {
             <h6>Video</h6>
           </div>
 
-          <div className="d-flex items-center">
+          {/* <div className="d-flex items-center">
             <SvgIcon name="star" className="conference-card-icon" />
             <SvgIcon name="bookmark" className="conference-card-icon" />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

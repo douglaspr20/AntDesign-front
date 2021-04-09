@@ -23,6 +23,7 @@ import IconLoading from "images/icon-loading.gif";
 import { actions as envActions } from "redux/actions/env-actions";
 import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
+import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -170,6 +171,7 @@ const mapDispatchToProps = {
   upgradePlan,
   inviteFriend,
   getCategories,
+  getChannelCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
