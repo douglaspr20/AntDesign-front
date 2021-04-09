@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES, SETTINGS, CARD_TYPE } from "enum";
 import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
@@ -37,7 +37,9 @@ const EventList = ({
   showFilter,
   onClick,
   edit,
+  type,
   onMenuClick,
+  onAddEvent,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
@@ -78,6 +80,12 @@ const EventList = ({
         />
       </div>
       {data && data.length === 0 && <NoEventCard />}
+      {edit && type === CARD_TYPE.EDIT && (
+        <div className="event-list-batch">
+          <div />
+          <EventCard className="add" type={CARD_TYPE.ADD} onClick={onAddEvent} />
+        </div>
+      )}
       {Object.keys(groupedByEventData).map((date) => {
         const day = moment(date, DataFormat).date();
         const month = moment(date, DataFormat).month();
@@ -114,19 +122,23 @@ const EventList = ({
 EventList.propTypes = {
   data: PropTypes.array,
   edit: PropTypes.bool,
+  type: PropTypes.string,
   onAttend: PropTypes.func,
   onClick: PropTypes.func,
   showFilter: PropTypes.func,
   onMenuClick: PropTypes.func,
+  onAddEvent: PropTypes.func,
 };
 
 EventList.defaultProps = {
   data: [],
   edit: false,
+  type: CARD_TYPE.VIEW,
   onAttend: () => {},
   onClick: () => {},
   showFilter: () => {},
   onMenuClick: () => {},
+  onAddEvent: () => {},
 };
 
 const mapStateToProps = (state) => ({

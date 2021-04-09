@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { notification } from "antd";
 
 import EventList from "pages/Events/EventList";
-import { CustomButton } from "components";
 import EventAddEditDrawer from "containers/EventAddEditDrawer";
+import { CARD_TYPE } from "enum";
 
 import {
   getChannelEvents,
@@ -76,10 +76,11 @@ const EventsList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      {isOwner && <CustomButton text="Add Event" onClick={onAddEvent} />}
       <EventList
         edit={isOwner}
+        type={CARD_TYPE.EDIT}
         data={channelEvents}
+        onAddEvent={onAddEvent}
         onMenuClick={handleEvent}
       />
     </div>
