@@ -31,3 +31,7 @@ export const setFollowChannel = ({ channel }) => {
 export const updateChannel = ({ channel }) => {
   return httpClient.put(`private/channel/${channel.id}`, channel);
 };
+
+export const unsetFollowChannel = ({ channel }) => {
+  return httpClient.put(`private/channel/unfollow/${channel.id}`);
+};
