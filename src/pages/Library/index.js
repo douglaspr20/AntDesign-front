@@ -38,6 +38,7 @@ const LearningLibraryPage = ({
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [filters, setFilters] = useState({});
+  const [meta, setMeta] = useState("");
 
   const planUpdated = userProfile.memberShip !== "free";
 
@@ -46,6 +47,7 @@ const LearningLibraryPage = ({
       ...filters,
       page: currentPage + 1,
       order: sortValue,
+      meta,
     });
   };
 
@@ -58,17 +60,28 @@ const LearningLibraryPage = ({
   };
 
   const onFilterChange = (filters) => {
-    searchLibraries(filters, sortValue);
+    searchLibraries({ ...filters, meta }, sortValue);
     setFilters(filters);
   };
 
   const onSortChange = (value) => {
     setSortValue(value);
-    searchLibraries(filters, value);
+    searchLibraries({ ...filters, meta }, value);
   };
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
+  const onSearch = (value) => {
+    searchLibraries(
+      {
+        ...filters,
+        meta: value,
+      },
+      sortValue
+    );
+    setMeta(value);
   };
 
   useEffect(() => {
@@ -78,8 +91,8 @@ const LearningLibraryPage = ({
 
   return (
     <div className="learning-library-page">
-      <LibraryFilterPanel onChange={onFilterChange} />
-      <FilterDrawer onChange={onFilterChange} />
+      <LibraryFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="search-results-container">
         <Row>
           <Col span={24}>

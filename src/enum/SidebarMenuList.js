@@ -13,7 +13,7 @@ import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
-import IconTvOutline from "images/icon-tv-outline.svg";
+// import IconTvOutline from "images/icon-tv-outline.svg";
 
 export default {
   TOP_MENUS: [
