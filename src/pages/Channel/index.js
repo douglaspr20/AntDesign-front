@@ -12,7 +12,11 @@ import EventsList from "./EventsList";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { getChannel, setFollowChannel } from "redux/actions/channel-actions";
+import {
+  getChannel,
+  setFollowChannel,
+  unsetFollowChannel,
+} from "redux/actions/channel-actions";
 
 import IconBack from "images/icon-back.svg";
 
@@ -26,6 +30,7 @@ const Channel = ({
   userProfile,
   getChannel,
   setFollowChannel,
+  unsetFollowChannel,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
@@ -37,7 +42,11 @@ const Channel = ({
   };
 
   const followChannel = () => {
-    setFollowChannel(selectedChannel);
+    if (followed) {
+      unsetFollowChannel(selectedChannel);
+    } else {
+      setFollowChannel(selectedChannel);
+    }
   };
 
   const TabData = [
@@ -115,9 +124,8 @@ const Channel = ({
                 <CustomButton
                   htmlType="button"
                   text={followed ? "Followed" : "Follow Channel"}
-                  type="primary"
+                  type={followed ? "secondary" : "primary"}
                   size="md"
-                  disabled={followed}
                   loading={channelLoading}
                   onClick={followChannel}
                 />
@@ -173,6 +181,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   getChannel,
   setFollowChannel,
+  unsetFollowChannel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

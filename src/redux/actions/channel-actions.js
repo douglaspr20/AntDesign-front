@@ -10,6 +10,7 @@ const SET_FIRST_CHANNEL_LIST = "SET_FIRST_CHANNEL_LIST";
 const GET_MORE_CHANNEL_LIST = "GET_MORE_CHANNEL_LIST";
 const SET_MORE_CHANNEL_LIST = "SET_MORE_CHANNEL_LIST";
 const SET_FOLLOW_CHANNEL = "SET_FOLLOW_CHANNEL";
+const UNSET_FOLLOW_CHANNEL = "UNSET_FOLLOW_CHANNEL";
 
 const SET_CHANNEL_LOADING = "SET_CHANNEL_LOADING";
 
@@ -25,6 +26,7 @@ export const constants = {
   SET_MORE_CHANNEL_LIST,
   SET_CHANNEL_LOADING,
   SET_FOLLOW_CHANNEL,
+  UNSET_FOLLOW_CHANNEL,
 };
 
 // ------------------------------------
@@ -74,6 +76,13 @@ export const setFollowChannel = createAction(SET_FOLLOW_CHANNEL, (channel) => ({
   channel,
 }));
 
+export const unsetFollowChannel = createAction(
+  UNSET_FOLLOW_CHANNEL,
+  (channel) => ({
+    channel,
+  })
+);
+
 export const actions = {
   createChannel,
   getChannel,
@@ -86,4 +95,5 @@ export const actions = {
   setMoreChannelList,
   setChannelLoading,
   setFollowChannel,
+  unsetFollowChannel,
 };
