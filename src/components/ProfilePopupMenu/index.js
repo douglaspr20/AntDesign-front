@@ -96,6 +96,10 @@ class ProfilePopupMenu extends React.Component {
     this.onVisibleChange(false);
   };
 
+  onUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
@@ -177,7 +181,10 @@ class ProfilePopupMenu extends React.Component {
           )}
         </div>
         {user.role !== USER_ROLES.CHANNEL_ADMIN && (
-          <div className="profile-popover-content-menu">Become a CREATOR</div>
+          <div
+            className="profile-popover-content-menu"
+            onClick={this.onUpgrade}
+          >Become a CREATOR</div>
         )}
         <div
           className="profile-popover-content-menu"
