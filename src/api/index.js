@@ -52,6 +52,7 @@ import {
   searchChannels,
   getChannel,
   setFollowChannel,
+  unsetFollowChannel,
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
@@ -102,5 +103,6 @@ export {
   deleteEvent,
   updateChannelEvent,
   setFollowChannel,
+  unsetFollowChannel,
   updateChannel,
 };
