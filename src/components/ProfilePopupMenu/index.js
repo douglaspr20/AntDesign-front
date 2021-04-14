@@ -115,9 +115,8 @@ class ProfilePopupMenu extends React.Component {
           )}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
-            user ? user.lastName || "" : ""
-          }`}</p>
+          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${user ? user.lastName || "" : ""
+            }`}</p>
           <p className="user-info-view">View / Update Profile</p>
         </div>
       </div>
@@ -181,11 +180,25 @@ class ProfilePopupMenu extends React.Component {
           )}
         </div>
         {user.role !== USER_ROLES.CHANNEL_ADMIN && (
+          user.channelsSubscription === false &&
           <div
             className="profile-popover-content-menu"
             onClick={this.onUpgrade}
           >Become a CREATOR</div>
         )}
+        {
+          user.channelsSubscription === true &&
+          <div className="profile-popover-content-menu">
+            <div>CREATOR MEMBER</div>
+              <div>
+                {moment(user.channelsSubscription_startdate)
+                  .format("MMMM DD, yyyy")}{" "}
+                  -{" "}
+                {moment(user.channelsSubscription_enddate)
+                  .format("MMMM DD, yyyy")}
+              </div>
+          </div>
+        }
         <div
           className="profile-popover-content-menu"
           onClick={this.onClaimCredits}
@@ -239,8 +252,8 @@ ProfilePopupMenu.propTypes = {
 
 ProfilePopupMenu.defaultProps = {
   title: "",
-  logout: () => {},
-  showPremiumAlert: () => {},
+  logout: () => { },
+  showPremiumAlert: () => { },
 };
 
 const mapStateToProps = (state) => homeSelector(state);

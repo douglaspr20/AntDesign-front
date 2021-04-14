@@ -36,10 +36,10 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
 
   const requestCheckoutSession = async (premium=false, creator=false) => {
     let checkoutSessionPrices = [];
-    if(premium===true){
+    if(premium === true){
       checkoutSessionPrices.push(prices[price].priceId);
     }
-    if(creator===true){
+    if(creator === true){
       checkoutSessionPrices.push(process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_CHANNELS_ID);
     }
     let sessionData = await getCheckoutSession({ prices: checkoutSessionPrices });
@@ -107,7 +107,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
           </>
         }
         {
-          userProfile.memberShip === 'free' && prices[price].priceId === process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID &&
+          userProfile.memberShip === 'freee' && prices[price].priceId === process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID &&
 
           <Card title="PREMIUM + CREATOR">
             <h3>
