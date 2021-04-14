@@ -79,11 +79,15 @@ const EventList = ({
           onClick={onShowFilter}
         />
       </div>
-      {data && data.length === 0 && <NoEventCard />}
+      {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
       {edit && type === CARD_TYPE.EDIT && (
         <div className="event-list-batch">
           <div />
-          <EventCard className="add" type={CARD_TYPE.ADD} onClick={onAddEvent} />
+          <EventCard
+            className="add"
+            type={CARD_TYPE.ADD}
+            onClick={onAddEvent}
+          />
         </div>
       )}
       {Object.keys(groupedByEventData).map((date) => {
