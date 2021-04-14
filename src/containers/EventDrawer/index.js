@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 
-import moment from 'moment';
+import moment from "moment";
 
 import {
   DateAvatar,
@@ -13,7 +13,7 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -40,7 +40,15 @@ const EventDrawer = ({
     removeFromMyEventList(event);
   };
 
-  const onClickClaimDigitalCertificate = (e) => {};
+  const onClickClaimDigitalCertificate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    window.open(
+      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`,
+      "_blank"
+    );
+  };
 
   const onClickConfirm = (e) => {
     Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, event);
@@ -50,44 +58,61 @@ const EventDrawer = ({
 
   const onCLickDownloadCalendar = (e) => {
     e.preventDefault();
-    window.open(`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}` ,"_blank");
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,
+      "_blank"
+    );
   };
 
   const onCLickAddGoogleCalendar = (e) => {
     e.preventDefault();
-    const description = event.description.blocks[0].text.replace(/(\r\n|\n|\r)/gm, "");
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${event.title}&dates=${moment(event.startDate).format('YYYYMMDDTHHmm')}/${moment(event.endDate).format('YYYYMMDDTHHmmss')}&details=${description}&location=${event.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
-    window.open(googleCalendarUrl ,"_blank");
+    const description = event.description.blocks[0].text.replace(
+      /(\r\n|\n|\r)/gm,
+      ""
+    );
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+      event.title
+    }&dates=${moment(event.startDate).format("YYYYMMDDTHHmm")}/${moment(
+      event.endDate
+    ).format("YYYYMMDDTHHmmss")}&details=${description}&location=${
+      event.location
+    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    window.open(googleCalendarUrl, "_blank");
   };
 
   const onCLickAddYahooCalendar = (e) => {
     e.preventDefault();
-    const description = event.description.blocks[0].text.replace(/(\r\n|\n|\r)/gm, "");
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${event.title}&st=${moment(event.startDate).format('YYYYMMDDTHHmm')}&dur${moment(event.endDate).format('HHmmss')}&desc=${description}&in_loc=${event.location}`;
-    window.open(yahooCalendarUrl ,"_blank");
+    const description = event.description.blocks[0].text.replace(
+      /(\r\n|\n|\r)/gm,
+      ""
+    );
+    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
+      event.title
+    }&st=${moment(event.startDate).format("YYYYMMDDTHHmm")}&dur${moment(
+      event.endDate
+    ).format("HHmmss")}&desc=${description}&in_loc=${event.location}`;
+    window.open(yahooCalendarUrl, "_blank");
   };
 
   const downloadDropdownOptions = () => (
     <Menu>
       <Menu.Item key="1">
-        <a href="/#" onClick={onCLickDownloadCalendar}>Download ICS File</a>
+        <a href="/#" onClick={onCLickDownloadCalendar}>
+          Download ICS File
+        </a>
       </Menu.Item>
-      <Menu.Item key="2" >
-        <a href="/#" onClick={onCLickAddGoogleCalendar}>Add to Google Calendar</a>
+      <Menu.Item key="2">
+        <a href="/#" onClick={onCLickAddGoogleCalendar}>
+          Add to Google Calendar
+        </a>
       </Menu.Item>
       <Menu.Item key="3">
-        <a href="/#" onClick={onCLickAddYahooCalendar}>Add to Yahoo Calendar</a>
+        <a href="/#" onClick={onCLickAddYahooCalendar}>
+          Add to Yahoo Calendar
+        </a>
       </Menu.Item>
     </Menu>
   );
-
-  // const menu = (
-  //   <Menu>
-  //     <Menu.Item>Google</Menu.Item>
-  //     <Menu.Item>Google</Menu.Item>
-  //     <Menu.Item>Google</Menu.Item>
-  //   </Menu>
-  // );
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -179,9 +204,15 @@ const EventDrawer = ({
             <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div>
-            { event.status !== "past" && event.status !== "confirmed" && (
+            {event.status !== "past" && event.status !== "confirmed" && (
               <Dropdown overlay={downloadDropdownOptions}>
-                <a href="/#" className="ant-dropdown-link" onClick={(e) => {e.preventDefault(); }}>
+                <a
+                  href="/#"
+                  className="ant-dropdown-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
                   Download calendar <DownOutlined />
                 </a>
               </Dropdown>
