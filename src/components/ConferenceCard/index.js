@@ -59,7 +59,7 @@ const ConferenceCard = ({ data, allCategories, keyword, frequency }) => {
       </div>
       {frequency ? (
         <div className="conference-card-keyword">
-          {`${keyword}: ${frequency} times`}
+          {`${keyword}: ${frequency} time${frequency > 1 ? 's' :''}`}
         </div>
       ) : null}
     </div>

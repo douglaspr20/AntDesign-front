@@ -124,7 +124,7 @@ const LibraryCard = ({
           </div>
           {frequency ? (
             <div className="library-card-keyword">
-              {`${keyword}: ${frequency} times`}
+              {`${keyword}: ${frequency} time${frequency > 1 ? 's' :''}`}
             </div>
           ) : null}
         </>
