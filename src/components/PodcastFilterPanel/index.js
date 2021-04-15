@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox } from "components";
+import { CustomCheckbox, SearchInput } from "components";
 
 import { SEARCH_FILTERS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -13,7 +13,7 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.library;
 const FilterTitles = Object.keys(SearchFilters);
 
-const FilterPanel = ({ title, userProfile, onChange }) => {
+const FilterPanel = ({ title, userProfile, onChange, onSearch }) => {
   const [filters, setFilters] = useState({});
 
   const onFilterChange = (field, values) => {
@@ -29,31 +29,37 @@ const FilterPanel = ({ title, userProfile, onChange }) => {
     <div className="podcast-filter-panel">
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
-        {FilterTitles.map((filter, index) => (
-          filter === 'Topics' &&
-          <div className="search-filter" key={`${filter}-${index}`}>
-            <h5 className="search-filter-title font-bold">{filter}</h5>
-            <Checkbox.Group
-              value={
-                filters[filter.toLowerCase()]
-                  ? JSON.parse(filters[filter.toLowerCase()])
-                  : []
-              }
-              onChange={(values) => onFilterChange(filter, values)}
-            >
-              {SearchFilters[filter].map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={userProfile.memberShip === "free"}
+        <div className="search-filter">
+          <h5 className="search-filter-title font-bold">Search</h5>
+          <SearchInput onSearch={onSearch} />
+        </div>
+        {FilterTitles.map(
+          (filter, index) =>
+            filter === "Topics" && (
+              <div className="search-filter" key={`${filter}-${index}`}>
+                <h5 className="search-filter-title font-bold">{filter}</h5>
+                <Checkbox.Group
+                  value={
+                    filters[filter.toLowerCase()]
+                      ? JSON.parse(filters[filter.toLowerCase()])
+                      : []
+                  }
+                  onChange={(values) => onFilterChange(filter, values)}
                 >
-                  {item.text}
-                </CustomCheckbox>
-              ))}
-            </Checkbox.Group>
-          </div>
-        ))}
+                  {SearchFilters[filter].map((item) => (
+                    <CustomCheckbox
+                      key={item.value}
+                      value={item.value}
+                      size="sm"
+                      disabled={userProfile.memberShip === "free"}
+                    >
+                      {item.text}
+                    </CustomCheckbox>
+                  ))}
+                </Checkbox.Group>
+              </div>
+            )
+        )}
       </div>
     </div>
   );
@@ -62,11 +68,13 @@ const FilterPanel = ({ title, userProfile, onChange }) => {
 FilterPanel.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
+  onSearch: PropTypes.func,
 };
 
 FilterPanel.defaultProps = {
   title: "Filters",
   onChange: () => {},
+  onSearch: () => {},
 };
 
 const mapStateToProps = (state) => ({

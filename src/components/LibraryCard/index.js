@@ -16,7 +16,15 @@ ContentTypes = ContentTypes.reduce(
   {}
 );
 
-const LibraryCard = ({ data, locked, type, onClickAccess, onAdd, onMenuClick }) => {
+const LibraryCard = ({
+  data,
+  locked,
+  type,
+  keyword,
+  frequency,
+  onAdd,
+  onMenuClick,
+}) => {
   const [lineClamp, setLineClamp] = useState(3);
   const { title, image, description, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
@@ -114,6 +122,11 @@ const LibraryCard = ({ data, locked, type, onClickAccess, onAdd, onMenuClick }) 
               </CardMenu>
             )}
           </div>
+          {frequency ? (
+            <div className="library-card-keyword">
+              {`${keyword}: ${frequency} times`}
+            </div>
+          ) : null}
         </>
       )}
     </div>
@@ -124,7 +137,8 @@ LibraryCard.propTypes = {
   data: PropTypes.object,
   locked: PropTypes.bool,
   type: PropTypes.string,
-  onClickAccess: PropTypes.func,
+  frequency: PropTypes.number,
+  keyword: PropTypes.string,
   onAdd: PropTypes.func,
   onMenuClick: PropTypes.func,
 };
@@ -133,7 +147,8 @@ LibraryCard.defaultProps = {
   data: {},
   locked: true,
   type: CARD_TYPE.VIEW,
-  onClickAccess: () => {},
+  frequency: 0,
+  keyword: "",
   onAdd: () => {},
   onMenuClick: () => {},
 };

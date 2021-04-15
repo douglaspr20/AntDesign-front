@@ -85,6 +85,8 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
 
 const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
   const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
+  const [filters, setFilters] = useState({});
+  const [meta, setMeta] = useState("");
 
   useEffect(() => {
     getAllPodcasts();
@@ -92,17 +94,26 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
   }, []);
 
   const onFilterChange = (filter) => {
-    getAllPodcasts(filter);
+    getAllPodcasts({ ...filter, meta });
+    setFilters(filter);
   };
 
   const showFilterPanel = () => {
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
+  const onSearch = (value) => {
+    getAllPodcasts({
+      ...filters,
+      meta: value,
+    });
+    setMeta(value);
+  };
+
   return (
     <div className="podcast-page">
-      <PodcastFilterPanel onChange={onFilterChange} />
-      <FilterDrawer onChange={onFilterChange} />
+      <PodcastFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="podcast-page__container">
         <div className="podcast-page__filters--button">
           <CustomButton
@@ -148,6 +159,11 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
 
         <section className="podcast-page__episodes-row">
           {allEpisodes.map((episode) => {
+            let frequency = 0;
+            if (episode.meta && meta) {
+              frequency = [...episode.meta.matchAll(meta)].length;
+            }
+
             return (
               <div className="podcast-page__episodes-col" key={episode.id}>
                 <EpisodeCard
@@ -157,6 +173,8 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}
                   categories={episode.topics}
+                  keyword={meta}
+                  frequency={frequency}
                   links={getPodcastLinks(episode)}
                 />
               </div>

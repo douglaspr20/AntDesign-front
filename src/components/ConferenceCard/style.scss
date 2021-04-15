@@ -99,4 +99,10 @@
       margin-left: 0.25rem !important;
     }
   }
+
+  &-keyword {
+    @include app-font(16px, 21px, 600);
+    color: $color-text-primary !important;
+    margin: 0 1rem 1rem;
+  }
 }

@@ -108,9 +108,21 @@ const ConferenceLibrary = ({
           </Col>
         </Row>
         <div className="search-results-list">
-          {allConferenceLibraries.map((item, index) => (
-            <ConferenceCard key={index} data={item} />
-          ))}
+          {allConferenceLibraries.map((item, index) => {
+            let frequency = 0;
+            if (item.meta && meta) {
+              frequency = [...item.meta.matchAll(meta)].length;
+            }
+
+            return (
+              <ConferenceCard
+                key={index}
+                data={item}
+                keyword={meta}
+                frequency={frequency}
+              />
+            );
+          })}
         </div>
         {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
           <div className="search-results-container-footer d-flex justify-center items-center">

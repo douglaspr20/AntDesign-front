@@ -27,6 +27,8 @@ function EpisodeCard({
   allCategories,
   title,
   type,
+  keyword,
+  frequency,
   onAdd,
   onMenuClick,
 }) {
@@ -112,6 +114,11 @@ function EpisodeCard({
                 </div>
               </CardMenu>
             )}
+            {frequency ? (
+              <div className="podcast-episode__card-keyword">
+                {`${keyword}: ${frequency} times`}
+              </div>
+            ) : null}
           </div>
         </>
       )}
@@ -127,6 +134,8 @@ EpisodeCard.propTypes = {
   links: PropTypes.array,
   title: PropTypes.string,
   type: PropTypes.string,
+  frequency: PropTypes.number,
+  keyword: PropTypes.string,
   onAdd: PropTypes.func,
   onMenuClick: PropTypes.func,
 };
@@ -139,6 +148,8 @@ EpisodeCard.defaultProps = {
   links: [],
   title: "",
   type: CARD_TYPE.VIEW,
+  frequency: 0,
+  keyword: "",
   onAdd: () => {},
   onMenuClick: () => {},
 };
