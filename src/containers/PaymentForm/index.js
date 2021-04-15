@@ -21,7 +21,8 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   const [stripe, setStripe] = useState(null);
   const [price, setPrice] = useState(0);
-  const [prices] = useState(STRIPE_PRICES);
+  const [prices] = useState(STRIPE_PRICES.STRIPE_PRICES);
+  const [channelsPrices] = useState(STRIPE_PRICES.CHANNELS_STRIPE_PRICES);
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       checkoutSessionPrices.push(prices[price].priceId);
     }
     if(creator === true){
-      checkoutSessionPrices.push(process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_CHANNELS_ID);
+      checkoutSessionPrices.push(channelsPrices[price].priceId);
     }
     let sessionData = await getCheckoutSession({ prices: checkoutSessionPrices });
     return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
@@ -74,21 +75,20 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             </div>
           </>
         )}
-        {
-          userProfile.memberShip === 'free' &&
-            <div className="plan-ugrade-form-content">
-              <h4>Select:</h4>
-              {
-                options.length > 0 &&
-                <CustomSelect
-                  options={options}
-                  defaultValue={price}
-                  onChange={(value) => { setPrice(value) }}
-                  className="pay-select"
-                />
-              }
-            </div>
-        }
+
+        <div className="plan-ugrade-form-content">
+          <h4>Select:</h4>
+          {
+            options.length > 0 &&
+            <CustomSelect
+              options={options}
+              defaultValue={price}
+              onChange={(value) => { setPrice(value) }}
+              className="pay-select"
+            />
+          }
+        </div>
+
         <div className="plan-upgrade-cards">
           {
             userProfile.memberShip === 'free' &&
@@ -108,11 +108,12 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
               </Card>
           }
           {
-            userProfile.memberShip === 'free' && userProfile.channelsSubscription === false && prices[price].priceId === process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID &&
+            userProfile.memberShip === 'free' && userProfile.channelsSubscription === false &&
 
             <Card title="PREMIUM + CREATOR">
               <h3>
-                $ 349.99 per year
+                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> 
+                { (parseFloat(prices[price].price.replace(",", "")) + parseFloat(channelsPrices[price].price.replace(",", ""))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") } per year
               </h3>
               <br></br>
               <Button
@@ -130,7 +131,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             
             <Card title="CREATOR">
               <h3>
-                $ 250 per year
+              <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> { channelsPrices[price].price } per year
               </h3>
               <br></br>
               <Button
