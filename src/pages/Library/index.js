@@ -126,14 +126,22 @@ const LearningLibraryPage = ({
           </Col>
         </Row>
         <div className="search-results-list">
-          {allLibraries.map((item, index) => (
-            <LibraryCard
-              key={index}
-              data={item}
-              onClickAccess={planUpdate}
-              locked={!planUpdated}
-            />
-          ))}
+          {allLibraries.map((item, index) => {
+            let frequency = 0;
+            if (item.meta && meta) {
+              frequency = [...item.meta.matchAll(meta)].length;
+            }
+            return (
+              <LibraryCard
+                key={index}
+                data={item}
+                onClickAccess={planUpdate}
+                locked={!planUpdated}
+                keyword={meta}
+                frequency={frequency}
+              />
+            );
+          })}
         </div>
         {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
           <div className="search-results-container-footer d-flex justify-center items-center">

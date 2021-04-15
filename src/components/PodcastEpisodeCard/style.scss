@@ -39,6 +39,11 @@
     height: 24px;
     cursor: pointer;
   }
+
+  &-keyword {
+    @include app-font(16px, 21px, 600);
+    color: $color-text-primary !important;
+  }
 }
 
 .podcast-episode__card-cover {

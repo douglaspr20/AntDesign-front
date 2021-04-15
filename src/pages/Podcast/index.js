@@ -159,6 +159,11 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
 
         <section className="podcast-page__episodes-row">
           {allEpisodes.map((episode) => {
+            let frequency = 0;
+            if (episode.meta && meta) {
+              frequency = [...episode.meta.matchAll(meta)].length;
+            }
+
             return (
               <div className="podcast-page__episodes-col" key={episode.id}>
                 <EpisodeCard
@@ -168,6 +173,8 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}
                   categories={episode.topics}
+                  keyword={meta}
+                  frequency={frequency}
                   links={getPodcastLinks(episode)}
                 />
               </div>

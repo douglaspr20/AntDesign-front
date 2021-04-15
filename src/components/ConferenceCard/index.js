@@ -10,7 +10,7 @@ import IconVideo from "images/icon-video.svg";
 
 import "./style.scss";
 
-const ConferenceCard = ({ data, allCategories }) => {
+const ConferenceCard = ({ data, allCategories, keyword, frequency }) => {
   const { title, year, categories } = data || {};
 
   const onCardClick = () => {
@@ -57,16 +57,25 @@ const ConferenceCard = ({ data, allCategories }) => {
           </div> */}
         </div>
       </div>
+      {frequency ? (
+        <div className="conference-card-keyword">
+          {`${keyword}: ${frequency} times`}
+        </div>
+      ) : null}
     </div>
   );
 };
 
 ConferenceCard.propTypes = {
   data: PropTypes.object,
+  frequency: PropTypes.number,
+  keyword: PropTypes.string,
 };
 
 ConferenceCard.defaultProps = {
   data: {},
+  frequency: 0,
+  keyword: "",
 };
 
 const mapStateToProps = (state) => ({
