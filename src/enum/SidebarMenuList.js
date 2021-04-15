@@ -72,11 +72,11 @@ export default {
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.MARKETPLACE,
     },
-    {
-      label: "Channels",
-      icon: IconTvOutline,
-      url: INTERNAL_LINKS.CHANNELS,
-    },
+    // {
+    //   label: "Channels",
+    //   icon: IconTvOutline,
+    //   url: INTERNAL_LINKS.CHANNELS,
+    // },
   ],
   BOTTOM_MENUS: [
     {
