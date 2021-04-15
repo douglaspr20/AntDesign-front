@@ -13,7 +13,7 @@ import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
-// import IconTvOutline from "images/icon-tv-outline.svg";
+import IconTvOutline from "images/icon-tv-outline.svg";
 
 export default {
   TOP_MENUS: [
@@ -72,11 +72,11 @@ export default {
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.MARKETPLACE,
     },
-    // {
-    //   label: "Channels",
-    //   icon: IconTvOutline,
-    //   url: INTERNAL_LINKS.CHANNELS,
-    // },
+    {
+      label: "Channels",
+      icon: IconTvOutline,
+      url: INTERNAL_LINKS.CHANNELS,
+    },
   ],
   BOTTOM_MENUS: [
     {
