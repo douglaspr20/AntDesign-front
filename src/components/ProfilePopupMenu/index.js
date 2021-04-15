@@ -189,7 +189,7 @@ class ProfilePopupMenu extends React.Component {
         {
           user.channelsSubscription === true &&
           <div className="profile-popover-content-menu">
-            <div>CREATOR MEMBER</div>
+            <div>CREATOR</div>
               <div>
                 {moment(user.channelsSubscription_startdate)
                   .format("MMMM DD, yyyy")}{" "}

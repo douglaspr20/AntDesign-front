@@ -76,7 +76,6 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         )}
         {
           userProfile.memberShip === 'free' &&
-          <>
             <div className="plan-ugrade-form-content">
               <h4>Select:</h4>
               {
@@ -89,61 +88,62 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                 />
               }
             </div>
-            <Card title="PREMIUM">
+        }
+        <div className="plan-upgrade-cards">
+          {
+            userProfile.memberShip === 'free' &&
+              <Card title="PREMIUM">
+                <h3>
+                  <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price} per year
+                </h3>
+                <br></br>
+                <Button
+                  onClick={() => {
+                    requestCheckoutSession(true);
+                  }}
+                  className="pay-buttton"
+                >
+                  Subscribe
+                </Button>
+              </Card>
+          }
+          {
+            userProfile.memberShip === 'free' && userProfile.channelsSubscription === false && prices[price].priceId === process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID &&
+
+            <Card title="PREMIUM + CREATOR">
               <h3>
-                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price}
+                $ 349.99 per year
               </h3>
-              <h3>yearly</h3>
               <br></br>
               <Button
                 onClick={() => {
-                  requestCheckoutSession(true);
+                  requestCheckoutSession(true, true);
                 }}
                 className="pay-buttton"
               >
                 Subscribe
               </Button>
             </Card>
-          </>
-        }
-        {
-          userProfile.memberShip === 'freee' && prices[price].priceId === process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID &&
-
-          <Card title="PREMIUM + CREATOR">
-            <h3>
-              <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price} + $ 250 USD
-            </h3>
-            <h3>yearly</h3>
-            <br></br>
-            <Button
-              onClick={() => {
-                requestCheckoutSession(true, true);
-              }}
-              className="pay-buttton"
-            >
-              Subscribe
-            </Button>
-          </Card>
-        }
-        {
-          userProfile.memberShip === 'premium' &&
-          
-          <Card title="CREATOR">
-            <h3>
-              $ 250 USD
-            </h3>
-            <h3>yearly</h3>
-            <br></br>
-            <Button
-              onClick={() => {
-                requestCheckoutSession(false, true);
-              }}
-              className="pay-buttton"
-            >
-              Subscribe
-            </Button>
-          </Card>
-        }
+          }
+          {
+            userProfile.memberShip === 'premium' && userProfile.channelsSubscription === false &&
+            
+            <Card title="CREATOR">
+              <h3>
+                $ 250 per year
+              </h3>
+              <br></br>
+              <Button
+                onClick={() => {
+                  requestCheckoutSession(false, true);
+                }}
+                className="pay-buttton"
+              >
+                Subscribe
+              </Button>
+            </Card>
+          }
+        </div>
       </form>
     </>
   );
