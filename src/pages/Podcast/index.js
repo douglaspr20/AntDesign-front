@@ -161,7 +161,7 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
           {allEpisodes.map((episode) => {
             let frequency = 0;
             if (episode.meta && meta) {
-              frequency = [...episode.meta.matchAll(meta)].length;
+              frequency = [...episode.meta.toLowerCase().matchAll(meta)].length;
             }
 
             return (

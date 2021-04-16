@@ -111,7 +111,7 @@ const ConferenceLibrary = ({
           {allConferenceLibraries.map((item, index) => {
             let frequency = 0;
             if (item.meta && meta) {
-              frequency = [...item.meta.matchAll(meta)].length;
+              frequency = [...item.meta.toLowerCase().matchAll(meta)].length;
             }
 
             return (
