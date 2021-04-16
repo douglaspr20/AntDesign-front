@@ -116,7 +116,9 @@ function EpisodeCard({
             )}
             {frequency ? (
               <div className="podcast-episode__card-keyword">
-                {`${keyword}: ${frequency} time${frequency > 1 ? 's' :''}`}
+                {`${keyword}: Found ${frequency} time${
+                  frequency > 1 ? "s" : ""
+                }`}
               </div>
             ) : null}
           </div>
