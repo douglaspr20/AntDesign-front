@@ -9,7 +9,7 @@ import IconCalendar from "images/icon-calendar.svg";
 import IconStar from "images/icon-star.svg";
 import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
-import IconHeartOutline from "images/icon-heart-outline.svg";
+// import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
@@ -23,9 +23,9 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
-      label: "Heart",
-      icon: IconHeartOutline,
-      url: INTERNAL_LINKS.HEART,
+      label: "Channels",
+      icon: IconTvOutline,
+      url: INTERNAL_LINKS.CHANNELS,
     },
     {
       label: "Learning library",
@@ -71,11 +71,6 @@ export default {
       label: "HR Marketplace",
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.MARKETPLACE,
-    },
-    {
-      label: "Channels",
-      icon: IconTvOutline,
-      url: INTERNAL_LINKS.CHANNELS,
     },
   ],
   BOTTOM_MENUS: [
