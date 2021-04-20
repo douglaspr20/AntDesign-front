@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Card, Button } from "antd";
+import { Alert, Button, Card, } from "antd";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { envSelector } from "redux/selectors/envSelector";
@@ -24,6 +24,8 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   const [prices] = useState(STRIPE_PRICES.STRIPE_PRICES);
   const [channelsPrices] = useState(STRIPE_PRICES.CHANNELS_STRIPE_PRICES);
   const [options, setOptions] = useState([]);
+  const [checkoutSessionError, setCheckoutSessionError] = useState(false);
+  const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
 
   useEffect(() => {
     instanceStripe();
@@ -35,16 +37,23 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSession = async (premium=false, creator=false) => {
+  const requestCheckoutSession = async (premium = false, creator = false) => {
+    setCheckoutSessionError(false);
+    setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
-    if(premium === true){
+    if (premium === true) {
       checkoutSessionPrices.push(prices[price].priceId);
     }
-    if(creator === true){
+    if (creator === true) {
       checkoutSessionPrices.push(channelsPrices[price].priceId);
     }
-    let sessionData = await getCheckoutSession({ prices: checkoutSessionPrices });
-    return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
+    try {
+      let sessionData = await getCheckoutSession({ prices: checkoutSessionPrices });
+      return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
+    } catch (err) {
+      setCheckoutSessionError(true);
+      setCheckoutSessionErrorMsg(err.response.data.msg);
+    }
   };
 
   const generateCountryOptions = () => {
@@ -92,28 +101,28 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         <div className="plan-upgrade-cards">
           {
             userProfile.memberShip === 'free' &&
-              <Card title="PREMIUM">
-                <h3>
-                  <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price} per year
+            <Card title="PREMIUM">
+              <h3>
+                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price} per year
                 </h3>
-                <br></br>
-                <Button
-                  onClick={() => {
-                    requestCheckoutSession(true);
-                  }}
-                  className="pay-buttton"
-                >
-                  Subscribe
+              <br></br>
+              <Button
+                onClick={() => {
+                  requestCheckoutSession(true);
+                }}
+                className="pay-buttton"
+              >
+                Subscribe
                 </Button>
-              </Card>
+            </Card>
           }
           {
             userProfile.memberShip === 'free' && userProfile.channelsSubscription === false &&
 
             <Card title="PREMIUM + CREATOR">
               <h3>
-                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> 
-                { (parseFloat(prices[price].price.replace(",", "")) + parseFloat(channelsPrices[price].price.replace(",", ""))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") } per year
+                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span>
+                {(parseFloat(prices[price].price.replace(",", "")) + parseFloat(channelsPrices[price].price.replace(",", ""))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} per year
               </h3>
               <br></br>
               <Button
@@ -128,10 +137,10 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
           }
           {
             userProfile.memberShip === 'premium' && userProfile.channelsSubscription === false &&
-            
+
             <Card title="CREATOR">
               <h3>
-              <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> { channelsPrices[price].price } per year
+                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {channelsPrices[price].price} per year
               </h3>
               <br></br>
               <Button
@@ -145,6 +154,14 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             </Card>
           }
         </div>
+        { checkoutSessionError &&
+          <Alert
+            message="Error"
+            description={ checkoutSessionErrorMsg }
+            type="error"
+            showIcon
+          />
+        }
       </form>
     </>
   );
