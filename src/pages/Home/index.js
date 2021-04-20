@@ -28,8 +28,8 @@ const HomePage = ({
   };
 
   useEffect(() => {
-    const { success } = queryString.parse(location.search);
-    if (success === 1) {
+    const { refresh } = queryString.parse(location.search);
+    if (refresh === 1) {
       getUser();
     }
 
