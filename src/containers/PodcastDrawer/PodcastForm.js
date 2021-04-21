@@ -85,7 +85,7 @@ const PodcastForm = ({
         });
       }
       notification.info({
-        message: "You can only select five categories."
+        message: "You can only select four categories."
       })
     }
   };
