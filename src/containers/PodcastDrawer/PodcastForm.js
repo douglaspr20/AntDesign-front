@@ -77,6 +77,19 @@ const PodcastForm = ({
 
   const onFinishFailed = () => {};
 
+  const onFormValuesChange = (values) => {
+    if (values.topics && values.topics.length > 4) {
+      if (refForm && refForm.current) {
+        refForm.current.setFieldsValue({
+          topics: values.topics.slice(0, 4),
+        });
+      }
+      notification.info({
+        message: "You can only select five categories."
+      })
+    }
+  };
+
   useEffect(() => {
     if (edit && !isEmpty(podcast)) {
       if (refForm && refForm.current) {
@@ -98,6 +111,7 @@ const PodcastForm = ({
         ref={refForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        onValuesChange={onFormValuesChange}
       >
         <Form.Item name="title" label="Title">
           <CustomInput />
