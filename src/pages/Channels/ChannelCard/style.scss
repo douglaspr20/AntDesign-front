@@ -2,8 +2,6 @@
 @import "styles/_mixins.scss";
 
 .channel-card {
-  display: flex;
-  justify-content: center;
   min-height: 386px;
   background: $color-white;
   border: 1px solid $color-border;
@@ -11,6 +9,7 @@
   box-shadow: 4px 0px 14px #37215714;
   display: grid;
   grid-template-rows: auto 1fr;
+  justify-items: center;
   position: relative;
   cursor: pointer;
   width: 100%;
@@ -78,10 +77,10 @@
     @include app-font(14px, 21px, 500);
     color: $color-text-secondary !important;
     overflow: hidden;
-    display: block;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 5;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
     margin: 0;
     height: 100%;
     /* autoprefixer: off */

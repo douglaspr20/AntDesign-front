@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { SpecialtyItem } from "components";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS, CARD_MENUS } from "enum";
-import RenderPropsTruncatedString from "components/RenderPropsTruncatedString.js";
 import { categorySelector } from "redux/selectors/categorySelector";
 import CardMenu from "components/CardMenu";
 
@@ -48,9 +47,7 @@ const ChannelCard = ({
             <h3 className="channel-card-title">{title}</h3>
             <div className="d-flex items-center">
               <p className="channel-card-desc">
-                <RenderPropsTruncatedString text={description} threshold={250}>
-                  {({ truncatedText }) => <>{truncatedText}</>}
-                </RenderPropsTruncatedString>
+                {description || ''}
               </p>
             </div>
             <div className="channel-card-content-categories">
