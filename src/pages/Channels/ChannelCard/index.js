@@ -41,14 +41,16 @@ const ChannelCard = ({
       ) : (
         <>
           <div className="channel-card-header">
-            {image && <img src={image} alt={title || "cover image"} />}
+            {image ? (
+              <img src={image} alt={title || "cover image"} />
+            ) : (
+              <div className="channel-card-header-default" />
+            )}
           </div>
           <div className="channel-card-content">
             <h3 className="channel-card-title">{title}</h3>
             <div className="d-flex items-center">
-              <p className="channel-card-desc">
-                {description || ''}
-              </p>
+              <p className="channel-card-desc">{description || ""}</p>
             </div>
             <div className="channel-card-content-categories">
               {(categories || []).map((item, index) => {
