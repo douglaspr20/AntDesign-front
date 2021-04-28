@@ -61,14 +61,14 @@
         border-radius: 4px;
         background: $color-white;
         border: 1px solid $color-border;
-  
+
         span {
           margin-left: 0.5rem;
         }
-  
+
         @media (max-width: 575.98px) {
           height: 36px;
-  
+
           .anticon.anticon-check {
             margin-right: 0.5rem;
           }
@@ -116,7 +116,7 @@
     border-radius: 0 0 8px 8px;
     border: 1px solid $color-border;
     padding: 60px 2rem 120px;
-    
+
     h1 {
       text-align: center;
       margin-bottom: 2rem !important;
@@ -172,5 +172,30 @@
 
   @media (max-width: 977.98px) {
     padding-bottom: 0;
+  }
+}
+
+.modal-container-login {
+  width: 50% !important;
+  height: calc(100vh) !important;
+  padding: 20px;
+  top: 0px !important;
+
+  .ant-modal-content {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    .login-page {
+      background: transparent;
+    }
+  }
+
+  @media (max-width: 977.98px) {
+    width: 100% !important;
   }
 }

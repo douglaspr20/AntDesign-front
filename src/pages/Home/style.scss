@@ -17,7 +17,15 @@
       padding: 28px 1rem;
     }
   }
-
+  &-container-recommendations{
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2rem;
+    flex-wrap: wrap;
+  }
   &-container {
     padding: 0 2rem 150px;
     background: $color-background;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Form } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,6 +8,8 @@ import { CustomButton } from "components";
 
 import { actions as authActions } from "redux/actions/auth-actions";
 import { authSelector } from "redux/selectors/authSelector";
+import { addToMyEventList } from "redux/actions/event-actions";
+import { eventSelector } from "redux/selectors/eventSelector";
 import { INTERNAL_LINKS } from "enum";
 
 import LoginForm from "./LoginForm";
@@ -25,6 +28,9 @@ const Login = ({
   history,
   match,
   signup,
+  updatedEvent,
+  addToMyEventList,
+  onClose,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
@@ -51,7 +57,14 @@ const Login = ({
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push(INTERNAL_LINKS.HOME);
+      if (history != null) {
+        history.push(INTERNAL_LINKS.HOME);
+      } else {
+        addToMyEventList(updatedEvent);
+        if (onClose) {
+          onClose();
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
@@ -109,7 +122,7 @@ const Login = ({
                 <span className="account-desc">
                   {isLogin
                     ? "Don't have an account?"
-                    : "Alreay have an account?"}
+                    : "Already have an account?"}
                 </span>
                 <span className="signup-select" onClick={onChangeType}>
                   {isLogin ? "Sign up?" : "Log in?"}
@@ -126,13 +139,23 @@ const Login = ({
   );
 };
 
+Login.propTypes = {
+  onClose: PropTypes.func,
+};
+
+Login.defaultProps = {
+  onClose: () => {},
+};
+
 const mapStateToProps = (state) => ({
   isAuthenticated: authSelector(state).isAuthenticated,
   error: authSelector(state).error,
+  updatedEvent: eventSelector(state).updatedEvent,
 });
 
 const mapDispatchToProps = {
   ...authActions,
+  addToMyEventList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

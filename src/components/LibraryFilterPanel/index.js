@@ -4,7 +4,7 @@ import { Checkbox } from "antd";
 import { connect } from "react-redux";
 import Emitter from "services/emitter";
 
-import { CustomCheckbox, CustomButton } from "components";
+import { CustomCheckbox, CustomButton, SearchInput } from "components";
 
 import { EVENT_TYPES } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -12,7 +12,7 @@ import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const FilterPanel = ({ title, userProfile, allCategories, onChange }) => {
+const FilterPanel = ({ title, userProfile, allCategories, onChange, onSearch }) => {
   const [filters, setFilters] = useState({});
 
   const onShareContent = () => {
@@ -40,6 +40,8 @@ const FilterPanel = ({ title, userProfile, allCategories, onChange }) => {
       <h2 className="font-regular">{title}</h2>
       <div className="library-filter-panel-content">
         <div className="search-filter">
+          <h5 className="search-filter-title font-bold">Search</h5>
+          <SearchInput onSearch={onSearch} />
           <h5 className="search-filter-title font-bold">Topics</h5>
           <Checkbox.Group
             value={filters["topics"] ? JSON.parse(filters["topics"]) : []}
@@ -65,11 +67,13 @@ const FilterPanel = ({ title, userProfile, allCategories, onChange }) => {
 FilterPanel.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
+  onSearch: PropTypes.func,
 };
 
 FilterPanel.defaultProps = {
   title: "Filters",
   onChange: () => {},
+  onSearch: () => {},
 };
 
 const mapStateToProps = (state) => ({

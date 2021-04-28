@@ -128,9 +128,9 @@ const ResetPasswordPage = ({ match, history }) => {
                     <>
                       We have problems to reset password, try again process from
                       beginning or contact us via email{" "}
-                      <a href="mailto:hackinghrlab@gmail.com">
+                      <a href={`mailto:${process.env.REACT_APP_MAIN_EMAIL}`}>
                         {" "}
-                        hackinghrlab@gmail.com
+                        {process.env.REACT_APP_MAIN_EMAIL}
                       </a>
                       .
                     </>

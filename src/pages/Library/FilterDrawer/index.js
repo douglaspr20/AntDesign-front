@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Checkbox } from "antd";
 
-import { CustomDrawer, CustomButton, CustomCheckbox } from "components";
+import {
+  CustomDrawer,
+  CustomButton,
+  CustomCheckbox,
+  SearchInput,
+} from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -11,7 +16,7 @@ import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const FilterDrawer = ({ userProfile, allCategories, onChange }) => {
+const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
@@ -50,7 +55,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange }) => {
 
     return () => {
       Emitter.off(EVENT_TYPES.OPEN_FILTER_PANEL);
-    }
+    };
   }, []);
 
   return (
@@ -79,6 +84,8 @@ const FilterDrawer = ({ userProfile, allCategories, onChange }) => {
             onClick={onShareContent}
           />
           <div className="search-filter">
+            <h5 className="search-filter-title font-bold">Search</h5>
+            <SearchInput onChange={onSearch} />
             <h4 className="search-filter-title font-bold">Topics</h4>
             <Checkbox.Group
               value={
@@ -116,11 +123,13 @@ const FilterDrawer = ({ userProfile, allCategories, onChange }) => {
 FilterDrawer.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
+  onSearch: PropTypes.func,
 };
 
 FilterDrawer.defaultProps = {
   title: "",
   onChange: () => {},
+  onSearch: () => {},
 };
 
 const mapStateToProps = (state) => ({

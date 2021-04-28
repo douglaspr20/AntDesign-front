@@ -10,6 +10,11 @@ import podcastReducer from "./podcastReducer";
 import marketplaceReducer from "./marketplaceReducer";
 import marketplaceCategoriesReducer from "./marketplaceCategoriesReducer";
 import categoryReducer from "./categoryReducer";
+import conferenceReducer from "./conferenceReducer";
+import journeyReducer from "./journeyReducer";
+import journeyItemReducer from "./journeyItemReducer";
+import channelReducer from "./channelReducer";
+import channelCategoryReducer from "./channelCategoryReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -22,4 +27,9 @@ export default combineReducers({
   marketplace: marketplaceReducer,
   marketplaceCategories: marketplaceCategoriesReducer,
   category: categoryReducer,
+  conference: conferenceReducer,
+  journey: journeyReducer,
+  journeyItem: journeyItemReducer,
+  channel: channelReducer,
+  channelCategory: channelCategoryReducer,
 });

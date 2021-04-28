@@ -43,7 +43,7 @@ const PaymentModal = ({
       }
       centered
       visible={visible}
-      width={300}
+      width={600}
       closable={true}
       footer={[]}
       closeIcon={<CloseCircleFilled className="payment-modal-close" />}

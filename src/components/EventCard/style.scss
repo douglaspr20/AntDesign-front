@@ -34,6 +34,7 @@
   &-content {
     padding: 1.5rem 28px;
     flex: 1;
+    position: relative;
 
     @media (max-width: 575.98px) {
       padding: 28px 1.5rem;
@@ -69,6 +70,10 @@
       width: 112px;
       padding: 0 !important;
       font-weight: 500 !important;
+    }
+
+    .ant-dropdown-link {
+      margin-bottom: 1rem;
     }
 
     .going-label {
@@ -197,6 +202,42 @@
           }
         }
       }
+    }
+  }
+
+  &-menu {
+    position: absolute;
+    top: 2rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+  }
+
+  &.add {
+    height: 280px;
+    margin-bottom: 2.25rem;
+    position: relative;
+    border: 1px dashed $color-border;
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: 4px 0px 14px #37215714;
+    }
+  }
+
+  &-plus {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 50px;
+      height: 50px;
     }
   }
 }

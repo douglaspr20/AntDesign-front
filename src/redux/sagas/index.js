@@ -8,6 +8,11 @@ import { podcastSaga } from "./podcast";
 import { marketplaceSaga } from "./marketplace";
 import { marketplaceCategoriesSaga } from "./marketplaceCategories";
 import { categorySaga } from "./category";
+import { conferenceSaga } from "./conference";
+import { journeySaga } from "./journey";
+import { journeyItemSaga } from "./journeyItem";
+import { channelSaga } from "./channel";
+import { channelCategorySaga } from "./channelCategory";
 
 export default function* sagas() {
   yield all([
@@ -20,5 +25,10 @@ export default function* sagas() {
     ...marketplaceSaga,
     ...marketplaceCategoriesSaga,
     ...categorySaga,
+    ...conferenceSaga,
+    ...journeySaga,
+    ...journeyItemSaga,
+    ...channelSaga,
+    ...channelCategorySaga,
   ]);
 }

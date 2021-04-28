@@ -7,7 +7,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, USER_ROLES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -45,7 +45,7 @@ class ProfilePopupMenu extends React.Component {
   }
 
   loadSubscription = async () => {
-    if(this.state.subscription === null) {
+    if (this.state.subscription === null) {
       try {
         let response = await getSubscription();
         this.setState({
@@ -55,16 +55,19 @@ class ProfilePopupMenu extends React.Component {
         console.log(err);
       }
     }
-  }
+  };
 
   createPortalSession = async () => {
     try {
       let response = await getPortalSession();
-      this.setState({
-        portalSession: response.data.session,
-      }, () => {
-        window.open(this.state.portalSession.url, "_blank")
-      });
+      this.setState(
+        {
+          portalSession: response.data.session,
+        },
+        () => {
+          window.open(this.state.portalSession.url, "_blank");
+        }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -83,6 +86,20 @@ class ProfilePopupMenu extends React.Component {
     this.props.logout();
   };
 
+  onClaimCredits = () => {
+    const { userProfile } = this.props;
+    if (userProfile.memberShip === "premium") {
+      window.open(process.env.REACT_APP_CLAIM_CREDITS_LINK, "_blank");
+    } else {
+      this.props.showPremiumAlert();
+    }
+    this.onVisibleChange(false);
+  };
+
+  onUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
     const { visible } = this.state;
@@ -98,9 +115,8 @@ class ProfilePopupMenu extends React.Component {
           )}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
-            user ? user.lastName || "" : ""
-          }`}</p>
+          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${user ? user.lastName || "" : ""
+            }`}</p>
           <p className="user-info-view">View / Update Profile</p>
         </div>
       </div>
@@ -108,7 +124,7 @@ class ProfilePopupMenu extends React.Component {
 
     const ContentSection = () => (
       <div className="profile-popover-content">
-        <div className="profile-popover-content-membership">
+        <div className="profile-popover-content-menu">
           {user.memberShip === "premium" ? (
             <React.Fragment>
               <div>PREMIUM MEMBER</div>
@@ -163,6 +179,32 @@ class ProfilePopupMenu extends React.Component {
             <div>Free Membership</div>
           )}
         </div>
+        {user.role !== USER_ROLES.CHANNEL_ADMIN && (
+          user.channelsSubscription === false &&
+          <div
+            className="profile-popover-content-menu"
+            onClick={this.onUpgrade}
+          >Become a CREATOR</div>
+        )}
+        {
+          user.channelsSubscription === true &&
+          <div className="profile-popover-content-menu">
+            <div>CREATOR</div>
+              <div>
+                {moment(user.channelsSubscription_startdate)
+                  .format("MMMM DD, yyyy")}{" "}
+                  -{" "}
+                {moment(user.channelsSubscription_enddate)
+                  .format("MMMM DD, yyyy")}
+              </div>
+          </div>
+        }
+        <div
+          className="profile-popover-content-menu"
+          onClick={this.onClaimCredits}
+        >
+          Claim Conference Credits
+        </div>
         {ProfileMenus.map((menu, index) => (
           <Link
             key={index}
@@ -205,11 +247,13 @@ class ProfilePopupMenu extends React.Component {
 ProfilePopupMenu.propTypes = {
   title: PropTypes.string,
   logout: PropTypes.func,
+  showPremiumAlert: PropTypes.func,
 };
 
 ProfilePopupMenu.defaultProps = {
   title: "",
-  logout: () => {},
+  logout: () => { },
+  showPremiumAlert: () => { },
 };
 
 const mapStateToProps = (state) => homeSelector(state);

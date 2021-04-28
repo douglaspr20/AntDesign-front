@@ -11,8 +11,13 @@
   cursor: pointer;
   border: 1px solid $color-text-third;
   color: $color-text-third;
-  white-space: nowrap;
   overflow: hidden;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &.active {
     border: 1px solid $color-accent;

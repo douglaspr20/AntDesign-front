@@ -16,6 +16,12 @@
     align-items: center;
   }
 
+  &-form {
+    .ant-form-item-label {
+      margin-top: 0.5rem;
+    }
+  }
+
   &.mobile {
     padding: 44px 20px 56px;
 

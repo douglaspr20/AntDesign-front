@@ -30,15 +30,19 @@ class Sider extends Component {
         />
         <PrivateRoute path={INTERNAL_LINKS.MENTORING} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CHANNELS} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CHANNELS} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.CERTIFICATIONS}
           render={() => <Sidebar />}
         />
+        <PrivateRoute path={INTERNAL_LINKS.JOURNEY} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.HUB} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.PODCAST} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.FAVORITES} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.READ_LATER} render={() => <Sidebar />} />
         <PrivateRoute path={INTERNAL_LINKS.MARKETPLACE} render={() => <Sidebar />} />
+        <PrivateRoute path={INTERNAL_LINKS.CONFERENCE_LIBRARY} render={() => <Sidebar />} />
       </Switch>
     );
   }

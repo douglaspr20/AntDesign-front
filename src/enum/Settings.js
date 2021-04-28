@@ -19,4 +19,9 @@ export default {
       text: "Sort by type",
     },
   ],
+  VISIBLE_LEVEL: {
+    DEFAULT: 0,
+    CHANNEL: 1,
+    ALL: 2,
+  },
 };

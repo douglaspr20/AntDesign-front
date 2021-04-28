@@ -17,10 +17,14 @@ import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
 import ClassesPage from "pages/Classes";
 import MicroClassPage from "pages/MicroClass";
+import JourneyPage from "pages/Journey";
 import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
+import ConferenceLibrary from "pages/ConferenceLibrary";
+import ChannelsPage from "pages/Channels";
+import ChannelPage from "pages/Channel";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -58,10 +62,6 @@ class Content extends Component {
             render={(props) => <PasswordRecoveryPage {...props} />}
           />
           <Route
-            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
-            render={(props) => <PublicEventPage {...props} />}
-          />
-          <Route
             path={INTERNAL_LINKS.PUBLIC_MARKETPLACE}
             render={(props) => <MarketplacePage {...props} />}
           />
@@ -84,6 +84,15 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CLASS}/:id`}
             render={(props) => <MicroClassPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.CHANNELS}
+            render={(props) => <ChannelsPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+            render={(props) => <ChannelPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}
@@ -114,8 +123,25 @@ class Content extends Component {
             render={(props) => <CertificatePage {...props} />}
           />
           <PrivateRoute
+            path={INTERNAL_LINKS.JOURNEY}
+            render={(props) => <JourneyPage {...props} />}
+          />
+          <PrivateRoute
             path={INTERNAL_LINKS.MARKETPLACE}
             render={(props) => <MarketplacePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
+            render={(props) => <ConferenceLibrary {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.NOT_FOUND}
+            render={(props) => <NoPageFound {...props} />}
+          />
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+            render={(props) => <PublicEventPage {...props} />}
           />
           <Route component={NoPageFound} />
         </Switch>

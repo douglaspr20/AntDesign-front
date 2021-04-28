@@ -76,7 +76,7 @@ const LibraryShareForm = ({ allCategories, onCancel, addLibrary }) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item name="image" label="Upload image">
-          <ImageUpload />
+          <ImageUpload aspect={400 / 152} />
         </Form.Item>
         {/* <Form.Item name="language" label="Main language">
           <CustomSelect

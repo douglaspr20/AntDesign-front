@@ -5,12 +5,15 @@ import IconLibrary from "images/icon-library.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
 import IconMedal from "images/icon-medal.svg";
-import IconReader from "images/icon-reader.svg";
+// import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
+import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
-import IconHeartOutline from "images/icon-heart-outline.svg";
+// import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
+import IconConferenceVideo from "images/icon-sidebar-video.svg";
+import IconTvOutline from "images/icon-tv-outline.svg";
 
 export default {
   TOP_MENUS: [
@@ -20,14 +23,19 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
-      label: "Heart",
-      icon: IconHeartOutline,
-      url: INTERNAL_LINKS.HEART,
+      label: "Channels",
+      icon: IconTvOutline,
+      url: INTERNAL_LINKS.CHANNELS,
     },
     {
       label: "Learning library",
       icon: IconLibrary,
       url: INTERNAL_LINKS.LEARNING_LIBRARY,
+    },
+    {
+      label: "Conference library",
+      icon: IconConferenceVideo,
+      url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
     {
       label: "Mentoring",
@@ -40,10 +48,20 @@ export default {
       url: INTERNAL_LINKS.EVENTS,
     },
     {
-      label: "Hub",
-      icon: IconReader,
-      url: INTERNAL_LINKS.HUB,
+       label: "Classes",
+       icon: IconMedal,
+       url: INTERNAL_LINKS.CLASSES,
     },
+    {
+      label: "Learning Journeys",
+      icon: IconJourney,
+      url: INTERNAL_LINKS.JOURNEY,
+    },
+    // {
+    //   label: "Annual Conference",
+    //   icon: IconReader,
+    //   url: INTERNAL_LINKS.HUB,
+    // },
     {
       label: "Podcast",
       icon: IconHeadsetOutline,

@@ -9,7 +9,12 @@ import {
   addLibrary,
   getLibrary,
   searchLibrary,
+  searchChannelLibrary,
   getRecommendations,
+  addChannelLibrary,
+  deleteChannelLibrary,
+  updateChannelLibrary,
+  shareChannelLibrary,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -96,12 +101,134 @@ export function* getRecommendationsSaga() {
     const response = yield call(getRecommendations);
 
     if (response.status === 200) {
-      yield put(libraryActions.setRecommendations(response.data.libraries));
+      yield put(libraryActions.setRecommendations(response.data));
     }
 
     yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* addChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* updateChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(updateChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getFirstChannelLibraryList({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.setFirstChannelLibraryList(
+          response.data.libraries.count,
+          1,
+          response.data.libraries.rows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getMoreChannelLibraryList({ payload }) {
+  yield put(libraryActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.setMoreChannelLibraryList(
+          response.data.libraries.count,
+          payload.filter.page,
+          response.data.libraries.rows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(libraryActions.setLoading(false));
+  }
+}
+
+export function* deleteChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(deleteChannelLibrary, { ...payload });
+
+    if (response.status === 200 && payload.callback) {
+      payload.callback("");
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* shareChannelLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(shareChannelLibrary, { ...payload });
+
+    if (response.status === 200 && payload.callback) {
+      payload.callback("");
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback("Something went wrong. Please try again.");
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -115,6 +242,24 @@ function* watchLogin() {
     libraryConstants.GET_RECOMMENDATIONS,
     getRecommendationsSaga
   );
+  yield takeLatest(libraryConstants.ADD_CHANNEL_LIBRARY, addChannelLibrarySaga);
+  yield takeLatest(
+    libraryConstants.UPDATE_CHANNEL_LIBRARY,
+    updateChannelLibrarySaga
+  );
+  yield takeLatest(
+    libraryConstants.GET_FIRST_CHANNEL_LIBRARY_LIST,
+    getFirstChannelLibraryList
+  );
+  yield takeLatest(
+    libraryConstants.GET_MORE_CHANNEL_LIBRARY_LIST,
+    getMoreChannelLibraryList
+  );
+  yield takeLatest(
+    libraryConstants.DELETE_CHANNEL_LIBRARY,
+    deleteChannelLibrarySaga
+  );
+  yield takeLatest(libraryConstants.SHARE_CHANNEL_LIBRARY, shareChannelLibrarySaga);
 }
 
 export const librarySaga = [fork(watchLogin)];

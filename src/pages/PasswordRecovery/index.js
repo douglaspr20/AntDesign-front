@@ -82,7 +82,7 @@ const PasswordRecoveryPage = ({ history }) => {
               <br />
               <AuthAlert
                 title="Error"
-                message="Email don't match with any user."
+                message="Email doesn't match with any user."
               />
             </>
           )}

@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES, SETTINGS, CARD_TYPE } from "enum";
 import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
@@ -30,7 +30,18 @@ const monthStr = [
 
 const DataFormat = SETTINGS.DATE_FORMAT;
 
-const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) => {
+const EventList = ({
+  data,
+  isMobile,
+  onAttend,
+  showFilter,
+  onClick,
+  edit,
+  type,
+  onMenuClick,
+  onAddEvent,
+  ...rest
+}) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
 
   const onEventChanged = (event, going) => {
@@ -46,8 +57,13 @@ const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) =
     }
   };
 
+  const getRandomNumber = () => Math.floor(Math.random() * 1000);
+
   useEffect(() => {
-    const groupedData = groupBy(data, "date");
+    const groupedData = groupBy(
+      data.map((item) => ({ ...item, groupKey: item.date.slice(0, 10) })),
+      "groupKey"
+    );
 
     setGroupedByEventData({ ...groupedData });
   }, [data]);
@@ -63,24 +79,39 @@ const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) =
           onClick={onShowFilter}
         />
       </div>
-      {data && data.length === 0 && <NoEventCard />}
+      {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
+      {edit && type === CARD_TYPE.EDIT && (
+        <div className="event-list-batch">
+          <div />
+          <EventCard
+            className="add"
+            type={CARD_TYPE.ADD}
+            onClick={onAddEvent}
+          />
+        </div>
+      )}
       {Object.keys(groupedByEventData).map((date) => {
         const day = moment(date, DataFormat).date();
         const month = moment(date, DataFormat).month();
         return (
-          <div className="event-list-batch" key={date}>
+          <div
+            className="event-list-batch"
+            key={`${date}-${getRandomNumber()}`}
+          >
             <DateAvatar day={day} month={monthStr[month]} />
             <Row gutter={[0, 36]}>
               {groupedByEventData[date].map((event, index) => (
                 <Col
-                  key={`${date}-${index}`}
+                  key={`col-${date}-${getRandomNumber()}`}
                   span={24}
                   className="event-list-item"
                 >
                   <EventCard
+                    edit={edit}
                     data={event}
                     onAttend={(going) => onEventChanged(event, going)}
                     onClick={onClick}
+                    onMenuClick={(menu) => onMenuClick(menu, event)}
                   />
                 </Col>
               ))}
@@ -94,16 +125,24 @@ const EventList = ({ data, isMobile, onAttend, showFilter, onClick, ...rest }) =
 
 EventList.propTypes = {
   data: PropTypes.array,
+  edit: PropTypes.bool,
+  type: PropTypes.string,
   onAttend: PropTypes.func,
   onClick: PropTypes.func,
   showFilter: PropTypes.func,
+  onMenuClick: PropTypes.func,
+  onAddEvent: PropTypes.func,
 };
 
 EventList.defaultProps = {
   data: [],
+  edit: false,
+  type: CARD_TYPE.VIEW,
   onAttend: () => {},
   onClick: () => {},
   showFilter: () => {},
+  onMenuClick: () => {},
+  onAddEvent: () => {},
 };
 
 const mapStateToProps = (state) => ({
