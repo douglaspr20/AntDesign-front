@@ -1,84 +1,32 @@
-import React, { useState } from 'react';
-import ClassesFilterPanel from "./ClassesFilterPanel";
+import React, { useEffect, useState } from 'react';
+import { connect } from "react-redux";
+
 import { Row, Col } from "antd";
 import { CustomSelect } from "components";
-import { SETTINGS } from "enum";
+
+import {
+  getAllCourses,
+} from "redux/actions/course-actions";
+
+import { courseSelector } from "redux/selectors/courseSelector";
+
 import ClassCard from './ClassCard';
+import ClassesFilterPanel from "./ClassesFilterPanel";
+import { SETTINGS } from "enum";
 
 import './style.scss';
 
 const SortOptions = SETTINGS.SORT_OPTIONS;
 
-const HARDCODED_CLASSES_DATA = [
-  {
-    "id":"17",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-01-30T04:26:29.487Z",
-    "updatedAt":"2021-01-31T00:30:33.176Z"
-  },
-  {
-    "id":"14",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit.",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-01-18T01:51:02.001Z",
-    "updatedAt":"2021-01-31T00:27:45.123Z"
-  },
-  {
-    "id":"13",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-02-18T01:51:02.001Z",
-    "updatedAt":"2021-02-31T00:27:45.123Z"
-  },
-  {
-    "id":"12",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat.",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-03-18T01:51:02.001Z",
-    "updatedAt":"2021-03-31T00:27:45.123Z"
-  },
-  {
-    "id":"171",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-01-30T04:26:29.487Z",
-    "updatedAt":"2021-01-31T00:30:33.176Z"
-  },
-  {
-    "id":"142",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit.",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-01-18T01:51:02.001Z",
-    "updatedAt":"2021-01-31T00:27:45.123Z"
-  },
-  {
-    "id":"133",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat. Donec vehicula elit eu erat pulvinar, vel congue ex egestas. Praesent egestas purus dolor, a porta arcu pharetra",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-02-18T01:51:02.001Z",
-    "updatedAt":"2021-02-31T00:27:45.123Z"
-  },
-  {
-    "id":"124",
-    "title":"Bay area job seekers and recruiters - Video conference",
-    "description":"Praesent eu dolor eu orci vehicula euismod. Vivamus sed sollicitudin libero, vel malesuada velit. Nullam et maximus lorem. Suspendisse maximus dolor quis consequat volutpat.",
-    "image":"https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg",
-    "createdAt":"2021-03-18T01:51:02.001Z",
-    "updatedAt":"2021-03-31T00:27:45.123Z"
-  },
-];
-
-function Classes() {
+function Classes({
+  getAllCourses,
+  allCourses,
+}) {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
-  const [classesList] = useState(HARDCODED_CLASSES_DATA);
+
+  useEffect(() => {
+    getAllCourses();
+  }, []);
 
   function onFilterChange(filter) {
     console.log('Filter Change', filter);
@@ -99,14 +47,14 @@ function Classes() {
                 <h3 className="filters-btn">
                   Filters
                 </h3>
-                <h3>{classesList.length} result{classesList.length > 1 ? 's' : ''}</h3>
+                <h3>{allCourses.length} result{allCourses.length > 1 ? 's' : ''}</h3>
               </div>
             </Col>
           </Row>
           <Row>
             <Col span={24}>
               <div className="search-results-container-header d-flex justify-between items-center">
-                <h3>{classesList.length} result{classesList.length > 1 ? 's' : ''}</h3>
+                <h3>{allCourses.length} result{allCourses.length > 1 ? 's' : ''}</h3>
                 <CustomSelect
                   className="search-results-container-sort"
                   bordered={false}
@@ -118,13 +66,13 @@ function Classes() {
             </Col>
           </Row>
           <div className="classes-list">
-            {classesList.map(classItem => (
+            {allCourses.map(classItem => (
               <ClassCard
                 key={classItem.id}
                 id={classItem.id}
                 title={classItem.title}
                 description={classItem.description}
-                image={classItem.image}
+                image={classItem.image != null ? classItem.image : "https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg" }
               />
             ))}
           </div>
@@ -134,4 +82,15 @@ function Classes() {
   );
 }
 
-export default Classes;
+const mapStateToProps = (state, props) => ({
+  allCourses: courseSelector(state).allCourses,
+});
+
+const mapDispatchToProps = {
+  getAllCourses,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Classes);

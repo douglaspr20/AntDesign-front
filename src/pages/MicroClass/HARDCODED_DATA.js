@@ -9,7 +9,7 @@ export default {
       title: 'Launch party startup ecosystem ramen',
       duration: 2347.925,
       url: 'https://vimeo.com/479284022',
-      is_watched: false,
+      is_watched: true,
     },
     {
       id: '2',

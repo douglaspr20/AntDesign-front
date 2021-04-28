@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import MicroClassSkeleton from './MicroClassSkeleton';
 import MicroClassVideosList from './MicroClassVideosList';
 import MicroClassVideoWrapper from './MicroClassVideoWrapper';
 import CustomButton from "components/Button";
+
+import {
+  getCourse,
+  getCourseClasses,
+} from "redux/actions/course-actions";
+
+import { courseSelector } from "redux/selectors/courseSelector";
 
 import './style.scss';
 import HARDCODED_MICRO_CLASS_DATA from './HARDCODED_DATA.js';
@@ -31,9 +39,20 @@ function useMicroClassQuery(id) {
   }
 }
 
-function MicroClass({ match }) {
+function MicroClass({
+  match,
+  getCourse,
+  course,
+  getCourseClasses,
+  classes,
+}) {
   const { microClassData, status, setMicroClassData } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
+
+  useEffect(() => {
+    getCourse(match.params.id);
+    getCourseClasses(match.params.id);
+  }, []);
 
   const activeVideoUrl = useMemo(() => {
     if (microClassData && microClassData.content && microClassData.content.length) {
@@ -88,10 +107,10 @@ function MicroClass({ match }) {
         {status === 'success' &&
           <div className="micro-class__row">
             <div className="micro-class__col-1">
-              <h2>{microClassData.title}</h2>
+              <h2>{course.title}</h2>
 
               <MicroClassVideosList
-                list={microClassData.content}
+                list={classes}
                 setActiveVideoId={id => setActiveVideoId(id)}
                 activeVideoId={activeVideoId}
               />
@@ -121,7 +140,7 @@ function MicroClass({ match }) {
                   <div>
                     <div className="micro-class__description-card">
                       <h3>Course Description</h3>
-                      <p className="micro-class__description-p">{microClassData.description}</p>
+                      <p className="micro-class__description-p">{course.description}</p>
                     </div>
                   </div>
                 )}
@@ -183,4 +202,19 @@ function MicroClass({ match }) {
   );
 }
 
-export default withRouter(MicroClass);
+const mapStateToProps = (state, props) => ({
+  course: courseSelector(state).course,
+  classes: courseSelector(state).classes,
+});
+
+const mapDispatchToProps = {
+  getCourse,
+  getCourseClasses,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MicroClass);
+
+// export default withRouter(MicroClass);
