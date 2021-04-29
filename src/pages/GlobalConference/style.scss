@@ -1,0 +1,5 @@
+@import "../../styles/main.scss";
+
+.global-conference {
+  @include app-font(18px, 18px, 700);
+}
