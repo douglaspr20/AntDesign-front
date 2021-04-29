@@ -55,10 +55,10 @@ function MicroClass({
   }, []);
 
   const activeVideoUrl = useMemo(() => {
-    if (microClassData && microClassData.content && microClassData.content.length) {
-      let videoObject = microClassData.content.find(item => item.id === activeVideoId);
-      if (videoObject && videoObject.url) {
-        return videoObject.url;
+    if (microClassData && classes && classes.length) {
+      let videoObject = classes.find(item => item.id === activeVideoId);
+      if (videoObject && videoObject.videoUrl) {
+        return videoObject.videoUrl;
       }
       return null;
     }
@@ -67,9 +67,9 @@ function MicroClass({
 
   const didWachedAllVideos = useMemo(() => {
     let is_watched = false;
-    if (microClassData && microClassData.content && microClassData.content.length) {
+    if (microClassData && classes && classes.length) {
       is_watched = true;
-      for (const videoObj of microClassData.content) {
+      for (const videoObj of classes) {
         if (!videoObj.is_watched) {
           is_watched = videoObj.is_watched;
         }
