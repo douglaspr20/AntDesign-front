@@ -1,0 +1,70 @@
+@import "styles/main.scss";
+
+.annual-conference-card {
+  background: $color-white;
+  border: 1px solid $color-border;
+  box-shadow: 4px 0px 14px #37215714;
+  border-radius: 0.5rem;
+  opacity: 1;
+  padding: 2rem;
+}
+
+.acc-session {
+  &-header {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-type {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+    margin-top: 1rem;
+  }
+
+  &-date {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &-time {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+  }
+
+  &-toggle {
+    display: flex;
+    align-items: center;
+    color: $color-accent;
+    @include app-font(16px, 21px, 600);
+    cursor: pointer;
+
+    &-icon {
+      margin-left: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      min-width: 1, 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: $color-accent;
+
+      &.hide {
+        transform: rotate(180deg);
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+
+        path {
+          stroke: $color-white;
+        }
+      }
+    }
+  }
+}
