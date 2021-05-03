@@ -1,0 +1,33 @@
+@import "../../../styles/main.scss";
+
+.conference-list {
+  margin-top: 3rem;
+  height: calc(100vh - 380px);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+
+    &-select {
+      display: flex;
+      align-items: center;
+    }
+
+    &-sort {
+      margin-left: 1rem;
+      max-width: 200px;
+    }
+  }
+
+  &-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+  }
+}

@@ -1,5 +1,21 @@
 @import "../../styles/main.scss";
 
 .global-conference {
-  @include app-font(18px, 18px, 700);
+  background: $color-background;
+  padding: 3rem 0;
+  height: calc(100vh - 72px);
+
+  &-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  &-description {
+    margin-top: 2rem;
+    @include app-font(16px, 24px);
+    color: $color-text-secondary;
+  }
 }
