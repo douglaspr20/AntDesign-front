@@ -6,12 +6,21 @@
   .ant-select-selector {
     height: 52px !important;
     border-radius: 8px !important;
-    border: 1px solid $color-border !important;
+    border: none !important;
     padding: 0 48px 0 16px !important;
 
     @media (max-width: 575.98px) {
       height: 44px !important;
     }
+  }
+
+  &.border .ant-select-selector {
+    border: 1px solid $color-border !important;
+  }
+
+  &.ant-select-focused .ant-select-selector {
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   .ant-select-selection-item {
