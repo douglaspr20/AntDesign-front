@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import MicroClassSkeleton from './MicroClassSkeleton';
 import MicroClassVideosList from './MicroClassVideosList';
 import MicroClassVideoWrapper from './MicroClassVideoWrapper';
 import CustomButton from "components/Button";
+import { Tabs } from 'antd';
 
 import {
   getCourse,
@@ -17,7 +17,9 @@ import { courseSelector } from "redux/selectors/courseSelector";
 import './style.scss';
 import HARDCODED_MICRO_CLASS_DATA from './HARDCODED_DATA.js';
 
-function useMicroClassQuery(id) {
+const { TabPane } = Tabs;
+
+const useMicroClassQuery = (id) => {
   const [data, setData] = useState(null);
   const [status, setStatus] = useState('loading');
 
@@ -39,13 +41,13 @@ function useMicroClassQuery(id) {
   }
 }
 
-function MicroClass({
+const MicroClass = ({
   match,
   getCourse,
   course,
   getCourseClasses,
   classes,
-}) {
+}) => {
   const { microClassData, status, setMicroClassData } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
@@ -63,7 +65,7 @@ function MicroClass({
       return null;
     }
     return null;
-  }, [activeVideoId, microClassData]);
+  }, [activeVideoId, classes]);
 
   const didWachedAllVideos = useMemo(() => {
     let is_watched = false;
@@ -76,13 +78,13 @@ function MicroClass({
       }
     }
     return is_watched;
-  }, [microClassData]);
+  }, [classes]);
 
   function setVideoAsWatched(id) {
     setMicroClassData(prevData => {
       const dataClone = cloneDeep(prevData);
       const videoIndex = dataClone.content.findIndex(item => item.id === id);
-      if (videoIndex  > -1) {
+      if (videoIndex > -1) {
         dataClone.content[videoIndex].is_watched = true;
       }
       return dataClone;
@@ -96,7 +98,7 @@ function MicroClass({
       console.log("Haven't watched all videos, can't be certified");
     }
   }
-  
+
   return (
     <div className="micro-class__page">
       <div className="micro-class__container">
@@ -106,46 +108,53 @@ function MicroClass({
 
         {status === 'success' &&
           <div className="micro-class__row">
-            <div className="micro-class__col-1">
-              <h2>{course.title}</h2>
-
-              <MicroClassVideosList
-                list={classes}
-                setActiveVideoId={id => setActiveVideoId(id)}
-                activeVideoId={activeVideoId}
-              />
-
-              <div className="micro-class__claim-certificate-button-wrap">
-                <CustomButton
-                  disabled={!didWachedAllVideos}
-                  htmlType="button"
-                  type="primary"
-                  size="lg"
-                  onClick={handleClaimCertificate}
-                  text="Claim Digital Certificate"
-                />
-                <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
-              </div>
-            </div>
-
-            <div className="micro-class__col-2">
+            <div className="micro-class__row-1">
               <MicroClassVideoWrapper
                 url={activeVideoUrl ? activeVideoUrl : null}
                 id={activeVideoId}
                 setVideoAsWatched={setVideoAsWatched}
               />
+            </div>
+            <div className="micro-class__row-1">
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="Class Information" key="1">
+                  <div className="micro-class__class-information">
+                    <div className="micro-class__class-information--column-1">
+                      <h2>{course.title}</h2>
 
-              <div className="micro-class__row-2">
-                {microClassData.description && (
-                  <div>
-                    <div className="micro-class__description-card">
-                      <h3>Course Description</h3>
-                      <p className="micro-class__description-p">{course.description}</p>
+                      <MicroClassVideosList
+                        list={classes}
+                        setActiveVideoId={id => setActiveVideoId(id)}
+                        activeVideoId={activeVideoId}
+                      />
+
+                      <div className="micro-class__claim-certificate-button-wrap">
+                        <CustomButton
+                          disabled={!didWachedAllVideos}
+                          htmlType="button"
+                          type="primary"
+                          size="lg"
+                          onClick={handleClaimCertificate}
+                          text="Claim Digital Certificate"
+                        />
+                        <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
+                      </div>
                     </div>
-                  </div>
-                )}
+                    <div className="micro-class__class-information--column-2">
+                      {microClassData.description && (
+                        <div>
+                          <div className="micro-class__description-card">
+                            <h3>Course Description</h3>
+                            <p className="micro-class__description-p">{course.description}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
 
-                <div className="micro-class__addition-info-col">
+                  </div>
+
+                </TabPane>
+                <TabPane tab="Instructors" key="2">
                   {microClassData.instructors.length && (
                     <div className="micro-class__additional-info-card">
                       <h3>Instructors</h3>
@@ -169,7 +178,8 @@ function MicroClass({
                       </div>
                     </div>
                   )}
-
+                </TabPane>
+                <TabPane tab="Sponsors" key="3">
                   {microClassData.sponsors.length && (
                     <div className="micro-class__additional-info-card">
                       <h3>Sponsors</h3>
@@ -192,8 +202,8 @@ function MicroClass({
                       </div>
                     </div>
                   )}
-                </div>
-              </div>
+                </TabPane>
+              </Tabs>
             </div>
           </div>
         }
@@ -216,5 +226,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(MicroClass);
-
-// export default withRouter(MicroClass);
