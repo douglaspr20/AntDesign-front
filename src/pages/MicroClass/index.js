@@ -109,13 +109,6 @@ const MicroClass = ({
         {status === 'success' &&
           <div className="micro-class__row">
             <div className="micro-class__row-1">
-              <div className="micro-class__row-1--video-player">
-                <MicroClassVideoWrapper
-                  url={activeVideoUrl ? activeVideoUrl : null}
-                  id={activeVideoId}
-                  setVideoAsWatched={setVideoAsWatched}
-                />
-              </div>
               <div className="micro-class__row-1--video-list">
                 <h2>{course.title}</h2>
 
@@ -136,6 +129,13 @@ const MicroClass = ({
                   />
                   <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
                 </div>
+              </div>
+              <div className="micro-class__row-1--video-player">
+                <MicroClassVideoWrapper
+                  url={activeVideoUrl ? activeVideoUrl : null}
+                  id={activeVideoId}
+                  setVideoAsWatched={setVideoAsWatched}
+                />
               </div>
             </div>
             <div className="micro-class__row-1">
