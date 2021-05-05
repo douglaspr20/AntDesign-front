@@ -106,7 +106,7 @@ const PublicEventPage = ({
           </Modal>
           {updatedEvent.status === "attend" && (
             <CustomButton
-              text="Attend"
+              text="REGISTER HERE"
               size="lg"
               type="primary"
               onClick={onAttend}
