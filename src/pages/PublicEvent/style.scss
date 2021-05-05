@@ -49,6 +49,10 @@
         }
       }
 
+      .custom-button.lg {
+        height: 60px !important;
+      }
+
       .going-label {
         color: $color-success;
         @include app-font(16px, 19px, normal);
@@ -64,10 +68,6 @@
 
         span {
           margin-left: 0.5rem;
-        }
-
-        .ant-btn {
-          height: 60px !important;
         }
 
         @media (max-width: 575.98px) {
