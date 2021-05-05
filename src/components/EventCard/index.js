@@ -63,7 +63,7 @@ class EventCard extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  onCLickDownloadCalendar = (e) => {
+  onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     window.open(
@@ -119,7 +119,7 @@ class EventCard extends React.Component {
   downloadDropdownOptions = () => (
     <Menu>
       <Menu.Item key="1">
-        <a href="/#" onClick={this.onCLickDownloadCalendar}>
+        <a href="/#" onClick={this.onClickDownloadCalendar}>
           Download ICS File
         </a>
       </Menu.Item>
