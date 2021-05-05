@@ -79,7 +79,17 @@ function getEventPeriod(date, date2, timezone) {
   const startDate = convertToCertainTime(date, timezone);
   const endDate = convertToCertainTime(date2, timezone);
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
-  tz = (tz || {}).abbr || "";
+  if (tz) {
+    if (tz.offset > 0) {
+      tz = `${tz.abbr} (GMT+${tz.offset})`;
+    } else if (tz.offset < 0) {
+      tz = `${tz.abbr} (GMT-${-tz.offset})`;
+    } else {
+      tz = `${tz.abbr} (GMT)`;
+    }
+  } else {
+    tz = "";
+  }
 
   if (
     startDate.year() === endDate.year() &&
