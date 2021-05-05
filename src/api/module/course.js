@@ -11,3 +11,13 @@ export const get = async (id) => {
 export const getCourseClasses = async (course) => {
   return await httpClient.get(`private/course-classes/${course}`);
 };
+
+export const getCourseInstructors = async (course) => {
+  console.log(course);
+  return await httpClient.get(`private/course-instructors/${course}`);
+};
+
+export const getCourseSponsors = async (course) => {
+  console.log(course);
+  return await httpClient.get(`private/course-sponsors/${course}`);
+};

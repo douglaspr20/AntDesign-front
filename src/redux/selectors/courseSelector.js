@@ -8,6 +8,8 @@ const resultSelector = createSelector(courseDataSelector, (payload) => {
     allCourses: payload.get("allCourses"),
     course: payload.get("course"),
     classes: payload.get("classes"),
+    instructors: payload.get("instructors"),
+    sponsors: payload.get("sponsors"),
   };
 });
 

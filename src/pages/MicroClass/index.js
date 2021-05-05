@@ -10,6 +10,8 @@ import { Tabs } from 'antd';
 import {
   getCourse,
   getCourseClasses,
+  getCourseInstructors,
+  getCourseSponsors,
 } from "redux/actions/course-actions";
 
 import { courseSelector } from "redux/selectors/courseSelector";
@@ -46,7 +48,11 @@ const MicroClass = ({
   getCourse,
   course,
   getCourseClasses,
+  getCourseInstructors,
+  getCourseSponsors,
   classes,
+  instructors,
+  sponsors,
 }) => {
   const { microClassData, status, setMicroClassData } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
@@ -54,6 +60,8 @@ const MicroClass = ({
   useEffect(() => {
     getCourse(match.params.id);
     getCourseClasses(match.params.id);
+    getCourseInstructors(match.params.id);
+    getCourseSponsors(match.params.id);
   }, []);
 
   const activeVideoUrl = useMemo(() => {
@@ -151,21 +159,21 @@ const MicroClass = ({
                     )}
                 </TabPane>
                 <TabPane tab="Instructors" key="2">
-                  {microClassData.instructors.length && (
+                  {instructors.length && (
                     <div className="micro-class__additional-info-card">
                       <div className="micro-class__additional-info-row">
-                        {microClassData.instructors.map((instructor, i) => (
+                        {instructors.map((instructor, i) => (
                           <div className="micro-class__additional-info-col"
                             key={i}
                           >
                             <div className="micro-class__additional-info-item">
                               <span className="micro-class__additional-info-ico"
                                 style={{
-                                  backgroundImage: `url(${instructor.icon})`
+                                  backgroundImage: `url(${instructor.image})`
                                 }}
                               ></span>
                               <span className="micro-class__additional-info-item-text">{instructor.name}</span>
-                              <span className="micro-class__additional-info-item-text-sub">{instructor.title}</span>
+                              <span className="micro-class__additional-info-item-text-sub">{instructor.description}</span>
                             </div>
                           </div>
                         ))}
@@ -174,26 +182,28 @@ const MicroClass = ({
                   )}
                 </TabPane>
                 <TabPane tab="Sponsors" key="3">
-                  {microClassData.sponsors.length && (
-                    <div className="micro-class__additional-info-card">
-                      <div className="micro-class__additional-info-row">
-                        {microClassData.sponsors.map((sponsor, i) => (
-                          <div className="micro-class__additional-info-col"
-                            key={i}
-                          >
-                            <a href={sponsor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
-                              <span className="micro-class__additional-info-ico"
-                                style={{
-                                  backgroundImage: `url(${sponsor.icon})`
-                                }}
-                              ></span>
-                              <span className="micro-class__additional-info-item-text">{sponsor.title}</span>
-                            </a>
-                          </div>
-                        ))}
+                  <div>
+                    {sponsors.length && (
+                      <div className="micro-class__additional-info-card">
+                        <div className="micro-class__additional-info-row">
+                          {sponsors.map((sponsor, i) => (
+                            <div className="micro-class__additional-info-col"
+                              key={i}
+                            >
+                              <a href={sponsor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
+                                <span className="micro-class__additional-info-ico"
+                                  style={{
+                                    backgroundImage: `url(${sponsor.icon})`
+                                  }}
+                                ></span>
+                                <span className="micro-class__additional-info-item-text">{sponsor.name}</span>
+                              </a>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </TabPane>
               </Tabs>
             </div>
@@ -207,11 +217,15 @@ const MicroClass = ({
 const mapStateToProps = (state, props) => ({
   course: courseSelector(state).course,
   classes: courseSelector(state).classes,
+  instructors: courseSelector(state).instructors,
+  sponsors: courseSelector(state).sponsors,
 });
 
 const mapDispatchToProps = {
   getCourse,
   getCourseClasses,
+  getCourseInstructors,
+  getCourseSponsors,
 };
 
 export default connect(

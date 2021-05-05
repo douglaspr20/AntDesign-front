@@ -9,6 +9,8 @@ import {
   get,
   getAll,
   getCourseClasses,
+  getCourseInstructors,
+  getCourseSponsors,
 } from "../../api/module/course";
 
 export function* getAllCoursesSaga() {
@@ -62,10 +64,45 @@ export function* getCourseClassesSaga({payload}) {
   }
 }
 
+export function* getCourseInstructorsSaga({payload}) {
+  yield put(homeActions.setLoading(true));
+  try {
+    const response = yield call(getCourseInstructors, payload.id);
+
+    if (response.status === 200) {
+      yield put(courseActions.setCourseInstructors(response.data.instructors));
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getCourseSponsorsSaga({payload}) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getCourseSponsors, payload.id);
+
+    if (response.status === 200) {
+      yield put(courseActions.setCourseSponsors(response.data.sponsors));
+    }
+
+    yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(courseConstants.GET_ALL_COURSES, getAllCoursesSaga);
   yield takeLatest(courseConstants.GET_COURSE, getCourseSaga);
   yield takeLatest(courseConstants.GET_COURSE_CLASSES, getCourseClassesSaga);
+  yield takeLatest(courseConstants.GET_COURSE_INSTRUCTORS, getCourseInstructorsSaga);
+  yield takeLatest(courseConstants.GET_COURSE_SPONSORS, getCourseSponsorsSaga);
 }
 
 export const courseSaga = [fork(watchLogin)];
