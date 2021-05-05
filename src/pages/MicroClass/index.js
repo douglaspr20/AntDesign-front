@@ -109,56 +109,50 @@ const MicroClass = ({
         {status === 'success' &&
           <div className="micro-class__row">
             <div className="micro-class__row-1">
-              <MicroClassVideoWrapper
-                url={activeVideoUrl ? activeVideoUrl : null}
-                id={activeVideoId}
-                setVideoAsWatched={setVideoAsWatched}
-              />
+              <div className="micro-class__row-1--video-player">
+                <MicroClassVideoWrapper
+                  url={activeVideoUrl ? activeVideoUrl : null}
+                  id={activeVideoId}
+                  setVideoAsWatched={setVideoAsWatched}
+                />
+              </div>
+              <div className="micro-class__row-1--video-list">
+                <h2>{course.title}</h2>
+
+                <MicroClassVideosList
+                  list={classes}
+                  setActiveVideoId={id => setActiveVideoId(id)}
+                  activeVideoId={activeVideoId}
+                />
+
+                <div className="micro-class__claim-certificate-button-wrap">
+                  <CustomButton
+                    disabled={!didWachedAllVideos}
+                    htmlType="button"
+                    type="primary"
+                    size="lg"
+                    onClick={handleClaimCertificate}
+                    text="Claim Digital Certificate"
+                  />
+                  <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
+                </div>
+              </div>
             </div>
             <div className="micro-class__row-1">
               <Tabs defaultActiveKey="1">
                 <TabPane tab="Class Information" key="1">
-                  <div className="micro-class__class-information">
-                    <div className="micro-class__class-information--column-1">
-                      <h2>{course.title}</h2>
-
-                      <MicroClassVideosList
-                        list={classes}
-                        setActiveVideoId={id => setActiveVideoId(id)}
-                        activeVideoId={activeVideoId}
-                      />
-
-                      <div className="micro-class__claim-certificate-button-wrap">
-                        <CustomButton
-                          disabled={!didWachedAllVideos}
-                          htmlType="button"
-                          type="primary"
-                          size="lg"
-                          onClick={handleClaimCertificate}
-                          text="Claim Digital Certificate"
-                        />
-                        <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
-                      </div>
-                    </div>
-                    <div className="micro-class__class-information--column-2">
-                      {microClassData.description && (
-                        <div>
-                          <div className="micro-class__description-card">
-                            <h3>Course Description</h3>
-                            <p className="micro-class__description-p">{course.description}</p>
-                          </div>
+                    {microClassData.description && (
+                      <div>
+                        <div className="micro-class__description-card">
+                          <h3>Course Description</h3>
+                          <p className="micro-class__description-p">{course.description}</p>
                         </div>
-                      )}
-                    </div>
-
-                  </div>
-
+                      </div>
+                    )}
                 </TabPane>
                 <TabPane tab="Instructors" key="2">
                   {microClassData.instructors.length && (
                     <div className="micro-class__additional-info-card">
-                      <h3>Instructors</h3>
-
                       <div className="micro-class__additional-info-row">
                         {microClassData.instructors.map((instructor, i) => (
                           <div className="micro-class__additional-info-col"
@@ -182,8 +176,6 @@ const MicroClass = ({
                 <TabPane tab="Sponsors" key="3">
                   {microClassData.sponsors.length && (
                     <div className="micro-class__additional-info-card">
-                      <h3>Sponsors</h3>
-
                       <div className="micro-class__additional-info-row">
                         {microClassData.sponsors.map((sponsor, i) => (
                           <div className="micro-class__additional-info-col"
