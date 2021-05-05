@@ -5,7 +5,6 @@ import { Dropdown, Menu } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 
 import clsx from "clsx";
-import moment from "moment";
 import { withRouter } from "react-router-dom";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -15,6 +14,7 @@ import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
+import { convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
@@ -72,18 +72,22 @@ class EventCard extends React.Component {
     );
   };
 
-  onCLickAddGoogleCalendar = (e) => {
+  onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const description = this.props.data.description.blocks[0].text.replace(
-      /(\r\n|\n|\r)/gm,
-      ""
-    );
+    const { data } = this.props || {};
+    let description = "";
+    if (data.description) {
+      description = data.description.blocks[0].text.replace(
+        /(\r\n|\n|\r)/gm,
+        ""
+      );
+    }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       this.props.data.title
-    }&dates=${moment(this.props.data.startDate).format(
+    }&dates=${convertToLocalTime(this.props.data.startDate).format(
       "YYYYMMDDTHHmm"
-    )}/${moment(this.props.data.endDate).format(
+    )}/${convertToLocalTime(this.props.data.endDate).format(
       "YYYYMMDDTHHmmss"
     )}&details=${description}&location=${
       this.props.data.location
@@ -91,18 +95,22 @@ class EventCard extends React.Component {
     window.open(googleCalendarUrl, "_blank");
   };
 
-  onCLickAddYahooCalendar = (e) => {
+  onClickAddYahooCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const description = this.props.data.description.blocks[0].text.replace(
-      /(\r\n|\n|\r)/gm,
-      ""
-    );
+    const { data } = this.props || {};
+    let description = "";
+    if (data.description) {
+      description = data.description.blocks[0].text.replace(
+        /(\r\n|\n|\r)/gm,
+        ""
+      );
+    }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       this.props.data.title
-    }&st=${moment(this.props.data.startDate).format(
+    }&st=${convertToLocalTime(this.props.data.startDate).format(
       "YYYYMMDDTHHmm"
-    )}&dur${moment(this.props.data.endDate).format(
+    )}&dur${convertToLocalTime(this.props.data.endDate).format(
       "HHmmss"
     )}&desc=${description}&in_loc=${this.props.data.location}`;
     window.open(yahooCalendarUrl, "_blank");
@@ -116,12 +124,12 @@ class EventCard extends React.Component {
         </a>
       </Menu.Item>
       <Menu.Item key="2">
-        <a href="/#" onClick={this.onCLickAddGoogleCalendar}>
+        <a href="/#" onClick={this.onClickAddGoogleCalendar}>
           Add to Google Calendar
         </a>
       </Menu.Item>
       <Menu.Item key="3">
-        <a href="/#" onClick={this.onCLickAddYahooCalendar}>
+        <a href="/#" onClick={this.onClickAddYahooCalendar}>
           Add to Yahoo Calendar
         </a>
       </Menu.Item>

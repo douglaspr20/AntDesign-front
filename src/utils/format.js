@@ -112,6 +112,12 @@ function convertToUTCTime(date, tz) {
   return res;
 }
 
+function convertToLocalTime(date) {
+  const localTimezone = moment.tz.guess();
+
+  return moment.utc(date).tz(localTimezone);
+}
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -121,4 +127,5 @@ export {
   getEventDescription,
   convertToCertainTime,
   convertToUTCTime,
+  convertToLocalTime,
 };
