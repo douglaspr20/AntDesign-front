@@ -21,28 +21,28 @@ const SessionType = [
 const ConferenceData = [
   {
     title: "Leading organizations in the remote world of work",
-    type: "Keybote",
+    type: "Keynote",
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
   },
   {
     title: "Leading organizations in the remote world of work",
-    type: "Keybote",
+    type: "Keynote",
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
   },
   {
     title: "Leading organizations in the remote world of work",
-    type: "Keybote",
+    type: "Keynote",
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
   },
   {
     title: "Leading organizations in the remote world of work",
-    type: "Keybote",
+    type: "Keynote",
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
