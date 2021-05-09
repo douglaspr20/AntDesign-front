@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { Dropdown, Menu } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 
-import moment from "moment";
-
 import {
   DateAvatar,
   CustomButton,
@@ -17,6 +15,7 @@ import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { convertToLocalTime } from "utils/format"
 
 import "./style.scss";
 
@@ -56,7 +55,7 @@ const EventDrawer = ({
 
   const onClickClaimCredits = (e) => {};
 
-  const onCLickDownloadCalendar = (e) => {
+  const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     window.open(
       `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,
@@ -64,15 +63,19 @@ const EventDrawer = ({
     );
   };
 
-  const onCLickAddGoogleCalendar = (e) => {
+  const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
-    const description = event.description.blocks[0].text.replace(
-      /(\r\n|\n|\r)/gm,
-      ""
-    );
+    const { data } = this.props || {};
+    let description = "";
+    if (data.description) {
+      description = data.description.blocks[0].text.replace(
+        /(\r\n|\n|\r)/gm,
+        ""
+      );
+    }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       event.title
-    }&dates=${moment(event.startDate).format("YYYYMMDDTHHmm")}/${moment(
+    }&dates=${convertToLocalTime(event.startDate).format("YYYYMMDDTHHmm")}/${convertToLocalTime(
       event.endDate
     ).format("YYYYMMDDTHHmmss")}&details=${description}&location=${
       event.location
@@ -82,13 +85,17 @@ const EventDrawer = ({
 
   const onCLickAddYahooCalendar = (e) => {
     e.preventDefault();
-    const description = event.description.blocks[0].text.replace(
-      /(\r\n|\n|\r)/gm,
-      ""
-    );
+    const { data } = this.props || {};
+    let description = "";
+    if (data.description) {
+      description = data.description.blocks[0].text.replace(
+        /(\r\n|\n|\r)/gm,
+        ""
+      );
+    }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       event.title
-    }&st=${moment(event.startDate).format("YYYYMMDDTHHmm")}&dur${moment(
+    }&st=${convertToLocalTime(event.startDate).format("YYYYMMDDTHHmm")}&dur${convertToLocalTime(
       event.endDate
     ).format("HHmmss")}&desc=${description}&in_loc=${event.location}`;
     window.open(yahooCalendarUrl, "_blank");
@@ -97,12 +104,12 @@ const EventDrawer = ({
   const downloadDropdownOptions = () => (
     <Menu>
       <Menu.Item key="1">
-        <a href="/#" onClick={onCLickDownloadCalendar}>
+        <a href="/#" onClick={onClickDownloadCalendar}>
           Download ICS File
         </a>
       </Menu.Item>
       <Menu.Item key="2">
-        <a href="/#" onClick={onCLickAddGoogleCalendar}>
+        <a href="/#" onClick={onClickAddGoogleCalendar}>
           Add to Google Calendar
         </a>
       </Menu.Item>
