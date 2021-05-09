@@ -37,6 +37,38 @@ const AnnualConferenceCard = ({ session }) => {
           </div>
         </div>
       </div>
+      {!hideInfo && (
+        <div className="acc-details">
+          <div className="acc-details-speakers">
+            {(session.speakers || []).map((speaker, index) => (
+              <div className="acc-details-speaker" key={index}>
+                <div className="acc-details-speaker-image">
+                  <img src={speaker.image} alt="speaker-img" />
+                </div>
+                <div className="acc-details-speaker-desc">
+                  <h4>{speaker.name}</h4>
+                  <h5>{speaker.title}</h5>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="acc-details-other">
+            {session.description && (
+              <>
+                <h4>Description</h4>
+                <p>{session.description}</p>
+              </>
+            )}
+            <div className="acc-details-other-brands">
+              {(session.brands || []).map((brand, index) => (
+                <div className="session-brand" key={index}>
+                  <img src={brand} alt="brand-img" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

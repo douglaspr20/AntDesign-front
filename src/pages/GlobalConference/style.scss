@@ -4,6 +4,7 @@
   background: $color-background;
   padding: 3rem 0;
   height: calc(100vh - 72px);
+  overflow: auto;
 
   &-container {
     max-width: 1024px;

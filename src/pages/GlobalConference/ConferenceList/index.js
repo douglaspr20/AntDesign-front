@@ -25,6 +25,33 @@ const ConferenceData = [
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
+    description:
+      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
+    speakers: [
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+    ],
+    brands: [
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+    ],
   },
   {
     title: "Leading organizations in the remote world of work",
@@ -32,6 +59,19 @@ const ConferenceData = [
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
+    description:
+      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
+    speakers: [
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+    ],
+    brands: [
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+    ],
   },
   {
     title: "Leading organizations in the remote world of work",
@@ -39,6 +79,26 @@ const ConferenceData = [
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
+    description:
+      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
+    speakers: [
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+      {
+        image:
+          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
+        name: "Roberto Carlos da Silva",
+        title: "HHRR manager at Adobe",
+      },
+    ],
+    brands: [
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
+    ],
   },
   {
     title: "Leading organizations in the remote world of work",
@@ -46,6 +106,9 @@ const ConferenceData = [
     startTime: moment(),
     endTime: moment(),
     timezone: "Pacific Daylight Time",
+    description:
+      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
+    speakers: [],
   },
 ];
 

@@ -2,8 +2,6 @@
 
 .conference-list {
   margin-top: 3rem;
-  height: calc(100vh - 380px);
-  overflow: auto;
 
   &::-webkit-scrollbar {
     display: none;
@@ -25,7 +23,7 @@
   }
 
   &-container {
-    margin-top: 2rem;
+    margin: 2rem 0 3rem;
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
