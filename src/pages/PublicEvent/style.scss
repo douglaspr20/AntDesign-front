@@ -49,6 +49,10 @@
         }
       }
 
+      .custom-button.lg {
+        height: 60px !important;
+      }
+
       .going-label {
         color: $color-success;
         @include app-font(16px, 19px, normal);
