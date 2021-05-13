@@ -44,7 +44,7 @@ function MicroClassVideosList({ list, setActiveVideoId, activeVideoId }) {
 MicroClassVideosList.propTypes = {
   list: PropTypes.array,
   setActiveVideoId: PropTypes.func,
-  activeVideoId: PropTypes.string,
+  activeVideoId: PropTypes.number,
 };
 
 MicroClassVideosList.defaultProps = {

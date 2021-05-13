@@ -16,6 +16,12 @@
       margin-top: 1.5rem;
     }
   }
+
+  .ant-tabs-tabpane-active {
+    flex-grow: 1;
+    width: 100%;
+  }
+
 }
 
 .micro-class__container {
@@ -24,6 +30,7 @@
   // max-width: 1230px;
   margin-left: auto;
   margin-right: auto;
+
 }
 
 .micro-class__row {

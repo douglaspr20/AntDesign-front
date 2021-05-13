@@ -13,11 +13,9 @@ export const getCourseClasses = async (course) => {
 };
 
 export const getCourseInstructors = async (course) => {
-  console.log(course);
   return await httpClient.get(`private/course-instructors/${course}`);
 };
 
 export const getCourseSponsors = async (course) => {
-  console.log(course);
   return await httpClient.get(`private/course-sponsors/${course}`);
 };

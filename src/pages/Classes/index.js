@@ -18,21 +18,22 @@ import './style.scss';
 
 const SortOptions = SETTINGS.SORT_OPTIONS;
 
-function Classes({
+const Classes = ({
   getAllCourses,
   allCourses,
-}) {
+}) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
 
   useEffect(() => {
     getAllCourses();
+    // eslint-disable-next-line
   }, []);
 
-  function onFilterChange(filter) {
+  const onFilterChange = (filter) => {
     console.log('Filter Change', filter);
   }
 
-  function onSortChange(value) {
+  const onSortChange = (value) => {
     setSortValue(value);
   };
 

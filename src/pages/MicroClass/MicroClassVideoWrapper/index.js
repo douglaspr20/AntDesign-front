@@ -38,7 +38,7 @@ function MicroClassVideoWrapper({ url, setVideoAsWatched, id, }) {
 MicroClassVideoWrapper.propTypes = {
   url: PropTypes.string,
   setVideoAsWatched: PropTypes.func,
-  id: PropTypes.string,
+  id: PropTypes.number,
 };
 
 MicroClassVideoWrapper.defaultProps = {
