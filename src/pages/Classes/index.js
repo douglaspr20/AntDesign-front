@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 
 import { Row, Col } from "antd";
-import { CustomSelect } from "components";
+import Emitter from "services/emitter";
+import { CustomSelect, PodcastFilterPanel as ClassesFilterPanel } from "components";
 
 import {
   getAllCourses,
@@ -11,8 +12,8 @@ import {
 import { courseSelector } from "redux/selectors/courseSelector";
 
 import ClassCard from './ClassCard';
-import ClassesFilterPanel from "./ClassesFilterPanel";
-import { SETTINGS } from "enum";
+import FilterDrawer from "./FilterDrawer";
+import { SETTINGS, EVENT_TYPES } from "enum";
 
 import './style.scss';
 
@@ -23,29 +24,63 @@ const Classes = ({
   allCourses,
 }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
+  const [orderValue, setOrderValue] = useState('["createdAt","DESC"]');
+  const [filters, setFilters] = useState({});
+  const [meta, setMeta] = useState("");
 
   useEffect(() => {
-    getAllCourses();
+    getAllCourses({order: orderValue});
     // eslint-disable-next-line
   }, []);
 
-  const onFilterChange = (filter) => {
-    console.log('Filter Change', filter);
-  }
-
   const onSortChange = (value) => {
     setSortValue(value);
+    let order = '';
+    switch (value) {
+      case "newest-first":
+        order = '["createdAt","DESC"]';
+        break;
+      case "newest-last":
+        order = '["createdAt","ASC"]';
+        break;
+      case "sort-name":
+        order = '["title","ASC"]';
+        break;
+      default:
+        // default
+    }
+    setOrderValue(order);
+    getAllCourses({ ...filters, meta, order });
+  };
+
+  const onFilterChange = (filter) => {
+    getAllCourses({ ...filter, meta, order: orderValue });
+    setFilters(filter);
+  };
+
+  const onSearch = (value) => {
+    getAllCourses({
+      ...filters,
+      meta: value,
+      order: orderValue,
+    });
+    setMeta(value);
+  };
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
   return (
     <div className="classes-page">
-      <ClassesFilterPanel onChange={onFilterChange} />
+      <ClassesFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="classes-page__container">
         <div className="search-results-container">
           <Row>
             <Col span={24}>
               <div className="search-results-container-mobile-header">
-                <h3 className="filters-btn">
+                <h3 className="filters-btn" onClick={() => { showFilterPanel(); }}>
                   Filters
                 </h3>
                 <h3>{allCourses.length} result{allCourses.length > 1 ? 's' : ''}</h3>
@@ -73,7 +108,7 @@ const Classes = ({
                 id={classItem.id}
                 title={classItem.title}
                 description={classItem.description}
-                image={classItem.image != null ? classItem.image : "https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg" }
+                image={classItem.image != null ? classItem.image : "https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg"}
               />
             ))}
           </div>

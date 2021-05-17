@@ -11,10 +11,12 @@ import { setCollapsed } from "redux/actions/env-actions";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
+import IconMedal from "images/icon-medal.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { courseSelector } from "redux/selectors/courseSelector";
 
 import "./style.scss";
 
@@ -64,6 +66,14 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconTvOutline,
         label: (selectedChannel || {}).name || "",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
+      const { selectedCourse } = this.props;
+      pathInfo = {
+        icon: IconMedal,
+        label: `Class - ${(selectedCourse || {}).title || ""}`,
       };
     }
 
@@ -138,6 +148,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
+  selectedCourse: courseSelector(state).course,
 });
 
 const mapDispatchToProps = {

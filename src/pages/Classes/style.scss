@@ -6,6 +6,12 @@
   grid-template-columns: auto 1fr;
   width: 100%;
 
+  @media (max-width: 1023.98px) {
+    .podcast-filter-panel {
+      display: none;
+    }
+  }
+
   .search-results-container {
     height: calc(100vh - 72px);
     background: $color-background;

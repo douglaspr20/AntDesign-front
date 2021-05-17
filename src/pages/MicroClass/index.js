@@ -15,9 +15,11 @@ import {
 } from "redux/actions/course-actions";
 
 import { courseSelector } from "redux/selectors/courseSelector";
+import { INTERNAL_LINKS } from 'enum';
+
+import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
 
 import './style.scss';
-import HARDCODED_MICRO_CLASS_DATA from './HARDCODED_DATA.js';
 
 const { TabPane } = Tabs;
 
@@ -29,7 +31,6 @@ const useMicroClassQuery = (id) => {
     setStatus('loading');
 
     let timeout = setTimeout(() => {
-      setData(HARDCODED_MICRO_CLASS_DATA);
       setStatus('success');
     }, 1500);
 
@@ -46,6 +47,7 @@ const useMicroClassQuery = (id) => {
 }
 
 const MicroClass = ({
+  history,
   match,
   getCourse,
   course,
@@ -56,7 +58,7 @@ const MicroClass = ({
   instructors,
   sponsors,
 }) => {
-  const { microClassData, status, setMicroClassData } = useMicroClassQuery(match.params.id);
+  const { status, setMicroClassData } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const MicroClass = ({
       }
       return dataClone;
     });
-  }
+  };
 
   const handleClaimCertificate = () => {
     if (didWachedAllVideos) {
@@ -109,7 +111,7 @@ const MicroClass = ({
     } else {
       console.log("Haven't watched all videos, can't be certified");
     }
-  }
+  };
 
   return (
     <div className="micro-class__page">
@@ -123,7 +125,9 @@ const MicroClass = ({
             <div className="micro-class__row">
               <div className="micro-class__row-1">
                 <div className="micro-class__row-1--video-list">
-                  <h2>{course.title}</h2>
+                  <div className="micro-class__row-1--video-list--title" >
+                    <IconArrowBackCircleOutline title="Back to Classes" onClick={() => { history.push(INTERNAL_LINKS.CLASSES); }} /> <h2>{course.title}</h2>
+                  </div>
 
                   <MicroClassVideosList
                     list={classes}
@@ -149,71 +153,70 @@ const MicroClass = ({
                     id={activeVideoId}
                     setVideoAsWatched={setVideoAsWatched}
                   />
+
+                  <Tabs defaultActiveKey="1">
+                    <TabPane tab="Class Information" key="1">
+                      {course.description && (
+                        <div>
+                          <div className="micro-class__description-card">
+                            <h3>Course Description</h3>
+                            <p className="micro-class__description-p">{course.description}</p>
+                          </div>
+                        </div>
+                      )}
+                    </TabPane>
+                    <TabPane tab="Instructors" key="2">
+                      {instructors.length > 0 && (
+                        <div>
+                          <div className="micro-class__additional-info-card">
+                            <div className="micro-class__additional-info-row">
+                              {instructors.map((instructor, i) => (
+                                <div className="micro-class__additional-info-col"
+                                  key={i}
+                                >
+                                  <a href={instructor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
+                                    <span className="micro-class__additional-info-ico"
+                                      style={{
+                                        backgroundImage: `url(${instructor.image})`
+                                      }}
+                                    ></span>
+                                    <span className="micro-class__additional-info-item-text">{instructor.name}</span>
+                                    <span className="micro-class__additional-info-item-text-sub">{instructor.description}</span>
+                                  </a>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </TabPane>
+                    {sponsors.length > 0 && (
+                      <TabPane tab="Sponsors" key="3">
+                        <div>
+                          <div className="micro-class__additional-info-card">
+                            <div className="micro-class__additional-info-row">
+                              {sponsors.map((sponsor, i) => (
+                                <div className="micro-class__additional-info-col"
+                                  key={i}
+                                >
+                                  <a href={sponsor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
+                                    <span className="micro-class__additional-info-ico"
+                                      style={{
+                                        backgroundImage: `url(${sponsor.image})`
+                                      }}
+                                    ></span>
+                                    <span className="micro-class__additional-info-item-text">{sponsor.name}</span>
+                                  </a>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </TabPane>
+                    )}
+                  </Tabs>
                 </div>
               </div>
-            </div>
-            <div className="">
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="Class Information" key="1">
-                  {microClassData.description && (
-                    <div>
-                      <div className="micro-class__description-card">
-                        <h3>Course Description</h3>
-                        <p className="micro-class__description-p">{course.description}</p>
-                      </div>
-                    </div>
-                  )}
-                </TabPane>
-                <TabPane tab="Instructors" key="2">
-                  {instructors.length > 0 && (
-                    <div>
-                      <div className="micro-class__additional-info-card">
-                        <div className="micro-class__additional-info-row">
-                          {instructors.map((instructor, i) => (
-                            <div className="micro-class__additional-info-col"
-                              key={i}
-                            >
-                              <div className="micro-class__additional-info-item">
-                                <span className="micro-class__additional-info-ico"
-                                  style={{
-                                    backgroundImage: `url(${instructor.image})`
-                                  }}
-                                ></span>
-                                <span className="micro-class__additional-info-item-text">{instructor.name}</span>
-                                <span className="micro-class__additional-info-item-text-sub">{instructor.description}</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </TabPane>
-                <TabPane tab="Sponsors" key="3">
-                  <div>
-                    {sponsors.length && (
-                      <div className="micro-class__additional-info-card">
-                        <div className="micro-class__additional-info-row">
-                          {sponsors.map((sponsor, i) => (
-                            <div className="micro-class__additional-info-col"
-                              key={i}
-                            >
-                              <a href={sponsor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
-                                <span className="micro-class__additional-info-ico"
-                                  style={{
-                                    backgroundImage: `url(${sponsor.image})`
-                                  }}
-                                ></span>
-                                <span className="micro-class__additional-info-item-text">{sponsor.name}</span>
-                              </a>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </TabPane>
-              </Tabs>
             </div>
           </>
         }

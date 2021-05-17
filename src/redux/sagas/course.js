@@ -13,11 +13,11 @@ import {
   getCourseSponsors,
 } from "../../api/module/course";
 
-export function* getAllCoursesSaga() {
+export function* getAllCoursesSaga({payload}) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAll);
+    const response = yield call(getAll, payload);
 
     if (response.status === 200) {
       yield put(courseActions.setAllCourses(response.data.courses));

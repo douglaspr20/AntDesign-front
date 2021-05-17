@@ -29,7 +29,7 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllCourses = createAction(GET_ALL_COURSES);
+export const getAllCourses = createAction(GET_ALL_COURSES, (filter) => ({ filter }));
 export const setAllCourses = createAction(SET_ALL_COURSES, (courses) => ({ courses }));
 export const getCourse = createAction(GET_COURSE, (id) => ({ id }));
 export const setCourse = createAction(SET_COURSE, (course) => ({ course }));

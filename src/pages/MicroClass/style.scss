@@ -88,8 +88,19 @@
     padding-left: 1rem;
     padding-right: 1rem;
 
-    h2 {
+    &--title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      align-content: center;
       margin-bottom: 10px !important;
+
+      svg {
+        width: 30px !important;
+        margin-right: 15px;
+        color: $color-text-primary;
+        cursor: pointer;
+      }
     }
 
     .micro-class__claim-certificate-button-wrap {

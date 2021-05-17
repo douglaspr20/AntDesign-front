@@ -1,7 +1,17 @@
 import httpClient from "./httpClient";
 
-export const getAll = async () => {
-  return await httpClient.get(`private/courses`);
+export const getAll = async (data) => {
+  let newFilter = {};
+
+  if (data.filter) {
+    newFilter = { ...data.filter };
+  }
+
+  const parsedFilter = Object.keys(newFilter)
+    .map((item) => `${item}=${newFilter[item]}`)
+    .join("&");
+
+  return await httpClient.get(`private/courses?${parsedFilter}`);
 };
 
 export const get = async (id) => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SvgIcon } from "components";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import RenderPropsTruncatedString from 'components/RenderPropsTruncatedString.js';
@@ -38,8 +37,6 @@ function ClassCard({
         <div className="class-card-content-footer">
           <div className="d-flex items-center"></div>
           <div className="d-flex items-center">
-            <SvgIcon name="star" className="class-card-icon" />
-            <SvgIcon name="bookmark" className="class-card-icon" />
           </div>
         </div>
       </div>
