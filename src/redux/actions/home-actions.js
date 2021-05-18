@@ -9,6 +9,7 @@ const GET_USER = "GET_USER";
 const UPDATE_USER = "UPDATE_USER";
 const UPGRADE_PLAN = "UPGRADE_PLAN";
 const INVITE_FRIEND = "INVITE_FRIEND";
+const ATTEND_TO_GLOBAL_CONFERENCE = "ATTEND_TO_GLOBAL_CONFERENCE";
 
 export const constants = {
   SET_LOADING,
@@ -19,6 +20,7 @@ export const constants = {
   UPDATE_USER,
   UPGRADE_PLAN,
   INVITE_FRIEND,
+  ATTEND_TO_GLOBAL_CONFERENCE,
 };
 
 // ------------------------------------
@@ -36,7 +38,13 @@ export const setSettingCollapsed = createAction(
 export const getUser = createAction(GET_USER);
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
-export const inviteFriend = createAction(INVITE_FRIEND, (email, callback) => ({ email, callback }));
+export const inviteFriend = createAction(INVITE_FRIEND, (email, callback) => ({
+  email,
+  callback,
+}));
+export const attendToGlobalConference = createAction(
+  ATTEND_TO_GLOBAL_CONFERENCE
+);
 
 export const actions = {
   setLoading,
@@ -46,4 +54,5 @@ export const actions = {
   updateUser,
   upgradePlan,
   inviteFriend,
+  attendToGlobalConference,
 };

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
+import { CheckOutlined } from "@ant-design/icons";
 
 import { CustomButton, Tabs } from "components";
 
 import ConferenceList from "./ConferenceList";
 import { getAllSessions } from "redux/actions/session-actions";
+import { attendToGlobalConference } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
 
 import "./style.scss";
@@ -17,7 +20,12 @@ const Description = `
 `;
 const TAB_NUM = 7;
 
-const GlobalConference = ({ allSessions, getAllSessions }) => {
+const GlobalConference = ({
+  allSessions,
+  userProfile,
+  getAllSessions,
+  attendToGlobalConference,
+}) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate, setFirstTabDate] = useState(moment().startOf("day"));
   const [tabData, setTabData] = useState([]);
@@ -28,6 +36,10 @@ const GlobalConference = ({ allSessions, getAllSessions }) => {
 
   const goToNextPage = () => {
     setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
+  };
+
+  const onAttend = () => {
+    attendToGlobalConference();
   };
 
   useEffect(() => {
@@ -70,7 +82,21 @@ const GlobalConference = ({ allSessions, getAllSessions }) => {
       <div className="global-conference-container">
         <div className="w-full d-flex justify-between items-center">
           <h3>HHRR Global Conference 2021</h3>
-          <CustomButton size="xs" text="Attend the conference" />
+          {userProfile.attendedToConference ? (
+            <div className="d-flex items-center">
+              <div className="attending-label">
+                <CheckOutlined />
+                <span>I'm attending</span>
+              </div>
+              <CustomButton size="xs" text="Download my agenda" />
+            </div>
+          ) : (
+            <CustomButton
+              size="xs"
+              text="Attend the conference"
+              onClick={onAttend}
+            />
+          )}
         </div>
         <p className="global-conference-description">{Description}</p>
         <div className="global-conference-tabs">
@@ -105,10 +131,12 @@ GlobalConference.defaultProps = {
 
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   getAllSessions,
+  attendToGlobalConference,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

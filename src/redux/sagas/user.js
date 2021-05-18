@@ -5,7 +5,13 @@ import {
   constants as homeConstants,
   actions as homeActions,
 } from "../actions/home-actions";
-import { getUserFromId, updateUser, upgradePlan, inviteFriend } from "../../api";
+import {
+  getUserFromId,
+  updateUser,
+  upgradePlan,
+  inviteFriend,
+  attendToGlobalConference,
+} from "../../api";
 
 const defaultUserInfo = {
   firstName: "",
@@ -114,11 +120,27 @@ export function* sendInvitationEmail({ payload }) {
   }
 }
 
+export function* attendToGlobalConferenceSaga() {
+  try {
+    const response = yield call(attendToGlobalConference);
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUser(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
   yield takeLatest(homeConstants.UPGRADE_PLAN, upgradeUserPlan);
   yield takeLatest(homeConstants.INVITE_FRIEND, sendInvitationEmail);
+  yield takeLatest(
+    homeConstants.ATTEND_TO_GLOBAL_CONFERENCE,
+    attendToGlobalConferenceSaga
+  );
 }
 
 export const userSaga = [fork(watchLogin)];

@@ -16,6 +16,17 @@
     height: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
+
+    .attending-label {
+      margin-right: 37px;
+      color: $color-success;
+      @include app-font(16px, 21px, normal);
+      white-space: nowrap;
+
+      span {
+        margin-left: 0.5rem;
+      }
+    }
   }
 
   &-description {

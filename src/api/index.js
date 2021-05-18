@@ -7,6 +7,7 @@ import {
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
+  attendToGlobalConference,
 } from "./module/user";
 import {
   getAllEvents,
@@ -107,4 +108,5 @@ export {
   unsetFollowChannel,
   updateChannel,
   getAllSessions,
+  attendToGlobalConference,
 };

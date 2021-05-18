@@ -33,3 +33,7 @@ export const inviteFriend = (email) => {
     email,
   });
 };
+
+export const attendToGlobalConference = () => {
+  return httpClient.put(`private/user/attend-conference`);
+};
