@@ -165,8 +165,8 @@ const MicroClass = ({
                         </div>
                       )}
                     </TabPane>
-                    <TabPane tab="Instructors" key="2">
-                      {instructors.length > 0 && (
+                    {instructors.length > 0 && (
+                      <TabPane tab="Instructors" key="2">
                         <div>
                           <div className="micro-class__additional-info-card">
                             <div className="micro-class__additional-info-row">
@@ -188,8 +188,8 @@ const MicroClass = ({
                             </div>
                           </div>
                         </div>
-                      )}
-                    </TabPane>
+                      </TabPane>
+                    )}
                     {sponsors.length > 0 && (
                       <TabPane tab="Sponsors" key="3">
                         <div>
