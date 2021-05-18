@@ -18,15 +18,9 @@ const AnnualConferenceCard = ({ session }) => {
         <CustomButton size="md" text="Add session" />
       </div>
       <div className="acc-session-type">{`Session type: ${session.type}`}</div>
-      <div className="acc-session-date">
-        {moment(session.startTime).format("MMMM, D, YYYY")}
-      </div>
+      <div className="acc-session-date">{session.date}</div>
       <div className="d-flex justify-between align-center">
-        <div className="acc-session-time">
-          {`From ${moment(session.startTime).format("h:mm a")} to ${moment(
-            session.endTime
-          ).format("h:mm a")}. ${session.timezone}`}
-        </div>
+        <div className="acc-session-time">{session.period}</div>
         <div
           className="acc-session-toggle"
           onClick={() => setHideInfo(!hideInfo)}
@@ -43,10 +37,14 @@ const AnnualConferenceCard = ({ session }) => {
             {(session.speakers || []).map((speaker, index) => (
               <div className="acc-details-speaker" key={index}>
                 <div className="acc-details-speaker-image">
-                  <img src={speaker.image} alt="speaker-img" />
+                  {speaker.img ? (
+                    <img src={speaker.img} alt="speaker-img" />
+                  ) : (
+                    <div className="empty" />
+                  )}
                 </div>
                 <div className="acc-details-speaker-desc">
-                  <h4>{speaker.name}</h4>
+                  <h4>{`${speaker.firstName} ${speaker.lastName}`}</h4>
                   <h5>{speaker.title}</h5>
                 </div>
               </div>

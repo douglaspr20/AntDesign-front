@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import { CustomSelect, AnnualConferenceCard } from "components";
-import { CONFERENCE_SETTING } from "enum";
+import { CONFERENCE_SETTING, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
+import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
 
@@ -122,6 +123,40 @@ const ConferenceList = ({ data, allCategories }) => {
       value: "all",
     },
   ]);
+  const [sessionData, setSessionData] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setSessionData(
+        (data || []).map((item) => {
+          const sTime = convertToCertainTime(item.startTime, item.timezone);
+          const eTime = convertToCertainTime(item.endTime, item.timezone);
+          let tz = TIMEZONE_LIST.find((t) => t.value === item.timezone);
+          if (tz) {
+            if (tz.offset > 0) {
+              tz = `${tz.abbr} (GMT+${tz.offset})`;
+            } else if (tz.offset < 0) {
+              tz = `${tz.abbr} (GMT-${-tz.offset})`;
+            } else {
+              tz = `${tz.abbr} (GMT)`;
+            }
+          } else {
+            tz = "";
+          }
+
+          return {
+            ...item,
+            date: sTime.format("MMM, D, YYYY"),
+            period: `From ${sTime.format("h:mm a")} to ${eTime.format(
+              "h:mm a"
+            )} ${tz}`,
+          };
+        })
+      );
+    } else {
+      setSessionData([]);
+    }
+  }, [data]);
 
   useEffect(() => {
     setCategoryOptions([
@@ -165,7 +200,7 @@ const ConferenceList = ({ data, allCategories }) => {
         </div>
       </div>
       <div className="conference-list-container">
-        {ConferenceData.map((session, index) => (
+        {sessionData.map((session, index) => (
           <AnnualConferenceCard key={index} session={session} />
         ))}
       </div>

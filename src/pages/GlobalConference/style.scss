@@ -6,6 +6,10 @@
   height: calc(100vh - 72px);
   overflow: auto;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &-container {
     max-width: 1024px;
     margin: 0 auto;
@@ -18,5 +22,27 @@
     margin-top: 2rem;
     @include app-font(16px, 24px);
     color: $color-text-secondary;
+  }
+
+  &-pagination {
+    display: flex;
+    justify-content: flex-end;
+
+    .custom-button {
+      margin-left: 0.5rem;
+      padding: 0 1rem;
+    }
+  }
+
+  &-tabs {
+    .ant-tabs-nav-list {
+      width: 100%;
+
+      .ant-tabs-tab {
+        flex: 1;
+        margin-left: 0;
+        justify-content: center;
+      }
+    }
   }
 }
