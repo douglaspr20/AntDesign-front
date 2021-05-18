@@ -7,15 +7,28 @@ import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg"
 
 import "./style.scss";
 
-const AnnualConferenceCard = ({ session, attended }) => {
+const AnnualConferenceCard = ({ session, attended, added, onAddSession }) => {
   const [hideInfo, setHideInfo] = useState(true);
 
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
         <h3>{session.title}</h3>
-        {attended ? <CustomButton size="md" text="Add session" /> : null}
+        {added ? (
+          <CustomButton size="md" text="Check in" />
+        ) : attended ? (
+          <CustomButton size="md" text="Add session" onClick={onAddSession} />
+        ) : null}
       </div>
+      {added && (
+        <CustomButton
+          className="acc-session-remove"
+          disabled
+          size="md"
+          text="Remove"
+        />
+      )}
+      {added && <div className="acc-session-added-tag">Added</div>}
       <div className="acc-session-type">{`Session type: ${session.type}`}</div>
       <div className="acc-session-date">{session.date}</div>
       <div className="d-flex justify-between align-center">
@@ -73,11 +86,15 @@ const AnnualConferenceCard = ({ session, attended }) => {
 AnnualConferenceCard.propTypes = {
   session: PropTypes.object,
   attended: PropTypes.number,
+  added: PropTypes.bool,
+  onAddSession: PropTypes.func,
 };
 
 AnnualConferenceCard.defaultProps = {
   session: {},
   attended: 0,
+  added: false,
+  onAddSession: () => {},
 };
 
 export default AnnualConferenceCard;

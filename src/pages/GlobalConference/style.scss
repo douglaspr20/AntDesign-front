@@ -46,6 +46,8 @@
   }
 
   &-tabs {
+    overflow-x: visible;
+
     .ant-tabs-nav-list {
       width: 100%;
 
@@ -54,6 +56,10 @@
         margin-left: 0;
         justify-content: center;
       }
+    }
+
+    .custom-tabs {
+      overflow: visible;
     }
   }
 }

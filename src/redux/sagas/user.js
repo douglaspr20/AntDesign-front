@@ -11,6 +11,7 @@ import {
   upgradePlan,
   inviteFriend,
   attendToGlobalConference,
+  addSession,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -125,10 +126,26 @@ export function* attendToGlobalConferenceSaga() {
     const response = yield call(attendToGlobalConference);
 
     if (response.status === 200) {
-      yield put(homeActions.updateUser(response.data.user));
+      yield put(homeActions.updateUserInformation(response.data.user));
     }
   } catch (error) {
     console.log(error);
+  }
+}
+
+export function* addSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addSession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -141,6 +158,7 @@ function* watchLogin() {
     homeConstants.ATTEND_TO_GLOBAL_CONFERENCE,
     attendToGlobalConferenceSaga
   );
+  yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

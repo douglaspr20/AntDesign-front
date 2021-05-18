@@ -7,6 +7,7 @@ import { CONFERENCE_SETTING, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { addSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
@@ -19,7 +20,7 @@ const SessionType = [
   ...CONFERENCE_SETTING.SESSION_TYPE,
 ];
 
-const ConferenceList = ({ data, allCategories, userProfile }) => {
+const ConferenceList = ({ data, allCategories, userProfile, addSession }) => {
   const [sortTheme, setSortTheme] = useState("main");
   const [sortCategory, setSortCategory] = useState("all");
   const [sortSessionType, setSortSessionType] = useState("all");
@@ -30,6 +31,10 @@ const ConferenceList = ({ data, allCategories, userProfile }) => {
     },
   ]);
   const [sessionData, setSessionData] = useState([]);
+
+  const onAddSession = (session) => {
+    addSession(session);
+  };
 
   useEffect(() => {
     if (data) {
@@ -111,6 +116,8 @@ const ConferenceList = ({ data, allCategories, userProfile }) => {
             key={index}
             session={session}
             attended={userProfile.attendedToConference}
+            added={(userProfile.sessions || []).includes(session.id)}
+            onAddSession={() => onAddSession(session)}
           />
         ))}
       </div>
@@ -131,4 +138,8 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(ConferenceList);
+const mapDispatchToProps = {
+  addSession,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConferenceList);

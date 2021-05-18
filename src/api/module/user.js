@@ -37,3 +37,7 @@ export const inviteFriend = (email) => {
 export const attendToGlobalConference = () => {
   return httpClient.put(`private/user/attend-conference`);
 };
+
+export const addSession = ({ session }) => {
+  return httpClient.put(`private/user/add-session/${session.id}`);
+};
