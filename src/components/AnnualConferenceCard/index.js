@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import clsx from "clsx";
 
 import { CustomButton } from "components";
@@ -8,14 +7,14 @@ import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg"
 
 import "./style.scss";
 
-const AnnualConferenceCard = ({ session }) => {
+const AnnualConferenceCard = ({ session, attended }) => {
   const [hideInfo, setHideInfo] = useState(true);
 
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
         <h3>{session.title}</h3>
-        <CustomButton size="md" text="Add session" />
+        {attended ? <CustomButton size="md" text="Add session" /> : null}
       </div>
       <div className="acc-session-type">{`Session type: ${session.type}`}</div>
       <div className="acc-session-date">{session.date}</div>
@@ -73,10 +72,12 @@ const AnnualConferenceCard = ({ session }) => {
 
 AnnualConferenceCard.propTypes = {
   session: PropTypes.object,
+  attended: PropTypes.number,
 };
 
 AnnualConferenceCard.defaultProps = {
   session: {},
+  attended: 0,
 };
 
 export default AnnualConferenceCard;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
 
 import { CustomSelect, AnnualConferenceCard } from "components";
 import { CONFERENCE_SETTING, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
@@ -19,101 +19,7 @@ const SessionType = [
   ...CONFERENCE_SETTING.SESSION_TYPE,
 ];
 
-const ConferenceData = [
-  {
-    title: "Leading organizations in the remote world of work",
-    type: "Keynote",
-    startTime: moment(),
-    endTime: moment(),
-    timezone: "Pacific Daylight Time",
-    description:
-      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
-    speakers: [
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-    ],
-    brands: [
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-    ],
-  },
-  {
-    title: "Leading organizations in the remote world of work",
-    type: "Keynote",
-    startTime: moment(),
-    endTime: moment(),
-    timezone: "Pacific Daylight Time",
-    description:
-      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
-    speakers: [
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-    ],
-    brands: [
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-    ],
-  },
-  {
-    title: "Leading organizations in the remote world of work",
-    type: "Keynote",
-    startTime: moment(),
-    endTime: moment(),
-    timezone: "Pacific Daylight Time",
-    description:
-      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
-    speakers: [
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-      {
-        image:
-          "https://lab-user-images.s3.us-east-2.amazonaws.com/profile/1610331531465.jpeg",
-        name: "Roberto Carlos da Silva",
-        title: "HHRR manager at Adobe",
-      },
-    ],
-    brands: [
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-      "https://lab-user-images.s3.us-east-2.amazonaws.com/marketplace/1619816316750.jpeg",
-    ],
-  },
-  {
-    title: "Leading organizations in the remote world of work",
-    type: "Keynote",
-    startTime: moment(),
-    endTime: moment(),
-    timezone: "Pacific Daylight Time",
-    description:
-      "Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.",
-    speakers: [],
-  },
-];
-
-const ConferenceList = ({ data, allCategories }) => {
+const ConferenceList = ({ data, allCategories, userProfile }) => {
   const [sortTheme, setSortTheme] = useState("main");
   const [sortCategory, setSortCategory] = useState("all");
   const [sortSessionType, setSortSessionType] = useState("all");
@@ -201,7 +107,11 @@ const ConferenceList = ({ data, allCategories }) => {
       </div>
       <div className="conference-list-container">
         {sessionData.map((session, index) => (
-          <AnnualConferenceCard key={index} session={session} />
+          <AnnualConferenceCard
+            key={index}
+            session={session}
+            attended={userProfile.attendedToConference}
+          />
         ))}
       </div>
     </div>
@@ -218,6 +128,7 @@ ConferenceList.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(ConferenceList);
