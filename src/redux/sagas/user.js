@@ -12,6 +12,7 @@ import {
   inviteFriend,
   attendToGlobalConference,
   addSession,
+  removeSession,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -149,6 +150,22 @@ export function* addSessionSaga({ payload }) {
   }
 }
 
+export function* removeSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removeSession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -159,6 +176,7 @@ function* watchLogin() {
     attendToGlobalConferenceSaga
   );
   yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
+  yield takeLatest(homeConstants.REMOVE_SESSION, removeSessionSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

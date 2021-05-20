@@ -11,6 +11,7 @@ const UPGRADE_PLAN = "UPGRADE_PLAN";
 const INVITE_FRIEND = "INVITE_FRIEND";
 const ATTEND_TO_GLOBAL_CONFERENCE = "ATTEND_TO_GLOBAL_CONFERENCE";
 const ADD_SESSION = "ADD_SESSION";
+const REMOVE_SESSION = "REMOVE_SESSION";
 
 export const constants = {
   SET_LOADING,
@@ -23,6 +24,7 @@ export const constants = {
   INVITE_FRIEND,
   ATTEND_TO_GLOBAL_CONFERENCE,
   ADD_SESSION,
+  REMOVE_SESSION,
 };
 
 // ------------------------------------
@@ -48,6 +50,9 @@ export const attendToGlobalConference = createAction(
   ATTEND_TO_GLOBAL_CONFERENCE
 );
 export const addSession = createAction(ADD_SESSION, (session) => ({ session }));
+export const removeSession = createAction(REMOVE_SESSION, (session) => ({
+  session,
+}));
 
 export const actions = {
   setLoading,
@@ -59,4 +64,5 @@ export const actions = {
   inviteFriend,
   attendToGlobalConference,
   addSession,
+  removeSession,
 };

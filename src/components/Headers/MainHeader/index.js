@@ -79,7 +79,11 @@ class MainHeader extends React.Component {
               <div className="page-icon">
                 <img src={pathInfo.icon} alt="page-icon" />
               </div>
-              <span className="page-label">{pathInfo.label}</span>
+              <span className="page-label">
+                {pathInfo.url === INTERNAL_LINKS.GLOBAL_CONFERENCE
+                  ? "Hacking HR 2022 Global Online Conference"
+                  : pathInfo.label}
+              </span>
             </>
           )}
         </div>

@@ -7,7 +7,13 @@ import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg"
 
 import "./style.scss";
 
-const AnnualConferenceCard = ({ session, attended, added, onAddSession }) => {
+const AnnualConferenceCard = ({
+  session,
+  attended,
+  added,
+  onAddSession,
+  onRemoveSession,
+}) => {
   const [hideInfo, setHideInfo] = useState(true);
 
   return (
@@ -15,19 +21,16 @@ const AnnualConferenceCard = ({ session, attended, added, onAddSession }) => {
       <div className="acc-session-header">
         <h3>{session.title}</h3>
         {added ? (
-          <CustomButton size="md" text="Check in" />
+          <CustomButton
+            type="primary outlined"
+            size="md"
+            text="Remove"
+            onClick={onRemoveSession}
+          />
         ) : attended ? (
           <CustomButton size="md" text="Add session" onClick={onAddSession} />
         ) : null}
       </div>
-      {added && (
-        <CustomButton
-          className="acc-session-remove"
-          disabled
-          size="md"
-          text="Remove"
-        />
-      )}
       {added && <div className="acc-session-added-tag">Added</div>}
       <div className="acc-session-type">{`Session type: ${session.type}`}</div>
       <div className="acc-session-date">{session.date}</div>
@@ -88,6 +91,7 @@ AnnualConferenceCard.propTypes = {
   attended: PropTypes.number,
   added: PropTypes.bool,
   onAddSession: PropTypes.func,
+  onRemoveSession: PropTypes.func,
 };
 
 AnnualConferenceCard.defaultProps = {
@@ -95,6 +99,7 @@ AnnualConferenceCard.defaultProps = {
   attended: 0,
   added: false,
   onAddSession: () => {},
+  onRemoveSession: () => {},
 };
 
 export default AnnualConferenceCard;

@@ -7,7 +7,7 @@ import { CONFERENCE_SETTING, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { addSession } from "redux/actions/home-actions";
+import { addSession, removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
@@ -20,7 +20,13 @@ const SessionType = [
   ...CONFERENCE_SETTING.SESSION_TYPE,
 ];
 
-const ConferenceList = ({ data, allCategories, userProfile, addSession }) => {
+const ConferenceList = ({
+  data,
+  allCategories,
+  userProfile,
+  addSession,
+  removeSession,
+}) => {
   const [sortTheme, setSortTheme] = useState("main");
   const [sortCategory, setSortCategory] = useState("all");
   const [sortSessionType, setSortSessionType] = useState("all");
@@ -34,6 +40,10 @@ const ConferenceList = ({ data, allCategories, userProfile, addSession }) => {
 
   const onAddSession = (session) => {
     addSession(session);
+  };
+
+  const onRemoveSession = (session) => {
+    removeSession(session);
   };
 
   useEffect(() => {
@@ -85,7 +95,6 @@ const ConferenceList = ({ data, allCategories, userProfile, addSession }) => {
   return (
     <div className="conference-list">
       <div className="conference-list-header">
-        <h3>{`${data.length} talk${data.length === 1 ? "" : "s"}`}</h3>
         <div className="conference-list-header-select">
           <CustomSelect
             className="conference-list-header-sort"
@@ -118,6 +127,7 @@ const ConferenceList = ({ data, allCategories, userProfile, addSession }) => {
             attended={userProfile.attendedToConference}
             added={(userProfile.sessions || []).includes(session.id)}
             onAddSession={() => onAddSession(session)}
+            onRemoveSession={() => onRemoveSession(session)}
           />
         ))}
       </div>
@@ -140,6 +150,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addSession,
+  removeSession,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceList);

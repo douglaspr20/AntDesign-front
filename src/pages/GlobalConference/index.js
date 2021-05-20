@@ -80,15 +80,14 @@ const GlobalConference = ({
   return (
     <div className="global-conference">
       <div className="global-conference-container">
-        <div className="w-full d-flex justify-between items-center">
-          <h3>HHRR Global Conference 2021</h3>
+        <div className="w-full d-flex justify-end items-center">
           {userProfile.attendedToConference ? (
             <div className="d-flex items-center">
               <div className="attending-label">
                 <CheckOutlined />
                 <span>I'm attending</span>
               </div>
-              <CustomButton size="xs" text="Download my agenda" />
+              {/* <CustomButton size="xs" text="Download my agenda" /> */}
             </div>
           ) : (
             <CustomButton

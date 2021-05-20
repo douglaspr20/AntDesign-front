@@ -9,6 +9,7 @@ import {
   getAllMyEventsFromAPI,
   attendToGlobalConference,
   addSession,
+  removeSession,
 } from "./module/user";
 import {
   getAllEvents,
@@ -111,4 +112,5 @@ export {
   getAllSessions,
   attendToGlobalConference,
   addSession,
+  removeSession,
 };

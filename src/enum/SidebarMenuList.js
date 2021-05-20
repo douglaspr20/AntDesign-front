@@ -24,7 +24,7 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
-      label: "Global conference",
+      label: "Global Conference",
       icon: IconGlobal,
       url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
     },
