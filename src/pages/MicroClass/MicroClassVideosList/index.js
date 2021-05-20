@@ -1,12 +1,31 @@
 import React, { useEffect, } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+
+import {
+  getCourseUserProgress,
+} from "redux/actions/course-user-progress-actions";
+import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
+
 import './style.scss';
 
 function fmtMSS(s){
   return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + Math.round(s);
 }
 
-function MicroClassVideosList({ list, setActiveVideoId, activeVideoId }) {
+function MicroClassVideosList({
+  list,
+  setActiveVideoId,
+  activeVideoId,
+  getCourseUserProgress,
+  courseUserProgress,
+  courseId,
+}) {
+
+  useEffect(() => {
+    getCourseUserProgress(courseId);
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (activeVideoId === null && list.length > 0) {
@@ -17,12 +36,18 @@ function MicroClassVideosList({ list, setActiveVideoId, activeVideoId }) {
   return (
     <div className="micro-class__videos-list">
       <div className="micro-class__videos-list-inner">
-        {list.map(item => (
-          <button 
+        {list.map(item => {
+          let isViewed = false;
+          for(let courseClassUserItem of courseUserProgress){
+            if(item.id === courseClassUserItem.CourseClassId && courseClassUserItem.viewed === true){
+              isViewed = true;
+            }
+          }
+          return(<button 
             key={item.id}
             className={`
               micro-class__videos-list-button
-              ${item.is_watched ? 'micro-class__videos-list-button--watched' : ''}
+              ${isViewed ? 'micro-class__videos-list-button--watched' : ''}
               ${activeVideoId === item.id ? 'micro-class__videos-list-button--active' : ''}
             `}
             onClick={() => setActiveVideoId(item.id)}
@@ -34,8 +59,8 @@ function MicroClassVideosList({ list, setActiveVideoId, activeVideoId }) {
             <span className="micro-class__videos-list-button-duration">
               {fmtMSS(item.duration)}
             </span>
-          </button>
-        ))}
+          </button>)
+        })}
       </div>
     </div>
   )
@@ -53,4 +78,15 @@ MicroClassVideosList.defaultProps = {
   activeVideoId: null,
 };
 
-export default MicroClassVideosList;
+const mapStateToProps = (state, props) => ({
+  courseUserProgress: courseClassUserSelector(state).courseUserProgress,
+});
+
+const mapDispatchToProps = {
+  getCourseUserProgress,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MicroClassVideosList);

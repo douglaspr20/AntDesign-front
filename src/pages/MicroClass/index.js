@@ -15,6 +15,7 @@ import {
 } from "redux/actions/course-actions";
 
 import { courseSelector } from "redux/selectors/courseSelector";
+
 import { INTERNAL_LINKS } from 'enum';
 
 import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
@@ -66,7 +67,6 @@ const MicroClass = ({
     getCourseClasses(match.params.id);
     getCourseInstructors(match.params.id);
     getCourseSponsors(match.params.id);
-
     // eslint-disable-next-line
   }, []);
 
@@ -133,6 +133,7 @@ const MicroClass = ({
                     list={classes}
                     setActiveVideoId={id => setActiveVideoId(id)}
                     activeVideoId={activeVideoId}
+                    courseId={match.params.id}
                   />
 
                   <div className="micro-class__claim-certificate-button-wrap">
@@ -152,6 +153,7 @@ const MicroClass = ({
                     url={activeVideoUrl ? activeVideoUrl : null}
                     id={activeVideoId}
                     setVideoAsWatched={setVideoAsWatched}
+                    courseId={match.params.id}
                   />
 
                   <Tabs defaultActiveKey="1">

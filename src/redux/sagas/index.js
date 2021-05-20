@@ -14,6 +14,7 @@ import { journeyItemSaga } from "./journeyItem";
 import { channelSaga } from "./channel";
 import { channelCategorySaga } from "./channelCategory";
 import { courseSaga } from "./course";
+import { courseClassUserSaga } from "./courseClassUser";
 
 export default function* sagas() {
   yield all([
@@ -32,5 +33,6 @@ export default function* sagas() {
     ...channelSaga,
     ...channelCategorySaga,
     ...courseSaga,
+    ...courseClassUserSaga,
   ]);
 }

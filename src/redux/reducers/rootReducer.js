@@ -16,6 +16,7 @@ import journeyItemReducer from "./journeyItemReducer";
 import channelReducer from "./channelReducer";
 import channelCategoryReducer from "./channelCategoryReducer";
 import courseReducer from "./courseReducer";
+import courseClassUser from "./courseClassUserReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -34,4 +35,5 @@ export default combineReducers({
   channel: channelReducer,
   channelCategory: channelCategoryReducer,
   course: courseReducer,
+  courseClassUser: courseClassUser,
 });

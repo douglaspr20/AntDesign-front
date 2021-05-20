@@ -1,22 +1,35 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from "react-redux";
 import ReactPlayer from 'react-player/vimeo';
 import LoadingGif from 'images/icon-loading.gif';
+
+import {
+  setProgress,
+} from "redux/actions/course-user-progress-actions";
+
 import './style.scss';
 
 const REQUIRED_VIDEO_PROGRESS_TO_SET_AS_WATCHED = 0.9;
 
-function MicroClassVideoWrapper({ url, setVideoAsWatched, id, }) {
+function MicroClassVideoWrapper({ 
+  url,
+  setVideoAsWatched,
+  id,
+  courseId,
+  setProgress }) {
   const idToCompare = useRef(id);
+  const player = useRef(null);
 
-  function handleProgress({ loaded }) {
-    if (idToCompare.current === id) {
+  function handleProgress({ playedSeconds }) {
+    setProgress({ courseId, CourseClassId: id, progress_video: playedSeconds });
+    /*if (idToCompare.current === id) {
       if (loaded >= REQUIRED_VIDEO_PROGRESS_TO_SET_AS_WATCHED) {
         setVideoAsWatched(id);
       }
     } else {
       idToCompare.current = id;
-    }
+    }*/
   }
 
   return (
@@ -29,7 +42,11 @@ function MicroClassVideoWrapper({ url, setVideoAsWatched, id, }) {
         height="100%"
         playsinline
         url={url}
+        progressInterval={30000}
         onProgress={handleProgress}
+        onReady={() => player.current.seekTo(50)}
+        ref={player}
+        onEnded={(data) => { setProgress({ courseId, CourseClassId: id, viewed: true }); }}
       />
     </div>
   )
@@ -47,4 +64,15 @@ MicroClassVideoWrapper.defaultProps = {
   id: null,
 };
 
-export default MicroClassVideoWrapper;
+const mapStateToProps = (state, props) => ({
+  
+});
+
+const mapDispatchToProps = {
+  setProgress
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MicroClassVideoWrapper);
