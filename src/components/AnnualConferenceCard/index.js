@@ -59,8 +59,8 @@ const AnnualConferenceCard = ({
                   )}
                 </div>
                 <div className="acc-details-speaker-desc">
-                  <h4>{`${speaker.firstName} ${speaker.lastName}`}</h4>
-                  <h5>{speaker.title}</h5>
+                  <h4>{speaker.name}</h4>
+                  <h5>{speaker.description}</h5>
                 </div>
               </div>
             ))}
