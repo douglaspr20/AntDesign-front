@@ -27,5 +27,10 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
+
+    .session-step,
+    .annual-conference-card {
+      margin-bottom: 2rem !important;
+    }
   }
 }
