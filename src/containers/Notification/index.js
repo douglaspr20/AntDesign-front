@@ -38,7 +38,7 @@ const Notification = ({ className }) => {
   );
 
   return (
-    <Popover placement="bottom" title="" content={content} trigger="click">
+    <Popover placement="bottom" title="" content={content}>
       <Badge
         className={className}
         count={notifications.length}
