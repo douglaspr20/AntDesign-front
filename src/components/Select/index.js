@@ -7,12 +7,12 @@ import "./style.scss";
 
 class CustomSelect extends React.Component {
   render() {
-    const { options, className, ...rest } = this.props;
+    const { options, className, bordered, ...rest } = this.props;
 
     return (
       <Select
         {...rest}
-        className={clsx("custom-select", className)}
+        className={clsx("custom-select", className, { border: bordered })}
         suffixIcon={<i className="fal fa-angle-down" />}
         dropdownClassName="custom-select-dropdown"
       >

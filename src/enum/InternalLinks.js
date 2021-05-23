@@ -24,4 +24,5 @@ export default {
   PUBLIC_MARKETPLACE: "/public-marketplace",
   CONFERENCE_LIBRARY: "/conference-library",
   NOT_FOUND: "/not-found",
+  GLOBAL_CONFERENCE: "/global-conference",
 };

@@ -96,6 +96,10 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.NOT_FOUND}
           render={(props) => <MainHeader {...props} />}
         />

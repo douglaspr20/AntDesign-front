@@ -7,6 +7,9 @@ import {
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
+  attendToGlobalConference,
+  addSession,
+  removeSession,
 } from "./module/user";
 import {
   getAllEvents,
@@ -56,6 +59,7 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
+import { getAllSessions } from "./module/session";
 
 export {
   signIn,
@@ -105,4 +109,8 @@ export {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  getAllSessions,
+  attendToGlobalConference,
+  addSession,
+  removeSession,
 };
