@@ -27,7 +27,7 @@ const GlobalConference = ({
   attendToGlobalConference,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate, setFirstTabDate] = useState(moment().startOf("day"));
+  const [firstTabDate, setFirstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
 
   const goToPrevPage = () => {
