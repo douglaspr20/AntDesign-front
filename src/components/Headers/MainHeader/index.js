@@ -12,6 +12,7 @@ import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
+import IconNotification from "images/icon-notification-header.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -59,7 +60,12 @@ class MainHeader extends React.Component {
     const { pathname } = this.props.history.location || {};
     let pathInfo = MenuList.find((item) => item.url.includes(pathname));
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
+    if (pathname === INTERNAL_LINKS.NOTIFICATIONS) {
+      pathInfo = {
+        icon: IconNotification,
+        label: "Notifications",
+      }
+    } else if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
       const { selectedChannel } = this.props;
       pathInfo = {
         icon: IconTvOutline,

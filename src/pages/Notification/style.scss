@@ -1,0 +1,31 @@
+@import "styles/main.scss";
+
+.notification-page {
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: $color-background;
+  overflow: auto;
+  padding: 3rem;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .notification-list-item {
+    padding: 1rem 0;
+
+    &-message {
+      margin-bottom: 1rem !important;
+    }
+
+    &-date {
+      font-weight: 400 !important;
+      color: $color-text-secondary !important;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    padding: 2rem;
+  }
+}
