@@ -8,6 +8,7 @@ import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
 import { setCollapsed } from "redux/actions/env-actions";
+import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
@@ -100,6 +101,7 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
+          <Notification className="main-header-notification" />
           <ProfilePopupMenu showPremiumAlert={this.showPremiumAlert}>
             <div className="user-avatar">
               {user.img ? (
