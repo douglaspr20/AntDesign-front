@@ -13,6 +13,7 @@ export default {
   READ_LATER: "/read-later",
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
+  MICRO_CLASS_CERTIFICATE: "/micro-class-certificate",
   JOURNEY: "/journey",
   HEART: "/heart",
   CLASSES: "/classes",

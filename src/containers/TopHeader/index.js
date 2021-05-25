@@ -100,6 +100,10 @@ class TopHeader extends Component {
           render={(props) => <CertificateHeader {...props} />}
         />
         <PrivateRoute
+          path={`${INTERNAL_LINKS.MICRO_CLASS_CERTIFICATE}/:id`}
+          render={(props) => <CertificateHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
           render={(props) => <MainHeader {...props} />}
         />

@@ -7,29 +7,29 @@ import LoadingGif from 'images/icon-loading.gif';
 import {
   setProgress,
 } from "redux/actions/course-user-progress-actions";
+import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
 
 import './style.scss';
 
-const REQUIRED_VIDEO_PROGRESS_TO_SET_AS_WATCHED = 0.9;
-
 function MicroClassVideoWrapper({ 
   url,
-  setVideoAsWatched,
   id,
   courseId,
-  setProgress }) {
-  const idToCompare = useRef(id);
+  setProgress,
+  courseUserProgress,
+}) {
   const player = useRef(null);
 
   function handleProgress({ playedSeconds }) {
-    setProgress({ courseId, CourseClassId: id, progress_video: playedSeconds });
-    /*if (idToCompare.current === id) {
-      if (loaded >= REQUIRED_VIDEO_PROGRESS_TO_SET_AS_WATCHED) {
-        setVideoAsWatched(id);
+    setProgress({ courseId, CourseClassId: id, progressVideo: playedSeconds });
+  }
+
+  const setProgressVideoPlayer = () => {
+    for (let item of courseUserProgress) {
+      if(id === item.CourseClassId) {
+        player.current.seekTo(item.progressVideo);
       }
-    } else {
-      idToCompare.current = id;
-    }*/
+    }
   }
 
   return (
@@ -44,9 +44,9 @@ function MicroClassVideoWrapper({
         url={url}
         progressInterval={30000}
         onProgress={handleProgress}
-        onReady={() => player.current.seekTo(50)}
+        onReady={() => { setProgressVideoPlayer(); }}
         ref={player}
-        onEnded={(data) => { setProgress({ courseId, CourseClassId: id, viewed: true }); }}
+        onEnded={() => { setProgress({ courseId, CourseClassId: id, viewed: true }); }}
       />
     </div>
   )
@@ -65,7 +65,7 @@ MicroClassVideoWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  
+  courseUserProgress: courseClassUserSelector(state).courseUserProgress,
 });
 
 const mapDispatchToProps = {

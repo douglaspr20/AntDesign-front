@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from "react-redux";
-import cloneDeep from "lodash/cloneDeep";
 import MicroClassSkeleton from './MicroClassSkeleton';
 import MicroClassVideosList from './MicroClassVideosList';
 import MicroClassVideoWrapper from './MicroClassVideoWrapper';
@@ -15,6 +14,7 @@ import {
 } from "redux/actions/course-actions";
 
 import { courseSelector } from "redux/selectors/courseSelector";
+import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
 
 import { INTERNAL_LINKS } from 'enum';
 
@@ -59,7 +59,7 @@ const MicroClass = ({
   instructors,
   sponsors,
 }) => {
-  const { status, setMicroClassData } = useMicroClassQuery(match.params.id);
+  const { status } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
   useEffect(() => {
@@ -81,36 +81,8 @@ const MicroClass = ({
     return null;
   }, [activeVideoId, classes]);
 
-  const didWachedAllVideos = useMemo(() => {
-    let is_watched = false;
-    if (classes && classes.length) {
-      is_watched = true;
-      for (const videoObj of classes) {
-        if (!videoObj.is_watched) {
-          is_watched = videoObj.is_watched;
-        }
-      }
-    }
-    return is_watched;
-  }, [classes]);
-
-  const setVideoAsWatched = (id) => {
-    setMicroClassData(prevData => {
-      const dataClone = cloneDeep(prevData);
-      const videoIndex = dataClone.content.findIndex(item => item.id === id);
-      if (videoIndex > -1) {
-        dataClone.content[videoIndex].is_watched = true;
-      }
-      return dataClone;
-    });
-  };
-
   const handleClaimCertificate = () => {
-    if (didWachedAllVideos) {
-      console.log('Watched all videos, can be certified');
-    } else {
-      console.log("Haven't watched all videos, can't be certified");
-    }
+    history.push(`${INTERNAL_LINKS.MICRO_CLASS_CERTIFICATE}/${course.id}`);
   };
 
   return (
@@ -138,21 +110,23 @@ const MicroClass = ({
 
                   <div className="micro-class__claim-certificate-button-wrap">
                     <CustomButton
-                      disabled={!didWachedAllVideos}
+                      disabled={!course.finished}
                       htmlType="button"
                       type="primary"
                       size="lg"
                       onClick={handleClaimCertificate}
                       text="Claim Digital Certificate"
                     />
-                    <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
+                    {
+                      !course.finished &&
+                        <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
+                    }
                   </div>
                 </div>
                 <div className="micro-class__row-1--video-player">
                   <MicroClassVideoWrapper
                     url={activeVideoUrl ? activeVideoUrl : null}
                     id={activeVideoId}
-                    setVideoAsWatched={setVideoAsWatched}
                     courseId={match.params.id}
                   />
 
@@ -232,6 +206,7 @@ const mapStateToProps = (state, props) => ({
   classes: courseSelector(state).classes,
   instructors: courseSelector(state).instructors,
   sponsors: courseSelector(state).sponsors,
+  courseUserProgress: courseClassUserSelector(state).courseUserProgress,
 });
 
 const mapDispatchToProps = {

@@ -15,6 +15,7 @@ import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
+import MicroClassCertificatePage from "pages/MicroClassCertificate";
 import ClassesPage from "pages/Classes";
 import MicroClassPage from "pages/MicroClass";
 import JourneyPage from "pages/Journey";
@@ -121,6 +122,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.MICRO_CLASS_CERTIFICATE}/:id`}
+            render={(props) => <MicroClassCertificatePage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.JOURNEY}

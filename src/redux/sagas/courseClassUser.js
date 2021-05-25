@@ -1,6 +1,10 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
 
 import {
+  actions as courseActions,
+} from "../actions/course-actions";
+
+import {
   constants as courseClassUserConstants,
   actions as courseClassUserActions,
 } from "../actions/course-user-progress-actions";
@@ -35,6 +39,7 @@ export function* setProgressSaga({payload}) {
       if (response.status === 200) {
         yield put(courseClassUserActions.setCourseUserProgress(response.data.courseClassUser));
       }
+      yield put(courseActions.getCourse(payload.data.courseId));
     }
 
   } catch (error) {
