@@ -25,4 +25,5 @@ export default {
   CONFERENCE_LIBRARY: "/conference-library",
   NOT_FOUND: "/not-found",
   GLOBAL_CONFERENCE: "/global-conference",
+  LIVE: "/live",
 };

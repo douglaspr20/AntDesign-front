@@ -1,0 +1,43 @@
+@import "../../styles/main.scss";
+
+.live-page {
+  height: calc(100vh - 92px);
+  background: $color-background;
+  overflow-y: scroll;
+
+  &--container {
+    padding-top: 50px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &--videoplayer {
+      height: 30vw;
+      @media (max-width: 1023.98px) {
+        height: 50vw;
+      }
+    }
+
+    .ant-divider {
+      background-color: $color-primary;
+      @media (max-width: 1023.98px) {
+        width: 80%;
+        margin: 0 auto;
+      }
+    }
+
+    .live-item {
+      padding-top: 1rem;
+      @media (max-width: 1023.98px) {
+        padding: 1rem;
+      }
+    }
+
+    p {
+      text-align: justify;
+    }
+  }
+}
