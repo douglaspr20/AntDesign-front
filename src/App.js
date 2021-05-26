@@ -69,6 +69,7 @@ class App extends Component {
     });
 
     this.props.getCategories();
+    this.props.getLive();
   }
 
   updateDimensions() {

@@ -1,27 +1,54 @@
 import React from 'react';
 import { Divider } from 'antd';
 import ReactPlayer from 'react-player/youtube';
-import './style.scss';
 
-const LivePage = () => {
-  return (<div className="live-page">
-    <div class="live-page--container">
-      <div className="live-page--container--videoplayer">
-        <ReactPlayer
-          url="https://www.youtube.com/watch?v=WGWQnw8uVdY"
-          width="100%"
-          height="100%"
-        />
+import { connect } from "react-redux";
+import { liveSelector } from "redux/selectors/liveSelector";
+
+import './style.scss';
+import { INTERNAL_LINKS } from 'enum';
+
+const LivePage = ({
+  history,
+  live,
+}) => {
+  return (<>
+    { live.live === true ?
+
+      <div className="live-page">
+        <div className="live-page--container">
+          <div className="live-page--container--videoplayer">
+            <ReactPlayer
+              url={live.url}
+              width="100%"
+              height="100%"
+              playing={true}
+            />
+          </div>
+          <div className="live-item">
+            <Divider />
+            <h2>{live.title}</h2>
+          </div>
+          <div className="live-item">
+            <p>{live.description}</p>
+          </div>
+        </div>
       </div>
-      <div className="live-item">
-        <Divider />
-        <h2>El en vivo mas importante de la vida!</h2>
-      </div>
-      <div className="live-item">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut finibus mauris. Curabitur accumsan dolor non massa luctus, quis venenatis dolor lobortis. Cras vel nisl libero. Aliquam nec tempus felis. Nullam consectetur nisl nibh, ut lobortis lorem sodales in. Nulla pellentesque neque eget arcu dignissim, nec sodales arcu vehicula. Suspendisse blandit ornare ullamcorper. Morbi eget justo ipsum. Phasellus rutrum, urna vel venenatis blandit, metus ante gravida ipsum, ac semper purus velit bibendum purus. Nullam a nulla sit amet leo hendrerit rhoncus at vitae velit.</p>
-      </div>
-    </div>
-  </div>);
+      :
+      history.push(INTERNAL_LINKS.HOME)
+    }
+    </>
+  );
 };
 
-export default LivePage;
+const mapStateToProps = (state, props) => ({
+      live: liveSelector(state).live,
+});
+
+const mapDispatchToProps = {
+    };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LivePage);

@@ -19,14 +19,14 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 export default {
   TOP_MENUS: [
     {
-      label: "Live",
-      icon: IconConferenceVideo,
-      url: INTERNAL_LINKS.LIVE,
-    },
-    {
       label: "Home",
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
+    },
+    {
+      label: "Live",
+      icon: IconConferenceVideo,
+      url: INTERNAL_LINKS.LIVE,
     },
     // {
     //   label: "Global Conference",
