@@ -31,7 +31,7 @@ export function* getNotificationsSaga({ payload }) {
     if (payload.page === 1) {
       yield put(notificationActions.setNotificationLoading(false));
     } else {
-      yield put(notificationActions.setNotificationMoreLoading(true));
+      yield put(notificationActions.setNotificationMoreLoading(false));
     }
   }
 }
