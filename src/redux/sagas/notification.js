@@ -7,20 +7,32 @@ import {
 import { getNotifications } from "../../api";
 
 export function* getNotificationsSaga({ payload }) {
-  yield put(notificationActions.setNotificationLoading(true));
+  if (payload.page === 1) {
+    yield put(notificationActions.setNotificationLoading(true));
+  } else {
+    yield put(notificationActions.setNotificationMoreLoading(true));
+  }
 
   try {
     const response = yield call(getNotifications, { ...payload });
 
     if (response.status === 200) {
       yield put(
-        notificationActions.setNotifications(response.data.notifications)
+        notificationActions.setNotifications(
+          response.data.notifications.count,
+          payload.page,
+          response.data.notifications.rows
+        )
       );
     }
   } catch (error) {
     console.log(error);
   } finally {
-    yield put(notificationActions.setNotificationLoading(false));
+    if (payload.page === 1) {
+      yield put(notificationActions.setNotificationLoading(false));
+    } else {
+      yield put(notificationActions.setNotificationMoreLoading(true));
+    }
   }
 }
 
