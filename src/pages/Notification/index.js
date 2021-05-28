@@ -32,11 +32,7 @@ const NotificationPage = ({
     getNotifications(currentPage + 1, MAX_NOTIFICATIONS);
   };
 
-  const renderLoading = () => (
-    <div className="loading-container">
-      <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
-    </div>
-  );
+  const renderLoading = () => <div className="loading-container" />;
 
   const renderNotifications = () => (
     <>
