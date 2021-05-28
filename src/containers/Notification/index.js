@@ -21,6 +21,7 @@ const Notification = ({
   className,
   notificationList,
   loading,
+  countOfResults,
   getNotifications,
 }) => {
   const renderLoading = () => (
@@ -66,7 +67,7 @@ const Notification = ({
     <Popover placement="bottom" title="" content={content}>
       <Badge
         className={className}
-        count={notificationList.length}
+        count={countOfResults}
         overflowCount={999}
       >
         <div className="notification-icon">
