@@ -21,12 +21,24 @@ const NotificationPage = ({ notificationList, loading, getNotifications }) => {
   const renderNotifications = () => (
     <>
       {notificationList.length > 0 ? (
-        [notificationList].map((noti) => (
+        notificationList.map((noti) => (
           <div className="notification-list-item" key={noti.id}>
-            <h4 className="notification-list-item-message">{noti.message}</h4>
-            <h6 className="notification-list-item-date">
-              {moment(noti.createdAt).format("YYYY, MMM DD h:mm a")}
-            </h6>
+            <div className="notification-list-item-left">
+              <h4 className="notification-list-item-message">{noti.message}</h4>
+              <h6 className="notification-list-item-date">
+                {moment(noti.createdAt).format("YYYY, MMM DD h:mm a")}
+              </h6>
+            </div>
+            {noti.type === "event" && (
+              <a
+                className="notification-list-item-link"
+                href={noti.meta.publicLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Go to public page
+              </a>
+            )}
           </div>
         ))
       ) : (

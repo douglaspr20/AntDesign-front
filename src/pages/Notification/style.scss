@@ -13,7 +13,20 @@
   }
 
   .notification-list-item {
-    padding: 1rem 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $color-border;
+
+    &-link {
+      @include app-font(16px, 18px);
+      color: $color-primary !important;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
 
     &-message {
       margin-bottom: 1rem !important;
