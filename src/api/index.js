@@ -56,6 +56,7 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
+import { getNotifications } from "./module/notification";
 
 export {
   signIn,
@@ -105,4 +106,5 @@ export {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  getNotifications,
 };
