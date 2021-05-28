@@ -2,19 +2,17 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Spin } from "antd";
 import moment from "moment";
 
 import { CustomButton } from "components";
 import { notificationSelector } from "redux/selectors/notificationSelector";
 import { getNotifications } from "redux/actions/notification-actions";
 
-import IconLoading from "images/icon-loading.gif";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const MAX_NOTIFICATIONS = 3;
+const MAX_NOTIFICATIONS = 10;
 
 const NotificationPage = ({
   notificationList,
