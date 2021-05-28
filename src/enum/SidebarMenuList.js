@@ -14,6 +14,7 @@ import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
+// import IconGlobal from "images/icon-global.svg";
 
 export default {
   TOP_MENUS: [
@@ -22,6 +23,11 @@ export default {
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
     },
+    // {
+    //   label: "Global Conference",
+    //   icon: IconGlobal,
+    //   url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
+    // },
     {
       label: "Channels",
       icon: IconTvOutline,

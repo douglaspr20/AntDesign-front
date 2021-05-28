@@ -43,3 +43,4 @@ export { default as CreditSelect } from "./CreditSelect";
 export { default as EventCodeGenerator } from "./EventCodeGenerator";
 export { default as CardMenu } from "./CardMenu";
 export { default as SearchInput } from "./SearchInput";
+export { default as AnnualConferenceCard } from "./AnnualConferenceCard";

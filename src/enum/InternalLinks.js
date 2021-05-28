@@ -25,4 +25,5 @@ export default {
   CONFERENCE_LIBRARY: "/conference-library",
   NOT_FOUND: "/not-found",
   NOTIFICATIONS: "/notifications",
+  GLOBAL_CONFERENCE: "/global-conference",
 };

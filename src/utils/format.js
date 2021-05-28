@@ -116,7 +116,8 @@ function convertToUTCTime(date, tz) {
   if (timezone) {
     res = moment.tz(res, "YYYY-MM-DD h:mm a", timezone.utc[0]).utc().format();
   } else {
-    res = moment.tz(res, "YYYY-MM-DD h:mm a").format();
+    const localTimezone = moment.tz.guess();
+    res = moment.tz(res, "YYYY-MM-DD h:mm a", localTimezone).format();
   }
 
   return res;

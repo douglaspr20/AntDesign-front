@@ -16,6 +16,7 @@ import journeyItemReducer from "./journeyItemReducer";
 import channelReducer from "./channelReducer";
 import channelCategoryReducer from "./channelCategoryReducer";
 import notificationReducer from "./notificationReducer";
+import sessionReducer from "./sessionReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -34,4 +35,5 @@ export default combineReducers({
   channel: channelReducer,
   channelCategory: channelCategoryReducer,
   notification: notificationReducer,
+  session: sessionReducer,
 });

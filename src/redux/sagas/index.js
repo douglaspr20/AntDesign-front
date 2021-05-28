@@ -14,6 +14,7 @@ import { journeyItemSaga } from "./journeyItem";
 import { channelSaga } from "./channel";
 import { channelCategorySaga } from "./channelCategory";
 import { notificationSaga } from "./notification";
+import { sessionSaga } from "./session";
 
 export default function* sagas() {
   yield all([
@@ -32,5 +33,6 @@ export default function* sagas() {
     ...channelSaga,
     ...channelCategorySaga,
     ...notificationSaga,
+    ...sessionSaga,
   ]);
 }

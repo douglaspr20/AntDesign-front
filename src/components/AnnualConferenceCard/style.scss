@@ -1,0 +1,160 @@
+@import "styles/main.scss";
+
+.annual-conference-card {
+  background: $color-white;
+  border: 1px solid $color-border;
+  box-shadow: 4px 0px 14px #37215714;
+  border-radius: 0.5rem;
+  opacity: 1;
+  padding: 2rem;
+  position: relative;
+}
+
+.acc-session {
+  &-header {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-type {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+    margin-top: 1rem;
+  }
+
+  &-date {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &-time {
+    @include app-font(14px, 19px);
+    color: $color-text-secondary;
+  }
+
+  &-toggle {
+    display: flex;
+    align-items: center;
+    color: $color-accent;
+    @include app-font(16px, 21px, 600);
+    cursor: pointer;
+
+    &-icon {
+      margin-left: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      min-width: 1, 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: $color-accent;
+
+      &.hide {
+        transform: rotate(180deg);
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+
+        path {
+          stroke: $color-white;
+        }
+      }
+    }
+  }
+
+  &-remove {
+    position: absolute !important;
+    right: 2rem;
+    top: 6rem;
+  }
+
+  &-added-tag {
+    width: 76px;
+    height: 28px;
+    border-radius: 100px;
+    background: $color-accent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-white;
+    @include app-font(14px, 19px);
+    position: absolute;
+    top: -14px;
+    right: -24px;
+  }
+}
+
+.acc-details {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  grid-column-gap: 1fr;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid $color-border;
+
+  &-speaker {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    grid-row-gap: 2rem;
+    grid-column-gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    &-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      & > .empty {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: $color-text-third;
+      }
+    }
+
+    &-desc {
+      margin-top: 0.5rem;
+
+      h5 {
+        color: $color-text-secondary !important;
+      }
+    }
+  }
+
+  &-other {
+    margin: 0.5rem 0 2rem;
+
+    p {
+      color: $color-text-secondary;
+      @include app-font(14px, 24px);
+    }
+
+    &-brands {
+      display: flex;
+
+      .session-brand {
+        height: 80px;
+        object-fit: cover;
+        margin: 0 1rem 1rem 0;
+
+        img {
+          height: 100%;
+        }
+      }
+    }
+  }
+}
