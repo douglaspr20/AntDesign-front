@@ -59,7 +59,7 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
-import { getNotifications } from "./module/notification";
+import { getNotifications, markeToRead } from "./module/notification";
 import { getAllSessions } from "./module/session";
 
 export {
@@ -115,4 +115,5 @@ export {
   attendToGlobalConference,
   addSession,
   removeSession,
+  markeToRead,
 };

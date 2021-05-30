@@ -6,14 +6,17 @@ import moment from "moment";
 
 import { CustomButton } from "components";
 import { notificationSelector } from "redux/selectors/notificationSelector";
-import { getNotifications } from "redux/actions/notification-actions";
+import {
+  getNotifications,
+  marketNotificationToRead,
+} from "redux/actions/notification-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
-const MAX_NOTIFICATIONS = 10;
+const MAX_NOTIFICATIONS = 50;
 
 const NotificationPage = ({
   notificationList,
@@ -23,9 +26,17 @@ const NotificationPage = ({
   countOfResults,
   userProfile,
   getNotifications,
+  marketNotificationToRead,
 }) => {
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
+
+    return () => {
+      const unreadNotifications = notificationList
+        .filter((noti) => !noti.readers.includes(userProfile.id))
+        .map((noti) => noti.id);
+      marketNotificationToRead(unreadNotifications, userProfile.id);
+    };
   }, []);
 
   const onShowMore = () => {
@@ -45,9 +56,7 @@ const NotificationPage = ({
                   {!noti.readers.includes(userProfile.id) && (
                     <div className="notification-list-item-circle" />
                   )}
-                  <h4>
-                    {noti.message}
-                  </h4>
+                  <h4>{noti.message}</h4>
                 </div>
                 <h6 className="notification-list-item-date">
                   {moment(noti.createdAt).format("YYYY, MMM DD h:mm a")}
@@ -113,6 +122,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getNotifications,
+  marketNotificationToRead,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage);

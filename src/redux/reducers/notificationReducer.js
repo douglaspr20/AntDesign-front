@@ -22,7 +22,7 @@ export const reducers = {
       ),
       currentPage: payload.currentPage,
       countOfResults: payload.countOfResults,
-      unreadCount: payload.unreadCount,
+      unreadCount: payload.countOfResults - payload.readCount,
     });
   },
   [notificationConstants.SET_NOTIFICATION_LOADING]: (state, { payload }) => {
@@ -37,10 +37,22 @@ export const reducers = {
   [notificationConstants.PUSH_NOTIFICATION]: (state, { payload }) => {
     const notificationList = state.get("notificationList");
     const countOfResults = state.get("countOfResults");
+    const unreadCount = state.get("unreadCount");
 
     return state.merge({
       notificationList: [payload.data, ...notificationList],
       countOfResults: countOfResults + 1,
+      unreadCount: unreadCount + 1,
+    });
+  },
+  [notificationConstants.UPDATE_NOTIFICATION_TO_READ]: (state, { payload }) => {
+    const notificationList = state.get("notificationList");
+
+    return state.merge({
+      notificationList: notificationList.map((noti) => ({
+        ...noti,
+        readers: [...noti.readers, payload.userId],
+      })),
     });
   },
 };

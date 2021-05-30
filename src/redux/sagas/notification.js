@@ -4,7 +4,7 @@ import {
   actions as notificationActions,
 } from "../actions/notification-actions";
 
-import { getNotifications } from "../../api";
+import { getNotifications, markeToRead } from "../../api";
 
 export function* getNotificationsSaga({ payload }) {
   if (payload.page === 1) {
@@ -22,7 +22,7 @@ export function* getNotificationsSaga({ payload }) {
           response.data.notifications.count,
           payload.page,
           response.data.notifications.rows,
-          response.data.unreadCount,
+          response.data.readCount
         )
       );
     }
@@ -37,10 +37,26 @@ export function* getNotificationsSaga({ payload }) {
   }
 }
 
+export function* setNotificationToReadSaga({ payload }) {
+  try {
+    const response = yield call(markeToRead, { ...payload });
+
+    if (response.status === 200) {
+      yield put(notificationActions.updateNotificationToRead(payload.userId));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* watchNotification() {
   yield takeLatest(
     notificationConstants.GET_NOTIFICATIONS,
     getNotificationsSaga
+  );
+  yield takeLatest(
+    notificationConstants.MARK_NOTIFICATION_TO_READ,
+    setNotificationToReadSaga
   );
 }
 

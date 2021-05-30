@@ -16,13 +16,12 @@ import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
 
-const MAX_NOTIFICATIONS = 10;
+const MAX_NOTIFICATIONS = 50;
 
 const Notification = ({
   className,
   notificationList,
   loading,
-  countOfResults,
   unreadCount,
   userProfile,
   getNotifications,

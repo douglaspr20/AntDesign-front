@@ -5,6 +5,8 @@ const SET_NOTIFICATIONS = "SET_NOTIFICATIONS";
 const SET_NOTIFICATION_LOADING = "SET_NOTIFICATION_LOADING";
 const SET_NOTIFICATION_MORE_LOADING = "SET_NOTIFICATION_MORE_LOADING";
 const PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
+const MARK_NOTIFICATION_TO_READ = "MARK_NOTIFICATION_TO_READ";
+const UPDATE_NOTIFICATION_TO_READ = "UPDATE_NOTIFICATION_TO_READ";
 
 export const constants = {
   GET_NOTIFICATIONS,
@@ -12,6 +14,8 @@ export const constants = {
   SET_NOTIFICATION_LOADING,
   SET_NOTIFICATION_MORE_LOADING,
   PUSH_NOTIFICATION,
+  MARK_NOTIFICATION_TO_READ,
+  UPDATE_NOTIFICATION_TO_READ,
 };
 
 // ------------------------------------
@@ -23,11 +27,11 @@ export const getNotifications = createAction(
 );
 export const setNotifications = createAction(
   SET_NOTIFICATIONS,
-  (countOfResults, currentPage, notificationList, unreadCount) => ({
+  (countOfResults, currentPage, notificationList, readCount) => ({
     countOfResults,
     currentPage,
     notificationList,
-    unreadCount,
+    readCount,
   })
 );
 export const setNotificationLoading = createAction(
@@ -41,6 +45,14 @@ export const setNotificationMoreLoading = createAction(
 export const pushNotification = createAction(PUSH_NOTIFICATION, (data) => ({
   data,
 }));
+export const marketNotificationToRead = createAction(
+  MARK_NOTIFICATION_TO_READ,
+  (notifications, userId) => ({ notifications, userId })
+);
+export const updateNotificationToRead = createAction(
+  UPDATE_NOTIFICATION_TO_READ,
+  (userId) => ({ userId })
+);
 
 export const actions = {
   getNotifications,
@@ -48,4 +60,6 @@ export const actions = {
   setNotificationLoading,
   setNotificationMoreLoading,
   pushNotification,
+  marketNotificationToRead,
+  updateNotificationToRead,
 };
