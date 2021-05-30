@@ -9,6 +9,7 @@ import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 import LibraryShareDrawer from "containers/LibraryShareDrawer";
 import Emitter from "services/emitter";
+import SocketIO from "services/socket";
 
 import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
@@ -16,7 +17,7 @@ import InviteFriendModal from "./containers/InviteFriendModal";
 import InviteFriendForm from "./containers/InviteFriendForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
 
@@ -24,6 +25,7 @@ import { actions as envActions } from "redux/actions/env-actions";
 import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
+import { pushNotification } from "redux/actions/notification-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -67,7 +69,15 @@ class App extends Component {
       }
     });
 
+    SocketIO.on(SOCKET_EVENT_TYPE.NEW_EVENT, (data) => {
+      this.props.pushNotification(data);
+    });
+
     this.props.getCategories();
+  }
+
+  componentWillUnmount() {
+    SocketIO.off();
   }
 
   updateDimensions() {
@@ -172,6 +182,7 @@ const mapDispatchToProps = {
   inviteFriend,
   getCategories,
   getChannelCategories,
+  pushNotification,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

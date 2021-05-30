@@ -4,12 +4,14 @@ const GET_NOTIFICATIONS = "GET_NOTIFICATIONS";
 const SET_NOTIFICATIONS = "SET_NOTIFICATIONS";
 const SET_NOTIFICATION_LOADING = "SET_NOTIFICATION_LOADING";
 const SET_NOTIFICATION_MORE_LOADING = "SET_NOTIFICATION_MORE_LOADING";
+const PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
 
 export const constants = {
   GET_NOTIFICATIONS,
   SET_NOTIFICATIONS,
   SET_NOTIFICATION_LOADING,
   SET_NOTIFICATION_MORE_LOADING,
+  PUSH_NOTIFICATION,
 };
 
 // ------------------------------------
@@ -35,10 +37,15 @@ export const setNotificationMoreLoading = createAction(
   SET_NOTIFICATION_MORE_LOADING,
   (loading) => ({ loading })
 );
+export const pushNotification = createAction(
+  PUSH_NOTIFICATION,
+  (data) => ({ data })
+);
 
 export const actions = {
   getNotifications,
   setNotifications,
   setNotificationLoading,
   setNotificationMoreLoading,
+  pushNotification,
 };
