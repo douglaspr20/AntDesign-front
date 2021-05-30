@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Badge, Popover, Spin } from "antd";
 import { Link } from "react-router-dom";
@@ -26,6 +26,8 @@ const Notification = ({
   userProfile,
   getNotifications,
 }) => {
+  const [visible, setVisible] = useState(false);
+
   const renderLoading = () => (
     <div className="loading-container">
       <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
@@ -45,7 +47,12 @@ const Notification = ({
         </div>
       ))}
       <div className="notification-item see-more">
-        <Link to={INTERNAL_LINKS.NOTIFICATIONS}>See more ...</Link>
+        <Link
+          to={INTERNAL_LINKS.NOTIFICATIONS}
+          onClick={() => setVisible(false)}
+        >
+          See more ...
+        </Link>
       </div>
     </>
   );
@@ -71,7 +78,13 @@ const Notification = ({
   }, []);
 
   return (
-    <Popover placement="bottom" title="" content={content}>
+    <Popover
+      placement="bottom"
+      title=""
+      content={content}
+      visible={visible}
+      onVisibleChange={setVisible}
+    >
       <Badge className={className} count={unreadCount} overflowCount={999}>
         <div className="notification-icon">
           <img src={IconNotification} alt="icon-notification" />
