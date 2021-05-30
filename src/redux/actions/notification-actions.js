@@ -51,7 +51,7 @@ export const marketNotificationToRead = createAction(
 );
 export const updateNotificationToRead = createAction(
   UPDATE_NOTIFICATION_TO_READ,
-  (userId) => ({ userId })
+  (unreadCount, userId) => ({ unreadCount, userId })
 );
 
 export const actions = {

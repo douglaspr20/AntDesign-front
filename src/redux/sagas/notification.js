@@ -42,7 +42,12 @@ export function* setNotificationToReadSaga({ payload }) {
     const response = yield call(markeToRead, { ...payload });
 
     if (response.status === 200) {
-      yield put(notificationActions.updateNotificationToRead(payload.userId));
+      yield put(
+        notificationActions.updateNotificationToRead(
+          response.data.unread,
+          payload.userId
+        )
+      );
     }
   } catch (error) {
     console.log(error);

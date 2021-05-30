@@ -53,6 +53,7 @@ export const reducers = {
         ...noti,
         readers: [...noti.readers, payload.userId],
       })),
+      unreadCount: payload.unreadCount,
     });
   },
 };
