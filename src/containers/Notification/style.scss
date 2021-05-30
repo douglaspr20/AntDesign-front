@@ -16,14 +16,16 @@
 
 .notification-item {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 8px 1fr;
   grid-gap: 0.5rem;
   align-items: center;
   justify-content: space-between;
   height: 2rem;
   cursor: pointer;
+  margin-left: -0.5rem;
 
   &.see-more a {
+    grid-column: 2 / 3;
     color: $color-primary !important;
   }
 

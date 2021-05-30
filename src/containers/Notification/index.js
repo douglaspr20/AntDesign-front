@@ -36,8 +36,10 @@ const Notification = ({
     <>
       {notificationList.slice(0, 10).map((noti) => (
         <div className="notification-item" key={noti.id}>
-          {!noti.readers.includes(userProfile.id) && (
+          {!noti.readers.includes(userProfile.id) ? (
             <div className="notification-item-circle" />
+          ) : (
+            <div />
           )}
           <h5 className="notification-item-message">{noti.message}</h5>
         </div>
@@ -70,11 +72,7 @@ const Notification = ({
 
   return (
     <Popover placement="bottom" title="" content={content} trigger="click">
-      <Badge
-        className={className}
-        count={unreadCount}
-        overflowCount={999}
-      >
+      <Badge className={className} count={unreadCount} overflowCount={999}>
         <div className="notification-icon">
           <img src={IconNotification} alt="icon-notification" />
         </div>
