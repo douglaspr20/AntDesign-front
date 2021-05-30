@@ -71,7 +71,7 @@ const Notification = ({
   }, []);
 
   return (
-    <Popover placement="bottom" title="" content={content} trigger="click">
+    <Popover placement="bottom" title="" content={content}>
       <Badge className={className} count={unreadCount} overflowCount={999}>
         <div className="notification-icon">
           <img src={IconNotification} alt="icon-notification" />
