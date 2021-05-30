@@ -22,6 +22,7 @@ export const reducers = {
       ),
       currentPage: payload.currentPage,
       countOfResults: payload.countOfResults,
+      unreadCount: payload.unreadCount,
     });
   },
   [notificationConstants.SET_NOTIFICATION_LOADING]: (state, { payload }) => {
@@ -51,6 +52,7 @@ export const initialState = () =>
     notificationList: [],
     countOfResults: 0,
     currentPage: 1,
+    unreadCount: 0,
   });
 
 export default handleActions(reducers, initialState());

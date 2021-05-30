@@ -9,6 +9,7 @@ const resultSelector = createSelector(notificatioinDataSelector, (payload) => {
     moreLoading: payload.get("moreLoading"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    unreadCount: payload.get("unreadCount"),
   };
 });
 

@@ -22,6 +22,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid $color-border;
+    position: relative;
 
     &-link {
       @include app-font(16px, 18px);
@@ -34,11 +35,26 @@
 
     &-message {
       margin-bottom: 1rem !important;
+      position: relative;
     }
 
     &-date {
       font-weight: 400 !important;
       color: $color-text-secondary !important;
+    }
+
+    &-circle {
+      display: block;
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      min-height: 8px;
+      background: $color-primary;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: -16px;
+      transform: translate(0, -50%);
     }
   }
 

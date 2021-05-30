@@ -21,7 +21,8 @@ export function* getNotificationsSaga({ payload }) {
         notificationActions.setNotifications(
           response.data.notifications.count,
           payload.page,
-          response.data.notifications.rows
+          response.data.notifications.rows,
+          response.data.unreadCount,
         )
       );
     }

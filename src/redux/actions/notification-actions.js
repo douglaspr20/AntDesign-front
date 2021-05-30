@@ -23,10 +23,11 @@ export const getNotifications = createAction(
 );
 export const setNotifications = createAction(
   SET_NOTIFICATIONS,
-  (countOfResults, currentPage, notificationList) => ({
+  (countOfResults, currentPage, notificationList, unreadCount) => ({
     countOfResults,
     currentPage,
     notificationList,
+    unreadCount,
   })
 );
 export const setNotificationLoading = createAction(
@@ -37,10 +38,9 @@ export const setNotificationMoreLoading = createAction(
   SET_NOTIFICATION_MORE_LOADING,
   (loading) => ({ loading })
 );
-export const pushNotification = createAction(
-  PUSH_NOTIFICATION,
-  (data) => ({ data })
-);
+export const pushNotification = createAction(PUSH_NOTIFICATION, (data) => ({
+  data,
+}));
 
 export const actions = {
   getNotifications,

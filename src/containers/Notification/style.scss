@@ -16,7 +16,7 @@
 
 .notification-item {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr;
   grid-gap: 0.5rem;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +25,16 @@
 
   &.see-more a {
     color: $color-primary !important;
+  }
+
+  &-circle {
+    display: block;
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+    background: $color-primary;
+    border-radius: 50%;
   }
 
   &-message {

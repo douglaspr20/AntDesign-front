@@ -7,6 +7,7 @@ import moment from "moment";
 import { CustomButton } from "components";
 import { notificationSelector } from "redux/selectors/notificationSelector";
 import { getNotifications } from "redux/actions/notification-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -20,6 +21,7 @@ const NotificationPage = ({
   moreLoading,
   currentPage,
   countOfResults,
+  userProfile,
   getNotifications,
 }) => {
   useEffect(() => {
@@ -39,9 +41,14 @@ const NotificationPage = ({
           {notificationList.map((noti) => (
             <div className="notification-list-item" key={noti.id}>
               <div className="notification-list-item-left">
-                <h4 className="notification-list-item-message">
-                  {noti.message}
-                </h4>
+                <div className="notification-list-item-message">
+                  {!noti.readers.includes(userProfile.id) && (
+                    <div className="notification-list-item-circle" />
+                  )}
+                  <h4>
+                    {noti.message}
+                  </h4>
+                </div>
                 <h6 className="notification-list-item-date">
                   {moment(noti.createdAt).format("YYYY, MMM DD h:mm a")}
                 </h6>
@@ -101,6 +108,7 @@ NotificationPage.defaultProps = {
 
 const mapStateToProps = (state) => ({
   ...notificationSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

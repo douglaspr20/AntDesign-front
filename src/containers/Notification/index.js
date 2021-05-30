@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
 import { notificationSelector } from "redux/selectors/notificationSelector";
 import { getNotifications } from "redux/actions/notification-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconNotification from "images/icon-notification.svg";
 import IconLoading from "images/icon-loading.gif";
@@ -22,6 +23,8 @@ const Notification = ({
   notificationList,
   loading,
   countOfResults,
+  unreadCount,
+  userProfile,
   getNotifications,
 }) => {
   const renderLoading = () => (
@@ -34,6 +37,9 @@ const Notification = ({
     <>
       {notificationList.slice(0, 10).map((noti) => (
         <div className="notification-item" key={noti.id}>
+          {!noti.readers.includes(userProfile.id) && (
+            <div className="notification-item-circle" />
+          )}
           <h5 className="notification-item-message">{noti.message}</h5>
         </div>
       ))}
@@ -64,10 +70,10 @@ const Notification = ({
   }, []);
 
   return (
-    <Popover placement="bottom" title="" content={content}>
+    <Popover placement="bottom" title="" content={content} trigger="click">
       <Badge
         className={className}
-        count={countOfResults}
+        count={unreadCount}
         overflowCount={999}
       >
         <div className="notification-icon">
@@ -88,6 +94,7 @@ Notification.defaultProps = {
 
 const mapStateToProps = (state) => ({
   ...notificationSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
