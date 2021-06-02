@@ -23,11 +23,6 @@ export default {
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
     },
-    {
-      label: "Live",
-      icon: IconConferenceVideo,
-      url: INTERNAL_LINKS.LIVE,
-    },
     // {
     //   label: "Global Conference",
     //   icon: IconGlobal,

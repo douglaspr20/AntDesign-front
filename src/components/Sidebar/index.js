@@ -11,7 +11,6 @@ import SidebarMenuItem from "./SidebarMenuItem";
 import LogoSidebar from "images/logo-sidebar.svg";
 
 import { envSelector } from "redux/selectors/envSelector";
-import { liveSelector } from "redux/selectors/liveSelector";
 
 import "./style.scss";
 
@@ -65,23 +64,13 @@ class NavBar extends Component {
           style={menuStyle}
           className="layout-sidebar-top-menus"
         >
-          {TopMenuList.map((menu) => {
-            if (menu.label === "Live" && this.props.live.live === true) {
-              return (<Menu.Item key={menu.url} className="layout-sidebar-menu">
-                <Link to={menu.url} onClick={this.onCloseSidebar}>
-                  <SidebarMenuItem icon={menu.icon} text={menu.label} />
-                </Link>
-              </Menu.Item>);
-            } else if (menu.label !== "Live") {
-              return (<Menu.Item key={menu.url} className="layout-sidebar-menu">
-                <Link to={menu.url} onClick={this.onCloseSidebar}>
-                  <SidebarMenuItem icon={menu.icon} text={menu.label} />
-                </Link>
-              </Menu.Item>);
-            }else{
-              return false;
-            }
-          })}
+          {TopMenuList.map((menu) => (
+            <Menu.Item key={menu.url} className="layout-sidebar-menu">
+              <Link to={menu.url} onClick={this.onCloseSidebar}>
+                <SidebarMenuItem icon={menu.icon} text={menu.label} />
+              </Link>
+            </Menu.Item>
+          ))}
         </Menu>
         {/* <Menu
           theme={navBarTheme}
@@ -109,7 +98,6 @@ class NavBar extends Component {
 }
 const mapStateToProps = (state) => ({
   env: envSelector(state),
-  live: liveSelector(state).live,
 });
 
 const mapDispatchToProps = {

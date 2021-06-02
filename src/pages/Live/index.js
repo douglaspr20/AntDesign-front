@@ -18,12 +18,17 @@ const LivePage = ({
       <div className="live-page">
         <div className="live-page--container">
           <div className="live-page--container--videoplayer">
-            <ReactPlayer
-              url={live.url}
-              width="100%"
-              height="100%"
-              playing={true}
-            />
+            <div className="video">
+              <ReactPlayer
+                url={live.url}
+                width="100%"
+                height="100%"
+                playing={true}
+              />
+            </div>
+            <div className="chat">
+              <iframe title="live-chat" src={`https://gaming.youtube.com/live_chat?v=${ live.url.split('=')[1] }&embed_domain=${window.location.hostname}`}></iframe>
+            </div>
           </div>
           <div className="live-item">
             <Divider />
