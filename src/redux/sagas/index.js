@@ -13,6 +13,7 @@ import { journeySaga } from "./journey";
 import { journeyItemSaga } from "./journeyItem";
 import { channelSaga } from "./channel";
 import { channelCategorySaga } from "./channelCategory";
+import { notificationSaga } from "./notification";
 import { sessionSaga } from "./session";
 
 export default function* sagas() {
@@ -31,6 +32,7 @@ export default function* sagas() {
     ...journeyItemSaga,
     ...channelSaga,
     ...channelCategorySaga,
+    ...notificationSaga,
     ...sessionSaga,
   ]);
 }

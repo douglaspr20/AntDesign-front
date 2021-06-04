@@ -79,7 +79,7 @@
         width: 100px;
         margin-right: 10px;
         padding: 5px;
-        
+
         span {
           font-size: 1rem;
         }
@@ -135,5 +135,9 @@
         object-fit: cover;
       }
     }
+  }
+
+  &-notification {
+    margin-right: 1.5rem !important;
   }
 }
