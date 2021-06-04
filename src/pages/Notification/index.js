@@ -33,13 +33,24 @@ const NotificationPage = ({
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
 
-    return () => {
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (
+      userProfile &&
+      userProfile.id &&
+      notificationList &&
+      notificationList.length
+    ) {
       const unreadNotifications = notificationList
         .filter((noti) => !noti.readers.includes(userProfile.id))
         .map((noti) => noti.id);
-      marketNotificationToRead(unreadNotifications, userProfile.id);
-    };
-  }, []);
+      if (unreadNotifications.length > 0) {
+        marketNotificationToRead(unreadNotifications, userProfile.id);
+      }
+    }
+  }, [notificationList, userProfile]);
 
   const onShowMore = () => {
     getNotifications(currentPage + 1, MAX_NOTIFICATIONS);
