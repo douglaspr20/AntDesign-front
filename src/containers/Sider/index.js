@@ -44,6 +44,10 @@ class Sider extends Component {
         />
         <PrivateRoute path={INTERNAL_LINKS.HUB} render={() => <Sidebar />} />
         <PrivateRoute
+          path={INTERNAL_LINKS.NOTIFICATIONS}
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.PODCAST}
           render={() => <Sidebar />}
         />

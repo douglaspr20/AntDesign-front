@@ -59,6 +59,7 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
+import { getNotifications, markeToRead } from "./module/notification";
 import { getAllSessions } from "./module/session";
 
 export {
@@ -109,8 +110,10 @@ export {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  getNotifications,
   getAllSessions,
   attendToGlobalConference,
   addSession,
   removeSession,
+  markeToRead,
 };

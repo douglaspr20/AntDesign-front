@@ -23,6 +23,7 @@ import NoPageFound from "pages/NoPageFound";
 import ConferenceLibrary from "pages/ConferenceLibrary";
 import ChannelsPage from "pages/Channels";
 import ChannelPage from "pages/Channel";
+import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
 import LivePage from "pages/Live";
 
@@ -130,6 +131,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.NOT_FOUND}
             render={(props) => <NoPageFound {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.NOTIFICATIONS}
+            render={(props) => <NotificationPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
