@@ -67,6 +67,7 @@ const Notification = ({
         )
       ) : (
         <div className="notification-item">
+          <div />
           <h5 className="notification-item-message">No notifications.</h5>
         </div>
       )}
