@@ -3,8 +3,10 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 import { CustomButton } from "components";
+import { INTERNAL_LINKS } from "enum";
 import { notificationSelector } from "redux/selectors/notificationSelector";
 import {
   getNotifications,
@@ -71,6 +73,30 @@ const NotificationPage = ({
                 >
                   Go to public page
                 </a>
+              )}
+              {noti.type === "podcast" && (
+                <Link
+                  className="notification-list-item-link"
+                  to={INTERNAL_LINKS.PODCAST}
+                >
+                  Go to Podcast
+                </Link>
+              )}
+              {noti.type === "marketplace" && (
+                <Link
+                  className="notification-list-item-link"
+                  to={INTERNAL_LINKS.MARKETPLACE}
+                >
+                  Go to HR Marketplace
+                </Link>
+              )}
+              {noti.type === "content" && (
+                <Link
+                  className="notification-list-item-link"
+                  to={INTERNAL_LINKS.LEARNING_LIBRARY}
+                >
+                  Go to Learning library
+                </Link>
               )}
             </div>
           ))}
