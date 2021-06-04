@@ -75,6 +75,10 @@ class App extends Component {
       this.props.pushNotification(data);
     });
 
+    SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
+      this.props.getLive();
+    });
+
     this.props.getCategories();
     this.props.getLive();
   }
