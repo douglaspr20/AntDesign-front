@@ -71,6 +71,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={() => <Sidebar />}
         />
+        <PrivateRoute
+          path={INTERNAL_LINKS.LIVE}
+          render={() => <Sidebar />}
+        />
       </Switch>
     );
   }

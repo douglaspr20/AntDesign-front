@@ -17,6 +17,7 @@ import channelReducer from "./channelReducer";
 import channelCategoryReducer from "./channelCategoryReducer";
 import notificationReducer from "./notificationReducer";
 import sessionReducer from "./sessionReducer";
+import liveReducer from "./liveReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -36,4 +37,5 @@ export default combineReducers({
   channelCategory: channelCategoryReducer,
   notification: notificationReducer,
   session: sessionReducer,
+  live: liveReducer,
 });

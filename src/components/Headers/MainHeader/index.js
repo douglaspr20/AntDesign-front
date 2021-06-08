@@ -17,6 +17,7 @@ import IconNotification from "images/icon-notification-header.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { liveSelector } from "redux/selectors/liveSelector";
 
 import "./style.scss";
 
@@ -95,6 +96,15 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
+          {this.props.live.live === true &&
+            <CustomButton
+              text={<div className="live-container"><div className="live-circle"></div><div>LIVE</div></div>}
+              type="primary"
+              size="lg"
+              className="outlined btn-live"
+              onClick={() => { this.props.history.push(INTERNAL_LINKS.LIVE); }}
+            />
+          }
           <CustomButton
             text="Invite friend"
             type="primary"
@@ -120,9 +130,8 @@ class MainHeader extends React.Component {
                 user.abbrName
               )}
             </div>
-            <span className="user-name">{`${user.firstName || ""} ${
-              user.lastName || ""
-            }`}</span>
+            <span className="user-name">{`${user.firstName || ""} ${user.lastName || ""
+              }`}</span>
             <div className="profile-menu-chevron">
               <img src={IconChevronDown} alt="profile-menu" />
             </div>
@@ -149,6 +158,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
+  live: liveSelector(state).live,
 });
 
 const mapDispatchToProps = {

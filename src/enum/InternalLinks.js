@@ -26,4 +26,5 @@ export default {
   NOT_FOUND: "/not-found",
   NOTIFICATIONS: "/notifications",
   GLOBAL_CONFERENCE: "/global-conference",
+  LIVE: "/live",
 };

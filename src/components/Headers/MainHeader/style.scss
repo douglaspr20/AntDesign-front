@@ -72,6 +72,51 @@
       align-items: center;
     }
 
+    .btn-live {
+      margin-right: 2rem;
+      .live-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        div:first-child {
+          margin-right: 5px;
+        }
+
+        @keyframes live {
+          0% { 
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(0.6);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        .live-circle {
+          width: 15px;
+          height: 15px;
+          border-radius: 100%;
+          overflow: hidden;
+          background:red;
+          animation: live 1.4s infinite ease;
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        width: 100px;
+        margin-right: 10px;
+        padding: 5px;
+        
+        span {
+          font-size: 1rem;
+        }
+      }
+    }
+
     .btn-invite {
       margin-right: 2rem;
 

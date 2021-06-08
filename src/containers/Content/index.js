@@ -25,6 +25,8 @@ import ChannelsPage from "pages/Channels";
 import ChannelPage from "pages/Channel";
 import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
+import LivePage from "pages/Live";
+
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -137,6 +139,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.LIVE}
+            render={(props) => <LivePage {...props} />}
           />
           <Route
             exact

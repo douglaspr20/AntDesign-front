@@ -25,6 +25,8 @@ import { actions as envActions } from "redux/actions/env-actions";
 import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
+import { getLive } from "redux/actions/live-actions";
+
 import { pushNotification } from "redux/actions/notification-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -73,7 +75,12 @@ class App extends Component {
       this.props.pushNotification(data);
     });
 
+    SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
+      this.props.getLive();
+    });
+
     this.props.getCategories();
+    this.props.getLive();
   }
 
   componentWillUnmount() {
@@ -182,6 +189,7 @@ const mapDispatchToProps = {
   inviteFriend,
   getCategories,
   getChannelCategories,
+  getLive,
   pushNotification,
 };
 
