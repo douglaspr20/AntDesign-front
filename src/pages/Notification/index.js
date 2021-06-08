@@ -82,7 +82,7 @@ const NotificationPage = ({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Go to public page
+                  Go to event
                 </a>
               )}
               {noti.type === "podcast" && (

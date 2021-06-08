@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Badge, Popover, Spin } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { INTERNAL_LINKS } from "enum";
@@ -27,12 +27,33 @@ const Notification = ({
   getNotifications,
 }) => {
   const [visible, setVisible] = useState(false);
+  const history = useHistory();
 
   const renderLoading = () => (
     <div className="loading-container">
       <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
     </div>
   );
+
+  const onClickNotification = (noti) => {
+    switch (noti.type) {
+      case "marketplace":
+        history.push(INTERNAL_LINKS.MARKETPLACE);
+        break;
+      case "event":
+        window.open(noti.meta.publicLink, "_blank");
+        break;
+      case "podcast":
+        history.push(INTERNAL_LINKS.PODCAST);
+        break;
+      case "content":
+        history.push(INTERNAL_LINKS.LEARNING_LIBRARY);
+        break;
+      default:
+        break;
+    }
+    setVisible(false);
+  };
 
   const renderNotifications = () => (
     <>
@@ -43,7 +64,12 @@ const Notification = ({
           ) : (
             <div />
           )}
-          <h5 className="notification-item-message">{noti.message}</h5>
+          <h5
+            className="notification-item-message"
+            onClick={() => onClickNotification(noti)}
+          >
+            {noti.message}
+          </h5>
         </div>
       ))}
       <div className="notification-item see-more">
