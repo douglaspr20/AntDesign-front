@@ -10,7 +10,7 @@ import { CustomButton, EpisodeCard } from "components";
 import FilterDrawer from "./FilterDrawer";
 import { PodcastFilterPanel } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
@@ -22,6 +22,7 @@ import IconRadiopublic from "images/icon-radiopublic.svg";
 import IconSpotify from "images/icon-spotify.svg";
 import IconVimeo from "images/icon-vimeo.svg";
 import IconGoogle from "images/icon-google.svg";
+import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
@@ -83,13 +84,19 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   },
 };
 
-const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
+const PodcastPage = ({
+  loading,
+  allEpisodes,
+  currentPage,
+  countOfResults,
+  getAllPodcasts,
+}) => {
   const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
 
   useEffect(() => {
-    getAllPodcasts();
+    getAllPodcasts({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -108,6 +115,14 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
       meta: value,
     });
     setMeta(value);
+  };
+
+  const onShowMore = () => {
+    getAllPodcasts({
+      ...filters,
+      meta,
+      page: currentPage + 1,
+    });
   };
 
   return (
@@ -181,13 +196,26 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
             );
           })}
         </section>
+        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+          <div className="podcast-page-footer d-flex justify-center items-center">
+            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  allEpisodes: podcastSelector(state).allEpisodes,
+  ...podcastSelector(state),
 });
 
 const mapDispatchToProps = {

@@ -8,7 +8,19 @@ import { constants as podcastConstants } from "../actions/podcast-actions";
 // Events's Reducer
 export const reducers = {
   [podcastConstants.SET_ALL_PODCASTS]: (state, { payload }) => {
-    return state.merge({ allEpisodes: cloneDeep(payload.podcasts) });
+    if (payload.page === 1) {
+      return state.merge({
+        allEpisodes: cloneDeep(payload.podcasts),
+        currentPage: payload.page,
+        countOfResults: payload.total,
+      });
+    }
+    const allEpisodes = state.get("allEpisodes");
+    return state.merge({
+      allEpisodes: cloneDeep([...allEpisodes, ...payload.podcasts]),
+      currentPage: payload.page,
+      countOfResults: payload.total,
+    });
   },
   [podcastConstants.SET_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
