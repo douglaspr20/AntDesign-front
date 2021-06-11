@@ -30,9 +30,14 @@ export const constants = {
 export const getAllPodcasts = createAction(GET_ALL_PODCASTS, (filter) => ({
   filter,
 }));
-export const setAllPodcasts = createAction(SET_ALL_PODCASTS, (podcasts) => ({
-  podcasts,
-}));
+export const setAllPodcasts = createAction(
+  SET_ALL_PODCASTS,
+  (total, page, podcasts) => ({
+    total,
+    page,
+    podcasts,
+  })
+);
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addPodcastToChannel = createAction(
   ADD_PODCAST_TO_CHANNEL,

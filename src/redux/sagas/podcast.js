@@ -15,18 +15,29 @@ import {
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(podcastActions.setLoading(true));
+  }
 
   try {
     const response = yield call(getAllPodcasts, payload);
 
     if (response.status === 200) {
-      yield put(podcastActions.setAllPodcasts(response.data.podcast));
+      yield put(
+        podcastActions.setAllPodcasts(
+          response.data.podcasts.count,
+          payload.filter.page || 1,
+          response.data.podcasts.rows
+        )
+      );
     }
   } catch (error) {
     console.log(error);
   } finally {
     yield put(homeActions.setLoading(false));
+    yield put(podcastActions.setLoading(false));
   }
 }
 
