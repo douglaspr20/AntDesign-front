@@ -87,3 +87,52 @@
 .ant-popover-title {
   border-bottom: 1px solid $color-border !important;
 }
+
+.upload-resume {
+  &-form {
+    display: flex;
+    align-items: center;
+
+    &-label {
+      @include app-font(14px, 19px, 600);
+      color: $color-text-primary !important;
+      margin-right: 1rem;
+    }
+
+    &-pdficon {
+      color: $color-error !important;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-delete {
+      color: $color-error !important;
+      font-size: 20px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        background: #e61e4733;
+      }
+    }
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+
+  &-none {
+    color: $color-primary !important;
+  }
+}
