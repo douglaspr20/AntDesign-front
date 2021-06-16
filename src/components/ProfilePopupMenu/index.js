@@ -5,14 +5,14 @@ import { Popover } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { FilePdfOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import { CustomButton, CustomModal } from "components";
+import { CustomButton } from "components";
 import { EVENT_TYPES, USER_ROLES } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
+import UploadResumeModal from "../UploadResumeModal";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
@@ -105,8 +105,6 @@ class ProfilePopupMenu extends React.Component {
   openResumeModal = (flag) => {
     this.setState({ showResumeModal: flag, visible: false });
   };
-
-  onUploadResume = () => {};
 
   render() {
     const { className, children, ...rest } = this.props;
@@ -244,36 +242,10 @@ class ProfilePopupMenu extends React.Component {
             onClick={this.onLogout}
           />
         </div>
-        <CustomModal
-          title="Upload your resume"
-          centered
+        <UploadResumeModal
           visible={showResumeModal}
-          width={500}
-          onCancel={() => this.openResumeModal(false)}
-        >
-          <div className="upload-resume">
-            <div className="upload-resume-form">
-              <span className="upload-resume-form-label">Resume:</span>
-              {user.resume ? (
-                <>
-                  <FilePdfOutlined className="upload-resume-form-pdficon" />
-                  <DeleteOutlined className="upload-resume-form-delete" />
-                </>
-              ) : (
-                <h5 className="upload-resume-none">-</h5>
-              )}
-            </div>
-            <div className="upload-resume-footer">
-              <CustomButton
-                text="Upload"
-                className="upload-resume-upload"
-                type="primary outlined"
-                size="xs"
-                onClick={this.onUploadResume}
-              />
-            </div>
-          </div>
-        </CustomModal>
+          onClose={() => this.openResumeModal(false)}
+        />
       </div>
     );
 
