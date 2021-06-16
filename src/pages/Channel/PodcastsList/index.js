@@ -126,7 +126,9 @@ const PodcastsList = ({
           {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
             <div className="channel-page-loading d-flex justify-center items-center">
               {loading ? (
-                <img src={IconLoadingMore} alt="loading-more-img" />
+                <div className="channel-page-loading-more">
+                  <img src={IconLoadingMore} alt="loading-more-img" />
+                </div>
               ) : (
                 <CustomButton
                   text="Show More"

@@ -8,6 +8,13 @@
     padding: 44px 0;
   }
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &-collapse {
     display: none;
     justify-content: center;

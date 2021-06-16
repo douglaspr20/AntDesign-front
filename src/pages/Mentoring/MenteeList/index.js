@@ -70,7 +70,11 @@ const MenteeList = ({
         ))}
         {!hideMore && (
           <div className="mentee-list-items-more">
-            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {loading && (
+              <div className="mentee-list-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
             {!loading && (
               <CustomButton
                 text="Show more"

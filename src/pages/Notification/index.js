@@ -114,7 +114,9 @@ const NotificationPage = ({
           {currentPage * MAX_NOTIFICATIONS < countOfResults && (
             <div className="notification-page-showmore d-flex justify-center items-center">
               {moreLoading && (
-                <img src={IconLoadingMore} alt="loading-more-img" />
+                <div className="notification-page-loading-more">
+                  <img src={IconLoadingMore} alt="loading-more-img" />
+                </div>
               )}
               {!moreLoading && (
                 <CustomButton

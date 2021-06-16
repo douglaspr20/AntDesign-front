@@ -5,6 +5,13 @@
   grid-template-columns: auto 1fr;
   width: 100%;
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .search-results-container {
     height: calc(100vh - 72px);
     background: $color-background;
