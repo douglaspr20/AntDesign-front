@@ -10,7 +10,7 @@ import { INTERNAL_LINKS } from "enum";
 import { notificationSelector } from "redux/selectors/notificationSelector";
 import {
   getNotifications,
-  marketNotificationToRead,
+  markNotificationToRead,
 } from "redux/actions/notification-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -28,7 +28,7 @@ const NotificationPage = ({
   countOfResults,
   userProfile,
   getNotifications,
-  marketNotificationToRead,
+  markNotificationToRead,
 }) => {
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
@@ -47,7 +47,7 @@ const NotificationPage = ({
         .filter((noti) => !noti.readers.includes(userProfile.id))
         .map((noti) => noti.id);
       if (unreadNotifications.length > 0) {
-        marketNotificationToRead(unreadNotifications, userProfile.id);
+        markNotificationToRead(unreadNotifications, userProfile.id);
       }
     }
   }, [notificationList, userProfile]);
@@ -161,7 +161,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getNotifications,
-  marketNotificationToRead,
+  markNotificationToRead,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage);

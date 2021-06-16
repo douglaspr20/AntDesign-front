@@ -45,7 +45,7 @@ export const setNotificationMoreLoading = createAction(
 export const pushNotification = createAction(PUSH_NOTIFICATION, (data) => ({
   data,
 }));
-export const marketNotificationToRead = createAction(
+export const markNotificationToRead = createAction(
   MARK_NOTIFICATION_TO_READ,
   (notifications, userId) => ({ notifications, userId })
 );
@@ -60,6 +60,6 @@ export const actions = {
   setNotificationLoading,
   setNotificationMoreLoading,
   pushNotification,
-  marketNotificationToRead,
+  markNotificationToRead,
   updateNotificationToRead,
 };
