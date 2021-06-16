@@ -198,7 +198,11 @@ const PodcastPage = ({
         </section>
         {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
           <div className="podcast-page-footer d-flex justify-center items-center">
-            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {loading && (
+              <div className="podcast-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
             {!loading && (
               <CustomButton
                 text="Show more"

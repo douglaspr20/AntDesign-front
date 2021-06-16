@@ -8,7 +8,10 @@ import { connect } from "react-redux";
 
 import { INTERNAL_LINKS } from "enum";
 import { notificationSelector } from "redux/selectors/notificationSelector";
-import { getNotifications } from "redux/actions/notification-actions";
+import {
+  getNotifications,
+  markNotificationToRead,
+} from "redux/actions/notification-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconNotification from "images/icon-notification.svg";
@@ -25,6 +28,7 @@ const Notification = ({
   unreadCount,
   userProfile,
   getNotifications,
+  markNotificationToRead,
 }) => {
   const [visible, setVisible] = useState(false);
   const history = useHistory();
@@ -36,6 +40,7 @@ const Notification = ({
   );
 
   const onClickNotification = (noti) => {
+    markNotificationToRead([noti.id], userProfile.id);
     switch (noti.type) {
       case "marketplace":
         history.push(INTERNAL_LINKS.MARKETPLACE);
@@ -136,6 +141,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getNotifications,
+  markNotificationToRead,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notification);

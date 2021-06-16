@@ -145,7 +145,11 @@ const Channels = ({
           </div>
           {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
             <div className="search-results-container-footer d-flex justify-center items-center">
-              {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+              {loading && (
+                <div className="channels-page-loading-more">
+                  <img src={IconLoadingMore} alt="loading-more-img" />
+                </div>
+              )}
               {!loading && (
                 <CustomButton
                   text="Show more"

@@ -12,6 +12,13 @@
     display: none;
   }
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   &-showmore {
     margin-top: 3rem;
   }

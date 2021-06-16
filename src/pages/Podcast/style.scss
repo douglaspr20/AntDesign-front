@@ -7,6 +7,13 @@
   height: calc(100vh - 72px);
   overflow: auto;
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   @media (max-width: 576px) {
     padding: 2rem 0;
   }
