@@ -51,7 +51,11 @@ export const markNotificationToRead = createAction(
 );
 export const updateNotificationToRead = createAction(
   UPDATE_NOTIFICATION_TO_READ,
-  (unreadCount, userId) => ({ unreadCount, userId })
+  (notifications, unreadCount, userId) => ({
+    notifications,
+    unreadCount,
+    userId,
+  })
 );
 
 export const actions = {

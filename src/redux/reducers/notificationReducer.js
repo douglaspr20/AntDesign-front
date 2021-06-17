@@ -51,7 +51,9 @@ export const reducers = {
     return state.merge({
       notificationList: notificationList.map((noti) => ({
         ...noti,
-        readers: [...noti.readers, payload.userId],
+        readers: (payload.notifications || []).includes(noti.id)
+          ? [...noti.readers, payload.userId]
+          : [...noti.readers],
       })),
       unreadCount: payload.unreadCount,
     });

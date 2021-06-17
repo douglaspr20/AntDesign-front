@@ -44,6 +44,7 @@ export function* setNotificationToReadSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         notificationActions.updateNotificationToRead(
+          payload.notifications,
           response.data.unread,
           payload.userId
         )
