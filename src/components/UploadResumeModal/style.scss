@@ -52,5 +52,6 @@
 
   &-none {
     color: $color-primary !important;
+    @include app-font(16px, 24px, 600);
   }
 }

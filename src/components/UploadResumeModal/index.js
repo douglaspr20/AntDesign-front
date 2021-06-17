@@ -10,7 +10,7 @@ const UploadResumeModal = ({ visible, onClose }) => {
   const fileRef = useRef(null);
   const [selectedFileInfo, setSelectedFileInfo] = useState({});
 
-  const onSelectResume = () => {
+  const onUploadResume = () => {
     if (fileRef && fileRef.current) {
       fileRef.current.click();
     }
@@ -21,8 +21,6 @@ const UploadResumeModal = ({ visible, onClose }) => {
       setSelectedFileInfo(fileRef.current.files[0]);
     }
   };
-
-  const onUploadResume = () => {};
 
   return (
     <CustomModal
@@ -45,29 +43,24 @@ const UploadResumeModal = ({ visible, onClose }) => {
               <DeleteOutlined className="upload-resume-form-delete" />
             </>
           ) : (
-            <CustomButton
-              text="Select"
-              type="primary outlined"
-              size="xs"
-              onClick={onSelectResume}
-            />
+            <span className="upload-resume-none">-</span>
           )}
         </div>
         <div className="upload-resume-footer">
-          <CustomButton
-            text="Cancel"
-            className="upload-resume-upload"
-            type="primary outlined"
-            size="xs"
-            style={{ marginRight: "1rem" }}
-            onClick={onClose}
-          />
           <CustomButton
             text="Upload"
             className="upload-resume-upload"
             type="primary"
             size="xs"
             onClick={onUploadResume}
+          />
+          <CustomButton
+            text="Close"
+            className="upload-resume-upload"
+            type="primary outlined"
+            size="xs"
+            style={{ marginLeft: "1rem" }}
+            onClick={onClose}
           />
         </div>
         <input
