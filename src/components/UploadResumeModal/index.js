@@ -1,18 +1,18 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { FilePdfOutlined, DeleteOutlined } from "@ant-design/icons";
+import { FilePdfOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
 import { CustomModal, CustomButton } from "components";
 import { uploadResume } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
 
-const UploadResumeModal = ({ visible, onClose, uploadResume }) => {
+const UploadResumeModal = ({ visible, userProfile, onClose, uploadResume }) => {
   const fileRef = useRef(null);
-  const [selectedFileInfo, setSelectedFileInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -21,6 +21,8 @@ const UploadResumeModal = ({ visible, onClose, uploadResume }) => {
       fileRef.current.click();
     }
   };
+
+  const onDeleteResume = () => {};
 
   const onFileChange = async () => {
     if (fileRef && fileRef.current) {
@@ -48,13 +50,16 @@ const UploadResumeModal = ({ visible, onClose, uploadResume }) => {
         });
       });
       if (response) {
-        setSelectedFileInfo(file);
-        console.log("***** success upload");
+        console.log("success upload");
       } else {
         setErrorMessage("Something went wrong. Please try again!");
       }
       setLoading(false);
     }
+  };
+
+  const onOpenResume = (resume) => {
+    window.open(resume, "_target");
   };
 
   return (
@@ -76,13 +81,16 @@ const UploadResumeModal = ({ visible, onClose, uploadResume }) => {
           <React.Fragment>
             <div className="upload-resume-form">
               <span className="upload-resume-form-label">Resume:</span>
-              {!!selectedFileInfo.name ? (
+              {!!userProfile.resumeFileName ? (
                 <>
                   <FilePdfOutlined className="upload-resume-form-pdficon" />
                   <span className="upload-resume-filename">
-                    {selectedFileInfo.name}
+                    {userProfile.resumeFileName}
                   </span>
-                  <DeleteOutlined className="upload-resume-form-delete" />
+                  <i
+                    className="fas fa-external-link-alt external-link"
+                    onClick={() => onOpenResume(userProfile.resumeUrl)}
+                  />
                 </>
               ) : (
                 <span className="upload-resume-none">-</span>
@@ -94,14 +102,19 @@ const UploadResumeModal = ({ visible, onClose, uploadResume }) => {
             <div className="upload-resume-footer">
               <CustomButton
                 text="Upload"
-                className="upload-resume-upload"
                 type="primary"
                 size="xs"
                 onClick={onUploadResume}
               />
               <CustomButton
+                text="Delete"
+                type="primary outlined"
+                size="xs"
+                style={{ marginLeft: "1rem" }}
+                onClick={onDeleteResume}
+              />
+              <CustomButton
                 text="Close"
-                className="upload-resume-upload"
                 type="primary outlined"
                 size="xs"
                 style={{ marginLeft: "1rem" }}
@@ -133,7 +146,9 @@ UploadResumeModal.defaultProps = {
   onClose: () => {},
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
   uploadResume,

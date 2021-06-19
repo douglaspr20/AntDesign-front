@@ -172,12 +172,13 @@ export function* uploadResumeSaga({ payload }) {
     const response = yield call(uploadResume, { ...payload });
 
     if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
       if (payload.callback) {
         payload.callback("");
       }
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (payload.callback) {
       payload.callback(error);
     }
