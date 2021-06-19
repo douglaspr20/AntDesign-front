@@ -45,3 +45,11 @@ export const addSession = ({ session }) => {
 export const removeSession = ({ session }) => {
   return httpClient.put(`private/user/remove-session/${session.id}`);
 };
+
+export const uploadResume = ({ resume }) => {
+  return httpClient.put("private/user/upload-resume", resume);
+};
+
+export const deleteResume = () => {
+  return httpClient.put("private/user/delete-resume");
+};

@@ -12,6 +12,7 @@ import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
+import UploadResumeModal from "../UploadResumeModal";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
@@ -37,6 +38,7 @@ class ProfilePopupMenu extends React.Component {
       visible: false,
       portalSession: null,
       subscription: null,
+      showResumeModal: false,
     };
   }
 
@@ -100,9 +102,13 @@ class ProfilePopupMenu extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  openResumeModal = (flag) => {
+    this.setState({ showResumeModal: flag, visible: false });
+  };
+
   render() {
     const { className, children, ...rest } = this.props;
-    const { visible } = this.state;
+    const { visible, showResumeModal } = this.state;
     const { userProfile: user } = this.props;
 
     const TitleSection = () => (
@@ -115,8 +121,9 @@ class ProfilePopupMenu extends React.Component {
           )}
         </div>
         <div className="user-info">
-          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${user ? user.lastName || "" : ""
-            }`}</p>
+          <p className="user-info-name">{`${user ? user.firstName || "" : ""} ${
+            user ? user.lastName || "" : ""
+          }`}</p>
           <p className="user-info-view">View / Update Profile</p>
         </div>
       </div>
@@ -179,32 +186,43 @@ class ProfilePopupMenu extends React.Component {
             <div>Free Membership</div>
           )}
         </div>
-        {user.role !== USER_ROLES.CHANNEL_ADMIN && (
-          user.channelsSubscription === false &&
-          <div
-            className="profile-popover-content-menu"
-            onClick={this.onUpgrade}
-          >Become a CREATOR</div>
-        )}
-        {
-          user.channelsSubscription === true &&
+        {user.role !== USER_ROLES.CHANNEL_ADMIN &&
+          user.channelsSubscription === false && (
+            <div
+              className="profile-popover-content-menu"
+              onClick={this.onUpgrade}
+            >
+              Become a CREATOR
+            </div>
+          )}
+        {user.channelsSubscription === true && (
           <div className="profile-popover-content-menu">
             <div>CREATOR</div>
-              <div>
-                {moment(user.channelsSubscription_startdate)
-                  .format("MMMM DD, yyyy")}{" "}
-                  -{" "}
-                {moment(user.channelsSubscription_enddate)
-                  .format("MMMM DD, yyyy")}
-              </div>
+            <div>
+              {moment(user.channelsSubscription_startdate).format(
+                "MMMM DD, yyyy"
+              )}{" "}
+              -{" "}
+              {moment(user.channelsSubscription_enddate).format(
+                "MMMM DD, yyyy"
+              )}
+            </div>
           </div>
-        }
+        )}
         <div
           className="profile-popover-content-menu"
           onClick={this.onClaimCredits}
         >
           Claim Conference Credits
         </div>
+        {user.percentOfCompletion === 100 && (
+          <div
+            className="profile-popover-content-menu"
+            onClick={() => this.openResumeModal(true)}
+          >
+            Upload your resume
+          </div>
+        )}
         {ProfileMenus.map((menu, index) => (
           <Link
             key={index}
@@ -224,6 +242,10 @@ class ProfilePopupMenu extends React.Component {
             onClick={this.onLogout}
           />
         </div>
+        <UploadResumeModal
+          visible={showResumeModal}
+          onClose={() => this.openResumeModal(false)}
+        />
       </div>
     );
 
@@ -252,8 +274,8 @@ ProfilePopupMenu.propTypes = {
 
 ProfilePopupMenu.defaultProps = {
   title: "",
-  logout: () => { },
-  showPremiumAlert: () => { },
+  logout: () => {},
+  showPremiumAlert: () => {},
 };
 
 const mapStateToProps = (state) => homeSelector(state);
