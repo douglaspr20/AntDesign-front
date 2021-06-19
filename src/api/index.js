@@ -10,6 +10,7 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  uploadResume,
 } from "./module/user";
 import {
   getAllEvents,
@@ -116,4 +117,5 @@ export {
   addSession,
   removeSession,
   markeToRead,
+  uploadResume,
 };

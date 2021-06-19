@@ -12,6 +12,7 @@ const INVITE_FRIEND = "INVITE_FRIEND";
 const ATTEND_TO_GLOBAL_CONFERENCE = "ATTEND_TO_GLOBAL_CONFERENCE";
 const ADD_SESSION = "ADD_SESSION";
 const REMOVE_SESSION = "REMOVE_SESSION";
+const UPLOAD_RESUME = "UPLOAD_RESUME";
 
 export const constants = {
   SET_LOADING,
@@ -25,6 +26,7 @@ export const constants = {
   ATTEND_TO_GLOBAL_CONFERENCE,
   ADD_SESSION,
   REMOVE_SESSION,
+  UPLOAD_RESUME,
 };
 
 // ------------------------------------
@@ -53,6 +55,10 @@ export const addSession = createAction(ADD_SESSION, (session) => ({ session }));
 export const removeSession = createAction(REMOVE_SESSION, (session) => ({
   session,
 }));
+export const uploadResume = createAction(UPLOAD_RESUME, (resume, callback) => ({
+  resume,
+  callback,
+}));
 
 export const actions = {
   setLoading,
@@ -65,4 +71,5 @@ export const actions = {
   attendToGlobalConference,
   addSession,
   removeSession,
+  uploadResume,
 };

@@ -44,6 +44,11 @@
     }
   }
 
+  &-error {
+    @include app-font(16px, 24px);
+    color: $color-error;
+  }
+
   &-footer {
     display: flex;
     justify-content: flex-end;
@@ -53,5 +58,12 @@
   &-none {
     color: $color-primary !important;
     @include app-font(16px, 24px, 600);
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
   }
 }
