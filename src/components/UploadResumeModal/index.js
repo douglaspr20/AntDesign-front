@@ -5,13 +5,19 @@ import { FilePdfOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
 import { CustomModal, CustomButton } from "components";
-import { uploadResume } from "redux/actions/home-actions";
+import { uploadResume, deleteResume } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
 
-const UploadResumeModal = ({ visible, userProfile, onClose, uploadResume }) => {
+const UploadResumeModal = ({
+  visible,
+  userProfile,
+  onClose,
+  uploadResume,
+  deleteResume,
+}) => {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,7 +28,25 @@ const UploadResumeModal = ({ visible, userProfile, onClose, uploadResume }) => {
     }
   };
 
-  const onDeleteResume = () => {};
+  const onDeleteResume = async () => {
+    setLoading(true);
+    setErrorMessage("");
+    const response = await new Promise((resolve) => {
+      deleteResume((error) => {
+        if (error) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+    if (response) {
+      console.log("success delete");
+    } else {
+      setErrorMessage("Something went wrong. Please try again!");
+    }
+    setLoading(false);
+  };
 
   const onFileChange = async () => {
     if (fileRef && fileRef.current) {
@@ -104,12 +128,14 @@ const UploadResumeModal = ({ visible, userProfile, onClose, uploadResume }) => {
                 text="Upload"
                 type="primary"
                 size="xs"
+                disabled={!!userProfile.resumeFileName}
                 onClick={onUploadResume}
               />
               <CustomButton
                 text="Delete"
                 type="primary outlined"
                 size="xs"
+                disabled={!userProfile.resumeFileName}
                 style={{ marginLeft: "1rem" }}
                 onClick={onDeleteResume}
               />
@@ -152,6 +178,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   uploadResume,
+  deleteResume,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadResumeModal);

@@ -11,6 +11,7 @@ import {
   addSession,
   removeSession,
   uploadResume,
+  deleteResume,
 } from "./module/user";
 import {
   getAllEvents,
@@ -118,4 +119,5 @@ export {
   removeSession,
   markeToRead,
   uploadResume,
+  deleteResume,
 };

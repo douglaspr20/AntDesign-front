@@ -14,6 +14,7 @@ import {
   addSession,
   removeSession,
   uploadResume,
+  deleteResume,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -185,6 +186,24 @@ export function* uploadResumeSaga({ payload }) {
   }
 }
 
+export function* deleteResumeSaga({ payload }) {
+  try {
+    const response = yield call(deleteResume, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -197,6 +216,7 @@ function* watchLogin() {
   yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
   yield takeLatest(homeConstants.REMOVE_SESSION, removeSessionSaga);
   yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);
+  yield takeLatest(homeConstants.DELETE_RESUME, deleteResumeSaga);
 }
 
 export const userSaga = [fork(watchLogin)];
