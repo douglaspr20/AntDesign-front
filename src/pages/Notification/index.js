@@ -36,22 +36,6 @@ const NotificationPage = ({
     return () => {};
   }, []);
 
-  useEffect(() => {
-    if (
-      userProfile &&
-      userProfile.id &&
-      notificationList &&
-      notificationList.length
-    ) {
-      const unreadNotifications = notificationList
-        .filter((noti) => !noti.readers.includes(userProfile.id))
-        .map((noti) => noti.id);
-      if (unreadNotifications.length > 0) {
-        markNotificationToRead(unreadNotifications, userProfile.id);
-      }
-    }
-  }, [notificationList, userProfile]);
-
   const onShowMore = () => {
     getNotifications(currentPage + 1, MAX_NOTIFICATIONS);
   };
@@ -81,6 +65,9 @@ const NotificationPage = ({
                   href={noti.meta.publicLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    markNotificationToRead([noti.id], userProfile.id)
+                  }
                 >
                   Go to event
                 </a>
@@ -89,6 +76,9 @@ const NotificationPage = ({
                 <Link
                   className="notification-list-item-link"
                   to={INTERNAL_LINKS.PODCAST}
+                  onClick={() =>
+                    markNotificationToRead([noti.id], userProfile.id)
+                  }
                 >
                   Go to Podcast
                 </Link>
@@ -97,6 +87,9 @@ const NotificationPage = ({
                 <Link
                   className="notification-list-item-link"
                   to={INTERNAL_LINKS.MARKETPLACE}
+                  onClick={() =>
+                    markNotificationToRead([noti.id], userProfile.id)
+                  }
                 >
                   Go to HR Marketplace
                 </Link>
@@ -105,6 +98,9 @@ const NotificationPage = ({
                 <Link
                   className="notification-list-item-link"
                   to={INTERNAL_LINKS.LEARNING_LIBRARY}
+                  onClick={() =>
+                    markNotificationToRead([noti.id], userProfile.id)
+                  }
                 >
                   Go to Learning library
                 </Link>
