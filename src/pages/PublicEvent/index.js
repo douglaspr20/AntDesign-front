@@ -87,6 +87,9 @@ const PublicEventPage = ({
         {!updatedEvent.image2 && updatedEvent.image && (
           <img src={updatedEvent.image} alt="event-img" />
         )}
+        {!updatedEvent.image2 && !updatedEvent.image && (
+          <div className="public-event-page-header-defaultimg" />
+        )}
         <div className="public-event-page-header-title">
           <Modal
             visible={modalVisible}
