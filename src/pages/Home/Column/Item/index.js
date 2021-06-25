@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CheckOutlined } from "@ant-design/icons";
 import ReactPlayer from "react-player";
-import moment from 'moment';
+import moment from "moment";
 
 import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -30,8 +30,8 @@ const HomeRecommendationsItem = ({
   const [image, setImage] = useState(HARDCODED_COVER_PLACEHOLDER);
   const [eventStatus, setEventStatus] = useState("attend");
   const contentType = {
-    'article': { text: "Article", icon: <IconDocument /> },
-    'video': { text: "Video", icon: <IconVideo /> },
+    article: { text: "Article", icon: <IconDocument /> },
+    video: { text: "Video", icon: <IconVideo /> },
   };
 
   useEffect(() => {
@@ -51,117 +51,141 @@ const HomeRecommendationsItem = ({
   }, [element, type]);
 
   const onAttend = () => {
-    setEventStatus("going")
+    setEventStatus("going");
     let event = element;
     event.going = true;
     addToMyEventList(event);
-  }
+  };
 
   const onRemove = () => {
-    setEventStatus("attend")
+    setEventStatus("attend");
     let event = element;
     event.going = false;
     removeFromMyEventList(event);
-  }
+  };
 
-  return (<div className="item-container">
-    { type === "event" &&
-      <div className="item-circle-date">
-        <span>{moment(element.startDate).format("DD")}</span>
-        <span>{moment(element.startDate).format("MMM")}</span>
-      </div>
-    }
-    <div className="img-container">
-      {
-        type !== "conference" ?
-          <img src={image} className={`image-${type}`} alt={`${type}-${element.id}`} />
-          :
+  const numberOfCategories = (element.topics || element.categories || [])
+    .length;
+
+  return (
+    <div className="item-container">
+      {type === "event" && (
+        <div className="item-circle-date">
+          <span>{moment(element.startDate).format("DD")}</span>
+          <span>{moment(element.startDate).format("MMM")}</span>
+        </div>
+      )}
+      <div className="img-container">
+        {type !== "conference" ? (
+          <img
+            src={image}
+            className={`image-${type}`}
+            alt={`${type}-${element.id}`}
+          />
+        ) : (
           <ReactPlayer
             className={`image-${type}`}
             controls={false}
             url={element.link}
           />
-      }
-    </div>
-    <h3>
-      {type !== "event" ?
-        <a href={type === "podcast" ? element.appleLink : element.link} target="_blank" rel="noopener noreferrer">{element.title}</a>
-        :
-        element.title
-      }
-    </h3>
-    { type === "library" &&
-      <p className="item-description">{element.description}</p>
-    }
-    {
-      type !== "library" &&
-        type === "event" ?
-        <span className="item-date">{moment(element.startDate).format("DD MMM - HH:MM A ")}</span>
-        :
-        type !== "library" &&
-        <span className="item-date">{moment(element.createdAt).format("DD MMM")}</span>
-
-    }
-    { type === "library" && element.contentType &&
-      <div className="item-library-info">
-        <div className="item-library-type">
-          {contentType[element.contentType].icon}
-          {contentType[element.contentType].text}
-        </div>
+        )}
       </div>
-    }
-    { type === "event" &&
-      <div className="item-event-info">
-        <span>
-          {`${(element.location || []).join(
-            ", "
-          )} event`}
+      <h3>
+        {type !== "event" ? (
+          <a
+            href={type === "podcast" ? element.appleLink : element.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {element.title}
+          </a>
+        ) : (
+          element.title
+        )}
+      </h3>
+      {type === "library" && (
+        <p className="item-description">{element.description}</p>
+      )}
+      {type !== "library" && type === "event" ? (
+        <span className="item-date">
+          {moment(element.startDate).format("DD MMM - HH:MM A ")}
         </span>
-        <span>{element.ticket}</span>
-      </div>
-    }
-    { type !== "library" &&
-      <div className="recomendation-topics">
-        {(element.topics || element.categories || []).map((item, index) => {
-          const category = allCategories.find((cat) => cat.value === item);
-          return (
-            <SpecialtyItem
-              key={index}
-              title={category ? category.title : item}
-              active={false}
-            />
-          );
-        })}
-      </div>
-    }
-    { type === "event" &&
-      eventStatus === "attend" ?
-      <CustomButton
-        text="Attend"
-        size="md"
-        type="primary"
-        onClick={() => { onAttend() }}
-      />
-      :
-      eventStatus === "going" && (
-        <div className="going-group-part">
-          <div className="going-label">
-            <CheckOutlined />
-            <span>I'm going</span>
+      ) : (
+        type !== "library" && (
+          <span className="item-date">
+            {moment(element.createdAt).format("DD MMM")}
+          </span>
+        )
+      )}
+      {type === "library" && element.contentType && (
+        <div className="item-library-info">
+          <div className="item-library-type">
+            {contentType[element.contentType].icon}
+            {contentType[element.contentType].text}
           </div>
-          <CustomButton
-            className="not-going-btn"
-            text="Not going"
-            size="md"
-            type="remove"
-            remove={true}
-            onClick={() => { onRemove() }}
-          />
         </div>
-      )
-    }
-  </div>);
-}
+      )}
+      {type === "event" && (
+        <div className="item-event-info">
+          <span>{`${(element.location || []).join(", ")} event`}</span>
+          <span>{element.ticket}</span>
+        </div>
+      )}
+      {type !== "library" && (
+        <div className="recomendation-topics">
+          {(element.topics || element.categories || [])
+            .slice(0, 2)
+            .map((item, index) => {
+              const category = allCategories.find((cat) => cat.value === item);
+              return (
+                <React.Fragment>
+                  <SpecialtyItem
+                    key={index}
+                    title={category ? category.title : item}
+                    active={false}
+                  />
+                </React.Fragment>
+              );
+            })}
+          {numberOfCategories > 2 && (
+            <span className="recomendation-topics-more">{`${
+              numberOfCategories - 2
+            }+ More`}</span>
+          )}
+        </div>
+      )}
+      {type === "event" && eventStatus === "attend" ? (
+        <CustomButton
+          text="Attend"
+          size="md"
+          type="primary"
+          onClick={() => {
+            onAttend();
+          }}
+        />
+      ) : (
+        eventStatus === "going" && (
+          <div className="going-group-part">
+            <div className="going-label">
+              <CheckOutlined />
+              <span>I'm going</span>
+            </div>
+            <CustomButton
+              className="not-going-btn"
+              text="Not going"
+              size="md"
+              type="remove"
+              remove={true}
+              onClick={() => {
+                onRemove();
+              }}
+            />
+          </div>
+        )
+      )}
+    </div>
+  );
+};
 
 HomeRecommendationsItem.propTypes = {
   element: PropTypes.object,
@@ -181,7 +205,6 @@ HomeRecommendationsItem.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
-
 });
 
 const mapDispatchToProps = {
@@ -189,4 +212,7 @@ const mapDispatchToProps = {
   removeFromMyEventList,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeRecommendationsItem);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeRecommendationsItem);
