@@ -10,7 +10,7 @@ import { CustomButton, EpisodeCard } from "components";
 import FilterDrawer from "./FilterDrawer";
 import { PodcastFilterPanel } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES, SETTINGS, INTERNAL_LINKS } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
@@ -86,6 +86,7 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
 
 const PodcastPage = ({
   loading,
+  history,
   allEpisodes,
   currentPage,
   countOfResults,
@@ -125,9 +126,17 @@ const PodcastPage = ({
     });
   };
 
+  const onClickPodcastSeries = () => {
+    history.push(INTERNAL_LINKS.PODCAST_SERIES);
+  };
+
   return (
     <div className="podcast-page">
-      <PodcastFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <PodcastFilterPanel
+        onChange={onFilterChange}
+        onSearch={onSearch}
+        onClickPodcastSeries={onClickPodcastSeries}
+      />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="podcast-page__container">
         <div className="podcast-page__filters--button">
@@ -136,7 +145,13 @@ const PodcastPage = ({
             onClick={() => {
               showFilterPanel();
             }}
-          ></CustomButton>
+          />
+          <CustomButton
+            type="primary"
+            text="Podcast Series"
+            style={{ marginTop: "1rem" }}
+            onClick={onClickPodcastSeries}
+          />
         </div>
         <header className="podcast-page__header">
           <h2>Subscribe:</h2>
