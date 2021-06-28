@@ -13,11 +13,13 @@ import Notification from "containers/Notification";
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconNotification from "images/icon-notification-header.svg";
+import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { podcastSelector } from "redux/selectors/podcastSelector";
 
 import "./style.scss";
 
@@ -65,12 +67,20 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconNotification,
         label: "Notifications",
-      }
+      };
     } else if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
       const { selectedChannel } = this.props;
       pathInfo = {
         icon: IconTvOutline,
         label: (selectedChannel || {}).name || "",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
+      const { podcastSeries } = this.props;
+      pathInfo = {
+        icon: IconHeadsetOutline,
+        label: (podcastSeries || {}).title || "Podcast Series",
       };
     }
 
@@ -96,15 +106,22 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          {this.props.live.live === true &&
+          {this.props.live.live === true && (
             <CustomButton
-              text={<div className="live-container"><div className="live-circle"></div><div>LIVE</div></div>}
+              text={
+                <div className="live-container">
+                  <div className="live-circle"></div>
+                  <div>LIVE</div>
+                </div>
+              }
               type="primary"
               size="lg"
               className="outlined btn-live"
-              onClick={() => { this.props.history.push(INTERNAL_LINKS.LIVE); }}
+              onClick={() => {
+                this.props.history.push(INTERNAL_LINKS.LIVE);
+              }}
             />
-          }
+          )}
           <CustomButton
             text="Invite friend"
             type="primary"
@@ -130,8 +147,9 @@ class MainHeader extends React.Component {
                 user.abbrName
               )}
             </div>
-            <span className="user-name">{`${user.firstName || ""} ${user.lastName || ""
-              }`}</span>
+            <span className="user-name">{`${user.firstName || ""} ${
+              user.lastName || ""
+            }`}</span>
             <div className="profile-menu-chevron">
               <img src={IconChevronDown} alt="profile-menu" />
             </div>
@@ -159,6 +177,7 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   live: liveSelector(state).live,
+  podcastSeries: podcastSelector(state).podcastSeries,
 });
 
 const mapDispatchToProps = {

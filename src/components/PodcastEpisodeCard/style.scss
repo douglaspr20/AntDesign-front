@@ -51,6 +51,8 @@
   border: 1px solid $color-border;
   border-radius: 0.5rem;
   overflow: hidden;
+  min-height: 100px;
+  background: $color-background-dark;
 
   img {
     width: 100%;

@@ -2,6 +2,10 @@ import { createAction } from "redux-actions";
 
 const GET_ALL_PODCASTS = "GET_ALL_PODCASTS";
 const SET_ALL_PODCASTS = "SET_ALL_PODCASTS";
+const GET_ALL_PODCAST_SERIES = "GET_ALL_PODCAST_SERIES";
+const SET_ALL_PODCAST_SERIES = "SET_ALL_PODCAST_SERIES";
+const GET_PODCAST_SERIES = "GET_PODCAST_SERIES";
+const SET_PODCAST_SERIES = "SET_PODCAST_SERIES";
 const SET_LOADING = "SET_PODCASTS_LOADING";
 const ADD_PODCAST_TO_CHANNEL = "ADD_PODCAST_TO_CHANNEL";
 const GET_FIRST_CHANNEL_PODCAST_LIST = "GET_FIRST_CHANNEL_PODCAST_LIST";
@@ -14,6 +18,10 @@ const UPDATE_CHANNEL_PODCAST = "UPDATE_CHANNEL_PODCAST";
 export const constants = {
   GET_ALL_PODCASTS,
   SET_ALL_PODCASTS,
+  GET_ALL_PODCAST_SERIES,
+  SET_ALL_PODCAST_SERIES,
+  GET_PODCAST_SERIES,
+  SET_PODCAST_SERIES,
   SET_LOADING,
   ADD_PODCAST_TO_CHANNEL,
   GET_FIRST_CHANNEL_PODCAST_LIST,
@@ -37,6 +45,18 @@ export const setAllPodcasts = createAction(
     page,
     podcasts,
   })
+);
+export const getAllPodcastSeries = createAction(GET_ALL_PODCAST_SERIES);
+export const setAllPodcastSeries = createAction(
+  SET_ALL_PODCAST_SERIES,
+  (allPodcastSeries) => ({ allPodcastSeries })
+);
+export const getPodcastSeries = createAction(GET_PODCAST_SERIES, (id) => ({
+  id,
+}));
+export const setPodcastSeries = createAction(
+  SET_PODCAST_SERIES,
+  (podcastSeries) => ({ podcastSeries })
 );
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addPodcastToChannel = createAction(
@@ -72,6 +92,10 @@ export const updateChannelPodcast = createAction(
 export const actions = {
   getAllPodcasts,
   setAllPodcasts,
+  getAllPodcastSeries,
+  setAllPodcastSeries,
+  getPodcastSeries,
+  setPodcastSeries,
   setLoading,
   addPodcastToChannel,
   getFirstChannelPodcastList,

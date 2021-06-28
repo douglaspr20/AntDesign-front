@@ -18,6 +18,14 @@ export const getAllPodcasts = async (data) => {
   return await httpClient.get(`private/podcast/search?${parsedFilter}`);
 };
 
+export const getAllPodcastSeries = async () => {
+  return await httpClient.get(`private/podcast-series`);
+};
+
+export const getPodcastSeries = async ({ id }) => {
+  return await httpClient.get(`private/podcast-series/${id}`);
+};
+
 export const addPodcastToChannel = ({ podcast }) => {
   return httpClient.post("private/podcast/channel", { ...podcast });
 };

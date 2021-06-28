@@ -22,6 +22,12 @@ export const reducers = {
       countOfResults: payload.total,
     });
   },
+  [podcastConstants.SET_ALL_PODCAST_SERIES]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
+  [podcastConstants.SET_PODCAST_SERIES]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
   [podcastConstants.SET_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
@@ -46,6 +52,8 @@ export const initialState = () =>
   Map({
     loading: false,
     allEpisodes: [],
+    allPodcastSeries: [],
+    podcastSeries: {},
     countOfResults: 0,
     currentPage: 1,
   });
