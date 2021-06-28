@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import {
-  SIDEBAR_MENU_LIST,
-  EVENT_TYPES,
-  INTERNAL_LINKS,
-} from "enum";
+import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
@@ -17,14 +13,12 @@ import Notification from "containers/Notification";
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconNotification from "images/icon-notification-header.svg";
-import IconMedal from "images/icon-medal.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
-import { courseSelector } from "redux/selectors/courseSelector";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 
 import "./style.scss";
@@ -73,7 +67,7 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconNotification,
         label: "Notifications",
-      }
+      };
     } else if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
       const { selectedChannel } = this.props;
       pathInfo = {
@@ -87,14 +81,6 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconHeadsetOutline,
         label: (podcastSeries || {}).title || "Podcast Series",
-      };
-    }
-
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
-      const { selectedCourse } = this.props;
-      pathInfo = {
-        icon: IconMedal,
-        label: `Class - ${(selectedCourse || {}).title || ""}`,
       };
     }
 
@@ -120,15 +106,22 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          {this.props.live.live === true &&
+          {this.props.live.live === true && (
             <CustomButton
-              text={<div className="live-container"><div className="live-circle"></div><div>LIVE</div></div>}
+              text={
+                <div className="live-container">
+                  <div className="live-circle"></div>
+                  <div>LIVE</div>
+                </div>
+              }
               type="primary"
               size="lg"
               className="outlined btn-live"
-              onClick={() => { this.props.history.push(INTERNAL_LINKS.LIVE); }}
+              onClick={() => {
+                this.props.history.push(INTERNAL_LINKS.LIVE);
+              }}
             />
-          }
+          )}
           <CustomButton
             text="Invite friend"
             type="primary"
@@ -154,8 +147,9 @@ class MainHeader extends React.Component {
                 user.abbrName
               )}
             </div>
-            <span className="user-name">{`${user.firstName || ""} ${user.lastName || ""
-              }`}</span>
+            <span className="user-name">{`${user.firstName || ""} ${
+              user.lastName || ""
+            }`}</span>
             <div className="profile-menu-chevron">
               <img src={IconChevronDown} alt="profile-menu" />
             </div>
@@ -183,7 +177,6 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   live: liveSelector(state).live,
-  selectedCourse: courseSelector(state).course,
   podcastSeries: podcastSelector(state).podcastSeries,
 });
 

@@ -17,7 +17,6 @@ import "./style.scss";
 const PodcastSeriesDetail = ({
   userProfile,
   match,
-  history,
   podcastSeries,
   getPodcastSeries,
 }) => {
@@ -71,13 +70,15 @@ const PodcastSeriesDetail = ({
           />
         ))}
       </div>
-      <div className="d-flex justify-center">
-        <CustomButton
-          type="primary"
-          text="Claim HR Credits"
-          onClick={onClaimCredits}
-        />
-      </div>
+      {userProfile && userProfile.memberShip === "premium" && (
+        <div className="d-flex justify-center">
+          <CustomButton
+            type="primary"
+            text="Claim HR Credits"
+            onClick={onClaimCredits}
+          />
+        </div>
+      )}
     </div>
   );
 };
