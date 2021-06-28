@@ -12,6 +12,8 @@ import {
   searchChannelPodcast,
   deleteChannelPodcast,
   updateChannelPodcast,
+  getAllPodcastSeries,
+  getPodcastSeries,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
@@ -38,6 +40,40 @@ export function* getAllPodcastsSaga({ payload }) {
   } finally {
     yield put(homeActions.setLoading(false));
     yield put(podcastActions.setLoading(false));
+  }
+}
+
+export function* getAllPodcastSeriesSaga() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllPodcastSeries);
+
+    if (response.status === 200) {
+      yield put(
+        podcastActions.setAllPodcastSeries(response.data.podcastSeries)
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getPodcastSeriesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      yield put(podcastActions.setPodcastSeries(response.data.podcastSeries));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -146,6 +182,11 @@ export function* updateChannelPodcastSaga({ payload }) {
 
 function* watchPodcast() {
   yield takeLatest(podcastConstants.GET_ALL_PODCASTS, getAllPodcastsSaga);
+  yield takeLatest(
+    podcastConstants.GET_ALL_PODCAST_SERIES,
+    getAllPodcastSeriesSaga
+  );
+  yield takeLatest(podcastConstants.GET_PODCAST_SERIES, getPodcastSeriesSaga);
   yield takeLatest(
     podcastConstants.ADD_PODCAST_TO_CHANNEL,
     addPodcastToChannelSaga

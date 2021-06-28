@@ -6,6 +6,8 @@ const resultSelector = createSelector(podcastDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
     allEpisodes: payload.get("allEpisodes"),
+    allPodcastSeries: payload.get("allPodcastSeries"),
+    podcastSeries: payload.get("podcastSeries"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
   };

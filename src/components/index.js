@@ -44,3 +44,4 @@ export { default as EventCodeGenerator } from "./EventCodeGenerator";
 export { default as CardMenu } from "./CardMenu";
 export { default as SearchInput } from "./SearchInput";
 export { default as AnnualConferenceCard } from "./AnnualConferenceCard";
+export { default as PodcastSeriesCard } from "./PodcastSeriesCard";

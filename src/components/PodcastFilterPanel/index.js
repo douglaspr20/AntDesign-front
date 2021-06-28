@@ -16,6 +16,7 @@ const FilterTitles = Object.keys(SearchFilters);
 const FilterPanel = ({
   title,
   userProfile,
+  hidePodcastSeries,
   onChange,
   onSearch,
   onClickPodcastSeries,
@@ -33,11 +34,13 @@ const FilterPanel = ({
 
   return (
     <div className="podcast-filter-panel">
-      <CustomButton
-        type="primary"
-        text="Podcast Series"
-        onClick={onClickPodcastSeries}
-      />
+      {!hidePodcastSeries && (
+        <CustomButton
+          type="primary"
+          text="Podcast Series"
+          onClick={onClickPodcastSeries}
+        />
+      )}
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">
@@ -78,6 +81,7 @@ const FilterPanel = ({
 
 FilterPanel.propTypes = {
   title: PropTypes.string,
+  hidePodcastSeries: PropTypes.bool,
   onChange: PropTypes.func,
   onSearch: PropTypes.func,
   onClickPodcastSeries: PropTypes.func,
@@ -85,6 +89,7 @@ FilterPanel.propTypes = {
 
 FilterPanel.defaultProps = {
   title: "Filters",
+  hidePodcastSeries: false,
   onChange: () => {},
   onSearch: () => {},
   onClickPodcastSeries: () => {},

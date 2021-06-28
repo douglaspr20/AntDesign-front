@@ -2,7 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import {
+  SIDEBAR_MENU_LIST,
+  EVENT_TYPES,
+  INTERNAL_LINKS,
+} from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
@@ -13,11 +17,15 @@ import Notification from "containers/Notification";
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconNotification from "images/icon-notification-header.svg";
+import IconMedal from "images/icon-medal.svg";
+import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { courseSelector } from "redux/selectors/courseSelector";
+import { podcastSelector } from "redux/selectors/podcastSelector";
 
 import "./style.scss";
 
@@ -71,6 +79,22 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconTvOutline,
         label: (selectedChannel || {}).name || "",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
+      const { podcastSeries } = this.props;
+      pathInfo = {
+        icon: IconHeadsetOutline,
+        label: (podcastSeries || {}).title || "Podcast Series",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
+      const { selectedCourse } = this.props;
+      pathInfo = {
+        icon: IconMedal,
+        label: `Class - ${(selectedCourse || {}).title || ""}`,
       };
     }
 
@@ -159,6 +183,8 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   live: liveSelector(state).live,
+  selectedCourse: courseSelector(state).course,
+  podcastSeries: podcastSelector(state).podcastSeries,
 });
 
 const mapDispatchToProps = {

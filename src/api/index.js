@@ -47,6 +47,8 @@ import {
   searchChannelPodcast,
   deleteChannelPodcast,
   updateChannelPodcast,
+  getAllPodcastSeries,
+  getPodcastSeries,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -120,4 +122,6 @@ export {
   markeToRead,
   uploadResume,
   deleteResume,
+  getAllPodcastSeries,
+  getPodcastSeries,
 };

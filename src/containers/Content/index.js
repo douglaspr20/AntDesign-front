@@ -130,6 +130,7 @@ class Content extends Component {
             render={(props) => <ConferenceLibrary {...props} />}
           />
           <PrivateRoute
+            exact
             path={INTERNAL_LINKS.PODCAST_SERIES}
             render={(props) => <PodcastSeriesPage {...props} />}
           />
