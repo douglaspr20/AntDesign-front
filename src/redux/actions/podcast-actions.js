@@ -14,6 +14,7 @@ const GET_MORE_CHANNEL_PODCAST_LIST = "GET_MORE_CHANNEL_PODCAST_LIST";
 const SET_MORE_CHANNEL_PODCAST_LIST = "SET_MORE_CHANNEL_PODCAST_LIST";
 const DELETE_CHANNEL_PODCAST = "DELETE_CHANNEL_PODCAST";
 const UPDATE_CHANNEL_PODCAST = "UPDATE_CHANNEL_PODCAST";
+const CLAIM_PODCAST_SERIES = "CLAIM_PODCAST_SERIES";
 
 export const constants = {
   GET_ALL_PODCASTS,
@@ -30,6 +31,7 @@ export const constants = {
   SET_MORE_CHANNEL_PODCAST_LIST,
   DELETE_CHANNEL_PODCAST,
   UPDATE_CHANNEL_PODCAST,
+  CLAIM_PODCAST_SERIES,
 };
 
 // ------------------------------------
@@ -88,6 +90,10 @@ export const updateChannelPodcast = createAction(
   UPDATE_CHANNEL_PODCAST,
   (episode, callback) => ({ episode, callback })
 );
+export const claimPodcastSeries = createAction(
+  CLAIM_PODCAST_SERIES,
+  (id, callback) => ({ id, callback })
+);
 
 export const actions = {
   getAllPodcasts,
@@ -104,4 +110,5 @@ export const actions = {
   setMoreChannelPodcastList,
   deleteChannelPodcast,
   updateChannelPodcast,
+  claimPodcastSeries,
 };

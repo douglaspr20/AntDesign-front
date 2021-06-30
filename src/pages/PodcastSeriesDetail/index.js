@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { notification } from "antd";
 
 import { EpisodeCard, CustomButton } from "components";
 import { INTERNAL_LINKS } from "enum";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { getPodcastSeries } from "redux/actions/podcast-actions";
+import {
+  getPodcastSeries,
+  claimPodcastSeries,
+} from "redux/actions/podcast-actions";
 import getPodcastLinks from "utils/getPodcastLinks";
+import PodcastClaimModal from "./PodcastClaimModal";
 
 import IconBack from "images/icon-back.svg";
 
@@ -19,8 +24,29 @@ const PodcastSeriesDetail = ({
   match,
   podcastSeries,
   getPodcastSeries,
+  claimPodcastSeries,
 }) => {
-  const onClaimCredits = () => {};
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const onClaimCredits = () => {
+    setModalVisible(true);
+  };
+
+  const onHRClaimOffered = () => {
+    claimPodcastSeries(podcastSeries.id, (err) => {
+      if (err) {
+        notification.error({
+          message: "Error",
+          description: (err || {}).msg,
+        });
+      } else {
+        notification.info({
+          message: "Email was send successfully.",
+        });
+        setModalVisible(false);
+      }
+    });
+  };
 
   useEffect(() => {
     if (match.params.id) {
@@ -56,6 +82,9 @@ const PodcastSeriesDetail = ({
         {podcastSeries.duration || ""}
       </h3>
       <h5 className="podcast-series-detail-label">HR Credit offered</h5>
+      <h3 className="podcast-series-detail-value">
+        {podcastSeries.hrCreditOffered || ""}
+      </h3>
       <div className="podcast-series-detail-list">
         {(podcastSeries.podcasts || []).map((podcast) => (
           <EpisodeCard
@@ -79,6 +108,14 @@ const PodcastSeriesDetail = ({
           />
         </div>
       )}
+      <PodcastClaimModal
+        visible={modalVisible}
+        title="HR Credit Offered"
+        destroyOnClose={true}
+        subTitle={podcastSeries.title}
+        onClaim={onHRClaimOffered}
+        onCancel={() => setModalVisible(false)}
+      />
     </div>
   );
 };
@@ -90,6 +127,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = {
   getPodcastSeries,
+  claimPodcastSeries,
 };
 
 export default connect(

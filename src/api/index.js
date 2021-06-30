@@ -49,6 +49,7 @@ import {
   updateChannelPodcast,
   getAllPodcastSeries,
   getPodcastSeries,
+  claimPodcastSeries,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -124,4 +125,5 @@ export {
   deleteResume,
   getAllPodcastSeries,
   getPodcastSeries,
+  claimPodcastSeries,
 };

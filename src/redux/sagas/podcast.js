@@ -14,6 +14,7 @@ import {
   updateChannelPodcast,
   getAllPodcastSeries,
   getPodcastSeries,
+  claimPodcastSeries,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
@@ -180,6 +181,28 @@ export function* updateChannelPodcastSaga({ payload }) {
   }
 }
 
+export function* claimPodcastSeriesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchPodcast() {
   yield takeLatest(podcastConstants.GET_ALL_PODCASTS, getAllPodcastsSaga);
   yield takeLatest(
@@ -206,6 +229,10 @@ function* watchPodcast() {
   yield takeLatest(
     podcastConstants.UPDATE_CHANNEL_PODCAST,
     updateChannelPodcastSaga
+  );
+  yield takeLatest(
+    podcastConstants.CLAIM_PODCAST_SERIES,
+    claimPodcastSeriesSaga
   );
 }
 
