@@ -56,3 +56,7 @@ export const deleteChannelPodcast = ({ episode }) => {
 export const updateChannelPodcast = ({ episode }) => {
   return httpClient.put(`private/podcast/channel/${episode.id}`, episode);
 };
+
+export const claimPodcastSeries = ({ id }) => {
+  return httpClient.post(`private/podcast-series/claim`, { id });
+};
