@@ -5,7 +5,7 @@ import "./style.scss";
 
 const PodcastSeriesCard = ({ data, onClick }) => {
   const [lineClamp, setLineClamp] = useState(12);
-  const { title, img, description } = data || {};
+  const { title, img, description, hrCreditOffered } = data || {};
   const randomId = `podcastseries-description-${Math.floor(
     Math.random() * 1000
   )}`;
@@ -57,6 +57,10 @@ const PodcastSeriesCard = ({ data, onClick }) => {
             {description}
           </p>
         </div>
+        <h5 className="podcast-series-card-hr">
+          <strong>{`HR Credit Offered: `}</strong>
+          {hrCreditOffered || ""}
+        </h5>
       </div>
     </div>
   );
