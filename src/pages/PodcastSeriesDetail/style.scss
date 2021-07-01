@@ -1,12 +1,17 @@
 @import "styles/main.scss";
 
 .podcast-series-detail {
-  width: & 100%;
-  height: calc(100vh - 72px);
-  background: $color-background;
-  overflow: auto;
-  padding: 4rem;
-  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+
+  &-container {
+    height: calc(100vh - 72px);
+    background: $color-background;
+    overflow: auto;
+    padding: 4rem;
+    position: relative;
+  }
 
   &-back {
     display: flex;
@@ -35,6 +40,7 @@
     margin-top: 1rem !important;
     color: $color-text-secondary !important;
     font-weight: 500 !important;
+    max-width: 1000px;
   }
 
   &-list {
@@ -73,5 +79,35 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 3rem;
+  }
+}
+
+.podcast-series-panel {
+  width: 266px;
+  height: calc(100vh - 72px);
+  background: $color-white;
+  box-shadow: 4px 0px 14px #37215714;
+  padding: 44px 0 2rem;
+  z-index: 9;
+  overflow: auto;
+
+  & > .font-regular {
+    padding-left: 2rem;
+  }
+
+  &-container {
+    margin-top: 2rem;
+  }
+
+  .podcast-series-item {
+    padding: 1rem 2rem;
+    cursor: pointer;
+    border-right: 3px solid $color-white !important;
+
+    &:hover,
+    &.active {
+      background-color: $color-background-dark !important;
+      border-right: 3px solid $color-primary !important;
+    }
   }
 }

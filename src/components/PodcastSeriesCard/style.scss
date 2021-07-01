@@ -57,4 +57,18 @@
     height: 100%;
     /* autoprefixer: off */
   }
+
+  &-hr {
+    @include app-font(14px, 21px, 500);
+    color: $color-text-secondary !important;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    margin: 0;
+    height: 100%;
+    /* autoprefixer: off */
+  }
 }
