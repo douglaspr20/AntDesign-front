@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { SpecialtyItem } from "components";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const PodcastSeriesCard = ({ data, onClick }) => {
+const PodcastSeriesCard = ({ data, allCategories, onClick }) => {
   const [lineClamp, setLineClamp] = useState(12);
-  const { title, img, description, hrCreditOffered } = data || {};
+  const { title, img, description, hrCreditOffered, categories } = data || {};
   const randomId = `podcastseries-description-${Math.floor(
     Math.random() * 1000
   )}`;
@@ -61,6 +65,18 @@ const PodcastSeriesCard = ({ data, onClick }) => {
           <strong>{`HR Credit Offered: `}</strong>
           {hrCreditOffered || ""}
         </h5>
+        <div className="podcast-series-card-categories">
+          {(categories || []).map((item, index) => {
+            const category = allCategories.find((cat) => cat.value === item);
+            return (
+              <SpecialtyItem
+                key={index}
+                title={category ? category.title : item}
+                active={false}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -76,4 +92,8 @@ PodcastSeriesCard.defaultProps = {
   onClick: () => {},
 };
 
-export default PodcastSeriesCard;
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+});
+
+export default connect(mapStateToProps)(PodcastSeriesCard);
