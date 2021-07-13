@@ -112,6 +112,7 @@ class MainHeader extends React.Component {
                 <div className="live-container">
                   <div className="live-circle"></div>
                   <div>LIVE</div>
+                  <p>: { this.props.live.title }</p>
                 </div>
               }
               type="primary"
