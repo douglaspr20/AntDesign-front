@@ -30,15 +30,13 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   anchor: {
     icon: IconAnchorFm,
     label: "Anchor FM",
-    link:
-      "https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak",
+    link: "https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak",
   },
 
   apple: {
     icon: IconApplePodcast,
     label: "Apple Podcast",
-    link:
-      "https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4",
+    link: "https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4",
   },
 
   breaker: {
@@ -135,6 +133,7 @@ const PodcastPage = ({
       <PodcastFilterPanel
         onChange={onFilterChange}
         onSearch={onSearch}
+        hidePodcastSeries
         onClickPodcastSeries={onClickPodcastSeries}
       />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
