@@ -115,6 +115,7 @@ const PodcastSeriesDetail = ({
           visible={modalVisible}
           title="HR Credit Offered"
           destroyOnClose={true}
+          data={podcastSeries}
           subTitle={podcastSeries.title}
           onClaim={onHRClaimOffered}
           onCancel={() => setModalVisible(false)}
