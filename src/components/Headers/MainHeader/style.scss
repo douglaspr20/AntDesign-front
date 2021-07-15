@@ -38,6 +38,10 @@
     .page-label {
       @include app-font(26px, 34px, 600);
       color: $color-text-primary;
+
+      @media (max-width: 575.98px) {
+        display: none;
+      }
     }
 
     &-menu {
@@ -93,7 +97,7 @@
           text-overflow: ellipsis;
           padding: 0px;
           margin: 0px;
-          
+
           @media (max-width: 1197.98px) {
             max-width: 60%;
           }
@@ -103,7 +107,7 @@
         }
 
         @keyframes live {
-          0% { 
+          0% {
             transform: scale(1);
           }
           50% {
@@ -119,7 +123,7 @@
           height: 15px;
           border-radius: 100%;
           overflow: hidden;
-          background:red;
+          background: red;
           animation: live 1.4s infinite ease;
         }
       }
@@ -137,7 +141,7 @@
         width: 100px;
         margin-right: 10px;
         padding: 5px;
-        
+
         span {
           font-size: 1rem;
         }

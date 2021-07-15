@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
-import clsx from "clsx";
 
 import FilterDrawer from "./FilterDrawer";
 import { numberWithCommas } from "utils/format";
@@ -40,8 +39,6 @@ const LearningLibraryPage = ({
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
 
-  const planUpdated = userProfile.memberShip !== "free";
-
   const onShowMore = () => {
     getMoreLibraries({
       ...filters,
@@ -69,10 +66,6 @@ const LearningLibraryPage = ({
     searchLibraries({ ...filters, meta }, value);
   };
 
-  const planUpgrade = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
-  };
-
   const onSearch = (value) => {
     searchLibraries(
       {
@@ -97,10 +90,7 @@ const LearningLibraryPage = ({
         <Row>
           <Col span={24}>
             <div className="search-results-container-mobile-header">
-              <h3
-                className={clsx("filters-btn", { disabled: !planUpdated })}
-                onClick={() => planUpdated && showFilterPanel()}
-              >
+              <h3 className="filters-btn" onClick={showFilterPanel}>
                 Filters
               </h3>
               <h3>{`${numberWithCommas(countOfResults)} result${
@@ -136,7 +126,6 @@ const LearningLibraryPage = ({
                 key={index}
                 data={item}
                 onClickAccess={planUpdate}
-                locked={!planUpdated}
                 keyword={meta}
                 frequency={frequency}
               />
@@ -158,16 +147,6 @@ const LearningLibraryPage = ({
                 onClick={onShowMore}
               />
             )}
-          </div>
-        )}
-        {!planUpdated && (
-          <div className="upgrade-notification">
-            <div className="upgrade-notification-panel" onClick={planUpgrade}>
-              <h3>
-                Upgrade to a PREMIUM Membership and get unlimited access to the
-                LAB features
-              </h3>
-            </div>
           </div>
         )}
       </div>

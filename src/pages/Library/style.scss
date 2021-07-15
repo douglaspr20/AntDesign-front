@@ -56,36 +56,6 @@
     &-footer {
       height: 40px;
     }
-
-    .upgrade-notification {
-      position: sticky;
-      bottom: 50%;
-      transform: translate(0, 50%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 1rem;
-      cursor: pointer;
-
-      &-panel {
-        padding: 1rem 3rem;
-        border-radius: 0.5rem;
-        background: $color-primary;
-        text-align: center;
-
-        h3 {
-          color: $color-white !important;
-        }
-
-        @media (max-width: 575.98px) {
-          padding: 1rem;
-
-          h3 {
-            @include app-font(16px, 21px, 600);
-          }
-        }
-      }
-    }
   }
 
   .search-results-list {
