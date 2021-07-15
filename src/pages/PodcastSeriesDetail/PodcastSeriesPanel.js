@@ -23,7 +23,7 @@ const PodcastSeriesPanel = ({
 
   useEffect(() => {
     if (!allPodcastSeries || allPodcastSeries.length === 0) {
-      getAllPodcastSeries();
+      getAllPodcastSeries({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

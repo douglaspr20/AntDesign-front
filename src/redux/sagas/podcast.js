@@ -44,11 +44,11 @@ export function* getAllPodcastsSaga({ payload }) {
   }
 }
 
-export function* getAllPodcastSeriesSaga() {
+export function* getAllPodcastSeriesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAllPodcastSeries);
+    const response = yield call(getAllPodcastSeries, { ...payload });
 
     if (response.status === 200) {
       yield put(
