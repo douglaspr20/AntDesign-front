@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { CustomModal, CustomCheckbox, CustomButton } from "components";
@@ -7,6 +7,10 @@ import "./style.scss";
 
 const PodcastClaimModal = ({ data, onClaim, ...rest }) => {
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setChecked(false);
+  }, [rest.visible]);
 
   return (
     <CustomModal width={500} maskClosable={false} {...rest}>
