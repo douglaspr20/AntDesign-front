@@ -207,5 +207,9 @@
 
   @media (max-width: 977.98px) {
     width: 100% !important;
+
+    .ant-modal-body {
+      padding: 0 !important;
+    }
   }
 }

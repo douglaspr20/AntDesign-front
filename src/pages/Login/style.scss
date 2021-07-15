@@ -53,6 +53,7 @@
 
     &-form {
       padding: 2rem;
+      background-color: $color-white;
     }
 
     &-content {
@@ -147,7 +148,7 @@
   }
 }
 
-.term-and-conditions{
+.term-and-conditions {
   font-weight: 600;
   margin-top: 1em;
   text-align: center;
