@@ -18,8 +18,12 @@ export const getAllPodcasts = async (data) => {
   return await httpClient.get(`private/podcast/search?${parsedFilter}`);
 };
 
-export const getAllPodcastSeries = async () => {
-  return await httpClient.get(`private/podcast-series`);
+export const getAllPodcastSeries = async ({ filter }) => {
+  const parsedFilter = Object.keys(filter)
+    .map((item) => `${item}=${filter[item]}`)
+    .join("&");
+
+  return await httpClient.get(`private/podcast-series?${parsedFilter}`);
 };
 
 export const getPodcastSeries = async ({ id }) => {

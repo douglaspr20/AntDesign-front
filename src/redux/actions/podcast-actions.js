@@ -48,7 +48,10 @@ export const setAllPodcasts = createAction(
     podcasts,
   })
 );
-export const getAllPodcastSeries = createAction(GET_ALL_PODCAST_SERIES);
+export const getAllPodcastSeries = createAction(
+  GET_ALL_PODCAST_SERIES,
+  (filter) => ({ filter })
+);
 export const setAllPodcastSeries = createAction(
   SET_ALL_PODCAST_SERIES,
   (allPodcastSeries) => ({ allPodcastSeries })

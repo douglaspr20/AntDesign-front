@@ -11,6 +11,29 @@
     overflow: auto;
     padding: 4rem;
     position: relative;
+
+    @media (max-width: 576px) {
+      padding: 1rem;
+    }
+  }
+
+  &__filters--button {
+    display: none;
+    margin-bottom: 1rem;
+
+    button {
+      width: 100%;
+    }
+
+    @media (max-width: 1023.98px) {
+      display: block;
+    }
+  }
+
+  @media (max-width: 1023.98px) {
+    .podcast-filter-panel {
+      display: none;
+    }
   }
 }
 
@@ -22,12 +45,12 @@
   margin-top: 3rem;
 
   @media (max-width: 1023.98px) {
-    margin: 0 4rem 44px;
+    margin: 1rem 4rem 44px;
     justify-items: center;
   }
 
   @media (max-width: 767.98px) {
-    margin: 0 1rem 44px;
+    margin: 1rem 1rem 44px;
     grid-row-gap: 42px;
     grid-column-gap: 1rem;
   }
