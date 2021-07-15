@@ -10,6 +10,7 @@ import Login from "pages/Login";
 import { getEvent, addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
+import { envSelector } from "redux/selectors/envSelector";
 import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
@@ -18,6 +19,7 @@ const PublicEventPage = ({
   match,
   updatedEvent,
   isAuthenticated,
+  isMobile,
   getEvent,
   addToMyEventList,
   history,
@@ -110,7 +112,7 @@ const PublicEventPage = ({
           {updatedEvent.status === "attend" && (
             <CustomButton
               text="REGISTER HERE"
-              size="lg"
+              size={isMobile ? "md" : "lg"}
               type="primary"
               onClick={onAttend}
             />
@@ -162,6 +164,7 @@ const PublicEventPage = ({
 const mapStateToProps = (state) => ({
   updatedEvent: eventSelector(state).updatedEvent,
   isAuthenticated: authSelector(state).isAuthenticated,
+  isMobile: envSelector(state).isMobile,
 });
 
 const mapDispatchToProps = {
