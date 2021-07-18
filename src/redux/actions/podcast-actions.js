@@ -95,7 +95,7 @@ export const updateChannelPodcast = createAction(
 );
 export const claimPodcastSeries = createAction(
   CLAIM_PODCAST_SERIES,
-  (id, callback) => ({ id, callback })
+  (id, pdf, callback) => ({ id, pdf, callback })
 );
 
 export const actions = {
