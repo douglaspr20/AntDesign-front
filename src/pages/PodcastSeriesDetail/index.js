@@ -175,13 +175,13 @@ const PodcastSeriesDetail = ({
                 <img src={ImgHHRLogo} alt="sidebar-logo" />
               </div>
               <h3 className="certificate-title">
-                Hacking HR’s Certificate of Participation
+                Hacking HR's Certificate of Participation To
               </h3>
               <h1 className="certificate-username">{`${userProfile.firstName} ${userProfile.lastName}`}</h1>
             </div>
             <div className="certificate-center">
               <h5 className="certificate-text1 organizer">
-                {`For Attending Session:`}
+                For Joining The Podcast Series:
               </h5>
               <h4 className="certificate-text2">{podcastSeries.title}</h4>
               <h5 className="certificate-text1 duration">{`Duration: ${podcastSeries.duration}`}</h5>
