@@ -18,6 +18,8 @@ import "froala-editor/js/plugins/quick_insert.min.js";
 import "froala-editor/js/plugins/url.min.js";
 import "froala-editor/js/plugins/video.min.js";
 
+import "./style.scss";
+
 const FroalaEdit = ({ s3Hash, value, onChange }) => {
   const [editorConfig, setEditorConfig] = useState({});
   const [htmlNote, setHtmlNote] = useState("");
