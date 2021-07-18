@@ -133,7 +133,6 @@ const PodcastPage = ({
       <PodcastFilterPanel
         onChange={onFilterChange}
         onSearch={onSearch}
-        hidePodcastSeries
         onClickPodcastSeries={onClickPodcastSeries}
       />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
