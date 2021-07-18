@@ -21,6 +21,9 @@ export const reducers = {
   [envConstants.SET_LANG]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
+  [envConstants.SET_EDITOR_SIGNATURE]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
 };
 
 export const initialState = () =>
@@ -32,6 +35,7 @@ export const initialState = () =>
     lang: supportedLanguages.includes(navigator.language.split(/[-_]/)[0])
       ? navigator.language.split(/[-_]/)[0]
       : "en", // language without region code
+    s3Hash: {},
   });
 
 export default handleActions(reducers, initialState());

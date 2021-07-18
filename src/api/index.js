@@ -67,6 +67,8 @@ import { getChannelCategories } from "./module/channel-category";
 import { getNotifications, markeToRead } from "./module/notification";
 import { getAllSessions } from "./module/session";
 
+import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -126,4 +128,5 @@ export {
   getAllPodcastSeries,
   getPodcastSeries,
   claimPodcastSeries,
+  getEditorSignature,
 };

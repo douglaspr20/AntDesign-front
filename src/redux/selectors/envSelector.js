@@ -9,6 +9,7 @@ const resultSelector = createSelector(envDataSelector, (payload) => {
     isMobile: payload.get("isMobile"),
     siderMenuCollapsed: payload.get("siderMenuCollapsed"),
     lang: payload.get("lang"),
+    s3Hash: payload.get("s3Hash"),
   };
 });
 

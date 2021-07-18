@@ -16,6 +16,7 @@ import { channelCategorySaga } from "./channelCategory";
 import { notificationSaga } from "./notification";
 import { sessionSaga } from "./session";
 import { liveSaga } from "./live";
+import { envSaga } from "./env";
 
 export default function* sagas() {
   yield all([
@@ -36,5 +37,6 @@ export default function* sagas() {
     ...notificationSaga,
     ...sessionSaga,
     ...liveSaga,
+    ...envSaga,
   ]);
 }

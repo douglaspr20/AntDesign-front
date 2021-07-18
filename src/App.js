@@ -81,6 +81,7 @@ class App extends Component {
 
     this.props.getCategories();
     this.props.getLive();
+    this.props.getEditorSignature();
   }
 
   componentWillUnmount() {
