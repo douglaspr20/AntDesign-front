@@ -26,6 +26,7 @@ const PublicEventPage = ({
 }) => {
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [editor, setEditor] = useState("froala");
 
   const onAttend = () => {
     if (isAuthenticated) {
@@ -35,6 +36,14 @@ const PublicEventPage = ({
       setModalVisible(true);
     }
   };
+
+  useEffect(() => {
+    if (updatedEvent.description && updatedEvent.description.blocks) {
+      setEditor("draft");
+    } else {
+      setEditor("froala");
+    }
+  }, [updatedEvent]);
 
   useEffect(() => {
     let isMounted = true;
@@ -155,7 +164,16 @@ const PublicEventPage = ({
             ))}
           </div>
         )}
-        <RichEdit data={updatedEvent.description} />
+        {editor === "froala" ? (
+          <div
+            className="event-description"
+            dangerouslySetInnerHTML={{
+              __html: (updatedEvent.description || {}).html || "",
+            }}
+          />
+        ) : (
+          <RichEdit data={updatedEvent.description} />
+        )}
       </div>
     </div>
   );
