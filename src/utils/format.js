@@ -134,6 +134,15 @@ function convertToLocalTime(date) {
   return moment.utc(date).tz(localTimezone);
 }
 
+const convertBlobToBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -144,4 +153,5 @@ export {
   convertToCertainTime,
   convertToUTCTime,
   convertToLocalTime,
+  convertBlobToBase64,
 };

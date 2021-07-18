@@ -13,6 +13,12 @@
     position: relative;
   }
 
+  .podcastseries-certificate {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+  }
+
   &-back {
     display: flex;
     justify-content: flex-start;

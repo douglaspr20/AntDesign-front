@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { notification } from "antd";
+import html2canvas from "html2canvas";
+import jsPdf from "jspdf";
 
 import { EpisodeCard, CustomButton } from "components";
 import { INTERNAL_LINKS } from "enum";
@@ -12,11 +14,17 @@ import {
   getPodcastSeries,
   claimPodcastSeries,
 } from "redux/actions/podcast-actions";
+import { setLoading } from "redux/actions/home-actions";
 import getPodcastLinks from "utils/getPodcastLinks";
 import PodcastClaimModal from "./PodcastClaimModal";
 import PodcastSeriesPanel from "./PodcastSeriesPanel";
 
+import { convertBlobToBase64 } from "utils/format";
+
 import IconBack from "images/icon-back.svg";
+import ImgCertificateStamp from "images/img-certificate-stamp.png";
+import ImgHHRLogo from "images/img-certificate-logo.png";
+import ImgSignature from "images/img-signature.png";
 
 import "./style.scss";
 
@@ -26,6 +34,7 @@ const PodcastSeriesDetail = ({
   podcastSeries,
   getPodcastSeries,
   claimPodcastSeries,
+  setLoading,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -33,8 +42,10 @@ const PodcastSeriesDetail = ({
     setModalVisible(true);
   };
 
-  const onHRClaimOffered = () => {
-    claimPodcastSeries(podcastSeries.id, (err) => {
+  const onHRClaimOffered = async () => {
+    const pdf = await generatePDF();
+
+    claimPodcastSeries(podcastSeries.id, pdf, (err) => {
       if (err) {
         notification.error({
           message: "Error",
@@ -47,6 +58,40 @@ const PodcastSeriesDetail = ({
         setModalVisible(false);
       }
     });
+  };
+
+  const generatePDF = async () => {
+    setLoading(true);
+    const domElement = document.getElementById("certificate-panel");
+    const canvas = await html2canvas(domElement, { scale: 4 });
+
+    const width = domElement.clientWidth;
+    const height = domElement.clientHeight;
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPdf({
+      orientation: "landscape",
+      format: [2000, (2000 / width) * height],
+      unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
+    });
+
+    pdf.addImage(
+      imgData,
+      "jpeg",
+      0,
+      0,
+      2000,
+      (2000 / width) * height,
+      "",
+      "SLOW"
+    );
+
+    const blobPdf = pdf.output("blob");
+
+    setLoading(false);
+    return await convertBlobToBase64(blobPdf);
   };
 
   useEffect(() => {
@@ -120,6 +165,50 @@ const PodcastSeriesDetail = ({
           onClaim={onHRClaimOffered}
           onCancel={() => setModalVisible(false)}
         />
+        <div
+          className="podcastseries-certificate certificate-page-wrapper"
+          id="certificate-panel"
+        >
+          <div className="certificate">
+            <div className="certificate-top">
+              <div className="certificate-logo">
+                <img src={ImgHHRLogo} alt="sidebar-logo" />
+              </div>
+              <h3 className="certificate-title">
+                Hacking HR’s Certificate of Participation
+              </h3>
+              <h1 className="certificate-username">{`${userProfile.firstName} ${userProfile.lastName}`}</h1>
+            </div>
+            <div className="certificate-center">
+              <h5 className="certificate-text1 organizer">
+                {`For Attending Session:`}
+              </h5>
+              <h4 className="certificate-text2">{podcastSeries.title}</h4>
+              <h5 className="certificate-text1 duration">{`Duration: ${podcastSeries.duration}`}</h5>
+            </div>
+            <div className="certificate-bottom">
+              <div className="certificate-bottom-sign">
+                <h5 className="certificate-text1 date">{`${moment().format(
+                  "MMMM DD, YYYY"
+                )}`}</h5>
+                <div className="certificate-divider" />
+                <h5 className="certificate-text1">Date</h5>
+              </div>
+              <div className="certificate-bottom-image">
+                <img src={ImgCertificateStamp} alt="certificate-img" />
+              </div>
+              <div className="certificate-bottom-sign">
+                <div className="certificate-signature">
+                  <img src={ImgSignature} alt="certificate-signature" />
+                </div>
+                <div className="certificate-divider" />
+                <h5 className="certificate-text1 signature">
+                  Founder at Hacking HR
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -133,6 +222,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   getPodcastSeries,
   claimPodcastSeries,
+  setLoading,
 };
 
 export default connect(
