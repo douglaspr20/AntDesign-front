@@ -5,9 +5,10 @@ import moment from "moment";
 import { notification } from "antd";
 import html2canvas from "html2canvas";
 import jsPdf from "jspdf";
+import Emitter from "services/emitter";
 
 import { EpisodeCard, CustomButton } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
@@ -37,9 +38,14 @@ const PodcastSeriesDetail = ({
   setLoading,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const onClaimCredits = () => {
-    setModalVisible(true);
+    if (userProfile && userProfile.memberShip === "premium") {
+      setModalVisible(true);
+    } else {
+      setShowFirewall(true);
+    }
   };
 
   const onHRClaimOffered = async () => {
@@ -94,6 +100,10 @@ const PodcastSeriesDetail = ({
     return await convertBlobToBase64(blobPdf);
   };
 
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   useEffect(() => {
     if (match.params.id) {
       getPodcastSeries(match.params.id);
@@ -105,6 +115,19 @@ const PodcastSeriesDetail = ({
     <div className="podcast-series-detail">
       <PodcastSeriesPanel />
       <div className="podcast-series-detail-container">
+        {showFirewall && (
+          <div
+            className="podcast-series-detail-firewall"
+            onClick={() => setShowFirewall(false)}
+          >
+            <div className="upgrade-notification-panel" onClick={planUpgrade}>
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
+          </div>
+        )}
         <Link to={INTERNAL_LINKS.PODCAST_SERIES}>
           <div className="podcast-series-detail-back">
             <div className="podcast-series-detail-back-img">
@@ -147,15 +170,13 @@ const PodcastSeriesDetail = ({
             />
           ))}
         </div>
-        {userProfile && userProfile.memberShip === "premium" && (
-          <div className="d-flex justify-center">
-            <CustomButton
-              type="primary"
-              text="Claim HR Credits"
-              onClick={onClaimCredits}
-            />
-          </div>
-        )}
+        <div className="d-flex justify-center">
+          <CustomButton
+            type="primary"
+            text="Claim HR Credits"
+            onClick={onClaimCredits}
+          />
+        </div>
         <PodcastClaimModal
           visible={modalVisible}
           title="HR Credit Offered"

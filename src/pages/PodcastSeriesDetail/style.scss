@@ -74,6 +74,40 @@
       min-width: 260px;
     }
   }
+
+  &-firewall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #3c475252;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .upgrade-notification-panel {
+      padding: 1rem 3rem;
+      border-radius: 0.5rem;
+      background: $color-primary;
+      text-align: center;
+      width: fit-content;
+
+      h3 {
+        color: $color-white !important;
+      }
+
+      @media (max-width: 575.98px) {
+        padding: 1rem;
+
+        h3 {
+          @include app-font(16px, 21px, 600);
+        }
+      }
+    }
+  }
 }
 
 .podcast-claim-modal {
