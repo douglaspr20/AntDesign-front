@@ -72,3 +72,7 @@ export const shareChannelLibrary = ({ library }) => {
     approvalStatus: "approved",
   });
 };
+
+export const claimLibrary = ({ id }) => {
+  return httpClient.post(`private/library/claim`, { id });
+};

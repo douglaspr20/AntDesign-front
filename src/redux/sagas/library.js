@@ -15,6 +15,7 @@ import {
   deleteChannelLibrary,
   updateChannelLibrary,
   shareChannelLibrary,
+  claimLibrary,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -233,6 +234,28 @@ export function* shareChannelLibrarySaga({ payload }) {
   }
 }
 
+export function* claimLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(libraryConstants.GET_MORE_LIBRARIES, getMoreLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
@@ -259,7 +282,11 @@ function* watchLogin() {
     libraryConstants.DELETE_CHANNEL_LIBRARY,
     deleteChannelLibrarySaga
   );
-  yield takeLatest(libraryConstants.SHARE_CHANNEL_LIBRARY, shareChannelLibrarySaga);
+  yield takeLatest(
+    libraryConstants.SHARE_CHANNEL_LIBRARY,
+    shareChannelLibrarySaga
+  );
+  yield takeLatest(libraryConstants.CLAIM_LIBRARY, claimLibrarySaga);
 }
 
 export const librarySaga = [fork(watchLogin)];
