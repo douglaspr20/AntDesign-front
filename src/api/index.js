@@ -32,6 +32,7 @@ import {
   deleteChannelLibrary,
   updateChannelLibrary,
   shareChannelLibrary,
+  claimLibrary,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -129,4 +130,5 @@ export {
   getPodcastSeries,
   claimPodcastSeries,
   getEditorSignature,
+  claimLibrary,
 };
