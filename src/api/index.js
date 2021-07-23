@@ -55,7 +55,10 @@ import {
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
 import { getCategories } from "./module/category";
-import { searchConferenceLibrary } from "./module/conference";
+import {
+  searchConferenceLibrary,
+  claimConferenceLibrary,
+} from "./module/conference";
 import {
   createChannel,
   searchChannels,
@@ -131,4 +134,5 @@ export {
   claimPodcastSeries,
   getEditorSignature,
   claimLibrary,
+  claimConferenceLibrary,
 };

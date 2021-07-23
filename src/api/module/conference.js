@@ -17,3 +17,7 @@ export const searchConferenceLibrary = ({ filter }) => {
 
   return httpClient.get(`private/conference?${parsedFilter}`);
 };
+
+export const claimConferenceLibrary = ({ id }) => {
+  return httpClient.post(`private/conference/claim`, { id });
+};
