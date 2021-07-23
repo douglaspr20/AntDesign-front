@@ -21,15 +21,15 @@ const LibraryClaimModal = ({ data, onClaim, ...rest }) => {
           Thank you for joining the library: <strong>{data.title}</strong>
         </p>
         <p>
-          Please check the box below to receive your HR Recertification
-          Credits.This is the attestation that you watched or listened to the
-          podcasts of this podcast series.
+          Please check the box below to receive your HR Recertification Credits.
+          This is the attestation that you watched, listened or read the content
+          piece.
         </p>
         <p>
           Notice that you can be audited by SHRM or HRCI based on their
-          regulations. You will receive an email confirming your participation
-          in the Library. The email will contain the SHRM and HRCI
-          recertification codes. Please save that email.
+          regulations. You will receive an email confirming your attestation.
+          The email will contain the SHRM and HRCI recertification codes. Please
+          save that email.
         </p>
         <CustomCheckbox
           size="sm"
