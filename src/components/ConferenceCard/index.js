@@ -8,6 +8,7 @@ import ReactPlayer from "react-player";
 import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { claimConferenceLibrary } from "redux/actions/conference-actions";
 import { EVENT_TYPES } from "enum";
 import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
 
@@ -21,6 +22,7 @@ const ConferenceCard = ({
   allCategories,
   keyword,
   frequency,
+  claimConferenceLibrary,
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,19 +49,19 @@ const ConferenceCard = ({
   };
 
   const onHRClaimOffered = async () => {
-    // claimLibrary(data.id, (err) => {
-    //   if (err) {
-    //     notification.error({
-    //       message: "Error",
-    //       description: (err || {}).msg,
-    //     });
-    //   } else {
-    //     notification.info({
-    //       message: "Email was send successfully.",
-    //     });
-    //     setModalVisible(false);
-    //   }
-    // });
+    claimConferenceLibrary(data.id, (err) => {
+      if (err) {
+        notification.error({
+          message: "Error",
+          description: (err || {}).msg,
+        });
+      } else {
+        notification.info({
+          message: "Email was send successfully.",
+        });
+        setModalVisible(false);
+      }
+    });
   };
 
   return (
@@ -157,4 +159,8 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(ConferenceCard);
+const mapDispatchToProps = {
+  claimConferenceLibrary,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConferenceCard);
