@@ -40,6 +40,8 @@ class EventCard extends React.Component {
     e.stopPropagation();
 
     Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, this.props.data);
+
+    this.props.onConfirmAttendance(this.props.data);
   };
 
   onClickClaimDigitalCertificate = (e) => {
@@ -55,6 +57,8 @@ class EventCard extends React.Component {
   onClickClaimCredits = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    this.props.onConfirmCredit(this.props.data);
   };
 
   planUpgrade = (e) => {
@@ -138,7 +142,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { title, type, ticket, location, status, image, period },
+      data: { title, type, ticket, location, status, image, period, showClaim },
       className,
       userProfile: { memberShip },
       edit,
@@ -210,12 +214,14 @@ class EventCard extends React.Component {
                             type="primary outlined"
                             onClick={this.onClickClaimDigitalCertificate}
                           />
-                          <CustomButton
-                            text="Claim credits"
-                            size="md"
-                            type="primary"
-                            onClick={this.onClickClaimCredits}
-                          />
+                          {showClaim === 1 && (
+                            <CustomButton
+                              text="Claim credits"
+                              size="md"
+                              type="primary"
+                              onClick={this.onClickClaimCredits}
+                            />
+                          )}
                         </React.Fragment>
                       ) : (
                         <CustomButton
@@ -276,6 +282,8 @@ EventCard.propTypes = {
   onClick: PropTypes.func,
   onAttend: PropTypes.func,
   onMenuClick: PropTypes.func,
+  onConfirmAttendance: PropTypes.func,
+  onConfirmCredit: PropTypes.func,
 };
 
 EventCard.defaultProps = {
@@ -286,6 +294,8 @@ EventCard.defaultProps = {
   onClick: () => {},
   onAttend: () => {},
   onMenuClick: () => {},
+  onConfirmAttendance: () => {},
+  onConfirmCredit: () => {},
 };
 
 const mapStateToProps = (state) => ({

@@ -40,6 +40,8 @@ const EventList = ({
   type,
   onMenuClick,
   onAddEvent,
+  onConfirmAttendance,
+  onConfirmCredit,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
@@ -112,6 +114,8 @@ const EventList = ({
                     onAttend={(going) => onEventChanged(event, going)}
                     onClick={onClick}
                     onMenuClick={(menu) => onMenuClick(menu, event)}
+                    onConfirmAttendance={onConfirmAttendance}
+                    onConfirmCredit={onConfirmCredit}
                   />
                 </Col>
               ))}
@@ -132,6 +136,8 @@ EventList.propTypes = {
   showFilter: PropTypes.func,
   onMenuClick: PropTypes.func,
   onAddEvent: PropTypes.func,
+  onConfirmAttendance: PropTypes.func,
+  onConfirmCredit: PropTypes.func,
 };
 
 EventList.defaultProps = {
@@ -143,6 +149,8 @@ EventList.defaultProps = {
   showFilter: () => {},
   onMenuClick: () => {},
   onAddEvent: () => {},
+  onConfirmAttendance: () => {},
+  onConfirmCredit: () => {},
 };
 
 const mapStateToProps = (state) => ({

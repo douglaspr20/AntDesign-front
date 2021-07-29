@@ -5,6 +5,7 @@ import moment from "moment";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
+import { notification } from "antd";
 
 import { Tabs, EventFilterPanel } from "components";
 import EventDrawer from "containers/EventDrawer";
@@ -15,9 +16,12 @@ import {
   addToMyEventList,
   removeFromMyEventList,
   getMyEvents,
+  claimEventAttendance,
+  claimEventCredit,
 } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import EventFilterDrawer from "./EventFilterDrawer";
+import EventClaimModal from "./EventClaimModal";
 
 import "./style.scss";
 
@@ -29,6 +33,8 @@ const EventsPage = ({
   getMyEvents,
   addToMyEventList,
   removeFromMyEventList,
+  claimEventAttendance,
+  claimEventCredit,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -36,6 +42,8 @@ const EventsPage = ({
   const [filterParams, setFilterParams] = useState({});
   const [visible, setVisible] = useState(false);
   const [event, setEvent] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const [eventForCredit, setEventForCredit] = useState({});
 
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
@@ -53,6 +61,31 @@ const EventsPage = ({
       ...event,
       day: moment(event.date, DataFormat).date(),
       month: MONTH_NAMES[moment(event.date, DataFormat).month()],
+    });
+  };
+
+  const onConfirmAttendance = (event) => {
+    claimEventAttendance(event.id);
+  };
+
+  const onConfirmCredit = (event) => {
+    setEventForCredit(event);
+    setModalVisible(true);
+  };
+
+  const onClaimCredit = () => {
+    claimEventCredit(eventForCredit.id, (err) => {
+      if (err) {
+        notification.error({
+          message: "Error",
+          description: (err || {}).msg,
+        });
+      } else {
+        notification.info({
+          message: "Email was send successfully.",
+        });
+        setModalVisible(false);
+      }
     });
   };
 
@@ -88,6 +121,8 @@ const EventsPage = ({
           )}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          onConfirmAttendance={onConfirmAttendance}
+          onConfirmCredit={onConfirmCredit}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -178,7 +213,9 @@ const EventsPage = ({
 
   return (
     <div className="events-page">
-      <EventFilterDrawer onFilterChange={(data) => onFilterChange(data, true)} />
+      <EventFilterDrawer
+        onFilterChange={(data) => onFilterChange(data, true)}
+      />
       <div className={clsx("events-page-filter", { visible: visibleFilter })}>
         <EventFilterPanel
           title="Categories"
@@ -195,6 +232,14 @@ const EventsPage = ({
         visible={visible}
         event={event}
         onClose={onEventDrawerClose}
+      />
+      <EventClaimModal
+        visible={modalVisible}
+        title="HR Credit Offered"
+        destroyOnClose={true}
+        data={eventForCredit}
+        onClaim={onClaimCredit}
+        onCancel={() => setModalVisible(false)}
       />
     </div>
   );
@@ -219,6 +264,8 @@ const mapDispatchToProps = {
   getMyEvents,
   addToMyEventList,
   removeFromMyEventList,
+  claimEventAttendance,
+  claimEventCredit,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
