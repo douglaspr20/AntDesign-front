@@ -21,6 +21,8 @@ import {
   getChannelEvents,
   deleteEvent,
   updateChannelEvent,
+  claimEventCredit,
+  claimEventAttendance,
 } from "./module/event";
 import {
   addLibrary,
@@ -135,4 +137,6 @@ export {
   getEditorSignature,
   claimLibrary,
   claimConferenceLibrary,
+  claimEventCredit,
+  claimEventAttendance,
 };

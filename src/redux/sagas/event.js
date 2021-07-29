@@ -24,6 +24,8 @@ import {
   getChannelEvents,
   deleteEvent,
   updateChannelEvent,
+  claimEventCredit,
+  claimEventAttendance,
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -363,6 +365,38 @@ export function* updateChannelEventSaga({ payload }) {
   }
 }
 
+export function* claimEventCreditSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimEventCredit, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* claimEventAttendanceSaga({ payload }) {
+  try {
+    yield call(claimEventAttendance, { ...payload });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
@@ -376,9 +410,11 @@ function* watchLogin() {
   yield takeLatest(eventConstants.CREATE_CHANNEL_EVENT, createChannelEventSaga);
   yield takeLatest(eventConstants.GET_CHANNEL_EVENTS, getChannelEventsSaga);
   yield takeLatest(eventConstants.DELETE_EVENT, deleteEventSaga);
+  yield takeLatest(eventConstants.UPDATE_CHANNEL_EVENT, updateChannelEventSaga);
+  yield takeLatest(eventConstants.EVENT_CLAIM_CREDIT, claimEventCreditSaga);
   yield takeLatest(
-    eventConstants.UPDATE_CHANNEL_EVENT,
-    updateChannelEventSaga
+    eventConstants.EVENT_CLAIM_ATTENDANCE,
+    claimEventAttendanceSaga
   );
 }
 
