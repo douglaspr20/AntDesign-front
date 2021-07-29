@@ -6,6 +6,9 @@ import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
 import { notification } from "antd";
+import converter from "number-to-words";
+import html2canvas from "html2canvas";
+import jsPdf from "jspdf";
 
 import { Tabs, EventFilterPanel } from "components";
 import EventDrawer from "containers/EventDrawer";
@@ -19,9 +22,17 @@ import {
   claimEventAttendance,
   claimEventCredit,
 } from "redux/actions/event-actions";
+import { setLoading } from "redux/actions/home-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import EventFilterDrawer from "./EventFilterDrawer";
 import EventClaimModal from "./EventClaimModal";
+
+import ImgCertificateStamp from "images/img-certificate-stamp.png";
+import ImgHHRLogo from "images/img-certificate-logo.png";
+import ImgSignature from "images/img-signature.png";
+
+import { convertBlobToBase64 } from "utils/format";
 
 import "./style.scss";
 
@@ -29,12 +40,14 @@ const EventsPage = ({
   allEvents,
   myEvents,
   updatedEvent,
+  userProfile,
   getAllEvent,
   getMyEvents,
   addToMyEventList,
   removeFromMyEventList,
   claimEventAttendance,
   claimEventCredit,
+  setLoading,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -73,8 +86,10 @@ const EventsPage = ({
     setModalVisible(true);
   };
 
-  const onClaimCredit = () => {
-    claimEventCredit(eventForCredit.id, (err) => {
+  const onClaimCredit = async () => {
+    const pdf = await generatePDF();
+
+    claimEventCredit(eventForCredit.id, pdf, (err) => {
       if (err) {
         notification.error({
           message: "Error",
@@ -178,6 +193,51 @@ const EventsPage = ({
     setVisible(false);
   };
 
+  const getPerodOfEvent = (startDate, endDate) => {
+    const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+
+    return duration.asHours();
+  };
+
+  const period = getPerodOfEvent(
+    eventForCredit.startDate,
+    eventForCredit.endDate
+  );
+
+  const generatePDF = async () => {
+    setLoading(true);
+    const domElement = document.getElementById("certificate-panel");
+    const canvas = await html2canvas(domElement, { scale: 4 });
+
+    const width = domElement.clientWidth;
+    const height = domElement.clientHeight;
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPdf({
+      orientation: "landscape",
+      format: [2000, (2000 / width) * height],
+      unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
+    });
+
+    pdf.addImage(
+      imgData,
+      "jpeg",
+      0,
+      0,
+      2000,
+      (2000 / width) * height,
+      "",
+      "SLOW"
+    );
+
+    const blobPdf = pdf.output("blob");
+
+    setLoading(false);
+    return await convertBlobToBase64(blobPdf);
+  };
+
   useEffect(() => {
     if (!allEvents || allEvents.length === 0) {
       getAllEvent();
@@ -241,6 +301,54 @@ const EventsPage = ({
         onClaim={onClaimCredit}
         onCancel={() => setModalVisible(false)}
       />
+      {!isEmpty(eventForCredit) && (
+        <div
+          className="event-certificate certificate-page-wrapper"
+          id="certificate-panel"
+        >
+          <div className="certificate">
+            <div className="certificate-top">
+              <div className="certificate-logo">
+                <img src={ImgHHRLogo} alt="sidebar-logo" />
+              </div>
+              <h3 className="certificate-title">
+                Hacking HR's Certificate of Participation
+              </h3>
+              <h1 className="certificate-username">{`${userProfile.firstName} ${userProfile.lastName}`}</h1>
+            </div>
+            <div className="certificate-center">
+              <h5 className="certificate-text1 organizer">
+                {`For Attending ${eventForCredit.organizer} Session:`}
+              </h5>
+              <h4 className="certificate-text2">{eventForCredit.title}</h4>
+              <h5 className="certificate-text1 duration">{`Duration: ${converter.toWords(
+                period
+              )} Hour${period > 1 ? "s" : ""}`}</h5>
+            </div>
+            <div className="certificate-bottom">
+              <div className="certificate-bottom-sign">
+                <h5 className="certificate-text1 date">{`${moment(
+                  eventForCredit.startDate
+                ).format("MMMM DD, YYYY")}`}</h5>
+                <div className="certificate-divider" />
+                <h5 className="certificate-text1">Date</h5>
+              </div>
+              <div className="certificate-bottom-image">
+                <img src={ImgCertificateStamp} alt="certificate-img" />
+              </div>
+              <div className="certificate-bottom-sign">
+                <div className="certificate-signature">
+                  <img src={ImgSignature} alt="certificate-signature" />
+                </div>
+                <div className="certificate-divider" />
+                <h5 className="certificate-text1 signature">
+                  Founder at Hacking HR
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -257,6 +365,7 @@ const mapStateToProps = (state) => ({
   myEvents: eventSelector(state).myEvents,
   allEvents: eventSelector(state).allEvents,
   updatedEvent: eventSelector(state).updatedEvent,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
@@ -266,6 +375,7 @@ const mapDispatchToProps = {
   removeFromMyEventList,
   claimEventAttendance,
   claimEventCredit,
+  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

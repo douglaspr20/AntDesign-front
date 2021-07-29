@@ -108,7 +108,7 @@ const CertificatePage = ({
               <img src={ImgHHRLogo} alt="sidebar-logo" />
             </div>
             <h3 className="certificate-title">
-              Hacking HR’s Certificate of Participation
+              Hacking HR's Certificate of Participation
             </h3>
             <h1 className="certificate-username">{`${user.firstName} ${user.lastName}`}</h1>
           </div>

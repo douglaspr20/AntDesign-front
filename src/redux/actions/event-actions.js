@@ -93,7 +93,7 @@ export const updateChannelEvent = createAction(
 );
 export const claimEventCredit = createAction(
   EVENT_CLAIM_CREDIT,
-  (id, callback) => ({ id, callback })
+  (id, pdf, callback) => ({ id, pdf, callback })
 );
 export const claimEventAttendance = createAction(
   EVENT_CLAIM_ATTENDANCE,
