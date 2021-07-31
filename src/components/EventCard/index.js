@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { Dropdown, Menu } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
-import { homeSelector } from "redux/selectors/homeSelector";
 
 import { CustomButton, SpecialtyItem } from "components";
 import { EVENT_TYPES, INTERNAL_LINKS, CARD_TYPE } from "enum";
@@ -19,14 +17,6 @@ import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
 class EventCard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showFirewall: false,
-    };
-  }
-
   onAttend = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -40,11 +30,7 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    const { showFirewall } = this.state;
-
-    if (!showFirewall) {
-      this.props.onClick(this.props.data);
-    }
+    this.props.onClick(this.props.data);
   };
 
   onClickConfirm = (e) => {
@@ -70,13 +56,7 @@ class EventCard extends React.Component {
     e.preventDefault();
     e.stopPropagation();
 
-    const { userProfile } = this.props;
-
-    if (userProfile && userProfile.memberShip === "premium") {
-      this.props.onConfirmCredit(this.props.data);
-    } else {
-      this.setState({ showFirewall: true });
-    }
+    this.props.onConfirmCredit(this.props.data);
   };
 
   planUpgrade = (e) => {
@@ -160,13 +140,12 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { title, type, ticket, location, status, image, period, showClaim },
+      data: { title, type, ticket, location, status, image, period },
       className,
       edit,
       type: cardType,
       onMenuClick,
     } = this.props;
-    const { showFirewall } = this.state;
 
     return (
       <div
@@ -210,7 +189,7 @@ class EventCard extends React.Component {
               )}
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
-                  {status !== "going" && showClaim === 1 && (
+                  {status !== "going" && (
                     <div className="claim-buttons">
                       <CustomButton
                         className="claim-digital-certificate"
@@ -257,22 +236,6 @@ class EventCard extends React.Component {
             )}
           </>
         )}
-        {showFirewall && (
-          <div
-            className="event-card-firewall"
-            onClick={() => this.setState({ showFirewall: false })}
-          >
-            <div
-              className="upgrade-notification-panel"
-              onClick={this.planUpgrade}
-            >
-              <h3>
-                Upgrade to a PREMIUM Membership and get unlimited access to the
-                LAB features
-              </h3>
-            </div>
-          </div>
-        )}
       </div>
     );
   }
@@ -302,8 +265,4 @@ EventCard.defaultProps = {
   onConfirmCredit: () => {},
 };
 
-const mapStateToProps = (state) => ({
-  userProfile: homeSelector(state).userProfile,
-});
-
-export default withRouter(connect(mapStateToProps)(EventCard));
+export default withRouter(EventCard);
