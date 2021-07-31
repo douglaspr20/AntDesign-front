@@ -19,6 +19,14 @@ import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
 class EventCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showFirewall: false,
+    };
+  }
+
   onAttend = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -32,7 +40,11 @@ class EventCard extends React.Component {
   };
 
   openEventDetails = () => {
-    this.props.onClick(this.props.data);
+    const { showFirewall } = this.state;
+
+    if (!showFirewall) {
+      this.props.onClick(this.props.data);
+    }
   };
 
   onClickConfirm = (e) => {
@@ -58,7 +70,13 @@ class EventCard extends React.Component {
     e.preventDefault();
     e.stopPropagation();
 
-    this.props.onConfirmCredit(this.props.data);
+    const { userProfile } = this.props;
+
+    if (userProfile && userProfile.memberShip === "premium") {
+      this.props.onConfirmCredit(this.props.data);
+    } else {
+      this.setState({ showFirewall: true });
+    }
   };
 
   planUpgrade = (e) => {
@@ -144,11 +162,11 @@ class EventCard extends React.Component {
     const {
       data: { title, type, ticket, location, status, image, period, showClaim },
       className,
-      userProfile: { memberShip },
       edit,
       type: cardType,
       onMenuClick,
     } = this.props;
+    const { showFirewall } = this.state;
 
     return (
       <div
@@ -192,45 +210,15 @@ class EventCard extends React.Component {
               )}
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
-                  {status === "past" && (
+                  {status !== "going" && showClaim === 1 && (
                     <div className="claim-buttons">
                       <CustomButton
                         className="claim-digital-certificate"
                         text="Confirm I attended this event"
                         size="md"
                         type="primary outlined"
-                        onClick={this.onClickConfirm}
+                        onClick={this.onClickClaimCredits}
                       />
-                    </div>
-                  )}
-                  {status === "confirmed" && (
-                    <div className="claim-buttons">
-                      {memberShip === "premium" ? (
-                        <React.Fragment>
-                          <CustomButton
-                            className="claim-digital-certificate"
-                            text="Claim digital certificate"
-                            size="md"
-                            type="primary outlined"
-                            onClick={this.onClickClaimDigitalCertificate}
-                          />
-                          {showClaim === 1 && (
-                            <CustomButton
-                              text="Claim credits"
-                              size="md"
-                              type="primary"
-                              onClick={this.onClickClaimCredits}
-                            />
-                          )}
-                        </React.Fragment>
-                      ) : (
-                        <CustomButton
-                          text="Upgrade to premium"
-                          size="md"
-                          type="primary"
-                          onClick={this.planUpgrade}
-                        />
-                      )}
                     </div>
                   )}
                   {status === "attend" && (
@@ -268,6 +256,22 @@ class EventCard extends React.Component {
               </CardMenu>
             )}
           </>
+        )}
+        {showFirewall && (
+          <div
+            className="event-card-firewall"
+            onClick={() => this.setState({ showFirewall: false })}
+          >
+            <div
+              className="upgrade-notification-panel"
+              onClick={this.planUpgrade}
+            >
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
+          </div>
         )}
       </div>
     );
