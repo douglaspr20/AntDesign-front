@@ -5,7 +5,7 @@ import {
   actions as conferenceActions,
 } from "../actions/conference-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { searchConferenceLibrary } from "../../api";
+import { searchConferenceLibrary, claimConferenceLibrary } from "../../api";
 
 export function* getMoreConferenceLibrariesSaga({ payload }) {
   yield put(conferenceActions.setLoading(true));
@@ -52,6 +52,28 @@ export function* searchConferenceLibrarySaga({ payload }) {
   }
 }
 
+export function* claimConferenceLibrarySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimConferenceLibrary, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchConference() {
   yield takeLatest(
     conferenceConstants.GET_MORE_CONFERENCE_LIBRARIES,
@@ -60,6 +82,10 @@ function* watchConference() {
   yield takeLatest(
     conferenceConstants.SEARCH_CONFERENCE_LIBRARIES,
     searchConferenceLibrarySaga
+  );
+  yield takeLatest(
+    conferenceConstants.CLAIM_CONFERENCE_LIBRARY,
+    claimConferenceLibrarySaga
   );
 }
 

@@ -1,0 +1,36 @@
+@import "../../../styles/main.scss";
+
+.conference-list {
+  margin-top: 3rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: flex-end;
+
+    &-select {
+      display: flex;
+      align-items: center;
+    }
+
+    &-sort {
+      margin-left: 1rem;
+      max-width: 200px;
+    }
+  }
+
+  &-container {
+    margin: 2rem 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+
+    .session-step,
+    .annual-conference-card {
+      margin-bottom: 2rem !important;
+    }
+  }
+}

@@ -44,6 +44,10 @@
         height: 100px;
       }
 
+      & > div button:first-child {
+        margin-bottom: 0.5rem;
+      }
+
       @media (max-width: 1023.98px) {
         justify-content: center;
         button {

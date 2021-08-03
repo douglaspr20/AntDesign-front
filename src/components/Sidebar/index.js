@@ -98,7 +98,6 @@ class NavBar extends Component {
 }
 const mapStateToProps = (state) => ({
   env: envSelector(state),
-
 });
 
 const mapDispatchToProps = {

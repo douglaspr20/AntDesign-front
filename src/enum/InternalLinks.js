@@ -19,6 +19,7 @@ export default {
   CLASSES: "/classes",
   MICRO_CLASS: "/micro-class",
   PODCAST: "/podcast",
+  PODCAST_SERIES: "/podcast-series",
   CHANNELS: "/channels",
   PUBLIC_EVENT: "",
   JOIN: "/join",
@@ -27,4 +28,7 @@ export default {
   PUBLIC_MARKETPLACE: "/public-marketplace",
   CONFERENCE_LIBRARY: "/conference-library",
   NOT_FOUND: "/not-found",
+  NOTIFICATIONS: "/notifications",
+  GLOBAL_CONFERENCE: "/global-conference",
+  LIVE: "/live",
 };

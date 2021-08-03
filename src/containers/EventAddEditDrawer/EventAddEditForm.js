@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
@@ -15,6 +15,7 @@ import {
   RichEdit,
   CreditSelect,
   EventCodeGenerator,
+  FroalaEdit,
 } from "components";
 import { SETTINGS, TIMEZONE_LIST } from "enum";
 
@@ -25,6 +26,7 @@ import {
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { envSelector } from "redux/selectors/envSelector";
 
 import {
   isValidURL,
@@ -65,6 +67,7 @@ const EventAddEditForm = ({
   allCategories,
   selectedChannel,
   edit,
+  s3Hash,
   selectedEvent,
   onAdded,
   onCancel,
@@ -72,6 +75,7 @@ const EventAddEditForm = ({
   updateChannelEvent,
 }) => {
   const refForm = useRef(null);
+  const [editor, setEditor] = useState("froala");
 
   const onFinish = (values) => {
     let params = {
@@ -135,6 +139,16 @@ const EventAddEditForm = ({
         });
       }
     }
+
+    if (edit) {
+      if (selectedEvent.description && selectedEvent.description.blocks) {
+        setEditor("draft");
+      } else {
+        setEditor("froala");
+      }
+    } else {
+      setEditor("froala");
+    }
   }, [selectedEvent, edit]);
 
   return (
@@ -165,6 +179,7 @@ const EventAddEditForm = ({
             showSearch
             options={TIMEZONE_LIST}
             optionFilterProp="children"
+            bordered
             filterOption={(input, option) =>
               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
@@ -200,7 +215,11 @@ const EventAddEditForm = ({
           </Checkbox.Group>
         </Form.Item>
         <Form.Item name="description" label="Description">
-          <RichEdit readOnly={false} data={selectedEvent.description} />
+          {editor === "froala" ? (
+            <FroalaEdit s3Hash={s3Hash} />
+          ) : (
+            <RichEdit readOnly={false} data={selectedEvent.description} />
+          )}
         </Form.Item>
         <Form.Item
           name="link"
@@ -268,6 +287,7 @@ const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
   selectedChannel: channelSelector(state).selectedChannel,
   selectedEvent: eventSelector(state).updatedEvent,
+  s3Hash: envSelector(state).s3Hash,
 });
 
 const mapDispatchToProps = {

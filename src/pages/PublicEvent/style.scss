@@ -18,6 +18,12 @@
       height: 100%;
     }
 
+    &-defaultimg {
+      width: 100%;
+      height: 100px;
+      background-color: $color-background;
+    }
+
     &-title {
       width: 772px;
       position: absolute;
@@ -47,6 +53,10 @@
         &.no-image {
           color: $color-text-primary !important;
         }
+      }
+
+      .event-description {
+        margin-top: 20px;
       }
 
       .custom-button.lg {
@@ -201,5 +211,10 @@
 
   @media (max-width: 977.98px) {
     width: 100% !important;
+    padding: 0 !important;
+
+    .ant-modal-body {
+      padding: 0 !important;
+    }
   }
 }

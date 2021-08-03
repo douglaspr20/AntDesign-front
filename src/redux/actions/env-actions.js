@@ -9,6 +9,8 @@ const SET_DIMENSIONS = "SET_DIMENSIONS";
 const SET_IS_MOBILE = "SET_IS_MOBILE";
 const SET_COLLAPSED = "SET_COLLAPSED";
 const SET_LANG = "SET_LANG";
+const GET_EDITOR_SIGNATURE = "GET_EDITOR_SIGNATURE";
+const SET_EDITOR_SIGNATURE = "SET_EDITOR_SIGNATURE";
 
 export const constants = {
   SET_ENV,
@@ -16,6 +18,8 @@ export const constants = {
   SET_IS_MOBILE,
   SET_COLLAPSED,
   SET_LANG,
+  GET_EDITOR_SIGNATURE,
+  SET_EDITOR_SIGNATURE,
 };
 
 // ------------------------------------
@@ -35,6 +39,11 @@ export const setCollapsed = createAction(SET_COLLAPSED, (collapsed) => ({
 export const setLang = createAction(SET_LANG, (lang) => ({
   lang: supportedLanguages.includes(lang) ? lang : "en",
 }));
+export const getEditorSignature = createAction(GET_EDITOR_SIGNATURE);
+export const setEditorSignature = createAction(
+  SET_EDITOR_SIGNATURE,
+  (s3Hash) => ({ s3Hash })
+);
 
 export const actions = {
   setEnv,
@@ -42,4 +51,6 @@ export const actions = {
   setIsMobile,
   setCollapsed,
   setLang,
+  getEditorSignature,
+  setEditorSignature,
 };

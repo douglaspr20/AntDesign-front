@@ -14,8 +14,6 @@ import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
 
-const HARDCODED_COVER_PLACEHOLDER =
-  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 const DATE_FORMAT = "MMMM DD, YYYY";
 
 function EpisodeCard({
@@ -50,10 +48,11 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            <img
-              src={episode_cover || HARDCODED_COVER_PLACEHOLDER}
-              alt="header-img"
-            />
+            {episode_cover ? (
+              <img src={episode_cover} alt="header-img" />
+            ) : (
+              <div />
+            )}
           </div>
           <div className="podcast-episode__card-body">
             <div className="podcast-episode__card-body-data">
@@ -145,7 +144,7 @@ EpisodeCard.propTypes = {
 EpisodeCard.defaultProps = {
   created_at: {},
   episode_number: 0,
-  episode_cover: HARDCODED_COVER_PLACEHOLDER,
+  episode_cover: "",
   categories: [],
   links: [],
   title: "",

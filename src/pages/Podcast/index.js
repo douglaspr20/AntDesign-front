@@ -10,7 +10,7 @@ import { CustomButton, EpisodeCard } from "components";
 import FilterDrawer from "./FilterDrawer";
 import { PodcastFilterPanel } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, SETTINGS, INTERNAL_LINKS } from "enum";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import IconAnchorFm from "images/icon-anchor-fm.svg";
@@ -22,6 +22,7 @@ import IconRadiopublic from "images/icon-radiopublic.svg";
 import IconSpotify from "images/icon-spotify.svg";
 import IconVimeo from "images/icon-vimeo.svg";
 import IconGoogle from "images/icon-google.svg";
+import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
@@ -29,15 +30,13 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   anchor: {
     icon: IconAnchorFm,
     label: "Anchor FM",
-    link:
-      "https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak",
+    link: "https://anchor.fm/hacking-hr/episodes/The-Hacking-HR-Podcast---Episode-1-ei2cak",
   },
 
   apple: {
     icon: IconApplePodcast,
     label: "Apple Podcast",
-    link:
-      "https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4",
+    link: "https://podcasts.apple.com/us/podcast/the-hacking-hr-podcast/id1527651839?uo=4",
   },
 
   breaker: {
@@ -83,13 +82,20 @@ const HARDCODED_LIST_OF_PODCAST_HOSTS = {
   },
 };
 
-const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
+const PodcastPage = ({
+  loading,
+  history,
+  allEpisodes,
+  currentPage,
+  countOfResults,
+  getAllPodcasts,
+}) => {
   const [podcastHosts] = useState(HARDCODED_LIST_OF_PODCAST_HOSTS);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
 
   useEffect(() => {
-    getAllPodcasts();
+    getAllPodcasts({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -110,9 +116,25 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
     setMeta(value);
   };
 
+  const onShowMore = () => {
+    getAllPodcasts({
+      ...filters,
+      meta,
+      page: currentPage + 1,
+    });
+  };
+
+  const onClickPodcastSeries = () => {
+    history.push(INTERNAL_LINKS.PODCAST_SERIES);
+  };
+
   return (
     <div className="podcast-page">
-      <PodcastFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <PodcastFilterPanel
+        onChange={onFilterChange}
+        onSearch={onSearch}
+        onClickPodcastSeries={onClickPodcastSeries}
+      />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="podcast-page__container">
         <div className="podcast-page__filters--button">
@@ -121,7 +143,13 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
             onClick={() => {
               showFilterPanel();
             }}
-          ></CustomButton>
+          />
+          <CustomButton
+            type="primary"
+            text="Podcast Series"
+            style={{ marginTop: "1rem" }}
+            onClick={onClickPodcastSeries}
+          />
         </div>
         <header className="podcast-page__header">
           <h2>Subscribe:</h2>
@@ -181,13 +209,30 @@ const PodcastPage = ({ allEpisodes, getAllPodcasts }) => {
             );
           })}
         </section>
+        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+          <div className="podcast-page-footer d-flex justify-center items-center">
+            {loading && (
+              <div className="podcast-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  allEpisodes: podcastSelector(state).allEpisodes,
+  ...podcastSelector(state),
 });
 
 const mapDispatchToProps = {

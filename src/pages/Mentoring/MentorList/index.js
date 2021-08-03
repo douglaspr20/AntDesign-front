@@ -70,7 +70,11 @@ const MentorList = ({
         ))}
         {!hideMore && (
           <div className="mentor-list-items-more">
-            {loading && <img src={IconLoadingMore} alt="loading-more-img" />}
+            {loading && (
+              <div className="mentor-list-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
             {!loading && (
               <CustomButton
                 text="Show more"

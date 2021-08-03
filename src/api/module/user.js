@@ -33,3 +33,23 @@ export const inviteFriend = (email) => {
     email,
   });
 };
+
+export const attendToGlobalConference = () => {
+  return httpClient.put(`private/user/attend-conference`);
+};
+
+export const addSession = ({ session }) => {
+  return httpClient.put(`private/user/add-session/${session.id}`);
+};
+
+export const removeSession = ({ session }) => {
+  return httpClient.put(`private/user/remove-session/${session.id}`);
+};
+
+export const uploadResume = ({ resume }) => {
+  return httpClient.put("private/user/upload-resume", resume);
+};
+
+export const deleteResume = () => {
+  return httpClient.put("private/user/delete-resume");
+};

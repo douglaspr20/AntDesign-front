@@ -7,6 +7,11 @@ import {
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
+  attendToGlobalConference,
+  addSession,
+  removeSession,
+  uploadResume,
+  deleteResume,
 } from "./module/user";
 import {
   getAllEvents,
@@ -16,6 +21,8 @@ import {
   getChannelEvents,
   deleteEvent,
   updateChannelEvent,
+  claimEventCredit,
+  claimEventAttendance,
 } from "./module/event";
 import {
   addLibrary,
@@ -27,6 +34,7 @@ import {
   deleteChannelLibrary,
   updateChannelLibrary,
   shareChannelLibrary,
+  claimLibrary,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -42,11 +50,17 @@ import {
   searchChannelPodcast,
   deleteChannelPodcast,
   updateChannelPodcast,
+  getAllPodcastSeries,
+  getPodcastSeries,
+  claimPodcastSeries,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
 import { getCategories } from "./module/category";
-import { searchConferenceLibrary } from "./module/conference";
+import {
+  searchConferenceLibrary,
+  claimConferenceLibrary,
+} from "./module/conference";
 import {
   createChannel,
   searchChannels,
@@ -56,6 +70,10 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
+import { getNotifications, markeToRead } from "./module/notification";
+import { getAllSessions } from "./module/session";
+
+import { getEditorSignature } from "./module/env";
 
 export {
   signIn,
@@ -105,4 +123,20 @@ export {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  getNotifications,
+  getAllSessions,
+  attendToGlobalConference,
+  addSession,
+  removeSession,
+  markeToRead,
+  uploadResume,
+  deleteResume,
+  getAllPodcastSeries,
+  getPodcastSeries,
+  claimPodcastSeries,
+  getEditorSignature,
+  claimLibrary,
+  claimConferenceLibrary,
+  claimEventCredit,
+  claimEventAttendance,
 };

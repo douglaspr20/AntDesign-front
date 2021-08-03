@@ -26,6 +26,11 @@ import NoPageFound from "pages/NoPageFound";
 import ConferenceLibrary from "pages/ConferenceLibrary";
 import ChannelsPage from "pages/Channels";
 import ChannelPage from "pages/Channel";
+import NotificationPage from "pages/Notification";
+import GlobalConferencePage from "pages/GlobalConference";
+import LivePage from "pages/Live";
+import PodcastSeriesPage from "pages/PodcastSeries";
+import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -140,8 +145,29 @@ class Content extends Component {
             render={(props) => <ConferenceLibrary {...props} />}
           />
           <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.PODCAST_SERIES}
+            render={(props) => <PodcastSeriesPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.PODCAST_SERIES}/:id`}
+            render={(props) => <PodcastSeriesDetailPage {...props} />}
+          />
+          <PrivateRoute
             path={INTERNAL_LINKS.NOT_FOUND}
             render={(props) => <NoPageFound {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.NOTIFICATIONS}
+            render={(props) => <NotificationPage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
+            render={(props) => <GlobalConferencePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.LIVE}
+            render={(props) => <LivePage {...props} />}
           />
           <Route
             exact

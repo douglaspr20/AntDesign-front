@@ -5,7 +5,17 @@ import {
   constants as homeConstants,
   actions as homeActions,
 } from "../actions/home-actions";
-import { getUserFromId, updateUser, upgradePlan, inviteFriend } from "../../api";
+import {
+  getUserFromId,
+  updateUser,
+  upgradePlan,
+  inviteFriend,
+  attendToGlobalConference,
+  addSession,
+  removeSession,
+  uploadResume,
+  deleteResume,
+} from "../../api";
 
 const defaultUserInfo = {
   firstName: "",
@@ -114,11 +124,99 @@ export function* sendInvitationEmail({ payload }) {
   }
 }
 
+export function* attendToGlobalConferenceSaga() {
+  try {
+    const response = yield call(attendToGlobalConference);
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* addSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addSession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* removeSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removeSession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* uploadResumeSaga({ payload }) {
+  try {
+    const response = yield call(uploadResume, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  }
+}
+
+export function* deleteResumeSaga({ payload }) {
+  try {
+    const response = yield call(deleteResume, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
   yield takeLatest(homeConstants.UPGRADE_PLAN, upgradeUserPlan);
   yield takeLatest(homeConstants.INVITE_FRIEND, sendInvitationEmail);
+  yield takeLatest(
+    homeConstants.ATTEND_TO_GLOBAL_CONFERENCE,
+    attendToGlobalConferenceSaga
+  );
+  yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
+  yield takeLatest(homeConstants.REMOVE_SESSION, removeSessionSaga);
+  yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);
+  yield takeLatest(homeConstants.DELETE_RESUME, deleteResumeSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

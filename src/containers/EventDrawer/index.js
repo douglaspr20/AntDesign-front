@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dropdown, Menu } from "antd";
@@ -15,7 +15,7 @@ import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime } from "utils/format"
+import { convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
@@ -27,6 +27,8 @@ const EventDrawer = ({
   userProfile,
   onClose,
 }) => {
+  const [editor, setEditor] = useState("froala");
+
   const onDrawerClose = () => {
     onClose();
   };
@@ -75,9 +77,11 @@ const EventDrawer = ({
     }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       event.title
-    }&dates=${convertToLocalTime(event.startDate).format("YYYYMMDDTHHmm")}/${convertToLocalTime(
-      event.endDate
-    ).format("YYYYMMDDTHHmmss")}&details=${description}&location=${
+    }&dates=${convertToLocalTime(event.startDate).format(
+      "YYYYMMDDTHHmm"
+    )}/${convertToLocalTime(event.endDate).format(
+      "YYYYMMDDTHHmmss"
+    )}&details=${description}&location=${
       event.location
     }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
@@ -95,9 +99,11 @@ const EventDrawer = ({
     }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       event.title
-    }&st=${convertToLocalTime(event.startDate).format("YYYYMMDDTHHmm")}&dur${convertToLocalTime(
-      event.endDate
-    ).format("HHmmss")}&desc=${description}&in_loc=${event.location}`;
+    }&st=${convertToLocalTime(event.startDate).format(
+      "YYYYMMDDTHHmm"
+    )}&dur${convertToLocalTime(event.endDate).format(
+      "HHmmss"
+    )}&desc=${description}&in_loc=${event.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -124,6 +130,14 @@ const EventDrawer = ({
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
+
+  useEffect(() => {
+    if (event.description && event.description.blocks) {
+      setEditor("draft");
+    } else {
+      setEditor("froala");
+    }
+  }, [event]);
 
   return (
     <CustomDrawer
@@ -241,7 +255,16 @@ const EventDrawer = ({
               ))}
             </div>
           )}
-          <RichEdit data={event.description} />
+          {editor === "froala" ? (
+            <div
+              className="event-description"
+              dangerouslySetInnerHTML={{
+                __html: (event.description || {}).html || "",
+              }}
+            />
+          ) : (
+            <RichEdit data={event.description} />
+          )}
         </div>
       </div>
     </CustomDrawer>

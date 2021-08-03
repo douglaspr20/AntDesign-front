@@ -2,6 +2,10 @@ import { createAction } from "redux-actions";
 
 const GET_ALL_PODCASTS = "GET_ALL_PODCASTS";
 const SET_ALL_PODCASTS = "SET_ALL_PODCASTS";
+const GET_ALL_PODCAST_SERIES = "GET_ALL_PODCAST_SERIES";
+const SET_ALL_PODCAST_SERIES = "SET_ALL_PODCAST_SERIES";
+const GET_PODCAST_SERIES = "GET_PODCAST_SERIES";
+const SET_PODCAST_SERIES = "SET_PODCAST_SERIES";
 const SET_LOADING = "SET_PODCASTS_LOADING";
 const ADD_PODCAST_TO_CHANNEL = "ADD_PODCAST_TO_CHANNEL";
 const GET_FIRST_CHANNEL_PODCAST_LIST = "GET_FIRST_CHANNEL_PODCAST_LIST";
@@ -10,10 +14,15 @@ const GET_MORE_CHANNEL_PODCAST_LIST = "GET_MORE_CHANNEL_PODCAST_LIST";
 const SET_MORE_CHANNEL_PODCAST_LIST = "SET_MORE_CHANNEL_PODCAST_LIST";
 const DELETE_CHANNEL_PODCAST = "DELETE_CHANNEL_PODCAST";
 const UPDATE_CHANNEL_PODCAST = "UPDATE_CHANNEL_PODCAST";
+const CLAIM_PODCAST_SERIES = "CLAIM_PODCAST_SERIES";
 
 export const constants = {
   GET_ALL_PODCASTS,
   SET_ALL_PODCASTS,
+  GET_ALL_PODCAST_SERIES,
+  SET_ALL_PODCAST_SERIES,
+  GET_PODCAST_SERIES,
+  SET_PODCAST_SERIES,
   SET_LOADING,
   ADD_PODCAST_TO_CHANNEL,
   GET_FIRST_CHANNEL_PODCAST_LIST,
@@ -22,6 +31,7 @@ export const constants = {
   SET_MORE_CHANNEL_PODCAST_LIST,
   DELETE_CHANNEL_PODCAST,
   UPDATE_CHANNEL_PODCAST,
+  CLAIM_PODCAST_SERIES,
 };
 
 // ------------------------------------
@@ -30,9 +40,29 @@ export const constants = {
 export const getAllPodcasts = createAction(GET_ALL_PODCASTS, (filter) => ({
   filter,
 }));
-export const setAllPodcasts = createAction(SET_ALL_PODCASTS, (podcasts) => ({
-  podcasts,
+export const setAllPodcasts = createAction(
+  SET_ALL_PODCASTS,
+  (total, page, podcasts) => ({
+    total,
+    page,
+    podcasts,
+  })
+);
+export const getAllPodcastSeries = createAction(
+  GET_ALL_PODCAST_SERIES,
+  (filter) => ({ filter })
+);
+export const setAllPodcastSeries = createAction(
+  SET_ALL_PODCAST_SERIES,
+  (allPodcastSeries) => ({ allPodcastSeries })
+);
+export const getPodcastSeries = createAction(GET_PODCAST_SERIES, (id) => ({
+  id,
 }));
+export const setPodcastSeries = createAction(
+  SET_PODCAST_SERIES,
+  (podcastSeries) => ({ podcastSeries })
+);
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addPodcastToChannel = createAction(
   ADD_PODCAST_TO_CHANNEL,
@@ -63,10 +93,18 @@ export const updateChannelPodcast = createAction(
   UPDATE_CHANNEL_PODCAST,
   (episode, callback) => ({ episode, callback })
 );
+export const claimPodcastSeries = createAction(
+  CLAIM_PODCAST_SERIES,
+  (id, pdf, callback) => ({ id, pdf, callback })
+);
 
 export const actions = {
   getAllPodcasts,
   setAllPodcasts,
+  getAllPodcastSeries,
+  setAllPodcastSeries,
+  getPodcastSeries,
+  setPodcastSeries,
   setLoading,
   addPodcastToChannel,
   getFirstChannelPodcastList,
@@ -75,4 +113,5 @@ export const actions = {
   setMoreChannelPodcastList,
   deleteChannelPodcast,
   updateChannelPodcast,
+  claimPodcastSeries,
 };

@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
+import Emitter from "services/emitter";
+import { notification } from "antd";
 
-import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS } from "enum";
+import CustomButton from "../Button";
+import LibraryClaimModal from "./LibraryClaimModal";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { claimLibrary } from "redux/actions/library-actions";
+import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS, EVENT_TYPES } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
 import IconMenu from "images/icon-menu.svg";
@@ -22,10 +29,15 @@ const LibraryCard = ({
   type,
   keyword,
   frequency,
+  userProfile,
   onAdd,
   onMenuClick,
+  claimLibrary,
 }) => {
   const [lineClamp, setLineClamp] = useState(3);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
+
   const { title, image, description, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
@@ -60,6 +72,34 @@ const LibraryCard = ({
     } else if (data.link && !locked) {
       window.open(data.link);
     }
+  };
+
+  const onClaimCredits = () => {
+    if (userProfile && userProfile.memberShip === "premium") {
+      setModalVisible(true);
+    } else {
+      setShowFirewall(true);
+    }
+  };
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
+  const onHRClaimOffered = async () => {
+    claimLibrary(data.id, (err) => {
+      if (err) {
+        notification.error({
+          message: "Error",
+          description: (err || {}).msg,
+        });
+      } else {
+        notification.info({
+          message: "Email was send successfully.",
+        });
+        setModalVisible(false);
+      }
+    });
   };
 
   return (
@@ -108,7 +148,15 @@ const LibraryCard = ({
                 </div>
                 <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
               </div>
-
+              {data.showClaim === 1 && (
+                <CustomButton
+                  className="claim-credits"
+                  type="primary"
+                  size="xs"
+                  text="Claim HR Credits"
+                  onClick={onClaimCredits}
+                />
+              )}
               {/* <div className="d-flex items-center">
                 <SvgIcon name="star" className="library-card-icon" />
                 <SvgIcon name="bookmark" className="library-card-icon" />
@@ -129,6 +177,27 @@ const LibraryCard = ({
           ) : null}
         </>
       )}
+      {showFirewall && (
+        <div
+          className="library-card-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              Upgrade to a PREMIUM Membership and get unlimited access to the
+              LAB features
+            </h3>
+          </div>
+        </div>
+      )}
+      <LibraryClaimModal
+        visible={modalVisible}
+        title="HR Credit Offered"
+        destroyOnClose={true}
+        data={data}
+        onClaim={onHRClaimOffered}
+        onCancel={() => setModalVisible(false)}
+      />
     </div>
   );
 };
@@ -153,4 +222,12 @@ LibraryCard.defaultProps = {
   onMenuClick: () => {},
 };
 
-export default LibraryCard;
+const mapStateToProps = (state, props) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {
+  claimLibrary,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LibraryCard);

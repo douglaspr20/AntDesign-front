@@ -1,0 +1,65 @@
+@import "../../styles/main.scss";
+
+.global-conference {
+  background: $color-background;
+  padding: 3rem 0;
+  height: calc(100vh - 72px);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+
+    .attending-label {
+      margin-right: 37px;
+      color: $color-success;
+      @include app-font(16px, 21px, normal);
+      white-space: nowrap;
+
+      span {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  &-description {
+    margin-top: 2rem;
+    @include app-font(16px, 24px);
+    color: $color-text-secondary;
+  }
+
+  &-pagination {
+    display: flex;
+    justify-content: flex-end;
+
+    .custom-button {
+      margin-left: 0.5rem;
+      padding: 0 1rem;
+    }
+  }
+
+  &-tabs {
+    overflow-x: visible;
+
+    .ant-tabs-nav-list {
+      width: 100%;
+
+      .ant-tabs-tab {
+        flex: 1;
+        margin-left: 0;
+        justify-content: center;
+      }
+    }
+
+    .custom-tabs {
+      overflow: visible;
+    }
+  }
+}

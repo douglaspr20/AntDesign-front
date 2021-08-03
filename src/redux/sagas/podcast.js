@@ -12,16 +12,64 @@ import {
   searchChannelPodcast,
   deleteChannelPodcast,
   updateChannelPodcast,
+  getAllPodcastSeries,
+  getPodcastSeries,
+  claimPodcastSeries,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(podcastActions.setLoading(true));
+  }
 
   try {
     const response = yield call(getAllPodcasts, payload);
 
     if (response.status === 200) {
-      yield put(podcastActions.setAllPodcasts(response.data.podcast));
+      yield put(
+        podcastActions.setAllPodcasts(
+          response.data.podcasts.count,
+          payload.filter.page || 1,
+          response.data.podcasts.rows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+    yield put(podcastActions.setLoading(false));
+  }
+}
+
+export function* getAllPodcastSeriesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        podcastActions.setAllPodcastSeries(response.data.podcastSeries)
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getPodcastSeriesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      yield put(podcastActions.setPodcastSeries(response.data.podcastSeries));
     }
   } catch (error) {
     console.log(error);
@@ -133,8 +181,35 @@ export function* updateChannelPodcastSaga({ payload }) {
   }
 }
 
+export function* claimPodcastSeriesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchPodcast() {
   yield takeLatest(podcastConstants.GET_ALL_PODCASTS, getAllPodcastsSaga);
+  yield takeLatest(
+    podcastConstants.GET_ALL_PODCAST_SERIES,
+    getAllPodcastSeriesSaga
+  );
+  yield takeLatest(podcastConstants.GET_PODCAST_SERIES, getPodcastSeriesSaga);
   yield takeLatest(
     podcastConstants.ADD_PODCAST_TO_CHANNEL,
     addPodcastToChannelSaga
@@ -154,6 +229,10 @@ function* watchPodcast() {
   yield takeLatest(
     podcastConstants.UPDATE_CHANNEL_PODCAST,
     updateChannelPodcastSaga
+  );
+  yield takeLatest(
+    podcastConstants.CLAIM_PODCAST_SERIES,
+    claimPodcastSeriesSaga
   );
 }
 

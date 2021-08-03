@@ -2,17 +2,32 @@ import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
 export const getAllPodcasts = async (data) => {
-  let newFilter = {};
+  let newFilter = {
+    page: 1,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
+  };
 
   if (data.filter) {
-    newFilter = { ...data.filter };
+    newFilter = { ...newFilter, ...data.filter };
   }
 
   const parsedFilter = Object.keys(newFilter)
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return await httpClient.get(`private/podcast?${parsedFilter}`);
+  return await httpClient.get(`private/podcast/search?${parsedFilter}`);
+};
+
+export const getAllPodcastSeries = async ({ filter }) => {
+  const parsedFilter = Object.keys(filter)
+    .map((item) => `${item}=${filter[item]}`)
+    .join("&");
+
+  return await httpClient.get(`private/podcast-series?${parsedFilter}`);
+};
+
+export const getPodcastSeries = async ({ id }) => {
+  return await httpClient.get(`private/podcast-series/${id}`);
 };
 
 export const addPodcastToChannel = ({ podcast }) => {
@@ -44,4 +59,8 @@ export const deleteChannelPodcast = ({ episode }) => {
 
 export const updateChannelPodcast = ({ episode }) => {
   return httpClient.put(`private/podcast/channel/${episode.id}`, episode);
+};
+
+export const claimPodcastSeries = ({ id, pdf }) => {
+  return httpClient.post(`private/podcast-series/claim`, { id, pdf });
 };

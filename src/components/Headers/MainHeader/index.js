@@ -2,21 +2,31 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS, INTERNAL_LINKS_ADDITIONAL_DATA_FOR_HEADER } from "enum";
+import {
+  SIDEBAR_MENU_LIST,
+  EVENT_TYPES,
+  INTERNAL_LINKS,
+  INTERNAL_LINKS_ADDITIONAL_DATA_FOR_HEADER,
+} from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
 import { setCollapsed } from "redux/actions/env-actions";
+import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconMedal from "images/icon-medal.svg";
+import IconNotification from "images/icon-notification-header.svg";
+import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { courseSelector } from "redux/selectors/courseSelector";
+import { liveSelector } from "redux/selectors/liveSelector";
+import { podcastSelector } from "redux/selectors/podcastSelector";
 
 import "./style.scss";
 
@@ -61,7 +71,12 @@ class MainHeader extends React.Component {
     const { pathname } = this.props.history.location || {};
     let pathInfo = MenuList.find((item) => item.url.includes(pathname));
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
+    if (pathname === INTERNAL_LINKS.NOTIFICATIONS) {
+      pathInfo = {
+        icon: IconNotification,
+        label: "Notifications",
+      };
+    } else if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.CHANNELS}/`)) {
       const { selectedChannel } = this.props;
       pathInfo = {
         icon: IconTvOutline,
@@ -74,6 +89,14 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconMedal,
         label: `Class - ${(selectedCourse || {}).title || ""}`,
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
+      const { podcastSeries } = this.props;
+      pathInfo = {
+        icon: IconHeadsetOutline,
+        label: (podcastSeries || {}).title || "Podcast Series",
       };
     }
 
@@ -90,11 +113,32 @@ class MainHeader extends React.Component {
               <div className="page-icon">
                 <img src={pathInfo.icon} alt="page-icon" />
               </div>
-              <span className="page-label">{pathInfo.label}</span>
+              <span className="page-label">
+                {pathInfo.url === INTERNAL_LINKS.GLOBAL_CONFERENCE
+                  ? "Hacking HR 2022 Global Online Conference"
+                  : pathInfo.label}
+              </span>
             </>
           )}
         </div>
         <div className="main-header-right">
+          {this.props.live.live === true && (
+            <CustomButton
+              text={
+                <div className="live-container">
+                  <div className="live-circle"></div>
+                  <div>LIVE</div>
+                  <p>: {this.props.live.title}</p>
+                </div>
+              }
+              type="primary"
+              size="lg"
+              className="outlined btn-live"
+              onClick={() => {
+                this.props.history.push(INTERNAL_LINKS.LIVE);
+              }}
+            />
+          )}
           <CustomButton
             text="Invite friend"
             type="primary"
@@ -111,6 +155,7 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
+          <Notification className="main-header-notification" />
           <ProfilePopupMenu showPremiumAlert={this.showPremiumAlert}>
             <div className="user-avatar">
               {user.img ? (
@@ -149,6 +194,8 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   selectedCourse: courseSelector(state).course,
+  live: liveSelector(state).live,
+  podcastSeries: podcastSelector(state).podcastSeries,
 });
 
 const mapDispatchToProps = {

@@ -176,6 +176,7 @@ class ProfileEditPanel extends React.Component {
             />
             <h5 className="textfield-label">Location</h5>
             <CustomSelect
+              className="border"
               showSearch
               options={COUNTRIES}
               value={user.location}
@@ -193,6 +194,7 @@ class ProfileEditPanel extends React.Component {
             />
             <h5 className="textfield-label">Time zone</h5>
             <CustomSelect
+              className="border"
               showSearch
               options={TIMEZONE_LIST}
               value={user.timezone}
@@ -207,6 +209,7 @@ class ProfileEditPanel extends React.Component {
               {user.languages.map((lang, index) => (
                 <div className="language-list-item" key={index}>
                   <CustomSelect
+                    className="border"
                     showSearch
                     options={Languages}
                     value={lang}

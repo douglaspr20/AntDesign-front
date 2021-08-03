@@ -15,6 +15,10 @@ import { channelSaga } from "./channel";
 import { channelCategorySaga } from "./channelCategory";
 import { courseSaga } from "./course";
 import { courseClassUserSaga } from "./courseClassUser";
+import { notificationSaga } from "./notification";
+import { sessionSaga } from "./session";
+import { liveSaga } from "./live";
+import { envSaga } from "./env";
 
 export default function* sagas() {
   yield all([
@@ -34,5 +38,9 @@ export default function* sagas() {
     ...channelCategorySaga,
     ...courseSaga,
     ...courseClassUserSaga,
+    ...notificationSaga,
+    ...sessionSaga,
+    ...liveSaga,
+    ...envSaga,
   ]);
 }

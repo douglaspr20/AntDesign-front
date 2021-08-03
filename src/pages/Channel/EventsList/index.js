@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { notification } from "antd";
+import moment from "moment";
 
 import EventList from "pages/Events/EventList";
 import EventAddEditDrawer from "containers/EventAddEditDrawer";
-import { CARD_TYPE } from "enum";
+import EventDrawer from "containers/EventDrawer";
+import { CARD_TYPE, MONTH_NAMES } from "enum";
 
 import {
   getChannelEvents,
@@ -14,6 +16,8 @@ import {
 } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+
+const DataFormat = "YYYY.MM.DD hh:mm A";
 
 const EventsList = ({
   isOwner,
@@ -26,6 +30,8 @@ const EventsList = ({
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [visibleEventDrawer, setVisibleEventDrawer] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState({});
 
   const onAddEvent = () => {
     setEditMode(false);
@@ -58,6 +64,15 @@ const EventsList = ({
     }
   };
 
+  const onEventClick = (event) => {
+    setVisibleEventDrawer(true);
+    setSelectedEvent({
+      ...event,
+      day: moment(event.date, DataFormat).date(),
+      month: MONTH_NAMES[moment(event.date, DataFormat).month()],
+    });
+  };
+
   useEffect(() => {
     if (channel && channel.id) {
       getChannelEvents({ ...filter, channel: channel.id });
@@ -80,8 +95,14 @@ const EventsList = ({
         edit={isOwner}
         type={CARD_TYPE.EDIT}
         data={channelEvents}
+        onClick={onEventClick}
         onAddEvent={onAddEvent}
         onMenuClick={handleEvent}
+      />
+      <EventDrawer
+        visible={visibleEventDrawer}
+        event={selectedEvent}
+        onClose={() => setVisibleEventDrawer(false)}
       />
     </div>
   );

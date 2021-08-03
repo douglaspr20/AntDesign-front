@@ -33,3 +33,11 @@ export const deleteEvent = ({ event }) => {
 export const updateChannelEvent = ({ event }) => {
   return httpClient.put(`private/event/channel/${event.id}`, event);
 };
+
+export const claimEventCredit = ({ id, pdf }) => {
+  return httpClient.post(`private/event/claim-credit`, { id, pdf });
+};
+
+export const claimEventAttendance = ({ id }) => {
+  return httpClient.post(`private/event/claim-attendance`, { id });
+};

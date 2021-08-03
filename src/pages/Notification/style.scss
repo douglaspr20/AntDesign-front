@@ -1,0 +1,71 @@
+@import "styles/main.scss";
+
+.notification-page {
+  width: 100%;
+  height: calc(100vh - 72px);
+  background: $color-background;
+  overflow: auto;
+  padding: 3rem;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-showmore {
+    margin-top: 3rem;
+  }
+
+  .notification-list-item {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $color-border;
+    position: relative;
+
+    &-link {
+      @include app-font(16px, 18px);
+      color: $color-primary !important;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &-message {
+      margin-bottom: 1rem !important;
+      position: relative;
+    }
+
+    &-date {
+      font-weight: 400 !important;
+      color: $color-text-secondary !important;
+    }
+
+    &-circle {
+      display: block;
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      min-height: 8px;
+      background: $color-primary;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: -16px;
+      transform: translate(0, -50%);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    padding: 2rem;
+  }
+}

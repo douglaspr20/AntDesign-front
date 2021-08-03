@@ -10,6 +10,7 @@ import { actions as authActions } from "redux/actions/auth-actions";
 import { authSelector } from "redux/selectors/authSelector";
 import { addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
+import { liveSelector } from "redux/selectors/liveSelector";
 import { INTERNAL_LINKS } from "enum";
 
 import LoginForm from "./LoginForm";
@@ -31,6 +32,7 @@ const Login = ({
   updatedEvent,
   addToMyEventList,
   onClose,
+  live,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
@@ -58,7 +60,11 @@ const Login = ({
   useEffect(() => {
     if (isAuthenticated) {
       if (history != null) {
-        history.push(INTERNAL_LINKS.HOME);
+        if(live && live.live === true){
+          history.push(INTERNAL_LINKS.LIVE);
+        }else{
+          history.push(INTERNAL_LINKS.HOME);
+        }
       } else {
         addToMyEventList(updatedEvent);
         if (onClose) {
@@ -151,6 +157,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: authSelector(state).isAuthenticated,
   error: authSelector(state).error,
   updatedEvent: eventSelector(state).updatedEvent,
+  live: liveSelector(state).live,
 });
 
 const mapDispatchToProps = {

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput } from "components";
+import { CustomCheckbox, SearchInput, CustomButton } from "components";
 
 import { SEARCH_FILTERS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -13,7 +13,14 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.library;
 const FilterTitles = Object.keys(SearchFilters);
 
-const FilterPanel = ({ title, userProfile, onChange, onSearch }) => {
+const FilterPanel = ({
+  title,
+  userProfile,
+  hidePodcastSeries,
+  onChange,
+  onSearch,
+  onClickPodcastSeries,
+}) => {
   const [filters, setFilters] = useState({});
 
   const onFilterChange = (field, values) => {
@@ -27,6 +34,13 @@ const FilterPanel = ({ title, userProfile, onChange, onSearch }) => {
 
   return (
     <div className="podcast-filter-panel">
+      {!hidePodcastSeries && (
+        <CustomButton
+          type="primary"
+          text="Podcast Series"
+          onClick={onClickPodcastSeries}
+        />
+      )}
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">
@@ -67,14 +81,18 @@ const FilterPanel = ({ title, userProfile, onChange, onSearch }) => {
 
 FilterPanel.propTypes = {
   title: PropTypes.string,
+  hidePodcastSeries: PropTypes.bool,
   onChange: PropTypes.func,
   onSearch: PropTypes.func,
+  onClickPodcastSeries: PropTypes.func,
 };
 
 FilterPanel.defaultProps = {
   title: "Filters",
+  hidePodcastSeries: false,
   onChange: () => {},
   onSearch: () => {},
+  onClickPodcastSeries: () => {},
 };
 
 const mapStateToProps = (state) => ({

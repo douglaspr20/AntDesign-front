@@ -5,6 +5,13 @@
   grid-template-columns: auto 1fr;
   width: 100%;
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .search-results-container {
     height: calc(100vh - 72px);
     background: $color-background;
@@ -48,36 +55,6 @@
 
     &-footer {
       height: 40px;
-    }
-
-    .upgrade-notification {
-      position: sticky;
-      bottom: 50%;
-      transform: translate(0, 50%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 1rem;
-      cursor: pointer;
-
-      &-panel {
-        padding: 1rem 3rem;
-        border-radius: 0.5rem;
-        background: $color-primary;
-        text-align: center;
-
-        h3 {
-          color: $color-white !important;
-        }
-
-        @media (max-width: 575.98px) {
-          padding: 1rem;
-
-          h3 {
-            @include app-font(16px, 21px, 600);
-          }
-        }
-      }
     }
   }
 
