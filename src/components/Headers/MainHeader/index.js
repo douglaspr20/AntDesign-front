@@ -2,7 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SIDEBAR_MENU_LIST, EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import {
+  SIDEBAR_MENU_LIST,
+  EVENT_TYPES,
+  INTERNAL_LINKS,
+  INTERNAL_LINKS_ADDITIONAL_DATA_FOR_HEADER,
+} from "enum";
 import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
@@ -12,12 +17,14 @@ import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
+import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { courseSelector } from "redux/selectors/courseSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
 import { podcastSelector } from "redux/selectors/podcastSelector";
 
@@ -26,6 +33,7 @@ import "./style.scss";
 const MenuList = [
   ...SIDEBAR_MENU_LIST.TOP_MENUS,
   ...SIDEBAR_MENU_LIST.BOTTOM_MENUS,
+  ...INTERNAL_LINKS_ADDITIONAL_DATA_FOR_HEADER,
 ];
 
 class MainHeader extends React.Component {
@@ -76,6 +84,14 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
+      const { selectedCourse } = this.props;
+      pathInfo = {
+        icon: IconMedal,
+        label: `Class - ${(selectedCourse || {}).title || ""}`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
       const { podcastSeries } = this.props;
       pathInfo = {
@@ -112,7 +128,7 @@ class MainHeader extends React.Component {
                 <div className="live-container">
                   <div className="live-circle"></div>
                   <div>LIVE</div>
-                  <p>: { this.props.live.title }</p>
+                  <p>: {this.props.live.title}</p>
                 </div>
               }
               type="primary"
@@ -177,6 +193,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
+  selectedCourse: courseSelector(state).course,
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
 });
