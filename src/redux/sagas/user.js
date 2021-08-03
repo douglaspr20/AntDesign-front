@@ -5,6 +5,7 @@ import {
   constants as homeConstants,
   actions as homeActions,
 } from "../actions/home-actions";
+import { actions as authActions } from "../actions/auth-actions";
 import {
   getUserFromId,
   updateUser,
@@ -47,9 +48,19 @@ export function* getUser() {
         ...user,
       })
     );
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    yield put(
+      authActions.setAuth({
+        isAuthenticated: false,
+        loading: false,
+        error: error.response.data.msg,
+        accessToken: null,
+        id: 0,
+      })
+    );
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
