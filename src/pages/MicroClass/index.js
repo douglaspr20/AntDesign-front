@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import MicroClassSkeleton from './MicroClassSkeleton';
-import MicroClassVideosList from './MicroClassVideosList';
-import MicroClassVideoWrapper from './MicroClassVideoWrapper';
+import MicroClassSkeleton from "./MicroClassSkeleton";
+import MicroClassVideosList from "./MicroClassVideosList";
+import MicroClassVideoWrapper from "./MicroClassVideoWrapper";
 import CustomButton from "components/Button";
-import { Tabs } from 'antd';
+import { Tabs } from "antd";
 
 import {
   getCourse,
@@ -16,23 +16,23 @@ import {
 import { courseSelector } from "redux/selectors/courseSelector";
 import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
 
-import { INTERNAL_LINKS } from 'enum';
+import { INTERNAL_LINKS } from "enum";
 
-import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
+import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
 
-import './style.scss';
+import "./style.scss";
 
 const { TabPane } = Tabs;
 
 const useMicroClassQuery = (id) => {
   const [data, setData] = useState(null);
-  const [status, setStatus] = useState('loading');
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
-    setStatus('loading');
+    setStatus("loading");
 
     let timeout = setTimeout(() => {
-      setStatus('success');
+      setStatus("success");
     }, 1500);
 
     return () => clearTimeout(timeout);
@@ -44,8 +44,8 @@ const useMicroClassQuery = (id) => {
     microClassData: data,
     setMicroClassData: setData,
     status,
-  }
-}
+  };
+};
 
 const MicroClass = ({
   history,
@@ -72,7 +72,7 @@ const MicroClass = ({
 
   const activeVideoUrl = useMemo(() => {
     if (classes && classes.length) {
-      let videoObject = classes.find(item => item.id === activeVideoId);
+      let videoObject = classes.find((item) => item.id === activeVideoId);
       if (videoObject && videoObject.videoUrl) {
         return videoObject.videoUrl;
       }
@@ -88,22 +88,26 @@ const MicroClass = ({
   return (
     <div className="micro-class__page">
       <div className="micro-class__container">
-        {status === 'loading' &&
-          <MicroClassSkeleton />
-        }
+        {status === "loading" && <MicroClassSkeleton />}
 
-        {status === 'success' &&
+        {status === "success" && (
           <>
             <div className="micro-class__row">
               <div className="micro-class__row-1">
                 <div className="micro-class__row-1--video-list">
-                  <div className="micro-class__row-1--video-list--title" >
-                    <IconArrowBackCircleOutline title="Back to Classes" onClick={() => { history.push(INTERNAL_LINKS.CLASSES); }} /> <h2>{course.title}</h2>
+                  <div className="micro-class__row-1--video-list--title">
+                    <IconArrowBackCircleOutline
+                      title="Back to Classes"
+                      onClick={() => {
+                        history.push(INTERNAL_LINKS.CLASSES);
+                      }}
+                    />{" "}
+                    <h2>{course.title}</h2>
                   </div>
 
                   <MicroClassVideosList
                     list={classes}
-                    setActiveVideoId={id => setActiveVideoId(id)}
+                    setActiveVideoId={(id) => setActiveVideoId(id)}
                     activeVideoId={activeVideoId}
                     courseId={match.params.id}
                   />
@@ -117,10 +121,11 @@ const MicroClass = ({
                       onClick={handleClaimCertificate}
                       text="Claim Digital Certificate"
                     />
-                    {
-                      !course.finished &&
-                        <span className="micro-class__claim-certificate-button-span">(only available when all sub-videos have been watched)</span>
-                    }
+                    {!course.finished && (
+                      <span className="micro-class__claim-certificate-button-span">
+                        (only available when all sub-videos have been watched)
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="micro-class__row-1--video-player">
@@ -136,7 +141,9 @@ const MicroClass = ({
                         <div>
                           <div className="micro-class__description-card">
                             <h3>Course Description</h3>
-                            <p className="micro-class__description-p">{course.description}</p>
+                            <p className="micro-class__description-p">
+                              {course.description}
+                            </p>
                           </div>
                         </div>
                       )}
@@ -147,17 +154,28 @@ const MicroClass = ({
                           <div className="micro-class__additional-info-card">
                             <div className="micro-class__additional-info-row">
                               {instructors.map((instructor, i) => (
-                                <div className="micro-class__additional-info-col"
+                                <div
+                                  className="micro-class__additional-info-col"
                                   key={i}
                                 >
-                                  <a href={instructor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
-                                    <span className="micro-class__additional-info-ico"
+                                  <a
+                                    href={instructor.link}
+                                    className="micro-class__additional-info-item"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <span
+                                      className="micro-class__additional-info-ico"
                                       style={{
-                                        backgroundImage: `url(${instructor.image})`
+                                        backgroundImage: `url(${instructor.image})`,
                                       }}
                                     ></span>
-                                    <span className="micro-class__additional-info-item-text">{instructor.name}</span>
-                                    <span className="micro-class__additional-info-item-text-sub">{instructor.description}</span>
+                                    <span className="micro-class__additional-info-item-text">
+                                      {instructor.name}
+                                    </span>
+                                    <span className="micro-class__additional-info-item-text-sub">
+                                      {instructor.description}
+                                    </span>
                                   </a>
                                 </div>
                               ))}
@@ -172,16 +190,25 @@ const MicroClass = ({
                           <div className="micro-class__additional-info-card">
                             <div className="micro-class__additional-info-row">
                               {sponsors.map((sponsor, i) => (
-                                <div className="micro-class__additional-info-col"
+                                <div
+                                  className="micro-class__additional-info-col"
                                   key={i}
                                 >
-                                  <a href={sponsor.link} className="micro-class__additional-info-item" target="_blank" rel="noopener noreferrer">
-                                    <span className="micro-class__additional-info-ico"
+                                  <a
+                                    href={sponsor.link}
+                                    className="micro-class__additional-info-item"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <span
+                                      className="micro-class__additional-info-ico"
                                       style={{
-                                        backgroundImage: `url(${sponsor.image})`
+                                        backgroundImage: `url(${sponsor.image})`,
                                       }}
                                     ></span>
-                                    <span className="micro-class__additional-info-item-text">{sponsor.name}</span>
+                                    <span className="micro-class__additional-info-item-text">
+                                      {sponsor.name}
+                                    </span>
                                   </a>
                                 </div>
                               ))}
@@ -195,11 +222,11 @@ const MicroClass = ({
               </div>
             </div>
           </>
-        }
+        )}
       </div>
     </div>
   );
-}
+};
 
 const mapStateToProps = (state, props) => ({
   course: courseSelector(state).course,
@@ -216,7 +243,4 @@ const mapDispatchToProps = {
   getCourseSponsors,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MicroClass);
+export default connect(mapStateToProps, mapDispatchToProps)(MicroClass);
