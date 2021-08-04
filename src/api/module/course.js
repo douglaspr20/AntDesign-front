@@ -29,3 +29,7 @@ export const getCourseInstructors = async (course) => {
 export const getCourseSponsors = async (course) => {
   return await httpClient.get(`private/course-sponsors/${course}`);
 };
+
+export const claimCourse = ({ id, pdf }) => {
+  return httpClient.post(`private/course/claim`, { id, pdf });
+};
