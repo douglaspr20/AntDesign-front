@@ -31,7 +31,6 @@ class FeedbackBox extends Component {
       async () => {
         let data = {
           message: this.state.message,
-          userId: this.props.userId,
         };
         let result = await sendEmail(data);
         if (result.status === 200) {

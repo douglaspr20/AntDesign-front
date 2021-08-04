@@ -11,9 +11,10 @@ import {
   getCourseClasses,
   getCourseInstructors,
   getCourseSponsors,
+  claimCourse,
 } from "../../api/module/course";
 
-export function* getAllCoursesSaga({payload}) {
+export function* getAllCoursesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
@@ -30,7 +31,7 @@ export function* getAllCoursesSaga({payload}) {
   }
 }
 
-export function* getCourseSaga({payload}) {
+export function* getCourseSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
@@ -47,7 +48,7 @@ export function* getCourseSaga({payload}) {
   }
 }
 
-export function* getCourseClassesSaga({payload}) {
+export function* getCourseClassesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
@@ -64,7 +65,7 @@ export function* getCourseClassesSaga({payload}) {
   }
 }
 
-export function* getCourseInstructorsSaga({payload}) {
+export function* getCourseInstructorsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
     const response = yield call(getCourseInstructors, payload.id);
@@ -80,7 +81,7 @@ export function* getCourseInstructorsSaga({payload}) {
   }
 }
 
-export function* getCourseSponsorsSaga({payload}) {
+export function* getCourseSponsorsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
@@ -97,12 +98,38 @@ export function* getCourseSponsorsSaga({payload}) {
   }
 }
 
+export function* claimCourseSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimCourse, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(courseConstants.GET_ALL_COURSES, getAllCoursesSaga);
   yield takeLatest(courseConstants.GET_COURSE, getCourseSaga);
   yield takeLatest(courseConstants.GET_COURSE_CLASSES, getCourseClassesSaga);
-  yield takeLatest(courseConstants.GET_COURSE_INSTRUCTORS, getCourseInstructorsSaga);
+  yield takeLatest(
+    courseConstants.GET_COURSE_INSTRUCTORS,
+    getCourseInstructorsSaga
+  );
   yield takeLatest(courseConstants.GET_COURSE_SPONSORS, getCourseSponsorsSaga);
+  yield takeLatest(courseConstants.CLAIM_COURSE, claimCourseSaga);
 }
 
 export const courseSaga = [fork(watchLogin)];
