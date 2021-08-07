@@ -3,7 +3,7 @@
 
 .class-card {
   display: flex;
-  justify-content: center;
+  justify-content: stretch;
   min-height: 386px;
   background: $color-white;
   border: 1px solid $color-border;
@@ -86,7 +86,6 @@
   }
 
   @media (max-width: 1023.98px) {
-
   }
 
   @media (max-width: 767.98px) {
