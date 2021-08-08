@@ -6,6 +6,7 @@ import {
   constants as sessionConstants,
   actions as sessionActions,
 } from "../actions/session-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { getAllSessions } from "../../api";
 
@@ -22,12 +23,7 @@ export function* getAllSessionsSaga({ payload }) {
         return session.reduce(
           (res, item) => ({
             ...res,
-            ...omit(item, [
-              "userid",
-              "name",
-              "image",
-              "description",
-            ]),
+            ...omit(item, ["userid", "name", "image", "description"]),
             speakers: [
               ...(res.speakers || []),
               {
@@ -45,6 +41,10 @@ export function* getAllSessionsSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

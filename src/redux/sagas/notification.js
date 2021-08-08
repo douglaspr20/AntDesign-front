@@ -3,9 +3,9 @@ import {
   constants as notificationConstants,
   actions as notificationActions,
 } from "../actions/notification-actions";
+import { logout } from "../actions/auth-actions";
 
 import { getNotifications, markeToRead } from "../../api";
-
 export function* getNotificationsSaga({ payload }) {
   if (payload.page === 1) {
     yield put(notificationActions.setNotificationLoading(true));
@@ -28,6 +28,10 @@ export function* getNotificationsSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     if (payload.page === 1) {
       yield put(notificationActions.setNotificationLoading(false));
@@ -52,6 +56,10 @@ export function* setNotificationToReadSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   }
 }
 

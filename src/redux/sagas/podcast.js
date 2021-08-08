@@ -5,6 +5,7 @@ import {
   actions as podcastActions,
 } from "../actions/podcast-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { logout } from "../actions/auth-actions";
 
 import {
   getAllPodcasts,
@@ -38,6 +39,10 @@ export function* getAllPodcastsSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
     yield put(podcastActions.setLoading(false));
@@ -57,6 +62,10 @@ export function* getAllPodcastSeriesSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -73,6 +82,10 @@ export function* getPodcastSeriesSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -91,6 +104,10 @@ export function* addPodcastToChannelSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -113,6 +130,10 @@ export function* getFirstChannelPodcastList({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -135,6 +156,10 @@ export function* getMoreChannelPodcastList({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(podcastActions.setLoading(false));
   }
@@ -151,7 +176,10 @@ export function* deleteChannelPodcastSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again.");
     }
   } finally {
@@ -171,7 +199,9 @@ export function* updateChannelPodcastSaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );
@@ -193,7 +223,9 @@ export function* claimPodcastSeriesSaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );

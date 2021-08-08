@@ -4,6 +4,7 @@ import {
   constants as mentoringConstants,
   actions as mentoringActions,
 } from "../actions/mentoring-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
 import {
@@ -30,6 +31,10 @@ export function* setMentoringInfoSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -49,6 +54,10 @@ export function* updateMentoringInfoSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -67,6 +76,10 @@ export function* getMentoringInfoSaga() {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -90,6 +103,10 @@ export function* getMentorListSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -113,6 +130,10 @@ export function* getMoreMentorListSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(mentoringActions.setMentorLoading(false));
   }
@@ -136,6 +157,10 @@ export function* getMenteeListSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -159,6 +184,10 @@ export function* getMoreMenteeListSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(mentoringActions.setMenteeLoading(false));
   }
@@ -178,6 +207,10 @@ export function* setMatchSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

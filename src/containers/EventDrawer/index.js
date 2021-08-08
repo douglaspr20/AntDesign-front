@@ -11,7 +11,7 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -26,6 +26,7 @@ const EventDrawer = ({
   event,
   userProfile,
   onClose,
+  onConfirmCredit,
 }) => {
   const [editor, setEditor] = useState("froala");
 
@@ -41,21 +42,26 @@ const EventDrawer = ({
     removeFromMyEventList(event);
   };
 
-  const onClickClaimDigitalCertificate = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const onClickClaimDigitalCertificate = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    window.open(
-      `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`,
-      "_blank"
-    );
-  };
+  //   window.open(
+  //     `${INTERNAL_LINKS.CERTIFICATE}/${this.props.data.id}`,
+  //     "_blank"
+  //   );
+  // };
 
   const onClickConfirm = (e) => {
     Emitter.emit(EVENT_TYPES.OPEN_ATTENDANCE_DISCLAIMER, event);
   };
 
-  const onClickClaimCredits = (e) => {};
+  const onClickClaimCredits = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    onConfirmCredit(event);
+  };
 
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
@@ -171,15 +177,15 @@ const EventDrawer = ({
               <React.Fragment>
                 {(userProfile || {}).memberShip === "premium" ? (
                   <React.Fragment>
-                    <CustomButton
+                    {/* <CustomButton
                       className="claim-digital-certificate"
                       text="Claim digital certificate"
                       size="lg"
                       type="primary outlined"
                       onClick={onClickClaimDigitalCertificate}
-                    />
+                    /> */}
                     <CustomButton
-                      text="Claim credits"
+                      text="Confirm I attended this event"
                       size="lg"
                       type="primary"
                       onClick={onClickClaimCredits}
@@ -276,6 +282,7 @@ EventDrawer.propTypes = {
   visible: PropTypes.bool,
   event: PropTypes.object,
   onClose: PropTypes.func,
+  onConfirmCredit: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
@@ -283,6 +290,7 @@ EventDrawer.defaultProps = {
   visible: false,
   event: {},
   onClose: () => {},
+  onConfirmCredit: () => {},
 };
 
 const mapStateToProps = (state) => ({
