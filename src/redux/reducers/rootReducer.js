@@ -15,6 +15,8 @@ import journeyReducer from "./journeyReducer";
 import journeyItemReducer from "./journeyItemReducer";
 import channelReducer from "./channelReducer";
 import channelCategoryReducer from "./channelCategoryReducer";
+import courseReducer from "./courseReducer";
+import courseClassUser from "./courseClassUserReducer";
 import notificationReducer from "./notificationReducer";
 import sessionReducer from "./sessionReducer";
 import liveReducer from "./liveReducer";
@@ -35,6 +37,8 @@ export default combineReducers({
   journeyItem: journeyItemReducer,
   channel: channelReducer,
   channelCategory: channelCategoryReducer,
+  course: courseReducer,
+  courseClassUser: courseClassUser,
   notification: notificationReducer,
   session: sessionReducer,
   live: liveReducer,

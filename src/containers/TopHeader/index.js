@@ -36,6 +36,14 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.CLASSES}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.MICRO_CLASS}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.CHANNELS}
           render={(props) => <MainHeader {...props} />}
         />
@@ -89,6 +97,10 @@ class TopHeader extends Component {
         />
         <PrivateRoute
           path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
+          render={(props) => <CertificateHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.MICRO_CLASS_CERTIFICATE}/:id`}
           render={(props) => <CertificateHeader {...props} />}
         />
         <PrivateRoute
