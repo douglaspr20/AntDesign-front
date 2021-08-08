@@ -12,6 +12,7 @@ import {
   constants as eventConstants,
   actions as eventActions,
 } from "../actions/event-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import {
   getAllEvents,
@@ -77,17 +78,21 @@ export function* getAllEventsSaga() {
         )
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
 
-    const { msg } = error.response.data || {};
-    yield put(eventActions.setError(msg));
-    notification.error({
-      message: "Cannot read all the events.",
-      description: msg,
-    });
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else {
+      const { msg } = error.response.data || {};
+      yield put(eventActions.setError(msg));
+      notification.error({
+        message: "Cannot read all the events.",
+        description: msg,
+      });
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -120,13 +125,16 @@ export function* getEventSaga({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
-    yield put(homeActions.setLoading(false));
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(true);
     }
+  } finally {
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -155,9 +163,13 @@ export function* addToMyEventList({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -187,9 +199,13 @@ export function* removeFromMyEventList({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -221,9 +237,13 @@ export function* getAllMyEvents() {
         )
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -252,9 +272,13 @@ export function* updateEventStatus({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -272,7 +296,10 @@ export function* createChannelEventSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again.");
     }
   } finally {
@@ -319,6 +346,10 @@ export function* getChannelEventsSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -335,7 +366,10 @@ export function* deleteEventSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again.");
     }
   } finally {
@@ -355,7 +389,9 @@ export function* updateChannelEventSaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );
@@ -377,7 +413,9 @@ export function* claimEventCreditSaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );
@@ -392,6 +430,10 @@ export function* claimEventAttendanceSaga({ payload }) {
     yield call(claimEventAttendance, { ...payload });
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

@@ -292,6 +292,7 @@ const EventsPage = ({
         visible={visible}
         event={event}
         onClose={onEventDrawerClose}
+        onConfirmCredit={onConfirmCredit}
       />
       <EventClaimModal
         visible={modalVisible}

@@ -5,9 +5,8 @@ import {
   actions as liveActions,
 } from "../actions/live-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import {
-  get,
-} from "../../api/module/live";
+import { logout } from "../actions/auth-actions";
+import { get } from "../../api/module/live";
 
 export function* getLiveSaga() {
   yield put(homeActions.setLoading(true));
@@ -18,10 +17,13 @@ export function* getLiveSaga() {
     if (response.status === 200) {
       yield put(liveActions.setLive(response.data.live));
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }

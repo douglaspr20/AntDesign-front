@@ -5,6 +5,7 @@ import {
   actions as channelActions,
 } from "../actions/channel-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { logout } from "../actions/auth-actions";
 
 import {
   createChannel,
@@ -26,7 +27,10 @@ export function* createChannelSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       const { msg } = error.response.data || {};
       payload.callback(msg || "Something went wrong, please try again.");
     }
@@ -50,7 +54,10 @@ export function* getChannelSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(true);
     }
   } finally {
@@ -71,7 +78,10 @@ export function* updateChannelSaga({ payload }) {
     }
   } catch (err) {
     console.log(err);
-    if (payload.callback) {
+
+    if (err && err.response && err.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again!");
     }
   } finally {
@@ -96,10 +106,13 @@ export function* getFirstChannelListSaga({ payload }) {
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -121,6 +134,9 @@ export function* getMoreChannelListSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(channelActions.setChannelLoading(false));
   }
@@ -142,7 +158,10 @@ export function* setFollowChannelSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wront. Please try again.");
     }
   } finally {
@@ -166,7 +185,10 @@ export function* unsetFollowChannelSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wront. Please try again.");
     }
   } finally {
