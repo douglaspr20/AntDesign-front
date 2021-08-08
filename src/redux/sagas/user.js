@@ -51,15 +51,9 @@ export function* getUser() {
   } catch (error) {
     console.log(error);
 
-    yield put(
-      authActions.setAuth({
-        isAuthenticated: false,
-        loading: false,
-        error: error.response.data.msg,
-        accessToken: null,
-        id: 0,
-      })
-    );
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -81,12 +75,16 @@ export function* putUser({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
-    notification.error({
-      message: "User profile was not updated",
-      description: error.response.data.msg,
-    });
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else {
+      notification.error({
+        message: "User profile was not updated",
+        description: error.response.data.msg,
+      });
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -107,9 +105,13 @@ export function* upgradeUserPlan({ payload }) {
         })
       );
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -127,7 +129,10 @@ export function* sendInvitationEmail({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else if (payload.callback) {
       payload.callback(true);
     }
   } finally {
@@ -144,6 +149,10 @@ export function* attendToGlobalConferenceSaga() {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
   }
 }
 
@@ -158,6 +167,10 @@ export function* addSessionSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -174,6 +187,10 @@ export function* removeSessionSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -191,7 +208,10 @@ export function* uploadResumeSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else if (payload.callback) {
       payload.callback(error);
     }
   }
@@ -209,7 +229,10 @@ export function* deleteResumeSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else if (payload.callback) {
       payload.callback(error);
     }
   }

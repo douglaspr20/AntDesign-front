@@ -5,6 +5,7 @@ import {
   actions as conferenceActions,
 } from "../actions/conference-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { logout } from "../actions/auth-actions";
 import { searchConferenceLibrary, claimConferenceLibrary } from "../../api";
 
 export function* getMoreConferenceLibrariesSaga({ payload }) {
@@ -22,9 +23,13 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
         )
       );
     }
-    yield put(conferenceActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(conferenceActions.setLoading(false));
   }
 }
@@ -44,10 +49,13 @@ export function* searchConferenceLibrarySaga({ payload }) {
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -64,7 +72,9 @@ export function* claimConferenceLibrarySaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );

@@ -5,6 +5,7 @@ import {
   actions as envActions,
 } from "../actions/env-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { logout } from "../actions/auth-actions";
 
 import { getEditorSignature } from "../../api";
 
@@ -19,6 +20,10 @@ export function* getEditorSignatureSaga() {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

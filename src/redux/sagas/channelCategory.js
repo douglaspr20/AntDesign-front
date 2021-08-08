@@ -6,6 +6,7 @@ import {
 } from "../actions/channel-category-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { getChannelCategories } from "../../api";
+import { logout } from "../actions/auth-actions";
 
 export function* getCategoriesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -18,6 +19,10 @@ export function* getCategoriesSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

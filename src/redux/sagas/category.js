@@ -4,6 +4,7 @@ import {
   constants as categoryConstants,
   actions as categoryActions,
 } from "../actions/category-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { getCategories } from "../../api";
 
@@ -18,6 +19,10 @@ export function* getCategoriesSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }

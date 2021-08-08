@@ -4,6 +4,7 @@ import {
   constants as libraryConstants,
   actions as libraryActions,
 } from "../actions/library-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import {
   addLibrary,
@@ -33,9 +34,13 @@ export function* getMoreLibrariesSaga({ payload }) {
         )
       );
     }
-    yield put(libraryActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(libraryActions.setLoading(false));
   }
 }
@@ -49,9 +54,13 @@ export function* addLibrarySaga({ payload }) {
     if (response.status === 200) {
       yield put(libraryActions.setLibrary(response.data.library));
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -65,9 +74,13 @@ export function* getLibrarySaga({ payload }) {
     if (response.status === 200) {
       yield put(libraryActions.setLibrary(response.data.library));
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -87,10 +100,13 @@ export function* searchLibrarySaga({ payload }) {
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -104,10 +120,13 @@ export function* getRecommendationsSaga() {
     if (response.status === 200) {
       yield put(libraryActions.setRecommendations(response.data));
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -125,6 +144,10 @@ export function* addChannelLibrarySaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -142,7 +165,9 @@ export function* updateChannelLibrarySaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );
@@ -169,6 +194,10 @@ export function* getFirstChannelLibraryList({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
@@ -191,6 +220,10 @@ export function* getMoreChannelLibraryList({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
   } finally {
     yield put(libraryActions.setLoading(false));
   }
@@ -207,7 +240,10 @@ export function* deleteChannelLibrarySaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again.");
     }
   } finally {
@@ -226,7 +262,10 @@ export function* shareChannelLibrarySaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
-    if (payload.callback) {
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback("Something went wrong. Please try again.");
     }
   } finally {
@@ -246,7 +285,9 @@ export function* claimLibrarySaga({ payload }) {
       }
     }
   } catch (error) {
-    if (payload.callback) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
       payload.callback(
         error.response.data || "Something went wrong, Please try again."
       );

@@ -4,12 +4,13 @@ import {
   constants as journeyConstants,
   actions as journeyActions,
 } from "../actions/journey-actions";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import {
   getAllJourneys,
   get,
   post,
-  put as updateJourney
+  put as updateJourney,
 } from "../../api/module/journey";
 
 export function* getAllJourneysSaga() {
@@ -21,10 +22,13 @@ export function* getAllJourneysSaga() {
     if (response.status === 200) {
       yield put(journeyActions.setAllJourneys(response.data.journeys));
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -38,10 +42,13 @@ export function* getJourneySaga({ payload }) {
     if (response.status === 200) {
       yield put(journeyActions.setJourney(response.data.journey));
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -56,9 +63,13 @@ export function* addJourneySaga({ payload }) {
       yield put(journeyActions.setShowForm(false));
       yield put(journeyActions.getAllJourneys());
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -74,14 +85,18 @@ export function* updateJourneySaga({ payload }) {
       yield put(journeyActions.unsetJourney());
       yield put(journeyActions.getAllJourneys());
     }
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
 
-export function* unSetJourneySaga(){
+export function* unSetJourneySaga() {
   yield put(journeyActions.getAllJourneys());
 }
 
