@@ -22,8 +22,10 @@ import { courseSelector } from "redux/selectors/courseSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
 
-import { INTERNAL_LINKS } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 import { convertBlobToBase64 } from "utils/format";
+import MicroclassClaimModal from "./MicroclassClaimModal";
+import Emitter from "services/emitter";
 
 import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
 import ImgCertificateStamp from "images/img-certificate-stamp.png";
@@ -74,6 +76,8 @@ const MicroClass = ({
 }) => {
   const { status } = useMicroClassQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
 
   useEffect(() => {
     getCourse(match.params.id);
@@ -146,6 +150,18 @@ const MicroClass = ({
     });
   };
 
+  const onClaimCertificate = () => {
+    if (user && user.memberShip === "premium") {
+      setModalVisible(true);
+    } else {
+      setShowFirewall(true);
+    }
+  };
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   return (
     <div className="micro-class__page">
       <div className="micro-class__container">
@@ -178,9 +194,9 @@ const MicroClass = ({
                       disabled={!course.finished}
                       htmlType="button"
                       type="primary"
-                      size="lg"
-                      onClick={handleClaimCertificate}
-                      text="Claim Digital Certificate"
+                      size="xs"
+                      onClick={onClaimCertificate}
+                      text="Claim Digital Certificate and HR Credits"
                     />
                     {!course.finished && (
                       <span className="micro-class__claim-certificate-button-span">
@@ -328,6 +344,27 @@ const MicroClass = ({
           </div>
         </div>
       </div>
+      {showFirewall && (
+        <div
+          className="microclasse-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              Upgrade to a PREMIUM Membership and get unlimited access to the
+              LAB features
+            </h3>
+          </div>
+        </div>
+      )}
+      <MicroclassClaimModal
+        visible={modalVisible}
+        title="Claim Digital Certificate and HR Credits"
+        destroyOnClose={true}
+        data={course}
+        onClaim={handleClaimCertificate}
+        onCancel={() => setModalVisible(false)}
+      />
     </div>
   );
 };
