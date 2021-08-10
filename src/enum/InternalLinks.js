@@ -17,7 +17,7 @@ export default {
   JOURNEY: "/journey",
   HEART: "/heart",
   CLASSES: "/classes",
-  MICRO_CLASS: "/micro-class",
+  MICRO_CLASS: "/class",
   PODCAST: "/podcast",
   PODCAST_SERIES: "/podcast-series",
   CHANNELS: "/channels",
