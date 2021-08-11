@@ -189,7 +189,7 @@ class EventCard extends React.Component {
               )}
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
-                  {status !== "going" && showClaim === 1 && (
+                  {!["going", "attend"].includes(status) && showClaim === 1 && (
                     <div className="claim-buttons">
                       <CustomButton
                         className="claim-digital-certificate"
