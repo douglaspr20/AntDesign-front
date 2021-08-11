@@ -140,7 +140,7 @@ class EventCard extends React.Component {
 
   render() {
     const {
-      data: { title, type, ticket, location, status, image, period },
+      data: { title, type, ticket, location, status, image, period, showClaim },
       className,
       edit,
       type: cardType,
@@ -189,7 +189,7 @@ class EventCard extends React.Component {
               )}
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
-                  {status !== "going" && (
+                  {status !== "going" && showClaim === 1 && (
                     <div className="claim-buttons">
                       <CustomButton
                         className="claim-digital-certificate"
