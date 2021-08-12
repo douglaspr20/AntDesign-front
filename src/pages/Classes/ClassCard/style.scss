@@ -33,7 +33,7 @@
   &-content {
     flex: 1;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr auto auto auto auto;
     grid-row-gap: 0.5rem;
     padding: 1.5rem 1rem 1rem;
     overflow: hidden;
@@ -54,6 +54,42 @@
     margin: 0;
     height: 100%;
     /* autoprefixer: off */
+  }
+
+  &-hr {
+    @include app-font(14px, 21px, 500);
+    color: $color-text-secondary !important;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    margin: 0;
+    height: 100%;
+    /* autoprefixer: off */
+  }
+
+  &-duration {
+    display: flex;
+    align-items: center;
+
+    & > h5 {
+      @include app-font(14px, 21px, 700);
+      color: $color-text-secondary !important;
+      margin-right: 0.5rem !important;
+    }
+  }
+
+  &-categories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow: hidden;
+
+    .specialty-item {
+      margin: 0 8px 8px 0;
+    }
   }
 
   &-content-footer {
