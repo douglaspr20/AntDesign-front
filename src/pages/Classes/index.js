@@ -124,6 +124,8 @@ const Classes = ({ getAllCourses, allCourses }) => {
                     ? classItem.image
                     : "https://lab-user-images.s3.us-east-2.amazonaws.com/library/1611980789047.jpeg"
                 }
+                hrCreditOffered={classItem.hrCreditOffered}
+                categories={classItem.topics}
               />
             ))}
           </div>

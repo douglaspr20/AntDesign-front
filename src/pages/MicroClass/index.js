@@ -146,6 +146,7 @@ const MicroClass = ({
         notification.info({
           message: "Email was send successfully.",
         });
+        setModalVisible(false);
       }
     });
   };
