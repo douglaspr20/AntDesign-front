@@ -126,6 +126,7 @@ const Classes = ({ getAllCourses, allCourses }) => {
                 }
                 hrCreditOffered={classItem.hrCreditOffered}
                 categories={classItem.topics}
+                duration={Number(classItem.duration)}
               />
             ))}
           </div>

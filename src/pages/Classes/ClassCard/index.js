@@ -13,10 +13,15 @@ import "./style.scss";
 const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
+function fmtMSS(s) {
+  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + Math.round(s);
+}
+
 const ClassCard = ({
   id,
   title,
   description,
+  duration,
   image,
   hrCreditOffered,
   categories,
@@ -39,6 +44,10 @@ const ClassCard = ({
         <strong>{`HR Credit Offered: `}</strong>
         {hrCreditOffered || ""}
       </h5>
+      <div className="class-card-duration">
+        <h5>Duration: </h5>
+        <SpecialtyItem title={`${fmtMSS(duration)}`} active={false} />
+      </div>
       <div className="class-card-categories">
         {(categories || []).map((item, index) => {
           const category = allCategories.find((cat) => cat.value === item);
@@ -65,6 +74,7 @@ ClassCard.propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   hrCreditOffered: PropTypes.string,
+  duration: PropTypes.number,
 };
 
 ClassCard.defaultProps = {
@@ -72,6 +82,7 @@ ClassCard.defaultProps = {
   description: "",
   image: HARDCODED_COVER_PLACEHOLDER,
   hrCreditOffered: "",
+  duration: 0,
 };
 
 const mapStateToProps = (state) => ({
