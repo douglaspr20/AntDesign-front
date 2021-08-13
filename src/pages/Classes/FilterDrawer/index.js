@@ -9,16 +9,14 @@ import {
   CustomCheckbox,
   SearchInput,
 } from "components";
-import { EVENT_TYPES, SEARCH_FILTERS } from "enum";
+import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const SearchFilters = SEARCH_FILTERS.library;
-const FilterTitles = Object.keys(SearchFilters);
-
-const FilterDrawer = ({ userProfile, onChange, onSearch }) => {
+const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState({});
 
@@ -76,34 +74,20 @@ const FilterDrawer = ({ userProfile, onChange, onSearch }) => {
           <div className="search-filter">
             <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />
+            <h5 className="search-filter-title font-bold">Topics</h5>
+            <Checkbox.Group
+              value={
+                filterValues["topics"] ? JSON.parse(filterValues["topics"]) : []
+              }
+              onChange={(values) => onFilterChange("Topics", values)}
+            >
+              {allCategories.map((item) => (
+                <CustomCheckbox key={item.value} value={item.value} size="sm">
+                  {item.title}
+                </CustomCheckbox>
+              ))}
+            </Checkbox.Group>
           </div>
-          {FilterTitles.map(
-            (filter, index) =>
-              filter === "Topics" && (
-                <div className="search-filter" key={`${filter}-${index}`}>
-                  <h4 className="search-filter-title font-bold">{filter}</h4>
-                  <Checkbox.Group
-                    value={
-                      filterValues[filter.toLowerCase()]
-                        ? JSON.parse(filterValues[filter.toLowerCase()])
-                        : []
-                    }
-                    onChange={(values) => onFilterChange(filter, values)}
-                  >
-                    {SearchFilters[filter].map((item) => (
-                      <CustomCheckbox
-                        key={item.value}
-                        value={item.value}
-                        size="md"
-                        disabled={userProfile.memberShip === "free"}
-                      >
-                        {item.text}
-                      </CustomCheckbox>
-                    ))}
-                  </Checkbox.Group>
-                </div>
-              )
-          )}
         </div>
         <div className="filter-drawer-footer">
           <CustomButton
@@ -133,6 +117,7 @@ FilterDrawer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(FilterDrawer);

@@ -9,7 +9,6 @@ export { default as TIMEZONE_LIST } from "./TimezoneList";
 export { default as SEARCH_FILTERS } from "./SearchFilters";
 export { default as MONTH_NAMES } from "./MonthNames";
 export { default as USER_ROLES } from "./UserRoles";
-export { default as EVENT_FILTER } from "./EventFilters";
 export { default as COUNTRIES } from "./Countries";
 export { default as SETTINGS } from "./Settings";
 export { default as PUBLIC_HEADER_MENUS } from "./PublicHeaderMenus";
