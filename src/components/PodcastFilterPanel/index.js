@@ -5,18 +5,16 @@ import { connect } from "react-redux";
 
 import { CustomCheckbox, SearchInput, CustomButton } from "components";
 
-import { SEARCH_FILTERS } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
-
-const SearchFilters = SEARCH_FILTERS.library;
-const FilterTitles = Object.keys(SearchFilters);
 
 const FilterPanel = ({
   title,
   userProfile,
   hidePodcastSeries,
+  allCategories,
   onChange,
   onSearch,
   onClickPodcastSeries,
@@ -46,34 +44,23 @@ const FilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
+          <h5 className="search-filter-title font-bold">Topics</h5>
+          <Checkbox.Group
+            value={filters["topics"] ? JSON.parse(filters["topics"]) : []}
+            onChange={(values) => onFilterChange("Topics", values)}
+          >
+            {allCategories.map((item) => (
+              <CustomCheckbox
+                key={item.value}
+                value={item.value}
+                size="sm"
+                disabled={userProfile.memberShip === "free"}
+              >
+                {item.title}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
         </div>
-        {FilterTitles.map(
-          (filter, index) =>
-            filter === "Topics" && (
-              <div className="search-filter" key={`${filter}-${index}`}>
-                <h5 className="search-filter-title font-bold">{filter}</h5>
-                <Checkbox.Group
-                  value={
-                    filters[filter.toLowerCase()]
-                      ? JSON.parse(filters[filter.toLowerCase()])
-                      : []
-                  }
-                  onChange={(values) => onFilterChange(filter, values)}
-                >
-                  {SearchFilters[filter].map((item) => (
-                    <CustomCheckbox
-                      key={item.value}
-                      value={item.value}
-                      size="sm"
-                      disabled={userProfile.memberShip === "free"}
-                    >
-                      {item.text}
-                    </CustomCheckbox>
-                  ))}
-                </Checkbox.Group>
-              </div>
-            )
-        )}
       </div>
     </div>
   );
@@ -97,6 +84,7 @@ FilterPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
 });
 
 export default connect(mapStateToProps)(FilterPanel);
