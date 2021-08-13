@@ -49,7 +49,7 @@ const ClassCard = ({
         {`${fmtMSS(duration)} minutes`}
       </h5>
       <div className="class-card-categories">
-        {(categories || []).map((item, index) => {
+        {(categories || []).slice(0, 2).map((item, index) => {
           const category = allCategories.find((cat) => cat.value === item);
           return (
             <SpecialtyItem
@@ -59,6 +59,11 @@ const ClassCard = ({
             />
           );
         })}
+        {(categories || []).length > 2 && (
+          <span className="class-card-categories-more">{`${
+            (categories || []).length - 2
+          }+ More`}</span>
+        )}
       </div>
       <div className="class-card-content-footer">
         <div className="d-flex items-center"></div>
