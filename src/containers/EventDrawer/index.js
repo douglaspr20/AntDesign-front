@@ -15,7 +15,7 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime } from "utils/format";
+import { convertToLocalTime, getValidDescription } from "utils/format";
 
 import "./style.scss";
 
@@ -73,13 +73,10 @@ const EventDrawer = ({
 
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
-    const { data } = this.props || {};
     let description = "";
-    if (data.description) {
-      description = data.description.blocks[0].text.replace(
-        /(\r\n|\n|\r)/gm,
-        ""
-      );
+    if (event.description) {
+      description = getValidDescription(event);
+      description = description?.replace(/(\r\n|\n|\r)/gm, "");
     }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       event.title
@@ -95,13 +92,10 @@ const EventDrawer = ({
 
   const onCLickAddYahooCalendar = (e) => {
     e.preventDefault();
-    const { data } = this.props || {};
     let description = "";
-    if (data.description) {
-      description = data.description.blocks[0].text.replace(
-        /(\r\n|\n|\r)/gm,
-        ""
-      );
+    if (event.description) {
+      description = getValidDescription(event);
+      description = description?.replace(/(\r\n|\n|\r)/gm, "");
     }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       event.title
