@@ -17,6 +17,8 @@ import JourneyDetailsCard from "./Card";
 import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
 import { ReactComponent as IconDoubleCheckmark } from "images/icon-double-checkmark.svg";
 
+import { getValidDescription } from "utils/format";
+
 import "./style.scss";
 
 const JourneyDetails = ({
@@ -32,12 +34,7 @@ const JourneyDetails = ({
     let description = "";
 
     if (item.contentType === "event") {
-      if (item.description && item.description.blocks) {
-        description = JSON.parse(item.description);
-        description = description.blocks[0].text;
-      } else if (item.description && item.description.html) {
-        description = item.description.html;
-      }
+      description = getValidDescription(item);
     } else {
       description = item.description;
     }

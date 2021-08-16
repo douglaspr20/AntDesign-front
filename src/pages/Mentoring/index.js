@@ -148,10 +148,6 @@ const Mentoring = ({
     setSelectedType(tab === "1" ? "mentee" : "mentor");
   };
 
-  const planUpgrade = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
-  };
-
   const onShowMore = (who) => {
     if (who) {
       // in case of mentee
