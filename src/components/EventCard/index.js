@@ -14,6 +14,8 @@ import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
 import { convertToLocalTime } from "utils/format";
 
+import { getValidDescription } from "utils/format";
+
 import "./style.scss";
 
 class EventCard extends React.Component {
@@ -80,10 +82,8 @@ class EventCard extends React.Component {
     const { data } = this.props || {};
     let description = "";
     if (data.description) {
-      description = data.description.blocks[0].text.replace(
-        /(\r\n|\n|\r)/gm,
-        ""
-      );
+      description = getValidDescription(data);
+      description = description?.replace(/(\r\n|\n|\r)/gm, "");
     }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       this.props.data.title
@@ -103,10 +103,8 @@ class EventCard extends React.Component {
     const { data } = this.props || {};
     let description = "";
     if (data.description) {
-      description = data.description.blocks[0].text.replace(
-        /(\r\n|\n|\r)/gm,
-        ""
-      );
+      description = getValidDescription(data);
+      description = description?.replace(/(\r\n|\n|\r)/gm, "");
     }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       this.props.data.title

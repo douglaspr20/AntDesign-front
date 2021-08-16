@@ -29,7 +29,6 @@ import { EVENT_TYPES, SETTINGS } from "enum";
 import "./style.scss";
 
 const Mentoring = ({
-  userProfile,
   isMentor,
   mentorInfo,
   isMentee,
@@ -145,14 +144,8 @@ const Mentoring = ({
     },
   ];
 
-  const isPremium = userProfile.memberShip !== "free";
-
   const onTabChange = (tab) => {
     setSelectedType(tab === "1" ? "mentee" : "mentor");
-  };
-
-  const planUpgrade = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
   const onShowMore = (who) => {
@@ -217,16 +210,6 @@ const Mentoring = ({
 
   return (
     <div className="mentoring-page">
-      {!isPremium && (
-        <div className="mentoring-page-firewall">
-          <div className="upgrade-notification-panel" onClick={planUpgrade}>
-            <h3>
-              Upgrade to a PREMIUM Membership and get unlimited access to the
-              LAB features
-            </h3>
-          </div>
-        </div>
-      )}
       <div className="mentoring-page-container">
         {!openSetting && (
           <Tabs
@@ -317,7 +300,6 @@ Mentoring.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    userProfile: homeSelector(state).userProfile,
     isMentor: !!homeSelector(state).userProfile.mentor,
     isMentee: !!homeSelector(state).userProfile.mentee,
     ...mentoringSelector(state),

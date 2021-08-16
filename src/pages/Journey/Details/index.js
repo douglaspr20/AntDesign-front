@@ -1,12 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Switch, Progress } from 'antd';
+import { Switch, Progress } from "antd";
 import { connect } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
 
-import {
-  unsetJourney,
-} from "redux/actions/journey-actions";
+import { unsetJourney } from "redux/actions/journey-actions";
 import {
   updateJourneyItem,
   getAllJourneyItems,
@@ -14,14 +12,14 @@ import {
 import { journeySelector } from "redux/selectors/journeySelector";
 import { journeyItemSelector } from "redux/selectors/journeyItemSelector";
 
-import {
-  CustomButton,
-} from "components";
-import JourneyDetailsCard from './Card';
-import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
-import { ReactComponent as IconDoubleCheckmark } from 'images/icon-double-checkmark.svg';
+import { CustomButton } from "components";
+import JourneyDetailsCard from "./Card";
+import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
+import { ReactComponent as IconDoubleCheckmark } from "images/icon-double-checkmark.svg";
 
-import './style.scss';
+import { getValidDescription } from "utils/format";
+
+import "./style.scss";
 
 const JourneyDetails = ({
   journey,
@@ -33,12 +31,15 @@ const JourneyDetails = ({
 }) => {
   const [switchValue, setSwitchValue] = useState(false);
   const getDescription = (item) => {
-    if(item.contentType === 'event'){
-      const description = JSON.parse(item.description);
-      return description.blocks[0].text;
-    }else{
-      return item.description;
+    let description = "";
+
+    if (item.contentType === "event") {
+      description = getValidDescription(item);
+    } else {
+      description = item.description;
     }
+
+    return description;
   };
 
   const markAsViewed = (id) => {
@@ -49,7 +50,7 @@ const JourneyDetails = ({
       loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
-  }
+  };
 
   const viewed = (id) => {
     const data = {
@@ -59,7 +60,7 @@ const JourneyDetails = ({
       loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
-  }
+  };
 
   const remove = (id) => {
     const data = {
@@ -69,7 +70,7 @@ const JourneyDetails = ({
       loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
-  }
+  };
 
   const addItem = (id) => {
     const data = {
@@ -79,57 +80,94 @@ const JourneyDetails = ({
       loadRemovedItems: switchValue,
     };
     updateJourneyItem(data);
-  }
+  };
 
   const switchChange = (checked) => {
     setSwitchValue(checked);
-    if(checked){
+    if (checked) {
       getAllJourneyItems({
         id: journey.id,
         removed: true,
       });
-    } else{
+    } else {
       getAllJourneyItems({
         id: journey.id,
       });
     }
-  }
-  return (<div className="journey-details-container">
-    <div className="journey-details-container__header">
-      <div className="journey-details-container__header--back">
-        <IconArrowBackCircleOutline onClick={() => { unsetJourney(); }} />
-        <h3>{ journey ? journey.name : '' }</h3>
+  };
+  return (
+    <div className="journey-details-container">
+      <div className="journey-details-container__header">
+        <div className="journey-details-container__header--back">
+          <IconArrowBackCircleOutline
+            onClick={() => {
+              unsetJourney();
+            }}
+          />
+          <h3>{journey ? journey.name : ""}</h3>
+        </div>
+        <div className="journey-details-container__header--progress">
+          <span className="learning-details--progress">
+            <span>
+              <IconDoubleCheckmark />
+              {journey.progress != null ? journey.progress : 0}
+            </span>
+            % completed
+          </span>
+          <Progress
+            percent={journey.progress != null ? journey.progress : 0}
+            size="small"
+            showInfo={false}
+            strokeColor="#438cef"
+          />
+        </div>
       </div>
-      <div className="journey-details-container__header--progress">
-        <span className="learning-details--progress"><span><IconDoubleCheckmark />{journey.progress != null ? journey.progress : 0}</span>% completed</span>
-        <Progress percent={journey.progress != null ? journey.progress : 0} size="small" showInfo={false} strokeColor="#438cef" />
+      <div className="journey-details-container__actions">
+        <CustomButton
+          onClick={showForm}
+          text="Edit journey"
+          size="sm"
+          type="primary outlined"
+        />
+        <div className="journey-details-container__actions--switch">
+          View removed items{" "}
+          <Switch
+            onChange={(checked) => {
+              switchChange(checked);
+            }}
+            unCheckedChildren="No"
+            checkedChildren="Yes"
+          />
+        </div>
+      </div>
+      <div className="journey-details-container__date">
+        <h4>Started: {moment(journey.createdAt).format("MMMM DD - YYYY")}</h4>
+      </div>
+      <div className="journey-details-container__list">
+        {allJourneyItems.map((item) => {
+          return (
+            <JourneyDetailsCard
+              key={`joruney-card-${item.id}`}
+              element={item}
+              description={getDescription(item)}
+              markAsViewed={() => {
+                markAsViewed(item.id);
+              }}
+              viewed={() => {
+                viewed(item.id);
+              }}
+              remove={() => {
+                remove(item.id);
+              }}
+              addItem={() => {
+                addItem(item.id);
+              }}
+            />
+          );
+        })}
       </div>
     </div>
-    <div className="journey-details-container__actions">
-      <CustomButton onClick={showForm} text="Edit journey" size="sm" type="primary outlined" />
-      <div className="journey-details-container__actions--switch">
-        View removed items <Switch onChange={(checked) => { switchChange(checked); }} unCheckedChildren="No" checkedChildren="Yes" />
-      </div>
-    </div>
-    <div className="journey-details-container__date">
-      <h4>Started: {moment(journey.createdAt).format("MMMM DD - YYYY")}</h4>
-    </div>
-    <div className="journey-details-container__list">
-      { 
-        allJourneyItems.map((item) => {
-          return(<JourneyDetailsCard
-            key={`joruney-card-${item.id}`}
-            element={item}
-            description={getDescription(item)}
-            markAsViewed={() => { markAsViewed(item.id); }}
-            viewed={() => { viewed(item.id); }}
-            remove={() => { remove(item.id); }}
-            addItem={() => { addItem(item.id); }}
-          />);
-        })
-      }
-    </div>
-  </div>);
+  );
 };
 
 JourneyDetails.propTypes = {
@@ -161,7 +199,4 @@ const mapDispatchToProps = {
   getAllJourneyItems,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JourneyDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(JourneyDetails);

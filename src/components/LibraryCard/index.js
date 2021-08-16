@@ -25,7 +25,6 @@ ContentTypes = ContentTypes.reduce(
 
 const LibraryCard = ({
   data,
-  locked,
   type,
   keyword,
   frequency,
@@ -69,12 +68,14 @@ const LibraryCard = ({
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
-    } else if (data.link && !locked) {
+    } else if (data.link && !modalVisible) {
       window.open(data.link);
     }
   };
 
-  const onClaimCredits = () => {
+  const onClaimCredits = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (userProfile && userProfile.memberShip === "premium") {
       setModalVisible(true);
     } else {
@@ -204,7 +205,6 @@ const LibraryCard = ({
 
 LibraryCard.propTypes = {
   data: PropTypes.object,
-  locked: PropTypes.bool,
   type: PropTypes.string,
   frequency: PropTypes.number,
   keyword: PropTypes.string,
@@ -214,7 +214,6 @@ LibraryCard.propTypes = {
 
 LibraryCard.defaultProps = {
   data: {},
-  locked: true,
   type: CARD_TYPE.VIEW,
   frequency: 0,
   keyword: "",

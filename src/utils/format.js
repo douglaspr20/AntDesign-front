@@ -143,6 +143,19 @@ const convertBlobToBase64 = (blob) => {
   });
 };
 
+const getValidDescription = (item) => {
+  let description = "";
+
+  if (item.description && item.description.blocks) {
+    description = JSON.parse(item.description);
+    description = description.blocks[0].text;
+  } else if (item.description && item.description.html) {
+    description = item.description.html;
+  }
+
+  return description;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -154,4 +167,5 @@ export {
   convertToUTCTime,
   convertToLocalTime,
   convertBlobToBase64,
+  getValidDescription,
 };
