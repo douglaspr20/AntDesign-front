@@ -36,7 +36,7 @@ const FavouritesPage = () => {
     <div className="favourites-page">
       <div className="favourites-page-list">
         {data.map((item, index) => (
-          <LibraryCard key={index} data={item} locked={false} />
+          <LibraryCard key={index} data={item} />
         ))}
       </div>
       <div className="d-flex justify-center items-center">
