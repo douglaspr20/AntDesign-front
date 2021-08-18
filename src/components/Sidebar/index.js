@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, notification } from "antd";
 import { setCollapsed } from "redux/actions/env-actions";
 import { injectIntl } from "react-intl";
 import { Link, withRouter } from "react-router-dom";
@@ -11,6 +11,7 @@ import SidebarMenuItem from "./SidebarMenuItem";
 import LogoSidebar from "images/logo-sidebar.svg";
 
 import { envSelector } from "redux/selectors/envSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
 
@@ -22,6 +23,22 @@ class NavBar extends Component {
   onCloseSidebar = () => {
     const { isMobile } = this.props.env || {};
     if (isMobile) {
+      this.props.setCollapsed(true);
+    }
+  };
+
+  onClickMenu = (e, url) => {
+    const { isMobile } = this.props.env || {};
+
+    if (
+      url === INTERNAL_LINKS.MENTORING &&
+      this.props.userProfile.percentOfCompletion !== 100
+    ) {
+      e.preventDefault();
+      notification.info({
+        message: "Please complete your profile first.",
+      });
+    } else if (isMobile) {
       this.props.setCollapsed(true);
     }
   };
@@ -66,7 +83,10 @@ class NavBar extends Component {
         >
           {TopMenuList.map((menu) => (
             <Menu.Item key={menu.url} className="layout-sidebar-menu">
-              <Link to={menu.url} onClick={this.onCloseSidebar}>
+              <Link
+                to={menu.url}
+                onClick={(e) => this.onClickMenu(e, menu.url)}
+              >
                 <SidebarMenuItem icon={menu.icon} text={menu.label} />
               </Link>
             </Menu.Item>
@@ -98,6 +118,7 @@ class NavBar extends Component {
 }
 const mapStateToProps = (state) => ({
   env: envSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

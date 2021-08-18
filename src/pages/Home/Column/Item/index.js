@@ -7,6 +7,7 @@ import moment from "moment";
 
 import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import {
   addToMyEventList,
   removeFromMyEventList,
@@ -24,6 +25,7 @@ const HomeRecommendationsItem = ({
   element,
   allCategories,
   type,
+  userProfile,
   addToMyEventList,
   removeFromMyEventList,
 }) => {
@@ -43,12 +45,10 @@ const HomeRecommendationsItem = ({
 
     if (type === "event") {
       if (element.status) {
-        if (element.status[1] !== undefined) {
-          setEventStatus(element.status[1]);
-        }
+        setEventStatus(element.status[userProfile.id] || "attend");
       }
     }
-  }, [element, type]);
+  }, [element, type, userProfile]);
 
   const onAttend = () => {
     setEventStatus("going");
@@ -77,17 +77,29 @@ const HomeRecommendationsItem = ({
       )}
       <div className="img-container">
         {type !== "conference" ? (
-          <img
-            src={image}
-            className={`image-${type}`}
-            alt={`${type}-${element.id}`}
-          />
+          <>
+            {image ? (
+              <img
+                src={image}
+                className={`image-${type}`}
+                alt={`${type}-${element.id}`}
+              />
+            ) : (
+              <div className="img-container-empty" />
+            )}
+          </>
         ) : (
-          <ReactPlayer
-            className={`image-${type}`}
-            controls={false}
-            url={element.link}
-          />
+          <>
+            {element.link ? (
+              <ReactPlayer
+                className={`image-${type}`}
+                controls={false}
+                url={element.link}
+              />
+            ) : (
+              <div className="img-container-empty" />
+            )}
+          </>
         )}
       </div>
       <h3>
@@ -205,6 +217,7 @@ HomeRecommendationsItem.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
