@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Layout, Menu, notification } from "antd";
+import { Layout, Menu } from "antd";
 import { setCollapsed } from "redux/actions/env-actions";
 import { injectIntl } from "react-intl";
 import { Link, withRouter } from "react-router-dom";
@@ -20,6 +20,14 @@ const TopMenuList = SIDEBAR_MENU_LIST.TOP_MENUS;
 // const BottomMenuList = SIDEBAR_MENU_LIST.BOTTOM_MENUS;
 
 class NavBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showFirewall: false,
+    };
+  }
+
   onCloseSidebar = () => {
     const { isMobile } = this.props.env || {};
     if (isMobile) {
@@ -35,9 +43,7 @@ class NavBar extends Component {
       this.props.userProfile.percentOfCompletion !== 100
     ) {
       e.preventDefault();
-      notification.info({
-        message: "Please complete your profile first.",
-      });
+      this.setState({ showFirewall: true });
     } else if (isMobile) {
       this.props.setCollapsed(true);
     }
@@ -52,6 +58,7 @@ class NavBar extends Component {
       : { collapsible: true };
     const navBarTheme = "light";
     const collapsed = isMobile ? siderMenuCollapsed : false;
+    const { showFirewall } = this.state;
 
     const menuStyle = {
       // laggy for now
@@ -110,6 +117,19 @@ class NavBar extends Component {
         {isMobile && (
           <div className="layout-sidebar-close">
             <CloseOutlined onClick={this.onCloseSidebar} />
+          </div>
+        )}
+        {showFirewall && (
+          <div
+            className="sidebar-firewall"
+            onClick={() => this.setState({ showFirewall: false })}
+          >
+            <div className="upgrade-notification-panel">
+              <h3>
+                You must fully complete your profile before joining the
+                mentoring feature.
+              </h3>
+            </div>
           </div>
         )}
       </Sider>
