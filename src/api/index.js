@@ -60,6 +60,7 @@ import { getCategories } from "./module/category";
 import {
   searchConferenceLibrary,
   claimConferenceLibrary,
+  markConferenceLibraryViewed,
 } from "./module/conference";
 import {
   createChannel,
@@ -139,4 +140,5 @@ export {
   claimConferenceLibrary,
   claimEventCredit,
   claimEventAttendance,
+  markConferenceLibraryViewed,
 };

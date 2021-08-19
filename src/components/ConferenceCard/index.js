@@ -8,7 +8,10 @@ import ReactPlayer from "react-player";
 import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { claimConferenceLibrary } from "redux/actions/conference-actions";
+import {
+  claimConferenceLibrary,
+  setConferenceLibraryViewed,
+} from "redux/actions/conference-actions";
 import { EVENT_TYPES } from "enum";
 import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
 
@@ -23,6 +26,7 @@ const ConferenceCard = ({
   keyword,
   frequency,
   claimConferenceLibrary,
+  setConferenceLibraryViewed,
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,6 +35,10 @@ const ConferenceCard = ({
   const onCardClick = () => {
     if (data.link && !modalVisible && !showFirewall) {
       window.open(data.link);
+
+      if (data.viewed && !data.viewed[userProfile.id]) {
+        setConferenceLibraryViewed(data.id, "unmark");
+      }
     }
   };
 
@@ -95,15 +103,41 @@ const ConferenceCard = ({
             </div>
             <h6>Video</h6>
           </div>
-          {data.showClaim === 1 && (
-            <CustomButton
-              className="claim-credits"
-              type="primary"
-              size="xs"
-              text="Claim HR Credits"
-              onClick={onClaimCredits}
-            />
-          )}
+          <div className="d-flex flex-column">
+            {data.viewed && data.viewed[userProfile.id] ? (
+              <CustomButton
+                className="mark-viewed"
+                type={
+                  data.viewed[userProfile.id] === "unmark"
+                    ? "secondary"
+                    : "remove"
+                }
+                size="xs"
+                text={
+                  data.viewed[userProfile.id] === "unmark"
+                    ? "Mark as Viewed"
+                    : "Marked as viewed"
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setConferenceLibraryViewed(
+                    data.id,
+                    data.viewed[userProfile.id] === "unmark" ? "mark" : "unmark"
+                  );
+                }}
+              />
+            ) : null}
+            {data.showClaim === 1 && (
+              <CustomButton
+                className="claim-credits"
+                type="primary"
+                size="xs"
+                text="Claim HR Credits"
+                onClick={onClaimCredits}
+              />
+            )}
+          </div>
           {/* <div className="d-flex items-center">
             <SvgIcon name="star" className="conference-card-icon" />
             <SvgIcon name="bookmark" className="conference-card-icon" />
@@ -161,6 +195,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   claimConferenceLibrary,
+  setConferenceLibraryViewed,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceCard);
