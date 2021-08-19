@@ -116,7 +116,7 @@ const ConferenceCard = ({
                 text={
                   data.viewed[userProfile.id] === "unmark"
                     ? "Mark as Viewed"
-                    : "Marked as viewed"
+                    : "Viewed"
                 }
                 onClick={(e) => {
                   e.preventDefault();
