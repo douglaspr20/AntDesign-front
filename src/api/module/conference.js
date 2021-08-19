@@ -21,3 +21,7 @@ export const searchConferenceLibrary = ({ filter }) => {
 export const claimConferenceLibrary = ({ id }) => {
   return httpClient.post(`private/conference/claim`, { id });
 };
+
+export const markConferenceLibraryViewed = ({ id, viewed }) => {
+  return httpClient.put('private/conference/viewed', { id, mark: viewed });
+};
