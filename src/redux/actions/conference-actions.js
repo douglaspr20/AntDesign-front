@@ -6,6 +6,8 @@ const SEARCH_CONFERENCE_LIBRARIES = "SEARCH_CONFERENCE_LIBRARIES";
 const SET_SEARCH_CONFERENCE_LIBRARIES = "SET_SEARCH_CONFERENCE_LIBRARIES";
 const SET_LOADING = "SET_CONFERENCE_LIBRARY_LOADING";
 const CLAIM_CONFERENCE_LIBRARY = "CLAIM_CONFERENCE_LIBRARY";
+const SET_CONFERENCE_VIEWED = "SET_CONFERENCE_VIEWED";
+const UPDATE_CONFERENCE_VIEWED = "UPDATE_CONFERENCE_VIEWED";
 
 export const constants = {
   GET_MORE_CONFERENCE_LIBRARIES,
@@ -14,6 +16,8 @@ export const constants = {
   SET_SEARCH_CONFERENCE_LIBRARIES,
   SET_LOADING,
   CLAIM_CONFERENCE_LIBRARY,
+  SET_CONFERENCE_VIEWED,
+  UPDATE_CONFERENCE_VIEWED,
 };
 
 // ------------------------------------
@@ -55,6 +59,17 @@ export const claimConferenceLibrary = createAction(
     callback,
   })
 );
+export const setConferenceLibraryViewed = createAction(
+  SET_CONFERENCE_VIEWED,
+  (id, viewed) => ({
+    id,
+    viewed,
+  })
+);
+export const updateConferenceLibraryViewed = createAction(
+  UPDATE_CONFERENCE_VIEWED,
+  (data) => ({ data })
+);
 
 export const actions = {
   getMoreConferenceLibraries,
@@ -63,4 +78,6 @@ export const actions = {
   setSearchConferenceLibraries,
   setLoading,
   claimConferenceLibrary,
+  setConferenceLibraryViewed,
+  updateConferenceLibraryViewed,
 };
