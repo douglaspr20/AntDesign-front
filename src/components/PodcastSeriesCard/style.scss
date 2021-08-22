@@ -39,6 +39,10 @@
     padding: 1.5rem 1rem 1rem;
     overflow: hidden;
     position: relative;
+
+    .mark-viewed {
+      padding: 0 12px;
+    }
   }
 
   &-title {
