@@ -104,30 +104,28 @@ const ConferenceCard = ({
             <h6>Video</h6>
           </div>
           <div className="d-flex flex-column">
-            {data.viewed && data.viewed[userProfile.id] ? (
-              <CustomButton
-                className="mark-viewed"
-                type={
-                  data.viewed[userProfile.id] === "unmark"
-                    ? "secondary"
-                    : "remove"
-                }
-                size="xs"
-                text={
-                  data.viewed[userProfile.id] === "unmark"
-                    ? "Mark as Viewed"
-                    : "Marked as viewed"
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setConferenceLibraryViewed(
-                    data.id,
-                    data.viewed[userProfile.id] === "unmark" ? "mark" : "unmark"
-                  );
-                }}
-              />
-            ) : null}
+            <CustomButton
+              className="mark-viewed"
+              type={
+                data.viewed[userProfile.id] === "mark"
+                  ? "remove"
+                  : "secondary"
+              }
+              size="xs"
+              text={
+                data.viewed[userProfile.id] === "mark"
+                  ? "Viewed"
+                  : "Mark as Viewed"
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setConferenceLibraryViewed(
+                  data.id,
+                  data.viewed[userProfile.id] === "mark" ? "unmark" : "mark"
+                );
+              }}
+            />
             {data.showClaim === 1 && (
               <CustomButton
                 className="claim-credits"
