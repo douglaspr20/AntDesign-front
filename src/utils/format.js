@@ -147,8 +147,7 @@ const getValidDescription = (item) => {
   let description = "";
 
   if (item.description && item.description.blocks) {
-    description = JSON.parse(item.description);
-    description = description.blocks[0].text;
+    description = item.description.blocks.map((item) => item.text).join('\n');
   } else if (item.description && item.description.html) {
     description = item.description.html;
   }

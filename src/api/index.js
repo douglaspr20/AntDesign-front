@@ -53,6 +53,7 @@ import {
   getAllPodcastSeries,
   getPodcastSeries,
   claimPodcastSeries,
+  markPodcastseriesViewed,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -141,4 +142,5 @@ export {
   claimEventCredit,
   claimEventAttendance,
   markConferenceLibraryViewed,
+  markPodcastseriesViewed,
 };

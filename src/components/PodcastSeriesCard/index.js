@@ -2,14 +2,23 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { SpecialtyItem } from "components";
+import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { setPodcastseriesViewed } from "redux/actions/podcast-actions";
 
 import "./style.scss";
 
-const PodcastSeriesCard = ({ data, allCategories, onClick }) => {
+const PodcastSeriesCard = ({
+  data,
+  allCategories,
+  userProfile,
+  onClick,
+  setPodcastseriesViewed,
+}) => {
   const [lineClamp, setLineClamp] = useState(12);
-  const { title, img, description, hrCreditOffered, categories } = data || {};
+  const { title, img, description, hrCreditOffered, categories, viewed } =
+    data || {};
   const randomId = `podcastseries-description-${Math.floor(
     Math.random() * 1000
   )}`;
@@ -77,6 +86,30 @@ const PodcastSeriesCard = ({ data, allCategories, onClick }) => {
             );
           })}
         </div>
+        <div className="d-flex justify-end">
+          <CustomButton
+            className="mark-viewed"
+            type={
+              viewed && viewed[userProfile.id] === "mark"
+                ? "remove"
+                : "secondary"
+            }
+            size="xs"
+            text={
+              viewed && viewed[userProfile.id] === "mark"
+                ? "Viewed"
+                : "Mark as Viewed"
+            }
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setPodcastseriesViewed(
+                data.id,
+                viewed && viewed[userProfile.id] === "mark" ? "unmark" : "mark"
+              );
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -94,6 +127,11 @@ PodcastSeriesCard.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(PodcastSeriesCard);
+const mapDispatchToProps = {
+  setPodcastseriesViewed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PodcastSeriesCard);

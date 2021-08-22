@@ -34,7 +34,9 @@ const JourneyDetails = ({
     let description = "";
 
     if (item.contentType === "event") {
-      description = getValidDescription(item);
+      description = getValidDescription({
+        description: item.description ? JSON.parse(item.description) : null
+      });
     } else {
       description = item.description;
     }
