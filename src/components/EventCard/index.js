@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Dropdown, Menu } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
+import draftToHtml from "draftjs-to-html";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -13,8 +14,6 @@ import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
 import { convertToLocalTime } from "utils/format";
-
-import { getValidDescription } from "utils/format";
 
 import "./style.scss";
 
@@ -76,14 +75,25 @@ class EventCard extends React.Component {
     );
   };
 
+  getDescriptionHTML = (item) => {
+    let description = "";
+
+    if (item.description && item.description.blocks) {
+      description = draftToHtml(item.description);
+    } else if (item.description && item.description.html) {
+      description = item.description.html;
+    }
+
+    return encodeURIComponent(description);
+  };
+
   onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     const { data } = this.props || {};
     let description = "";
     if (data.description) {
-      description = getValidDescription(data);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
+      description = this.getDescriptionHTML(data);
     }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       this.props.data.title
@@ -103,8 +113,7 @@ class EventCard extends React.Component {
     const { data } = this.props || {};
     let description = "";
     if (data.description) {
-      description = getValidDescription(data);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
+      description = this.getDescriptionHTML(data);
     }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       this.props.data.title
