@@ -6,6 +6,7 @@ import queryString from "query-string";
 import ProfileStatusBar from "./ProfileStatusBar";
 import HomeRecommendationsColumn from "./Column";
 import { CustomButton } from "components";
+import PostForm from "containers/PostForm";
 import { getUser } from "redux/actions/home-actions";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -14,6 +15,7 @@ import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
+import { authSelector } from "redux/selectors/authSelector";
 
 const HomePage = ({
   history,
@@ -50,6 +52,16 @@ const HomePage = ({
           </Row>
         </div>
       )}
+      <div id="post-form-container"
+      style={{
+        width: '80%',
+        margin: '0 auto',
+        background: '#ffffff',
+        textAlign: 'center',
+      }}
+      >
+        <PostForm></PostForm>
+      </div>
       <div className="home-page-container-recommendations">
         <HomeRecommendationsColumn
           history={history}

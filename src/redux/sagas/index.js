@@ -18,6 +18,7 @@ import { courseClassUserSaga } from "./courseClassUser";
 import { notificationSaga } from "./notification";
 import { sessionSaga } from "./session";
 import { liveSaga } from "./live";
+import { postSaga } from "./post";
 import { envSaga } from "./env";
 
 export default function* sagas() {
@@ -41,6 +42,7 @@ export default function* sagas() {
     ...notificationSaga,
     ...sessionSaga,
     ...liveSaga,
+    ...postSaga,
     ...envSaga,
   ]);
 }
