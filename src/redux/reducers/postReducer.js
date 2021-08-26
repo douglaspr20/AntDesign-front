@@ -9,10 +9,14 @@ export const reducers = {
   [postConstants.SET_POST]: (state, { payload }) => {
     return state.merge({ post: payload.post });
   },
+  [postConstants.SET_POSTS]: (state, { payload }) => {
+    return state.merge({ posts: payload.posts });
+  },
 };
 
 export const initialState = () =>
   Map({
+    posts: [],
     post: {},
   });
 

@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 
 import ProfileStatusBar from "./ProfileStatusBar";
 import HomeRecommendationsColumn from "./Column";
-import { CustomButton } from "components";
+import { CustomModal, CustomButton } from "components";
 import PostForm from "containers/PostForm";
+import Posts from "containers/Posts";
 import { getUser } from "redux/actions/home-actions";
 import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -25,8 +26,16 @@ const HomePage = ({
   getRecommendations,
   getUser,
 }) => {
+  const [postModalIsVisible, setPostModalIsVisible] = useState(false);
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
+  const onOpenPostModal = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+  };
+  const onClosePostModal = () => {
+    Emitter.emit(EVENT_TYPES.CLOSE_POST_MODAL);
   };
 
   useEffect(() => {
@@ -36,6 +45,13 @@ const HomePage = ({
     }
 
     getRecommendations();
+
+    Emitter.on(EVENT_TYPES.OPEN_POST_MODAL, () => {
+      setPostModalIsVisible(true);
+    });
+    Emitter.on(EVENT_TYPES.CLOSE_POST_MODAL, () => {
+      setPostModalIsVisible(false);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,42 +68,59 @@ const HomePage = ({
           </Row>
         </div>
       )}
-      <div id="post-form-container"
-      style={{
-        width: '80%',
-        margin: '0 auto',
-        background: '#ffffff',
-        textAlign: 'center',
-      }}
+      <div
+        id="post-form-container"
+        style={{
+          width: "80%",
+          margin: "0 auto",
+          background: "#ffffff",
+          textAlign: "center",
+        }}
       >
-        <PostForm></PostForm>
-      </div>
-      <div className="home-page-container-recommendations">
-        <HomeRecommendationsColumn
-          history={history}
-          items={recommendations.podcasts}
-          type="podcast"
-          columnTitle="Podcast"
+        <CustomButton
+          type="primary"
+          text="CREATE POST"
+          onClick={onOpenPostModal}
         />
-        <HomeRecommendationsColumn
-          history={history}
-          items={recommendations.conferenceLibrary}
-          type="conference"
-          columnTitle="Conference Library"
-        />
-        <HomeRecommendationsColumn
-          history={history}
-          items={recommendations.libraries}
-          type="library"
-          columnTitle="Learning Library"
-        />
-        <HomeRecommendationsColumn
-          history={history}
-          items={recommendations.events}
-          type="event"
-          columnTitle="Upcoming Events"
+        <CustomModal
+          title={"CREATE POST"}
+          width={"80%"}
+          visible={postModalIsVisible}
+          children={<PostForm></PostForm>}
+          bodyStyle={{ overflowY: "scroll", maxHeight: "calc(100vh - 200px)" }}
+          onCancel={onClosePostModal}
         />
       </div>
+      <Posts />
+      {false && (
+        <div className="home-page-container-recommendations">
+          <HomeRecommendationsColumn
+            history={history}
+            items={recommendations.podcasts}
+            type="podcast"
+            columnTitle="Podcast"
+          />
+          <HomeRecommendationsColumn
+            history={history}
+            items={recommendations.conferenceLibrary}
+            type="conference"
+            columnTitle="Conference Library"
+          />
+          <HomeRecommendationsColumn
+            history={history}
+            items={recommendations.libraries}
+            type="library"
+            columnTitle="Learning Library"
+          />
+          <HomeRecommendationsColumn
+            history={history}
+            items={recommendations.events}
+            type="event"
+            columnTitle="Upcoming Events"
+          />
+        </div>
+      )}
+
       <div className="home-page-container">
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>

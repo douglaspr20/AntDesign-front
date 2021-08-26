@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import { Form, Select } from "antd";
-import { CustomButton, CustomInput, FroalaEdit, ImageUpload2 } from "components";
+import { CustomButton, CustomInput, FroalaEdit, ImageUpload } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
 import {
   addPost,
 } from "redux/actions/post-actions";
+
+import "./style.scss";
 
 const { Item } = Form;
 const { Option } = Select;
@@ -38,7 +40,7 @@ const PostForm = ({
   };
 
   return (
-    <>
+    <div className="post-form-container">
       <Form
         layout="vertical"
         onValuesChange={(data) => {
@@ -50,7 +52,7 @@ const PostForm = ({
           <FroalaEdit s3Hash={s3Hash} />
         </Item>
         <Item label="Image" name="imageData">
-          <ImageUpload2 />
+          <ImageUpload />
         </Item>
         <Item label="video URL" name="videoUrl">
           <CustomInput />
@@ -75,7 +77,7 @@ const PostForm = ({
           <CustomButton htmlType="submit" text="POST" />
         </Item>
       </Form>
-    </>
+    </div>
   );
 };
 
