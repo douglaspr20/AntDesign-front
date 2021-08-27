@@ -45,7 +45,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
         reason,
         title,
         specialties,
-        blockMatchAsMentor: activateMentoring.includes("receive"),
+        blockMatchAsMentor: activateMentoring.includes("block"),
       });
     }
   };
@@ -54,7 +54,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
     setReason(setting.about);
     setTitle(setting.title);
     setSpecialties(setting.areas);
-    setActivateMentoring(setting.blockMatchAsMentor ? ["receive"] : "");
+    setActivateMentoring(setting.blockMatchAsMentor ? ["block"] : "");
   }, [setting]);
 
   return (
@@ -83,7 +83,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
           className="mentor-setting-block"
           onChange={setActivateMentoring}
         >
-          <CustomCheckbox value="receive">Activate</CustomCheckbox>
+          <CustomCheckbox value="block">Deactivate</CustomCheckbox>
         </Checkbox.Group>
         <h5 className="mentor-setting-sublabel">
           In what areas do you want to be a mentor?
