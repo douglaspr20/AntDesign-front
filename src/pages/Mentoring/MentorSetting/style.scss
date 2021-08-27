@@ -21,6 +21,15 @@
     }
   }
 
+  &-block {
+    margin-top: 44px !important;
+
+    & > label {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   &-sublabel {
     @include app-font(14px, 19px, bold);
     margin: 44px 0 12px !important;
