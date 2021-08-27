@@ -172,7 +172,7 @@ const Mentoring = ({
     setDrawerState((prev) => ({
       visible: true,
       member,
-      match: member.ismentor ? menteeInfo.areas || [] : mentorInfo.areas || [],
+      match: member.isMentor ? menteeInfo.areas || [] : mentorInfo.areas || [],
     }));
   };
 
@@ -181,7 +181,7 @@ const Mentoring = ({
   };
 
   const onMatchFromDrawer = () => {
-    if (drawerState.member.ismentor) {
+    if (drawerState.member.isMentor) {
       setMatch(menteeInfo.id, true, drawerState.member.mid);
     } else {
       setMatch(mentorInfo.id, true, drawerState.member.mid);

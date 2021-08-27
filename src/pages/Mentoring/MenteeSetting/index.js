@@ -45,7 +45,7 @@ const MenteeSetting = ({ setting, allCategories, onCancel, onSave }) => {
         reason,
         title,
         specialties,
-        blockMatchAsMentee: activateMentoring.includes("receive"),
+        blockMatchAsMentee: activateMentoring.includes("block"),
       });
     }
   };
@@ -54,7 +54,7 @@ const MenteeSetting = ({ setting, allCategories, onCancel, onSave }) => {
     setReason(setting.about);
     setTitle(setting.title);
     setSpecialties(setting.areas);
-    setActivateMentoring(setting.blockMatchAsMentee ? ["receive"] : "");
+    setActivateMentoring(setting.blockMatchAsMentee ? ["block"] : "");
   }, [setting]);
 
   return (
@@ -83,8 +83,8 @@ const MenteeSetting = ({ setting, allCategories, onCancel, onSave }) => {
           className="mentee-setting-block"
           onChange={setActivateMentoring}
         >
-          <CustomCheckbox value="receive">
-            Activate
+          <CustomCheckbox value="block">
+            Deactivate
           </CustomCheckbox>
         </Checkbox.Group>
         <h5 className="mentee-setting-sublabel">

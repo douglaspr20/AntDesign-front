@@ -63,7 +63,7 @@ const MentorList = ({
           <MemberCard
             key={`mentor-${index}`}
             user={mentor}
-            block={mentor.blockMatchAsMentor}
+            block={mentor.blockMatchAsMentor === 1}
             match={user ? user.areas : []}
             onClick={() => onMemberClick(mentor)}
             onMatchClicked={() => onMatchClicked(index)}

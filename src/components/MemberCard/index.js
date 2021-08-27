@@ -50,7 +50,7 @@ const MemberCard = ({
           )}
         </div>
         <h5 className="member-title">{user.title}</h5>
-        <p className="member-about">{user.mentorabout}</p>
+        <p className="member-about">{user.mentorAbout}</p>
         <div className="member-specialties">
           {(user.areas || [])
             .sort((x, y) => {
