@@ -68,6 +68,7 @@ const Mentoring = ({
           title: data.title,
           about: data.reason,
           areas: data.specialties,
+          blockMatchAsMentor: data.blockMatchAsMentor,
           isMentor: 1,
         },
         () => {
@@ -98,6 +99,7 @@ const Mentoring = ({
           title: data.title,
           about: data.reason,
           areas: data.specialties,
+          blockMatchAsMentee: data.blockMatchAsMentee,
           isMentor: 0,
         },
         () => {
