@@ -33,6 +33,7 @@ const Login = ({
   addToMyEventList,
   onClose,
   live,
+  confirmEmail,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
@@ -60,9 +61,9 @@ const Login = ({
   useEffect(() => {
     if (isAuthenticated) {
       if (history != null) {
-        if(live && live.live === true){
+        if (live && live.live === true) {
           history.push(INTERNAL_LINKS.LIVE);
-        }else{
+        } else {
           history.push(INTERNAL_LINKS.HOME);
         }
       } else {
@@ -107,7 +108,11 @@ const Login = ({
           onValuesChange={onValuesChange}
         >
           <div className="login-dialog-content">
-            {isLogin ? <LoginForm /> : <SignupForm />}
+            {isLogin ? (
+              <LoginForm />
+            ) : (
+              <SignupForm confirmEmail={confirmEmail} />
+            )}
           </div>
           <div className="login-dialog-footer">
             <span className="login-dialog-footer-error">{error}</span>
@@ -146,10 +151,12 @@ const Login = ({
 };
 
 Login.propTypes = {
+  confirmEmail: PropTypes.bool,
   onClose: PropTypes.func,
 };
 
 Login.defaultProps = {
+  confirmEmail: false,
   onClose: () => {},
 };
 
