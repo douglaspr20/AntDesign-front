@@ -171,3 +171,65 @@
     }
   }
 }
+.payment-form-table-container {
+  width: 100%;
+  table {
+    border-spacing: 40px 0px !important;
+  }
+  .antd-table-payment {
+    margin: 0 auto;
+    width: 95% !important;
+    .ant-table-thead {
+      th {
+        background: $color-white !important;
+        font-size: 26px !important;
+        color: $color-text-primary !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        padding-bottom: 2rem;
+        font-weight: bold;
+      }
+    }
+    .ant-table-tbody {
+      tr {
+        background: $color-white !important;
+        .ant-table-cell {
+          border-top: none !important;
+          border-bottom: none !important;
+
+          svg {
+            width: 52px;
+            height: 52px;
+          }
+          .green-icon {
+            color: $color-success;
+          }
+          .red-icon {
+            color: $color-error;
+          }
+        }
+        .payment-table-column-text {
+          min-width: 200px;
+          color: $color-text-secondary;
+          font-size: 14px !important;
+        }
+        .payment-table-column {
+          min-width: 80px;
+          border-top: 1px solid $color-border !important;
+        }
+      }
+      .pay-buttton {
+        width: 100%;
+        height: 36px;
+        background: #438cef;
+        @include app-font(16px, 16px, bold);
+        color: $color-white;
+        border-radius: 5px;
+
+        &.monthly {
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+}
