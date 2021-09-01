@@ -1,7 +1,14 @@
 @import "styles/main.scss";
 
+.payment-modal{
+  width: 80% !important;
+  .ant-modal-body{
+    padding: 0px !important;
+  }
+}
+
 .plan-ugrade-form {
-  padding: 0.75rem;
+  padding: 0px !important;
   text-align: center;
 
   h4 {
@@ -174,11 +181,11 @@
 .payment-form-table-container {
   width: 100%;
   table {
+    width: 100%;
     border-spacing: 40px 0px !important;
   }
   .antd-table-payment {
-    margin: 0 auto;
-    width: 95% !important;
+    width: 100%;
     .ant-table-thead {
       th {
         background: $color-white !important;

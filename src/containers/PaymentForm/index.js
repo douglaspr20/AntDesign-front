@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Alert, Button, Card, Table } from "antd";
+import { Alert, Button, Table } from "antd";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getCheckoutSession } from "api/module/stripe";
 
-import { CustomSelect } from "components";
 import { STRIPE_PRICES } from "enum";
 
 import IconLogo from "images/logo-sidebar.svg";
@@ -22,18 +21,15 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
 const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   const [stripe, setStripe] = useState(null);
-  const [price, setPrice] = useState(0);
-  const [prices] = useState(STRIPE_PRICES.STRIPE_PRICES);
-  const [channelsPrices] = useState(STRIPE_PRICES.CHANNELS_STRIPE_PRICES);
-  const [options, setOptions] = useState([]);
   const [checkoutSessionError, setCheckoutSessionError] = useState(false);
   const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
-  const [oldPaymentForm] = useState(false);
 
   const paymentColumns = [
     {
       title: "",
       key: "text",
+      fixed: "left",
+      width: 120,
       dataIndex: "text",
       className: "payment-table-column-text",
     },
@@ -42,12 +38,12 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       key: "free",
       dataIndex: "free",
       align: "center",
-      width: 190,
+      width: 150, 
       className: "payment-table-column",
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
           if (record.buttonSection === true) {
-            return <Button className="pay-buttton">Free</Button>;
+            return "Free";
           }
         } else {
           return getIcon(value);
@@ -59,12 +55,25 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       key: "premium",
       dataIndex: "premium",
       align: "center",
-      width: 190,
       className: "payment-table-column",
+      width: 150, 
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
           if (record.buttonSection === true) {
-            return <Button className="pay-buttton">Pay $19.99</Button>;
+            if (userProfile.memberShip === "premium") {
+              return "Premium";
+            } else {
+              return (
+                <Button
+                  onClick={() => {
+                    requestCheckoutSessionTable(true, false);
+                  }}
+                  className="pay-buttton"
+                >
+                  Pay ${STRIPE_PRICES.STRIPE_PRICES[0].price}
+                </Button>
+              );
+            }
           }
         } else {
           return getIcon(value);
@@ -76,12 +85,25 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       key: "creator",
       dataIndex: "creator",
       align: "center",
-      width: 190,
+      width: 150, 
       className: "payment-table-column",
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
           if (record.buttonSection === true) {
-            return <Button className="pay-buttton">Pay $19.99</Button>;
+            if (userProfile.memberShip === "channel_admin") {
+              return "Creator";
+            } else {
+              return (
+                <Button
+                  onClick={() => {
+                    requestCheckoutSessionTable(false, true);
+                  }}
+                  className="pay-buttton"
+                >
+                  Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
+                </Button>
+              );
+            }
           }
         } else {
           return getIcon(value);
@@ -129,7 +151,6 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
 
   useEffect(() => {
     instanceStripe();
-    generateCountryOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -137,15 +158,20 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSession = async (premium = false, creator = false) => {
+  const requestCheckoutSessionTable = async (
+    premium = false,
+    creator = false
+  ) => {
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
     if (premium === true) {
-      checkoutSessionPrices.push(prices[price].priceId);
+      checkoutSessionPrices.push(STRIPE_PRICES.STRIPE_PRICES[0].priceId);
     }
     if (creator === true) {
-      checkoutSessionPrices.push(channelsPrices[price].priceId);
+      checkoutSessionPrices.push(
+        STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].priceId
+      );
     }
     try {
       let sessionData = await getCheckoutSession({
@@ -158,14 +184,6 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     }
   };
 
-  const generateCountryOptions = () => {
-    let options = [];
-    for (let item in prices) {
-      options.push({ text: prices[item].country, value: parseInt(item) });
-    }
-    setOptions(options);
-  };
-
   const getIcon = (value) => {
     if (value === true) {
       return <IconDoubleCheckmark className="green-icon" />;
@@ -175,140 +193,44 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   };
 
   return (
-    <>
-      {oldPaymentForm === true ? (
-        <form
-          className={clsx("plan-ugrade-form", { mobile: isMobile })}
-          onSubmit={handleSubmit}
-        >
-          {isMobile && (
-            <>
-              <div className="plan-ugrade-form-header">
-                <div className="plan-ugrade-form-header-logo">
-                  <img src={IconLogo} alt="payment-logo" />
-                </div>
-                <h3>Plan update</h3>
-                <h5>Access to all content</h5>
-              </div>
-              <div className="plan-ugrade-form-close" onClick={hidePanel}>
-                <i className="fas fa-times" />
-              </div>
-            </>
-          )}
-
-          <div className="plan-ugrade-form-content">
-            <h4>Select:</h4>
-            {options.length > 0 && (
-              <CustomSelect
-                options={options}
-                defaultValue={price}
-                onChange={(value) => {
-                  setPrice(value);
-                }}
-                className="pay-select"
-              />
-            )}
+    <div
+      className={`payment-form-table-container ${clsx("plan-ugrade-form", {
+        mobile: isMobile,
+      })}`}
+    >
+      {isMobile && (
+        <>
+          <div className="plan-ugrade-form-header">
+            <div className="plan-ugrade-form-header-logo">
+              <img src={IconLogo} alt="payment-logo" />
+            </div>
+            <h3>Plan update</h3>
+            <h5>Access to all content</h5>
           </div>
-
-          <div className="plan-upgrade-cards">
-            {userProfile.memberShip === "free" && (
-              <Card title="PREMIUM">
-                <h3>
-                  <span
-                    className="character-price"
-                    dangerouslySetInnerHTML={{
-                      __html: prices[price].character,
-                    }}
-                  ></span>{" "}
-                  {prices[price].price} per year
-                </h3>
-                <br></br>
-                <Button
-                  onClick={() => {
-                    requestCheckoutSession(true);
-                  }}
-                  className="pay-buttton"
-                >
-                  Subscribe
-                </Button>
-              </Card>
-            )}
-            {userProfile.memberShip === "free" &&
-              userProfile.channelsSubscription === false && (
-                <Card title="PREMIUM + CREATOR">
-                  <h3>
-                    <span
-                      className="character-price"
-                      dangerouslySetInnerHTML={{
-                        __html: prices[price].character,
-                      }}
-                    ></span>
-                    {(
-                      parseFloat(prices[price].price.replace(",", "")) +
-                      parseFloat(channelsPrices[price].price.replace(",", ""))
-                    )
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                    per year
-                  </h3>
-                  <br></br>
-                  <Button
-                    onClick={() => {
-                      requestCheckoutSession(true, true);
-                    }}
-                    className="pay-buttton"
-                  >
-                    Subscribe
-                  </Button>
-                </Card>
-              )}
-            {userProfile.memberShip === "premium" &&
-              userProfile.channelsSubscription === false && (
-                <Card title="CREATOR">
-                  <h3>
-                    <span
-                      className="character-price"
-                      dangerouslySetInnerHTML={{
-                        __html: prices[price].character,
-                      }}
-                    ></span>{" "}
-                    {channelsPrices[price].price} per year
-                  </h3>
-                  <br></br>
-                  <Button
-                    onClick={() => {
-                      requestCheckoutSession(false, true);
-                    }}
-                    className="pay-buttton"
-                  >
-                    Subscribe
-                  </Button>
-                </Card>
-              )}
+          <div className="plan-ugrade-form-close" onClick={hidePanel}>
+            <i className="fas fa-times" />
           </div>
-          {checkoutSessionError && (
-            <Alert
-              message="Error"
-              description={checkoutSessionErrorMsg}
-              type="error"
-              showIcon
-            />
-          )}
-        </form>
-      ) : (
-        <div className="payment-form-table-container">
-          <Table
-            className="antd-table-payment"
-            rowClassName="payment-table-row"
-            bordered={false}
-            style={{ width: "862px" }}
-            columns={paymentColumns}
-            dataSource={paymentsDatasource}
-            pagination={false}
-          ></Table>
-        </div>
+        </>
       )}
-    </>
+      <Table
+        className="antd-table-payment"
+        rowClassName="payment-table-row"
+        bordered={false}
+        columns={paymentColumns}
+        dataSource={paymentsDatasource}
+        pagination={false}
+        scroll={ isMobile && { x: '100vw' }}
+      ></Table>
+      <br></br>
+      {checkoutSessionError && (
+        <Alert
+          message="Error"
+          description={checkoutSessionErrorMsg}
+          type="error"
+          showIcon
+        />
+      )}
+    </div>
   );
 };
 

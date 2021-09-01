@@ -32,7 +32,6 @@ const PaymentModal = ({
     <Modal
       {...rest}
       className="payment-modal"
-      style={{ top: 40 }}
       title={
         <div className="payment-modal-title">
           <h3>Plan update</h3>
@@ -44,7 +43,6 @@ const PaymentModal = ({
       }
       centered
       visible={visible}
-      width={1003}
       closable={true}
       footer={[]}
       closeIcon={<CloseCircleFilled className="payment-modal-close" />}
