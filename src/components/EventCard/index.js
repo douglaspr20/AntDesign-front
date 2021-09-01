@@ -90,18 +90,18 @@ class EventCard extends React.Component {
   onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const { data } = this.props || {};
-    let description = "";
-    if (data.description) {
-      description = this.getDescriptionHTML(data);
-    }
+    // const { data } = this.props || {};
+    // let description = "";
+    // if (data.description) {
+    //   description = this.getDescriptionHTML(data);
+    // }
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       this.props.data.title
     }&dates=${convertToLocalTime(this.props.data.startDate).format(
       "YYYYMMDDTHHmm"
     )}/${convertToLocalTime(this.props.data.endDate).format(
       "YYYYMMDDTHHmmss"
-    )}&details=${description}&location=${
+    )}&location=${
       this.props.data.location
     }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
@@ -110,18 +110,18 @@ class EventCard extends React.Component {
   onClickAddYahooCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const { data } = this.props || {};
-    let description = "";
-    if (data.description) {
-      description = this.getDescriptionHTML(data);
-    }
+    // const { data } = this.props || {};
+    // let description = "";
+    // if (data.description) {
+    //   description = this.getDescriptionHTML(data);
+    // }
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       this.props.data.title
     }&st=${convertToLocalTime(this.props.data.startDate).format(
       "YYYYMMDDTHHmm"
     )}&dur${convertToLocalTime(this.props.data.endDate).format(
       "HHmmss"
-    )}&desc=${description}&in_loc=${this.props.data.location}`;
+    )}&in_loc=${this.props.data.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
