@@ -1,6 +1,5 @@
 import React from "react";
 import { Form } from "antd";
-import PropTypes from "prop-types";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import { CustomInput } from "components";
@@ -8,7 +7,7 @@ import { isValidPassword } from "utils/format";
 
 const SecretKey = process.env.REACT_APP_RECAPTCHA_SITEKEY;
 
-const SignupForm = ({ confirmEmail }) => {
+const SignupForm = () => {
   return (
     <React.Fragment>
       <React.Fragment>
@@ -53,28 +52,26 @@ const SignupForm = ({ confirmEmail }) => {
       >
         <CustomInput placeholder="Email" size="sm" />
       </Form.Item>
-      {confirmEmail && (
-        <Form.Item
-          name="confirmEmail"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your email!",
+      <Form.Item
+        name="confirmEmail"
+        rules={[
+          {
+            required: true,
+            message: "Please enter your email!",
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (value && value !== getFieldValue("email")) {
+                return Promise.reject(new Error("Confirm your email."));
+              }
+              return Promise.resolve();
             },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (value && value !== getFieldValue("email")) {
-                  return Promise.reject(new Error("Confirm your email."));
-                }
-                return Promise.resolve();
-              },
-            }),
-          ]}
-          className="form-full-name"
-        >
-          <CustomInput placeholder="Confirm Email" size="sm" />
-        </Form.Item>
-      )}
+          }),
+        ]}
+        className="form-full-name"
+      >
+        <CustomInput placeholder="Confirm Email" size="sm" />
+      </Form.Item>
       <Form.Item
         name="password"
         rules={[
@@ -141,14 +138,6 @@ const SignupForm = ({ confirmEmail }) => {
       </Form.Item>
     </React.Fragment>
   );
-};
-
-SignupForm.propTypes = {
-  confirmEmail: PropTypes.bool,
-};
-
-SignupForm.defaultProps = {
-  confirmEmail: false,
 };
 
 export default SignupForm;

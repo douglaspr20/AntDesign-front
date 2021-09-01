@@ -33,7 +33,6 @@ const Login = ({
   addToMyEventList,
   onClose,
   live,
-  confirmEmail,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const layout = {
@@ -111,7 +110,7 @@ const Login = ({
             {isLogin ? (
               <LoginForm />
             ) : (
-              <SignupForm confirmEmail={confirmEmail} />
+              <SignupForm />
             )}
           </div>
           <div className="login-dialog-footer">
@@ -151,12 +150,10 @@ const Login = ({
 };
 
 Login.propTypes = {
-  confirmEmail: PropTypes.bool,
   onClose: PropTypes.func,
 };
 
 Login.defaultProps = {
-  confirmEmail: false,
   onClose: () => {},
 };
 
