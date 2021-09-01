@@ -114,7 +114,6 @@ const PublicEventPage = ({
               login={true}
               signUp={false}
               history={null}
-              confirmEmail={true}
               match={{ params: {} }}
               onClose={onCancelModal}
             />
