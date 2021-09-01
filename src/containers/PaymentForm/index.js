@@ -23,6 +23,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   const [stripe, setStripe] = useState(null);
   const [checkoutSessionError, setCheckoutSessionError] = useState(false);
   const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const paymentColumns = [
     {
@@ -38,7 +39,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       key: "free",
       dataIndex: "free",
       align: "center",
-      width: 150, 
+      width: 150,
       className: "payment-table-column",
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
@@ -56,7 +57,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       dataIndex: "premium",
       align: "center",
       className: "payment-table-column",
-      width: 150, 
+      width: 150,
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
           if (record.buttonSection === true) {
@@ -65,6 +66,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             } else {
               return (
                 <Button
+                  loading={loading}
                   onClick={() => {
                     requestCheckoutSessionTable(true, false);
                   }}
@@ -85,7 +87,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       key: "creator",
       dataIndex: "creator",
       align: "center",
-      width: 150, 
+      width: 150,
       className: "payment-table-column",
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
@@ -95,6 +97,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             } else {
               return (
                 <Button
+                  loading={loading}
                   onClick={() => {
                     requestCheckoutSessionTable(false, true);
                   }}
@@ -162,6 +165,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     premium = false,
     creator = false
   ) => {
+    setLoading(true);
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
@@ -179,6 +183,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       });
       return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
     } catch (err) {
+      setLoading(false);
       setCheckoutSessionError(true);
       setCheckoutSessionErrorMsg(err.response.data.msg);
     }
@@ -219,7 +224,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         columns={paymentColumns}
         dataSource={paymentsDatasource}
         pagination={false}
-        scroll={ isMobile && { x: '100vw' }}
+        scroll={isMobile && { x: "100vw" }}
       ></Table>
       <br></br>
       {checkoutSessionError && (

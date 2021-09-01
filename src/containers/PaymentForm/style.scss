@@ -1,8 +1,8 @@
 @import "styles/main.scss";
 
-.payment-modal{
+.payment-modal {
   width: 80% !important;
-  .ant-modal-body{
+  .ant-modal-body {
     padding: 0px !important;
   }
 }
@@ -204,7 +204,8 @@
           border-top: none !important;
           border-bottom: none !important;
 
-          svg {
+          .green-icon,
+          .red-icon {
             width: 52px;
             height: 52px;
           }
