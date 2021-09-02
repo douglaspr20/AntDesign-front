@@ -33,6 +33,9 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       width: 120,
       dataIndex: "text",
       className: "payment-table-column-text",
+      render: (value, record) => (
+        <span className="antd-table-payment-text">{record.text}</span>
+      ),
     },
     {
       title: "Free",
