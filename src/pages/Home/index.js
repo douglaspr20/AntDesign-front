@@ -5,18 +5,22 @@ import queryString from "query-string";
 
 import ProfileStatusBar from "./ProfileStatusBar";
 import HomeRecommendationsColumn from "./Column";
-import { CustomModal, CustomButton } from "components";
-import PostForm from "containers/PostForm";
+import { PostsFilterPanel, CustomButton } from "components";
+
 import Posts from "containers/Posts";
+
 import { getUser } from "redux/actions/home-actions";
+import { getAllPost } from "redux/actions/post-actions";
 import { getRecommendations } from "redux/actions/library-actions";
+
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
+import { postSelector } from "redux/selectors/postSelector";
+
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
-import { authSelector } from "redux/selectors/authSelector";
 
 const HomePage = ({
   history,
@@ -25,17 +29,13 @@ const HomePage = ({
   recommendations,
   getRecommendations,
   getUser,
+  currentPage,
 }) => {
-  const [postModalIsVisible, setPostModalIsVisible] = useState(false);
+  const [filters, setFilters] = useState({});
+  const [text, setText] = useState("");
+
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
-  };
-
-  const onOpenPostModal = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
-  };
-  const onClosePostModal = () => {
-    Emitter.emit(EVENT_TYPES.CLOSE_POST_MODAL);
   };
 
   useEffect(() => {
@@ -45,18 +45,38 @@ const HomePage = ({
     }
 
     getRecommendations();
-
-    Emitter.on(EVENT_TYPES.OPEN_POST_MODAL, () => {
-      setPostModalIsVisible(true);
-    });
-    Emitter.on(EVENT_TYPES.CLOSE_POST_MODAL, () => {
-      setPostModalIsVisible(false);
-    });
+    getAllPost({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onFilterChange = (filter) => {
+    getAllPost({ ...filter, text });
+    setFilters(filter);
+  };
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
+  };
+
+  const onSearch = (value) => {
+    getAllPost({
+      ...filters,
+      text: value,
+    });
+    setText(value);
+  };
+
+  const onShowMore = () => {
+    getAllPost({
+      ...filters,
+      text,
+      page: currentPage + 1,
+    });
+  };
+
   return (
     <div className="home-page">
+      <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
       {userProfile && userProfile.percentOfCompletion !== 100 && (
         <div className="home-page-profile">
           <Row gutter={16}>
@@ -68,31 +88,8 @@ const HomePage = ({
           </Row>
         </div>
       )}
-      <div
-        id="post-form-container"
-        style={{
-          width: "80%",
-          margin: "0 auto",
-          background: "#ffffff",
-          textAlign: "center",
-        }}
-      >
-        <CustomButton
-          type="primary"
-          text="CREATE POST"
-          onClick={onOpenPostModal}
-        />
-        <CustomModal
-          title={"CREATE POST"}
-          width={"80%"}
-          visible={postModalIsVisible}
-          children={<PostForm></PostForm>}
-          bodyStyle={{ overflowY: "scroll", maxHeight: "calc(100vh - 200px)" }}
-          onCancel={onClosePostModal}
-        />
-      </div>
-      <Posts />
-      {false && (
+
+      <div className="home-page-container">
         <div className="home-page-container-recommendations">
           <HomeRecommendationsColumn
             history={history}
@@ -119,9 +116,8 @@ const HomePage = ({
             columnTitle="Upcoming Events"
           />
         </div>
-      )}
 
-      <div className="home-page-container">
+        <Posts onShowMore={onShowMore} />
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
             <Col lg={{ span: 16, offset: 4 }}>
@@ -158,6 +154,7 @@ const HomePage = ({
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
   recommendations: librarySelector(state).recommendations,
+  currentPage: postSelector(state).currentPage,
 });
 
 const mapDispatchToProps = {

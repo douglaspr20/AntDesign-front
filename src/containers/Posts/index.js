@@ -2,19 +2,17 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Avatar, Comment, Card, Form, Input } from "antd";
-import {
-  LikeOutlined,
-  LikeFilled,
-  CommentOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import { CustomButton, SpecialtyItem } from "components";
+import PostCard from "components/PostCard";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { postSelector } from "redux/selectors/postSelector";
 import { authSelector } from "redux/selectors/authSelector";
+
+import { SETTINGS } from "enum";
 
 import {
   getAllPost,
@@ -22,17 +20,21 @@ import {
   deletePostLike,
   addPostComment,
 } from "redux/actions/post-actions";
+import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 
 const Posts = ({
-  allCategories,
+  loading,
   getAllPost,
-  allPost,
+  allPosts,
   setPostLike,
+  currentPage,
+  countOfResults,
   deletePostLike,
   addPostComment,
   userId,
+  onShowMore,
 }) => {
   useEffect(() => {
     getAllPost();
@@ -67,7 +69,7 @@ const Posts = ({
   };
 
   const renderLikeAction = (item) => {
-    const likeItem = searchLike(item.id, item.PostLikes);
+    /*const likeItem = searchLike(item.id, item.PostLikes);
     if (likeItem) {
       return (
         <LikeFilled
@@ -78,6 +80,7 @@ const Posts = ({
         />
       );
     }
+    */
     return (
       <LikeOutlined
         key="Like"
@@ -90,44 +93,10 @@ const Posts = ({
 
   return (
     <div id="posts-container">
-      {allPost.map((item) => {
+      {allPosts.map((item) => {
         return (
           <>
-            <Card
-              title={`Posted by: ${item.User.firstName} ${item.User.lastName}`}
-              actions={[
-                renderLikeAction(item),
-                <CommentOutlined key="Comment" />,
-                item.UserId == userId && <EditOutlined key="Edit" />,
-              ]}
-            >
-              <div dangerouslySetInnerHTML={{ __html: item.text }} />
-
-              {item.imageUrl && (
-                <img alt={`post-${item.id}`} src={item.imageUrl} />
-              )}
-
-              {item.videoUrl && (
-                <div className="video-container" dangerouslySetInnerHTML={{ __html: item.videoUrl }}></div>
-              )}
-
-              <div className="post-topics">
-                {(item.topics || []).map((itemTopic, index) => {
-                  const category = allCategories.find(
-                    (cat) => cat.value === itemTopic
-                  );
-                  return (
-                    <>
-                      <SpecialtyItem
-                        key={index}
-                        title={category ? category.title : itemTopic}
-                        active={false}
-                      />
-                    </>
-                  );
-                })}
-              </div>
-            </Card>
+            <PostCard data={item} />
             <Card>
               <Form
                 layout="vertical"
@@ -146,7 +115,57 @@ const Posts = ({
                   ></CustomButton>
                 </Form.Item>
               </Form>
-              {item.PostComments.map((itemComment) => (
+            </Card>
+            <Card></Card>
+          </>
+        );
+      })}
+      {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+        <div className="post-page-footer d-flex justify-center items-center">
+          {loading && (
+            <div className="post-page-loading-more">
+              <img src={IconLoadingMore} alt="loading-more-img" />
+            </div>
+          )}
+          {!loading && (
+            <CustomButton
+              text="Show more"
+              type="primary outlined"
+              size="lg"
+              onClick={onShowMore}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+Posts.propTypes = {
+  allCategories: PropTypes.array,
+};
+
+Posts.defaultProps = {
+  allCategories: [],
+};
+
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+  userId: authSelector(state).id,
+  ...postSelector(state),
+});
+
+const mapDispatchToProps = {
+  getAllPost,
+  setPostLike,
+  deletePostLike,
+  addPostComment,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+
+/*
+{item.PostComments.map((itemComment) => (
                 <Comment
                   author={`${itemComment.User.firstName} ${itemComment.User.lastName}`}
                   avatar={
@@ -164,34 +183,4 @@ const Posts = ({
                   )}
                 ></Comment>
               ))}
-            </Card>
-            <Card></Card>
-          </>
-        );
-      })}
-    </div>
-  );
-};
-
-Posts.propTypes = {
-  allCategories: PropTypes.array,
-};
-
-Posts.defaultProps = {
-  allCategories: [],
-};
-
-const mapStateToProps = (state) => ({
-  allCategories: categorySelector(state).categories,
-  allPost: postSelector(state).posts,
-  userId: authSelector(state).id,
-});
-
-const mapDispatchToProps = {
-  getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+*/

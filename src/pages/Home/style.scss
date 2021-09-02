@@ -1,8 +1,9 @@
 @import "styles/main.scss";
 
 .home-page {
-  background: $color-background;
-  min-height: calc(100vh - 72px);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
 
@@ -29,6 +30,8 @@
   &-container {
     padding: 0 2rem 150px;
     background: $color-background;
+    height: calc(100vh - 72px);
+    overflow: auto;
 
     .ant-col {
       width: 100%;

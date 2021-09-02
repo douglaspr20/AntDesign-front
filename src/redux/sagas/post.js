@@ -12,18 +12,27 @@ import {
   post as postLike,
   remove as removeLike,
 } from "../../api/module/postLike";
-import {
-  post as postComment,
-} from "../../api/module/postComment";
+import { post as postComment } from "../../api/module/postComment";
 
-export function* getAllPostSaga() {
-  yield put(homeActions.setLoading(true));
+export function* getAllPostSaga({ payload }) {
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(postActions.setLoading(true));
+  }
 
   try {
-    const response = yield call(getAllPosts);
+    const response = yield call(getAllPosts, payload);
 
     if (response.status === 200) {
-      yield put(postActions.setPosts(response.data.posts));
+      console.log(payload);
+      yield put(
+        postActions.setAllPosts(
+          response.data.posts.count,
+          payload.page || 1,
+          response.data.posts.rows
+        )
+      );
     }
   } catch (error) {
     console.log(error);

@@ -1,7 +1,21 @@
 import httpClient from "./httpClient";
+import { SETTINGS } from "enum";
 
 export const getAllPosts = async (data) => {
-  return await httpClient.get(`private/post`);
+  let newFilter = {
+    page: 1,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
+  };
+
+  if (data.filter) {
+    newFilter = { ...newFilter, ...data.filter };
+  }
+
+  const parsedFilter = Object.keys(newFilter)
+    .map((item) => `${item}=${newFilter[item]}`)
+    .join("&");
+
+  return await httpClient.get(`private/post/search?${parsedFilter}`);
 };
 
 export const get = async (id) => {

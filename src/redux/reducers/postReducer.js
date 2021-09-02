@@ -1,11 +1,27 @@
 import { handleActions } from "redux-actions";
 import { Map } from "immutable";
+import cloneDeep from "lodash/cloneDeep";
 
 // Action Type Imports
 import { constants as postConstants } from "../actions/post-actions";
 
 // Events's Reducer
 export const reducers = {
+  [postConstants.SET_ALL_POSTS]: (state, { payload }) => {
+    if (payload.page === 1) {
+      return state.merge({
+        allPosts: cloneDeep(payload.posts),
+        currentPage: payload.page,
+        countOfResults: payload.total,
+      });
+    }
+    const allPosts = state.get("allPosts");
+    return state.merge({
+      allPosts: cloneDeep([...allPosts, ...payload.posts]),
+      currentPage: payload.page,
+      countOfResults: payload.total,
+    });
+  },
   [postConstants.SET_POST]: (state, { payload }) => {
     return state.merge({ post: payload.post });
   },
@@ -16,6 +32,7 @@ export const reducers = {
 
 export const initialState = () =>
   Map({
+    allPosts: [],
     posts: [],
     post: {},
   });

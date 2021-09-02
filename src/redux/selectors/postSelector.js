@@ -7,6 +7,9 @@ const resultSelector = createSelector(postDataSelector, (payload) => {
     loading: payload.get("loading"),
     post: payload.get("post"),
     posts: payload.get("posts"),
+    allPosts: payload.get("allPosts"),
+    countOfResults: payload.get("countOfResults"),
+    currentPage: payload.get("currentPage"),
   };
 });
 
