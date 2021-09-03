@@ -7,22 +7,26 @@ import { CustomButton, CustomInput, FroalaEdit, ImageUpload } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
-import {
-  addPost,
-} from "redux/actions/post-actions";
+import { addPost } from "redux/actions/post-actions";
 
 import "./style.scss";
 
 const { Item } = Form;
 const { Option } = Select;
 
-const PostForm = ({ 
-  allCategories,
-  s3Hash,
-  addPost,
- }) => {
+const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonText }) => {
+  const [form] = Form.useForm();
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [checkGroupDisabled, setCheckGroupDisabled] = useState(false);
+
+  useEffect(() => {
+    if (postData) {
+      form.setFieldsValue({
+        ...postData,
+        text: { html: postData.text },
+      });
+    }
+  });
 
   const validLimit = (data) => {
     if (data.hasOwnProperty("topics")) {
@@ -36,12 +40,19 @@ const PostForm = ({
   };
 
   const onFinish = (data) => {
-    addPost(data);
+    console.log(data);
+    if (postData) {
+      onUpdate(data);
+    } else {
+      addPost(data);
+      form.resetFields();
+    }
   };
 
   return (
     <div className="post-form-container">
       <Form
+        form={form}
         layout="vertical"
         onValuesChange={(data) => {
           validLimit(data);
@@ -54,7 +65,7 @@ const PostForm = ({
         <Item label="Image" name="imageData">
           <ImageUpload />
         </Item>
-        <Item label="video URL" name="videoUrl">
+        <Item label="Video URL" name="videoUrl">
           <CustomInput />
         </Item>
         <Item label="Category tags" name="topics">
@@ -74,7 +85,7 @@ const PostForm = ({
           </Select>
         </Item>
         <Item>
-          <CustomButton htmlType="submit" text="POST" />
+          <CustomButton htmlType="submit" text={buttonText} />
         </Item>
       </Form>
     </div>
@@ -87,6 +98,7 @@ PostForm.propTypes = {
 
 PostForm.defaultProps = {
   allCategories: [],
+  buttonText: "POST"
 };
 
 const mapStateToProps = (state) => ({

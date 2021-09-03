@@ -34,7 +34,7 @@ export const initialState = () =>
   Map({
     allPosts: [],
     posts: [],
-    post: {},
+    post: null,
   });
 
 export default handleActions(reducers, initialState());

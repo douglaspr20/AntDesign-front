@@ -31,4 +31,5 @@ export default {
   NOTIFICATIONS: "/notifications",
   GLOBAL_CONFERENCE: "/global-conference",
   LIVE: "/live",
+  POST: "/post",
 };

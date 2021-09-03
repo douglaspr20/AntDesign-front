@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { Card } from "antd";
 import {
   LikeOutlined,
@@ -12,6 +13,8 @@ import { SpecialtyItem } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
+
+import { INTERNAL_LINKS } from "enum";
 
 const PostCard = ({ allCategories, userId, data }) => {
   const markAsLiked = (postId) => {
@@ -45,7 +48,11 @@ const PostCard = ({ allCategories, userId, data }) => {
       actions={[
         renderLikeAction(data),
         <CommentOutlined key="Comment" />,
-        data.UserId == userId && <EditOutlined key="Edit" />,
+        data.UserId == userId && (
+          <Link to={`${INTERNAL_LINKS.POST}/${data.id}`}>
+            <EditOutlined key="Edit" />
+          </Link>
+        ),
       ]}
     >
       <div dangerouslySetInnerHTML={{ __html: data.text }} />

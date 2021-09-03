@@ -106,7 +106,7 @@ class App extends Component {
     if (window.innerWidth < 576) this.props.setIsMobile(true);
     else this.props.setIsMobile(false);
   }
-
+  
   onHidePaymentModal = () => {
     this.setState({ openPaymentModal: false });
   };

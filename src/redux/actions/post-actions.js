@@ -3,6 +3,7 @@ import { createAction } from "redux-actions";
 const GET_ALL_POST = "GET_ALL_POST";
 const GET_POST = "GET_POST";
 const ADD_POST = "ADD_POST";
+const UPDATE_POST = "UPDATE_POST";
 const SET_ALL_POSTS = "SET_ALL_POSTS";
 const SET_POSTS = "SET_POSTS";
 const SET_POST = "SET_POST";
@@ -22,6 +23,7 @@ export const constants = {
   ADD_POST_COMMENT,
   SET_LOADING,
   SET_ALL_POSTS,
+  UPDATE_POST,
 };
 
 // ------------------------------------
@@ -30,6 +32,7 @@ export const constants = {
 export const getAllPost = createAction(GET_ALL_POST, (filter) => ({ filter }));
 export const getPost = createAction(GET_POST, (id) => ({ id }));
 export const addPost = createAction(ADD_POST, (post) => ({ post }));
+export const updatePost = createAction(UPDATE_POST, (post) => ({ post }));
 export const setPost = createAction(SET_POST, (post) => ({ post }));
 export const setAllPosts = createAction(
   SET_ALL_POSTS,
@@ -58,4 +61,5 @@ export const actions = {
   addPostComment,
   setLoading,
   setAllPosts,
+  updatePost,
 };

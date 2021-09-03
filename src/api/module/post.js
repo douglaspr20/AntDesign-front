@@ -15,7 +15,7 @@ export const getAllPosts = async (data) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return await httpClient.get(`private/post/search?${parsedFilter}`);
+  return await httpClient.get(`private/posts/search?${parsedFilter}`);
 };
 
 export const get = async (id) => {
@@ -27,6 +27,5 @@ export const post = async (data) => {
 };
 
 export const put = async (data) => {
-  console.log(data);
-  return await httpClient.put(`private/post/${data.id}`, data.post);
+  return await httpClient.put(`private/post/${data.id}`, data);
 };
