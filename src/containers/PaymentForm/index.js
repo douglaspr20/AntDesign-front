@@ -98,17 +98,33 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
             if (userProfile.memberShip === "channel_admin") {
               return "Creator";
             } else {
-              return (
-                <Button
-                  loading={loading}
-                  onClick={() => {
-                    requestCheckoutSessionTable(false, true);
-                  }}
-                  className="pay-buttton"
-                >
-                  Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
-                </Button>
-              );
+              if (userProfile.memberShip === "free") {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable(true, true);
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay $
+                    {parseFloat(STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price) +
+                      parseFloat(STRIPE_PRICES.STRIPE_PRICES[0].price)}
+                  </Button>
+                );
+              } else {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable(false, true);
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
+                  </Button>
+                );
+              }
             }
           }
         } else {
