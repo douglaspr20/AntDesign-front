@@ -16,7 +16,6 @@ import "./style.scss";
 const FilterPanel = ({
   title,
   userProfile,
-  hidePodcastSeries,
   allCategories,
   onChange,
   onSearch,
@@ -37,13 +36,11 @@ const FilterPanel = ({
   };
   return (
     <div className="posts-filter-panel">
-      {!hidePodcastSeries && (
-        <CustomButton
-          type="primary"
-          text="Create Post"
-          onClick={onOpenPostFormModal}
-        />
-      )}
+      <CustomButton
+        type="primary"
+        text="Create Post"
+        onClick={onOpenPostFormModal}
+      />
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">

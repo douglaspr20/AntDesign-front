@@ -40,7 +40,6 @@ const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonTe
   };
 
   const onFinish = (data) => {
-    console.log(data);
     if (postData) {
       onUpdate(data);
     } else {

@@ -30,6 +30,7 @@ const HomePage = ({
   getRecommendations,
   getUser,
   currentPage,
+  getAllPost,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
@@ -67,6 +68,7 @@ const HomePage = ({
   };
 
   const onShowMore = () => {
+    console.log("Entro more");
     getAllPost({
       ...filters,
       text,
@@ -160,6 +162,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   getRecommendations,
   getUser,
+  getAllPost,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -28,6 +28,9 @@ export const reducers = {
   [postConstants.SET_POSTS]: (state, { payload }) => {
     return state.merge({ posts: payload.posts });
   },
+  [postConstants.SET_LOADING]: (state, { payload }) => {
+    return state.merge({ loading: payload.loading });
+  },
 };
 
 export const initialState = () =>
@@ -35,6 +38,7 @@ export const initialState = () =>
     allPosts: [],
     posts: [],
     post: null,
+    loading: false,
   });
 
 export default handleActions(reducers, initialState());

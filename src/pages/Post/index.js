@@ -11,7 +11,6 @@ import "./style.scss";
 
 const PostPage = ({ getPost, match, post, updatePost }) => {
   useEffect(() => {
-    console.log(match.params.id);
     getPost(match.params.id);
   }, []);
 

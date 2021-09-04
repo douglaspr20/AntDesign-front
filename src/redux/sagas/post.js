@@ -15,12 +15,13 @@ import {
 import { post as postComment } from "../../api/module/postComment";
 
 export function* getAllPostSaga({ payload }) {
+  console.log("saga post 0");
   if (payload.page === 1) {
     yield put(homeActions.setLoading(true));
   } else {
     yield put(postActions.setLoading(true));
   }
-
+  console.log("saga post 1");
   try {
     const response = yield call(getAllPosts, payload);
 
@@ -41,6 +42,7 @@ export function* getAllPostSaga({ payload }) {
       yield put(logout());
     }
   } finally {
+    yield put(postActions.setLoading(false));
     yield put(homeActions.setLoading(false));
   }
 }
@@ -72,7 +74,9 @@ export function* updatePostSaga({ payload }) {
     const response = yield call(putPost, payload.post);
 
     if (response.status === 200) {
-      yield put(postActions.getAllPost());
+      console.log(response.data);
+      yield put(postActions.setPost(response.data.post));
+      // yield put(postActions.getAllPost());
     }
   } catch (error) {
     console.log(error);
