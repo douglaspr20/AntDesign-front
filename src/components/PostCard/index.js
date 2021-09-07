@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Card } from "antd";
@@ -11,42 +11,41 @@ import {
 
 import { SpecialtyItem } from "components";
 
+import { setPostLike, deletePostLike } from "redux/actions/post-actions";
+
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
 
 import { INTERNAL_LINKS } from "enum";
 
-const PostCard = ({ allCategories, userId, data }) => {
-  const markAsLiked = (postId) => {
-    // setPostLike({ PostId: postId });
+const PostCard = ({ allCategories, userId, data, setPostLike, deletePostLike }) => {
+  const [like, setLike] = useState();
+  useEffect(() => {
+    setLike(data.like);
+  }, []);
+
+  const markAsLiked = () => {
+    setPostLike({ PostId: data.id });
+    setLike(!like);
   };
 
-  const renderLikeAction = (data) => {
-    if (data.like === true) {
-      return (
-        <LikeFilled
-          key="Like"
-          onClick={() => {
-            // removeLike(likeItem);
-          }}
-        />
-      );
-    } else {
-      return (
-        <LikeOutlined
-          key="Like"
-          onClick={() => {
-            // markAsLiked(data.id);
-          }}
-        />
-      );
-    }
+  const removeLike = () => {
+    deletePostLike({ id: data.id });
+    setLike(!like);
   };
+
   return (
     <Card
       title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
       actions={[
-        renderLikeAction(data),
+        like ? (
+          <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
+        ) : (
+          <LikeOutlined
+            key={`like-outlined-${data.id}`}
+            onClick={markAsLiked}
+          />
+        ),
         <CommentOutlined key="Comment" />,
         data.UserId == userId && (
           <Link to={`${INTERNAL_LINKS.POST}/${data.id}`}>
@@ -89,6 +88,9 @@ const mapStateToProps = (state) => ({
   userId: authSelector(state).id,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setPostLike,
+  deletePostLike,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCard);

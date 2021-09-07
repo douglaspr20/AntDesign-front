@@ -15,18 +15,16 @@ import {
 import { post as postComment } from "../../api/module/postComment";
 
 export function* getAllPostSaga({ payload }) {
-  console.log("saga post 0");
   if (payload.page === 1) {
     yield put(homeActions.setLoading(true));
   } else {
     yield put(postActions.setLoading(true));
   }
-  console.log("saga post 1");
+
   try {
     const response = yield call(getAllPosts, payload);
 
     if (response.status === 200) {
-      console.log(payload);
       yield put(
         postActions.setAllPosts(
           response.data.posts.count,
@@ -90,42 +88,26 @@ export function* updatePostSaga({ payload }) {
 }
 
 export function* setPostLikeSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-
   try {
-    const response = yield call(postLike, payload.data);
-
-    if (response.status === 200) {
-      yield put(postActions.getAllPost());
-    }
+    yield call(postLike, payload.data);
   } catch (error) {
     console.log(error);
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
-  } finally {
-    yield put(homeActions.setLoading(false));
   }
 }
 
 export function* deletePostLikeSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-
   try {
-    const response = yield call(removeLike, payload.id);
-
-    if (response.status === 200) {
-      yield put(postActions.getAllPost());
-    }
+    yield call(removeLike, payload.id);
   } catch (error) {
     console.log(error);
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
-  } finally {
-    yield put(homeActions.setLoading(false));
   }
 }
 

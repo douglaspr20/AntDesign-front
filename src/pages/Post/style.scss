@@ -1,8 +1,6 @@
 @import "styles/main.scss";
 
 .post-page {
-  display: grid;
-  grid-template-columns: auto 1fr;
   width: 100%;
   height: calc(100vh - 72px);
   padding: 4rem;

@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Avatar, Comment, Card, Form, Input } from "antd";
-import { LikeOutlined, LikeFilled, EditOutlined } from "@ant-design/icons";
-import moment from "moment";
 
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton } from "components";
 import PostCard from "components/PostCard";
 
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -32,64 +29,11 @@ const Posts = ({
   currentPage,
   countOfResults,
   deletePostLike,
-  addPostComment,
-  userId,
   onShowMore,
 }) => {
   useEffect(() => {
     getAllPost();
   }, []);
-
-  const markAsLiked = (postId) => {
-    setPostLike({ PostId: postId });
-  };
-
-  const removeLike = (id) => {
-    deletePostLike({ id });
-  };
-
-  const addComment = (data, postId, postCommentId = null) => {
-    data["PostId"] = postId;
-    if (postCommentId) {
-      addPostComment({ ...data, PostId: postId });
-    } else {
-      addPostComment(data);
-    }
-  };
-
-  const searchLike = (postId, likes) => {
-    let exists = false;
-    for (let item of likes) {
-      if (item.PostId === postId && item.UserId === userId) {
-        exists = item.id;
-        break;
-      }
-    }
-    return exists;
-  };
-
-  const renderLikeAction = (item) => {
-    /*const likeItem = searchLike(item.id, item.PostLikes);
-    if (likeItem) {
-      return (
-        <LikeFilled
-          key="Like"
-          onClick={() => {
-            removeLike(likeItem);
-          }}
-        />
-      );
-    }
-    */
-    return (
-      <LikeOutlined
-        key="Like"
-        onClick={() => {
-          markAsLiked(item.id);
-        }}
-      />
-    );
-  };
 
   return (
     <div id="posts-container">
@@ -97,26 +41,6 @@ const Posts = ({
         return (
           <>
             <PostCard data={item} />
-            <Card>
-              <Form
-                layout="vertical"
-                onFinish={(data) => {
-                  addComment(data, item.id);
-                }}
-              >
-                <Form.Item name="comment">
-                  <Input.TextArea rows={2} />
-                </Form.Item>
-                <Form.Item>
-                  <CustomButton
-                    htmlType="submit"
-                    size="sm"
-                    text="Add comment"
-                  ></CustomButton>
-                </Form.Item>
-              </Form>
-            </Card>
-            <Card></Card>
           </>
         );
       })}
@@ -163,24 +87,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
-
-/*
-{item.PostComments.map((itemComment) => (
-                <Comment
-                  author={`${itemComment.User.firstName} ${itemComment.User.lastName}`}
-                  avatar={
-                    <Avatar
-                      alt={itemComment.UserId}
-                      src={itemComment.User.img != null && itemComment.User.img}
-                    >
-                      {itemComment.User.img == null &&
-                        `${itemComment.User.firstName[0]}${itemComment.User.lastName[0]}`}
-                    </Avatar>
-                  }
-                  content={itemComment.comment}
-                  datetime={moment(itemComment.createdAt).format(
-                    "YYYY-MM-DD HH:mm"
-                  )}
-                ></Comment>
-              ))}
-*/
