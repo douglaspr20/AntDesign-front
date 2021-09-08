@@ -40,5 +40,4 @@ export const actions = {
   deleteComment,
   setAllComments,
   setLoading,
-  actions,
 };

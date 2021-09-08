@@ -32,20 +32,20 @@ const Posts = ({
 }) => {
   useEffect(() => {
     getAllPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div id="posts-container">
       {allPosts.map((item) => {
         return (
-          <>
-            <PostCard
-              data={item}
-              onCommentClick={() => {
-                history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
-              }}
-            />
-          </>
+          <PostCard
+            key={`post-card-${item.id}`}
+            data={item}
+            onCommentClick={() => {
+              history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+            }}
+          />
         );
       })}
       {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
@@ -70,11 +70,13 @@ const Posts = ({
 };
 
 Posts.propTypes = {
-  allCategories: PropTypes.array,
+  onShowMore: PropTypes.func,
+  history: PropTypes.object,
 };
 
 Posts.defaultProps = {
-  allCategories: [],
+  onShowMore: () => {},
+  history: null,
 };
 
 const mapStateToProps = (state) => ({

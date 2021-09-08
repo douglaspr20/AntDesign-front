@@ -19,6 +19,9 @@ export const getAllComments = async (data) => {
 };
 
 export const post = async (data) => {
-  console.log(data);
   return await httpClient.post(`private/postComment/`, data);
+};
+
+export const remove = async (data) => {
+  return await httpClient.delete(`private/postComment/${data.id}`);
 };

@@ -39,6 +39,8 @@ export const initialState = () =>
     posts: [],
     post: null,
     loading: false,
+    currentPage: 1,
+    countOfResults: 0,
   });
 
 export default handleActions(reducers, initialState());

@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { Comment, Avatar } from "antd";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Comment, Avatar, Popconfirm } from "antd";
 import moment from "moment";
 
+import { DeleteOutlined } from "@ant-design/icons";
+
 import { default as SubPostComment } from "components/PostComment";
-
 import PostCommentForm from "containers/PostCommentForm";
+import { deleteComment } from "redux/actions/post-comment-actions";
+import { authSelector } from "redux/selectors/authSelector";
 
-const PostComment = ({ data, postId, afterSave }) => {
+const PostComment = ({
+  userId,
+  data,
+  postId,
+  afterSave,
+  enableReply,
+  deleteComment,
+}) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   const onReplyClick = () => {
@@ -16,21 +28,27 @@ const PostComment = ({ data, postId, afterSave }) => {
   const getPostComments = (item) => {
     return (
       <SubPostComment
+        key={`post-comment-${item.id}`}
         data={item}
         postId={postId}
         postCommentId={item.id}
         afterSave={afterSave}
+        enableReply={false}
       />
     );
   };
 
+  const onRemoveComment = () => {
+    deleteComment({ id: data.id, PostId: data.PostId });
+  };
+
   return (
     <Comment
-      author={`${data.User.firstName} ${data.User.lastName}`}
+      author={`${data.userFirstName} ${data.userLastName}`}
       avatar={
         <Avatar
-          src={data.User.img}
-          alt={`${data.User.firstName} ${data.User.lastName}`}
+          src={data.userImg}
+          alt={`${data.userFirstName} ${data.userLastName}`}
         />
       }
       datetime={
@@ -38,20 +56,58 @@ const PostComment = ({ data, postId, afterSave }) => {
       }
       content={data.comment}
       actions={[
-        <span key="comment-basic-reply-to" onClick={onReplyClick}>
-          Reply to
-        </span>,
+        enableReply && (
+          <span key="comment-basic-reply-to" onClick={onReplyClick}>
+            Reply to
+          </span>
+        ),
+        userId === data.UserId && (
+          <Popconfirm
+            title="Are you sure you want to permanently remove this item?"
+            onConfirm={onRemoveComment}
+          >
+            <DeleteOutlined></DeleteOutlined> Remove
+          </Popconfirm>
+        ),
       ]}
     >
       {showReplyForm && (
         <PostCommentForm
           postId={postId}
           postCommentId={data.id}
-          afterSave={afterSave}
+          afterSave={() => {
+            setShowReplyForm(!showReplyForm);
+            afterSave();
+          }}
         />
+      )}
+      {data.PostComments && (
+        <>{data.PostComments.map((item) => getPostComments(item))}</>
       )}
     </Comment>
   );
 };
 
-export default PostComment;
+PostComment.propTypes = {
+  enableReply: PropTypes.bool,
+  data: PropTypes.number,
+  postId: PropTypes.number,
+  afterSave: PropTypes.func,
+};
+
+PostComment.defaultProps = {
+  enableReply: true,
+  data: null,
+  postId: 0,
+  afterSave: () => {},
+};
+
+const mapStateToProps = (state) => ({
+  userId: authSelector(state).id,
+});
+
+const mapDispatchToProps = {
+  deleteComment,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostComment);

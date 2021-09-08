@@ -67,7 +67,6 @@ class App extends Component {
     });
 
     Emitter.on(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL, () => {
-      console.log(this.props.isMobile);
       if (this.props.isMobile) {
         this.setState({ openInviteFriendPanel: true });
       } else {
@@ -76,11 +75,18 @@ class App extends Component {
     });
 
     Emitter.on(EVENT_TYPES.OPEN_POST_MODAL, () => {
-      console.log(this.props.isMobile);
       if (this.props.isMobile) {
         this.setState({ openPostFormPanel: true });
       } else {
         this.setState({ openPostFormModal: true });
+      }
+    });
+
+    Emitter.on(EVENT_TYPES.CLOSE_POST_MODAL, () => {
+      if (this.props.isMobile) {
+        this.setState({ openPostFormPanel: false });
+      } else {
+        this.setState({ openPostFormModal: false });
       }
     });
 
@@ -106,7 +112,7 @@ class App extends Component {
     if (window.innerWidth < 576) this.props.setIsMobile(true);
     else this.props.setIsMobile(false);
   }
-  
+
   onHidePaymentModal = () => {
     this.setState({ openPaymentModal: false });
   };

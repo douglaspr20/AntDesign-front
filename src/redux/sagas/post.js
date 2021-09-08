@@ -3,7 +3,6 @@ import { put, fork, takeLatest, call } from "redux-saga/effects";
 import {
   constants as postConstants,
   actions as postActions,
-  addPostComment,
 } from "../actions/post-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { logout } from "../actions/auth-actions";
@@ -28,7 +27,7 @@ export function* getAllPostSaga({ payload }) {
       yield put(
         postActions.setAllPosts(
           response.data.posts.count,
-          payload.page || 1,
+          payload.filter.page || 1,
           response.data.posts.rows
         )
       );
@@ -52,7 +51,7 @@ export function* addPostSaga({ payload }) {
     const response = yield call(post, payload.post);
 
     if (response.status === 200) {
-      yield put(postActions.getAllPost());
+      yield put(postActions.getAllPost({ page: 1 }));
     }
   } catch (error) {
     console.log(error);
@@ -74,7 +73,6 @@ export function* updatePostSaga({ payload }) {
     if (response.status === 200) {
       console.log(response.data);
       yield put(postActions.setPost(response.data.post));
-      // yield put(postActions.getAllPost());
     }
   } catch (error) {
     console.log(error);

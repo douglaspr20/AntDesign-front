@@ -8,7 +8,7 @@ const PostFormModal = ({ userProfile, visible, onCancel, ...rest }) => {
   return (
     <CustomModal
       title={"CREATE POST"}
-      width={"80%"}
+      width={1000}
       visible={visible}
       bodyStyle={{ overflowY: "scroll", maxHeight: "calc(100vh - 200px)" }}
       onCancel={onCancel}

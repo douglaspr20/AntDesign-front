@@ -34,6 +34,7 @@ const PostPage = ({
   useEffect(() => {
     getPost(match.params.id);
     getAllComments({ postId: match.params.id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onUpdate = (data) => {
@@ -89,6 +90,7 @@ const PostPage = ({
                 <>
                   {allComments.map((item) => (
                     <PostComment
+                      key={`post-comment-${item.id}`}
                       data={item}
                       postId={post.id}
                       afterSave={afterSaveComment}
@@ -96,7 +98,7 @@ const PostPage = ({
                   ))}
                 </>
               ) : (
-                <div class="post-page-container--comments-container--empty-message">
+                <div className="post-page-container--comments-container--empty-message">
                   Comments not found.
                 </div>
               )}
@@ -108,9 +110,15 @@ const PostPage = ({
   );
 };
 
-PostPage.propTypes = {};
+PostPage.propTypes = {
+  match: PropTypes.object,
+  history: PropTypes.object,
+};
 
-PostPage.defaultProps = {};
+PostPage.defaultProps = {
+  match: null,
+  history: null,
+};
 
 const mapStateToProps = (state) => ({
   post: postSelector(state).post,

@@ -1,43 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import clsx from "clsx";
 import { Form, Select } from "antd";
+import Emitter from "services/emitter";
+
 import { CustomButton, CustomInput, FroalaEdit, ImageUpload } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { addPost } from "redux/actions/post-actions";
 
+import { EVENT_TYPES } from "enum";
+
 import "./style.scss";
 
 const { Item } = Form;
 const { Option } = Select;
 
-const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonText }) => {
+const PostForm = ({
+  allCategories,
+  s3Hash,
+  addPost,
+  postData,
+  onUpdate,
+  buttonText,
+}) => {
   const [form] = Form.useForm();
-  const [selectedTopics, setSelectedTopics] = useState([]);
-  const [checkGroupDisabled, setCheckGroupDisabled] = useState(false);
-
-  useEffect(() => {
-    if (postData) {
-      form.setFieldsValue({
-        ...postData,
-        text: { html: postData.text },
-      });
-    }
-  });
-
-  const validLimit = (data) => {
-    if (data.hasOwnProperty("topics")) {
-      setSelectedTopics(data.topics);
-      if (data.topics.length === 3) {
-        setCheckGroupDisabled(true);
-      } else {
-        setCheckGroupDisabled(false);
-      }
-    }
-  };
 
   const onFinish = (data) => {
     if (postData) {
@@ -45,6 +33,7 @@ const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonTe
     } else {
       addPost(data);
       form.resetFields();
+      Emitter.emit(EVENT_TYPES.CLOSE_POST_MODAL);
     }
   };
 
@@ -53,12 +42,17 @@ const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonTe
       <Form
         form={form}
         layout="vertical"
-        onValuesChange={(data) => {
-          validLimit(data);
-        }}
         onFinish={onFinish}
+        initialValues={
+          postData && {
+            ...postData,
+            topics: postData.topics,
+            text: { html: postData.text },
+            imageData: postData.imageUrl,
+          }
+        }
       >
-        <Item label="Post content" name="text">
+        <Item label="Post content" name="text" rules={[{ required: true }]}>
           <FroalaEdit s3Hash={s3Hash} />
         </Item>
         <Item label="Image" name="imageData">
@@ -70,14 +64,7 @@ const PostForm = ({ allCategories, s3Hash, addPost, postData, onUpdate, buttonTe
         <Item label="Category tags" name="topics">
           <Select allowClear mode="multiple">
             {allCategories.map((item) => (
-              <Option
-                key={`option-${item.value}`}
-                value={item.value}
-                disabled={
-                  checkGroupDisabled &&
-                  selectedTopics.indexOf(item.value) === -1
-                }
-              >
+              <Option key={`option-${item.value}`} value={item.value}>
                 {item.title}
               </Option>
             ))}
@@ -97,7 +84,7 @@ PostForm.propTypes = {
 
 PostForm.defaultProps = {
   allCategories: [],
-  buttonText: "POST"
+  buttonText: "POST",
 };
 
 const mapStateToProps = (state) => ({

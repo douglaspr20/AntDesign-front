@@ -8,6 +8,7 @@ import HomeRecommendationsColumn from "./Column";
 import { PostsFilterPanel, CustomButton } from "components";
 
 import Posts from "containers/Posts";
+import FilterDrawer from "../Home/FilterDrawer";
 
 import { getUser } from "redux/actions/home-actions";
 import { getAllPost } from "redux/actions/post-actions";
@@ -68,7 +69,6 @@ const HomePage = ({
   };
 
   const onShowMore = () => {
-    console.log("Entro more");
     getAllPost({
       ...filters,
       text,
@@ -79,6 +79,7 @@ const HomePage = ({
   return (
     <div className="home-page">
       <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+      <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
       {userProfile && userProfile.percentOfCompletion !== 100 && (
         <div className="home-page-profile">
           <Row gutter={16}>
@@ -119,6 +120,14 @@ const HomePage = ({
           />
         </div>
 
+        <div className="podcast-series-page__filters--button">
+          <CustomButton
+            text="Filters"
+            onClick={() => {
+              showFilterPanel();
+            }}
+          />
+        </div>
         <Posts onShowMore={onShowMore} history={history} />
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
@@ -153,7 +162,7 @@ const HomePage = ({
   );
 };
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   recommendations: librarySelector(state).recommendations,
   currentPage: postSelector(state).currentPage,

@@ -49,9 +49,17 @@ const PostCommentForm = ({
   );
 };
 
-PostCommentForm.propTypes = {};
+PostCommentForm.propTypes = {
+  postId: PropTypes.number,
+  postCommentId: PropTypes.number,
+  afterSave: PropTypes.func,
+};
 
-PostCommentForm.defaultProps = {};
+PostCommentForm.defaultProps = {
+  postId: 0,
+  postCommentId: 0,
+  afterSave: () => {},
+};
 
 const mapStateToProps = () => ({});
 

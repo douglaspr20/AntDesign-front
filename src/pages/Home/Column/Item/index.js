@@ -150,13 +150,11 @@ const HomeRecommendationsItem = ({
             .map((item, index) => {
               const category = allCategories.find((cat) => cat.value === item);
               return (
-                <React.Fragment>
-                  <SpecialtyItem
-                    key={index}
-                    title={category ? category.title : item}
-                    active={false}
-                  />
-                </React.Fragment>
+                <SpecialtyItem
+                  key={`topic-item-recomendation-${index}`}
+                  title={category ? category.title : item}
+                  active={false}
+                />
               );
             })}
           {numberOfCategories > 2 && (

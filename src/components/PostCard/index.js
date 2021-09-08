@@ -31,6 +31,21 @@ const PostCard = ({
 }) => {
   const [like, setLike] = useState();
 
+  useEffect(() => {
+    setLike(data.like);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const markAsLiked = () => {
+    setPostLike({ PostId: data.id });
+    setLike(!like);
+  };
+
+  const removeLike = () => {
+    deletePostLike({ id: data.id });
+    setLike(!like);
+  };
+
   const generalFooterActions = [
     like ? (
       <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
@@ -49,28 +64,15 @@ const PostCard = ({
     ) : (
       <LikeOutlined key={`like-outlined-${data.id}`} onClick={markAsLiked} />
     ),
-    showEdit && data.UserId == userId && (
+    showEdit && data.UserId === userId && (
       <EditOutlined onClick={onEditClick} key={`edit-action-${data.id}`} />
     ),
   ];
 
-  useEffect(() => {
-    setLike(data.like);
-  }, []);
-
-  const markAsLiked = () => {
-    setPostLike({ PostId: data.id });
-    setLike(!like);
-  };
-
-  const removeLike = () => {
-    deletePostLike({ id: data.id });
-    setLike(!like);
-  };
-
   return (
     <div className="post-card-container">
       <Card
+        key={`post-card-${data.id}`}
         title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
         actions={
           generalFooter === true ? generalFooterActions : detailsFooterActions
@@ -93,13 +95,11 @@ const PostCard = ({
               (cat) => cat.value === dataTopic
             );
             return (
-              <>
-                <SpecialtyItem
-                  key={index}
-                  title={category ? category.title : dataTopic}
-                  active={false}
-                />
-              </>
+              <SpecialtyItem
+                key={index}
+                title={category ? category.title : dataTopic}
+                active={false}
+              />
             );
           })}
         </div>
