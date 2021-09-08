@@ -6,21 +6,27 @@ import { Card, Form, Input } from "antd";
 import { CustomButton } from "components";
 
 import { addComment as addPostComment } from "redux/actions/post-comment-actions";
+import "./style.scss";
 
-const PostCommentForm = ({ postId, addPostComment, afterSave }) => {
+const PostCommentForm = ({
+  postId,
+  postCommentId,
+  addPostComment,
+  afterSave,
+}) => {
   const [form] = Form.useForm();
-  const addComment = (data, postCommentId = null) => {
+  const addComment = (data) => {
     if (postCommentId) {
-      addPostComment({ ...data, PostId: postId });
+      addPostComment({ ...data, PostCommentId: postCommentId, PostId: postId });
     } else {
-      addPostComment(data);
+      addPostComment({ ...data, PostId: postId });
     }
     afterSave();
     form.resetFields();
   };
 
   return (
-    <Card>
+    <Card className="form-comment-container">
       <Form
         form={form}
         layout="vertical"
@@ -47,7 +53,7 @@ PostCommentForm.propTypes = {};
 
 PostCommentForm.defaultProps = {};
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
   addPostComment,

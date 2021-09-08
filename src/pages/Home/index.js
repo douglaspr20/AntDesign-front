@@ -119,7 +119,7 @@ const HomePage = ({
           />
         </div>
 
-        <Posts onShowMore={onShowMore} />
+        <Posts onShowMore={onShowMore} history={history} />
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
             <Col lg={{ span: 16, offset: 4 }}>

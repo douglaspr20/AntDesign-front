@@ -9,7 +9,7 @@ import { categorySelector } from "redux/selectors/categorySelector";
 import { postSelector } from "redux/selectors/postSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
-import { SETTINGS } from "enum";
+import { INTERNAL_LINKS, SETTINGS } from "enum";
 
 import {
   getAllPost,
@@ -22,13 +22,12 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 import "./style.scss";
 
 const Posts = ({
+  history,
   loading,
   getAllPost,
   allPosts,
-  setPostLike,
   currentPage,
   countOfResults,
-  deletePostLike,
   onShowMore,
 }) => {
   useEffect(() => {
@@ -40,7 +39,12 @@ const Posts = ({
       {allPosts.map((item) => {
         return (
           <>
-            <PostCard data={item} />
+            <PostCard
+              data={item}
+              onCommentClick={() => {
+                history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+              }}
+            />
           </>
         );
       })}

@@ -18,7 +18,7 @@
       padding: 28px 1rem;
     }
   }
-  &-container-recommendations{
+  &-container-recommendations {
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -106,5 +106,11 @@
 
   .event-card-item:not(:first-child) {
     margin-top: 2.25rem;
+  }
+
+  @media (max-width: 1023.98px) {
+    .posts-filter-panel {
+      display: none;
+    }
   }
 }

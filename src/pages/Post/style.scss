@@ -7,9 +7,37 @@
   overflow: auto;
   position: relative;
 
+  @media (max-width: 575.98px) {
+    padding: 2rem;
+  }
+
   &-container {
     max-width: 1024px;
     margin: 0 auto;
-    background: $color-background;
+
+    &--header-button-section{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      svg {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+      }
+    }
+
+    &--comments-container{
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: $color-white;
+      
+      &--empty-message{
+        text-align: center;
+        color: $color-text-secondary;
+        font-weight: 700;
+      }
+    }
   }
 }

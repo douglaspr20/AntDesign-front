@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { Card } from "antd";
 import {
   LikeOutlined,
@@ -16,10 +16,44 @@ import { setPostLike, deletePostLike } from "redux/actions/post-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
 
-import { INTERNAL_LINKS } from "enum";
+import "./style.scss";
 
-const PostCard = ({ allCategories, userId, data, setPostLike, deletePostLike }) => {
+const PostCard = ({
+  allCategories,
+  userId,
+  data,
+  setPostLike,
+  deletePostLike,
+  showEdit,
+  generalFooter,
+  onCommentClick,
+  onEditClick,
+}) => {
   const [like, setLike] = useState();
+
+  const generalFooterActions = [
+    like ? (
+      <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
+    ) : (
+      <LikeOutlined key={`like-outlined-${data.id}`} onClick={markAsLiked} />
+    ),
+    <CommentOutlined
+      onClick={onCommentClick}
+      key={`comment-action-${data.id}`}
+    />,
+  ];
+
+  const detailsFooterActions = [
+    like ? (
+      <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
+    ) : (
+      <LikeOutlined key={`like-outlined-${data.id}`} onClick={markAsLiked} />
+    ),
+    showEdit && data.UserId == userId && (
+      <EditOutlined onClick={onEditClick} key={`edit-action-${data.id}`} />
+    ),
+  ];
+
   useEffect(() => {
     setLike(data.like);
   }, []);
@@ -35,52 +69,55 @@ const PostCard = ({ allCategories, userId, data, setPostLike, deletePostLike }) 
   };
 
   return (
-    <Card
-      title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
-      actions={[
-        like ? (
-          <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
-        ) : (
-          <LikeOutlined
-            key={`like-outlined-${data.id}`}
-            onClick={markAsLiked}
-          />
-        ),
-        <CommentOutlined key="Comment" />,
-        data.UserId == userId && (
-          <Link to={`${INTERNAL_LINKS.POST}/${data.id}`}>
-            <EditOutlined key="Edit" />
-          </Link>
-        ),
-      ]}
-    >
-      <div dangerouslySetInnerHTML={{ __html: data.text }} />
+    <div className="post-card-container">
+      <Card
+        title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
+        actions={
+          generalFooter === true ? generalFooterActions : detailsFooterActions
+        }
+      >
+        <div dangerouslySetInnerHTML={{ __html: data.text }} />
 
-      {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
+        {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
 
-      {data.videoUrl && (
-        <div
-          className="video-container"
-          dangerouslySetInnerHTML={{ __html: data.videoUrl }}
-        ></div>
-      )}
+        {data.videoUrl && (
+          <div
+            className="video-container"
+            dangerouslySetInnerHTML={{ __html: data.videoUrl }}
+          ></div>
+        )}
 
-      <div className="post-topics">
-        {(data.topics || []).map((dataTopic, index) => {
-          const category = allCategories.find((cat) => cat.value === dataTopic);
-          return (
-            <>
-              <SpecialtyItem
-                key={index}
-                title={category ? category.title : dataTopic}
-                active={false}
-              />
-            </>
-          );
-        })}
-      </div>
-    </Card>
+        <div className="post-topics">
+          {(data.topics || []).map((dataTopic, index) => {
+            const category = allCategories.find(
+              (cat) => cat.value === dataTopic
+            );
+            return (
+              <>
+                <SpecialtyItem
+                  key={index}
+                  title={category ? category.title : dataTopic}
+                  active={false}
+                />
+              </>
+            );
+          })}
+        </div>
+      </Card>
+    </div>
   );
+};
+
+PostCard.propTypes = {
+  showEdit: PropTypes.bool,
+  generalFooter: PropTypes.bool,
+  onCommentClick: PropTypes.func,
+};
+
+PostCard.defaultProps = {
+  showEdit: false,
+  generalFooter: true,
+  onCommentClick: () => {},
 };
 
 const mapStateToProps = (state) => ({

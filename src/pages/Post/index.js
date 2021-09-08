@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
+import { Card } from "antd";
 
-import { Card, Comment, Tooltip, Avatar } from "antd";
 import { getPost, updatePost } from "redux/actions/post-actions";
 import { getAllComments } from "redux/actions/post-comment-actions";
 import { postSelector } from "redux/selectors/postSelector";
 import { postCommentSelector } from "redux/selectors/postCommentSelector";
 
-import { CustomButton } from "components";
 import PostCard from "components/PostCard";
 
 import PostCommentForm from "containers/PostCommentForm";
 import PostForm from "containers/PostForm";
 
+import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
+
+import { INTERNAL_LINKS } from "enum";
+
 import "./style.scss";
+import PostComment from "components/PostComment";
 
 const PostPage = ({
   getPost,
@@ -45,12 +48,18 @@ const PostPage = ({
   return (
     <div className="post-page">
       <div className="post-page-container">
-        <CustomButton
-          onClick={() => {
-            setIsUpdate(true);
-          }}
-          text="Edit"
-        />
+        <div className="post-page-container--header-button-section">
+          <IconArrowBackCircleOutline
+            title="Back to home"
+            onClick={() => {
+              if (isUpdate === true) {
+                setIsUpdate(false);
+              } else {
+                history.push(INTERNAL_LINKS.HOME);
+              }
+            }}
+          />
+        </div>
         {post != null && isUpdate && (
           <>
             {isUpdate && (
@@ -66,26 +75,31 @@ const PostPage = ({
         )}
         {post != null && !isUpdate && (
           <>
-            <PostCard data={post} />
+            <PostCard
+              data={post}
+              showEdit={true}
+              generalFooter={false}
+              onEditClick={() => {
+                setIsUpdate(true);
+              }}
+            />
             <PostCommentForm postId={post.id} afterSave={afterSaveComment} />
-            <div className="post-page-comments-container">
-              {allComments.map((item) => (
-                <Comment
-                  author={`${item.User.firstName} ${item.User.lastName}`}
-                  avatar={
-                    <Avatar
-                      src={item.User.img}
-                      alt={`${item.User.firstName} ${item.User.lastName}`}
+            <div className="post-page-container--comments-container">
+              {allComments.length > 0 ? (
+                <>
+                  {allComments.map((item) => (
+                    <PostComment
+                      data={item}
+                      postId={post.id}
+                      afterSave={afterSaveComment}
                     />
-                  }
-                  datetime={
-                    <span>
-                      {moment(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}
-                    </span>
-                  }
-                  content={item.comment}
-                />
-              ))}
+                  ))}
+                </>
+              ) : (
+                <div class="post-page-container--comments-container--empty-message">
+                  Comments not found.
+                </div>
+              )}
             </div>
           </>
         )}
