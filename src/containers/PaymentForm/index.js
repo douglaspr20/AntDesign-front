@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Alert, Button, Card, } from "antd";
+import { Alert, Button, Table } from "antd";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getCheckoutSession } from "api/module/stripe";
 
-import { CustomSelect } from 'components';
-import { STRIPE_PRICES } from 'enum';
+import { STRIPE_PRICES } from "enum";
 
 import IconLogo from "images/logo-sidebar.svg";
+import { ReactComponent as IconDoubleCheckmark } from "images/icon-double-checkmark.svg";
+import { ReactComponent as IconCloseOutline } from "images/icon-close-outline.svg";
 
 import "./style.scss";
 
@@ -20,16 +21,158 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
 const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
   const [stripe, setStripe] = useState(null);
-  const [price, setPrice] = useState(0);
-  const [prices] = useState(STRIPE_PRICES.STRIPE_PRICES);
-  const [channelsPrices] = useState(STRIPE_PRICES.CHANNELS_STRIPE_PRICES);
-  const [options, setOptions] = useState([]);
   const [checkoutSessionError, setCheckoutSessionError] = useState(false);
   const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const paymentColumns = [
+    {
+      title: "",
+      key: "text",
+      fixed: "left",
+      width: 120,
+      dataIndex: "text",
+      className: "payment-table-column-text",
+      render: (value, record) => (
+        <span className="antd-table-payment-text">{record.text}</span>
+      ),
+    },
+    {
+      title: "Free",
+      key: "free",
+      dataIndex: "free",
+      align: "center",
+      width: 150,
+      className: "payment-table-column",
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            return "Free";
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+    {
+      title: "Premium",
+      key: "premium",
+      dataIndex: "premium",
+      align: "center",
+      className: "payment-table-column",
+      width: 150,
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            if (userProfile.memberShip === "premium") {
+              return "Premium";
+            } else {
+              return (
+                <Button
+                  loading={loading}
+                  onClick={() => {
+                    requestCheckoutSessionTable(true, false);
+                  }}
+                  className="pay-buttton"
+                >
+                  Pay ${STRIPE_PRICES.STRIPE_PRICES[0].price}
+                </Button>
+              );
+            }
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+    {
+      title: "Creator",
+      key: "creator",
+      dataIndex: "creator",
+      align: "center",
+      width: 150,
+      className: "payment-table-column",
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            if (userProfile.memberShip === "channel_admin") {
+              return "Creator";
+            } else {
+              if (userProfile.memberShip === "free") {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable(true, true);
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay $
+                    {parseFloat(STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price) +
+                      parseFloat(STRIPE_PRICES.STRIPE_PRICES[0].price)}
+                  </Button>
+                );
+              } else {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable(false, true);
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
+                  </Button>
+                );
+              }
+            }
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+  ];
+
+  const paymentsDatasource = [
+    {
+      text: "Participation in all Hacking HR online events",
+      free: true,
+      premium: true,
+      creator: true,
+    },
+    {
+      text: "Access to: learning library, mentoring, conference library, classes, podcast and podcast series",
+      free: true,
+      premium: true,
+      creator: true,
+    },
+    {
+      text: "Access to learning journeys",
+      free: false,
+      premium: true,
+      creator: true,
+    },
+    {
+      text: "HR certification credits (for applicable learning items in the learning library, conference library, podcast series or classes)",
+      free: false,
+      premium: true,
+      creator: true,
+    },
+    {
+      text: "Content sharing with the community: events, podcasts, videos, classes and other resources",
+      free: false,
+      premium: false,
+      creator: true,
+    },
+    {
+      text: "",
+      buttonSection: true,
+    },
+  ];
 
   useEffect(() => {
     instanceStripe();
-    generateCountryOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -37,133 +180,81 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSession = async (premium = false, creator = false) => {
+  const requestCheckoutSessionTable = async (
+    premium = false,
+    creator = false
+  ) => {
+    setLoading(true);
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
     if (premium === true) {
-      checkoutSessionPrices.push(prices[price].priceId);
+      checkoutSessionPrices.push(STRIPE_PRICES.STRIPE_PRICES[0].priceId);
     }
     if (creator === true) {
-      checkoutSessionPrices.push(channelsPrices[price].priceId);
+      checkoutSessionPrices.push(
+        STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].priceId
+      );
     }
     try {
-      let sessionData = await getCheckoutSession({ prices: checkoutSessionPrices });
+      let sessionData = await getCheckoutSession({
+        prices: checkoutSessionPrices,
+      });
       return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
     } catch (err) {
+      setLoading(false);
       setCheckoutSessionError(true);
       setCheckoutSessionErrorMsg(err.response.data.msg);
     }
   };
 
-  const generateCountryOptions = () => {
-    let options = [];
-    for (let item in prices) {
-      options.push({ text: prices[item].country, value: parseInt(item) });
+  const getIcon = (value) => {
+    if (value === true) {
+      return <IconDoubleCheckmark className="green-icon" />;
+    } else {
+      return <IconCloseOutline className="red-icon" />;
     }
-    setOptions(options);
   };
 
   return (
-    <>
-      <form
-        className={clsx("plan-ugrade-form", { mobile: isMobile })}
-        onSubmit={handleSubmit}
-      >
-        {isMobile && (
-          <>
-            <div className="plan-ugrade-form-header">
-              <div className="plan-ugrade-form-header-logo">
-                <img src={IconLogo} alt="payment-logo" />
-              </div>
-              <h3>Plan update</h3>
-              <h5>Access to all content</h5>
+    <div
+      className={`payment-form-table-container ${clsx("plan-ugrade-form", {
+        mobile: isMobile,
+      })}`}
+    >
+      {isMobile && (
+        <>
+          <div className="plan-ugrade-form-header">
+            <div className="plan-ugrade-form-header-logo">
+              <img src={IconLogo} alt="payment-logo" />
             </div>
-            <div className="plan-ugrade-form-close" onClick={hidePanel}>
-              <i className="fas fa-times" />
-            </div>
-          </>
-        )}
-
-        <div className="plan-ugrade-form-content">
-          <h4>Select:</h4>
-          {
-            options.length > 0 &&
-            <CustomSelect
-              options={options}
-              defaultValue={price}
-              onChange={(value) => { setPrice(value) }}
-              className="pay-select"
-            />
-          }
-        </div>
-
-        <div className="plan-upgrade-cards">
-          {
-            userProfile.memberShip === 'free' &&
-            <Card title="PREMIUM">
-              <h3>
-                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {prices[price].price} per year
-                </h3>
-              <br></br>
-              <Button
-                onClick={() => {
-                  requestCheckoutSession(true);
-                }}
-                className="pay-buttton"
-              >
-                Subscribe
-                </Button>
-            </Card>
-          }
-          {
-            userProfile.memberShip === 'free' && userProfile.channelsSubscription === false &&
-
-            <Card title="PREMIUM + CREATOR">
-              <h3>
-                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span>
-                {(parseFloat(prices[price].price.replace(",", "")) + parseFloat(channelsPrices[price].price.replace(",", ""))).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} per year
-              </h3>
-              <br></br>
-              <Button
-                onClick={() => {
-                  requestCheckoutSession(true, true);
-                }}
-                className="pay-buttton"
-              >
-                Subscribe
-              </Button>
-            </Card>
-          }
-          {
-            userProfile.memberShip === 'premium' && userProfile.channelsSubscription === false &&
-
-            <Card title="CREATOR">
-              <h3>
-                <span className="character-price" dangerouslySetInnerHTML={{ __html: prices[price].character }}></span> {channelsPrices[price].price} per year
-              </h3>
-              <br></br>
-              <Button
-                onClick={() => {
-                  requestCheckoutSession(false, true);
-                }}
-                className="pay-buttton"
-              >
-                Subscribe
-              </Button>
-            </Card>
-          }
-        </div>
-        { checkoutSessionError &&
-          <Alert
-            message="Error"
-            description={ checkoutSessionErrorMsg }
-            type="error"
-            showIcon
-          />
-        }
-      </form>
-    </>
+            <h3>Plan update</h3>
+            <h5>Access to all content</h5>
+          </div>
+          <div className="plan-ugrade-form-close" onClick={hidePanel}>
+            <i className="fas fa-times" />
+          </div>
+        </>
+      )}
+      <Table
+        className="antd-table-payment"
+        rowClassName="payment-table-row"
+        bordered={false}
+        columns={paymentColumns}
+        dataSource={paymentsDatasource}
+        pagination={false}
+        scroll={isMobile && { x: "100vw" }}
+      ></Table>
+      <br></br>
+      {checkoutSessionError && (
+        <Alert
+          message="Error"
+          description={checkoutSessionErrorMsg}
+          type="error"
+          showIcon
+        />
+      )}
+    </div>
   );
 };
 
@@ -173,8 +264,8 @@ PaymentForm.propTypes = {
 };
 
 PaymentForm.defaultProps = {
-  handleSubmit: () => { },
-  hidePanel: () => { },
+  handleSubmit: () => {},
+  hidePanel: () => {},
 };
 
 const mapStateToProps = (state) => ({

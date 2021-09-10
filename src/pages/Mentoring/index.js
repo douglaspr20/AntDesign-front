@@ -68,6 +68,7 @@ const Mentoring = ({
           title: data.title,
           about: data.reason,
           areas: data.specialties,
+          blockMatchAsMentor: data.blockMatchAsMentor,
           isMentor: 1,
         },
         () => {
@@ -98,6 +99,7 @@ const Mentoring = ({
           title: data.title,
           about: data.reason,
           areas: data.specialties,
+          blockMatchAsMentee: data.blockMatchAsMentee,
           isMentor: 0,
         },
         () => {
@@ -170,7 +172,7 @@ const Mentoring = ({
     setDrawerState((prev) => ({
       visible: true,
       member,
-      match: member.ismentor ? menteeInfo.areas || [] : mentorInfo.areas || [],
+      match: member.isMentor ? menteeInfo.areas || [] : mentorInfo.areas || [],
     }));
   };
 
@@ -179,7 +181,7 @@ const Mentoring = ({
   };
 
   const onMatchFromDrawer = () => {
-    if (drawerState.member.ismentor) {
+    if (drawerState.member.isMentor) {
       setMatch(menteeInfo.id, true, drawerState.member.mid);
     } else {
       setMatch(mentorInfo.id, true, drawerState.member.mid);

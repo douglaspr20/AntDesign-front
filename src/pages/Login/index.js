@@ -60,9 +60,9 @@ const Login = ({
   useEffect(() => {
     if (isAuthenticated) {
       if (history != null) {
-        if(live && live.live === true){
+        if (live && live.live === true) {
           history.push(INTERNAL_LINKS.LIVE);
-        }else{
+        } else {
           history.push(INTERNAL_LINKS.HOME);
         }
       } else {
@@ -107,7 +107,11 @@ const Login = ({
           onValuesChange={onValuesChange}
         >
           <div className="login-dialog-content">
-            {isLogin ? <LoginForm /> : <SignupForm />}
+            {isLogin ? (
+              <LoginForm />
+            ) : (
+              <SignupForm />
+            )}
           </div>
           <div className="login-dialog-footer">
             <span className="login-dialog-footer-error">{error}</span>
