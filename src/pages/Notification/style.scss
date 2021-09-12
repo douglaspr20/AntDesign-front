@@ -23,6 +23,19 @@
     margin-top: 3rem;
   }
 
+  .notification-table {
+    .ant-table-cell {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    &-checkbox {
+      .ant-checkbox-inner {
+        border: 2px solid $color-border !important;
+      }
+    }
+  }
+
   .notification-list-item {
     padding: 1rem;
     display: flex;
