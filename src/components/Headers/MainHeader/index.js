@@ -130,21 +130,18 @@ class MainHeader extends React.Component {
         </div>
         <div className="main-header-right">
           {this.props.live.live === true && (
-            <CustomButton
-              text={
-                <div className="live-container">
-                  <div className="live-circle"></div>
-                  <div>LIVE</div>
-                  <p>: {this.props.live.title}</p>
-                </div>
-              }
-              type="primary"
-              size="lg"
-              className="outlined btn-live"
+            <div
+              className="live-button"
               onClick={() => {
                 this.props.history.push(INTERNAL_LINKS.LIVE);
               }}
-            />
+            >
+              <div className="live-container">
+                <div className="live-circle"></div>
+                <div>LIVE</div>
+                <p>: {this.props.live.title}</p>
+              </div>
+            </div>
           )}
           <CustomButton
             text="Invite friend"
