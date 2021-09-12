@@ -163,7 +163,7 @@ class App extends Component {
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
-        <Layout style={{ height: "100vh" }}>
+        <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
             <TopHeader />

@@ -80,19 +80,18 @@ const HomePage = ({
     <div className="home-page">
       <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
       <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-      {userProfile && userProfile.percentOfCompletion !== 100 && (
-        <div className="home-page-profile">
-          <Row gutter={16}>
-            <Col span={24} lg={{ span: 16, offset: 4 }}>
-              <ProfileStatusBar
-                percent={userProfile ? userProfile.percentOfCompletion : 0}
-              />
-            </Col>
-          </Row>
-        </div>
-      )}
-
       <div className="home-page-container">
+        {userProfile && userProfile.percentOfCompletion !== 100 && (
+          <div className="home-page-profile">
+            <Row gutter={16}>
+              <Col span={24} lg={{ span: 20, offset: 2 }}>
+                <ProfileStatusBar
+                  percent={userProfile ? userProfile.percentOfCompletion : 0}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
         <div className="home-page-container-recommendations">
           <HomeRecommendationsColumn
             history={history}
@@ -131,13 +130,13 @@ const HomePage = ({
         <Posts onShowMore={onShowMore} history={history} />
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
+            <Col lg={{ span: 20, offset: 2 }}>
               <div className="recommend-card">
                 <Row gutter={16}>
                   <Col
                     span={24}
                     offset={0}
-                    md={{ span: 14, offset: 5 }}
+                    md={{ span: 18, offset: 3 }}
                     className="d-flex flex-column items-center"
                   >
                     <h2 className="recommend-card-label">
