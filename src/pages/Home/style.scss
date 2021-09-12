@@ -11,11 +11,13 @@
     background: $color-white;
     padding: 28px 2rem;
     border-bottom: 1px solid $color-border;
+    margin: 0 -2rem;
 
     @media (max-width: 575.98px) {
       border-bottom: none;
       background: $color-background;
       padding: 28px 1rem;
+      margin: 0 -1rem;
     }
   }
   &-container-recommendations {
