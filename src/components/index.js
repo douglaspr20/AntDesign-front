@@ -46,3 +46,4 @@ export { default as SearchInput } from "./SearchInput";
 export { default as AnnualConferenceCard } from "./AnnualConferenceCard";
 export { default as PodcastSeriesCard } from "./PodcastSeriesCard";
 export { default as FroalaEdit } from "./FroalaEdit";
+export { default as PostsFilterPanel } from "./PostsFilterPanel";

@@ -20,6 +20,8 @@ import courseClassUser from "./courseClassUserReducer";
 import notificationReducer from "./notificationReducer";
 import sessionReducer from "./sessionReducer";
 import liveReducer from "./liveReducer";
+import postReducer from "./postReducer";
+import postCommentReducer from "./postCommentReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -42,4 +44,6 @@ export default combineReducers({
   notification: notificationReducer,
   session: sessionReducer,
   live: liveReducer,
+  post: postReducer,
+  postComment: postCommentReducer,
 });
