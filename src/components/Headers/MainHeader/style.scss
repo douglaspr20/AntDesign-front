@@ -78,6 +78,7 @@
 
     .live-button {
       max-width: 100%;
+      width: 500px;
       margin-right: 2rem;
       margin-left: 2rem;
       display: flex;
@@ -97,13 +98,13 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
+        overflow: hidden;
 
         div:first-child {
           margin-right: 5px;
         }
 
         p {
-          max-width: 80%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -132,6 +133,8 @@
 
         .live-circle {
           width: 15px;
+          min-width: 15px;
+          max-width: 15px;
           height: 15px;
           border-radius: 100%;
           overflow: hidden;
@@ -207,6 +210,7 @@
       @include app-font(14px, 19px, 600);
       color: $color-text-primary;
       margin-right: 0.75rem;
+      white-space: nowrap;
     }
 
     .profile-menu-chevron {
