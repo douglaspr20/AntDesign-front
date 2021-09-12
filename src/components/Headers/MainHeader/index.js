@@ -100,6 +100,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.POST}/`)) {
+      pathInfo = {
+        icon: IconMedal,
+        label: `Post Details`,
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">

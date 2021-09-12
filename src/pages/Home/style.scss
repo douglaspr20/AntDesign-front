@@ -1,8 +1,9 @@
 @import "styles/main.scss";
 
 .home-page {
-  background: $color-background;
-  min-height: calc(100vh - 72px);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
 
@@ -17,7 +18,7 @@
       padding: 28px 1rem;
     }
   }
-  &-container-recommendations{
+  &-container-recommendations {
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -29,6 +30,8 @@
   &-container {
     padding: 0 2rem 150px;
     background: $color-background;
+    height: calc(100vh - 72px);
+    overflow: auto;
 
     .ant-col {
       width: 100%;
@@ -103,5 +106,11 @@
 
   .event-card-item:not(:first-child) {
     margin-top: 2.25rem;
+  }
+
+  @media (max-width: 1023.98px) {
+    .posts-filter-panel {
+      display: none;
+    }
   }
 }

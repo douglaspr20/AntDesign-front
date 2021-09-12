@@ -31,6 +31,7 @@ import GlobalConferencePage from "pages/GlobalConference";
 import LivePage from "pages/Live";
 import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
+import PostPage from "pages/Post";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -168,6 +169,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.LIVE}
             render={(props) => <LivePage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.POST}/:id`}
+            render={(props) => <PostPage {...props} />}
           />
           <Route
             exact

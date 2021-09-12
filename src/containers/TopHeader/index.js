@@ -127,6 +127,10 @@ class TopHeader extends Component {
           path={INTERNAL_LINKS.PODCAST_SERIES}
           render={(props) => <MainHeader {...props} />}
         />
+        <PrivateRoute
+          path={INTERNAL_LINKS.POST}
+          render={(props) => <MainHeader {...props} />}
+        />
         <Route
           exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}

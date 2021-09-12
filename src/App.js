@@ -15,6 +15,8 @@ import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
 import InviteFriendModal from "./containers/InviteFriendModal";
 import InviteFriendForm from "./containers/InviteFriendForm";
+import PostFormModal from "./containers/PostFormModal";
+import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
@@ -48,6 +50,8 @@ class App extends Component {
       openPaymentPanel: false,
       openInviteFriendModal: false,
       openInviteFriendPanel: false,
+      openPostFormModal: false,
+      openPostFormPanel: false,
     };
   }
 
@@ -63,11 +67,26 @@ class App extends Component {
     });
 
     Emitter.on(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL, () => {
-      console.log(this.props.isMobile);
       if (this.props.isMobile) {
         this.setState({ openInviteFriendPanel: true });
       } else {
         this.setState({ openInviteFriendModal: true });
+      }
+    });
+
+    Emitter.on(EVENT_TYPES.OPEN_POST_MODAL, () => {
+      if (this.props.isMobile) {
+        this.setState({ openPostFormPanel: true });
+      } else {
+        this.setState({ openPostFormModal: true });
+      }
+    });
+
+    Emitter.on(EVENT_TYPES.CLOSE_POST_MODAL, () => {
+      if (this.props.isMobile) {
+        this.setState({ openPostFormPanel: false });
+      } else {
+        this.setState({ openPostFormModal: false });
       }
     });
 
@@ -110,6 +129,14 @@ class App extends Component {
     this.setState({ openInviteFriendPanel: false });
   };
 
+  onHidePostFormModal = () => {
+    this.setState({ openPostFormModal: false });
+  };
+
+  onHidePostFormPanel = () => {
+    this.setState({ openPostFormPanel: false });
+  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
@@ -130,6 +157,8 @@ class App extends Component {
       openPaymentPanel,
       openInviteFriendModal,
       openInviteFriendPanel,
+      openPostFormModal,
+      openPostFormPanel,
     } = this.state;
 
     return (
@@ -170,6 +199,17 @@ class App extends Component {
           <InviteFriendForm
             handleSubmit={this.handleInviteFriend}
             hidePanel={this.onHideInviteFriendPanel}
+          />
+        )}
+        <PostFormModal
+          visible={openPostFormModal}
+          onInvite={this.onHidePostFormModal}
+          onCancel={this.onHidePostFormModal}
+        />
+        {openPostFormPanel && (
+          <PostForm
+            handleSubmit={this.handlePostForm}
+            hidePanel={this.onHidePostFormPanel}
           />
         )}
       </div>
