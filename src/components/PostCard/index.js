@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Card } from "antd";
+import { Card, Popconfirm } from "antd";
 import {
   LikeOutlined,
   LikeFilled,
   CommentOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 import { SpecialtyItem } from "components";
 
-import { setPostLike, deletePostLike } from "redux/actions/post-actions";
+import {
+  setPostLike,
+  deletePostLike,
+  deletePost,
+} from "redux/actions/post-actions";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -25,9 +30,10 @@ const PostCard = ({
   setPostLike,
   deletePostLike,
   showEdit,
-  generalFooter,
   onCommentClick,
   onEditClick,
+  deletePost,
+  afterRemove,
 }) => {
   const [like, setLike] = useState();
 
@@ -46,7 +52,7 @@ const PostCard = ({
     setLike(!like);
   };
 
-  const generalFooterActions = [
+  const footerActions = [
     like ? (
       <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
     ) : (
@@ -56,16 +62,19 @@ const PostCard = ({
       onClick={onCommentClick}
       key={`comment-action-${data.id}`}
     />,
-  ];
-
-  const detailsFooterActions = [
-    like ? (
-      <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
-    ) : (
-      <LikeOutlined key={`like-outlined-${data.id}`} onClick={markAsLiked} />
-    ),
     showEdit && data.UserId === userId && (
       <EditOutlined onClick={onEditClick} key={`edit-action-${data.id}`} />
+    ),
+    data.UserId === userId && (
+      <Popconfirm
+        title="Are you sure you want to permanently remove this item?"
+        onConfirm={() => {
+          deletePost(data);
+          afterRemove();
+        }}
+      >
+        <DeleteOutlined key={`edit-action-${data.id}`} />
+      </Popconfirm>
     ),
   ];
 
@@ -74,9 +83,7 @@ const PostCard = ({
       <Card
         key={`post-card-${data.id}`}
         title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
-        actions={
-          generalFooter === true ? generalFooterActions : detailsFooterActions
-        }
+        actions={footerActions}
       >
         <div dangerouslySetInnerHTML={{ __html: data.text }} />
 
@@ -112,12 +119,14 @@ PostCard.propTypes = {
   showEdit: PropTypes.bool,
   generalFooter: PropTypes.bool,
   onCommentClick: PropTypes.func,
+  afterRemove: PropTypes.func,
 };
 
 PostCard.defaultProps = {
   showEdit: false,
   generalFooter: true,
   onCommentClick: () => {},
+  afterRemove: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -128,6 +137,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setPostLike,
   deletePostLike,
+  deletePost,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCard);

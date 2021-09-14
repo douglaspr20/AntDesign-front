@@ -29,6 +29,7 @@ const Posts = ({
   currentPage,
   countOfResults,
   onShowMore,
+  userId,
 }) => {
   useEffect(() => {
     getAllPost();
@@ -42,8 +43,13 @@ const Posts = ({
           <PostCard
             key={`post-card-${item.id}`}
             data={item}
+            showEdit={true}
+            generalFooter={!(userId === item.UserId)}
             onCommentClick={() => {
               history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+            }}
+            onEditClick={() => {
+              history.push(`${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`);
             }}
           />
         );

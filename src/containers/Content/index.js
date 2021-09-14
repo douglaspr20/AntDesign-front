@@ -171,7 +171,7 @@ class Content extends Component {
             render={(props) => <LivePage {...props} />}
           />
           <PrivateRoute
-            path={`${INTERNAL_LINKS.POST}/:id`}
+            path={`${INTERNAL_LINKS.POST}/:id/:edit?`}
             render={(props) => <PostPage {...props} />}
           />
           <Route

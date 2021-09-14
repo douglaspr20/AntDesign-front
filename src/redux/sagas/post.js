@@ -6,7 +6,13 @@ import {
 } from "../actions/post-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { logout } from "../actions/auth-actions";
-import { get, getAllPosts, post, put as putPost } from "../../api/module/post";
+import {
+  get,
+  getAllPosts,
+  post,
+  put as putPost,
+  remove as removePost,
+} from "../../api/module/post";
 import {
   post as postLike,
   remove as removeLike,
@@ -71,8 +77,27 @@ export function* updatePostSaga({ payload }) {
     const response = yield call(putPost, payload.post);
 
     if (response.status === 200) {
-      console.log(response.data);
       yield put(postActions.setPost(response.data.post));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* deletePostSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removePost, payload.post);
+
+    if (response.status === 200) {
+      yield put(postActions.getAllPost({ page: 1 }));
     }
   } catch (error) {
     console.log(error);
@@ -157,6 +182,7 @@ function* watchLogin() {
   yield takeLatest(postConstants.ADD_POST_COMMENT, addPostCommentSaga);
   yield takeLatest(postConstants.GET_POST, getPostSaga);
   yield takeLatest(postConstants.UPDATE_POST, updatePostSaga);
+  yield takeLatest(postConstants.DELETE_POST, deletePostSaga);
 }
 
 export const postSaga = [fork(watchLogin)];
