@@ -17,7 +17,10 @@ import {
   post as postLike,
   remove as removeLike,
 } from "../../api/module/postLike";
-import { post as postComment } from "../../api/module/postComment";
+import {
+  post as postFollow,
+  remove as removeFollow,
+} from "../../api/module/postFollow";
 
 export function* getAllPostSaga({ payload }) {
   if (payload.page === 1) {
@@ -46,6 +49,26 @@ export function* getAllPostSaga({ payload }) {
     }
   } finally {
     yield put(postActions.setLoading(false));
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getPostSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(get, payload.id);
+
+    if (response.status === 200) {
+      yield put(postActions.setPost(response.data.post));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
@@ -134,55 +157,40 @@ export function* deletePostLikeSaga({ payload }) {
   }
 }
 
-export function* addPostCommentSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-
+export function* setPostFollowSaga({ payload }) {
   try {
-    const response = yield call(postComment, payload.data);
-
-    if (response.status === 200) {
-      yield put(postActions.getAllPost());
-    }
+    yield call(postFollow, payload.data);
   } catch (error) {
     console.log(error);
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
-  } finally {
-    yield put(homeActions.setLoading(false));
   }
 }
 
-export function* getPostSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-
+export function* deletePostFollowSaga({ payload }) {
   try {
-    const response = yield call(get, payload.id);
-
-    if (response.status === 200) {
-      yield put(postActions.setPost(response.data.post));
-    }
+    yield call(removeFollow, payload.id);
   } catch (error) {
     console.log(error);
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
-  } finally {
-    yield put(homeActions.setLoading(false));
   }
 }
 
 function* watchLogin() {
-  yield takeLatest(postConstants.ADD_POST, addPostSaga);
   yield takeLatest(postConstants.GET_ALL_POST, getAllPostSaga);
-  yield takeLatest(postConstants.SET_POST_LIKE, setPostLikeSaga);
-  yield takeLatest(postConstants.DELETE_POST_LIKE, deletePostLikeSaga);
-  yield takeLatest(postConstants.ADD_POST_COMMENT, addPostCommentSaga);
   yield takeLatest(postConstants.GET_POST, getPostSaga);
+  yield takeLatest(postConstants.ADD_POST, addPostSaga);
   yield takeLatest(postConstants.UPDATE_POST, updatePostSaga);
   yield takeLatest(postConstants.DELETE_POST, deletePostSaga);
+  yield takeLatest(postConstants.SET_POST_LIKE, setPostLikeSaga);
+  yield takeLatest(postConstants.DELETE_POST_LIKE, deletePostLikeSaga);
+  yield takeLatest(postConstants.SET_POST_FOLLOW, setPostFollowSaga);
+  yield takeLatest(postConstants.DELETE_POST_FOLLOW, deletePostFollowSaga);
 }
 
 export const postSaga = [fork(watchLogin)];

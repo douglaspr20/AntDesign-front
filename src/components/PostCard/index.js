@@ -10,11 +10,13 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
-import { SpecialtyItem } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 
 import {
   setPostLike,
   deletePostLike,
+  setPostFollow,
+  deletePostFollow,
   deletePost,
 } from "redux/actions/post-actions";
 
@@ -34,11 +36,15 @@ const PostCard = ({
   onEditClick,
   deletePost,
   afterRemove,
+  setPostFollow,
+  deletePostFollow,
 }) => {
   const [like, setLike] = useState();
+  const [follow, setFollow] = useState();
 
   useEffect(() => {
     setLike(data.like);
+    setFollow(data.follow);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,6 +56,16 @@ const PostCard = ({
   const removeLike = () => {
     deletePostLike({ id: data.id });
     setLike(!like);
+  };
+
+  const markAsFollowing = () => {
+    setPostFollow({ PostId: data.id });
+    setFollow(!follow);
+  };
+
+  const removeFollow = () => {
+    deletePostFollow({ id: data.id });
+    setFollow(!follow);
   };
 
   const footerActions = [
@@ -82,7 +98,24 @@ const PostCard = ({
     <div className="post-card-container">
       <Card
         key={`post-card-${data.id}`}
-        title={`Posted by: ${data.User.firstName} ${data.User.lastName}`}
+        title={
+          <div className="post-card-container-title">
+            {`Posted by: ${data.User.firstName} ${data.User.lastName}`}
+            {follow === false ? (
+              <CustomButton
+                text="Follow Conversation"
+                size="sm"
+                onClick={markAsFollowing}
+              />
+            ) : (
+              <CustomButton
+                text="Following Conversation"
+                size="sm"
+                onClick={removeFollow}
+              />
+            )}
+          </div>
+        }
         actions={footerActions}
       >
         <div dangerouslySetInnerHTML={{ __html: data.text }} />
@@ -138,6 +171,8 @@ const mapDispatchToProps = {
   setPostLike,
   deletePostLike,
   deletePost,
+  setPostFollow,
+  deletePostFollow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCard);

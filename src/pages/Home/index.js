@@ -78,21 +78,23 @@ const HomePage = ({
 
   return (
     <div className="home-page">
-      <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
-      <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-      {userProfile && userProfile.percentOfCompletion !== 100 && (
-        <div className="home-page-profile">
-          <Row gutter={16}>
-            <Col span={24} lg={{ span: 16, offset: 4 }}>
-              <ProfileStatusBar
-                percent={userProfile ? userProfile.percentOfCompletion : 0}
-              />
-            </Col>
-          </Row>
-        </div>
-      )}
-
+      <div>
+        <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+      </div>
       <div className="home-page-container">
+        {userProfile && userProfile.percentOfCompletion !== 100 && (
+          <div className="home-page-profile">
+            <Row gutter={16}>
+              <Col span={24} lg={{ span: 16, offset: 4 }}>
+                <ProfileStatusBar
+                  percent={userProfile ? userProfile.percentOfCompletion : 0}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
+
         <div className="home-page-container-recommendations">
           <HomeRecommendationsColumn
             history={history}
@@ -119,7 +121,6 @@ const HomePage = ({
             columnTitle="Upcoming Events"
           />
         </div>
-
         <div className="podcast-series-page__filters--button">
           <CustomButton
             text="Filters"

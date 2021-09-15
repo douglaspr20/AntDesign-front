@@ -11,12 +11,7 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import { INTERNAL_LINKS, SETTINGS } from "enum";
 
-import {
-  getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
-} from "redux/actions/post-actions";
+import { getAllPost } from "redux/actions/post-actions";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
@@ -93,9 +88,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
