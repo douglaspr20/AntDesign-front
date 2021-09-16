@@ -7,18 +7,19 @@ import { getPost, updatePost } from "redux/actions/post-actions";
 import { getAllComments } from "redux/actions/post-comment-actions";
 import { postSelector } from "redux/selectors/postSelector";
 import { postCommentSelector } from "redux/selectors/postCommentSelector";
+import { authSelector } from "redux/selectors/authSelector";
 
 import PostCard from "components/PostCard";
+import PostComment from "components/PostComment";
 
-import PostCommentForm from "containers/PostCommentForm";
 import PostForm from "containers/PostForm";
+import PostCommentForm from "containers/PostCommentForm";
 
 import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
 
 import { INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
-import PostComment from "components/PostComment";
 
 const PostPage = ({
   getPost,
@@ -28,14 +29,28 @@ const PostPage = ({
   getAllComments,
   allComments,
   history,
+  userId,
 }) => {
   const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
-    getPost(match.params.id);
-    getAllComments({ postId: match.params.id });
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (post && match.params.edit) {
+      if (post.UserId === userId && parseInt(match.params.edit) === userId) {
+        setIsUpdate(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post]);
+
+  const load = async () => {
+    getPost(match.params.id);
+    getAllComments({ postId: match.params.id });
+  };
 
   const onUpdate = (data) => {
     updatePost({ ...data, id: post.id });
@@ -79,9 +94,11 @@ const PostPage = ({
             <PostCard
               data={post}
               showEdit={true}
-              generalFooter={false}
               onEditClick={() => {
                 setIsUpdate(true);
+              }}
+              afterRemove={() => {
+                history.push(INTERNAL_LINKS.HOME);
               }}
             />
             <PostCommentForm postId={post.id} afterSave={afterSaveComment} />
@@ -123,6 +140,7 @@ PostPage.defaultProps = {
 const mapStateToProps = (state) => ({
   post: postSelector(state).post,
   allComments: postCommentSelector(state).allComments,
+  userId: authSelector(state).id,
 });
 
 const mapDispatchToProps = {
