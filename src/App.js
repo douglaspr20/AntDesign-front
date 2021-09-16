@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { Spin, Layout } from "antd";
+import isEmpty from "lodash/isEmpty";
 
 import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
@@ -103,6 +104,15 @@ class App extends Component {
     this.props.getEditorSignature();
   }
 
+  componentDidUpdate(prevProps) {
+    const { userProfile: prevUser } = prevProps;
+    const { userProfile: curUser } = this.props;
+
+    if (isEmpty(prevUser) && !isEmpty(curUser)) {
+      this.props.getLive();
+    }
+  }
+
   componentWillUnmount() {
     SocketIO.off();
   }
@@ -163,7 +173,7 @@ class App extends Component {
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
-        <Layout style={{ height: "100vh" }}>
+        <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
             <TopHeader />

@@ -76,22 +76,35 @@
       align-items: center;
     }
 
-    .btn-live {
+    .live-button {
       max-width: 100%;
+      width: 500px;
       margin-right: 2rem;
       margin-left: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px !important;
+      background: $color-white !important;
+      border: 1px solid $color-primary !important;
+      color: $color-primary !important;
+      height: 40px;
+      padding: 0 31px;
+      @include app-font(20px, 26px, 600);
+      cursor: pointer;
+
       .live-container {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
+        overflow: hidden;
 
         div:first-child {
           margin-right: 5px;
         }
 
         p {
-          max-width: 80%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -120,6 +133,8 @@
 
         .live-circle {
           width: 15px;
+          min-width: 15px;
+          max-width: 15px;
           height: 15px;
           border-radius: 100%;
           overflow: hidden;
@@ -195,6 +210,7 @@
       @include app-font(14px, 19px, 600);
       color: $color-text-primary;
       margin-right: 0.75rem;
+      white-space: nowrap;
     }
 
     .profile-menu-chevron {
