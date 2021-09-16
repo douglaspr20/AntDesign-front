@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Form, Select } from "antd";
 import Emitter from "services/emitter";
 
-import { CustomButton, CustomInput, FroalaEdit, ImageUpload } from "components";
+import { CustomButton, FroalaEdit, ImageUpload } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -57,9 +57,6 @@ const PostForm = ({
         </Item>
         <Item label="Image" name="imageData">
           <ImageUpload />
-        </Item>
-        <Item label="Video URL" name="videoUrl">
-          <CustomInput />
         </Item>
         <Item label="Category tags" name="topics">
           <Select allowClear mode="multiple">

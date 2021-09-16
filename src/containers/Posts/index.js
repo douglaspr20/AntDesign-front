@@ -11,12 +11,7 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import { INTERNAL_LINKS, SETTINGS } from "enum";
 
-import {
-  getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
-} from "redux/actions/post-actions";
+import { getAllPost } from "redux/actions/post-actions";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
@@ -29,6 +24,7 @@ const Posts = ({
   currentPage,
   countOfResults,
   onShowMore,
+  userId,
 }) => {
   useEffect(() => {
     getAllPost();
@@ -42,8 +38,13 @@ const Posts = ({
           <PostCard
             key={`post-card-${item.id}`}
             data={item}
+            showEdit={true}
+            generalFooter={!(userId === item.UserId)}
             onCommentClick={() => {
               history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+            }}
+            onEditClick={() => {
+              history.push(`${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`);
             }}
           />
         );
@@ -87,9 +88,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
