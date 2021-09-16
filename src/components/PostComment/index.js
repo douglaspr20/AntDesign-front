@@ -90,7 +90,7 @@ const PostComment = ({
 
 PostComment.propTypes = {
   enableReply: PropTypes.bool,
-  data: PropTypes.number,
+  data: PropTypes.object,
   postId: PropTypes.number,
   afterSave: PropTypes.func,
 };

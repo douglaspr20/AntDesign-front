@@ -78,8 +78,10 @@ const HomePage = ({
 
   return (
     <div className="home-page">
-      <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
-      <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+      <div>
+        <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
+        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+      </div>
       <div className="home-page-container">
         {userProfile && userProfile.percentOfCompletion !== 100 && (
           <div className="home-page-profile">
@@ -118,7 +120,6 @@ const HomePage = ({
             columnTitle="Upcoming Events"
           />
         </div>
-
         <div className="podcast-series-page__filters--button">
           <CustomButton
             text="Filters"

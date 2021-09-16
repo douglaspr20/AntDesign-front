@@ -1,6 +1,12 @@
 @import "styles/main.scss";
 
 .post-card-container {
+  &-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
   margin-bottom: 1rem;
   .ant-card {
     margin-top: 1rem;
