@@ -56,7 +56,7 @@ const PostForm = ({
           <FroalaEdit s3Hash={s3Hash} />
         </Item>
         <Item label="Image" name="imageData">
-          <ImageUpload />
+          <ImageUpload aspect={16 / 9} />
         </Item>
         <Item label="Category tags" name="topics">
           <Select allowClear mode="multiple">
