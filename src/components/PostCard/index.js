@@ -10,7 +10,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton } from "components";
 
 import {
   setPostLike,
@@ -22,6 +22,13 @@ import {
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
+
+import { ReactComponent as IconCreateOutline } from "images/icon-create-outline.svg";
+import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.svg";
+import { ReactComponent as IconWaterOutline } from "images/icon-water-outline.svg";
+import { ReactComponent as IconFlameOutline } from "images/icon-flame-outline.svg";
+import { ReactComponent as IconHeartOutline } from "images/icon-heart-outline.svg";
+import { ReactComponent as IconChatBubblesOutline } from "images/icon-chatbubbles-outline.svg";
 
 import "./style.scss";
 
@@ -95,7 +102,76 @@ const PostCard = ({
   ];
 
   return (
-    <div className="post-card-container">
+    <div key={`custom-post-card-${data.id}`} className="post-card-container">
+      <div className="custom-post-card">
+        <section className="custom-post-card--header">
+          <section className="custom-post-card--header--user">
+            <div className="header--user-image">
+              <img src={data.User.img}></img>
+            </div>
+            <div className="header--user-text">
+              <h4>
+                {data.User.firstName} {data.User.lastName}
+              </h4>
+              <p>{data.User.about}</p>
+              <span>Now</span>
+            </div>
+          </section>
+          {data.UserId === userId ? (
+            <section className="custom-post-card--header--actions">
+              <ul>
+                <li>
+                  <IconCreateOutline /> Edit
+                </li>
+                <li>
+                  <IconTrashOutline /> Delete
+                </li>
+                <li>
+                  <IconWaterOutline /> Watercooler
+                </li>
+                <li>
+                  <IconFlameOutline /> Bonfire
+                </li>
+              </ul>
+            </section>
+          ) : (
+            <section className="custom-post-card--header--follow">
+              + Follow conversation
+            </section>
+          )}
+        </section>
+        <section
+          className="custom-post-card--content"
+          dangerouslySetInnerHTML={{ __html: data.text }}
+        />
+        <section className="custom-post-card--topics">
+          {(data.topics || []).map((dataTopic, index) => {
+            const category = allCategories.find(
+              (cat) => cat.value === dataTopic
+            );
+            return (
+              <div className="custom-post-card--item">
+                #{category ? category.title : dataTopic}
+              </div>
+            );
+          })}
+        </section>
+        <section className="custom-post-card--image">
+          {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
+        </section>
+        <section className="custom-post-card--counters"></section>
+        <section className="custom-post-card--footer-actions">
+          <ul>
+            <li>
+              <IconHeartOutline /> Like
+            </li>
+            <li>
+              <IconChatBubblesOutline /> Comment
+            </li>
+          </ul>
+        </section>
+      </div>
+
       <Card
         key={`post-card-${data.id}`}
         title={
@@ -120,29 +196,7 @@ const PostCard = ({
       >
         <div dangerouslySetInnerHTML={{ __html: data.text }} />
 
-        {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
-
-        {data.videoUrl && (
-          <div
-            className="video-container"
-            dangerouslySetInnerHTML={{ __html: data.videoUrl }}
-          ></div>
-        )}
-
-        <div className="post-topics">
-          {(data.topics || []).map((dataTopic, index) => {
-            const category = allCategories.find(
-              (cat) => cat.value === dataTopic
-            );
-            return (
-              <SpecialtyItem
-                key={index}
-                title={category ? category.title : dataTopic}
-                active={false}
-              />
-            );
-          })}
-        </div>
+        <div className="post-topics"></div>
       </Card>
     </div>
   );

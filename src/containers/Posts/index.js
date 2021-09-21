@@ -32,41 +32,46 @@ const Posts = ({
   }, []);
 
   return (
-    <div id="posts-container">
-      {allPosts.map((item) => {
-        return (
-          <PostCard
-            key={`post-card-${item.id}`}
-            data={item}
-            showEdit={true}
-            generalFooter={!(userId === item.UserId)}
-            onCommentClick={() => {
-              history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
-            }}
-            onEditClick={() => {
-              history.push(`${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`);
-            }}
-          />
-        );
-      })}
-      {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
-        <div className="post-page-footer d-flex justify-center items-center">
-          {loading && (
-            <div className="post-page-loading-more">
-              <img src={IconLoadingMore} alt="loading-more-img" />
-            </div>
-          )}
-          {!loading && (
-            <CustomButton
-              text="Show more"
-              type="primary outlined"
-              size="lg"
-              onClick={onShowMore}
+    <>
+      <h3>Lastes Stories</h3>
+      <div id="posts-container">
+        {allPosts.map((item) => {
+          return (
+            <PostCard
+              key={`post-card-${item.id}`}
+              data={item}
+              showEdit={true}
+              generalFooter={!(userId === item.UserId)}
+              onCommentClick={() => {
+                history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+              }}
+              onEditClick={() => {
+                history.push(
+                  `${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`
+                );
+              }}
             />
-          )}
-        </div>
-      )}
-    </div>
+          );
+        })}
+        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+          <div className="post-page-footer d-flex justify-center items-center">
+            {loading && (
+              <div className="post-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
+            {!loading && (
+              <CustomButton
+                text="Show more"
+                type="primary outlined"
+                size="lg"
+                onClick={onShowMore}
+              />
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
