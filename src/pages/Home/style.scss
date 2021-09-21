@@ -114,3 +114,13 @@
     }
   }
 }
+
+.home-page-container {
+  &--trending{
+    border-bottom: 1px solid $color-border;
+  }
+  &--posts {
+    display: flex;
+    flex-direction: row;
+  }
+}

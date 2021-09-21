@@ -1,20 +1,25 @@
 @import "styles/main.scss";
 
 .posts-filter-panel {
-  width: 266px;
-  height: calc(100vh - 72px);
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  width: 319px;
   background: $color-white;
-  box-shadow: 4px 0px 14px #37215714;
-  padding: 44px 2rem 2rem;
-  z-index: 9;
-  overflow: auto;
+  padding: 1.5rem;
+  margin: 1rem;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  & > button {
-    margin-bottom: 1rem !important;
+  button {
+    width: 100%;
+    height: 36px;
+    background: $color-accent;
+    @include app-font(16px, 16px, bold);
+    color: $color-white;
+    border-radius: 5px;
+    margin-bottom: 2rem !important;
   }
 
   .search-input {

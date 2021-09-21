@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Button, Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput, CustomButton } from "components";
+import { CustomCheckbox } from "components";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -36,16 +36,12 @@ const FilterPanel = ({
   };
   return (
     <div className="posts-filter-panel">
-      <CustomButton
-        type="primary"
-        text="Create Post"
-        onClick={onOpenPostFormModal}
-      />
+      <Button type="primary" onClick={onOpenPostFormModal}>
+        Create post
+      </Button>
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">
-          <h5 className="search-filter-title font-bold">Search</h5>
-          <SearchInput onSearch={onSearch} />
           <h5 className="search-filter-title font-bold">Topics</h5>
           <Checkbox.Group
             value={filters["topics"] ? JSON.parse(filters["topics"]) : []}

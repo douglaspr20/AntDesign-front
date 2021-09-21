@@ -33,8 +33,8 @@ const Posts = ({
 
   return (
     <>
-      <h3>Lastes Stories</h3>
       <div id="posts-container">
+        <h3>Lastes Stories</h3>
         {allPosts.map((item) => {
           return (
             <PostCard

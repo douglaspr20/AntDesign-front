@@ -38,7 +38,6 @@
 
   .custom-post-card {
     width: 100%;
-    max-width: 1021px;
     background-color: $color-white;
     border: 1px solid $color-border;
     border-radius: 8px;
@@ -98,6 +97,12 @@
             color: $color-text-secondary;
             margin-right: 1rem;
             cursor: pointer;
+            span {
+              display: flex;
+              flex-direction: row;
+              justify-items: center;
+              justify-content: center;
+            }
             svg {
               width: 22px;
               height: 22px;
@@ -154,6 +159,54 @@
       margin-top: 10px;
       width: 100%;
       border-bottom: 1px solid $color-border;
+
+      font-size: 10px;
+      color: $color-text-secondary;
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0px;
+        li {
+          list-style-type: none;
+          display: flex;
+          flex-direction: row;
+          justify-items: center;
+          justify-content: center;
+          align-items: center;
+          color: $color-text-secondary;
+          margin-right: 1rem;
+          cursor: pointer;
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            justify-items: center;
+            align-items: center;
+            width: 19px;
+            height: 19px;
+            border-radius: 19px;
+            margin-right: 5px;
+            svg {
+              width: 15px;
+              height: 15px;
+              color: $color-white;
+              path {
+                fill: $color-white;
+              }
+            }
+          }
+
+          .likes {
+            background-color: $color-error;
+          }
+          .comments {
+            background-color: $color-accent;
+          }
+        }
+      }
     }
 
     &--footer-actions {
@@ -176,10 +229,15 @@
             width: 22px;
             height: 22px;
             margin-right: 5px;
-            fill: $color-text-secondary;
             color: $color-text-secondary;
           }
         }
+      }
+    }
+
+    .svg-fill-color {
+      path {
+        fill: $color-text-secondary;
       }
     }
   }

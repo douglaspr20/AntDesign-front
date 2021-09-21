@@ -77,89 +77,104 @@ const HomePage = ({
   };
 
   return (
-    <div className="home-page">
-      <div>
-        <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
-        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-      </div>
+    <>
       <div className="home-page-container">
-        {userProfile && userProfile.percentOfCompletion !== 100 && (
-          <div className="home-page-profile">
+        <div className="home-page-container--trending">
+          <div
+            className="home-page-container-recommendations"
+            style={{ display: "none" }}
+          >
+            <HomeRecommendationsColumn
+              history={history}
+              items={recommendations.podcasts}
+              type="podcast"
+              columnTitle="Podcast"
+            />
+            <HomeRecommendationsColumn
+              history={history}
+              items={recommendations.conferenceLibrary}
+              type="conference"
+              columnTitle="Conference Library"
+            />
+            <HomeRecommendationsColumn
+              history={history}
+              items={recommendations.libraries}
+              type="library"
+              columnTitle="Learning Library"
+            />
+            <HomeRecommendationsColumn
+              history={history}
+              items={recommendations.events}
+              type="event"
+              columnTitle="Upcoming Events"
+            />
+          </div>
+        </div>
+        <div className="home-page-container--posts">
+          <PostsFilterPanel
+            title="Stories filter"
+            onChange={onFilterChange}
+            onSearch={onSearch}
+          />
+          <Posts onShowMore={onShowMore} history={history} />
+        </div>
+      </div>
+      <div className="home-page">
+        <div>
+          <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+        </div>
+        <div className="home-page-container">
+          {userProfile && userProfile.percentOfCompletion !== 100 && (
+            <div className="home-page-profile">
+              <Row gutter={16}>
+                <Col span={24} lg={{ span: 16, offset: 4 }}>
+                  <ProfileStatusBar
+                    percent={userProfile ? userProfile.percentOfCompletion : 0}
+                  />
+                </Col>
+              </Row>
+            </div>
+          )}
+
+          <div className="podcast-series-page__filters--button">
+            <CustomButton
+              text="Filters"
+              onClick={() => {
+                showFilterPanel();
+              }}
+            />
+          </div>
+          {userProfile && userProfile.memberShip === "free" && (
             <Row gutter={16}>
-              <Col span={24} lg={{ span: 16, offset: 4 }}>
-                <ProfileStatusBar
-                  percent={userProfile ? userProfile.percentOfCompletion : 0}
-                />
+              <Col lg={{ span: 16, offset: 4 }}>
+                <div className="recommend-card">
+                  <Row gutter={16}>
+                    <Col
+                      span={24}
+                      offset={0}
+                      md={{ span: 14, offset: 5 }}
+                      className="d-flex flex-column items-center"
+                    >
+                      <h2 className="recommend-card-label">
+                        Upgrade to a PREMIUM Membership and get unlimited access
+                        to the LAB features
+                      </h2>
+                      <CustomButton
+                        text="Upgrade"
+                        type="primary"
+                        size="xl"
+                        className="recommend-card-upgrade"
+                        onClick={onUpgrade}
+                      />
+                    </Col>
+                  </Row>
+                </div>
               </Col>
             </Row>
-          </div>
-        )}
-
-        <div className="home-page-container-recommendations">
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.podcasts}
-            type="podcast"
-            columnTitle="Podcast"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.conferenceLibrary}
-            type="conference"
-            columnTitle="Conference Library"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.libraries}
-            type="library"
-            columnTitle="Learning Library"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.events}
-            type="event"
-            columnTitle="Upcoming Events"
-          />
+          )}
         </div>
-        <div className="podcast-series-page__filters--button">
-          <CustomButton
-            text="Filters"
-            onClick={() => {
-              showFilterPanel();
-            }}
-          />
-        </div>
-        <Posts onShowMore={onShowMore} history={history} />
-        {userProfile && userProfile.memberShip === "free" && (
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
-              <div className="recommend-card">
-                <Row gutter={16}>
-                  <Col
-                    span={24}
-                    offset={0}
-                    md={{ span: 14, offset: 5 }}
-                    className="d-flex flex-column items-center"
-                  >
-                    <h2 className="recommend-card-label">
-                      Upgrade to a PREMIUM Membership and get unlimited access
-                      to the LAB features
-                    </h2>
-                    <CustomButton
-                      text="Upgrade"
-                      type="primary"
-                      size="xl"
-                      className="recommend-card-upgrade"
-                      onClick={onUpgrade}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        )}
       </div>
-    </div>
+    </>
   );
 };
 

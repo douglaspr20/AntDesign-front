@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Card, Popconfirm } from "antd";
-import {
-  LikeOutlined,
-  LikeFilled,
-  CommentOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
-
-import { CustomButton } from "components";
+import { Popconfirm } from "antd";
+import moment from "moment";
 
 import {
   setPostLike,
@@ -38,7 +30,6 @@ const PostCard = ({
   data,
   setPostLike,
   deletePostLike,
-  showEdit,
   onCommentClick,
   onEditClick,
   deletePost,
@@ -75,56 +66,63 @@ const PostCard = ({
     setFollow(!follow);
   };
 
-  const footerActions = [
-    like ? (
-      <LikeFilled key={`like-filled-${data.id}`} onClick={removeLike} />
-    ) : (
-      <LikeOutlined key={`like-outlined-${data.id}`} onClick={markAsLiked} />
-    ),
-    <CommentOutlined
-      onClick={onCommentClick}
-      key={`comment-action-${data.id}`}
-    />,
-    showEdit && data.UserId === userId && (
-      <EditOutlined onClick={onEditClick} key={`edit-action-${data.id}`} />
-    ),
-    data.UserId === userId && (
-      <Popconfirm
-        title="Are you sure you want to permanently remove this item?"
-        onConfirm={() => {
-          deletePost(data);
-          afterRemove();
-        }}
-      >
-        <DeleteOutlined key={`edit-action-${data.id}`} />
-      </Popconfirm>
-    ),
-  ];
+  const getPostTime = () => {
+    let datesDifferenceMinutes = moment().diff(
+      moment(data.createdAt),
+      "minutes"
+    );
+    let datesDifferenceHours = moment().diff(moment(data.createdAt), "hours");
+    let datesDifferenceDays = moment().diff(moment(data.createdAt), "days");
+    let datesDifferenceMonths = moment().diff(moment(data.createdAt), "months");
+
+    if (datesDifferenceMinutes < 1) {
+      return `Now`;
+    } else if (datesDifferenceMinutes < 61) {
+      return `${datesDifferenceMinutes} minutes ago`;
+    } else if (datesDifferenceHours < 25) {
+      return `${datesDifferenceHours} hours ago`;
+    } else if (datesDifferenceDays < 31) {
+      return `${datesDifferenceDays} days ago`;
+    } else {
+      return `${datesDifferenceMonths} months ago`;
+    }
+  };
 
   return (
-    <div key={`custom-post-card-${data.id}`} className="post-card-container">
-      <div className="custom-post-card">
+    <div className="post-card-container">
+      <div key={`custom-post-card-${data.id}`} className="custom-post-card">
         <section className="custom-post-card--header">
           <section className="custom-post-card--header--user">
             <div className="header--user-image">
-              <img src={data.User.img}></img>
+              <img
+                alt={`post-user-img-${data.User.id}`}
+                src={data.User.img}
+              ></img>
             </div>
             <div className="header--user-text">
               <h4>
                 {data.User.firstName} {data.User.lastName}
               </h4>
               <p>{data.User.about}</p>
-              <span>Now</span>
+              <span>{getPostTime()}</span>
             </div>
           </section>
           {data.UserId === userId ? (
             <section className="custom-post-card--header--actions">
               <ul>
-                <li>
+                <li onClick={onEditClick}>
                   <IconCreateOutline /> Edit
                 </li>
                 <li>
-                  <IconTrashOutline /> Delete
+                  <Popconfirm
+                    title="Are you sure you want to permanently remove this item?"
+                    onConfirm={() => {
+                      deletePost(data);
+                      afterRemove();
+                    }}
+                  >
+                    <IconTrashOutline /> Delete
+                  </Popconfirm>
                 </li>
                 <li>
                   <IconWaterOutline /> Watercooler
@@ -136,7 +134,11 @@ const PostCard = ({
             </section>
           ) : (
             <section className="custom-post-card--header--follow">
-              + Follow conversation
+              {follow === false ? (
+                <div onClick={markAsFollowing}>+ Follow conversation</div>
+              ) : (
+                <div onClick={removeFollow}>- Unfollow conversation</div>
+              )}
             </section>
           )}
         </section>
@@ -150,7 +152,10 @@ const PostCard = ({
               (cat) => cat.value === dataTopic
             );
             return (
-              <div className="custom-post-card--item">
+              <div
+                key={`hashtag-key-${index}-${category.title}`}
+                className="custom-post-card--item"
+              >
                 #{category ? category.title : dataTopic}
               </div>
             );
@@ -159,45 +164,42 @@ const PostCard = ({
         <section className="custom-post-card--image">
           {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
         </section>
-        <section className="custom-post-card--counters"></section>
-        <section className="custom-post-card--footer-actions">
+        <section className="custom-post-card--counters">
           <ul>
             <li>
-              <IconHeartOutline /> Like
+              <div className="likes">
+                <IconHeartOutline />
+              </div>
+              {data.likes}
             </li>
             <li>
+              <div className="comments">
+                <IconChatBubblesOutline />
+              </div>{" "}
+              {data.comments}
+            </li>
+          </ul>
+        </section>
+        <section className="custom-post-card--footer-actions">
+          <ul>
+            <li
+              onClick={() => {
+                if (like === true) {
+                  removeLike();
+                } else {
+                  markAsLiked();
+                }
+              }}
+            >
+              <IconHeartOutline className={like ? "svg-fill-color" : ""} />
+              Like
+            </li>
+            <li onClick={onCommentClick}>
               <IconChatBubblesOutline /> Comment
             </li>
           </ul>
         </section>
       </div>
-
-      <Card
-        key={`post-card-${data.id}`}
-        title={
-          <div className="post-card-container-title">
-            {`Posted by: ${data.User.firstName} ${data.User.lastName}`}
-            {follow === false ? (
-              <CustomButton
-                text="Follow Conversation"
-                size="sm"
-                onClick={markAsFollowing}
-              />
-            ) : (
-              <CustomButton
-                text="Following Conversation"
-                size="sm"
-                onClick={removeFollow}
-              />
-            )}
-          </div>
-        }
-        actions={footerActions}
-      >
-        <div dangerouslySetInnerHTML={{ __html: data.text }} />
-
-        <div className="post-topics"></div>
-      </Card>
     </div>
   );
 };

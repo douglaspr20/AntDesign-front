@@ -24,6 +24,7 @@ const PostForm = ({
   postData,
   onUpdate,
   buttonText,
+  externalForm,
 }) => {
   const [form] = Form.useForm();
 
@@ -32,15 +33,18 @@ const PostForm = ({
       onUpdate(data);
     } else {
       addPost(data);
-      form.resetFields();
       Emitter.emit(EVENT_TYPES.CLOSE_POST_MODAL);
     }
+    if (externalForm != null) {
+      externalForm.resetFields();
+    }
+    form.resetFields();
   };
 
   return (
     <div className="post-form-container">
       <Form
-        form={form}
+        form={externalForm == null ? form : externalForm}
         layout="vertical"
         onFinish={onFinish}
         initialValues={
@@ -52,13 +56,20 @@ const PostForm = ({
           }
         }
       >
-        <Item label="Post content" name="text" rules={[{ required: true }]}>
+        <Item
+          label="What do you want to talk about?"
+          className="labelFroala"
+          name="text"
+          rules={[
+            {
+              required: true,
+              message: "What do you want to talk about? is required.",
+            },
+          ]}
+        >
           <FroalaEdit s3Hash={s3Hash} />
         </Item>
-        <Item label="Image" name="imageData">
-          <ImageUpload aspect={16 / 9} />
-        </Item>
-        <Item label="Category tags" name="topics">
+        <Item label="Hashtags" name="topics">
           <Select allowClear mode="multiple">
             {allCategories.map((item) => (
               <Option key={`option-${item.value}`} value={item.value}>
@@ -67,9 +78,18 @@ const PostForm = ({
             ))}
           </Select>
         </Item>
-        <Item>
-          <CustomButton htmlType="submit" text={buttonText} />
+        <Item label="Upload image" name="imageData">
+          <ImageUpload aspect={16 / 9} />
         </Item>
+        {externalForm == null && (
+          <Item>
+            <CustomButton
+              htmlType="submit"
+              type="primary secondary"
+              text={buttonText}
+            />
+          </Item>
+        )}
       </Form>
     </div>
   );
@@ -77,11 +97,13 @@ const PostForm = ({
 
 PostForm.propTypes = {
   allCategories: PropTypes.array,
+  externalForm: PropTypes.object,
 };
 
 PostForm.defaultProps = {
   allCategories: [],
-  buttonText: "POST",
+  buttonText: "Post",
+  externalForm: null,
 };
 
 const mapStateToProps = (state) => ({
