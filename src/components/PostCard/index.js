@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Popconfirm } from "antd";
-import moment from "moment";
 
 import {
   setPostLike,
@@ -11,6 +10,8 @@ import {
   deletePostFollow,
   deletePost,
 } from "redux/actions/post-actions";
+
+import { getPublicationTime } from "utils/format";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
@@ -36,6 +37,7 @@ const PostCard = ({
   afterRemove,
   setPostFollow,
   deletePostFollow,
+  details,
 }) => {
   const [like, setLike] = useState();
   const [follow, setFollow] = useState();
@@ -66,31 +68,12 @@ const PostCard = ({
     setFollow(!follow);
   };
 
-  const getPostTime = () => {
-    let datesDifferenceMinutes = moment().diff(
-      moment(data.createdAt),
-      "minutes"
-    );
-    let datesDifferenceHours = moment().diff(moment(data.createdAt), "hours");
-    let datesDifferenceDays = moment().diff(moment(data.createdAt), "days");
-    let datesDifferenceMonths = moment().diff(moment(data.createdAt), "months");
-
-    if (datesDifferenceMinutes < 1) {
-      return `Now`;
-    } else if (datesDifferenceMinutes < 61) {
-      return `${datesDifferenceMinutes} minutes ago`;
-    } else if (datesDifferenceHours < 25) {
-      return `${datesDifferenceHours} hours ago`;
-    } else if (datesDifferenceDays < 31) {
-      return `${datesDifferenceDays} days ago`;
-    } else {
-      return `${datesDifferenceMonths} months ago`;
-    }
-  };
-
   return (
     <div className="post-card-container">
-      <div key={`custom-post-card-${data.id}`} className="custom-post-card">
+      <div
+        key={`custom-post-card-${data.id}`}
+        className={`custom-post-card  ${details === false && "bordered"}`}
+      >
         <section className="custom-post-card--header">
           <section className="custom-post-card--header--user">
             <div className="header--user-image">
@@ -104,7 +87,7 @@ const PostCard = ({
                 {data.User.firstName} {data.User.lastName}
               </h4>
               <p>{data.User.about}</p>
-              <span>{getPostTime()}</span>
+              <span>{getPublicationTime(data.createdAt)}</span>
             </div>
           </section>
           {data.UserId === userId ? (
@@ -164,41 +147,78 @@ const PostCard = ({
         <section className="custom-post-card--image">
           {data.imageUrl && <img alt={`post-${data.id}`} src={data.imageUrl} />}
         </section>
-        <section className="custom-post-card--counters">
-          <ul>
-            <li>
-              <div className="likes">
-                <IconHeartOutline />
-              </div>
-              {data.likes}
-            </li>
-            <li>
-              <div className="comments">
-                <IconChatBubblesOutline />
-              </div>{" "}
-              {data.comments}
-            </li>
-          </ul>
-        </section>
-        <section className="custom-post-card--footer-actions">
-          <ul>
-            <li
-              onClick={() => {
-                if (like === true) {
-                  removeLike();
-                } else {
-                  markAsLiked();
-                }
-              }}
-            >
-              <IconHeartOutline className={like ? "svg-fill-color" : ""} />
-              Like
-            </li>
-            <li onClick={onCommentClick}>
-              <IconChatBubblesOutline /> Comment
-            </li>
-          </ul>
-        </section>
+        {details === true ? (
+          <>
+            <section className="custom-post-card--counters details">
+              <ul>
+                <li
+                  onClick={() => {
+                    if (like === true) {
+                      removeLike();
+                    } else {
+                      markAsLiked();
+                    }
+                  }}
+                >
+                  <IconHeartOutline className={`${like && "svg-fill-color"}`} />
+                  Like
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <div className="likes">
+                    <IconHeartOutline />
+                  </div>
+                  {data.likes}
+                </li>
+                <li>
+                  <div className="comments">
+                    <IconChatBubblesOutline />
+                  </div>{" "}
+                  {data.comments}
+                </li>
+              </ul>
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="custom-post-card--counters">
+              <ul>
+                <li>
+                  <div className="likes">
+                    <IconHeartOutline />
+                  </div>
+                  {data.likes}
+                </li>
+                <li>
+                  <div className="comments">
+                    <IconChatBubblesOutline />
+                  </div>{" "}
+                  {data.comments}
+                </li>
+              </ul>
+            </section>
+            <section className="custom-post-card--footer-actions">
+              <ul>
+                <li
+                  onClick={() => {
+                    if (like === true) {
+                      removeLike();
+                    } else {
+                      markAsLiked();
+                    }
+                  }}
+                >
+                  <IconHeartOutline className={`${like && "svg-fill-color"}`} />
+                  Like
+                </li>
+                <li onClick={onCommentClick}>
+                  <IconChatBubblesOutline /> Comment
+                </li>
+              </ul>
+            </section>
+          </>
+        )}
       </div>
     </div>
   );
@@ -209,6 +229,7 @@ PostCard.propTypes = {
   generalFooter: PropTypes.bool,
   onCommentClick: PropTypes.func,
   afterRemove: PropTypes.func,
+  details: PropTypes.bool,
 };
 
 PostCard.defaultProps = {
@@ -216,6 +237,7 @@ PostCard.defaultProps = {
   generalFooter: true,
   onCommentClick: () => {},
   afterRemove: () => {},
+  details: false,
 };
 
 const mapStateToProps = (state) => ({

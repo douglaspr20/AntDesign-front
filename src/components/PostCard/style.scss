@@ -1,50 +1,19 @@
 @import "styles/main.scss";
 
 .post-card-container {
-  &-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  margin-bottom: 1em;
+  
+  .bordered {
+    box-shadow: 4px 0px 12px #37215714;
+    border: 1px solid $color-border;
+    border-radius: 8px;
   }
-  margin-bottom: 1rem;
-  .ant-card {
-    margin-top: 1rem;
-    .ant-card-body {
-      img {
-        width: 100%;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      }
-      .video-container {
-        iframe {
-          width: 100% !important;
-          height: 300px !important;
-        }
-      }
-    }
-  }
-
-  .post-topics {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    .specialty-item {
-      margin-top: 1rem;
-      margin-right: 1rem;
-    }
-  }
-
   .custom-post-card {
     width: 100%;
     background-color: $color-white;
-    border: 1px solid $color-border;
-    border-radius: 8px;
     opacity: 1;
     min-height: 328px;
     padding: 2.5rem;
-    box-shadow: 4px 0px 12px #37215714;
 
     &--header {
       display: flex;
@@ -164,6 +133,22 @@
       font-weight: 600;
       div {
         margin-right: 1rem;
+      }
+    }
+
+    .details {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom: none !important;
+      :first-child {
+        li {
+          svg {
+            width: 26px !important;
+            width: 26px !important;
+            margin-right: 5px;
+          }
+        }
       }
     }
 

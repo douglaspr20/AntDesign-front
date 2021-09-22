@@ -1,3 +1,19 @@
-.post-comment-form-container {
+.form-comment-container {
   margin-bottom: 1rem;
+  &--content {
+    display: flex;
+    flex-direction: row;
+    .user-img {
+      width: 90px;
+      text-align: left;
+      img {
+        width: 70px;
+        height: 70px;
+        border-radius: 70px;
+      }
+    }
+    .comment-form {
+      width: calc(100% - 90px);
+    }
+  }
 }

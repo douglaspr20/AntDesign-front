@@ -1,11 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Card, Form, Input } from "antd";
+import { Card, Form, } from "antd";
 
-import { CustomButton } from "components";
+import { CustomButton, CustomInput } from "components";
 
 import { addComment as addPostComment } from "redux/actions/post-comment-actions";
+
+import { homeSelector } from "redux/selectors/homeSelector";
+
 import "./style.scss";
 
 const PostCommentForm = ({
@@ -13,6 +16,7 @@ const PostCommentForm = ({
   postCommentId,
   addPostComment,
   afterSave,
+  userProfile,
 }) => {
   const [form] = Form.useForm();
   const addComment = (data) => {
@@ -26,25 +30,32 @@ const PostCommentForm = ({
   };
 
   return (
-    <Card className="form-comment-container">
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={(data) => {
-          addComment(data, postId);
-        }}
-      >
-        <Form.Item name="comment">
-          <Input.TextArea rows={2} />
-        </Form.Item>
-        <Form.Item>
-          <CustomButton
-            htmlType="submit"
-            size="sm"
-            text="Add comment"
-          ></CustomButton>
-        </Form.Item>
-      </Form>
+    <Card bordered={false} className="form-comment-container">
+      <div className="form-comment-container--content">
+        <section class="user-img">
+          <img src={userProfile.img} alt="user-img-form-comment" />
+        </section>
+        <section className="comment-form">
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={(data) => {
+              addComment(data, postId);
+            }}
+          >
+            <Form.Item name="comment">
+              <CustomInput multiple={true}  placeholder="Add a comment..." rows={2} />
+            </Form.Item>
+            <Form.Item>
+              <CustomButton
+                htmlType="submit"
+                size="sm"
+                text="Post comment"
+              ></CustomButton>
+            </Form.Item>
+          </Form>
+        </section>
+      </div>
     </Card>
   );
 };
@@ -61,7 +72,9 @@ PostCommentForm.defaultProps = {
   afterSave: () => {},
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
   addPostComment,
