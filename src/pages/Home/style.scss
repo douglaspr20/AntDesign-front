@@ -7,17 +7,6 @@
   height: calc(100vh - 72px);
   overflow: auto;
 
-  &-profile {
-    background: $color-white;
-    padding: 28px 2rem;
-    border-bottom: 1px solid $color-border;
-
-    @media (max-width: 575.98px) {
-      border-bottom: none;
-      background: $color-background;
-      padding: 28px 1rem;
-    }
-  }
   &-container-recommendations {
     margin: 0 auto;
     width: 100%;
@@ -107,20 +96,69 @@
   .event-card-item:not(:first-child) {
     margin-top: 2.25rem;
   }
-
-  @media (max-width: 1023.98px) {
-    .posts-filter-panel {
-      display: none;
-    }
-  }
 }
 
 .home-page-container {
-  &--trending{
+  width: 100%;
+  padding: 2em;
+  height: calc(100vh - 72px);
+  overflow: auto;
+
+  &--profile {
+    background: $color-white;
+    padding: 28px 2rem;
     border-bottom: 1px solid $color-border;
+
+    @media (max-width: 575.98px) {
+      border-bottom: none;
+      background: $color-background;
+      padding: 28px 1rem;
+    }
+  }
+
+  &--trending {
+    border-bottom: 1px solid $color-border;
+
+    h3 {
+      color: $color-primary !important;
+      margin-bottom: 1em !important;
+    }
+
+    .items {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding-bottom: 2em;
+      @media (max-width: 1023.98px) {
+        width: 95%;
+        flex-direction: column;
+      }
+    }
+  }
+  &--mobile-options {
+    display: none;
+    @media (max-width: 1023.98px) {
+      display: block;
+    }
+    button {
+      width: 100%;
+      height: 36px;
+      background: $color-accent;
+      @include app-font(16px, 16px, bold);
+      color: $color-white;
+      border-radius: 5px;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+    }
   }
   &--posts {
     display: flex;
     flex-direction: row;
+    @media (max-width: 1023.98px) {
+      .posts-filter-panel {
+        display: none;
+      }
+    }
   }
 }
