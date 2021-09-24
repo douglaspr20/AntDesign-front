@@ -107,12 +107,16 @@ const PostCard = ({
                     <IconTrashOutline /> Delete
                   </Popconfirm>
                 </li>
-                <li>
-                  <IconWaterOutline /> Watercooler
-                </li>
-                <li>
-                  <IconFlameOutline /> Bonfire
-                </li>
+                {false && (
+                  <>
+                    <li>
+                      <IconWaterOutline /> Watercooler
+                    </li>
+                    <li>
+                      <IconFlameOutline /> Bonfire
+                    </li>
+                  </>
+                )}
               </ul>
             </section>
           ) : (
@@ -129,6 +133,7 @@ const PostCard = ({
           className="custom-post-card--content"
           dangerouslySetInnerHTML={{ __html: data.text }}
         />
+
         <section className="custom-post-card--topics">
           {(data.topics || []).map((dataTopic, index) => {
             const category = allCategories.find(

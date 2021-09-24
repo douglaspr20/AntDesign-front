@@ -94,31 +94,31 @@ const HomePage = ({
         <div className="items">
           {recommendations.podcasts && (
             <>
-              {recommendations.podcasts.map((item) => (
-                <TrendingItem type="podcast" element={item} />
+              {recommendations.podcasts.map((item, index) => (
+                <TrendingItem key={`trending-podcast-${index}`} type="podcast" element={item} />
               ))}
             </>
           )}
 
           {recommendations.conferenceLibrary && (
             <>
-              {recommendations.conferenceLibrary.map((item) => (
-                <TrendingItem type="conference" element={item} />
+              {recommendations.conferenceLibrary.map((item, index) => (
+                <TrendingItem key={`trending-conference-${index}`} type="conference" element={item} />
               ))}
             </>
           )}
 
           {recommendations.libraries && (
             <>
-              {recommendations.libraries.map((item) => (
-                <TrendingItem type="library" element={item} />
+              {recommendations.libraries.map((item, index) => (
+                <TrendingItem key={`trending-library-${index}`} type="library" element={item} />
               ))}
             </>
           )}
           {recommendations.events && (
             <>
-              {recommendations.events.map((item) => (
-                <TrendingItem type="event" element={item} />
+              {recommendations.events.map((item, index) => (
+                <TrendingItem key={`trending-event-${index}`} type="event" element={item} />
               ))}
             </>
           )}

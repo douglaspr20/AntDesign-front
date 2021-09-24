@@ -57,8 +57,11 @@ const PostForm = ({
         }
       >
         <Item
-          label="What do you want to talk about?"
-          className="labelFroala"
+          label={
+            <label className="labelFroala">
+              What do you want to talk about?
+            </label>
+          }
           name="text"
           rules={[
             {
@@ -67,7 +70,33 @@ const PostForm = ({
             },
           ]}
         >
-          <FroalaEdit s3Hash={s3Hash} />
+          <FroalaEdit
+            s3Hash={s3Hash}
+            config={{
+              quickInsertTags: [],
+              placeholderText: "Add a post...",
+              toolbarButtons: [
+                "bold",
+                "italic",
+                "underline",
+                "strikeThrough",
+                "subscript",
+                "superscript",
+                "-",
+                "paragraphFormat",
+                "align",
+                "formatOL",
+                "formatUL",
+                "indent",
+                "outdent",
+                "-",
+                "insertLink",
+                "insertVideo",
+                "undo",
+                "redo",
+              ],
+            }}
+          />
         </Item>
         <Item label="Hashtags" name="topics">
           <Select allowClear mode="multiple">
