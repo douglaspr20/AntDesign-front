@@ -119,3 +119,28 @@ h6 {
 .h-full {
   height: 100%;
 }
+
+.wrapperLarge {
+  border: 1px solid $color-border !important;
+  margin-bottom: 2em;
+  
+  .textWrapperLarge {
+    border-bottom: 1px solid $color-border;
+    .siteNameLinkWrapper {
+      color: $color-text-primary !important;
+      text-align: left !important;
+      font-size: 16px !important;
+    }
+    .titleWrapper {
+      color: $color-text-primary !important;
+      text-align: left !important;
+      font-size: 16px !important;
+      font-weight: bold;
+    }
+    p {
+      text-align: left !important;
+      color: $color-text-secondary;
+      font-size: 14px !important;
+    }
+  }
+}

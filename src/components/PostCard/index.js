@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Popconfirm } from "antd";
+import { Spin, Popconfirm } from "antd";
+import OpengraphReactComponent from "opengraph-react";
 
 import {
   setPostLike,
@@ -41,10 +42,14 @@ const PostCard = ({
 }) => {
   const [like, setLike] = useState();
   const [follow, setFollow] = useState();
+  const [links, setLinks] = useState([]);
 
   useEffect(() => {
     setLike(data.like);
     setFollow(data.follow);
+    if (data.hasOwnProperty("text")) {
+      getOgLinks(data.text);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,6 +71,12 @@ const PostCard = ({
   const removeFollow = () => {
     deletePostFollow({ id: data.id });
     setFollow(!follow);
+  };
+
+  const getOgLinks = async (html) => {
+    const htmlElement = document.createElement("html");
+    htmlElement.innerHTML = html;
+    setLinks(Array.from(htmlElement.getElementsByTagName("a")));
   };
 
   return (
@@ -133,7 +144,15 @@ const PostCard = ({
           className="custom-post-card--content"
           dangerouslySetInnerHTML={{ __html: data.text }}
         />
-
+        {links.length > 0 && (
+          <OpengraphReactComponent
+            site={links[0].href}
+            appId={process.env.REACT_APP_OPENGRAPH_KEY}
+            loader={<Spin></Spin>}
+            size={"large"}
+            acceptLang="auto"
+          />
+        )}
         <section className="custom-post-card--topics">
           {(data.topics || []).map((dataTopic, index) => {
             const category = allCategories.find(

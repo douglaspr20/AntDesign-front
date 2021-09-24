@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Form, Select } from "antd";
+import { Form, Spin, Select } from "antd";
 import Emitter from "services/emitter";
+import OpengraphReactComponent from "opengraph-react";
 
 import { CustomButton, FroalaEdit, ImageUpload } from "components";
 
@@ -27,6 +28,16 @@ const PostForm = ({
   externalForm,
 }) => {
   const [form] = Form.useForm();
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    if (postData) {
+      if (postData.text) {
+        getOgLinks(postData.text);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onFinish = (data) => {
     if (postData) {
@@ -39,6 +50,12 @@ const PostForm = ({
       externalForm.resetFields();
     }
     form.resetFields();
+  };
+
+  const getOgLinks = async (html) => {
+    const htmlElement = document.createElement("html");
+    htmlElement.innerHTML = html;
+    setLinks(Array.from(htmlElement.getElementsByTagName("a")));
   };
 
   return (
@@ -73,6 +90,7 @@ const PostForm = ({
           <FroalaEdit
             s3Hash={s3Hash}
             config={{
+              emoticonsUseImage: false,
               quickInsertTags: [],
               placeholderText: "Add a post...",
               toolbarButtons: [
@@ -90,13 +108,32 @@ const PostForm = ({
                 "indent",
                 "outdent",
                 "-",
-                "insertLink",
-                "insertVideo",
                 "undo",
                 "redo",
+                "|",
+                "emoticons",
               ],
+              events: {
+                contentChanged: function () {
+                  getOgLinks(this.html.get());
+                },
+                "paste.after": function () {
+                  getOgLinks(this.html.get());
+                },
+              },
             }}
           />
+        </Item>
+        <Item>
+          {links.length > 0 && (
+            <OpengraphReactComponent
+              site={links[0].href}
+              appId={process.env.REACT_APP_OPENGRAPH_KEY}
+              loader={<Spin></Spin>}
+              size={"large"}
+              acceptLang="auto"
+            />
+          )}
         </Item>
         <Item label="Hashtags" name="topics">
           <Select allowClear mode="multiple">

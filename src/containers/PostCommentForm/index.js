@@ -32,7 +32,7 @@ const PostCommentForm = ({
   return (
     <Card bordered={false} className="form-comment-container">
       <div className="form-comment-container--content">
-        <section class="user-img">
+        <section className="user-img">
           <img src={userProfile.img} alt="user-img-form-comment" />
         </section>
         <section className="comment-form">
