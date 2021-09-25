@@ -92,6 +92,7 @@ const PostPage = ({
         {post != null && !isUpdate && (
           <>
             <PostCard
+              details={true}
               data={post}
               showEdit={true}
               onEditClick={() => {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "antd";
+import { Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import HomeRecommendationsColumn from "./Column";
 import { PostsFilterPanel, CustomButton } from "components";
 
 import Posts from "containers/Posts";
@@ -22,6 +21,7 @@ import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
+import TrendingItem from "./TrendingItem";
 
 const HomePage = ({
   history,
@@ -77,67 +77,81 @@ const HomePage = ({
   };
 
   return (
-    <div className="home-page">
-      <div>
-        <PostsFilterPanel onChange={onFilterChange} onSearch={onSearch} />
-        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+    <div className="home-page-container">
+      {userProfile && userProfile.percentOfCompletion !== 100 && (
+        <div className="home-page-container--profile">
+          <Row gutter={16}>
+            <Col span={24} lg={{ span: 16, offset: 4 }}>
+              <ProfileStatusBar
+                percent={userProfile ? userProfile.percentOfCompletion : 0}
+              />
+            </Col>
+          </Row>
+        </div>
+      )}
+      <div className="home-page-container--trending">
+        <h3>Trending</h3>
+        <div className="items">
+          {recommendations.podcasts && (
+            <>
+              {recommendations.podcasts.map((item, index) => (
+                <TrendingItem key={`trending-podcast-${index}`} type="podcast" element={item} />
+              ))}
+            </>
+          )}
+
+          {recommendations.conferenceLibrary && (
+            <>
+              {recommendations.conferenceLibrary.map((item, index) => (
+                <TrendingItem key={`trending-conference-${index}`} type="conference" element={item} />
+              ))}
+            </>
+          )}
+
+          {recommendations.libraries && (
+            <>
+              {recommendations.libraries.map((item, index) => (
+                <TrendingItem key={`trending-library-${index}`} type="library" element={item} />
+              ))}
+            </>
+          )}
+          {recommendations.events && (
+            <>
+              {recommendations.events.map((item, index) => (
+                <TrendingItem key={`trending-event-${index}`} type="event" element={item} />
+              ))}
+            </>
+          )}
+        </div>
       </div>
-      <div className="home-page-container">
-        {userProfile && userProfile.percentOfCompletion !== 100 && (
-          <div className="home-page-profile">
-            <Row gutter={16}>
-              <Col span={24} lg={{ span: 20, offset: 2 }}>
-                <ProfileStatusBar
-                  percent={userProfile ? userProfile.percentOfCompletion : 0}
-                />
-              </Col>
-            </Row>
-          </div>
-        )}
-        <div className="home-page-container-recommendations">
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.podcasts}
-            type="podcast"
-            columnTitle="Podcast"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.conferenceLibrary}
-            type="conference"
-            columnTitle="Conference Library"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.libraries}
-            type="library"
-            columnTitle="Learning Library"
-          />
-          <HomeRecommendationsColumn
-            history={history}
-            items={recommendations.events}
-            type="event"
-            columnTitle="Upcoming Events"
-          />
-        </div>
-        <div className="podcast-series-page__filters--button">
-          <CustomButton
-            text="Filters"
-            onClick={() => {
-              showFilterPanel();
-            }}
-          />
-        </div>
+      <div className="home-page-container--mobile-options">
+        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+        <Button
+          onClick={() => {
+            showFilterPanel();
+          }}
+        >
+          Filters
+        </Button>
+      </div>
+      <div className="home-page-container--posts">
+        <PostsFilterPanel
+          title="Stories filter"
+          onChange={onFilterChange}
+          onSearch={onSearch}
+        />
         <Posts onShowMore={onShowMore} history={history} />
+      </div>
+      <div className="home-page-container--upgrade">
         {userProfile && userProfile.memberShip === "free" && (
           <Row gutter={16}>
-            <Col lg={{ span: 20, offset: 2 }}>
+            <Col lg={{ span: 16, offset: 4 }}>
               <div className="recommend-card">
                 <Row gutter={16}>
                   <Col
                     span={24}
                     offset={0}
-                    md={{ span: 18, offset: 3 }}
+                    md={{ span: 14, offset: 5 }}
                     className="d-flex flex-column items-center"
                   >
                     <h2 className="recommend-card-label">

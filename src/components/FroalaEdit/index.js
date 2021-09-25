@@ -20,7 +20,7 @@ import "froala-editor/js/plugins/video.min.js";
 
 import "./style.scss";
 
-const FroalaEdit = ({ s3Hash, value, onChange }) => {
+const FroalaEdit = ({ s3Hash, value, onChange, ...rest }) => {
   const [editorConfig, setEditorConfig] = useState({});
   const [htmlNote, setHtmlNote] = useState("");
 
@@ -49,6 +49,7 @@ const FroalaEdit = ({ s3Hash, value, onChange }) => {
       tag="textarea"
       model={htmlNote}
       onModelChange={handleChange}
+      {...rest}
     />
   ) : null;
 };

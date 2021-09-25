@@ -1,5 +1,17 @@
+@import "styles/main.scss";
+
 #posts-container {
   width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
+  margin: 1rem auto;
+  padding: 0 1rem 0 2rem;
+
+  h3 {
+    color: $color-primary !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .custom-post-card {
+    margin: 0 auto;
+    max-width: 1000px;
+  }
 }

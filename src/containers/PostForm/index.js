@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Form, Select } from "antd";
+import { Form, Spin, Select } from "antd";
 import Emitter from "services/emitter";
+import OpengraphReactComponent from "opengraph-react";
 
 import { CustomButton, FroalaEdit, ImageUpload } from "components";
 
@@ -24,23 +25,43 @@ const PostForm = ({
   postData,
   onUpdate,
   buttonText,
+  externalForm,
 }) => {
   const [form] = Form.useForm();
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    if (postData) {
+      if (postData.text) {
+        getOgLinks(postData.text);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onFinish = (data) => {
     if (postData) {
       onUpdate(data);
     } else {
       addPost(data);
-      form.resetFields();
       Emitter.emit(EVENT_TYPES.CLOSE_POST_MODAL);
     }
+    if (externalForm != null) {
+      externalForm.resetFields();
+    }
+    form.resetFields();
+  };
+
+  const getOgLinks = async (html) => {
+    const htmlElement = document.createElement("html");
+    htmlElement.innerHTML = html;
+    setLinks(Array.from(htmlElement.getElementsByTagName("a")));
   };
 
   return (
     <div className="post-form-container">
       <Form
-        form={form}
+        form={externalForm == null ? form : externalForm}
         layout="vertical"
         onFinish={onFinish}
         initialValues={
@@ -52,13 +73,69 @@ const PostForm = ({
           }
         }
       >
-        <Item label="Post content" name="text" rules={[{ required: true }]}>
-          <FroalaEdit s3Hash={s3Hash} />
+        <Item
+          label={
+            <label className="labelFroala">
+              What do you want to talk about?
+            </label>
+          }
+          name="text"
+          rules={[
+            {
+              required: true,
+              message: "What do you want to talk about? is required.",
+            },
+          ]}
+        >
+          <FroalaEdit
+            s3Hash={s3Hash}
+            config={{
+              emoticonsUseImage: false,
+              quickInsertTags: [],
+              placeholderText: "Add a post...",
+              toolbarButtons: [
+                "bold",
+                "italic",
+                "underline",
+                "strikeThrough",
+                "subscript",
+                "superscript",
+                "-",
+                "paragraphFormat",
+                "align",
+                "formatOL",
+                "formatUL",
+                "indent",
+                "outdent",
+                "-",
+                "undo",
+                "redo",
+                "|",
+                "emoticons",
+              ],
+              events: {
+                contentChanged: function () {
+                  getOgLinks(this.html.get());
+                },
+                "paste.after": function () {
+                  getOgLinks(this.html.get());
+                },
+              },
+            }}
+          />
         </Item>
-        <Item label="Image" name="imageData">
-          <ImageUpload />
+        <Item>
+          {links.length > 0 && (
+            <OpengraphReactComponent
+              site={links[0].href}
+              appId={process.env.REACT_APP_OPENGRAPH_KEY}
+              loader={<Spin></Spin>}
+              size={"large"}
+              acceptLang="auto"
+            />
+          )}
         </Item>
-        <Item label="Category tags" name="topics">
+        <Item label="Hashtags" name="topics">
           <Select allowClear mode="multiple">
             {allCategories.map((item) => (
               <Option key={`option-${item.value}`} value={item.value}>
@@ -67,9 +144,18 @@ const PostForm = ({
             ))}
           </Select>
         </Item>
-        <Item>
-          <CustomButton htmlType="submit" text={buttonText} />
+        <Item label="Upload image" name="imageData">
+          <ImageUpload aspect={16 / 9} />
         </Item>
+        {externalForm == null && (
+          <Item>
+            <CustomButton
+              htmlType="submit"
+              type="primary secondary"
+              text={buttonText}
+            />
+          </Item>
+        )}
       </Form>
     </div>
   );
@@ -77,11 +163,13 @@ const PostForm = ({
 
 PostForm.propTypes = {
   allCategories: PropTypes.array,
+  externalForm: PropTypes.object,
 };
 
 PostForm.defaultProps = {
   allCategories: [],
-  buttonText: "POST",
+  buttonText: "Post",
+  externalForm: null,
 };
 
 const mapStateToProps = (state) => ({

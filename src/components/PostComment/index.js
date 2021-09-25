@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Comment, Avatar, Popconfirm } from "antd";
-import moment from "moment";
 
-import { DeleteOutlined } from "@ant-design/icons";
+import { getPublicationTime } from "utils/format";
 
 import { default as SubPostComment } from "components/PostComment";
 import PostCommentForm from "containers/PostCommentForm";
 import { deleteComment } from "redux/actions/post-comment-actions";
 import { authSelector } from "redux/selectors/authSelector";
+
+import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.svg";
+import { ReactComponent as IconChatBubblesOutline } from "images/icon-chatbubbles-outline.svg";
+
+import "./style.scss";
 
 const PostComment = ({
   userId,
@@ -51,14 +55,12 @@ const PostComment = ({
           alt={`${data.userFirstName} ${data.userLastName}`}
         />
       }
-      datetime={
-        <span>{moment(data.createdAt).format("YYYY-MM-DD HH:mm:ss")}</span>
-      }
+      datetime={<span>{getPublicationTime(data.createdAt)}</span>}
       content={data.comment}
       actions={[
         enableReply && (
           <span key="comment-basic-reply-to" onClick={onReplyClick}>
-            Reply to
+            <IconChatBubblesOutline /> Reply
           </span>
         ),
         userId === data.UserId && (
@@ -66,7 +68,7 @@ const PostComment = ({
             title="Are you sure you want to permanently remove this item?"
             onConfirm={onRemoveComment}
           >
-            <DeleteOutlined></DeleteOutlined> Remove
+            <IconTrashOutline /> Remove
           </Popconfirm>
         ),
       ]}
