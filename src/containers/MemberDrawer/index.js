@@ -34,6 +34,11 @@ const MemberDrawer = ({
     (item) => member && item.value === member.timezone
   );
 
+  const blockMatch =
+    member.isMentor === 1
+      ? member.blockMatchAsMentor === 1
+      : member.blockMatchAsMentee === 1;
+
   return (
     <CustomDrawer
       title={"Mentor profile"}
@@ -50,21 +55,23 @@ const MemberDrawer = ({
             percent={member.percentOfCompletion}
           />
           <h1 className="user-info-name">{`${member.firstName} ${member.lastName}`}</h1>
-          <CustomButton
-            className="profile-complete-btn"
-            text={member.connected ? "Connected" : "Match"}
-            type="primary"
-            size="lg"
-            disabled={member.connected}
-            onClick={() => !member.connected && onMatch()}
-          />
+          {!blockMatch && (
+            <CustomButton
+              className="profile-complete-btn"
+              text={member.connected ? "Connected" : "Match"}
+              type="primary"
+              size="lg"
+              disabled={member.connected}
+              onClick={() => !member.connected && onMatch()}
+            />
+          )}
         </div>
         <div className="member-details-content">
           <h5 className="member-details-content-label">
-            {`Why do I to be a ${member.ismentor ? "mentor" : "mentee"}?`}
+            {`Why do I to be a ${member.isMentor ? "mentor" : "mentee"}?`}
           </h5>
           <p className="member-details-content-text">
-            {member.mentorabout || ""}
+            {member.mentorAbout || ""}
           </p>
           <h5 className="member-details-content-label">Title / Profession</h5>
           <p className="member-details-content-text">{member.title || ""}</p>

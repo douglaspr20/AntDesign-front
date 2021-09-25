@@ -90,6 +90,7 @@ class ProfilePopupMenu extends React.Component {
 
   onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+    this.setState({ visible: false });
   };
 
   openResumeModal = (flag) => {

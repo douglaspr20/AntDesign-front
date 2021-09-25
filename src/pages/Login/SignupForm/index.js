@@ -53,6 +53,26 @@ const SignupForm = () => {
         <CustomInput placeholder="Email" size="sm" />
       </Form.Item>
       <Form.Item
+        name="confirmEmail"
+        rules={[
+          {
+            required: true,
+            message: "Please enter your email!",
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (value && value !== getFieldValue("email")) {
+                return Promise.reject(new Error("Confirm your email."));
+              }
+              return Promise.resolve();
+            },
+          }),
+        ]}
+        className="form-full-name"
+      >
+        <CustomInput placeholder="Confirm Email" size="sm" />
+      </Form.Item>
+      <Form.Item
         name="password"
         rules={[
           () => ({

@@ -12,6 +12,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
   const [reason, setReason] = useState(setting.reason);
   const [title, setTitle] = useState(setting.title);
   const [specialties, setSpecialties] = useState(setting.specialties || []);
+  const [activateMentoring, setActivateMentoring] = useState([]);
 
   const checkValidation = () => {
     if (!reason) {
@@ -44,6 +45,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
         reason,
         title,
         specialties,
+        blockMatchAsMentor: activateMentoring.includes("block"),
       });
     }
   };
@@ -52,6 +54,7 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
     setReason(setting.about);
     setTitle(setting.title);
     setSpecialties(setting.areas);
+    setActivateMentoring(setting.blockMatchAsMentor ? ["block"] : "");
   }, [setting]);
 
   return (
@@ -75,6 +78,13 @@ const MentorSetting = ({ setting, allCategories, onCancel, onSave }) => {
           value={title}
           onChange={setTitle}
         />
+        <Checkbox.Group
+          value={activateMentoring}
+          className="mentor-setting-block"
+          onChange={setActivateMentoring}
+        >
+          <CustomCheckbox value="block">Deactivate</CustomCheckbox>
+        </Checkbox.Group>
         <h5 className="mentor-setting-sublabel">
           In what areas do you want to be a mentor?
         </h5>

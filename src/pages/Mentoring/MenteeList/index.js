@@ -63,6 +63,7 @@ const MenteeList = ({
           <MemberCard
             key={`mentor-${index}`}
             user={mentee}
+            block={mentee.blockMatchAsMentee === 1}
             match={user ? user.areas : []}
             onClick={() => onMemberClick(mentee)}
             onMatchClicked={() => onMatchClicked(index)}
