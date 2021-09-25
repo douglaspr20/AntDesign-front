@@ -76,7 +76,13 @@ const PostCard = ({
   const getOgLinks = async (html) => {
     const htmlElement = document.createElement("html");
     htmlElement.innerHTML = html;
-    setLinks(Array.from(htmlElement.getElementsByTagName("a")));
+    let anchorArray = [];
+    for (let item of Array.from(htmlElement.getElementsByTagName("a"))) {
+      if (item.href.indexOf("froala") === -1) {
+        anchorArray.push(item);
+      }
+    }
+    setLinks(anchorArray);
   };
 
   return (
