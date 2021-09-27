@@ -43,6 +43,7 @@ const PostCard = ({
   const [like, setLike] = useState();
   const [follow, setFollow] = useState();
   const [links, setLinks] = useState([]);
+  const [newlike, setNewLike] = useState(0);
 
   useEffect(() => {
     setLike(data.like);
@@ -56,11 +57,17 @@ const PostCard = ({
   const markAsLiked = () => {
     setPostLike({ PostId: data.id });
     setLike(!like);
+    setNewLike(1);
   };
 
   const removeLike = () => {
     deletePostLike({ id: data.id });
     setLike(!like);
+    if (newlike > 0) {
+      setNewLike(newlike - 1);
+    } else {
+      setNewLike(0);
+    }
   };
 
   const markAsFollowing = () => {
@@ -199,7 +206,7 @@ const PostCard = ({
                   <div className="likes">
                     <IconHeartOutline />
                   </div>
-                  {data.likes}
+                  {parseInt(data.likes) + newlike}
                 </li>
                 <li>
                   <div className="comments">
@@ -218,7 +225,7 @@ const PostCard = ({
                   <div className="likes">
                     <IconHeartOutline />
                   </div>
-                  {data.likes}
+                  {parseInt(data.likes) + newlike}
                 </li>
                 <li>
                   <div className="comments">

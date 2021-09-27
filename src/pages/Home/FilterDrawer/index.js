@@ -77,7 +77,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
         <div className="filter-drawer-content">
           <div className="search-filter">
             <Button type="primary" className="create-post" onClick={onOpenPostFormModal}>
-              Create post
+              Add Story
             </Button>
             <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />

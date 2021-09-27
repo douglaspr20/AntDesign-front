@@ -11,7 +11,7 @@ const PostFormModal = ({ userProfile, visible, onCancel, ...rest }) => {
   const [externalForm] = Form.useForm();
   return (
     <CustomDrawer
-      title={"Create post"}
+      title={"Add Story"}
       width={1000}
       visible={visible}
       bodyStyle={{ overflowY: "scroll", maxHeight: "calc(100vh - 200px)" }}
