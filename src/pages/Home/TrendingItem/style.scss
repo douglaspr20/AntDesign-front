@@ -1,7 +1,7 @@
 @import "styles/main.scss";
 
 .trending-item-container {
-  width: 319px;
+  width: 270px;
   height: 381px;
   padding: 1em;
   background-color: $color-white;
@@ -16,7 +16,7 @@
   }
 
   .item-conference-header {
-    width: 279px;
+    width: 100%;
     height: 120px;
     border-radius: 8px;
     opacity: 1;
@@ -37,7 +37,7 @@
   }
 
   .img-container {
-    width: 279px;
+    width: 100%;
     height: 120px;
     text-align: center;
 
@@ -61,7 +61,7 @@
     .image-library,
     .image-conference,
     .image-event {
-      width: 279px !important;
+      width: 100% !important;
       height: 120px !important;
 
       iframe {
