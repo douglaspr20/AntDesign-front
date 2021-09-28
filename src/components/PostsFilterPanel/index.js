@@ -37,7 +37,7 @@ const FilterPanel = ({
   return (
     <div className="posts-filter-panel">
       <Button type="primary" onClick={onOpenPostFormModal}>
-        Create post
+        Add Story
       </Button>
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">

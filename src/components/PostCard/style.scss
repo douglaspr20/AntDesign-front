@@ -15,6 +15,10 @@
     min-height: 328px;
     padding: 2.5rem;
 
+    .wrapperLarge {
+      margin: 0 auto;
+    }
+
     &--header {
       display: flex;
       flex-direction: row;

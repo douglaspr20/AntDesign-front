@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Card } from "antd";
 
-import { getPost, updatePost } from "redux/actions/post-actions";
+import { setPost, getPost, updatePost } from "redux/actions/post-actions";
 import { getAllComments } from "redux/actions/post-comment-actions";
 import { postSelector } from "redux/selectors/postSelector";
 import { postCommentSelector } from "redux/selectors/postCommentSelector";
@@ -22,6 +22,7 @@ import { INTERNAL_LINKS } from "enum";
 import "./style.scss";
 
 const PostPage = ({
+  setPost,
   getPost,
   match,
   post,
@@ -34,6 +35,7 @@ const PostPage = ({
   const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
+    setPost(null);
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -145,6 +147,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  setPost,
   getPost,
   updatePost,
   getAllComments,
