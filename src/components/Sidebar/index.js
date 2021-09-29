@@ -135,7 +135,7 @@ class NavBar extends Component {
             <div className="upgrade-notification-panel">
               <h3>
                 {this.state.isAddStoryEvent === true ? (
-                  <>You must fully complete your profile before adding story.</>
+                  <>You must fully complete your profile before adding story or comment.</>
                 ) : (
                   <>
                     You must fully complete your profile before joining the
