@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Button, Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput, CustomButton } from "components";
+import { CustomCheckbox, SearchInput } from "components";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -32,15 +32,18 @@ const FilterPanel = ({
   };
 
   const onOpenPostFormModal = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+    if (userProfile.completed === true) {
+      Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+    } else {
+      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL);
+    }
   };
+
   return (
     <div className="posts-filter-panel">
-      <CustomButton
-        type="primary"
-        text="Create Post"
-        onClick={onOpenPostFormModal}
-      />
+      <Button type="primary" onClick={onOpenPostFormModal}>
+        Add Story
+      </Button>
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">

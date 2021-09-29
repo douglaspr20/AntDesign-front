@@ -3,6 +3,16 @@
 .filter-drawer {
   max-width: 450px;
 
+  .create-post {
+    width: 100%;
+    height: 36px;
+    background: $color-accent;
+    @include app-font(16px, 16px, bold);
+    color: $color-white;
+    border-radius: 5px;
+    margin-bottom: 2rem !important;
+  }
+
   .custom-drawer-close {
     display: none;
   }

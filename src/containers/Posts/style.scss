@@ -1,5 +1,16 @@
+@import "styles/main.scss";
+
 #posts-container {
   width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
+  padding-top: 1em;
+  max-width: 1000px;
+
+  h3 {
+    color: $color-primary !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .moreContainer {
+    padding: 1em;
+  }
 }

@@ -155,6 +155,28 @@ const getValidDescription = (item) => {
   return description;
 };
 
+const getPublicationTime = (publicationDate) => {
+  let datesDifferenceMinutes = moment().diff(
+    moment(publicationDate),
+    "minutes"
+  );
+  let datesDifferenceHours = moment().diff(moment(publicationDate), "hours");
+  let datesDifferenceDays = moment().diff(moment(publicationDate), "days");
+  let datesDifferenceMonths = moment().diff(moment(publicationDate), "months");
+
+  if (datesDifferenceMinutes < 1) {
+    return `Now`;
+  } else if (datesDifferenceMinutes < 61) {
+    return `${datesDifferenceMinutes} minutes ago`;
+  } else if (datesDifferenceHours < 25) {
+    return `${datesDifferenceHours} hours ago`;
+  } else if (datesDifferenceDays < 31) {
+    return `${datesDifferenceDays} days ago`;
+  } else {
+    return `${datesDifferenceMonths} months ago`;
+  }
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -167,4 +189,5 @@ export {
   convertToLocalTime,
   convertBlobToBase64,
   getValidDescription,
+  getPublicationTime,
 };
