@@ -54,7 +54,11 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
   }, []);
 
   const onOpenPostFormModal = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+    if (userProfile.completed === true) {
+      Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+    } else {
+      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL);
+    }
   };
 
   return (
@@ -76,7 +80,11 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
         </div>
         <div className="filter-drawer-content">
           <div className="search-filter">
-            <Button type="primary" className="create-post" onClick={onOpenPostFormModal}>
+            <Button
+              type="primary"
+              className="create-post"
+              onClick={onOpenPostFormModal}
+            >
               Add Story
             </Button>
             <h5 className="search-filter-title font-bold">Search</h5>

@@ -35,25 +35,25 @@ const Posts = ({
     <>
       <div id="posts-container">
         <h3>Latest Stories</h3>
-        <div className="overflow-container">
-          {allPosts.map((item) => {
-            return (
-              <PostCard
-                key={`post-card-${item.id}`}
-                data={item}
-                showEdit={true}
-                generalFooter={!(userId === item.UserId)}
-                onCommentClick={() => {
-                  history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
-                }}
-                onEditClick={() => {
-                  history.push(
-                    `${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`
-                  );
-                }}
-              />
-            );
-          })}
+        {allPosts.map((item) => {
+          return (
+            <PostCard
+              key={`post-card-${item.id}`}
+              data={item}
+              showEdit={true}
+              generalFooter={!(userId === item.UserId)}
+              onCommentClick={() => {
+                history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+              }}
+              onEditClick={() => {
+                history.push(
+                  `${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`
+                );
+              }}
+            />
+          );
+        })}
+        <div className="moreContainer">
           {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
             <div className="post-page-footer d-flex justify-center items-center">
               {loading && (

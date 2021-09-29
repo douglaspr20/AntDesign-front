@@ -2,23 +2,15 @@
 
 #posts-container {
   width: 100%;
-  margin: 1rem auto;
-  padding: 0 1rem 0 2rem;  
-
-  .overflow-container {
-    height: calc(100vh - 300px);
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
+  padding-top: 1em;
+  max-width: 1000px;
 
   h3 {
     color: $color-primary !important;
     margin-bottom: 2rem !important;
   }
 
-  .custom-post-card {
-    max-width: 1000px;
+  .moreContainer {
+    padding: 1em;
   }
 }

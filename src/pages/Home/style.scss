@@ -1,114 +1,15 @@
 @import "styles/main.scss";
 
-.home-page {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  width: 100%;
-  height: calc(100vh - 72px);
-  overflow: auto;
-
-  &-container-recommendations {
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 2rem;
-    flex-wrap: wrap;
-  }
-  &-container {
-    padding: 0 0 150px;
-    background: $color-background;
-    height: calc(100vh - 72px);
-    overflow: auto;
-
-    .ant-col {
-      width: 100%;
-    }
-
-    .view_all_events {
-      cursor: pointer;
-    }
-
-    .list-label {
-      font-weight: 900 !important;
-      margin-top: 60px !important;
-    }
-
-    .article-card {
-      margin-top: 2.25rem;
-    }
-
-    .recommend-card {
-      padding: 2.25rem 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: $color-white;
-      box-shadow: 4px 0px 14px #37215714;
-      border: 1px solid $color-border;
-      border-radius: 0.5rem;
-      margin-top: 2.25rem;
-
-      @media (max-width: 575.98px) {
-        margin-top: 20px;
-        padding: 28px 20px;
-
-        &-label {
-          @include app-font(20px, 30px, 600);
-        }
-
-        &-upgrade {
-          width: 100%;
-          font-weight: 500 !important;
-        }
-      }
-
-      &-label {
-        margin-bottom: 28px !important;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 575.98px) {
-      padding: 16px 1rem 150px;
-
-      .list-label {
-        margin-top: 36px !important;
-        margin-bottom: 8px !important;
-      }
-
-      .article-card {
-        margin-top: 20px;
-      }
-    }
-  }
-
-  .event-card-group {
-    margin-top: 2.25rem;
-
-    @media (max-width: 575.98px) {
-      margin-top: 18px;
-    }
-  }
-
-  .event-card-item:not(:first-child) {
-    margin-top: 2.25rem;
-  }
-}
-
 .home-page-container {
   width: 100%;
-  padding: 2em;
   height: calc(100vh - 72px);
   overflow: auto;
+  padding-bottom: 0px;
 
   &--profile {
-    background: $color-white;
+    max-width: 1000px;
     padding: 28px 2rem;
     border-bottom: 1px solid $color-border;
-    margin: 0 -2rem;
 
     @media (max-width: 575.98px) {
       border-bottom: none;
@@ -116,9 +17,13 @@
       padding: 28px 1rem;
       margin: 0 -1rem;
     }
+    .profile-status-bar {
+      background-color: $color-white;
+    }
   }
 
   &--trending {
+    display: none;
     border-bottom: 1px solid $color-border;
 
     h3 {
@@ -157,11 +62,61 @@
   &--posts {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 72px);
+    width: 100%;
+    overflow-y: scroll;
+
     @media (max-width: 1023.98px) {
       .posts-filter-panel {
         display: none;
       }
+    }
+
+    &-central-panel {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding-bottom: 1em;
+      @media (max-width: 1023.98px) {
+        padding: 0px 1em 1em 1em;
+      }
+    }
+  }
+
+  &--upgrade {
+    width: 100%;
+    max-width: 1000px;
+    font-weight: 500 !important;
+
+    .recommend-card {
+      padding: 2.25rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: $color-white;
+      box-shadow: 4px 0px 14px #37215714;
+      border: 1px solid $color-border;
+      border-radius: 0.5rem;
+      margin-top: 2.25rem;
+
+      @media (max-width: 575.98px) {
+        margin-top: 20px;
+        padding: 28px 20px;
+
+        &-label {
+          @include app-font(20px, 30px, 600);
+        }
+      }
+
+      &-label {
+        margin-bottom: 28px !important;
+        text-align: center;
+      }
+    }
+    h2 {
+      width: 80%;
+      text-align: center !important;
     }
   }
 }
