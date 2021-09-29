@@ -29,11 +29,17 @@ const PostForm = ({
 }) => {
   const [form] = Form.useForm();
   const [links, setLinks] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [checkGroupDisabled, setCheckGroupDisabled] = useState(false);
 
   useEffect(() => {
     if (postData) {
       if (postData.text) {
         getOgLinks(postData.text);
+      }
+      if (postData.topics.length === 5) {
+        setSelectedTopics(postData.topics);
+        setCheckGroupDisabled(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,12 +70,26 @@ const PostForm = ({
     setLinks(anchorArray);
   };
 
+  const validLimit = (data) => {
+    if (data.hasOwnProperty("topics")) {
+      setSelectedTopics(data.topics);
+      if (data.topics.length === 5) {
+        setCheckGroupDisabled(true);
+      } else {
+        setCheckGroupDisabled(false);
+      }
+    }
+  };
+
   return (
     <div className="post-form-container">
       <Form
         form={externalForm == null ? form : externalForm}
         layout="vertical"
         onFinish={onFinish}
+        onValuesChange={(data) => {
+          validLimit(data);
+        }}
         initialValues={
           postData && {
             ...postData,
@@ -141,10 +161,17 @@ const PostForm = ({
             />
           )}
         </Item>
-        <Item label="Hashtags" name="topics">
+        <Item label="Topics (select at least one)" name="topics">
           <Select allowClear mode="multiple">
             {allCategories.map((item) => (
-              <Option key={`option-${item.value}`} value={item.value}>
+              <Option
+                disabled={
+                  checkGroupDisabled &&
+                  selectedTopics.indexOf(item.value) === -1
+                }
+                key={`option-${item.value}`}
+                value={item.value}
+              >
                 {item.title}
               </Option>
             ))}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Row, Col } from "antd";
+import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 
@@ -78,24 +78,17 @@ const HomePage = ({
 
   return (
     <div className="home-page-container">
-      {userProfile && userProfile.percentOfCompletion !== 100 && (
-        <div className="home-page-container--profile">
-          <Row gutter={16}>
-            <Col span={24} lg={{ span: 16, offset: 4 }}>
-              <ProfileStatusBar
-                percent={userProfile ? userProfile.percentOfCompletion : 0}
-              />
-            </Col>
-          </Row>
-        </div>
-      )}
       <div className="home-page-container--trending">
         <h3>Trending</h3>
         <div className="items">
           {recommendations.podcasts && (
             <>
               {recommendations.podcasts.map((item, index) => (
-                <TrendingItem key={`trending-podcast-${index}`} type="podcast" element={item} />
+                <TrendingItem
+                  key={`trending-podcast-${index}`}
+                  type="podcast"
+                  element={item}
+                />
               ))}
             </>
           )}
@@ -103,7 +96,11 @@ const HomePage = ({
           {recommendations.conferenceLibrary && (
             <>
               {recommendations.conferenceLibrary.map((item, index) => (
-                <TrendingItem key={`trending-conference-${index}`} type="conference" element={item} />
+                <TrendingItem
+                  key={`trending-conference-${index}`}
+                  type="conference"
+                  element={item}
+                />
               ))}
             </>
           )}
@@ -111,28 +108,26 @@ const HomePage = ({
           {recommendations.libraries && (
             <>
               {recommendations.libraries.map((item, index) => (
-                <TrendingItem key={`trending-library-${index}`} type="library" element={item} />
+                <TrendingItem
+                  key={`trending-library-${index}`}
+                  type="library"
+                  element={item}
+                />
               ))}
             </>
           )}
           {recommendations.events && (
             <>
               {recommendations.events.map((item, index) => (
-                <TrendingItem key={`trending-event-${index}`} type="event" element={item} />
+                <TrendingItem
+                  key={`trending-event-${index}`}
+                  type="event"
+                  element={item}
+                />
               ))}
             </>
           )}
         </div>
-      </div>
-      <div className="home-page-container--mobile-options">
-        <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-        <Button
-          onClick={() => {
-            showFilterPanel();
-          }}
-        >
-          Filters
-        </Button>
       </div>
       <div className="home-page-container--posts">
         <PostsFilterPanel
@@ -140,37 +135,43 @@ const HomePage = ({
           onChange={onFilterChange}
           onSearch={onSearch}
         />
-        <Posts onShowMore={onShowMore} history={history} />
-      </div>
-      <div className="home-page-container--upgrade">
-        {userProfile && userProfile.memberShip === "free" && (
-          <Row gutter={16}>
-            <Col lg={{ span: 16, offset: 4 }}>
+        <div className="home-page-container--posts-central-panel">
+          {userProfile && userProfile.percentOfCompletion !== 100 && (
+            <div className="home-page-container--profile">
+              <ProfileStatusBar
+                percent={userProfile ? userProfile.percentOfCompletion : 0}
+              />
+            </div>
+          )}
+          <div className="home-page-container--mobile-options">
+            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+            <Button
+              onClick={() => {
+                showFilterPanel();
+              }}
+            >
+              Filters
+            </Button>
+          </div>
+          <Posts onShowMore={onShowMore} history={history} />
+          <div className="home-page-container--upgrade">
+            {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
-                <Row gutter={16}>
-                  <Col
-                    span={24}
-                    offset={0}
-                    md={{ span: 14, offset: 5 }}
-                    className="d-flex flex-column items-center"
-                  >
-                    <h2 className="recommend-card-label">
-                      Upgrade to a PREMIUM Membership and get unlimited access
-                      to the LAB features
-                    </h2>
-                    <CustomButton
-                      text="Upgrade"
-                      type="primary"
-                      size="xl"
-                      className="recommend-card-upgrade"
-                      onClick={onUpgrade}
-                    />
-                  </Col>
-                </Row>
+                <h2 className="recommend-card-label">
+                  Upgrade to a PREMIUM Membership and get unlimited access to
+                  the LAB features
+                </h2>
+                <CustomButton
+                  text="Upgrade"
+                  type="primary"
+                  size="xl"
+                  className="recommend-card-upgrade"
+                  onClick={onUpgrade}
+                />
               </div>
-            </Col>
-          </Row>
-        )}
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

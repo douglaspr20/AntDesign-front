@@ -5,14 +5,19 @@
   top: 20px;
   border: 1px solid $color-border;
   border-radius: 8px;
-  width: 319px;
+  width: 260px;
   background: $color-white;
   padding: 1.5rem;
   margin: 1rem;
   overflow-y: scroll;
+  height: calc(100vh - 100px);
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  h5 {
+    margin-bottom: 1em !important;
   }
 
   button {
