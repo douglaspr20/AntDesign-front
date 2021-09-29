@@ -23,6 +23,7 @@ import { ReactComponent as IconWaterOutline } from "images/icon-water-outline.sv
 import { ReactComponent as IconFlameOutline } from "images/icon-flame-outline.svg";
 import { ReactComponent as IconHeartOutline } from "images/icon-heart-outline.svg";
 import { ReactComponent as IconChatBubblesOutline } from "images/icon-chatbubbles-outline.svg";
+import { ReactComponent as IconDocument } from "images/icon-document.svg";
 
 import "./style.scss";
 
@@ -111,7 +112,7 @@ const PostCard = ({
                 {data.User.firstName} {data.User.lastName}
               </h4>
               <p>{data.User.about}</p>
-              <span>{getPublicationTime(data.createdAt)}</span>
+              <span>Posted {getPublicationTime(data.createdAt)}</span>
             </div>
           </section>
           {data.UserId === userId ? (
@@ -251,6 +252,9 @@ const PostCard = ({
                 </li>
                 <li onClick={onCommentClick}>
                   <IconChatBubblesOutline /> Comment
+                </li>
+                <li onClick={onCommentClick}>
+                  <IconDocument /> View full story
                 </li>
               </ul>
             </section>

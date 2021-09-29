@@ -34,7 +34,6 @@ const Posts = ({
   return (
     <>
       <div id="posts-container">
-        <h3>Latest Stories</h3>
         {allPosts.map((item) => {
           return (
             <PostCard
