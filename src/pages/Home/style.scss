@@ -8,7 +8,8 @@
 
   &--profile {
     max-width: 1000px;
-    padding: 28px 2rem;
+    padding-top: 1.5em;
+    padding-bottom: 1em;
     border-bottom: 1px solid $color-border;
 
     @media (max-width: 575.98px) {
