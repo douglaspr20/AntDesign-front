@@ -37,9 +37,11 @@ const PostForm = ({
       if (postData.text) {
         getOgLinks(postData.text);
       }
-      if (postData.topics.length === 5) {
-        setSelectedTopics(postData.topics);
-        setCheckGroupDisabled(true);
+      if (postData.topics != null) {
+        if (postData.topics.length === 5) {
+          setSelectedTopics(postData.topics);
+          setCheckGroupDisabled(true);
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
