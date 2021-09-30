@@ -115,7 +115,7 @@ const PostForm = ({
         >
           <FroalaEdit
             s3Hash={s3Hash}
-            config={{
+            additionalConfig={{
               linkAlwaysBlank: true,
               emoticonsUseImage: false,
               quickInsertTags: [],
@@ -162,7 +162,16 @@ const PostForm = ({
             />
           )}
         </Item>
-        <Item label="Topics (select at least one)" name="topics">
+        <Item
+          label="Topics (select at least one)"
+          name="topics"
+          rules={[
+            {
+              required: true,
+              message: "Topics (select at least one) is required.",
+            },
+          ]}
+        >
           <Select allowClear mode="multiple">
             {allCategories.map((item) => (
               <Option
