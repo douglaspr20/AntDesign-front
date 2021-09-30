@@ -84,7 +84,7 @@ const PostPage = ({
               <Card title="Edit Post">
                 <PostForm
                   postData={post}
-                  buttonText="Edit"
+                  buttonText="SAVE EDITS"
                   onUpdate={onUpdate}
                 />
               </Card>

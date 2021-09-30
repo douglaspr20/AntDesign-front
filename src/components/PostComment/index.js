@@ -50,14 +50,10 @@ const PostComment = ({
     <Comment
       author={`${data.userFirstName} ${data.userLastName}`}
       avatar={
-        data.userImg != null ? (
-          <Avatar
-            src={data.userImg}
-            alt={`${data.userFirstName} ${data.userLastName}`}
-          />
-        ) : (
-          <Avatar>{`${data.userFirstName[0]} ${data.userLastName[0]}`}</Avatar>
-        )
+        <Avatar
+          src={data.userImg}
+          alt={`${data.userFirstName} ${data.userLastName}`}
+        />
       }
       datetime={<span>{getPublicationTime(data.createdAt)}</span>}
       content={data.comment}
