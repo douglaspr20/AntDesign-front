@@ -116,6 +116,7 @@ const PostForm = ({
           <FroalaEdit
             s3Hash={s3Hash}
             config={{
+              linkAlwaysBlank: true,
               emoticonsUseImage: false,
               quickInsertTags: [],
               placeholderText: "Add a post...",
