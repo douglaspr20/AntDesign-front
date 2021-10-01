@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { Spin, Layout } from "antd";
+import isEmpty from "lodash/isEmpty";
 
 import Content from "containers/Content";
 import TopHeader from "containers/TopHeader";
@@ -15,6 +16,8 @@ import PaymentModal from "./containers/PaymentModal";
 import PaymentForm from "./containers/PaymentForm";
 import InviteFriendModal from "./containers/InviteFriendModal";
 import InviteFriendForm from "./containers/InviteFriendForm";
+import PostFormModal from "./containers/PostFormModal";
+import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
@@ -48,6 +51,8 @@ class App extends Component {
       openPaymentPanel: false,
       openInviteFriendModal: false,
       openInviteFriendPanel: false,
+      openPostFormModal: false,
+      openPostFormPanel: false,
     };
   }
 
@@ -63,7 +68,6 @@ class App extends Component {
     });
 
     Emitter.on(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL, () => {
-      console.log(this.props.isMobile);
       if (this.props.isMobile) {
         this.setState({ openInviteFriendPanel: true });
       } else {
@@ -71,8 +75,26 @@ class App extends Component {
       }
     });
 
+    Emitter.on(EVENT_TYPES.OPEN_POST_MODAL, () => {
+      if (this.props.isMobile) {
+        this.setState({ openPostFormPanel: true });
+      } else {
+        this.setState({ openPostFormModal: true });
+      }
+    });
+
+    Emitter.on(EVENT_TYPES.CLOSE_POST_MODAL, () => {
+      if (this.props.isMobile) {
+        this.setState({ openPostFormPanel: false });
+      } else {
+        this.setState({ openPostFormModal: false });
+      }
+    });
+
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_EVENT, (data) => {
-      this.props.pushNotification(data);
+      if (data.UserId == null || data.UserId === this.props.userProfile.id) {
+        this.props.pushNotification(data);
+      }
     });
 
     SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
@@ -82,6 +104,15 @@ class App extends Component {
     this.props.getCategories();
     this.props.getLive();
     this.props.getEditorSignature();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { userProfile: prevUser } = prevProps;
+    const { userProfile: curUser } = this.props;
+
+    if (isEmpty(prevUser) && !isEmpty(curUser)) {
+      this.props.getLive();
+    }
   }
 
   componentWillUnmount() {
@@ -110,6 +141,14 @@ class App extends Component {
     this.setState({ openInviteFriendPanel: false });
   };
 
+  onHidePostFormModal = () => {
+    this.setState({ openPostFormModal: false });
+  };
+
+  onHidePostFormPanel = () => {
+    this.setState({ openPostFormPanel: false });
+  };
+
   handleSubmit = (event) => {
     event.preventDefault();
     this.onHidePaymentPanel();
@@ -130,11 +169,13 @@ class App extends Component {
       openPaymentPanel,
       openInviteFriendModal,
       openInviteFriendPanel,
+      openPostFormModal,
+      openPostFormPanel,
     } = this.state;
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
-        <Layout style={{ height: "100vh" }}>
+        <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
             <TopHeader />
@@ -170,6 +211,17 @@ class App extends Component {
           <InviteFriendForm
             handleSubmit={this.handleInviteFriend}
             hidePanel={this.onHideInviteFriendPanel}
+          />
+        )}
+        <PostFormModal
+          visible={openPostFormModal}
+          onInvite={this.onHidePostFormModal}
+          onCancel={this.onHidePostFormModal}
+        />
+        {openPostFormPanel && (
+          <PostForm
+            handleSubmit={this.handlePostForm}
+            hidePanel={this.onHidePostFormPanel}
           />
         )}
       </div>

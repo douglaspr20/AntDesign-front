@@ -6,7 +6,8 @@ import { injectIntl } from "react-intl";
 import { Link, withRouter } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 
-import { SIDEBAR_MENU_LIST, INTERNAL_LINKS } from "enum";
+import Emitter from "services/emitter";
+import { SIDEBAR_MENU_LIST, INTERNAL_LINKS, EVENT_TYPES } from "enum";
 import SidebarMenuItem from "./SidebarMenuItem";
 import LogoSidebar from "images/logo-sidebar.svg";
 
@@ -25,7 +26,12 @@ class NavBar extends Component {
 
     this.state = {
       showFirewall: false,
+      isAddStoryEvent: false,
     };
+
+    Emitter.on(EVENT_TYPES.SHOW_FIREWALL, () => {
+      this.setState({ showFirewall: true, isAddStoryEvent: true });
+    });
   }
 
   onCloseSidebar = () => {
@@ -122,12 +128,20 @@ class NavBar extends Component {
         {showFirewall && (
           <div
             className="sidebar-firewall"
-            onClick={() => this.setState({ showFirewall: false })}
+            onClick={() =>
+              this.setState({ showFirewall: false, isAddStoryEvent: false })
+            }
           >
             <div className="upgrade-notification-panel">
               <h3>
-                You must fully complete your profile before joining the
-                mentoring feature.
+                {this.state.isAddStoryEvent === true ? (
+                  <>You must fully complete your profile before adding story or comment.</>
+                ) : (
+                  <>
+                    You must fully complete your profile before joining the
+                    mentoring feature.
+                  </>
+                )}
               </h3>
             </div>
           </div>
