@@ -5,7 +5,7 @@ import { Form, Spin, Select } from "antd";
 import Emitter from "services/emitter";
 import OpengraphReactComponent from "opengraph-react";
 
-import { CustomButton, FroalaEdit, ImageUpload } from "components";
+import { CustomButton, FroalaEdit, ImageUpload3 } from "components";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -190,7 +190,7 @@ const PostForm = ({
           </Select>
         </Item>
         <Item label="Upload image" name="imageData">
-          <ImageUpload aspect={16 / 9} />
+          <ImageUpload3 aspect={16 / 9} />
         </Item>
         {externalForm == null && (
           <Item>
