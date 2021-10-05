@@ -40,7 +40,7 @@
         text-align: center;
       }
 
-      img{
+      img {
         height: 100px;
       }
 
@@ -62,7 +62,7 @@
     }
   }
 
-  &__content__header{
+  &__content__header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -88,19 +88,19 @@
     }
   }
 
-  &__content__subtitle{
+  &__content__subtitle {
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    
-    .specialty-item{
+
+    .specialty-item {
       margin-right: 1em;
       margin-top: 1em;
     }
   }
 
-  &__content__paragraph{
+  &__content__paragraph {
     margin-top: 1rem;
 
     p {
@@ -127,7 +127,7 @@
     flex-direction: row;
     width: 100%;
     height: 40px;
-    
+
     @media (max-width: 1023.98px) {
       width: 100%;
       flex-wrap: wrap;
@@ -144,14 +144,14 @@
 
       @media (max-width: 1023.98px) {
         width: 100%;
-        margin-top: .8rem;
+        margin-top: 0.8rem;
       }
     }
     &--icon {
       display: inline-table;
       width: 28px;
       height: 28px;
-      margin-right: .5em;
+      margin-right: 0.5em;
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
@@ -159,15 +159,45 @@
     }
   }
 
-  &__content__mobile--button{
+  &__content__mobile--button {
     button {
       display: none;
 
-    @media (max-width: 1023.98px) {
-      margin-top: 1.5rem;
-      display: block;
-      width: 100%;
+      @media (max-width: 1023.98px) {
+        margin-top: 1.5rem;
+        display: block;
+        width: 100%;
+      }
     }
+  }
+
+  &__content__socialmedia_links {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    color: $color-text-secondary;
+    font-size: 14px;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    margin-top: 2em;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 1em;
+
+      a {
+        color: $color-text-secondary;
+      }
+
+      svg {
+        margin-right: 1em;
+        width: 28px;
+        height: 28px;
+      }
     }
   }
 }

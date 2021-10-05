@@ -9,6 +9,13 @@ import IconBriefCaseOutLine from "images/icon-briefcase-outline.svg";
 import IconCallOutLine from "images/icon-call-outline.svg";
 import IconUser from "images/icon-person-outline.svg";
 
+import {
+  FacebookOutlined,
+  TwitterOutlined,
+  InstagramOutlined,
+  LinkedinOutlined,
+} from "@ant-design/icons";
+
 import "./style.scss";
 
 const MarketplaceCard = ({
@@ -21,6 +28,10 @@ const MarketplaceCard = ({
   contact_email,
   contact_phone,
   demoUrl,
+  twitter,
+  facebook,
+  linkedin,
+  instagram,
   categories,
   allCategories,
 }) => {
@@ -50,9 +61,7 @@ const MarketplaceCard = ({
               size="sm"
               onClick={() => onVisitWebSite(url)}
             />
-            {demoUrl && (
-              <CustomButton text="Demo" size="sm" onClick={onDemo} />
-            )}
+            {demoUrl && <CustomButton text="Demo" size="sm" onClick={onDemo} />}
           </div>
         </div>
         <div className="marketplace-card__container__content">
@@ -116,6 +125,29 @@ const MarketplaceCard = ({
               {contact_phone}
             </div>
           </div>
+          <div className="marketplace-card__content__socialmedia_links">
+            {facebook && (
+              <div>
+                <a href={facebook}><FacebookOutlined /></a>
+              </div>
+            )}
+            {linkedin && (
+              <div>
+                <a href={linkedin}><LinkedinOutlined /></a>
+              </div>
+            )}
+            {twitter && (
+              <div>
+                <a href={twitter}><TwitterOutlined /></a>
+              </div>
+            )}
+            {instagram && (
+              <div>
+                <a href={instagram}><InstagramOutlined /></a>
+              </div>
+            )}
+          </div>
+
           <div className="marketplace-card__content__mobile--button">
             <CustomButton
               text="Visit website"
