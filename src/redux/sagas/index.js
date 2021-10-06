@@ -21,6 +21,7 @@ import { liveSaga } from "./live";
 import { postSaga } from "./post";
 import { postCommentSaga } from "./postComment";
 import { envSaga } from "./env";
+import { skillCohortSaga } from "./skillCohort"
 
 export default function* sagas() {
   yield all([
@@ -46,5 +47,6 @@ export default function* sagas() {
     ...postSaga,
     ...postCommentSaga,
     ...envSaga,
+    ...skillCohortSaga,
   ]);
 }

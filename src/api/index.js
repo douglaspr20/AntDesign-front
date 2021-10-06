@@ -74,6 +74,10 @@ import {
 import { getChannelCategories } from "./module/channel-category";
 import { getNotifications, markeToRead } from "./module/notification";
 import { getAllSessions } from "./module/session";
+import {
+  getAllSkillCohorts,
+  getSkillCohort,
+} from "./module/skillCohort"
 
 import { getEditorSignature } from "./module/env";
 
@@ -143,4 +147,6 @@ export {
   claimEventAttendance,
   markConferenceLibraryViewed,
   markPodcastseriesViewed,
+  getAllSkillCohorts,
+  getSkillCohort,
 };
