@@ -22,6 +22,7 @@ import sessionReducer from "./sessionReducer";
 import liveReducer from "./liveReducer";
 import postReducer from "./postReducer";
 import postCommentReducer from "./postCommentReducer";
+import skillCohortReducer from "./skillCohortReducer"
 
 export default combineReducers({
   home: homeReducer,
@@ -46,4 +47,5 @@ export default combineReducers({
   live: liveReducer,
   post: postReducer,
   postComment: postCommentReducer,
+  skillCohort: skillCohortReducer
 });

@@ -82,6 +82,10 @@ import {
   markeToUnRead,
 } from "./module/notification";
 import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import {
+  getAllSkillCohorts,
+  getSkillCohort,
+} from "./module/skillCohort"
 
 import { getEditorSignature } from "./module/env";
 
@@ -157,4 +161,6 @@ export {
   markPodcastViewed,
   markPodcastseriesViewed,
   markeToUnRead,
+  getAllSkillCohorts,
+  getSkillCohort,
 };

@@ -34,7 +34,12 @@ import LivePage from "pages/Live";
 import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 import PostPage from "pages/Post";
+<<<<<<< HEAD
 import LibraryItemPage from "pages/LibraryItem";
+=======
+import SkillCohortPage from 'pages/SkillCohort'
+import SkillCohortDetailPage from 'pages/SkillCohortDetail'
+>>>>>>> a72caf9 ([FEATURE][Lourence] - Skill Cohort)
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -189,6 +194,12 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
             render={(props) => <LibraryItemPage {...props} />}
+            path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id`}
+            render={(props) => <SkillCohortDetailPage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.SKILL_COHORTS}
+            render={(props) => <SkillCohortPage {...props} />}
           />
           <Route
             exact
