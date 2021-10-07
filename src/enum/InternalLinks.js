@@ -32,4 +32,5 @@ export default {
   GLOBAL_CONFERENCE: "/global-conference",
   LIVE: "/live",
   POST: "/post",
+  LIBRARY_ITEM: "/library-item",
 };

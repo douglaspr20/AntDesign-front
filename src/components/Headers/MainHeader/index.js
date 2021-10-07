@@ -107,6 +107,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
+      pathInfo = {
+        icon: IconMedal,
+        label: `Library Item`,
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">

@@ -1,0 +1,20 @@
+@import "../../styles/main.scss";
+
+.library-item-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 72px);
+  overflow-y: scroll;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  
+  &--conference-library {
+    margin: 0 auto;
+    max-width: 60%;
+
+    @media (max-width: 1023.98px) {
+      max-width: 95%;
+    }
+  }
+}

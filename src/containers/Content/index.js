@@ -32,6 +32,7 @@ import LivePage from "pages/Live";
 import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 import PostPage from "pages/Post";
+import LibraryItemPage from "pages/LibraryItem";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -173,6 +174,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.POST}/:id/:edit?`}
             render={(props) => <PostPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
+            render={(props) => <LibraryItemPage {...props} />}
           />
           <Route
             exact

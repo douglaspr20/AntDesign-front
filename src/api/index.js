@@ -62,6 +62,7 @@ import {
   searchConferenceLibrary,
   claimConferenceLibrary,
   markConferenceLibraryViewed,
+  getConferenceLibrary,
 } from "./module/conference";
 import {
   createChannel,
@@ -104,6 +105,7 @@ export {
   setMatch,
   getCategories,
   searchConferenceLibrary,
+  getConferenceLibrary,
   createChannel,
   searchChannels,
   getChannelCategories,
