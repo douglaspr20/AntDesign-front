@@ -58,14 +58,7 @@ const Login = ({
         setSignupStep(signupStep + 1);
       }
       if (signupStep === 3) {
-        signUp({
-          ...newSignupValues,
-          recentWorkArea: newSignupValues.recentWorkArea.includes("all")
-            ? WorkAreas.filter((item) => item.value !== "all").map(
-                (item) => item.value
-              )
-            : newSignupValues.recentWorkArea,
-        });
+        signUp({ ...newSignupValues });
       }
     }
   };

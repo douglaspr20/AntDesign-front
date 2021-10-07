@@ -5,13 +5,21 @@ import isEqual from "lodash/isEqual";
 import { connect } from "react-redux";
 
 import { ProfileAvatar, CustomButton } from "components";
-import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
+import {
+  CONTACT_ICONS,
+  TIMEZONE_LIST,
+  LANGUAGES,
+  COUNTRIES,
+  PROFILE_SETTINGS,
+} from "enum";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
 
 const Languages = LANGUAGES.ParsedLanguageData;
+
+const WorkAreas = PROFILE_SETTINGS.WORK_AREAS;
 
 class ProfileViewPanel extends React.Component {
   constructor(props) {
@@ -179,7 +187,11 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">
             What best defines your current or most recent job level?
           </h5>
-          <h3 className={clsx("textfield-value", { completed: !!user.recentJobLevel })}>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.recentJobLevel,
+            })}
+          >
             {user.recentJobLevel || "-"}
           </h3>
           <h5 className="textfield-label">
@@ -190,12 +202,20 @@ class ProfileViewPanel extends React.Component {
               completed: user.recentWorkArea && user.recentWorkArea.length,
             })}
           >
-            {user.recentWorkArea.join(", ") || "-"}
+            {user.recentWorkArea.includes("all")
+              ? WorkAreas.filter((item) => item.value !== "all")
+                  .map((item) => item.label)
+                  .join(", ")
+              : user.recentWorkArea.join(", ") || "-"}
           </h3>
           <h5 className="textfield-label">
             What is the size of the organization your work for?
           </h5>
-          <h3 className={clsx("textfield-value", { completed: !!user.sizeOfOrganization })}>
+          <h3
+            className={clsx("textfield-value", {
+              completed: !!user.sizeOfOrganization,
+            })}
+          >
             {user.sizeOfOrganization || "-"}
           </h3>
         </div>
