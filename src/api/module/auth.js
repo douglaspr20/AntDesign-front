@@ -14,6 +14,10 @@ export const signUp = ({
   password,
   password2,
   recaptcha,
+  location,
+  recentJobLevel,
+  recentWorkArea,
+  sizeOfOrganization,
 }) => {
   return httpClient.post("/public/register", {
     firstName,
@@ -22,6 +26,10 @@ export const signUp = ({
     password,
     password2,
     recaptcha,
+    location,
+    recentJobLevel,
+    recentWorkArea,
+    sizeOfOrganization,
   });
 };
 
