@@ -10,7 +10,7 @@ import {
   CustomSelect,
   CustomRadio,
 } from "components";
-import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES } from "enum";
+import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES, PROFILE_SETTINGS } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
 import { isValidEmail } from "utils/format";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -21,6 +21,12 @@ import IconDelete from "images/icon-delete.svg";
 import "./style.scss";
 
 const Languages = LANGUAGES.ParsedLanguageData;
+
+const JobLevels = PROFILE_SETTINGS.JOB_LEVELS;
+
+const WorkAreas = PROFILE_SETTINGS.WORK_AREAS;
+
+const OrgSizes = PROFILE_SETTINGS.ORG_SIZES;
 
 class ProfileEditPanel extends React.Component {
   constructor(props) {
@@ -297,6 +303,54 @@ class ProfileEditPanel extends React.Component {
             >
               <CustomRadio value={1}>Yes</CustomRadio>
               <CustomRadio value={0}>No</CustomRadio>
+            </Radio.Group>
+            <h5 className="textfield-label">
+              What best defines your current or most recent job level?
+            </h5>
+            <Radio.Group
+              className="d-flex flex-column radio-group"
+              value={user.recentJobLevel}
+              onChange={(e) =>
+                this.onFieldChange("recentJobLevel", e.target.value)
+              }
+            >
+              {JobLevels.map((job) => (
+                <CustomRadio key={job.value} value={job.value}>
+                  {job.label}
+                </CustomRadio>
+              ))}
+            </Radio.Group>
+            <h5 className="textfield-label">
+              In what area of HR do you currently work or most recently worked?
+            </h5>
+            <Checkbox.Group
+              className="d-flex flex-column custom-checkbox-group"
+              defaultValue={user.recentWorkArea}
+              onChange={(values) =>
+                this.onFieldChange("recentWorkArea", values)
+              }
+            >
+              {WorkAreas.map((area, index) => (
+                <CustomCheckbox key={index} value={area.value}>
+                  {area.label}
+                </CustomCheckbox>
+              ))}
+            </Checkbox.Group>
+            <h5 className="textfield-label">
+              What is the size of the organization your work for?
+            </h5>
+            <Radio.Group
+              className="d-flex flex-column radio-group"
+              value={user.sizeOfOrganization}
+              onChange={(e) =>
+                this.onFieldChange("sizeOfOrganization", e.target.value)
+              }
+            >
+              {OrgSizes.map((org) => (
+                <CustomRadio key={org.value} value={org.value}>
+                  {org.label}
+                </CustomRadio>
+              ))}
             </Radio.Group>
           </div>
         </div>
