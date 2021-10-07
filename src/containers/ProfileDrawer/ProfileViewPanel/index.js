@@ -176,6 +176,28 @@ class ProfileViewPanel extends React.Component {
               ? "No"
               : "-"}
           </h3>
+          <h5 className="textfield-label">
+            What best defines your current or most recent job level?
+          </h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.recentJobLevel })}>
+            {user.recentJobLevel || "-"}
+          </h3>
+          <h5 className="textfield-label">
+            In what area of HR do you currently work or most recently worked?
+          </h5>
+          <h3
+            className={clsx("textfield-value", {
+              completed: user.recentWorkArea && user.recentWorkArea.length,
+            })}
+          >
+            {user.recentWorkArea.join(", ") || "-"}
+          </h3>
+          <h5 className="textfield-label">
+            What is the size of the organization your work for?
+          </h5>
+          <h3 className={clsx("textfield-value", { completed: !!user.sizeOfOrganization })}>
+            {user.sizeOfOrganization || "-"}
+          </h3>
         </div>
       </div>
     );
