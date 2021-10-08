@@ -81,8 +81,13 @@ const ConferenceCard = ({
       <div className="conference-card-header">
         <ReactPlayer
           className="conference-card-player"
-          controls={false}
+          controls={isInternalLink === true}
           url={data.link}
+          onPlay={() => {
+            if (isInternalLink === false) {
+              window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/conference-library/${data.id}`;
+            }
+          }}
         />
       </div>
       <div className="conference-card-content">
