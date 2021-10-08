@@ -116,6 +116,10 @@ const MarketplacePage = ({
               contact_phone={item.contact_phone}
               contact_position={item.contact_position}
               demoUrl={item.demoUrl}
+              twitter={item.twitter}
+              facebook={item.facebook}
+              linkedin={item.linkedin}
+              instagram={item.instagram}
               categories={item.topics}
               allCategories={allCategories}
             />

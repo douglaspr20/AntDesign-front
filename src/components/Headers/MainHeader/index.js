@@ -49,9 +49,9 @@ class MainHeader extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  inviteFriend = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL);
-  };
+  // inviteFriend = () => {
+  //   Emitter.emit(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL);
+  // };
 
   onShowSidebar = () => {
     this.props.setCollapsed(false);
@@ -143,13 +143,13 @@ class MainHeader extends React.Component {
               </div>
             </div>
           )}
-          <CustomButton
+          {/* <CustomButton
             text="Invite friend"
             type="primary"
             size="lg"
             className="btn-invite"
             onClick={this.inviteFriend}
-          />
+          /> */}
           {user.memberShip === "free" && (
             <CustomButton
               text="Upgrade"
