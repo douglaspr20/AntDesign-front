@@ -128,22 +128,22 @@ const MarketplaceCard = ({
           <div className="marketplace-card__content__socialmedia_links">
             {facebook && (
               <div>
-                <a href={facebook}><FacebookOutlined /></a>
+                <a href={facebook} target="_blank" rel="noopener noreferrer"><FacebookOutlined /></a>
               </div>
             )}
             {linkedin && (
               <div>
-                <a href={linkedin}><LinkedinOutlined /></a>
+                <a href={linkedin} target="_blank" rel="noopener noreferrer"><LinkedinOutlined /></a>
               </div>
             )}
             {twitter && (
               <div>
-                <a href={twitter}><TwitterOutlined /></a>
+                <a href={twitter} target="_blank" rel="noopener noreferrer"><TwitterOutlined /></a>
               </div>
             )}
             {instagram && (
               <div>
-                <a href={instagram}><InstagramOutlined /></a>
+                <a href={instagram} target="_blank" rel="noopener noreferrer"><InstagramOutlined /></a>
               </div>
             )}
           </div>
