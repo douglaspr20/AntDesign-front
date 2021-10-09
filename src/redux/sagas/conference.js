@@ -6,7 +6,12 @@ import {
 } from "../actions/conference-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { logout } from "../actions/auth-actions";
-import { searchConferenceLibrary, claimConferenceLibrary, markConferenceLibraryViewed } from "../../api";
+import {
+  searchConferenceLibrary,
+  claimConferenceLibrary,
+  markConferenceLibraryViewed,
+  getConferenceLibrary,
+} from "../../api";
 
 export function* getMoreConferenceLibrariesSaga({ payload }) {
   yield put(conferenceActions.setLoading(true));
@@ -89,7 +94,28 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
     const response = yield call(markConferenceLibraryViewed, { ...payload });
 
     if (response.status === 200) {
-      yield put(conferenceActions.updateConferenceLibraryViewed(response.data.affectedRows));
+      yield put(
+        conferenceActions.updateConferenceLibraryViewed(
+          response.data.affectedRows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* getConferenceLibrarySaga({ payload }) {
+  try {
+    const response = yield call(getConferenceLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        conferenceActions.setConferenceLibrary(response.data.conference)
+      );
     }
   } catch (error) {
     console.log(error);
@@ -115,6 +141,10 @@ function* watchConference() {
   yield takeLatest(
     conferenceConstants.SET_CONFERENCE_VIEWED,
     markConferenceLibraryViewedSaga
+  );
+  yield takeLatest(
+    conferenceConstants.GET_CONFERENCE_LIBRARY,
+    getConferenceLibrarySaga
   );
 }
 

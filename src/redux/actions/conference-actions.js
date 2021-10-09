@@ -8,6 +8,8 @@ const SET_LOADING = "SET_CONFERENCE_LIBRARY_LOADING";
 const CLAIM_CONFERENCE_LIBRARY = "CLAIM_CONFERENCE_LIBRARY";
 const SET_CONFERENCE_VIEWED = "SET_CONFERENCE_VIEWED";
 const UPDATE_CONFERENCE_VIEWED = "UPDATE_CONFERENCE_VIEWED";
+const GET_CONFERENCE_LIBRARY = "GET_CONFERENCE_LIBRARY";
+const SET_CONFERENCE_LIBRARY = "SET_CONFERENCE_LIBRARY";
 
 export const constants = {
   GET_MORE_CONFERENCE_LIBRARIES,
@@ -18,6 +20,8 @@ export const constants = {
   CLAIM_CONFERENCE_LIBRARY,
   SET_CONFERENCE_VIEWED,
   UPDATE_CONFERENCE_VIEWED,
+  GET_CONFERENCE_LIBRARY,
+  SET_CONFERENCE_LIBRARY,
 };
 
 // ------------------------------------
@@ -71,6 +75,20 @@ export const updateConferenceLibraryViewed = createAction(
   (data) => ({ data })
 );
 
+export const getConferenceLibrary = createAction(
+  GET_CONFERENCE_LIBRARY,
+  (id) => ({
+    id,
+  })
+);
+
+export const setConferenceLibrary = createAction(
+  SET_CONFERENCE_LIBRARY,
+  (data) => ({
+    data,
+  })
+);
+
 export const actions = {
   getMoreConferenceLibraries,
   setMoreConferenceLibraries,
@@ -80,4 +98,6 @@ export const actions = {
   claimConferenceLibrary,
   setConferenceLibraryViewed,
   updateConferenceLibraryViewed,
+  getConferenceLibrary,
+  setConferenceLibrary,
 };

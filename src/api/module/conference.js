@@ -23,5 +23,9 @@ export const claimConferenceLibrary = ({ id }) => {
 };
 
 export const markConferenceLibraryViewed = ({ id, viewed }) => {
-  return httpClient.put('private/conference/viewed', { id, mark: viewed });
+  return httpClient.put("private/conference/viewed", { id, mark: viewed });
+};
+
+export const getConferenceLibrary = ({ id }) => {
+  return httpClient.get(`private/conference/${id}`);
 };
