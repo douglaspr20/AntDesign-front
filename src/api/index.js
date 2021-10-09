@@ -72,7 +72,11 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
-import { getNotifications, markeToRead } from "./module/notification";
+import {
+  getNotifications,
+  markeToRead,
+  markeToUnRead,
+} from "./module/notification";
 import { getAllSessions } from "./module/session";
 
 import { getEditorSignature } from "./module/env";
@@ -143,4 +147,5 @@ export {
   claimEventAttendance,
   markConferenceLibraryViewed,
   markPodcastseriesViewed,
+  markeToUnRead,
 };

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
+import isEmpty from "lodash/isEmpty";
 
 import { CustomButton } from "components";
 import { INTERNAL_LINKS } from "enum";
@@ -12,6 +13,7 @@ import { notificationSelector } from "redux/selectors/notificationSelector";
 import {
   getNotifications,
   markNotificationToRead,
+  markNotificationToUnRead,
 } from "redux/actions/notification-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -30,10 +32,56 @@ const NotificationPage = ({
   userProfile,
   getNotifications,
   markNotificationToRead,
+  markNotificationToUnRead,
 }) => {
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const onMarkAsRead = () => {
+    markNotificationToRead(
+      selectedRows.map((row) => row.id),
+      userProfile.id
+    );
+  };
+
+  const onMarkAsUnread = () => {
+    markNotificationToUnRead(
+      selectedRows.map((row) => row.id),
+      userProfile.id
+    );
+  };
+
+  const HeaderMenus = [
+    {
+      icon: "fas fa-envelope",
+      action: onMarkAsRead,
+      tooltip: "Mark as read",
+    },
+    {
+      icon: "fas fa-envelope-open",
+      action: onMarkAsUnread,
+      tooltip: "Mark as unread",
+    },
+  ];
+
+  const renderHeader = () =>
+    isEmpty(selectedRows) ? null : (
+      <div className="notification-table-header">
+        {HeaderMenus.map((menu) => (
+          <Tooltip placement="top" title={menu.tooltip}>
+            <div
+              className="notification-table-header-cell"
+              onClick={menu.action}
+            >
+              <i className={menu.icon} />
+            </div>
+          </Tooltip>
+        ))}
+      </div>
+    );
+
   const Columns = [
     {
-      title: "",
+      title: renderHeader,
       dataIndex: "description",
       render: (action, data) => renderNotification(data),
     },
@@ -108,10 +156,19 @@ const NotificationPage = ({
   };
 
   const rowSelection = {
+    selectedRowKeys: (selectedRows || []).map((row) => row.id),
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log("**** selectedRowKeys ", selectedRowKeys);
-      console.log("**** selectedRows ", selectedRows);
+      setSelectedRows(selectedRows);
     },
+  };
+
+  const onRowClick = (record) => {
+    const isExisted = selectedRows.find((row) => row.id === record.id);
+    if (isExisted) {
+      setSelectedRows(selectedRows.filter((row) => row.id !== record.id));
+    } else {
+      setSelectedRows([...selectedRows, record]);
+    }
   };
 
   const renderNotifications = () => (
@@ -123,6 +180,9 @@ const NotificationPage = ({
               type: "checkbox",
               ...rowSelection,
             }}
+            onRow={(record) => ({
+              onClick: () => onRowClick(record),
+            })}
             className="notification-table"
             columns={Columns}
             dataSource={notificationList}
@@ -181,6 +241,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getNotifications,
   markNotificationToRead,
+  markNotificationToUnRead,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage);
