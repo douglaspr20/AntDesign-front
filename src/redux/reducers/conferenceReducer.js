@@ -47,7 +47,12 @@ export const reducers = {
 
     return state.merge({
       allConferenceLibraries: cloneDeep([...allConferenceLibraries]),
-    })
+    });
+  },
+  [conferenceConstants.SET_CONFERENCE_LIBRARY]: (state, { payload }) => {
+    return state.merge({
+      conferenceLibrary: payload.data,
+    });
   },
 };
 
@@ -58,6 +63,7 @@ export const initialState = () =>
     allConferenceLibraries: [],
     countOfResults: 0,
     currentPage: 1,
+    conferenceLibrary: null,
   });
 
 export default handleActions(reducers, initialState());
