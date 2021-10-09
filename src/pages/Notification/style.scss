@@ -23,6 +23,86 @@
     margin-top: 3rem;
   }
 
+  .notification-table {
+    tr {
+      cursor: pointer;
+    }
+
+    .ant-table-row-selected > td {
+      background-color: #fe562111;
+
+      &:hover {
+        background-color: #fe562111;
+      }
+    }
+
+    .ant-table-cell {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ant-checkbox {
+      .ant-checkbox-inner {
+        border: 2px solid $color-border !important;
+        width: 20px;
+        height: 20px;
+      }
+
+      &:not(.ant-checkbox-indeterminate) {
+        .ant-checkbox-inner::after {
+          width: 8px;
+          height: 16px;
+          margin-left: -2px;
+        }
+      }
+
+      &.ant-checkbox-indeterminate {
+        .ant-checkbox-inner::after {
+          width: 12px;
+          height: 12px;
+          background: $color-primary !important;
+        }
+      }
+
+      &.ant-checkbox-checked {
+        .ant-checkbox-inner {
+          background: $color-primary !important;
+          border: 2px solid $color-primary !important;
+        }
+      }
+    }
+    
+    &-header {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+
+      &-cell {
+        width: 32px;
+        height: 32px;
+        margin-right: 1rem;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        i {
+          font-size: 20px;
+          color: #fe5621;
+        }
+
+        &:hover {
+          border-radius: 16px;
+          background-color: #fe5621;
+
+          i {
+            color: $color-white;
+          }
+        }
+      }
+    }
+  }
+
   .notification-list-item {
     padding: 1rem;
     display: flex;
