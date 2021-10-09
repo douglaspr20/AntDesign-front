@@ -58,11 +58,11 @@ export default {
       icon: IconMedal,
       url: INTERNAL_LINKS.CLASSES,
     },
-    {
-      label: "Learning Journeys",
-      icon: IconJourney,
-      url: INTERNAL_LINKS.JOURNEY,
-    },
+    // {
+    //   label: "Learning Journeys",
+    //   icon: IconJourney,
+    //   url: INTERNAL_LINKS.JOURNEY,
+    // },
     // {
     //   label: "Annual Conference",
     //   icon: IconReader,

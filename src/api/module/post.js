@@ -29,3 +29,7 @@ export const post = async (data) => {
 export const put = async (data) => {
   return await httpClient.put(`private/post/${data.id}`, data);
 };
+
+export const remove = async (data) => {
+  return await httpClient.delete(`private/post/${data.id}`);
+};

@@ -11,12 +11,7 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import { INTERNAL_LINKS, SETTINGS } from "enum";
 
-import {
-  getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
-} from "redux/actions/post-actions";
+import { getAllPost } from "redux/actions/post-actions";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
@@ -29,6 +24,7 @@ const Posts = ({
   currentPage,
   countOfResults,
   onShowMore,
+  userId,
 }) => {
   useEffect(() => {
     getAllPost();
@@ -36,36 +32,47 @@ const Posts = ({
   }, []);
 
   return (
-    <div id="posts-container">
-      {allPosts.map((item) => {
-        return (
-          <PostCard
-            key={`post-card-${item.id}`}
-            data={item}
-            onCommentClick={() => {
-              history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
-            }}
-          />
-        );
-      })}
-      {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
-        <div className="post-page-footer d-flex justify-center items-center">
-          {loading && (
-            <div className="post-page-loading-more">
-              <img src={IconLoadingMore} alt="loading-more-img" />
+    <>
+      <div id="posts-container">
+        {allPosts.map((item) => {
+          return (
+            <PostCard
+              key={`post-card-${item.id}`}
+              data={item}
+              showEdit={true}
+              generalFooter={!(userId === item.UserId)}
+              onCommentClick={() => {
+                history.push(`${INTERNAL_LINKS.POST}/${item.id}`);
+              }}
+              onEditClick={() => {
+                history.push(
+                  `${INTERNAL_LINKS.POST}/${item.id}/${item.UserId}`
+                );
+              }}
+            />
+          );
+        })}
+        <div className="moreContainer">
+          {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+            <div className="post-page-footer d-flex justify-center items-center">
+              {loading && (
+                <div className="post-page-loading-more">
+                  <img src={IconLoadingMore} alt="loading-more-img" />
+                </div>
+              )}
+              {!loading && (
+                <CustomButton
+                  text="Show more"
+                  type="primary outlined"
+                  size="lg"
+                  onClick={onShowMore}
+                />
+              )}
             </div>
           )}
-          {!loading && (
-            <CustomButton
-              text="Show more"
-              type="primary outlined"
-              size="lg"
-              onClick={onShowMore}
-            />
-          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 
@@ -87,9 +94,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllPost,
-  setPostLike,
-  deletePostLike,
-  addPostComment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

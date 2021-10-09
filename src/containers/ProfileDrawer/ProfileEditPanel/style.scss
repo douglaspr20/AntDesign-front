@@ -173,6 +173,16 @@
       }
     }
 
+    .radio-group {
+      margin-top: 1.5rem;
+
+      .custom-radio {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+    }
+
     @media (max-width: 575.98px) {
       padding: 44px 20px 7.5rem;
 

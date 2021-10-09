@@ -1,17 +1,16 @@
 @import "styles/main.scss";
 
-.home-page {
-  display: grid;
-  grid-template-columns: auto 1fr;
+.home-page-container {
   width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
+  padding-bottom: 0px;
 
-  &-profile {
-    background: $color-white;
-    padding: 28px 2rem;
+  &--profile {
+    max-width: 1000px;
+    padding-top: 1.5em;
+    padding-bottom: 1em;
     border-bottom: 1px solid $color-border;
-    margin: 0 -2rem;
 
     @media (max-width: 575.98px) {
       border-bottom: none;
@@ -19,38 +18,76 @@
       padding: 28px 1rem;
       margin: 0 -1rem;
     }
+    .profile-status-bar {
+      background-color: $color-white;
+    }
   }
-  &-container-recommendations {
-    margin: 0 auto;
-    width: 100%;
+
+  &--trending {
+    display: none;
+    border-bottom: 1px solid $color-border;
+
+    h3 {
+      color: $color-primary !important;
+      margin-bottom: 1em !important;
+    }
+
+    .items {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding-bottom: 2em;
+      @media (max-width: 1023.98px) {
+        width: 95%;
+        flex-direction: column;
+      }
+    }
+  }
+  &--mobile-options {
+    display: none;
+    @media (max-width: 1023.98px) {
+      display: block;
+    }
+    button {
+      width: 100%;
+      height: 36px;
+      background: $color-accent;
+      @include app-font(16px, 16px, bold);
+      color: $color-white;
+      border-radius: 5px;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+    }
+  }
+  &--posts {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 2rem;
-    flex-wrap: wrap;
-  }
-  &-container {
-    padding: 0 2rem 150px;
-    background: $color-background;
     height: calc(100vh - 72px);
-    overflow: auto;
+    width: 100%;
+    overflow-y: scroll;
 
-    .ant-col {
+    @media (max-width: 1023.98px) {
+      .posts-filter-panel {
+        display: none;
+      }
+    }
+
+    &-central-panel {
+      display: flex;
+      flex-direction: column;
       width: 100%;
+      padding-bottom: 1em;
+      @media (max-width: 1023.98px) {
+        padding: 0px 1em 1em 1em;
+      }
     }
+  }
 
-    .view_all_events {
-      cursor: pointer;
-    }
-
-    .list-label {
-      font-weight: 900 !important;
-      margin-top: 60px !important;
-    }
-
-    .article-card {
-      margin-top: 2.25rem;
-    }
+  &--upgrade {
+    width: 100%;
+    max-width: 1000px;
+    font-weight: 500 !important;
 
     .recommend-card {
       padding: 2.25rem 0;
@@ -63,6 +100,7 @@
       border: 1px solid $color-border;
       border-radius: 0.5rem;
       margin-top: 2.25rem;
+      margin-bottom: 1rem;
 
       @media (max-width: 575.98px) {
         margin-top: 20px;
@@ -71,11 +109,6 @@
         &-label {
           @include app-font(20px, 30px, 600);
         }
-
-        &-upgrade {
-          width: 100%;
-          font-weight: 500 !important;
-        }
       }
 
       &-label {
@@ -83,36 +116,9 @@
         text-align: center;
       }
     }
-
-    @media (max-width: 575.98px) {
-      padding: 16px 1rem 150px;
-
-      .list-label {
-        margin-top: 36px !important;
-        margin-bottom: 8px !important;
-      }
-
-      .article-card {
-        margin-top: 20px;
-      }
-    }
-  }
-
-  .event-card-group {
-    margin-top: 2.25rem;
-
-    @media (max-width: 575.98px) {
-      margin-top: 18px;
-    }
-  }
-
-  .event-card-item:not(:first-child) {
-    margin-top: 2.25rem;
-  }
-
-  @media (max-width: 1023.98px) {
-    .posts-filter-panel {
-      display: none;
+    h2 {
+      width: 80%;
+      text-align: center !important;
     }
   }
 }
