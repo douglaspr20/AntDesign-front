@@ -11,7 +11,7 @@ import { authSelector } from "redux/selectors/authSelector";
 import { addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
-import { INTERNAL_LINKS, PROFILE_SETTINGS } from "enum";
+import { INTERNAL_LINKS } from "enum";
 
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
@@ -21,8 +21,6 @@ import IconLogo from "images/logo-sidebar.svg";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
-
-const WorkAreas = PROFILE_SETTINGS.WORK_AREAS;
 
 const Login = ({
   isAuthenticated,

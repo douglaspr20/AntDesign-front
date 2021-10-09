@@ -6,7 +6,9 @@ const SET_NOTIFICATION_LOADING = "SET_NOTIFICATION_LOADING";
 const SET_NOTIFICATION_MORE_LOADING = "SET_NOTIFICATION_MORE_LOADING";
 const PUSH_NOTIFICATION = "PUSH_NOTIFICATION";
 const MARK_NOTIFICATION_TO_READ = "MARK_NOTIFICATION_TO_READ";
+const MARK_NOTIFICATION_TO_UNREAD = "MARK_NOTIFICATION_TO_UNREAD";
 const UPDATE_NOTIFICATION_TO_READ = "UPDATE_NOTIFICATION_TO_READ";
+const UPDATE_NOTIFICATION_TO_UNREAD = "UPDATE_NOTIFICATION_TO_UNREAD";
 
 export const constants = {
   GET_NOTIFICATIONS,
@@ -16,6 +18,8 @@ export const constants = {
   PUSH_NOTIFICATION,
   MARK_NOTIFICATION_TO_READ,
   UPDATE_NOTIFICATION_TO_READ,
+  MARK_NOTIFICATION_TO_UNREAD,
+  UPDATE_NOTIFICATION_TO_UNREAD,
 };
 
 // ------------------------------------
@@ -57,6 +61,18 @@ export const updateNotificationToRead = createAction(
     userId,
   })
 );
+export const markNotificationToUnRead = createAction(
+  MARK_NOTIFICATION_TO_UNREAD,
+  (notifications, userId) => ({ notifications, userId })
+);
+export const updateNotificationToUnRead = createAction(
+  UPDATE_NOTIFICATION_TO_UNREAD,
+  (notifications, unreadCount, userId) => ({
+    notifications,
+    unreadCount,
+    userId,
+  })
+);
 
 export const actions = {
   getNotifications,
@@ -66,4 +82,6 @@ export const actions = {
   pushNotification,
   markNotificationToRead,
   updateNotificationToRead,
+  markNotificationToUnRead,
+  updateNotificationToUnRead,
 };
