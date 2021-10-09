@@ -58,6 +58,22 @@ export const reducers = {
       unreadCount: payload.unreadCount,
     });
   },
+  [notificationConstants.UPDATE_NOTIFICATION_TO_UNREAD]: (
+    state,
+    { payload }
+  ) => {
+    const notificationList = state.get("notificationList");
+
+    return state.merge({
+      notificationList: notificationList.map((noti) => ({
+        ...noti,
+        readers: (payload.notifications || []).includes(noti.id)
+          ? noti.readers.filter((id) => id !== payload.userId)
+          : [...noti.readers],
+      })),
+      unreadCount: payload.unreadCount,
+    });
+  },
 };
 
 export const initialState = () =>
