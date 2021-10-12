@@ -204,6 +204,7 @@ const PodcastPage = ({
                   keyword={meta}
                   frequency={frequency}
                   links={getPodcastLinks(episode)}
+                  episode={episode}
                 />
               </div>
             );

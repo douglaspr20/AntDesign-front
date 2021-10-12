@@ -10,6 +10,7 @@ const resultSelector = createSelector(podcastDataSelector, (payload) => {
     podcastSeries: payload.get("podcastSeries"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    podcast: payload.get("podcast"),
   };
 });
 

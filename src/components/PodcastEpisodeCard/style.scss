@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   min-height: 300px;
+  cursor: pointer;
 
   &.add {
     display: flex;
@@ -53,6 +54,15 @@
   overflow: hidden;
   min-height: 100px;
   background: $color-background-dark;
+
+  .podcast-episode__player {
+    width: 1000px !important;
+    height: 564px !important;
+    @media (max-width: 1023.98px) {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
 
   img {
     width: 100%;

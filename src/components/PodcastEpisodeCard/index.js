@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
+import ReactPlayer from "react-player";
+
 
 import { SpecialtyItem } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
-import { CARD_TYPE } from "enum";
+import { CARD_TYPE, INTERNAL_LINKS } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
 import IconMenu from "images/icon-menu.svg";
@@ -29,10 +31,14 @@ function EpisodeCard({
   frequency,
   onAdd,
   onMenuClick,
+  isInternalLink,
+  episode,
 }) {
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
+    } else if (isInternalLink === false) {
+      window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`;
     }
   };
 
@@ -48,10 +54,20 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            {episode_cover ? (
-              <img src={episode_cover} alt="header-img" />
+            {isInternalLink === false ? (
+              <>
+                {episode_cover ? (
+                  <img src={episode_cover} alt="header-img" />
+                ) : (
+                  <div />
+                )}
+              </>
             ) : (
-              <div />
+              <ReactPlayer
+                className="podcast-episode__player"
+                controls={isInternalLink === true}
+                url={episode.vimeoLink}
+              />
             )}
           </div>
           <div className="podcast-episode__card-body">
@@ -139,6 +155,8 @@ EpisodeCard.propTypes = {
   keyword: PropTypes.string,
   onAdd: PropTypes.func,
   onMenuClick: PropTypes.func,
+  isInternalLink: PropTypes.bool,
+  episode: PropTypes.object,
 };
 
 EpisodeCard.defaultProps = {
@@ -153,6 +171,8 @@ EpisodeCard.defaultProps = {
   keyword: "",
   onAdd: () => {},
   onMenuClick: () => {},
+  isInternalLink: false,
+  episode: null,
 };
 
 const mapStateToProps = (state) => ({
