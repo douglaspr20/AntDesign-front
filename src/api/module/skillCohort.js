@@ -10,7 +10,7 @@ export const getAllSkillCohorts = async (filter) => {
     const parsedFilter = Object.keys(newFilter)
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
-    console.log('parsed', parsedFilter)
+
     return await httpClient.get(`private/skill-cohort?${parsedFilter}`)
 }
 

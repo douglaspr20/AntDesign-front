@@ -83,6 +83,33 @@ import {
   getAllSkillCohorts,
   getSkillCohort,
 } from "./module/skillCohort"
+import {
+  getSkillCohortParticipant,
+  getAllSkillCohortParticipants,
+  createSkillCohortParticipant,
+} from "./module/skillCohortParticipant"
+
+import {
+  getResource,
+  getAllResources
+} from './module/skillCohortResource'
+
+import {
+  getAllResourceResponses,
+  createResourceResponse,
+  getResourceResponse,
+  updateResourceResponse
+} from './module/skillCohortResourceResponse'
+
+import {
+  upsertSkillCohortResourceResponseAssessment,
+  getAllSkillCohortResourceResponseAssessment
+} from './module/skillCohortResourceResponseAssessment'
+
+import {
+  getAllResponseRating,
+  upsertResponseRating
+} from './module/skillCohortResourceResponseRating'
 
 import { getEditorSignature } from "./module/env";
 
@@ -156,4 +183,17 @@ export {
   getAllSkillCohorts,
   getSkillCohort,
   markeToUnRead,
+  getSkillCohortParticipant,
+  getAllSkillCohortParticipants,
+  createSkillCohortParticipant,
+  getResource,
+  getAllResources,
+  getAllResourceResponses,
+  createResourceResponse,
+  getResourceResponse,
+  updateResourceResponse,
+  upsertSkillCohortResourceResponseAssessment,
+  getAllSkillCohortResourceResponseAssessment,
+  getAllResponseRating,
+  upsertResponseRating
 };

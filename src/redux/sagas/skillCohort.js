@@ -15,8 +15,6 @@ import {
 export function* getAllSkillCohortSaga({ payload }) {
     yield put(homeActions.setLoading(true))
 
-    console.log('here', payload)
-
     try {
         const response = yield call(getAllSkillCohorts, { ...payload })
 

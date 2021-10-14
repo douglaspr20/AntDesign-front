@@ -1,28 +1,53 @@
 import { Row, Col } from "antd";
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { skillCohortSelector } from 'redux/selectors/skillCohortSelector'
-import { actions as skillCohortActions } from 'redux/actions/skillCohort-actions'
 import { numberWithCommas } from "utils/format";
+import moment from 'moment-timezone'
+
+import { homeSelector } from "redux/selectors/homeSelector";
+import { skillCohortSelector } from 'redux/selectors/skillCohortSelector'
+import { skillCohortParticipantSelector } from 'redux/selectors/skillCohortParticipantSelector'
+
+import { actions as skillCohortActions } from 'redux/actions/skillCohort-actions'
+import { actions as skillCohortParticipantActions } from 'redux/actions/skillCohortParticipant-actions'
 
 import SkillCohortFilterDrawer from './SkillCohortFilterDrawer'
 import SkillCohortCard from './SkillCohortCard'
 
 import './style.scss'
 
-const SkillCohort = ({ allSkillCohorts, getAllSkillCohorts }) => {
+moment().tz("America/Los_Angeles").format();
+
+const SkillCohort = ({ 
+    allSkillCohorts,
+    getAllSkillCohorts,
+    userProfile,
+    getAllSkillCohortParticipants,
+    allSkillCohortParticipants
+}) => {
 
     useEffect(() => {
         getAllSkillCohorts([])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    useEffect(() => {
+        if (userProfile.id) {
+            getAllSkillCohortParticipants(userProfile.id)
+        }
+        // eslint-disable-next-line
+    }, [userProfile])
+
     const handleFilterChange = filter => {
         getAllSkillCohorts(filter.category)
     }
 
     const displaySkillCohorts = allSkillCohorts.map((skillCohort) => {
-        return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} />
+        const hasAccess = allSkillCohortParticipants.some((participant) => {
+            return participant.SkillCohortId === skillCohort.id
+        })
+
+        return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} hasAccess={hasAccess}/>
     })
 
     return (
@@ -49,11 +74,14 @@ const SkillCohort = ({ allSkillCohorts, getAllSkillCohorts }) => {
 }
 
 const mapStateToProps = (state) => ({
-    ...skillCohortSelector(state)
+    ...skillCohortSelector(state),
+    ...skillCohortParticipantSelector(state),
+    userProfile: homeSelector(state).userProfile
 })
 
 const mapDispatchToProps = {
-    ...skillCohortActions
+    ...skillCohortActions,
+    ...skillCohortParticipantActions
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkillCohort)
