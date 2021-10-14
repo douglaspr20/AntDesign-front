@@ -1,0 +1,59 @@
+@import "styles/main.scss";
+
+.skill-cohort-resource-card {
+  min-height: 386px;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: 0.5rem;
+  box-shadow: 4px 0px 14px #37215714;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  width: 100%;
+
+  &-header {
+    width: 100%;
+    min-height: 100px;
+    overflow: hidden;
+    border: 1px solid $color-border;
+    border-radius: 0.5rem;
+    background: $color-background-dark;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-backimg {
+    background-color: $color-text-primary;
+  }
+
+  &-content {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto auto;
+    grid-row-gap: 0.5rem;
+    padding-top: 1.5rem;
+    overflow: hidden;
+    position: relative;
+
+    .mark-viewed {
+      padding: 0 12px;
+    }
+  }
+
+  &-release-date {
+    text-align: center;
+  }
+
+  &-join-btn {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.rating {
+  display: flex;
+}

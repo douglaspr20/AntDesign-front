@@ -34,6 +34,7 @@ import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 import PostPage from "pages/Post";
 import SkillCohortPage from 'pages/SkillCohort'
 import SkillCohortDetailPage from 'pages/SkillCohortDetail'
+import LibraryItemPage from "pages/LibraryItem";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -183,6 +184,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.SKILL_COHORTS}
             render={(props) => <SkillCohortPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
+            render={(props) => <LibraryItemPage {...props} />}
           />
           <Route
             exact

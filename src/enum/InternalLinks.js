@@ -32,5 +32,6 @@ export default {
   GLOBAL_CONFERENCE: "/global-conference",
   LIVE: "/live",
   POST: "/post",
-  SKILL_COHORTS: "/skill-cohorts"
+  SKILL_COHORTS: "/skill-cohorts",
+  LIBRARY_ITEM: "/library-item",
 };

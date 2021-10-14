@@ -7,3 +7,9 @@ export const getNotifications = ({ page, num }) => {
 export const markeToRead = ({ notifications }) => {
   return httpClient.put(`private/notification/mark-to-read`, { notifications });
 };
+
+export const markeToUnRead = ({ notifications }) => {
+  return httpClient.put(`private/notification/mark-to-un-read`, {
+    notifications,
+  });
+};

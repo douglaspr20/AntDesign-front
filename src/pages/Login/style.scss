@@ -54,9 +54,32 @@
     &-form {
       padding: 2rem;
       background-color: $color-white;
+      overflow: auto;
+      max-height: calc(100vh - 200px);
     }
 
     &-content {
+      &-back {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 1rem;
+        cursor: pointer;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .ant-form-item-label > label {
+        white-space: normal;
+        text-align: left;
+
+        &::after {
+          display: none;
+        }
+      }
+
       .ant-form-item-has-error .ant-form-item-explain-error {
         color: $color-primary !important;
       }
@@ -68,6 +91,10 @@
         &::before {
           display: none !important;
         }
+      }
+
+      .form-full-name {
+        margin-bottom: 1rem;
       }
     }
 
@@ -140,6 +167,23 @@
         height: 92px;
         top: -46px;
       }
+    }
+  }
+
+  .form-job-level,
+  .form-organization-size {
+    .custom-radio {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .form-recent-workarea {
+    .ant-checkbox-wrapper {
+      margin-top: 12px;
+      margin-left: 0 !important;
+      align-items: center;
     }
   }
 

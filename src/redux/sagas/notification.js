@@ -5,7 +5,7 @@ import {
 } from "../actions/notification-actions";
 import { logout } from "../actions/auth-actions";
 
-import { getNotifications, markeToRead } from "../../api";
+import { getNotifications, markeToRead, markeToUnRead } from "../../api";
 export function* getNotificationsSaga({ payload }) {
   if (payload.page === 1) {
     yield put(notificationActions.setNotificationLoading(true));
@@ -63,6 +63,28 @@ export function* setNotificationToReadSaga({ payload }) {
   }
 }
 
+export function* setNotificationToUnReadSaga({ payload }) {
+  try {
+    const response = yield call(markeToUnRead, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        notificationActions.updateNotificationToUnRead(
+          payload.notifications,
+          response.data.unread,
+          payload.userId
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchNotification() {
   yield takeLatest(
     notificationConstants.GET_NOTIFICATIONS,
@@ -71,6 +93,10 @@ function* watchNotification() {
   yield takeLatest(
     notificationConstants.MARK_NOTIFICATION_TO_READ,
     setNotificationToReadSaga
+  );
+  yield takeLatest(
+    notificationConstants.MARK_NOTIFICATION_TO_UNREAD,
+    setNotificationToUnReadSaga
   );
 }
 

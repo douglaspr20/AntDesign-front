@@ -62,6 +62,7 @@ import {
   searchConferenceLibrary,
   claimConferenceLibrary,
   markConferenceLibraryViewed,
+  getConferenceLibrary,
 } from "./module/conference";
 import {
   createChannel,
@@ -72,7 +73,11 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
-import { getNotifications, markeToRead } from "./module/notification";
+import {
+  getNotifications,
+  markeToRead,
+  markeToUnRead,
+} from "./module/notification";
 import { getAllSessions } from "./module/session";
 import {
   getAllSkillCohorts,
@@ -108,6 +113,7 @@ export {
   setMatch,
   getCategories,
   searchConferenceLibrary,
+  getConferenceLibrary,
   createChannel,
   searchChannels,
   getChannelCategories,
@@ -149,4 +155,5 @@ export {
   markPodcastseriesViewed,
   getAllSkillCohorts,
   getSkillCohort,
+  markeToUnRead,
 };

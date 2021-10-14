@@ -12,7 +12,7 @@ import {
   claimConferenceLibrary,
   setConferenceLibraryViewed,
 } from "redux/actions/conference-actions";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
 
 import IconVideo from "images/icon-video.svg";
@@ -27,6 +27,8 @@ const ConferenceCard = ({
   frequency,
   claimConferenceLibrary,
   setConferenceLibraryViewed,
+  afterUpdate,
+  isInternalLink,
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,7 +36,9 @@ const ConferenceCard = ({
 
   const onCardClick = () => {
     if (data.link && !modalVisible && !showFirewall) {
-      window.open(data.link);
+      if (isInternalLink === false) {
+        window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/conference-library/${data.id}`;
+      }
 
       if (data.viewed && !data.viewed[userProfile.id]) {
         setConferenceLibraryViewed(data.id, "unmark");
@@ -77,8 +81,13 @@ const ConferenceCard = ({
       <div className="conference-card-header">
         <ReactPlayer
           className="conference-card-player"
-          controls={false}
+          controls={isInternalLink === true}
           url={data.link}
+          onPlay={() => {
+            if (isInternalLink === false) {
+              window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/conference-library/${data.id}`;
+            }
+          }}
         />
       </div>
       <div className="conference-card-content">
@@ -107,9 +116,7 @@ const ConferenceCard = ({
             <CustomButton
               className="mark-viewed"
               type={
-                data.viewed[userProfile.id] === "mark"
-                  ? "remove"
-                  : "secondary"
+                data.viewed[userProfile.id] === "mark" ? "remove" : "secondary"
               }
               size="xs"
               text={
@@ -124,6 +131,9 @@ const ConferenceCard = ({
                   data.id,
                   data.viewed[userProfile.id] === "mark" ? "unmark" : "mark"
                 );
+                setTimeout(() => {
+                  afterUpdate();
+                }, 500);
               }}
             />
             {data.showClaim === 1 && (
@@ -178,12 +188,16 @@ ConferenceCard.propTypes = {
   data: PropTypes.object,
   frequency: PropTypes.number,
   keyword: PropTypes.string,
+  afterUpdate: PropTypes.func,
+  isInternalLink: PropTypes.bool,
 };
 
 ConferenceCard.defaultProps = {
   data: {},
   frequency: 0,
   keyword: "",
+  afterUpdate: () => {},
+  isInternalLink: false,
 };
 
 const mapStateToProps = (state) => ({
