@@ -201,6 +201,7 @@ const PodcastPage = ({
                   episode_number={episode.order}
                   episode_cover={episode.imageUrl}
                   categories={episode.topics}
+                  viewed={episode.viewed}
                   keyword={meta}
                   frequency={frequency}
                   links={getPodcastLinks(episode)}

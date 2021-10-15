@@ -46,6 +46,22 @@ export const reducers = {
       countOfResults: payload.total,
     });
   },
+  [podcastConstants.UPDATE_PODCAST_VIEWED]: (state, { payload }) => {
+    let allEpisodes = state.get("allEpisodes");
+    const index = allEpisodes.findIndex(
+      (episode) => episode.id === payload.data.id
+    );
+
+    if (index >= 0) {
+      allEpisodes[index] = {
+        ...payload.data,
+      };
+    }
+
+    return state.merge({
+      allEpisodes: cloneDeep([...allEpisodes]),
+    })
+  },
   [podcastConstants.UPDATE_PODCAST_SERIES_VIEWED]: (state, { payload }) => {
     let allPodcastSeries = state.get("allPodcastSeries");
     const index = allPodcastSeries.findIndex(

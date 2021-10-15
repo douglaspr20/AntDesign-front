@@ -15,7 +15,9 @@ const SET_MORE_CHANNEL_PODCAST_LIST = "SET_MORE_CHANNEL_PODCAST_LIST";
 const DELETE_CHANNEL_PODCAST = "DELETE_CHANNEL_PODCAST";
 const UPDATE_CHANNEL_PODCAST = "UPDATE_CHANNEL_PODCAST";
 const CLAIM_PODCAST_SERIES = "CLAIM_PODCAST_SERIES";
+const SET_PODCAST_VIEWED = "SET_PODCAST_VIEWED";
 const SET_PODCAST_SERIES_VIEWED = "SET_PODCAST_SERIES_VIEWED";
+const UPDATE_PODCAST_VIEWED = "UPDATE_PODCAST_VIEWED";
 const UPDATE_PODCAST_SERIES_VIEWED = "UPDATE_PODCAST_SERIES_VIEWED";
 
 export const constants = {
@@ -34,7 +36,9 @@ export const constants = {
   DELETE_CHANNEL_PODCAST,
   UPDATE_CHANNEL_PODCAST,
   CLAIM_PODCAST_SERIES,
+  SET_PODCAST_VIEWED,
   SET_PODCAST_SERIES_VIEWED,
+  UPDATE_PODCAST_VIEWED,
   UPDATE_PODCAST_SERIES_VIEWED,
 };
 
@@ -101,12 +105,23 @@ export const claimPodcastSeries = createAction(
   CLAIM_PODCAST_SERIES,
   (id, pdf, callback) => ({ id, pdf, callback })
 );
+export const setPodcastViewed = createAction(
+  SET_PODCAST_VIEWED,
+  (id, viewed) => ({
+    id,
+    viewed,
+  })
+);
 export const setPodcastseriesViewed = createAction(
   SET_PODCAST_SERIES_VIEWED,
   (id, viewed) => ({
     id,
     viewed,
   })
+);
+export const updatePodcastViewed = createAction(
+  UPDATE_PODCAST_VIEWED,
+  (data) => ({ data })
 );
 export const updatePodcastseriesViewed = createAction(
   UPDATE_PODCAST_SERIES_VIEWED,
@@ -129,6 +144,8 @@ export const actions = {
   deleteChannelPodcast,
   updateChannelPodcast,
   claimPodcastSeries,
+  setPodcastViewed,
   setPodcastseriesViewed,
+  updatePodcastViewed,
   updatePodcastseriesViewed,
 };

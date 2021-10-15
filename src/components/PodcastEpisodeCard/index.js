@@ -5,12 +5,16 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
 
-import { SpecialtyItem } from "components";
-import { categorySelector } from "redux/selectors/categorySelector";
-import { CARD_TYPE } from "enum";
-import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import { SpecialtyItem, CustomButton } from "components";
 import CardMenu from "../CardMenu";
+import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { setPodcastViewed } from "redux/actions/podcast-actions";
+
+import { CARD_TYPE } from "enum";
+
 import IconMenu from "images/icon-menu.svg";
+import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 
 import "./style.scss";
 
@@ -29,6 +33,10 @@ function EpisodeCard({
   frequency,
   onAdd,
   onMenuClick,
+  id,
+  viewed,
+  userProfile,
+  setPodcastViewed,
 }) {
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
@@ -106,6 +114,32 @@ function EpisodeCard({
                 );
               })}
             </div>
+            <div className="d-flex justify-end">
+              <CustomButton
+                className="mark-viewed"
+                type={
+                  viewed && viewed[userProfile.id] === "mark"
+                    ? "remove"
+                    : "secondary"
+                }
+                size="xs"
+                text={
+                  viewed && viewed[userProfile.id] === "mark"
+                    ? "Viewed"
+                    : "Mark as Viewed"
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPodcastViewed(
+                    id,
+                    viewed && viewed[userProfile.id] === "mark"
+                      ? "unmark"
+                      : "mark"
+                  );
+                }}
+              />
+            </div>
             {type === CARD_TYPE.EDIT && (
               <CardMenu onClick={onMenuClick}>
                 <div className="podcast-episode__card-menu">
@@ -157,6 +191,11 @@ EpisodeCard.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(EpisodeCard);
+const mapDispatchToProps = {
+  setPodcastViewed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EpisodeCard);
