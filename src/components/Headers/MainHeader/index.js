@@ -21,6 +21,7 @@ import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
+import IconStoreFrontOutline from "images/icon-storefront-outline.svg"
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -112,6 +113,13 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconLibrary,
         label: `Library Item`,
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SKILL_COHORTS}/`)) {
+      pathInfo = {
+        icon: IconStoreFrontOutline,
+        label: `Skill Cohort`,
       };
     }
 
