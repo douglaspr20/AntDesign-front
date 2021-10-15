@@ -70,7 +70,7 @@ const ResourceCard = (props) => {
                     const ids = allSkillCohortResourceResponses.map(response => {
                         return response.id
                     })
-    
+                    console.log('ids', ids)
                     getSkillCohortResourceResponseAssessment(skillCohortResource.id, skillCohortParticipant.id, ids)
                     getAllResponseRating(skillCohortResource.id, skillCohortParticipant.id)
                 }

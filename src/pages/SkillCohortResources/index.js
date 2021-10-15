@@ -38,7 +38,7 @@ const SkillCohortResources = ({
 
     const displayTodaysResource = !isEmpty(todayResource) && <ResourceCard skillCohortResource={todayResource} isPreviousResource={false} skillCohortParticipant={skillCohortParticipant}/>
 
-    const displayPreviousResources = previousResources.map((resource) => {
+    const displayPreviousResources = previousResources.reverse().map((resource) => {
         const diff = dateToday.diff(moment(resource.releaseDate).tz("America/Los_Angeles"), 'day')
         const isYesterday = diff === 1
 
@@ -47,15 +47,15 @@ const SkillCohortResources = ({
     return (
         <div className="skill-cohort-resources-page">
             <div className="skill-cohort-resources-page-container">
-                <Row>
-                    <Col span={24}>
-                        <div className="container-header d-flex justify-between items-center">
-                            <h3>Today's Resource</h3>
-                        </div>
-                    </Col>
-                </Row>
-                <div className="skill-cohort-resources-list">
-                    {displayTodaysResource}
+                <div className="container-header d-flex justify-between items-start">
+                    <div>
+                        <h3>Today's Resource</h3>
+                        {displayTodaysResource}
+                    </div>
+                    <div>
+                        <h3>Meeting Date this week: October 31, 2021 12 AM</h3>
+                        <a href="#">Test link</a>
+                    </div>
                 </div>
                 <Row>
                     <Col span={24}>
