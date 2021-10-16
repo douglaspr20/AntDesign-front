@@ -30,6 +30,7 @@ export default {
   NOT_FOUND: "/not-found",
   NOTIFICATIONS: "/notifications",
   GLOBAL_CONFERENCE: "/global-conference",
+  SPEAKERS: "/speakers",
   LIVE: "/live",
   POST: "/post",
   LIBRARY_ITEM: "/library-item",

@@ -28,6 +28,7 @@ import ChannelsPage from "pages/Channels";
 import ChannelPage from "pages/Channel";
 import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
+import SpeakersPage from "pages/Speakers";
 import LivePage from "pages/Live";
 import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
@@ -166,6 +167,10 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
+          />
+          <PrivateRoute
+            path={INTERNAL_LINKS.SPEAKERS}
+            render={(props) => <SpeakersPage {...props} />}
           />
           <PrivateRoute
             path={INTERNAL_LINKS.LIVE}
