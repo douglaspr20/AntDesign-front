@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Image, Avatar } from "antd";
+import { Card, Col, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.scss";
 
@@ -18,14 +18,7 @@ const SpeakerCard = ({ speaker }) => {
         }}
       >
         {speaker.img ? (
-          <Image
-            width={200}
-            height={180}
-            src={speaker.image}
-            alt={speaker.name}
-            style={{ borderRadius: "100%" }}
-            preview={false}
-          />
+          <Avatar size={180} src={speaker.img} alt={speaker.name} />
         ) : (
           <Avatar size={180} icon={<UserOutlined />} />
         )}
