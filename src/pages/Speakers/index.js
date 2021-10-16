@@ -4,44 +4,17 @@ import Emitter from "services/emitter";
 import { CustomSelect, SpeakersFilterPanel } from "components";
 import SpeakerCard from "./SpeakerCard";
 import FilterDrawer from "./FilterDrawer";
+import { sessionSelector } from "redux/selectors/sessionSelector";
+
 import { SETTINGS, EVENT_TYPES } from "enum";
+import { getAllSessions } from "redux/actions/session-actions";
 
 import "./style.scss";
+import { connect } from "react-redux";
 
 const SortOptions = SETTINGS.SORT_OPTIONS;
 
-const speakersDefault = [
-  {
-    name: "Bill Gate",
-    job: "Founder",
-    enterprise: "Microsoft",
-    image:
-      "https://static.nationalgeographicla.com/files/styles/image_3200/public/20-01213_091420-bill-gates-goalkeepers-2020-science_alt.jpg?w=1600",
-  },
-  {
-    name: "Marck Zuckemberg",
-    job: "Co-Founding",
-    enterprise: "Facebook Inc",
-    image:
-      "https://cdn.forbes.co/2020/05/Mark-Zuckerberg-Reuters-1280x720-1.jpg",
-  },
-  {
-    name: "Jeff Bezos",
-    job: "Enginer",
-    enterprise: "Amazon Inc",
-    image:
-      "https://www.elcorreo.com/xlsemanal/wp-content/uploads/sites/5/2021/07/jeff-bezos-el-amo-del-mundo.jpg",
-  },
-  {
-    name: "Elon Musk",
-    job: "CEO",
-    enterprise: "Tesla",
-    image:
-      "https://i1.wp.com/lanoticia.com/wp-content/uploads/2021/10/Elon-Musk-Tesla-muda-sus-sedes-a-Austin-Texas.jpg?fit=1200%2C800&ssl=1",
-  },
-];
-
-const GlobalSpeakers = () => {
+const Speakers = ({ allSessions, history, match }) => {
   const [sortValue, setSortValue] = useState(SortOptions[0].value);
   const [, setOrderValue] = useState('["createdAt","DESC"]');
   const [, setFilters] = useState({});
@@ -50,11 +23,19 @@ const GlobalSpeakers = () => {
 
   useEffect(() => {
     const getSpeakers = () => {
-      setSpeakers(speakersDefault);
+      if (allSessions.length <= 0) return history.push("/global-conference");
+      const {
+        params: { idConference },
+      } = match;
+      const currentSession = allSessions.find(
+        (session) => session.id === parseInt(idConference)
+      );
+
+      setSpeakers(currentSession.speakers);
     };
 
     getSpeakers();
-  }, []);
+  }, [allSessions, match, history]);
 
   const onSortChange = (value) => {
     setSortValue(value);
@@ -86,6 +67,8 @@ const GlobalSpeakers = () => {
   const showFilterPanel = () => {
     Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
+
+  if (allSessions.length <= 0) history.push("/global-conference");
 
   return (
     <div className="speakers-page">
@@ -125,9 +108,10 @@ const GlobalSpeakers = () => {
             </Col>
           </Row>
           <div className="speakers-list">
-            {speakers.map((speaker) => (
-              <SpeakerCard speaker={speaker} />
-            ))}
+            {speakers.length > 0 &&
+              speakers.map((speaker) => (
+                <SpeakerCard key={speaker.id} speaker={speaker} />
+              ))}
           </div>
         </div>
       </div>
@@ -135,4 +119,12 @@ const GlobalSpeakers = () => {
   );
 };
 
-export default GlobalSpeakers;
+const mapStateToProps = (state) => ({
+  ...sessionSelector(state),
+});
+
+const mapDispatchToProps = {
+  getAllSessions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Speakers);

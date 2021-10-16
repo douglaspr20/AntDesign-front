@@ -169,7 +169,7 @@ class Content extends Component {
             render={(props) => <GlobalConferencePage {...props} />}
           />
           <PrivateRoute
-            path={INTERNAL_LINKS.SPEAKERS}
+            path={`${INTERNAL_LINKS.SPEAKERS}/:idConference`}
             render={(props) => <SpeakersPage {...props} />}
           />
           <PrivateRoute

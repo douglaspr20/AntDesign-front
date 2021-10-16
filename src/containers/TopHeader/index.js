@@ -113,7 +113,7 @@ class TopHeader extends Component {
         />
 
         <PrivateRoute
-          path={INTERNAL_LINKS.SPEAKERS}
+          path={`${INTERNAL_LINKS.SPEAKERS}/:idConference`}
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute

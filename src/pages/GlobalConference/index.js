@@ -28,7 +28,7 @@ const GlobalConference = ({
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate, setFirstTabDate] = useState(
-    moment("2022-03-07", "YYYY-MM-DD")
+    moment("2021-03-07", "YYYY-MM-DD")
   );
   const [tabData, setTabData] = useState([]);
 
@@ -53,6 +53,7 @@ const GlobalConference = ({
       );
       getAllSessions(startTime, endTime);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTabDate]);
 

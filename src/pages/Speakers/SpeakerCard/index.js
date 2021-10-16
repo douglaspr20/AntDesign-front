@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Image } from "antd";
+import { Card, Col, Image, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.scss";
 
@@ -17,18 +17,22 @@ const SpeakerCard = ({ speaker }) => {
           alignItems: "center",
         }}
       >
-        <Image
-          width={200}
-          height={180}
-          src={speaker.image}
-          alt={speaker.name}
-          style={{ borderRadius: "100%" }}
-          preview={false}
-        />
+        {speaker.img ? (
+          <Image
+            width={200}
+            height={180}
+            src={speaker.image}
+            alt={speaker.name}
+            style={{ borderRadius: "100%" }}
+            preview={false}
+          />
+        ) : (
+          <Avatar size={180} icon={<UserOutlined />} />
+        )}
+
         <div style={{ textAlign: "center" }}>
           <p className="speaker-name">{speaker.name}</p>
-          <p>{speaker.job}</p>
-          <p>{speaker.enterprise}</p>
+          <p>{speaker.description}</p>
         </div>
       </Card>
     </Col>
