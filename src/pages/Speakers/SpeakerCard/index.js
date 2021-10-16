@@ -18,8 +18,8 @@ const SpeakerCard = ({ speaker }) => {
         }}
       >
         <Image
-          width={150}
-          height={150}
+          width={200}
+          height={180}
           src={speaker.image}
           alt={speaker.name}
           style={{ borderRadius: "100%" }}
