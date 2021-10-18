@@ -49,3 +49,4 @@ export { default as PodcastSeriesCard } from "./PodcastSeriesCard";
 export { default as FroalaEdit } from "./FroalaEdit";
 export { default as PostsFilterPanel } from "./PostsFilterPanel";
 export { default as SpeakersFilterPanel } from "./SpeakersFiltersPanel";
+export { default as ParticipantsFilterPanel } from "./ParticipantsFilterPanel";

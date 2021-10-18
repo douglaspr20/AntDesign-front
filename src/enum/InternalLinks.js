@@ -34,4 +34,5 @@ export default {
   LIVE: "/live",
   POST: "/post",
   LIBRARY_ITEM: "/library-item",
+  PARTICIPANTS: "/participants",
 };
