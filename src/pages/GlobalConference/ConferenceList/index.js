@@ -119,7 +119,7 @@ const ConferenceList = ({
         };
       });
 
-      setSessionData(filteredData);
+      setSessionData(filteredData.filter((item) => !isEmpty(item.data)));
     } else {
       setSessionData([]);
     }
@@ -166,12 +166,26 @@ const ConferenceList = ({
         </div>
       </div>
       <div className="conference-list-container">
-        {sessionData
-          .filter((item) => !isEmpty(item.data))
-          .map((session, index) => (
+        {sessionData.map((session, index) => {
+          let sessionFiltered;
+          if (sortSessionType !== "all") {
+            sessionFiltered = session.data.filter(
+              (session) => session.type === sortSessionType
+            );
+          } else {
+            sessionFiltered = session.data;
+          }
+
+          if (sortCategory !== "all") {
+            sessionFiltered = sessionFiltered.filter((session) =>
+              session.categories.includes(sortCategory)
+            );
+          }
+
+          return sessionFiltered.length > 0 ? (
             <div key={index}>
               <h3 className="session-step">{session.step}</h3>
-              {session.data.map((s) => (
+              {sessionFiltered.map((s) => (
                 <AnnualConferenceCard
                   key={s.id}
                   session={s}
@@ -182,7 +196,8 @@ const ConferenceList = ({
                 />
               ))}
             </div>
-          ))}
+          ) : null;
+        })}
       </div>
     </div>
   );

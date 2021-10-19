@@ -15,7 +15,6 @@ const AnnualConferenceCard = ({
   onRemoveSession,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
-
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
@@ -50,19 +49,26 @@ const AnnualConferenceCard = ({
         <div className="acc-details">
           <div className="acc-details-speakers">
             {(session.speakers || []).map((speaker, index) => (
-              <div className="acc-details-speaker" key={index}>
-                <div className="acc-details-speaker-image">
-                  {speaker.img ? (
-                    <img src={speaker.img} alt="speaker-img" />
-                  ) : (
-                    <div className="empty" />
-                  )}
+              <a
+                href={speaker.linkSpeaker}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={index}
+              >
+                <div className="acc-details-speaker">
+                  <div className="acc-details-speaker-image">
+                    {speaker.img ? (
+                      <img src={speaker.img} alt="speaker-img" />
+                    ) : (
+                      <div className="empty" />
+                    )}
+                  </div>
+                  <div className="acc-details-speaker-desc">
+                    <h4>{speaker.name}</h4>
+                    <h5>{speaker.description}</h5>
+                  </div>
                 </div>
-                <div className="acc-details-speaker-desc">
-                  <h4>{speaker.name}</h4>
-                  <h5>{speaker.description}</h5>
-                </div>
-              </div>
+              </a>
             ))}
           </div>
           <div className="acc-details-other">

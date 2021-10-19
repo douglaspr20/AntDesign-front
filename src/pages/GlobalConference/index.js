@@ -7,11 +7,16 @@ import { CheckOutlined } from "@ant-design/icons";
 import { CustomButton, Tabs } from "components";
 
 import ConferenceList from "./ConferenceList";
+import FilterDrawer from "./FilterDrawer";
+import { GlobalConferenceFilterPanel } from "components";
 import { getAllSessions } from "redux/actions/session-actions";
 import { attendToGlobalConference } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
+
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -27,16 +32,37 @@ const GlobalConference = ({
   attendToGlobalConference,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate, setFirstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
+  const [firstTabDate, setFirstTabDate] = useState(
+    moment("2021-03-07", "YYYY-MM-DD")
+  );
   const [tabData, setTabData] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [meta, setMeta] = useState("");
 
-  const goToPrevPage = () => {
-    setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
+  const onFilterChange = (filter) => {
+    // getAllSessions({ ...filter, meta });
+    setFilters(filter);
   };
 
-  const goToNextPage = () => {
-    setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
+
+  const onSearch = (value) => {
+    // getAllSessions({
+    //   ...filters,
+    //   meta: value,
+    // });
+    // setMeta(value);
+  };
+
+  // const goToPrevPage = () => {
+  //   setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
+  // };
+
+  // const goToNextPage = () => {
+  //   setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
+  // };
 
   const onAttend = () => {
     attendToGlobalConference();
@@ -63,7 +89,6 @@ const GlobalConference = ({
         );
       });
     };
-
     const tData = Array.from(Array(TAB_NUM).keys()).map((item) => {
       const date = firstTabDate.clone().add(item, "days");
       const data = filterSessions(allSessions, date);
@@ -74,13 +99,28 @@ const GlobalConference = ({
       };
     });
 
+    console.log(tData);
+
     setTabData(tData);
   }, [firstTabDate, allSessions]);
 
   return (
     <div className="global-conference">
+      <GlobalConferenceFilterPanel
+        onChange={onFilterChange}
+        onSearch={onSearch}
+      />
+      <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="global-conference-container">
-        <div className="w-full d-flex justify-end items-center">
+        <div className="global-conference-page__filters--button">
+          <CustomButton
+            text="Filters"
+            onClick={() => {
+              showFilterPanel();
+            }}
+          />
+        </div>
+        <div className="">
           {userProfile.attendedToConference ? (
             <div className="d-flex items-center">
               <div className="attending-label">
@@ -99,7 +139,7 @@ const GlobalConference = ({
         </div>
         <p className="global-conference-description">{Description}</p>
         <div className="global-conference-tabs">
-          <div className="global-conference-pagination">
+          {/*<div className="global-conference-pagination">
             <CustomButton
               type="primary outlined"
               size="xs"
@@ -112,8 +152,8 @@ const GlobalConference = ({
               text=">"
               onClick={goToNextPage}
             />
-          </div>
-          <Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />
+          </div>*/}
+          {/*<Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />*/}
         </div>
       </div>
     </div>
