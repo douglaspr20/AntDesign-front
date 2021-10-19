@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Tooltip } from "antd";
-import moment from "moment";
 import { connect } from "react-redux";
 
 import { getAllPodcasts } from "redux/actions/podcast-actions";
@@ -195,16 +194,10 @@ const PodcastPage = ({
             return (
               <div className="podcast-page__episodes-col" key={episode.id}>
                 <EpisodeCard
-                  id={episode.id}
-                  title={episode.title}
-                  created_at={moment(episode.dateEpisode)}
-                  episode_number={episode.order}
-                  episode_cover={episode.imageUrl}
-                  categories={episode.topics}
-                  viewed={episode.viewed}
                   keyword={meta}
                   frequency={frequency}
                   links={getPodcastLinks(episode)}
+                  episode={episode}
                 />
               </div>
             );

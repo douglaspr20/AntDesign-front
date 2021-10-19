@@ -19,6 +19,8 @@ const SET_PODCAST_VIEWED = "SET_PODCAST_VIEWED";
 const SET_PODCAST_SERIES_VIEWED = "SET_PODCAST_SERIES_VIEWED";
 const UPDATE_PODCAST_VIEWED = "UPDATE_PODCAST_VIEWED";
 const UPDATE_PODCAST_SERIES_VIEWED = "UPDATE_PODCAST_SERIES_VIEWED";
+const GET_PODCAST = "GET_PODCAST";
+const SET_PODCAST = "SET_PODCAST";
 
 export const constants = {
   GET_ALL_PODCASTS,
@@ -40,6 +42,8 @@ export const constants = {
   SET_PODCAST_SERIES_VIEWED,
   UPDATE_PODCAST_VIEWED,
   UPDATE_PODCAST_SERIES_VIEWED,
+  GET_PODCAST,
+  SET_PODCAST,
 };
 
 // ------------------------------------
@@ -128,6 +132,14 @@ export const updatePodcastseriesViewed = createAction(
   (data) => ({ data })
 );
 
+export const getPodcast = createAction(GET_PODCAST, (id) => ({
+  id,
+}));
+
+export const setPodcast = createAction(SET_PODCAST, (data) => ({
+  data,
+}));
+
 export const actions = {
   getAllPodcasts,
   setAllPodcasts,
@@ -148,4 +160,6 @@ export const actions = {
   setPodcastseriesViewed,
   updatePodcastViewed,
   updatePodcastseriesViewed,
+  getPodcast,
+  setPodcast,
 };

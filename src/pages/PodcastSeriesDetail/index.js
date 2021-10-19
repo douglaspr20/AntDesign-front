@@ -160,13 +160,8 @@ const PodcastSeriesDetail = ({
           {(podcastSeries.podcasts || []).map((podcast) => (
             <EpisodeCard
               key={podcast.id}
-              id={podcast.id}
-              title={podcast.title}
-              created_at={moment(podcast.dateEpisode)}
-              episode_number={podcast.order}
-              episode_cover={podcast.imageUrl}
-              categories={podcast.topics}
               links={getPodcastLinks(podcast)}
+              episode={podcast}
             />
           ))}
         </div>

@@ -164,7 +164,7 @@ const LibraryCard = ({
                     text={
                       viewed && viewed[userProfile.id] === "mark"
                         ? "Viewed"
-                        : "Mark as Viewed"
+                        : "Mark As Completed"
                     }
                     onClick={(e) => {
                       e.preventDefault();

@@ -78,6 +78,11 @@ export const reducers = {
       allPodcastSeries: cloneDeep([...allPodcastSeries]),
     })
   },
+  [podcastConstants.SET_PODCAST]: (state, { payload }) => {
+    return state.merge({
+      podcast: payload.data,
+    });
+  },
 };
 
 export const initialState = () =>
@@ -88,6 +93,7 @@ export const initialState = () =>
     podcastSeries: {},
     countOfResults: 0,
     currentPage: 1,
+    podcast: null,
   });
 
 export default handleActions(reducers, initialState());

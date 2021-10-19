@@ -70,5 +70,9 @@ export const markPodcastViewed = ({ id, viewed }) => {
 };
 
 export const markPodcastseriesViewed = ({ id, viewed }) => {
-  return httpClient.put('private/podcast-series/viewed', { id, mark: viewed });
+  return httpClient.put("private/podcast-series/viewed", { id, mark: viewed });
+};
+
+export const getPodcast = ({ id }) => {
+  return httpClient.get(`private/podcast/episode/${id}`);
 };
