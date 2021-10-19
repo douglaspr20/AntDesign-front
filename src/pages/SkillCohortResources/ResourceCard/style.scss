@@ -1,6 +1,6 @@
 @import 'styles/main.scss';
 
-.skill-cohort-card {
+.skill-cohort-resource-card {
 	min-height: 386px;
 	background: $color-white;
 	border: 1px solid $color-border;
@@ -35,7 +35,7 @@
 		display: grid;
 		grid-template-rows: auto 1fr auto auto auto;
 		grid-row-gap: 0.5rem;
-		padding: 1.5rem 1rem 1rem;
+		padding-top: 1.5rem;
 		overflow: hidden;
 		position: relative;
 
@@ -44,50 +44,16 @@
 		}
 	}
 
-	&-title {
-		font-weight: 500 !important;
-	}
-
-	&-categories {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		overflow: hidden;
-
-		.specialty-item {
-			margin: 0 8px 8px 0;
-		}
-	}
-
-	&-desc {
-		@include app-font(14px, 21px, 500);
-		color: $color-text-secondary !important;
-		overflow: hidden;
-		display: block;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		text-overflow: ellipsis;
-		margin: 0;
-		height: 100%;
-		/* autoprefixer: off */
-	}
-
-	&-hr {
-		@include app-font(14px, 21px, 500);
-		color: $color-text-secondary !important;
-		overflow: hidden;
-		display: block;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		text-overflow: ellipsis;
-		-webkit-line-clamp: 3;
-		margin: 0;
-		height: 100%;
-		/* autoprefixer: off */
+	&-release-date {
+		text-align: center;
 	}
 
 	&-join-btn {
 		display: flex;
 		justify-content: center;
 	}
+}
+
+.rating {
+	display: flex;
 }

@@ -1,20 +1,19 @@
-import httpClient from './httpClient'
+import httpClient from './httpClient';
 
 export const getAllSkillCohorts = async (filter) => {
-    let newFilter = {};
+	let newFilter = {};
 
-    if (filter) {
-        newFilter = { ...filter };
-    }
+	if (filter) {
+		newFilter = { ...filter };
+	}
 
-    const parsedFilter = Object.keys(newFilter)
-    .map((item) => `${item}=${newFilter[item]}`)
-    .join("&");
+	const parsedFilter = Object.keys(newFilter)
+		.map((item) => `${item}=${newFilter[item]}`)
+		.join('&');
 
-    return await httpClient.get(`private/skill-cohort?${parsedFilter}`)
-}
+	return await httpClient.get(`private/skill-cohort?${parsedFilter}`);
+};
 
 export const getSkillCohort = async (id) => {
-
-    return await httpClient.get(`private/skill-cohort/${id}`)
-}
+	return await httpClient.get(`private/skill-cohort/${id}`);
+};
