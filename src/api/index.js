@@ -35,6 +35,7 @@ import {
   updateChannelLibrary,
   shareChannelLibrary,
   claimLibrary,
+  markLibraryViewed,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -53,6 +54,7 @@ import {
   getAllPodcastSeries,
   getPodcastSeries,
   claimPodcastSeries,
+  markPodcastViewed,
   markPodcastseriesViewed,
   getPodcast,
 } from "./module/podcast";
@@ -146,10 +148,12 @@ export {
   claimPodcastSeries,
   getEditorSignature,
   claimLibrary,
+  markLibraryViewed,
   claimConferenceLibrary,
   claimEventCredit,
   claimEventAttendance,
   markConferenceLibraryViewed,
+  markPodcastViewed,
   markPodcastseriesViewed,
   markeToUnRead,
 };

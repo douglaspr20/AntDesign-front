@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { connect } from "react-redux";
 import { notification } from "antd";
 
@@ -111,15 +110,10 @@ const PodcastsList = ({
             {podcasts.map((episode) => (
               <EpisodeCard
                 key={episode.id}
-                id={episode.id}
                 type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                title={episode.title}
-                created_at={moment(episode.dateEpisode)}
-                episode_number={episode.order}
-                episode_cover={episode.imageUrl}
-                categories={episode.topics}
                 links={getPodcastLinks(episode)}
                 onMenuClick={(menu) => handlePodcast(menu, episode)}
+                episode={episode}
               />
             ))}
           </div>

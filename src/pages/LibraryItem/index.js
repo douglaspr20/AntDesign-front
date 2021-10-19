@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
 
-import { ConferenceCard,EpisodeCard } from "components";
+import { ConferenceCard, EpisodeCard } from "components";
 
 import {
   getConferenceLibrary,
@@ -61,12 +60,6 @@ const LibraryItemPage = ({
         <div className="library-item-page-container--podcast-library">
           {podcast != null && (
             <EpisodeCard
-              id={podcast.id}
-              title={podcast.title}
-              created_at={moment(podcast.dateEpisode)}
-              episode_number={podcast.order}
-              episode_cover={podcast.imageUrl}
-              categories={podcast.topics}
               links={getPodcastLinks(podcast)}
               episode={podcast}
               isInternalLink={true}
