@@ -276,6 +276,7 @@ export function* markPodcastViewedSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(podcastActions.updatePodcastViewed(response.data.affectedRows));
+      yield put(podcastActions.setPodcast(response.data.affectedRows));
     }
   } catch (error) {
     console.log(error);
