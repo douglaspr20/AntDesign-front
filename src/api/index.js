@@ -54,6 +54,7 @@ import {
   getPodcastSeries,
   claimPodcastSeries,
   markPodcastseriesViewed,
+  getPodcast,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -141,6 +142,7 @@ export {
   deleteResume,
   getAllPodcastSeries,
   getPodcastSeries,
+  getPodcast,
   claimPodcastSeries,
   getEditorSignature,
   claimLibrary,

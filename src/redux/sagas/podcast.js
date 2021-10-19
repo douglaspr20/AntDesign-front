@@ -17,6 +17,7 @@ import {
   getPodcastSeries,
   claimPodcastSeries,
   markPodcastseriesViewed,
+  getPodcast,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
@@ -241,7 +242,24 @@ export function* markPodcastSeriesViewedSaga({ payload }) {
     const response = yield call(markPodcastseriesViewed, { ...payload });
 
     if (response.status === 200) {
-      yield put(podcastActions.updatePodcastseriesViewed(response.data.affectedRows));
+      yield put(
+        podcastActions.updatePodcastseriesViewed(response.data.affectedRows)
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* getPodcastSaga({ payload }) {
+  try {
+    const response = yield call(getPodcast, { ...payload });
+
+    if (response.status === 200) {
+      yield put(podcastActions.setPodcast(response.data.podcast));
     }
   } catch (error) {
     console.log(error);
@@ -286,6 +304,7 @@ function* watchPodcast() {
     podcastConstants.SET_PODCAST_SERIES_VIEWED,
     markPodcastSeriesViewedSaga
   );
+  yield takeLatest(podcastConstants.GET_PODCAST, getPodcastSaga);
 }
 
 export const podcastSaga = [fork(watchPodcast)];
