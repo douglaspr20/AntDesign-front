@@ -17,6 +17,7 @@ import {
   updateChannelLibrary,
   shareChannelLibrary,
   claimLibrary,
+  markLibraryViewed,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -297,6 +298,21 @@ export function* claimLibrarySaga({ payload }) {
   }
 }
 
+export function* markLibraryViewedSaga({ payload }) {
+  try {
+    const response = yield call(markLibraryViewed, { ...payload });
+
+    if (response.status === 200) {
+      yield put(libraryActions.updateLibraryViewed(response.data.affectedRows));
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(libraryConstants.GET_MORE_LIBRARIES, getMoreLibrariesSaga);
   yield takeLatest(libraryConstants.ADD_LIBRARY, addLibrarySaga);
@@ -328,6 +344,10 @@ function* watchLogin() {
     shareChannelLibrarySaga
   );
   yield takeLatest(libraryConstants.CLAIM_LIBRARY, claimLibrarySaga);
+  yield takeLatest(
+    libraryConstants.SET_LIBRARY_VIEWED,
+    markLibraryViewedSaga
+  );
 }
 
 export const librarySaga = [fork(watchLogin)];
