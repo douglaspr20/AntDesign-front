@@ -1,14 +1,14 @@
-import { createSelector } from 'reselect'
+import { createSelector } from 'reselect';
 
-const skillCohortResourceDataSelector = state => state.skillCohortResource
+const skillCohortResourceDataSelector = (state) => state.skillCohortResource;
 
 const resultSelector = createSelector(skillCohortResourceDataSelector, (payload) => {
-    return {
-        allSkillCohortResources: payload.get("allSkillCohortResources"),
-        skillCohortResource: payload.get("skillCohortResource")
-    }
-})
+	return {
+		allSkillCohortResources: payload.get('allSkillCohortResources'),
+		skillCohortResource: payload.get('skillCohortResource'),
+	};
+});
 
-export const skillCohortResourceSelector = state => ({
-    ...resultSelector(state)
-})
+export const skillCohortResourceSelector = (state) => ({
+	...resultSelector(state),
+});

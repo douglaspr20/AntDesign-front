@@ -1,87 +1,89 @@
-import { put, fork, call, takeLatest } from 'redux-saga/effects'
-import { notification } from 'antd'
+import { put, fork, call, takeLatest } from 'redux-saga/effects';
+import { notification } from 'antd';
+
+import { getSkillCohortParticipant, getAllSkillCohortParticipants, createSkillCohortParticipant } from '../../api';
 
 import {
-    getSkillCohortParticipant,
-    getAllSkillCohortParticipants,
-    createSkillCohortParticipant
-} from '../../api'
+	actions as skillCohortParticipantActions,
+	constants as skillCohortParticipantsConstants,
+} from 'redux/actions/skillCohortParticipant-actions';
 
-import {
-    actions as skillCohortParticipantActions,
-    constants as skillCohortParticipantsConstants
-} from 'redux/actions/skillCohortParticipant-actions'
-
-import { actions as homeActions } from "redux/actions/home-actions"
+import { actions as homeActions } from 'redux/actions/home-actions';
 
 export function* getSkillCohortParticipantSaga({ payload }) {
-    yield put(homeActions.setLoading(true))
+	yield put(homeActions.setLoading(true));
 
-    try {
-        const response = yield call(getSkillCohortParticipant, { ...payload })
+	try {
+		const response = yield call(getSkillCohortParticipant, { ...payload });
 
-        if (response.status === 200) {
-            yield put(skillCohortParticipantActions.setSkillCohortParticipant(response.data.skillCohortParticipant))
-        } 
-
-    } catch (error) {
-        console.log(error)
-        yield put(skillCohortParticipantActions.setSkillCohortParticipant({}))
-    } finally {
-        yield put(homeActions.setLoading(false))
-    }
+		if (response.status === 200) {
+			yield put(skillCohortParticipantActions.setSkillCohortParticipant(response.data.skillCohortParticipant));
+		}
+	} catch (error) {
+		console.log(error);
+		yield put(skillCohortParticipantActions.setSkillCohortParticipant({}));
+	} finally {
+		yield put(homeActions.setLoading(false));
+	}
 }
 
 export function* getAllSkillCohortParticipantsSaga({ payload }) {
-    yield put(homeActions.setLoading(true))
+	yield put(homeActions.setLoading(true));
 
-    try {
-        const response = yield call(getAllSkillCohortParticipants, { ...payload })
+	try {
+		const response = yield call(getAllSkillCohortParticipants, { ...payload });
 
-        if (response.status === 200) {
-            yield put(skillCohortParticipantActions.setAllSkillCohortParticipants(response.data.allSkillCohortParticipants))
-        }
-    } catch(error) {
-        console.log(error)
-    } finally {
-        yield put(homeActions.setLoading(false))
-    }
+		if (response.status === 200) {
+			yield put(
+				skillCohortParticipantActions.setAllSkillCohortParticipants(response.data.allSkillCohortParticipants),
+			);
+		}
+	} catch (error) {
+		console.log(error);
+	} finally {
+		yield put(homeActions.setLoading(false));
+	}
 }
 
 export function* createSkillCohortParticipantSaga({ payload }) {
-    yield put(homeActions.setLoading(true))
+	yield put(homeActions.setLoading(true));
 
-    try {
-        const response = yield call(createSkillCohortParticipant, { ...payload })
+	try {
+		const response = yield call(createSkillCohortParticipant, { ...payload });
 
-        if (response.status === 200) {
-            if (payload.callback) {
-                payload.callback.go(0)
-            }
+		if (response.status === 200) {
+			if (payload.callback) {
+				payload.callback.go(0);
+			}
 
-            notification.success({
-                message: "You have joined this cohort.",
-                description: "Test description"
-            })
+			notification.success({
+				message: 'You have joined this cohort.',
+				description: 'Test description',
+			});
 
-            yield put(skillCohortParticipantActions.setSkillCohortParticipant(response.data.skillCohortParticipant))
-        }
-    } catch (error) {
-        console.log(error)
-        notification.error({
-            message: "Internal Error.",
-            description: "Something went wrong."
-        })
-    } finally {
-        yield put(homeActions.setLoading(false))
-    }
+			yield put(skillCohortParticipantActions.setSkillCohortParticipant(response.data.skillCohortParticipant));
+		}
+	} catch (error) {
+		console.log(error);
+		notification.error({
+			message: 'Internal Error.',
+			description: 'Something went wrong.',
+		});
+	} finally {
+		yield put(homeActions.setLoading(false));
+	}
 }
-
 
 function* watchParticipant() {
-    yield takeLatest(skillCohortParticipantsConstants.GET_SKILL_COHORT_PARTICIPANT, getSkillCohortParticipantSaga)
-    yield takeLatest(skillCohortParticipantsConstants.CREATE_SKILL_COHORT_PARTICIPANT, createSkillCohortParticipantSaga)
-    yield takeLatest(skillCohortParticipantsConstants.GET_ALL_SKILL_COHORT_PARTICIPANTS, getAllSkillCohortParticipantsSaga)
+	yield takeLatest(skillCohortParticipantsConstants.GET_SKILL_COHORT_PARTICIPANT, getSkillCohortParticipantSaga);
+	yield takeLatest(
+		skillCohortParticipantsConstants.CREATE_SKILL_COHORT_PARTICIPANT,
+		createSkillCohortParticipantSaga,
+	);
+	yield takeLatest(
+		skillCohortParticipantsConstants.GET_ALL_SKILL_COHORT_PARTICIPANTS,
+		getAllSkillCohortParticipantsSaga,
+	);
 }
 
-export const skillCohortParticipantSaga = [fork(watchParticipant)]
+export const skillCohortParticipantSaga = [fork(watchParticipant)];
