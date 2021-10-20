@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
+import moment from 'moment'
+import { isEmpty } from 'lodash'
 
 import {
   DateAvatar,
@@ -63,69 +65,75 @@ const EventDrawer = ({
     onConfirmCredit(event);
   };
 
-  const onClickDownloadCalendar = (e) => {
-    e.preventDefault();
-    window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,
-      "_blank"
+  const onClickDownloadCalendar = (day) => {
+		window.open(
+			`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}`,
+			'_blank',
+		);
+	};
+
+  const onClickAddGoogleCalendar = (startDate, endDate) => {
+		let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+			event.title
+		}&dates=${convertToLocalTime(startDate).format(
+			'YYYYMMDDTHHmm',
+		)}/${convertToLocalTime(endDate).format(
+			'YYYYMMDDTHHmmss',
+		)}&location=${
+			event.location
+		}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+
+		window.open(googleCalendarUrl, '_blank');
+	};
+
+  const onClickAddYahooCalendar = (startDate, endDate) => {
+		let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
+			event.title
+		}&st=${convertToLocalTime(startDate).format(
+			'YYYYMMDDTHHmm',
+		)}&dur${convertToLocalTime(endDate).format(
+			'HHmmss',
+		)}&in_loc=${event.location}`;
+		window.open(yahooCalendarUrl, '_blank');
+	};
+
+  const handleOnClick = ({ item, key, domEvent }) => {
+    domEvent.stopPropagation()
+    domEvent.preventDefault()
+    const [day, time] = item.props.value
+
+    let date = moment(event.startDate).add(day, 'day').format("YYYY-MM-DD")
+
+    const startTime = moment(time.startTime).format("HH:mm:ss")
+		const startDate = moment(`${date}  ${startTime}`)
+
+    const endTime = moment(time.endTime).format("HH:mm:ss")
+    const endDate = moment(`${date}  ${endTime}`)
+
+    switch (key) {
+      case '1':
+        onClickDownloadCalendar(day)
+        break;
+      case '2':
+        onClickAddGoogleCalendar(startDate, endDate)
+        break;
+      case '3':
+        onClickAddYahooCalendar(startDate, endDate)
+        break;
+      default:
+        //
+    }
+	};
+
+  const downloadDropdownOptions = (time, day) => {
+    return (
+      <Menu onClick={handleOnClick}>
+        <Menu.Item key="1" value={[day, time]}>Download ICS File</Menu.Item>
+        <Menu.Item key="2" value={[day, time]}>Add to Google Calendar</Menu.Item>
+        <Menu.Item key="3" value={[day, time]}>Add to Yahoo Calendar</Menu.Item>
+      </Menu>
     );
-  };
-
-  const onClickAddGoogleCalendar = (e) => {
-    e.preventDefault();
-    let description = "";
-    if (event.description) {
-      description = getValidDescription(event);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
-    }
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      event.title
-    }&dates=${convertToLocalTime(event.startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(event.endDate).format(
-      "YYYYMMDDTHHmmss"
-    )}&details=${description}&location=${
-      event.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
-    window.open(googleCalendarUrl, "_blank");
-  };
-
-  const onCLickAddYahooCalendar = (e) => {
-    e.preventDefault();
-    let description = "";
-    if (event.description) {
-      description = getValidDescription(event);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
-    }
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      event.title
-    }&st=${convertToLocalTime(event.startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(event.endDate).format(
-      "HHmmss"
-    )}&desc=${description}&in_loc=${event.location}`;
-    window.open(yahooCalendarUrl, "_blank");
-  };
-
-  const downloadDropdownOptions = () => (
-    <Menu>
-      <Menu.Item key="1">
-        <a href="/#" onClick={onClickDownloadCalendar}>
-          Download ICS File
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a href="/#" onClick={onClickAddGoogleCalendar}>
-          Add to Google Calendar
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="/#" onClick={onCLickAddYahooCalendar}>
-          Add to Yahoo Calendar
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
+  }
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -226,17 +234,31 @@ const EventDrawer = ({
               <h3 className="event-date">{event.period}</h3>
             </div>
             {event.status !== "past" && event.status !== "confirmed" && (
-              <Dropdown overlay={downloadDropdownOptions}>
-                <a
-                  href="/#"
-                  className="ant-dropdown-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  Download calendar <DownOutlined />
-                </a>
-              </Dropdown>
+              <Space direction="vertical">
+              {!isEmpty(event.startAndEndTimes) && event.startAndEndTimes.map((time, index) => {
+                return (
+                  <Dropdown
+                    overlay={
+                      downloadDropdownOptions(time, index)
+                    }
+                  >
+                    <a
+                      href="/#"
+                      className="ant-dropdown-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      {`Download Day ${
+                        index + 1
+                      }`}
+                      <DownOutlined />
+                    </a>
+                  </Dropdown>
+                );
+              })}
+            </Space>
             )}
             {/* {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>

@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
+import moment from 'moment'
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -66,14 +67,12 @@ class EventCard extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  onClickDownloadCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}`,
-      "_blank"
-    );
-  };
+  onClickDownloadCalendar = (day) => {
+		window.open(
+			`${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
+			'_blank',
+		);
+	};
 
   getDescriptionHTML = (item) => {
     let description = "";
@@ -87,67 +86,72 @@ class EventCard extends React.Component {
     return encodeURIComponent(description);
   };
 
-  onClickAddGoogleCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // const { data } = this.props || {};
-    // let description = "";
-    // if (data.description) {
-    //   description = this.getDescriptionHTML(data);
-    // }
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      this.props.data.title
-    }&dates=${convertToLocalTime(this.props.data.startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(this.props.data.endDate).format(
-      "YYYYMMDDTHHmmss"
-    )}&location=${
-      this.props.data.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
-    window.open(googleCalendarUrl, "_blank");
-  };
+  onClickAddGoogleCalendar = (startDate, endDate) => {
+		let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+			this.props.data.title
+		}&dates=${convertToLocalTime(startDate).format(
+			'YYYYMMDDTHHmm',
+		)}/${convertToLocalTime(endDate).format(
+			'YYYYMMDDTHHmmss',
+		)}&location=${
+			this.props.data.location
+		}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
-  onClickAddYahooCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // const { data } = this.props || {};
-    // let description = "";
-    // if (data.description) {
-    //   description = this.getDescriptionHTML(data);
-    // }
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      this.props.data.title
-    }&st=${convertToLocalTime(this.props.data.startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(this.props.data.endDate).format(
-      "HHmmss"
-    )}&in_loc=${this.props.data.location}`;
-    window.open(yahooCalendarUrl, "_blank");
-  };
+		window.open(googleCalendarUrl, '_blank');
+	};
 
-  downloadDropdownOptions = () => (
-    <Menu>
-      <Menu.Item key="1">
-        <a href="/#" onClick={this.onClickDownloadCalendar}>
-          Download ICS File
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a href="/#" onClick={this.onClickAddGoogleCalendar}>
-          Add to Google Calendar
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="/#" onClick={this.onClickAddYahooCalendar}>
-          Add to Yahoo Calendar
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
+	onClickAddYahooCalendar = (startDate, endDate) => {
+		let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
+			this.props.data.title
+		}&st=${convertToLocalTime(startDate).format(
+			'YYYYMMDDTHHmm',
+		)}&dur${convertToLocalTime(endDate).format(
+			'HHmmss',
+		)}&in_loc=${this.props.data.location}`;
+		window.open(yahooCalendarUrl, '_blank');
+	};
+
+  handleOnClick = ({ item, key, domEvent }) => {
+    domEvent.stopPropagation()
+    domEvent.preventDefault()
+    const [day, time] = item.props.value
+
+    let date = moment(this.props.data.startDate).add(day, 'day').format("YYYY-MM-DD")
+
+    const startTime = moment(time.startTime).format("HH:mm:ss")
+		const startDate = moment(`${date}  ${startTime}`)
+
+    const endTime = moment(time.endTime).format("HH:mm:ss")
+    const endDate = moment(`${date}  ${endTime}`)
+
+    switch (key) {
+      case '1':
+        this.onClickDownloadCalendar(day)
+        break;
+      case '2':
+        this.onClickAddGoogleCalendar(startDate, endDate)
+        break;
+      case '3':
+        this.onClickAddYahooCalendar(startDate, endDate)
+        break;
+      default:
+        //
+    }
+	};
+
+  downloadDropdownOptions = (time, day) => {
+    return (
+      <Menu onClick={this.handleOnClick}>
+        <Menu.Item key="1" value={[day, time]}>Download ICS File</Menu.Item>
+        <Menu.Item key="2" value={[day, time]}>Add to Google Calendar</Menu.Item>
+        <Menu.Item key="3" value={[day, time]}>Add to Yahoo Calendar</Menu.Item>
+      </Menu>
+    );
+  }
 
   render() {
     const {
-      data: { title, type, ticket, location, status, image, period, showClaim },
+      data: { title, type, ticket, location, status, image, period, showClaim, startAndEndTimes },
       className,
       edit,
       type: cardType,
@@ -173,18 +177,31 @@ class EventCard extends React.Component {
               <h5>{period}</h5>
               <h5>{`${location ? location.join(",") : ""} event`}</h5>
               {status !== "past" && status !== "confirmed" && (
-                <Dropdown overlay={this.downloadDropdownOptions}>
-                  <a
-                    href="/#"
-                    className="ant-dropdown-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                  >
-                    Download calendar <DownOutlined />
-                  </a>
-                </Dropdown>
+                <Space direction="vertical">
+                {startAndEndTimes.map((time, index) => {
+                  return (
+                    <Dropdown
+                      overlay={
+                        this.downloadDropdownOptions(time, index)
+                      }
+                    >
+                      <a
+                        href="/#"
+                        className="ant-dropdown-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                      >
+                        {`Download Day ${
+                          index + 1
+                        } calendar`}
+                        <DownOutlined />
+                      </a>
+                    </Dropdown>
+                  );
+                })}
+              </Space>
               )}
               <h6 className="event-card-cost">{ticket}</h6>
               {type && type.length > 0 && (
