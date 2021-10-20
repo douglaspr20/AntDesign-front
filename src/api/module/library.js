@@ -76,3 +76,7 @@ export const shareChannelLibrary = ({ library }) => {
 export const claimLibrary = ({ id }) => {
   return httpClient.post(`private/library/claim`, { id });
 };
+
+export const markLibraryViewed = ({ id, viewed }) => {
+  return httpClient.put('private/library/viewed', { id, mark: viewed });
+};

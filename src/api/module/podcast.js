@@ -65,6 +65,14 @@ export const claimPodcastSeries = ({ id, pdf }) => {
   return httpClient.post(`private/podcast-series/claim`, { id, pdf });
 };
 
+export const markPodcastViewed = ({ id, viewed }) => {
+  return httpClient.put('private/podcast/viewed', { id, mark: viewed });
+};
+
 export const markPodcastseriesViewed = ({ id, viewed }) => {
-  return httpClient.put('private/podcast-series/viewed', { id, mark: viewed });
+  return httpClient.put("private/podcast-series/viewed", { id, mark: viewed });
+};
+
+export const getPodcast = ({ id }) => {
+  return httpClient.get(`private/podcast/episode/${id}`);
 };

@@ -20,6 +20,7 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
+import IconLibrary from "images/icon-library.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -109,7 +110,7 @@ class MainHeader extends React.Component {
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
       pathInfo = {
-        icon: IconMedal,
+        icon: IconLibrary,
         label: `Library Item`,
       };
     }
