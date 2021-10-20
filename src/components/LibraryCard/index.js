@@ -151,8 +151,9 @@ const LibraryCard = ({
                 </div>
                 <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
               </div>
-              {contentType === "video" && (
-                <div className="d-flex justify-end">
+
+              <div className="d-flex flex-column">
+                {contentType === "video" && (
                   <CustomButton
                     className="mark-viewed"
                     type={
@@ -177,17 +178,17 @@ const LibraryCard = ({
                       );
                     }}
                   />
-                </div>
-              )}
-              {data.showClaim === 1 && (
-                <CustomButton
-                  className="claim-credits"
-                  type="primary"
-                  size="xs"
-                  text="Claim HR Credits"
-                  onClick={onClaimCredits}
-                />
-              )}
+                )}
+                {data.showClaim === 1 && (
+                  <CustomButton
+                    className="claim-credits"
+                    type="primary"
+                    size="xs"
+                    text="Claim HR Credits"
+                    onClick={onClaimCredits}
+                  />
+                )}
+              </div>
               {/* <div className="d-flex items-center">
                 <SvgIcon name="star" className="library-card-icon" />
                 <SvgIcon name="bookmark" className="library-card-icon" />

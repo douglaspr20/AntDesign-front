@@ -95,7 +95,7 @@
   &-content-footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
 
     .library-card-icon {
       width: 1.5rem;
@@ -121,6 +121,11 @@
     }
 
     .claim-credits {
+      padding: 0 12px;
+      margin-top: 0.5rem;
+    }
+
+    .mark-viewed {
       padding: 0 12px;
     }
   }
