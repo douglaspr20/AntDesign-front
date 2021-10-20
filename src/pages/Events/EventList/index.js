@@ -42,6 +42,7 @@ const EventList = ({
   onAddEvent,
   onConfirmAttendance,
   onConfirmCredit,
+  userProfile,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
@@ -111,6 +112,7 @@ const EventList = ({
                   <EventCard
                     edit={edit}
                     data={event}
+                    userProfile={userProfile}
                     onAttend={(going) => onEventChanged(event, going)}
                     onClick={onClick}
                     onMenuClick={(menu) => onMenuClick(menu, event)}
@@ -138,19 +140,21 @@ EventList.propTypes = {
   onAddEvent: PropTypes.func,
   onConfirmAttendance: PropTypes.func,
   onConfirmCredit: PropTypes.func,
+  userProfile: PropTypes.object
 };
 
 EventList.defaultProps = {
   data: [],
   edit: false,
   type: CARD_TYPE.VIEW,
+  userProfile: {},
   onAttend: () => {},
   onClick: () => {},
   showFilter: () => {},
   onMenuClick: () => {},
   onAddEvent: () => {},
   onConfirmAttendance: () => {},
-  onConfirmCredit: () => {},
+  onConfirmCredit: () => {}
 };
 
 const mapStateToProps = (state) => ({

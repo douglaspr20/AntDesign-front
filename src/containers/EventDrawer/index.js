@@ -31,13 +31,26 @@ const EventDrawer = ({
 	onConfirmCredit,
 }) => {
 	const [editor, setEditor] = useState('froala');
+	const [showFirewall, setShowFirewall] = useState(false);
 
 	const onDrawerClose = () => {
+    setShowFirewall(false)
 		onClose();
 	};
 
-	const onAttend = () => {
-		addToMyEventList(event);
+	const onAttend = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    
+		if (event.ticket === 'premium') {
+      if (userProfile && userProfile.memberShip === 'premium') {
+        addToMyEventList(event);
+      } else {
+        setShowFirewall(true);
+      }
+    } else {
+      addToMyEventList(event);
+    }
 	};
 
 	const onCancelAttend = () => {
@@ -139,7 +152,9 @@ const EventDrawer = ({
 		);
 	};
 
-	const planUpgrade = () => {
+	const planUpgrade = (e) => {
+    e.preventDefault();
+		e.stopPropagation();
 		Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
 	};
 
@@ -159,6 +174,22 @@ const EventDrawer = ({
 			onClose={onDrawerClose}
 		>
 			<div className="event-details">
+				{showFirewall && (
+					<div
+						className="event-details-firewall"
+						onClick={() => setShowFirewall(false)}
+					>
+						<div
+							className="upgrade-notification-panel"
+							onClick={planUpgrade}
+						>
+							<h3>
+								Upgrade to a PREMIUM Membership and get
+								unlimited access to the LAB features
+							</h3>
+						</div>
+					</div>
+				)}
 				<div className="event-details-header">
 					{event.image2 && <img src={event.image2} alt="event-img" />}
 					{!event.image2 && event.image && (
@@ -239,7 +270,11 @@ const EventDrawer = ({
 					<h1 className="event-title">{event.title}</h1>
 					<div className="d-flex items-center event-info">
 						<div className="d-flex items-center">
-							<h3 className="event-date">{`${moment(event.startDate).format("LL")} - ${moment(event.endDate).format("LL")}`}</h3>
+							<h3 className="event-date">{`${moment(
+								event.startDate,
+							).format('LL')} - ${moment(event.endDate).format(
+								'LL',
+							)}`}</h3>
 						</div>
 						{event.status !== 'past' &&
 							event.status !== 'confirmed' && (

@@ -19,10 +19,29 @@ import { convertToLocalTime } from 'utils/format';
 import './style.scss';
 
 class EventCard extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			showFirewall: false,
+		};
+	}
+
 	onAttend = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		this.props.onAttend(true);
+
+		const userProfile = this.props.userProfile;
+
+		if (this.props.data.ticket === 'premium') {
+      if (userProfile && userProfile.memberShip === 'premium') {
+        this.props.onAttend(true);
+      } else {
+        this.setState({ showFirewall: true });
+      }
+    } else {
+      this.props.onAttend(true);
+    }
 	};
 
 	onCancelAttend = (e) => {
@@ -180,6 +199,22 @@ class EventCard extends React.Component {
 				className={clsx('event-card', className)}
 				onClick={this.openEventDetails}
 			>
+				{this.state.showFirewall && (
+					<div
+						className="event-card-firewall"
+						onClick={() => this.setState({ showFirewall: false })}
+					>
+						<div
+							className="upgrade-notification-panel"
+							onClick={this.planUpgrade}
+						>
+							<h3>
+								Upgrade to a PREMIUM Membership and get
+								unlimited access to the LAB features
+							</h3>
+						</div>
+					</div>
+				)}
 				{cardType === CARD_TYPE.ADD ? (
 					<div className="event-card-plus">
 						<IconPlus />
@@ -227,7 +262,13 @@ class EventCard extends React.Component {
 															<DownOutlined />
 														</a>
 													</Dropdown>
-													<div>{`${moment(time.startTime).format("HH:mm")} - ${moment(time.endTime).format("HH:mm")}`}</div>
+													<div>{`${moment(
+														time.startTime,
+													).format(
+														'HH:mm',
+													)} - ${moment(
+														time.endTime,
+													).format('HH:mm')}`}</div>
 												</Space>
 											</div>
 										);
@@ -313,6 +354,7 @@ EventCard.propTypes = {
 	onMenuClick: PropTypes.func,
 	onConfirmAttendance: PropTypes.func,
 	onConfirmCredit: PropTypes.func,
+	userProfile: PropTypes.object,
 };
 
 EventCard.defaultProps = {
@@ -320,6 +362,7 @@ EventCard.defaultProps = {
 	className: '',
 	edit: false,
 	type: CARD_TYPE.VIEW,
+	userProfile: {},
 	onClick: () => {},
 	onAttend: () => {},
 	onMenuClick: () => {},
