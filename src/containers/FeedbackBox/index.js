@@ -16,7 +16,7 @@ class FeedbackBox extends Component {
       loading: false,
       message: "",
       loadingMessage: "Sending...",
-      heightFeedbackBox: "auto",
+      heightFeedbackBox: "25px",
       rotateArrow: "rotate(0deg)",
     };
   }
