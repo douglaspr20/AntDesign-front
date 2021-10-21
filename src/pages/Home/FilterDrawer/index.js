@@ -57,7 +57,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
     if (userProfile.completed === true) {
       Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
     } else {
-      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL);
+      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "story");
     }
   };
 

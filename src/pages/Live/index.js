@@ -1,59 +1,66 @@
-import React from 'react';
-import { Divider } from 'antd';
-import ReactPlayer from 'react-player/youtube';
+import React, { useEffect } from "react";
+import { Divider } from "antd";
+import ReactPlayer from "react-player/youtube";
 
 import { connect } from "react-redux";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
-import './style.scss';
-import { INTERNAL_LINKS } from 'enum';
+import Emitter from "services/emitter";
 
-const LivePage = ({
-  history,
-  live,
-}) => {
-  return (<>
-    { live.live === true ?
+import "./style.scss";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 
-      <div className="live-page">
-        <div className="live-page--container">
-          <div className="live-page--container--videoplayer">
-            <div className="video">
-              <ReactPlayer
-                url={live.url}
-                width="100%"
-                height="100%"
-                playing={true}
-              />
+const LivePage = ({ history, live, userProfile }) => {
+  useEffect(() => {
+    if (userProfile.percentOfCompletion !== 100) {
+      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "live");
+    }
+  });
+  return (
+    <>
+      {live.live === true && userProfile.percentOfCompletion === 100 ? (
+        <div className="live-page">
+          <div className="live-page--container">
+            <div className="live-page--container--videoplayer">
+              <div className="video">
+                <ReactPlayer
+                  url={live.url}
+                  width="100%"
+                  height="100%"
+                  playing={true}
+                />
+              </div>
+              <div className="chat">
+                <iframe
+                  title="live-chat"
+                  src={`https://gaming.youtube.com/live_chat?v=${
+                    live.url.split("=")[1]
+                  }&embed_domain=${window.location.hostname}`}
+                ></iframe>
+              </div>
             </div>
-            <div className="chat">
-              <iframe title="live-chat" src={`https://gaming.youtube.com/live_chat?v=${ live.url.split('=')[1] }&embed_domain=${window.location.hostname}`}></iframe>
+            <div className="live-item">
+              <Divider />
+              <h2>{live.title}</h2>
             </div>
-          </div>
-          <div className="live-item">
-            <Divider />
-            <h2>{live.title}</h2>
-          </div>
-          <div className="live-item">
-            <p>{live.description}</p>
+            <div className="live-item">
+              <p>{live.description}</p>
+            </div>
           </div>
         </div>
-      </div>
-      :
-      history.push(INTERNAL_LINKS.HOME)
-    }
+      ) : (
+        history.push(INTERNAL_LINKS.HOME)
+      )}
     </>
   );
 };
 
 const mapStateToProps = (state, props) => ({
-      live: liveSelector(state).live,
+  live: liveSelector(state).live,
+  userProfile: homeSelector(state).userProfile,
 });
 
-const mapDispatchToProps = {
-    };
+const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LivePage);
+export default connect(mapStateToProps, mapDispatchToProps)(LivePage);
