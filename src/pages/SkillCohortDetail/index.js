@@ -1,3 +1,4 @@
+import { Space } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -5,7 +6,7 @@ import { INTERNAL_LINKS, EVENT_TYPES } from 'enum';
 import moment from 'moment-timezone';
 import { CustomButton, CustomModal } from 'components';
 import Emitter from 'services/emitter';
-import { ReactComponent as IconArrowBackCircleOutline } from 'images/icon-arrow-back-circle-outline.svg';
+import IconBack from 'images/icon-back.svg';
 import { isEmpty } from 'lodash';
 
 import { homeSelector } from 'redux/selectors/homeSelector';
@@ -16,8 +17,6 @@ import { actions as skillCohortActions } from 'redux/actions/skillCohort-actions
 import { actions as skillCohortParticipantActions } from 'redux/actions/skillCohortParticipant-actions';
 
 import './style.scss';
-
-// moment().tz("America/Los_Angeles").format();
 
 const SkillCohortDetail = ({
 	getSkillCohort,
@@ -45,10 +44,18 @@ const SkillCohortDetail = ({
 			const { startDate } = skillCohort;
 			const dateToday = moment().format('YYYY-MM-DD HH:mm:ssZ');
 
-			if (dateToday === moment(startDate).startOf('day').subtract(1, 'days').format('YYYY-MM-DD HH:mm:ssZ')) {
+			if (
+				dateToday ===
+				moment(startDate)
+					.startOf('day')
+					.subtract(1, 'days')
+					.format('YYYY-MM-DD HH:mm:ssZ')
+			) {
 				setHasCohortStarted(true);
 				setIsDayBeforeStartDate(true);
-			} else if (dateToday >= moment(startDate).format('YYYY-MM-DD HH:mm:ssZ')) {
+			} else if (
+				dateToday >= moment(startDate).format('YYYY-MM-DD HH:mm:ssZ')
+			) {
 				setHasCohortStarted(true);
 			} else {
 				setHasCohortStarted(false);
@@ -82,9 +89,15 @@ const SkillCohortDetail = ({
 	};
 
 	const displayFirewall = showFirewall && (
-		<div className="skill-cohort-firewall" onClick={() => setShowFirewall(false)}>
+		<div
+			className="skill-cohort-firewall"
+			onClick={() => setShowFirewall(false)}
+		>
 			<div className="upgrade-notification-panel" onClick={planUpgrade}>
-				<h3>Upgrade to a PREMIUM Membership and get unlimited access to the LAB features</h3>
+				<h3>
+					Upgrade to a PREMIUM Membership and get unlimited access to
+					the LAB features
+				</h3>
 			</div>
 		</div>
 	);
@@ -95,7 +108,9 @@ const SkillCohortDetail = ({
 		if (hasCohortStarted) {
 			if (skillCohortParticipant.hasAccess) {
 				if (isDayBeforeStartDate) {
-					displayBtn = `Starting on ${moment(skillCohort.startDate).format('LL')}`;
+					displayBtn = `Starting on ${moment(
+						skillCohort.startDate,
+					).format('LL')}`;
 				} else {
 					displayBtn = 'Enter Dashboard';
 				}
@@ -104,7 +119,9 @@ const SkillCohortDetail = ({
 			}
 		} else {
 			if (skillCohortParticipant.hasAccess) {
-				displayBtn = `Starting on ${moment(skillCohort.startDate).format('LL')}`;
+				displayBtn = `Starting on ${moment(
+					skillCohort.startDate,
+				).format('LL')}`;
 			} else {
 				displayBtn = 'Join';
 			}
@@ -121,44 +138,65 @@ const SkillCohortDetail = ({
 	const disabled =
 		(hasCohortStarted && !skillCohortParticipant.hasAccess) ||
 		(!hasCohortStarted && skillCohortParticipant.hasAccess);
-	const displayStartDateAndEndDate = `${moment(skillCohort.startDate).format('LL')} - ${moment(
-		skillCohort.endDate,
-	).format('LL')}`;
+	const displayStartDateAndEndDate = `${moment(skillCohort.startDate).format(
+		'LL',
+	)} - ${moment(skillCohort.endDate).format('LL')}`;
 
 	return (
 		<>
 			<div className="skill-cohort-detail-page">
-				<div className="back-btn" onClick={() => history.push(INTERNAL_LINKS.SKILL_COHORTS)}>
-					<IconArrowBackCircleOutline style={{ height: '32px' }} title="Back to Skill Cohort List" />
-					<h3>Back to Skill Cohort List</h3>
-				</div>
-				<div className="skill-cohort-content-wrapper">
-					<div className="skill-cohort-content">
-						<h2>Title</h2>
-						<div>{skillCohort.title}</div>
+				<Space direction="vertical" size="large">
+					<div
+						className="back-btn"
+						onClick={() =>
+							history.push(INTERNAL_LINKS.SKILL_COHORTS)
+						}
+					>
+						<div className="skill-cohort-detail-page-back">
+							<div className="skill-cohort-detail-page-back-img">
+								<img src={IconBack} alt="icon-back" />
+							</div>
+							<h4>Back to Podcast Series</h4>
+						</div>
 					</div>
-					<div className="skill-cohort-content">
-						<h2>Description</h2>
-						<div>{skillCohort.description}</div>
+					<div>
+						<Space direction="vertical" size="large">
+							<div>
+								<Space direction="vertical">
+									<h2>Title</h2>
+									<div>{skillCohort.title}</div>
+								</Space>
+							</div>
+							<div>
+								<Space direction="vertical">
+									<h2>Description</h2>
+									<div>{skillCohort.description}</div>
+								</Space>
+							</div>
+							<div>
+								<Space direction="vertical">
+									<h2>Learning Objectives</h2>
+									<div>{skillCohort.objectives}</div>
+								</Space>
+							</div>
+							<div>
+								<Space direction="vertical">
+									<h2>Schedule</h2>
+									<div>{displayStartDateAndEndDate}</div>
+								</Space>
+							</div>
+							<div className="skill-cohort-bottom-btn">
+								<CustomButton
+									text={displayBtn}
+									htmlType="button"
+									onClick={handleOnJoin}
+									disabled={disabled || isDayBeforeStartDate}
+								/>
+							</div>
+							{displayFirewall}
+						</Space>
 					</div>
-					<div className="skill-cohort-content">
-						<h2>Learning Objectives</h2>
-						<div>{skillCohort.objectives}</div>
-					</div>
-					<div className="skill-cohort-content">
-						<h2>Schedule</h2>
-						<div>{displayStartDateAndEndDate}</div>
-					</div>
-					<div className="skill-cohort-bottom-btn">
-						<CustomButton
-							text={displayBtn}
-							htmlType="button"
-							onClick={handleOnJoin}
-							disabled={disabled || isDayBeforeStartDate}
-						/>
-					</div>
-					{displayFirewall}
-				</div>
+				</Space>
 				<CustomModal
 					visible={confirmModal}
 					title="Join this cohort?"
@@ -173,7 +211,12 @@ const SkillCohortDetail = ({
 							htmlType="button"
 							onClick={() => setConfirmModal(false)}
 						/>
-						<CustomButton text="Confirm" type="primary" htmlType="button" onClick={handleJoinSkillCohort} />
+						<CustomButton
+							text="Confirm"
+							type="primary"
+							htmlType="button"
+							onClick={handleJoinSkillCohort}
+						/>
 					</div>
 				</CustomModal>
 			</div>
