@@ -33,7 +33,7 @@ const PostCommentForm = ({
   };
 
   const onOpenFirewallModal = () => {
-    Emitter.emit(EVENT_TYPES.SHOW_FIREWALL);
+    Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "comment");
   };
 
   return (
