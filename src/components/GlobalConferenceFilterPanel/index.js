@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput, CustomCalendar } from "components";
+import { CustomCheckbox, SearchInput } from "components";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -12,13 +12,7 @@ import { CONFERENCE_SETTING } from "enum";
 
 import "./style.scss";
 
-const SessionType = [
-  {
-    text: "All Sessions",
-    value: "all",
-  },
-  ...CONFERENCE_SETTING.SESSION_TYPE,
-];
+const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
 const FilterPanel = ({
   title,
@@ -28,16 +22,6 @@ const FilterPanel = ({
   onSearch,
 }) => {
   const [filterValues, setFilterValues] = useState({});
-
-  const onDateChange = (date) => {
-    const newFilters = {
-      ...filterValues,
-      date: date,
-    };
-
-    setFilterValues(newFilters);
-    onFilterChange("Date", date);
-  };
 
   const onFilterChange = (field, values) => {
     const newFilter = {
@@ -55,8 +39,6 @@ const FilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
-          <h5 className="search-filter-title font-bold">Date</h5>
-          <CustomCalendar value={filterValues.date} onChange={onDateChange} />
           <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group
             value={

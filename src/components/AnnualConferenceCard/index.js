@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 
-import { CustomButton } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 
 import "./style.scss";
@@ -15,6 +15,8 @@ const AnnualConferenceCard = ({
   onRemoveSession,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
+
+  console.log(session);
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
@@ -27,14 +29,25 @@ const AnnualConferenceCard = ({
             onClick={onRemoveSession}
           />
         ) : attended ? (
-          <CustomButton size="md" text="Add session" onClick={onAddSession} />
+          <CustomButton
+            size="sm"
+            text="Add To My Personalized Agenda"
+            onClick={onAddSession}
+          />
         ) : null}
       </div>
       {added && <div className="acc-session-added-tag">Added</div>}
       <div className="acc-session-type">{`Session type: ${session.type}`}</div>
       <div className="acc-session-date">{session.date}</div>
+      <div className="acc-session-time">
+        {session.period} {session.tz}
+      </div>
       <div className="d-flex justify-between align-center">
-        <div className="acc-session-time">{session.period}</div>
+        <div className="acc-session-categories">
+          {session.categories.map((category, i) => (
+            <SpecialtyItem key={i} title={category} />
+          ))}
+        </div>
         <div
           className="acc-session-toggle"
           onClick={() => setHideInfo(!hideInfo)}
@@ -47,7 +60,22 @@ const AnnualConferenceCard = ({
       </div>
       {!hideInfo && (
         <div className="acc-details">
-          <div className="acc-details-speakers">
+          {session.description && (
+            <>
+              <h4>Description</h4>
+              <p>{session.description}</p>
+            </>
+          )}
+          <div className="acc-details-other-brands">
+            {(session.brands || []).map((brand, index) => (
+              <div className="session-brand" key={index}>
+                <img src={brand} alt="brand-img" />
+              </div>
+            ))}
+          </div>
+
+          <div className="acc-details">
+            {session.speakers && <h4>Speakers</h4>}
             {(session.speakers || []).map((speaker, index) => (
               <a
                 href={speaker.linkSpeaker}
@@ -70,21 +98,6 @@ const AnnualConferenceCard = ({
                 </div>
               </a>
             ))}
-          </div>
-          <div className="acc-details-other">
-            {session.description && (
-              <>
-                <h4>Description</h4>
-                <p>{session.description}</p>
-              </>
-            )}
-            <div className="acc-details-other-brands">
-              {(session.brands || []).map((brand, index) => (
-                <div className="session-brand" key={index}>
-                  <img src={brand} alt="brand-img" />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       )}

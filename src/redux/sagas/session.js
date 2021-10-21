@@ -27,7 +27,7 @@ export function* getAllSessionsSaga({ payload }) {
               "userid",
               "name",
               "image",
-              "description",
+              "descriptionspeaker",
               "linkspeaker",
             ]),
             speakers: [
@@ -37,7 +37,7 @@ export function* getAllSessionsSaga({ payload }) {
                 name: item.name,
                 img: item.image,
                 linkSpeaker: item.linkspeaker,
-                description: item.description,
+                description: item.descriptionspeaker,
               },
             ],
           }),

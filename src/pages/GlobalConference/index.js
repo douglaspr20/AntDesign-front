@@ -40,7 +40,6 @@ const GlobalConference = ({
   const [meta, setMeta] = useState("");
 
   const onFilterChange = (filter) => {
-    // getAllSessions({ ...filter, meta });
     setFilters(filter);
   };
 
@@ -53,16 +52,16 @@ const GlobalConference = ({
     //   ...filters,
     //   meta: value,
     // });
-    // setMeta(value);
+    setMeta(value);
   };
 
-  // const goToPrevPage = () => {
-  //   setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
-  // };
+  const goToPrevPage = () => {
+    setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
+  };
 
-  // const goToNextPage = () => {
-  //   setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
-  // };
+  const goToNextPage = () => {
+    setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
+  };
 
   const onAttend = () => {
     attendToGlobalConference();
@@ -95,14 +94,14 @@ const GlobalConference = ({
 
       return {
         title: date.format("MMM DD"),
-        content: () => <ConferenceList data={data} />,
+        content: () => (
+          <ConferenceList data={data} filters={filters} meta={meta} />
+        ),
       };
     });
 
-    console.log(tData);
-
     setTabData(tData);
-  }, [firstTabDate, allSessions]);
+  }, [firstTabDate, allSessions, filters, meta]);
 
   return (
     <div className="global-conference">
@@ -139,7 +138,7 @@ const GlobalConference = ({
         </div>
         <p className="global-conference-description">{Description}</p>
         <div className="global-conference-tabs">
-          {/*<div className="global-conference-pagination">
+          <div className="global-conference-pagination">
             <CustomButton
               type="primary outlined"
               size="xs"
@@ -152,8 +151,8 @@ const GlobalConference = ({
               text=">"
               onClick={goToNextPage}
             />
-          </div>*/}
-          {/*<Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />*/}
+          </div>
+          <Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />
         </div>
       </div>
     </div>
