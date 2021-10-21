@@ -140,7 +140,7 @@ EventList.propTypes = {
   onAddEvent: PropTypes.func,
   onConfirmAttendance: PropTypes.func,
   onConfirmCredit: PropTypes.func,
-  userProfile: PropTypes.object
+  userProfile: PropTypes.object,
 };
 
 EventList.defaultProps = {
@@ -154,7 +154,7 @@ EventList.defaultProps = {
   onMenuClick: () => {},
   onAddEvent: () => {},
   onConfirmAttendance: () => {},
-  onConfirmCredit: () => {}
+  onConfirmCredit: () => {},
 };
 
 const mapStateToProps = (state) => ({
