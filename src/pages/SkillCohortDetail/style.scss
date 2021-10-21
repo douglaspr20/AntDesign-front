@@ -1,15 +1,36 @@
 @import 'styles/main.scss';
 
 .skill-cohort-detail-page {
-	width: 100%;
+	width: 50%;
 	height: 100%;
 	padding: 12px;
+  margin-left: auto;
+  margin-right: auto;
 
 	.back-btn {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 	}
+
+  &-back {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    width: fit-content;
+
+    &-img {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 
 .skill-cohort-firewall {

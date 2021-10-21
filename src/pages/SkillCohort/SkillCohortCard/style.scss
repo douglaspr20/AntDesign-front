@@ -2,29 +2,29 @@
 
 .skill-cohort-card {
 	min-height: 386px;
-	background: $color-white;
-	border: 1px solid $color-border;
-	border-radius: 0.5rem;
-	box-shadow: 4px 0px 14px #37215714;
-	display: grid;
-	grid-template-rows: auto 1fr;
-	position: relative;
-	width: 100%;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: 0.5rem;
+  box-shadow: 4px 0px 14px #37215714;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  width: 100%;
 
 	&-header {
-		width: 100%;
-		min-height: 100px;
-		overflow: hidden;
-		border: 1px solid $color-border;
-		border-radius: 0.5rem;
-		background: $color-background-dark;
+    width: 100%;
+    min-height: 100px;
+    overflow: hidden;
+    border: 1px solid $color-border;
+    border-radius: 0.5rem;
+    background: $color-background-dark;
 
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-	}
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 
 	&-backimg {
 		background-color: $color-text-primary;

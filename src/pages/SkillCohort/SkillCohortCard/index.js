@@ -60,7 +60,7 @@ const SkillCohortCard = (props) => {
 					{moment(startDate).format('LL')} to {moment(endDate).format('LL')}
 				</h5>
 				<div className="skill-cohort-card-join-btn">
-					<CustomButton text={displayBtn} onClick={handleClickMore} />
+					<CustomButton text={displayBtn} onClick={handleClickMore} size="xs"/>
 				</div>
 			</div>
 		</div>
