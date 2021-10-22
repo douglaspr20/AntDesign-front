@@ -23,14 +23,21 @@ export function* getAllSessionsSaga({ payload }) {
         return session.reduce(
           (res, item) => ({
             ...res,
-            ...omit(item, ["userid", "name", "image", "description"]),
+            ...omit(item, [
+              "userid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
             speakers: [
               ...(res.speakers || []),
               {
                 id: item.userid,
                 name: item.name,
                 img: item.image,
-                description: item.description,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
               },
             ],
           }),

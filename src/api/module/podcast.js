@@ -66,7 +66,7 @@ export const claimPodcastSeries = ({ id, pdf }) => {
 };
 
 export const markPodcastViewed = ({ id, viewed }) => {
-  return httpClient.put('private/podcast/viewed', { id, mark: viewed });
+  return httpClient.put("private/podcast/viewed", { id, mark: viewed });
 };
 
 export const markPodcastseriesViewed = ({ id, viewed }) => {
