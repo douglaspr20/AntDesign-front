@@ -112,6 +112,7 @@ const EventsPage = ({
           data={filteredEvents}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -123,6 +124,7 @@ const EventsPage = ({
           data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -136,6 +138,7 @@ const EventsPage = ({
           )}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           onConfirmAttendance={onConfirmAttendance}
           onConfirmCredit={onConfirmCredit}
           showFilter={() => setVisibleFilter(true)}
