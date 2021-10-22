@@ -16,7 +16,6 @@ const AnnualConferenceCard = ({
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
 
-  console.log(session);
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
