@@ -166,10 +166,13 @@ export function* addSessionSaga({ payload }) {
       yield put(homeActions.updateUserInformation(response.data.user));
     }
   } catch (error) {
-    console.log(error);
-
     if (error && error.response && error.response.status === 401) {
       yield put(authActions.logout());
+    } else {
+      notification.error({
+        message: "The session was not added",
+        description: error.response.data.msg,
+      });
     }
   } finally {
     yield put(homeActions.setLoading(false));
