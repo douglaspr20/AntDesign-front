@@ -2,16 +2,22 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import clsx from "clsx";
 import Helmet from "react-helmet";
-import { CheckOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
+import { CheckOutlined, DownOutlined } from "@ant-design/icons";
+import { Modal, Dropdown, Space, Menu } from "antd";
+import moment from "moment";
+import { isEmpty } from "lodash";
 
+import { convertToLocalTime } from "utils/format";
+import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
 import { getEvent, addToMyEventList } from "redux/actions/event-actions";
+import { getUser } from "redux/actions/home-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
 import { envSelector } from "redux/selectors/envSelector";
-import { INTERNAL_LINKS } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -23,19 +29,36 @@ const PublicEventPage = ({
   getEvent,
   addToMyEventList,
   history,
+  userProfile,
+  getUser,
 }) => {
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [editor, setEditor] = useState("froala");
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const onAttend = () => {
     if (isAuthenticated) {
-      addToMyEventList(updatedEvent);
-      history.push(INTERNAL_LINKS.EVENTS);
+      if (updatedEvent.ticket === "premium") {
+        if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
+          addToMyEventList(updatedEvent);
+          history.push(INTERNAL_LINKS.EVENTS);
+        } else {
+          setShowFirewall(true);
+        }
+      } else {
+        addToMyEventList(updatedEvent);
+        history.push(INTERNAL_LINKS.EVENTS);
+      }
     } else {
       setModalVisible(true);
     }
   };
+
+  useEffect(() => {
+    getUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (updatedEvent.description && updatedEvent.description.blocks) {
@@ -64,12 +87,109 @@ const PublicEventPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const planUpgrade = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   const onCancelModal = () => {
     setModalVisible(false);
   };
 
+  const onClickDownloadCalendar = (day) => {
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}`,
+      "_blank"
+    );
+  };
+
+  const onClickAddGoogleCalendar = (startDate, endDate) => {
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+      updatedEvent?.title
+    }&dates=${convertToLocalTime(startDate).format(
+      "YYYYMMDDTHHmm"
+    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
+      updatedEvent?.location
+    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+
+    window.open(googleCalendarUrl, "_blank");
+  };
+
+  const onClickAddYahooCalendar = (startDate, endDate) => {
+    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
+      updatedEvent?.title
+    }&st=${convertToLocalTime(startDate).format(
+      "YYYYMMDDTHHmm"
+    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
+      updatedEvent?.location
+    }`;
+    window.open(yahooCalendarUrl, "_blank");
+  };
+
+  const handleOnClick = ({ item, key, domEvent }) => {
+    domEvent.stopPropagation();
+    domEvent.preventDefault();
+    const [day, time] = item.props.value;
+
+    let date = moment(updatedEvent?.startDate)
+      .add(day, "day")
+      .format("YYYY-MM-DD");
+
+    const startTime = moment(time.startTime).format("HH:mm:ss");
+    const startDate = moment(`${date}  ${startTime}`);
+
+    const endTime = moment(time.endTime).format("HH:mm:ss");
+    const endDate = moment(`${date}  ${endTime}`);
+
+    switch (key) {
+      case "1":
+        onClickDownloadCalendar(day);
+        break;
+      case "2":
+        onClickAddGoogleCalendar(startDate, endDate);
+        break;
+      case "3":
+        onClickAddYahooCalendar(startDate, endDate);
+        break;
+      default:
+      //
+    }
+  };
+
+  const downloadDropdownOptions = (time, day) => {
+    return (
+      <Menu onClick={handleOnClick}>
+        <Menu.Item key="1" value={[day, time]}>
+          Download ICS File
+        </Menu.Item>
+        <Menu.Item key="2" value={[day, time]}>
+          Add to Google Calendar
+        </Menu.Item>
+        <Menu.Item key="3" value={[day, time]}>
+          Add to Yahoo Calendar
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  // console.log(userProfile, "sheesh");
+
   return (
     <div className="public-event-page">
+      {showFirewall && (
+        <div
+          className="event-card-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+            This event requires a PREMIUM Membership to join. 
+            Click here to upgrate to a Premium Membership and get unlimited access to the LAB features.
+            </h3>
+          </div>
+        </div>
+      )}
       <Helmet>
         <title>{updatedEvent.title}</title>
         <meta name="description" content={updatedEvent.about} />
@@ -135,6 +255,37 @@ const PublicEventPage = ({
         </div>
       </div>
       <div className="public-event-page-content">
+        <div className="public-event-page-content-calendar">
+          {updatedEvent.status === "going" && isAuthenticated && (
+            <Space direction="vertical">
+              {updatedEvent?.startAndEndTimes.map((time, index) => {
+                return (
+                  <div className="d-flex calendar" key={index}>
+                    <Space size="middle">
+                      <Dropdown overlay={downloadDropdownOptions(time, index)}>
+                        <a
+                          href="/#"
+                          className="ant-dropdown-link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <Space>
+                            {updatedEvent?.startAndEndTimes.length > 1
+                              ? `Download Day ${index + 1}`
+                              : "Download Calendar"}
+                            <DownOutlined />
+                          </Space>
+                        </a>
+                      </Dropdown>
+                    </Space>
+                  </div>
+                );
+              })}
+            </Space>
+          )}
+        </div>
         <h1
           className={clsx("event-title", {
             "no-image": !updatedEvent.image2 && !updatedEvent.image,
@@ -142,7 +293,10 @@ const PublicEventPage = ({
         >
           {updatedEvent.title}
         </h1>
-        <h3 className="event-date">{updatedEvent.period}</h3>
+        <h3 className="event-date">
+          {moment(updatedEvent.startDate).format("LL")} -{" "}
+          {moment(updatedEvent.endDate).format("LL")} {updatedEvent.timezone}
+        </h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
         )} event`}</h3>
@@ -183,11 +337,13 @@ const mapStateToProps = (state) => ({
   updatedEvent: eventSelector(state).updatedEvent,
   isAuthenticated: authSelector(state).isAuthenticated,
   isMobile: envSelector(state).isMobile,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   getEvent,
   addToMyEventList,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicEventPage);

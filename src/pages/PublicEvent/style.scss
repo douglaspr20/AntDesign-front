@@ -131,6 +131,12 @@
     border: 1px solid $color-border;
     padding: 60px 2rem 120px;
 
+    &-calendar {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 1rem;
+    }
+
     h1 {
       text-align: center;
       margin-bottom: 2rem !important;
