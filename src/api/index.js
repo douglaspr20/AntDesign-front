@@ -35,6 +35,7 @@ import {
   updateChannelLibrary,
   shareChannelLibrary,
   claimLibrary,
+  markLibraryViewed,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -53,7 +54,9 @@ import {
   getAllPodcastSeries,
   getPodcastSeries,
   claimPodcastSeries,
+  markPodcastViewed,
   markPodcastseriesViewed,
+  getPodcast,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -62,6 +65,7 @@ import {
   searchConferenceLibrary,
   claimConferenceLibrary,
   markConferenceLibraryViewed,
+  getConferenceLibrary,
 } from "./module/conference";
 import {
   createChannel,
@@ -72,7 +76,11 @@ import {
   updateChannel,
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
-import { getNotifications, markeToRead } from "./module/notification";
+import {
+  getNotifications,
+  markeToRead,
+  markeToUnRead,
+} from "./module/notification";
 import { getAllSessions } from "./module/session";
 
 import { getEditorSignature } from "./module/env";
@@ -104,6 +112,7 @@ export {
   setMatch,
   getCategories,
   searchConferenceLibrary,
+  getConferenceLibrary,
   createChannel,
   searchChannels,
   getChannelCategories,
@@ -135,12 +144,16 @@ export {
   deleteResume,
   getAllPodcastSeries,
   getPodcastSeries,
+  getPodcast,
   claimPodcastSeries,
   getEditorSignature,
   claimLibrary,
+  markLibraryViewed,
   claimConferenceLibrary,
   claimEventCredit,
   claimEventAttendance,
   markConferenceLibraryViewed,
+  markPodcastViewed,
   markPodcastseriesViewed,
+  markeToUnRead,
 };

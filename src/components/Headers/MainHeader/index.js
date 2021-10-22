@@ -20,6 +20,7 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
+import IconLibrary from "images/icon-library.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -49,9 +50,9 @@ class MainHeader extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  inviteFriend = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL);
-  };
+  // inviteFriend = () => {
+  //   Emitter.emit(EVENT_TYPES.OPEN_INVITE_FRIEND_MODAL);
+  // };
 
   onShowSidebar = () => {
     this.props.setCollapsed(false);
@@ -107,6 +108,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
+      pathInfo = {
+        icon: IconLibrary,
+        label: `Library Item`,
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">
@@ -143,13 +151,13 @@ class MainHeader extends React.Component {
               </div>
             </div>
           )}
-          <CustomButton
+          {/* <CustomButton
             text="Invite friend"
             type="primary"
             size="lg"
             className="btn-invite"
             onClick={this.inviteFriend}
-          />
+          /> */}
           {user.memberShip === "free" && (
             <CustomButton
               text="Upgrade"

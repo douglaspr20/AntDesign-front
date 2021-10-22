@@ -48,3 +48,7 @@ export { default as AnnualConferenceCard } from "./AnnualConferenceCard";
 export { default as PodcastSeriesCard } from "./PodcastSeriesCard";
 export { default as FroalaEdit } from "./FroalaEdit";
 export { default as PostsFilterPanel } from "./PostsFilterPanel";
+export { default as GlobalConferenceFilterPanel } from "./GlobalConferenceFilterPanel";
+export { default as SpeakersFilterPanel } from "./SpeakersFiltersPanel";
+export { default as ParticipantsFilterPanel } from "./ParticipantsFilterPanel";
+

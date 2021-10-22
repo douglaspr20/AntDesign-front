@@ -47,4 +47,98 @@ export default {
     "Leadership",
     "Technology",
   ],
+  JOB_LEVELS: [
+    {
+      label: "C-Suite",
+      value: "C-Suite",
+    },
+    {
+      label: "VP or SVP",
+      value: "VP or SVP",
+    },
+    {
+      label: "Director",
+      value: "Director",
+    },
+    {
+      label: "Manager",
+      value: "Manager",
+    },
+    {
+      label: "Professional",
+      value: "Professional",
+    },
+    {
+      label: "Junior",
+      value: "Junior",
+    },
+  ],
+  WORK_AREAS: [
+    {
+      label: "Compensation/Benefits",
+      value: "Compensation/Benefits",
+    },
+    {
+      label: "Culture/Employee Experience",
+      value: "Culture/Employee Experience",
+    },
+    {
+      label: "Labor relations/Policy",
+      value: "Labor relations/Policy",
+    },
+    {
+      label: "Learning / Talent Development",
+      value: "Learning / Talent Development",
+    },
+    {
+      label: "Organizational Change Management / Transformation",
+      value: "Organizational Change Management / Transformation",
+    },
+    {
+      label: "Organizational Design",
+      value: "Organizational Design",
+    },
+    {
+      label: "People Analytics",
+      value: "People Analytics",
+    },
+    {
+      label: "Talent acquisition/recruitment",
+      value: "Talent acquisition/recruitment",
+    },
+    {
+      label: "Talent Management",
+      value: "Talent Management",
+    },
+    {
+      label: "All of the Above",
+      value: "all",
+    },
+  ],
+  ORG_SIZES: [
+    {
+      label: "1-100",
+      value: "1-100",
+    },
+    {
+      label: "101 - 500",
+      value: "101 - 500",
+    },
+    {
+      label: "501-1000",
+      value: "501-1000",
+    },
+    {
+      label: "1001 - 5000",
+      value: "1001 - 5000",
+    },
+    {
+      label: "5001-10000",
+      value: "5001-10000",
+    },
+    {
+      label: "Over 10000",
+      value: "Over 10000",
+    },
+  ],
 };

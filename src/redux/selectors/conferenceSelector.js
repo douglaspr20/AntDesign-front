@@ -9,6 +9,7 @@ const resultSelector = createSelector(conferenceDataSelector, (payload) => {
     error: payload.get("error"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    conferenceLibrary: payload.get("conferenceLibrary"),
   };
 });
 

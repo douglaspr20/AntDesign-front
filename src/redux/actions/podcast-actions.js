@@ -15,8 +15,12 @@ const SET_MORE_CHANNEL_PODCAST_LIST = "SET_MORE_CHANNEL_PODCAST_LIST";
 const DELETE_CHANNEL_PODCAST = "DELETE_CHANNEL_PODCAST";
 const UPDATE_CHANNEL_PODCAST = "UPDATE_CHANNEL_PODCAST";
 const CLAIM_PODCAST_SERIES = "CLAIM_PODCAST_SERIES";
+const SET_PODCAST_VIEWED = "SET_PODCAST_VIEWED";
 const SET_PODCAST_SERIES_VIEWED = "SET_PODCAST_SERIES_VIEWED";
+const UPDATE_PODCAST_VIEWED = "UPDATE_PODCAST_VIEWED";
 const UPDATE_PODCAST_SERIES_VIEWED = "UPDATE_PODCAST_SERIES_VIEWED";
+const GET_PODCAST = "GET_PODCAST";
+const SET_PODCAST = "SET_PODCAST";
 
 export const constants = {
   GET_ALL_PODCASTS,
@@ -34,8 +38,12 @@ export const constants = {
   DELETE_CHANNEL_PODCAST,
   UPDATE_CHANNEL_PODCAST,
   CLAIM_PODCAST_SERIES,
+  SET_PODCAST_VIEWED,
   SET_PODCAST_SERIES_VIEWED,
+  UPDATE_PODCAST_VIEWED,
   UPDATE_PODCAST_SERIES_VIEWED,
+  GET_PODCAST,
+  SET_PODCAST,
 };
 
 // ------------------------------------
@@ -101,6 +109,13 @@ export const claimPodcastSeries = createAction(
   CLAIM_PODCAST_SERIES,
   (id, pdf, callback) => ({ id, pdf, callback })
 );
+export const setPodcastViewed = createAction(
+  SET_PODCAST_VIEWED,
+  (id, viewed) => ({
+    id,
+    viewed,
+  })
+);
 export const setPodcastseriesViewed = createAction(
   SET_PODCAST_SERIES_VIEWED,
   (id, viewed) => ({
@@ -108,10 +123,22 @@ export const setPodcastseriesViewed = createAction(
     viewed,
   })
 );
+export const updatePodcastViewed = createAction(
+  UPDATE_PODCAST_VIEWED,
+  (data) => ({ data })
+);
 export const updatePodcastseriesViewed = createAction(
   UPDATE_PODCAST_SERIES_VIEWED,
   (data) => ({ data })
 );
+
+export const getPodcast = createAction(GET_PODCAST, (id) => ({
+  id,
+}));
+
+export const setPodcast = createAction(SET_PODCAST, (data) => ({
+  data,
+}));
 
 export const actions = {
   getAllPodcasts,
@@ -129,6 +156,10 @@ export const actions = {
   deleteChannelPodcast,
   updateChannelPodcast,
   claimPodcastSeries,
+  setPodcastViewed,
   setPodcastseriesViewed,
+  updatePodcastViewed,
   updatePodcastseriesViewed,
+  getPodcast,
+  setPodcast,
 };

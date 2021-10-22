@@ -23,6 +23,7 @@ import SignupForm from "./SignupForm";
 import AuthAlert from "containers/AuthAlert";
 
 import IconLogo from "images/logo-sidebar.svg";
+import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
 
@@ -48,18 +49,59 @@ const Login = ({
     wrapperCol: { span: 24 },
   };
 
+  const [signupStep, setSignupStep] = useState(0);
+  const [prevAreaValues, setPrevAreaVaues] = useState([]);
+  const [signupValues, setSignupValues] = useState({});
+
+  const refForm = React.useRef(null);
+
+
   const onFinish = (values) => {
     if (isLogin) {
       const { email, password } = values;
       login(email, password);
     } else {
-      signUp({ ...values });
+      const newSignupValues = {
+        ...signupValues,
+        ...values,
+      };
+      setSignupValues(newSignupValues);
+      if (signupStep !== 3) {
+        setSignupStep(signupStep + 1);
+      }
+      if (signupStep === 3) {
+        signUp({ ...newSignupValues });
+      }
     }
   };
 
   const onFinishFailed = () => {};
 
-  const onValuesChange = () => {};
+  const onValuesChange = (values) => {
+    if (values && values.recentWorkArea !== undefined) {
+      if (
+        !prevAreaValues.includes("all") &&
+        values.recentWorkArea.includes("all")
+      ) {
+        if (refForm && refForm.current) {
+          refForm.current.setFieldsValue({
+            recentWorkArea: ["all"],
+          });
+          setPrevAreaVaues(["all"]);
+        }
+      } else if (
+        prevAreaValues.includes("all") &&
+        values.recentWorkArea.includes("all")
+      ) {
+        if (refForm && refForm.current) {
+          refForm.current.setFieldsValue({
+            recentWorkArea: values.recentWorkArea.filter((v) => v !== "all"),
+          });
+          setPrevAreaVaues(values.recentWorkArea.filter((v) => v !== "all"));
+        }
+      }
+    }
+  };
 
   const onChangeType = () => {
     setIsLogin((prev) => !prev);
@@ -69,6 +111,10 @@ const Login = ({
     e.preventDefault();
     e.stopPropagation();
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  }
+  
+  const onBackSignup = () => {
+    setSignupStep(Math.max(signupStep - 1, 0));
   };
 
   useEffect(() => {
@@ -143,7 +189,8 @@ const Login = ({
         )}
 
         <Form
-          {...layout}
+          ref={refForm}
+          layout="vertical"
           className="login-dialog-form"
           name="basic"
           onFinish={onFinish}
@@ -152,12 +199,18 @@ const Login = ({
         >
           <div className="login-dialog-content">
             {isLogin ? <LoginForm /> : <SignupForm />}
+            {!isLogin && signupStep > 0 && (
+              <div className="login-dialog-content-back" onClick={onBackSignup}>
+                <img src={IconBack} alt="icon-back" />
+              </div>
+            )}
+            {isLogin ? <LoginForm /> : <SignupForm step={signupStep} />}
           </div>
           <div className="login-dialog-footer">
             <span className="login-dialog-footer-error">{error}</span>
             <CustomButton
               htmlType="submit"
-              text={isLogin ? "Log In" : "Sign up"}
+              text={isLogin ? "Log In" : signupStep === 3 ? "Sign up" : "Next"}
               type="primary"
               size="lg"
             />
