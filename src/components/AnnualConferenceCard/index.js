@@ -5,7 +5,10 @@ import clsx from "clsx";
 import { CustomButton, SpecialtyItem } from "components";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 
+import { INTERNAL_LINKS } from "../../enum";
+
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const AnnualConferenceCard = ({
   session,
@@ -20,6 +23,7 @@ const AnnualConferenceCard = ({
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
         <h3>{session.title}</h3>
+        <Link to={`${INTERNAL_LINKS.SPEAKERS}/${session.id}`}>Speakers</Link>
         {added ? (
           <CustomButton
             type="primary outlined"

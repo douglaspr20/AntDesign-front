@@ -76,6 +76,7 @@ const GlobalConference = ({
       );
       getAllSessions(startTime, endTime);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTabDate]);
 

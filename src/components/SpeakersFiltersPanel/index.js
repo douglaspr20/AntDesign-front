@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Checkbox } from "antd";
+import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
 import { CustomCheckbox, SearchInput } from "components";
@@ -8,8 +8,8 @@ import { CustomCheckbox, SearchInput } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
-import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+// import Emitter from "services/emitter";
+// import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -31,19 +31,16 @@ const FilterPanel = ({
     onChange(newFilter);
   };
 
-  const onOpenPostFormModal = () => {
-    if (userProfile.completed === true) {
-      Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
-    } else {
-      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "story");
-    }
-  };
+  // const onOpenPostFormModal = () => {
+  //   if (userProfile.completed === true) {
+  //     Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
+  //   } else {
+  //     Emitter.emit(EVENT_TYPES.SHOW_FIREWALL);
+  //   }
+  // };
 
   return (
-    <div className="posts-filter-panel">
-      <Button type="primary" onClick={onOpenPostFormModal}>
-        Add Story
-      </Button>
+    <div className="speakers-filter-panel">
       <h2 className="font-regular">{title}</h2>
       <div className="podcast-filter-panel-content">
         <div className="search-filter">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button, Checkbox } from "antd";
+import { Checkbox } from "antd";
 
 import {
   CustomDrawer,
@@ -53,14 +53,6 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
     };
   }, []);
 
-  const onOpenPostFormModal = () => {
-    if (userProfile.completed === true) {
-      Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
-    } else {
-      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "story");
-    }
-  };
-
   return (
     <CustomDrawer
       className="filter-drawer"
@@ -80,13 +72,6 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
         </div>
         <div className="filter-drawer-content">
           <div className="search-filter">
-            <Button
-              type="primary"
-              className="create-post"
-              onClick={onOpenPostFormModal}
-            >
-              Add Story
-            </Button>
             <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />
             <h5 className="search-filter-title font-bold">Topics</h5>
@@ -97,12 +82,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
               onChange={(values) => onFilterChange("Topics", values)}
             >
               {allCategories.map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={userProfile.memberShip === "free"}
-                >
+                <CustomCheckbox key={item.value} value={item.value} size="sm">
                   {item.title}
                 </CustomCheckbox>
               ))}
