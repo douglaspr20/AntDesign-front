@@ -2,20 +2,37 @@
 
 .global-conference {
   background: $color-background;
-  padding: 3rem 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
+
+  @media (max-width: 1023.98px) {
+    .global-conference-filter-panel {
+      display: none;
+    }
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
 
   &-container {
-    max-width: 1024px;
+    width: 100%;
+    padding: 3rem 20%;
     margin: 0 auto;
     height: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      padding: 3rem 10%;
+    }
 
     .attending-label {
       margin-right: 37px;
@@ -61,5 +78,16 @@
     .custom-tabs {
       overflow: visible;
     }
+  }
+}
+
+.global-conference-page__filters--button {
+  display: none;
+  button {
+    width: 100%;
+  }
+  @media (max-width: 1023.98px) {
+    display: block;
+    margin-bottom: 1rem;
   }
 }

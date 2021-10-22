@@ -89,14 +89,24 @@
     top: -14px;
     right: -24px;
   }
+
+  &-categories {
+    display: flex;
+    width: 70%;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+
+    & .specialty-item {
+      max-width: 200px;
+    }
+  }
 }
 
 .acc-details {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  grid-column-gap: 1fr;
-  padding-top: 2rem;
-  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  margin-top: 1rem;
   border-top: 1px solid $color-border;
 
   &-speaker {
@@ -104,6 +114,7 @@
     grid-template-columns: 80px 1fr;
     grid-row-gap: 2rem;
     grid-column-gap: 1.5rem;
+    margin-top: 0.5rem;
     margin-bottom: 2rem;
 
     &-image {
@@ -131,29 +142,6 @@
 
       h5 {
         color: $color-text-secondary !important;
-      }
-    }
-  }
-
-  &-other {
-    margin: 0.5rem 0 2rem;
-
-    p {
-      color: $color-text-secondary;
-      @include app-font(14px, 24px);
-    }
-
-    &-brands {
-      display: flex;
-
-      .session-brand {
-        height: 80px;
-        object-fit: cover;
-        margin: 0 1rem 1rem 0;
-
-        img {
-          height: 100%;
-        }
       }
     }
   }

@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
+import moment from "moment";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -18,10 +19,29 @@ import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
 class EventCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showFirewall: false,
+    };
+  }
+
   onAttend = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onAttend(true);
+
+    const userProfile = this.props.userProfile;
+
+    if (this.props.data.ticket === "premium") {
+      if (userProfile && userProfile.memberShip === "premium") {
+        this.props.onAttend(true);
+      } else {
+        this.setState({ showFirewall: true });
+      }
+    } else {
+      this.props.onAttend(true);
+    }
   };
 
   onCancelAttend = (e) => {
@@ -66,11 +86,9 @@ class EventCard extends React.Component {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  onClickDownloadCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  onClickDownloadCalendar = (day) => {
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
       "_blank"
     );
   };
@@ -87,67 +105,89 @@ class EventCard extends React.Component {
     return encodeURIComponent(description);
   };
 
-  onClickAddGoogleCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // const { data } = this.props || {};
-    // let description = "";
-    // if (data.description) {
-    //   description = this.getDescriptionHTML(data);
-    // }
+  onClickAddGoogleCalendar = (startDate, endDate) => {
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       this.props.data.title
-    }&dates=${convertToLocalTime(this.props.data.startDate).format(
+    }&dates=${convertToLocalTime(startDate).format(
       "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(this.props.data.endDate).format(
-      "YYYYMMDDTHHmmss"
-    )}&location=${
+    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
       this.props.data.location
     }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+
     window.open(googleCalendarUrl, "_blank");
   };
 
-  onClickAddYahooCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // const { data } = this.props || {};
-    // let description = "";
-    // if (data.description) {
-    //   description = this.getDescriptionHTML(data);
-    // }
+  onClickAddYahooCalendar = (startDate, endDate) => {
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       this.props.data.title
-    }&st=${convertToLocalTime(this.props.data.startDate).format(
+    }&st=${convertToLocalTime(startDate).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(this.props.data.endDate).format(
-      "HHmmss"
-    )}&in_loc=${this.props.data.location}`;
+    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
+      this.props.data.location
+    }`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
-  downloadDropdownOptions = () => (
-    <Menu>
-      <Menu.Item key="1">
-        <a href="/#" onClick={this.onClickDownloadCalendar}>
+  handleOnClick = ({ item, key, domEvent }) => {
+    domEvent.stopPropagation();
+    domEvent.preventDefault();
+    const [day, time] = item.props.value;
+
+    let date = moment(this.props.data.startDate)
+      .add(day, "day")
+      .format("YYYY-MM-DD");
+
+    const startTime = moment(time.startTime).format("HH:mm:ss");
+    const startDate = moment(`${date}  ${startTime}`);
+
+    const endTime = moment(time.endTime).format("HH:mm:ss");
+    const endDate = moment(`${date}  ${endTime}`);
+
+    switch (key) {
+      case "1":
+        this.onClickDownloadCalendar(day);
+        break;
+      case "2":
+        this.onClickAddGoogleCalendar(startDate, endDate);
+        break;
+      case "3":
+        this.onClickAddYahooCalendar(startDate, endDate);
+        break;
+      default:
+      //
+    }
+  };
+
+  downloadDropdownOptions = (time, day) => {
+    return (
+      <Menu onClick={this.handleOnClick}>
+        <Menu.Item key="1" value={[day, time]}>
           Download ICS File
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a href="/#" onClick={this.onClickAddGoogleCalendar}>
+        </Menu.Item>
+        <Menu.Item key="2" value={[day, time]}>
           Add to Google Calendar
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="/#" onClick={this.onClickAddYahooCalendar}>
+        </Menu.Item>
+        <Menu.Item key="3" value={[day, time]}>
           Add to Yahoo Calendar
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
+        </Menu.Item>
+      </Menu>
+    );
+  };
 
   render() {
     const {
-      data: { title, type, ticket, location, status, image, period, showClaim },
+      data: {
+        title,
+        type,
+        ticket,
+        location,
+        status,
+        image,
+        startDate,
+        endDate,
+        showClaim,
+        startAndEndTimes,
+      },
       className,
       edit,
       type: cardType,
@@ -159,6 +199,22 @@ class EventCard extends React.Component {
         className={clsx("event-card", className)}
         onClick={this.openEventDetails}
       >
+        {this.state.showFirewall && (
+          <div
+            className="event-card-firewall"
+            onClick={() => this.setState({ showFirewall: false })}
+          >
+            <div
+              className="upgrade-notification-panel"
+              onClick={this.planUpgrade}
+            >
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
+          </div>
+        )}
         {cardType === CARD_TYPE.ADD ? (
           <div className="event-card-plus">
             <IconPlus />
@@ -170,21 +226,41 @@ class EventCard extends React.Component {
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
-              <h5>{period}</h5>
+              <h5>{`${moment(startDate).format("LL")} | ${moment(
+                endDate
+              ).format("LL")}`}</h5>
               <h5>{`${location ? location.join(",") : ""} event`}</h5>
               {status !== "past" && status !== "confirmed" && (
-                <Dropdown overlay={this.downloadDropdownOptions}>
-                  <a
-                    href="/#"
-                    className="ant-dropdown-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                  >
-                    Download calendar <DownOutlined />
-                  </a>
-                </Dropdown>
+                <Space direction="vertical">
+                  {startAndEndTimes.map((time, index) => {
+                    return (
+                      <div className="d-flex">
+                        <Space size="middle">
+                          <Dropdown
+                            overlay={this.downloadDropdownOptions(time, index)}
+                          >
+                            <a
+                              href="/#"
+                              className="ant-dropdown-link"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                            >
+                              {startAndEndTimes.length > 1
+                                ? `Download Day ${index + 1}`
+                                : "Download Calendar"}
+                              <DownOutlined />
+                            </a>
+                          </Dropdown>
+                          <div>{`${moment(time.startTime).format(
+                            "HH:mm"
+                          )} - ${moment(time.endTime).format("HH:mm")}`}</div>
+                        </Space>
+                      </div>
+                    );
+                  })}
+                </Space>
               )}
               <h6 className="event-card-cost">{ticket}</h6>
               {type && type.length > 0 && (
@@ -258,6 +334,7 @@ EventCard.propTypes = {
   onMenuClick: PropTypes.func,
   onConfirmAttendance: PropTypes.func,
   onConfirmCredit: PropTypes.func,
+  userProfile: PropTypes.object,
 };
 
 EventCard.defaultProps = {
@@ -265,6 +342,7 @@ EventCard.defaultProps = {
   className: "",
   edit: false,
   type: CARD_TYPE.VIEW,
+  userProfile: {},
   onClick: () => {},
   onAttend: () => {},
   onMenuClick: () => {},
