@@ -198,7 +198,6 @@ const Login = ({
           onValuesChange={onValuesChange}
         >
           <div className="login-dialog-content">
-            {isLogin ? <LoginForm /> : <SignupForm />}
             {!isLogin && signupStep > 0 && (
               <div className="login-dialog-content-back" onClick={onBackSignup}>
                 <img src={IconBack} alt="icon-back" />
