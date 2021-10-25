@@ -81,7 +81,7 @@ import {
   markeToRead,
   markeToUnRead,
 } from "./module/notification";
-import { getAllSessions } from "./module/session";
+import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
 
 import { getEditorSignature } from "./module/env";
 
@@ -136,6 +136,7 @@ export {
   updateChannel,
   getNotifications,
   getAllSessions,
+  getSessionsAddedbyUser,
   attendToGlobalConference,
   addSession,
   removeSession,

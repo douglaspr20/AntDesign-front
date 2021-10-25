@@ -34,6 +34,13 @@
       padding: 3rem 10%;
     }
 
+    &-top-menu {
+      position: fixed !important;
+      width: 50% !important;
+      z-index: 20 !important;
+      background: $color-background;
+    }
+
     .attending-label {
       margin-right: 37px;
       color: $color-success;
@@ -64,6 +71,14 @@
 
   &-tabs {
     overflow-x: visible;
+    .ant-tabs > .ant-tabs-nav,
+    .ant-tabs > div > .ant-tabs-nav {
+      position: fixed;
+      width: 50%;
+      margin-top: 175px;
+      z-index: 19;
+      background: $color-background;
+    }
 
     .ant-tabs-nav-list {
       width: 100%;

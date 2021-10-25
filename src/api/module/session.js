@@ -5,3 +5,8 @@ export const getAllSessions = ({ startTime, endTime }) => {
     `private/session?startTime=${startTime}&endTime=${endTime}`
   );
 };
+
+export const getSessionsAddedbyUser = ({ id }) => {
+  console.log(id);
+  return httpClient.get(`private/session/sessionAddedByUsers?userId=${id}`);
+};

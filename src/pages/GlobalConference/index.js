@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
-import { CheckOutlined } from "@ant-design/icons";
 
+import { CheckOutlined } from "@ant-design/icons";
 import { CustomButton, Tabs } from "components";
 
 import ConferenceList from "./ConferenceList";
@@ -120,14 +120,21 @@ const GlobalConference = ({
             }}
           />
         </div>
-        <div className="">
+        <div className="global-conference-container-top-menu">
           {userProfile.attendedToConference ? (
             <div className="d-flex items-center">
               <div className="attending-label">
                 <CheckOutlined />
                 <span>I'm attending</span>
               </div>
-              {/* <CustomButton size="xs" text="Download my agenda" /> */}
+              <CustomButton
+                className="not-going-btn"
+                text="Not attending"
+                size="xs"
+                type="remove"
+                remove={true}
+                onClick={onAttend}
+              />
             </div>
           ) : (
             <CustomButton
@@ -136,9 +143,7 @@ const GlobalConference = ({
               onClick={onAttend}
             />
           )}
-        </div>
-        <p className="global-conference-description">{Description}</p>
-        <div className="global-conference-tabs">
+          <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
             <CustomButton
               type="primary outlined"
@@ -153,6 +158,9 @@ const GlobalConference = ({
               onClick={goToNextPage}
             />
           </div>
+        </div>
+
+        <div className="global-conference-tabs">
           <Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />
         </div>
       </div>
