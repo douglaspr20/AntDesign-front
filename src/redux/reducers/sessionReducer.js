@@ -11,6 +11,11 @@ export const reducers = {
       allSessions: payload.allSessions,
     });
   },
+  [sessionConstants.SET_SESSIONS_ADDED_BY_USER]: (state, { payload }) => {
+    return state.merge({
+      sessionsUser: payload.sessionsUser,
+    });
+  },
   [sessionConstants.SET_SESSION_LOADING]: (state, { payload }) => {
     return state.merge({
       sessionLoading: payload.loading,
@@ -22,6 +27,7 @@ export const initialState = () =>
   Map({
     sessionLoading: false,
     allSessions: [],
+    sessionsUser: [],
   });
 
 export default handleActions(reducers, initialState());

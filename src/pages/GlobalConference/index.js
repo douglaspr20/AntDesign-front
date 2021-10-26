@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { connect } from "react-redux";
-
+import { Menu } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
 import { CustomButton, Tabs } from "components";
 
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
 import { GlobalConferenceFilterPanel } from "components";
-import { getAllSessions } from "redux/actions/session-actions";
+import {
+  getAllSessions,
+  getSessionsAddedbyUser,
+} from "redux/actions/session-actions";
 import { attendToGlobalConference } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -29,6 +32,7 @@ const GlobalConference = ({
   allSessions,
   userProfile,
   getAllSessions,
+  getSessionsAddedbyUser,
   attendToGlobalConference,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
@@ -104,6 +108,10 @@ const GlobalConference = ({
     setTabData(tData);
   }, [firstTabDate, allSessions, filters, meta]);
 
+  useEffect(() => {
+    getSessionsAddedbyUser(1);
+  }, []);
+
   return (
     <div className="global-conference">
       <GlobalConferenceFilterPanel
@@ -145,18 +153,67 @@ const GlobalConference = ({
           )}
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
-            <CustomButton
-              type="primary outlined"
-              size="xs"
-              text="<"
-              onClick={goToPrevPage}
-            />
-            <CustomButton
-              type="primary outlined"
-              size="xs"
-              text=">"
-              onClick={goToNextPage}
-            />
+            <Menu
+              // onClick={this.handleClick}
+              //selectedKeys={"speakers"}
+              mode="horizontal"
+              style={{
+                lineHeight: "35px",
+                background: "none",
+                width: "80%",
+              }}
+            >
+              <Menu.Item key="speakers">
+                <a
+                  href="http://localhost:3001/speakers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Speakers
+                </a>
+              </Menu.Item>
+              <Menu.Item key="participants">
+                <a
+                  href="https://www.hackinghrlab.io/participants"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Participants
+                </a>
+              </Menu.Item>
+              <Menu.Item key="partners">
+                <a
+                  href="https://www.hackinghrlab.io/partners"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Partners
+                </a>
+              </Menu.Item>
+              <Menu.Item key="bonfire">
+                <a
+                  href="https://www.hackinghrlab.io/bonfire"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Bonfire
+                </a>
+              </Menu.Item>
+            </Menu>
+            <div>
+              <CustomButton
+                type="primary outlined"
+                size="xs"
+                text="<"
+                onClick={goToPrevPage}
+              />
+              <CustomButton
+                type="primary outlined"
+                size="xs"
+                text=">"
+                onClick={goToNextPage}
+              />
+            </div>
           </div>
         </div>
 
@@ -183,6 +240,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllSessions,
+  getSessionsAddedbyUser,
   attendToGlobalConference,
 };
 

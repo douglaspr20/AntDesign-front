@@ -39,6 +39,8 @@
       width: 50% !important;
       z-index: 20 !important;
       background: $color-background;
+      padding-top: 50px;
+      top: 73px;
     }
 
     .attending-label {
@@ -61,7 +63,7 @@
 
   &-pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
     .custom-button {
       margin-left: 0.5rem;
@@ -94,6 +96,18 @@
       overflow: visible;
     }
   }
+}
+a:hover,
+a:active,
+.ant-menu-item-selected a {
+  color: $color-primary !important;
+}
+
+.ant-menu-item:hover,
+.ant-menu-item-selected,
+.ant-menu-item-selected:active {
+  border-bottom: 2px solid $color-primary !important;
+  color: $color-primary !important;
 }
 
 .global-conference-page__filters--button {
