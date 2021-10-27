@@ -80,7 +80,6 @@ const AnnualConferenceCard = ({
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
         <h3>{session.title}</h3>
-        {/* <Link to={`${INTERNAL_LINKS.SPEAKERS}/${session.id}`}>Speakers</Link> */}
         {added ? (
           <CustomButton
             type="primary outlined"

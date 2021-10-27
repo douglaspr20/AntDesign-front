@@ -62,35 +62,9 @@ export function* getSessionsAddedbyUserSaga({ payload }) {
   try {
     let response = yield call(getSessionsAddedbyUser, { ...payload });
     if (response.status === 200) {
-      console.log(response);
-      // const sessionData = Object.values(
-      //   groupBy(response.data.conferences || [], "id")
-      // ).map((session) => {
-      //   return session.reduce(
-      //     (res, item) => ({
-      //       ...res,
-      //       ...omit(item, [
-      //         "userid",
-      //         "name",
-      //         "image",
-      //         "descriptionspeaker",
-      //         "linkspeaker",
-      //       ]),
-      //       speakers: [
-      //         ...(res.speakers || []),
-      //         {
-      //           id: item.userid,
-      //           name: item.name,
-      //           img: item.image,
-      //           linkSpeaker: item.linkspeaker,
-      //           description: item.descriptionspeaker,
-      //         },
-      //       ],
-      //     }),
-      //     {}
-      //   );
-      // });
-      //yield put(sessionActions.setAllSessions(sessionData));
+      const sessionData = response.data.sessionsUser.map((session) => session);
+
+      yield put(sessionActions.setSessionsAddedByUser(sessionData));
     }
   } catch (error) {
     console.log(error);

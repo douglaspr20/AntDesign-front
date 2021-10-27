@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { Menu } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
 import { CustomButton, Tabs } from "components";
+import jsPdf from "jspdf";
+import { convertToCertainTime } from "utils/format";
 
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
@@ -13,7 +15,10 @@ import {
   getAllSessions,
   getSessionsAddedbyUser,
 } from "redux/actions/session-actions";
-import { attendToGlobalConference } from "redux/actions/home-actions";
+import {
+  attendToGlobalConference,
+  setLoading,
+} from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
@@ -22,6 +27,7 @@ import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const Description = `
   Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.
@@ -33,6 +39,8 @@ const GlobalConference = ({
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
+  sessionsUser,
+  setLoading,
   attendToGlobalConference,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
@@ -110,7 +118,71 @@ const GlobalConference = ({
 
   useEffect(() => {
     getSessionsAddedbyUser(1);
-  }, []);
+  }, [getSessionsAddedbyUser]);
+
+  const downloadPdf = async () => {
+    setLoading(true);
+
+    const template = document.createElement("div");
+
+    template.setAttribute("id", "template-agenda");
+    template.style = "width: 750px; margin-top: 1rem";
+
+    let content = `<h1 style="text-align: center">My personalizated agenda</h1>`;
+
+    const sessionsOrdered = sessionsUser.sort((a, b) => {
+      if (a.startTime > b.startTime) {
+        return 1;
+      } else if (a.startTime > b.startTime) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    for (const session of sessionsOrdered) {
+      content += `<div style="margin: 20px 100px; border: 1px solid #e1e2ee; border-radius: 4px">
+         <div style="">
+            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+              session.title
+            }</h3>
+            <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+              session.type
+            }</span>
+            <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 1rem 0">${convertToCertainTime(
+              session.startTime,
+              session.timezone
+            ).format("MMM, D, YYYY")}</span>
+
+            <div>
+            ${session.categories.map((categorie) => {
+              return `<span style="border: 1px solid #438cef; color: #438cef; max-width: 200
+              px
+              ;">${categorie}</span>`;
+            })}
+            </div>
+            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">Description</h3>
+            <p>${session.description}<p>
+         </div>
+      </div>`;
+    }
+
+    template.innerHTML = content;
+    console.log(template);
+
+    const pdf = new jsPdf({
+      orientation: "p",
+      format: "a4",
+      unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
+    });
+
+    await pdf.html(template);
+
+    pdf.save("Personalizated Agenda.pdf");
+    setLoading(false);
+  };
 
   return (
     <div className="global-conference">
@@ -129,28 +201,37 @@ const GlobalConference = ({
           />
         </div>
         <div className="global-conference-container-top-menu">
-          {userProfile.attendedToConference ? (
-            <div className="d-flex items-center">
-              <div className="attending-label">
-                <CheckOutlined />
-                <span>I'm attending</span>
-              </div>
+          <div className="d-flex items-center">
+            {userProfile.attendedToConference ? (
+              <>
+                <div className="attending-label">
+                  <CheckOutlined />
+                  <span>I'm attending</span>
+                </div>
+                <CustomButton
+                  className="not-going-btn"
+                  text="Not attending"
+                  size="xs"
+                  type="remove"
+                  remove={true}
+                  onClick={onAttend}
+                />
+              </>
+            ) : (
               <CustomButton
-                className="not-going-btn"
-                text="Not attending"
                 size="xs"
-                type="remove"
-                remove={true}
+                text="Attend the conference"
                 onClick={onAttend}
               />
-            </div>
-          ) : (
+            )}
+
             <CustomButton
               size="xs"
-              text="Attend the conference"
-              onClick={onAttend}
+              text="Download  Personalized Agenda"
+              style={{ marginLeft: "1rem" }}
+              onClick={downloadPdf}
             />
-          )}
+          </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
             <Menu
@@ -163,41 +244,41 @@ const GlobalConference = ({
                 width: "80%",
               }}
             >
-              <Menu.Item key="speakers">
-                <a
-                  href="http://localhost:3001/speakers"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <Menu.Item
+                key="speakers"
+                className="sub-menu-item-global-conference"
+              >
+                <Link to="/speakers" target="_blank" rel="noopener noreferrer">
                   Speakers
-                </a>
+                </Link>
               </Menu.Item>
-              <Menu.Item key="participants">
-                <a
-                  href="https://www.hackinghrlab.io/participants"
+              <Menu.Item
+                key="participants"
+                className="sub-menu-item-global-conference"
+              >
+                <Link
+                  to="/participants"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Participants
-                </a>
+                </Link>
               </Menu.Item>
-              <Menu.Item key="partners">
-                <a
-                  href="https://www.hackinghrlab.io/partners"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <Menu.Item
+                key="partners"
+                className="sub-menu-item-global-conference"
+              >
+                <Link to="/partners" target="_blank" rel="noopener noreferrer">
                   Partners
-                </a>
+                </Link>
               </Menu.Item>
-              <Menu.Item key="bonfire">
-                <a
-                  href="https://www.hackinghrlab.io/bonfire"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <Menu.Item
+                key="bonfire"
+                className="sub-menu-item-global-conference"
+              >
+                <Link href="/bonfire" target="_blank" rel="noopener noreferrer">
                   Bonfire
-                </a>
+                </Link>
               </Menu.Item>
             </Menu>
             <div>
@@ -242,6 +323,7 @@ const mapDispatchToProps = {
   getAllSessions,
   getSessionsAddedbyUser,
   attendToGlobalConference,
+  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

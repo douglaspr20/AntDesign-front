@@ -103,9 +103,9 @@ a:active,
   color: $color-primary !important;
 }
 
-.ant-menu-item:hover,
-.ant-menu-item-selected,
-.ant-menu-item-selected:active {
+.sub-menu-item-global-conference:hover,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.sub-menu-item-global-conference:active {
   border-bottom: 2px solid $color-primary !important;
   color: $color-primary !important;
 }
