@@ -168,7 +168,6 @@ const GlobalConference = ({
     }
 
     template.innerHTML = content;
-    console.log(template);
 
     const pdf = new jsPdf({
       orientation: "p",
