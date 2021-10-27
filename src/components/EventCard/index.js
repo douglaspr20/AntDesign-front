@@ -14,7 +14,7 @@ import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
-import { convertToLocalTime } from "utils/format";
+import { convertToLocalTime, convertToUTCTime } from "utils/format";
 
 import "./style.scss";
 
@@ -138,10 +138,16 @@ class EventCard extends React.Component {
       .format("YYYY-MM-DD");
 
     const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = moment(`${date}  ${startTime}`);
+    const startDate = convertToUTCTime(
+      moment(`${date}  ${startTime}`),
+      this.props.data.timezone
+    );
 
     const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = moment(`${date}  ${endTime}`);
+    const endDate = convertToUTCTime(
+      moment(`${date}  ${endTime}`),
+      this.props.data.timezone
+    );
 
     switch (key) {
       case "1":
@@ -184,9 +190,10 @@ class EventCard extends React.Component {
         status,
         image,
         startDate,
-        endDate,
+        period,
         showClaim,
         startAndEndTimes,
+        timezone,
       },
       className,
       edit,
@@ -226,15 +233,29 @@ class EventCard extends React.Component {
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
-              <h5>{`${moment(startDate).format("LL")} | ${moment(
-                endDate
-              ).format("LL")}`}</h5>
+              <h5>{period}</h5>
               <h5>{`${location ? location.join(",") : ""} event`}</h5>
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
+                    let startTime = moment(time.startTime).format("HH:mm:ss");
+                    let endTime = moment(time.endTime).format("HH:mm:ss");
+
+                    const sDate = moment(startDate)
+                      .add(index, "day")
+                      .format("YYYY-MM-DD");
+
+                    startTime = convertToUTCTime(
+                      moment(`${sDate} ${startTime}`),
+                      timezone
+                    );
+                    endTime = convertToUTCTime(
+                      moment(`${sDate} ${endTime}`),
+                      timezone
+                    );
+
                     return (
-                      <div className="d-flex">
+                      <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
                             overlay={this.downloadDropdownOptions(time, index)}
@@ -253,9 +274,9 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(time.startTime).format(
+                          <div>{`${moment(startTime).format(
                             "HH:mm"
-                          )} - ${moment(time.endTime).format("HH:mm")}`}</div>
+                          )} - ${moment(endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );

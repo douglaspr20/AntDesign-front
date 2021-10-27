@@ -7,7 +7,11 @@ import { Modal, Dropdown, Space, Menu } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
 
-import { convertToLocalTime } from "utils/format";
+import {
+  convertToLocalTime,
+  convertToUTCTime,
+  getEventPeriod,
+} from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
@@ -56,9 +60,9 @@ const PublicEventPage = ({
   };
 
   useEffect(() => {
-    getUser()
+    getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (updatedEvent.description && updatedEvent.description.blocks) {
@@ -137,10 +141,10 @@ const PublicEventPage = ({
       .format("YYYY-MM-DD");
 
     const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = moment(`${date}  ${startTime}`);
+    const startDate = convertToUTCTime(moment(`${date}  ${startTime}`), updatedEvent.timezone);
 
     const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = moment(`${date}  ${endTime}`);
+    const endDate = convertToUTCTime(moment(`${date}  ${endTime}`), updatedEvent.timezone);
 
     switch (key) {
       case "1":
@@ -173,8 +177,6 @@ const PublicEventPage = ({
     );
   };
 
-  // console.log(userProfile, "sheesh");
-
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -184,8 +186,9 @@ const PublicEventPage = ({
         >
           <div className="upgrade-notification-panel" onClick={planUpgrade}>
             <h3>
-            This event requires a PREMIUM Membership to join. 
-            Click here to upgrate to a Premium Membership and get unlimited access to the LAB features.
+              This event requires a PREMIUM Membership to join. Click here to
+              upgrate to a Premium Membership and get unlimited access to the
+              LAB features.
             </h3>
           </div>
         </div>
@@ -293,10 +296,7 @@ const PublicEventPage = ({
         >
           {updatedEvent.title}
         </h1>
-        <h3 className="event-date">
-          {moment(updatedEvent.startDate).format("LL")} -{" "}
-          {moment(updatedEvent.endDate).format("LL")} {updatedEvent.timezone}
-        </h3>
+        <h3 className="event-date">{getEventPeriod(updatedEvent.startDate, updatedEvent.endDate, updatedEvent.timezone)}</h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
         )} event`}</h3>

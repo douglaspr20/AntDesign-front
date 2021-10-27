@@ -17,7 +17,7 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime, getValidDescription } from "utils/format";
+import { convertToLocalTime, convertToUTCTime } from "utils/format";
 
 import "./style.scss";
 
@@ -116,10 +116,10 @@ const EventDrawer = ({
     let date = moment(event.startDate).add(day, "day").format("YYYY-MM-DD");
 
     const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = moment(`${date}  ${startTime}`);
+    const startDate = convertToUTCTime(moment(`${date}  ${startTime}`), event.timezone);
 
     const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = moment(`${date}  ${endTime}`);
+    const endDate = convertToUTCTime(moment(`${date}  ${endTime}`), event.timezone);
 
     switch (key) {
       case "1":
@@ -263,9 +263,7 @@ const EventDrawer = ({
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
             <div className="d-flex items-center">
-              <h3 className="event-date">{`${moment(event.startDate).format(
-                "LL"
-              )} - ${moment(event.endDate).format("LL")}`}</h3>
+              <h3 className="event-date">{event.period}</h3>
             </div>
             {event.status !== "past" && event.status !== "confirmed" && (
               <Space direction="vertical">
