@@ -8,8 +8,8 @@ import moment from "moment";
 import { isEmpty } from "lodash";
 
 import {
+  convertToCertainTime,
   convertToLocalTime,
-  convertToUTCTime,
   getEventPeriod,
 } from "utils/format";
 import Emitter from "services/emitter";
@@ -134,43 +134,34 @@ const PublicEventPage = ({
   const handleOnClick = ({ item, key, domEvent }) => {
     domEvent.stopPropagation();
     domEvent.preventDefault();
-    const [day, time] = item.props.value;
 
-    let date = moment(updatedEvent?.startDate)
-      .add(day, "day")
-      .format("YYYY-MM-DD");
-
-    const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = convertToUTCTime(moment(`${date}  ${startTime}`), updatedEvent.timezone);
-
-    const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = convertToUTCTime(moment(`${date}  ${endTime}`), updatedEvent.timezone);
+    const [startTime, endTime, day] = item.props.value;
 
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startDate, endDate);
+        onClickAddGoogleCalendar(startTime, endTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startDate, endDate);
+        onClickAddYahooCalendar(startTime, endTime);
         break;
       default:
       //
     }
   };
 
-  const downloadDropdownOptions = (time, day) => {
+  const downloadDropdownOptions = (startTime, endTime, day) => {
     return (
       <Menu onClick={handleOnClick}>
-        <Menu.Item key="1" value={[day, time]}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
           Download ICS File
         </Menu.Item>
-        <Menu.Item key="2" value={[day, time]}>
+        <Menu.Item key="2" value={[startTime, endTime]}>
           Add to Google Calendar
         </Menu.Item>
-        <Menu.Item key="3" value={[day, time]}>
+        <Menu.Item key="3" value={[startTime, endTime]}>
           Add to Yahoo Calendar
         </Menu.Item>
       </Menu>
@@ -262,10 +253,13 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes.map((time, index) => {
+                const startTime = convertToCertainTime(time.startTime, updatedEvent?.timezone);
+                const endTime = convertToCertainTime(time.endTime, updatedEvent?.timezone);
+
                 return (
                   <div className="d-flex calendar" key={index}>
                     <Space size="middle">
-                      <Dropdown overlay={downloadDropdownOptions(time, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"

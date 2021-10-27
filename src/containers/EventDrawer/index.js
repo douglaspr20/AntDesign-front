@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
-import moment from "moment";
 import { isEmpty } from "lodash";
 
 import {
@@ -17,7 +16,7 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime, convertToUTCTime } from "utils/format";
+import { convertToCertainTime, convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
@@ -111,41 +110,34 @@ const EventDrawer = ({
   const handleOnClick = ({ item, key, domEvent }) => {
     domEvent.stopPropagation();
     domEvent.preventDefault();
-    const [day, time] = item.props.value;
 
-    let date = moment(event.startDate).add(day, "day").format("YYYY-MM-DD");
-
-    const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = convertToUTCTime(moment(`${date}  ${startTime}`), event.timezone);
-
-    const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = convertToUTCTime(moment(`${date}  ${endTime}`), event.timezone);
+    const [startTime, endTime, day] = item.props.value;
 
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startDate, endDate);
+        onClickAddGoogleCalendar(startTime, endTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startDate, endDate);
+        onClickAddYahooCalendar(startTime, endTime);
         break;
       default:
       //
     }
   };
 
-  const downloadDropdownOptions = (time, day) => {
+  const downloadDropdownOptions = (startTime, endTime, day) => {
     return (
       <Menu onClick={handleOnClick}>
-        <Menu.Item key="1" value={[day, time]}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
           Download ICS File
         </Menu.Item>
-        <Menu.Item key="2" value={[day, time]}>
+        <Menu.Item key="2" value={[startTime, endTime]}>
           Add to Google Calendar
         </Menu.Item>
-        <Menu.Item key="3" value={[day, time]}>
+        <Menu.Item key="3" value={[startTime, endTime]}>
           Add to Yahoo Calendar
         </Menu.Item>
       </Menu>
@@ -269,8 +261,11 @@ const EventDrawer = ({
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes.map((time, index) => {
+                    const startTime = convertToCertainTime(time.startTime, event.timezone);
+                    const endTime = convertToCertainTime(time.endTime, event.timezone);
+
                     return (
-                      <Dropdown overlay={downloadDropdownOptions(time, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"

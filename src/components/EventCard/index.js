@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
-import moment from "moment";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -14,7 +13,7 @@ import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
-import { convertToLocalTime, convertToUTCTime } from "utils/format";
+import { convertToCertainTime, convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
@@ -131,49 +130,34 @@ class EventCard extends React.Component {
   handleOnClick = ({ item, key, domEvent }) => {
     domEvent.stopPropagation();
     domEvent.preventDefault();
-    const [day, time] = item.props.value;
 
-    let date = moment(this.props.data.startDate)
-      .add(day, "day")
-      .format("YYYY-MM-DD");
-
-    const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = convertToUTCTime(
-      moment(`${date}  ${startTime}`),
-      this.props.data.timezone
-    );
-
-    const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = convertToUTCTime(
-      moment(`${date}  ${endTime}`),
-      this.props.data.timezone
-    );
+    const [startTime, endTime, day] = item.props.value;
 
     switch (key) {
       case "1":
         this.onClickDownloadCalendar(day);
         break;
       case "2":
-        this.onClickAddGoogleCalendar(startDate, endDate);
+        this.onClickAddGoogleCalendar(startTime, endTime);
         break;
       case "3":
-        this.onClickAddYahooCalendar(startDate, endDate);
+        this.onClickAddYahooCalendar(startTime, endTime);
         break;
       default:
       //
     }
   };
 
-  downloadDropdownOptions = (time, day) => {
+  downloadDropdownOptions = (startTime, endTime, day) => {
     return (
       <Menu onClick={this.handleOnClick}>
-        <Menu.Item key="1" value={[day, time]}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
           Download ICS File
         </Menu.Item>
-        <Menu.Item key="2" value={[day, time]}>
+        <Menu.Item key="2" value={[startTime, endTime]}>
           Add to Google Calendar
         </Menu.Item>
-        <Menu.Item key="3" value={[day, time]}>
+        <Menu.Item key="3" value={[startTime, endTime]}>
           Add to Yahoo Calendar
         </Menu.Item>
       </Menu>
@@ -189,7 +173,6 @@ class EventCard extends React.Component {
         location,
         status,
         image,
-        startDate,
         period,
         showClaim,
         startAndEndTimes,
@@ -238,27 +221,14 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
-                    let startTime = moment(time.startTime).format("HH:mm:ss");
-                    let endTime = moment(time.endTime).format("HH:mm:ss");
-
-                    const sDate = moment(startDate)
-                      .add(index, "day")
-                      .format("YYYY-MM-DD");
-
-                    startTime = convertToUTCTime(
-                      moment(`${sDate} ${startTime}`),
-                      timezone
-                    );
-                    endTime = convertToUTCTime(
-                      moment(`${sDate} ${endTime}`),
-                      timezone
-                    );
+                    const startTime = convertToCertainTime(time.startTime, timezone);
+                    const endTime = convertToCertainTime(time.endTime, timezone);
 
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
-                            overlay={this.downloadDropdownOptions(time, index)}
+                            overlay={this.downloadDropdownOptions(startTime, endTime, index)}
                           >
                             <a
                               href="/#"
@@ -274,9 +244,7 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format(
-                            "HH:mm"
-                          )} - ${moment(endTime).format("HH:mm")}`}</div>
+                          <div>{`${startTime.format("HH:mm")} - ${endTime.format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
