@@ -10,6 +10,7 @@ import { isEmpty } from "lodash";
 import {
   convertToLocalTime,
   getEventPeriod,
+  convertToCertainTime,
 } from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
@@ -44,13 +45,15 @@ const PublicEventPage = ({
     if (isAuthenticated) {
       if (updatedEvent.ticket === "premium") {
         if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
-          addToMyEventList(updatedEvent);
+          const timezone = moment.tz.guess();
+          addToMyEventList(updatedEvent, timezone);
           history.push(INTERNAL_LINKS.EVENTS);
         } else {
           setShowFirewall(true);
         }
       } else {
-        addToMyEventList(updatedEvent);
+        const timezone = moment.tz.guess();
+        addToMyEventList(updatedEvent, timezone);
         history.push(INTERNAL_LINKS.EVENTS);
       }
     } else {
@@ -136,11 +139,17 @@ const PublicEventPage = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(item => item.value === updatedEvent.timezone)
-    const offset = timezone.offset
+    const timezone = TIMEZONE_LIST.find(
+      (item) => item.value === updatedEvent.timezone
+    );
+    const offset = timezone.offset;
 
-    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
-    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+    const convertedStartTime = convertToLocalTime(
+      moment(startTime).utcOffset(offset, true)
+    );
+    const convertedEndTime = convertToLocalTime(
+      moment(endTime).utcOffset(offset, true)
+    );
 
     switch (key) {
       case "1":
@@ -258,11 +267,25 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes.map((time, index) => {
+                const startTime = convertToCertainTime(
+                  time.startTime,
+                  updatedEvent.timezone
+                );
+                const endTime = convertToCertainTime(
+                  time.endTime,
+                  updatedEvent.timezone
+                );
 
                 return (
                   <div className="d-flex calendar" key={index}>
                     <Space size="middle">
-                      <Dropdown overlay={downloadDropdownOptions(time.startTime, time.endTime, index)}>
+                      <Dropdown
+                        overlay={downloadDropdownOptions(
+                          startTime,
+                          endTime,
+                          index
+                        )}
+                      >
                         <a
                           href="/#"
                           className="ant-dropdown-link"
@@ -293,7 +316,13 @@ const PublicEventPage = ({
         >
           {updatedEvent.title}
         </h1>
-        <h3 className="event-date">{getEventPeriod(updatedEvent.startDate, updatedEvent.endDate, updatedEvent.timezone)}</h3>
+        <h3 className="event-date">
+          {getEventPeriod(
+            updatedEvent.startDate,
+            updatedEvent.endDate,
+            updatedEvent.timezone
+          )}
+        </h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
         )} event`}</h3>

@@ -17,7 +17,7 @@ import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime } from "utils/format";
+import { convertToLocalTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
 
@@ -44,7 +44,8 @@ const EventDrawer = ({
 
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
-        addToMyEventList(event);
+        const timezone = moment.tz.guess()
+        addToMyEventList(event, timezone);
       } else {
         setShowFirewall(true);
       }
@@ -268,9 +269,11 @@ const EventDrawer = ({
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes.map((time, index) => {
+                    const startTime = convertToCertainTime(time.startTime, event.timezone)
+                    const endTime = convertToCertainTime(time.endTime, event.timezone)
 
                     return (
-                      <Dropdown overlay={downloadDropdownOptions(time.startTime, time.endTime, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"
