@@ -1,7 +1,7 @@
 export default {
   SESSION_TYPE: [
     {
-      text: "Keynote",
+      text: "Keynote/Fireside Chat",
       value: "Keynote",
     },
     {
@@ -12,20 +12,12 @@ export default {
       text: "Roundtable",
       value: "Roundtable",
     },
+    // {
+    //   text: "DEMO",
+    //   value: "DEMO",
+    // },
     {
-      text: "Networking",
-      value: "Networking",
-    },
-    {
-      text: "DEMO",
-      value: "DEMO",
-    },
-    {
-      text: "Panel",
-      value: "Panel",
-    },
-    {
-      text: "Certificate",
+      text: "Certificate Track and Panels",
       value: "Certificate",
     },
   ],
