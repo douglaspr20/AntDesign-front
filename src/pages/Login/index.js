@@ -44,11 +44,6 @@ const Login = ({
   const [isLogin, setIsLogin] = useState(true);
   const [showFirewall, setShowFirewall] = useState(false);
 
-  const layout = {
-    labelCol: { span: 0 },
-    wrapperCol: { span: 24 },
-  };
-
   const [signupStep, setSignupStep] = useState(0);
   const [prevAreaValues, setPrevAreaVaues] = useState([]);
   const [signupValues, setSignupValues] = useState({});

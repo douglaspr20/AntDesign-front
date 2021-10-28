@@ -17,7 +17,7 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime, getValidDescription } from "utils/format";
+import { convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
