@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
+import moment from "moment-timezone";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
@@ -62,7 +62,8 @@ const EventsPage = ({
 
   const addMyEvents = (event) => {
     if (event.going) {
-      addToMyEventList(event);
+      const timezone = moment.tz.guess()
+      addToMyEventList(event, timezone);
     } else {
       removeFromMyEventList(event);
     }

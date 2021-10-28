@@ -8,7 +8,6 @@ import moment from "moment";
 import { isEmpty } from "lodash";
 
 import {
-  convertToCertainTime,
   convertToLocalTime,
   getEventPeriod,
 } from "utils/format";
@@ -21,7 +20,7 @@ import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
@@ -137,15 +136,21 @@ const PublicEventPage = ({
 
     const [startTime, endTime, day] = item.props.value;
 
+    const timezone = TIMEZONE_LIST.find(item => item.value === updatedEvent.timezone)
+    const offset = timezone.offset
+
+    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
+    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startTime, endTime);
+        onClickAddGoogleCalendar(convertedStartTime, convertedEndTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startTime, endTime);
+        onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
       //
@@ -253,13 +258,11 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes.map((time, index) => {
-                const startTime = convertToCertainTime(time.startTime, updatedEvent?.timezone);
-                const endTime = convertToCertainTime(time.endTime, updatedEvent?.timezone);
 
                 return (
                   <div className="d-flex calendar" key={index}>
                     <Space size="middle">
-                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(time.startTime, time.endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"

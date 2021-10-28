@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
+import moment from 'moment-timezone'
 
 import {
   DateAvatar,
@@ -12,11 +13,11 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToCertainTime, convertToLocalTime } from "utils/format";
+import { convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 
@@ -113,15 +114,21 @@ const EventDrawer = ({
 
     const [startTime, endTime, day] = item.props.value;
 
+    const timezone = TIMEZONE_LIST.find(item => item.value === event.timezone)
+    const offset = timezone.offset
+
+    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
+    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startTime, endTime);
+        onClickAddGoogleCalendar(convertedStartTime, convertedEndTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startTime, endTime);
+        onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
       //
@@ -261,11 +268,9 @@ const EventDrawer = ({
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(time.startTime, event.timezone);
-                    const endTime = convertToCertainTime(time.endTime, event.timezone);
 
                     return (
-                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(time.startTime, time.endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"
