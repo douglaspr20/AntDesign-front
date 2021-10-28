@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
-import moment from "moment";
 import { isEmpty } from "lodash";
+import moment from 'moment-timezone'
 
 import {
   DateAvatar,
@@ -13,11 +13,11 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime, getValidDescription } from "utils/format";
+import { convertToLocalTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
 
@@ -44,7 +44,8 @@ const EventDrawer = ({
 
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
-        addToMyEventList(event);
+        const timezone = moment.tz.guess()
+        addToMyEventList(event, timezone);
       } else {
         setShowFirewall(true);
       }
@@ -111,41 +112,40 @@ const EventDrawer = ({
   const handleOnClick = ({ item, key, domEvent }) => {
     domEvent.stopPropagation();
     domEvent.preventDefault();
-    const [day, time] = item.props.value;
 
-    let date = moment(event.startDate).add(day, "day").format("YYYY-MM-DD");
+    const [startTime, endTime, day] = item.props.value;
 
-    const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = moment(`${date}  ${startTime}`);
+    const timezone = TIMEZONE_LIST.find(item => item.value === event.timezone)
+    const offset = timezone.offset
 
-    const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = moment(`${date}  ${endTime}`);
+    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
+    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
 
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startDate, endDate);
+        onClickAddGoogleCalendar(convertedStartTime, convertedEndTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startDate, endDate);
+        onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
       //
     }
   };
 
-  const downloadDropdownOptions = (time, day) => {
+  const downloadDropdownOptions = (startTime, endTime, day) => {
     return (
       <Menu onClick={handleOnClick}>
-        <Menu.Item key="1" value={[day, time]}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
           Download ICS File
         </Menu.Item>
-        <Menu.Item key="2" value={[day, time]}>
+        <Menu.Item key="2" value={[startTime, endTime]}>
           Add to Google Calendar
         </Menu.Item>
-        <Menu.Item key="3" value={[day, time]}>
+        <Menu.Item key="3" value={[startTime, endTime]}>
           Add to Yahoo Calendar
         </Menu.Item>
       </Menu>
@@ -263,16 +263,17 @@ const EventDrawer = ({
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
             <div className="d-flex items-center">
-              <h3 className="event-date">{`${moment(event.startDate).format(
-                "LL"
-              )} - ${moment(event.endDate).format("LL")}`}</h3>
+              <h3 className="event-date">{event.period}</h3>
             </div>
             {event.status !== "past" && event.status !== "confirmed" && (
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes.map((time, index) => {
+                    const startTime = convertToCertainTime(time.startTime, event.timezone)
+                    const endTime = convertToCertainTime(time.endTime, event.timezone)
+
                     return (
-                      <Dropdown overlay={downloadDropdownOptions(time, index)}>
+                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
                         <a
                           href="/#"
                           className="ant-dropdown-link"
