@@ -111,7 +111,8 @@ const PostCard = ({
               <h4>
                 {data.User.firstName} {data.User.lastName}
               </h4>
-              <p>{data.User.about}</p>
+              <p>{data.User.titleProfessions}</p>
+              <p>{data.User.company}</p>
               <span>Posted {getPublicationTime(data.createdAt)}</span>
             </div>
           </section>

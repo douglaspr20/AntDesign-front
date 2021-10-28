@@ -2,15 +2,13 @@
 
 .speakers-filter-panel {
   position: sticky;
-  top: 20px;
   border: 1px solid $color-border;
   border-radius: 8px;
   width: 260px;
   background: $color-white;
   padding: 1.5rem;
-  margin: 1rem;
   overflow-y: scroll;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 72px);
 
   &::-webkit-scrollbar {
     display: none;

@@ -51,4 +51,3 @@ export { default as PostsFilterPanel } from "./PostsFilterPanel";
 export { default as GlobalConferenceFilterPanel } from "./GlobalConferenceFilterPanel";
 export { default as SpeakersFilterPanel } from "./SpeakersFiltersPanel";
 export { default as ParticipantsFilterPanel } from "./ParticipantsFilterPanel";
-

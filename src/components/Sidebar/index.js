@@ -56,6 +56,12 @@ class NavBar extends Component {
     ) {
       e.preventDefault();
       this.setState({ showFirewall: true, module: "conference-library" });
+    } else if (
+      url === INTERNAL_LINKS.GLOBAL_CONFERENCE &&
+      this.props.userProfile.percentOfCompletion !== 100
+    ) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "global-conference" });
     } else if (isMobile) {
       this.props.setCollapsed(true);
     }
@@ -162,6 +168,13 @@ class NavBar extends Component {
                   <>
                     You must fully complete your profile before joining the live
                     feature.
+                  </>
+                )}
+
+                {this.state.module === "global-conference" && (
+                  <>
+                    You must fully complete your profile before joining the
+                    Annual Conference feature.
                   </>
                 )}
               </h3>
