@@ -34,6 +34,15 @@
       padding: 3rem 10%;
     }
 
+    &-top-menu {
+      position: fixed !important;
+      width: 50% !important;
+      z-index: 20 !important;
+      background: $color-background;
+      padding-top: 50px;
+      top: 73px;
+    }
+
     .attending-label {
       margin-right: 37px;
       color: $color-success;
@@ -54,7 +63,7 @@
 
   &-pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
     .custom-button {
       margin-left: 0.5rem;
@@ -64,6 +73,14 @@
 
   &-tabs {
     overflow-x: visible;
+    .ant-tabs > .ant-tabs-nav,
+    .ant-tabs > div > .ant-tabs-nav {
+      position: fixed;
+      width: 50%;
+      margin-top: 175px;
+      z-index: 19;
+      background: $color-background;
+    }
 
     .ant-tabs-nav-list {
       width: 100%;
@@ -79,6 +96,18 @@
       overflow: visible;
     }
   }
+}
+a:hover,
+a:active,
+.ant-menu-item-selected a {
+  color: $color-primary !important;
+}
+
+.sub-menu-item-global-conference:hover,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.sub-menu-item-global-conference:active {
+  border-bottom: 2px solid $color-primary !important;
+  color: $color-primary !important;
 }
 
 .global-conference-page__filters--button {

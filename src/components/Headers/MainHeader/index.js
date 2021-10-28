@@ -123,16 +123,25 @@ class MainHeader extends React.Component {
               <i className="fal fa-bars" />
             </div>
           )}
-          {pathInfo && (
+          {pathInfo ? (
             <>
               <div className="page-icon">
                 <img src={pathInfo.icon} alt="page-icon" />
               </div>
               <span className="page-label">
-                {pathInfo.url === INTERNAL_LINKS.GLOBAL_CONFERENCE
+                {pathInfo.label === "Global Conference"
                   ? "Hacking HR 2022 Global Online Conference"
                   : pathInfo.label}
               </span>
+            </>
+          ) : (
+            <>
+              {/* <div className="page-icon">
+                <img src={IconReader} alt="page-icon" />
+              </div>
+              <span className="page-label">
+                Hacking HR 2022 Global Online Conference
+              </span> */}
             </>
           )}
         </div>

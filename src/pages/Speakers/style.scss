@@ -5,9 +5,12 @@
   display: grid;
   grid-template-columns: auto 1fr;
   width: 100%;
+  display: grid;
+  height: calc(100vh - 72px);
+  overflow: auto;
 
   @media (max-width: 1023.98px) {
-    .podcast-filter-panel {
+    .speakers-filter-panel {
       display: none;
     }
   }
@@ -54,36 +57,36 @@
     }
   }
 
-  @media (max-width: 1023.98px) {
-    grid-template-columns: 1fr;
+  // @media (max-width: 1023.98px) {
+  //   grid-template-columns: 1fr;
 
-    .speakers-filter-panel {
-      display: none;
-    }
+  //   .speakers-filter-panel {
+  //     display: none;
+  //   }
 
-    .search-results-container {
-      padding: 0 0 54px;
+  //   .search-results-container {
+  //     padding: 0 0 54px;
 
-      &-header {
-        justify-content: center !important;
-        margin-bottom: 50px;
+  //     &-header {
+  //       justify-content: center !important;
+  //       margin-bottom: 50px;
 
-        h3 {
-          display: none;
-        }
-      }
+  //       h3 {
+  //         display: none;
+  //       }
+  //     }
 
-      &-mobile-header {
-        display: flex;
-      }
+  //     &-mobile-header {
+  //       display: flex;
+  //     }
 
-      &-sort {
-        .ant-select-selection-item {
-          @include app-font(20px, 30px);
-        }
-      }
-    }
-  }
+  //     &-sort {
+  //       .ant-select-selection-item {
+  //         @include app-font(20px, 30px);
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 .speakers-page__container {
