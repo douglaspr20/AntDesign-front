@@ -229,8 +229,6 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(time.startTime, timezone)
-                    const endTime = convertToCertainTime(time.endTime, timezone)
 
                     return (
                       <div className="d-flex" key={index}>
@@ -252,7 +250,7 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format("HH:mm")} - ${moment(endTime).format("HH:mm")}`}</div>
+                          <div>{`${moment(time.startTime).format("HH:mm")} - ${moment(time.endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
