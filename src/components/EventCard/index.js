@@ -229,12 +229,14 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
+                    const startTime = convertToCertainTime(time.startTime, timezone)
+                    const endTime = convertToCertainTime(time.endTime, timezone)
 
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
-                            overlay={this.downloadDropdownOptions(time.startTime, time.endTime, index)}
+                            overlay={this.downloadDropdownOptions(startTime, endTime, index)}
                           >
                             <a
                               href="/#"
@@ -250,7 +252,7 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(time.startTime).format("HH:mm")} - ${moment(time.endTime).format("HH:mm")}`}</div>
+                          <div>{`${moment(startTime).format("HH:mm")} - ${moment(endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
