@@ -14,7 +14,7 @@ import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
-import { convertToLocalTime, convertToCertainTime } from "utils/format";
+import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from '../../enum'
 
 import "./style.scss";
@@ -184,7 +184,7 @@ class EventCard extends React.Component {
         period,
         showClaim,
         startAndEndTimes,
-        timezone
+        timezone,
       },
       className,
       edit,
@@ -229,14 +229,12 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(time.startTime, timezone)
-                    const endTime = convertToCertainTime(time.endTime, timezone)
 
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
-                            overlay={this.downloadDropdownOptions(startTime, endTime, index)}
+                            overlay={this.downloadDropdownOptions(time.startTime, time.endTime, index)}
                           >
                             <a
                               href="/#"
@@ -252,7 +250,7 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format("HH:mm")} - ${moment(endTime).format("HH:mm")}`}</div>
+                          <div>{`${moment(time.startTime).format("HH:mm")} - ${moment(time.endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
