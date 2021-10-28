@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { connect } from "react-redux";
+import moment from "moment";
+import jsPdf from "jspdf";
 import { Menu } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { CustomButton, Tabs } from "components";
-import jsPdf from "jspdf";
+import { CustomButton, Tabs, GlobalConferenceFilterPanel } from "components";
 import { convertToCertainTime } from "utils/format";
-
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
-import { GlobalConferenceFilterPanel } from "components";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -22,13 +20,11 @@ import {
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
-
 import "./style.scss";
 import { Link } from "react-router-dom";
-
+import LogoHackingHR from "images/img-hhr-logo.png";
 const Description = `
   Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.
 `;
@@ -60,10 +56,9 @@ const GlobalConference = ({
   };
 
   const onSearch = (value) => {
-    // getAllSessions({
-    //   ...filters,
-    //   meta: value,
-    // });
+    const startTime = convertToUTCTime(firstTabDate.clone());
+    const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
+    getAllSessions(startTime, endTime, value);
     setMeta(value);
   };
 
@@ -117,8 +112,10 @@ const GlobalConference = ({
   }, [firstTabDate, allSessions, filters, meta]);
 
   useEffect(() => {
-    getSessionsAddedbyUser(1);
-  }, [getSessionsAddedbyUser]);
+    if (userProfile.id) {
+      getSessionsAddedbyUser(userProfile.id);
+    }
+  }, [getSessionsAddedbyUser, userProfile]);
 
   const downloadPdf = async () => {
     setLoading(true);
@@ -126,9 +123,70 @@ const GlobalConference = ({
     const template = document.createElement("div");
 
     template.setAttribute("id", "template-agenda");
-    template.style = "width: 750px; margin-top: 1rem";
+    template.style =
+      "width: 800px; height: auto; display: flex; flex-direction: column;align-items: center";
 
-    let content = `<h1 style="text-align: center">My personalizated agenda</h1>`;
+    let content = `<div style="height: 1000px; width: 100%; display: flex; flex-direction: column; 
+    align-items: center; justify-content: center; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
+    <img src=${LogoHackingHR} style="width: 250px; height: 250px">
+    <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center">2022</p>
+    <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center; padding: 0px 150px">HR Innovation
+    and Future of
+    Work</p>
+    <span style="font-weight: 800 !important; font-size: 1.5rem !important; text-align: center">Global Online Conference and Workshop </span>
+    </div>
+    
+    <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
+    align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 150px">
+      <p style="font-size: 1.3rem">Personalized Agenda – Created on ${moment().format(
+        "MM-DD-YYYY"
+      )} </p>
+      <p style="font-size: 1.3rem">DOWNLOAD</p>
+      <p style="font-size: 1.3rem">${userProfile.firstName} ${
+      userProfile.lastName
+    }</p>
+    </div>
+
+    <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
+    align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
+        <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+          <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+          <div>
+            <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+            <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-weight: 800 !important; font-size: 2.5rem !important; text-align: center">Event Overview</p>
+          <p style="font-size: 1.5rem; padding: 0px 2.5rem">
+          This is your personalized agenda. It includes the sessions 
+          you are planning to join. 
+          <br>
+          <br>
+          You can update your personalized agenda at any time 
+          you want. Also, during conference week, you can join a 
+          different session than the original one you added in your 
+          personalized agenda. However, notice that during 
+          conference week, once you click on “join” a session, you 
+          won’t be able to join any other session happening at the 
+          same time. 
+          <br>
+          <br>
+          Regarding the HR certification credits: 1) you MUST be a 
+          PREMIUM member in the Hacking HR LAB (click on 
+          UPGRADE to become premium). There are no exceptions; 
+          2) the codes will be sent to you two weeks after the 
+          conference. We will ONLY send you the codes of the 
+          sessions you actually JOINED; and 3) you can watch the 
+          recordings later and still earn HR certification credits. 
+          Thank you and enjoy! 
+          </p>
+        </div>
+    </div>
+
+    </div>
+    `;
 
     const sessionsOrdered = sessionsUser.sort((a, b) => {
       if (a.startTime > b.startTime) {
@@ -140,31 +198,115 @@ const GlobalConference = ({
       return 0;
     });
 
-    for (const session of sessionsOrdered) {
-      content += `<div style="margin: 20px 100px; border: 1px solid #e1e2ee; border-radius: 4px">
-         <div style="">
-            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
-              session.title
-            }</h3>
-            <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
-              session.type
-            }</span>
-            <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 1rem 0">${convertToCertainTime(
-              session.startTime,
-              session.timezone
-            ).format("MMM, D, YYYY")}</span>
+    const sData = [];
 
+    for (let i = 0; i < sessionsOrdered.length; i++) {
+      let isEmpty = true;
+      for (let j = 0; j < sData.length; j++) {
+        if (
+          moment(sessionsOrdered[i]?.startTime).format("MMMM D") ===
+          sData[j].period
+        ) {
+          sData[j].data.push(sessionsOrdered[i]);
+          isEmpty = false;
+        }
+      }
+
+      if (isEmpty) {
+        sData.push({
+          period: moment(sessionsOrdered[i].startTime).format("MMMM D"),
+          data: [sessionsOrdered[i]],
+        });
+      }
+    }
+
+    console.log(sData);
+
+    for (const day of sData) {
+      let conferences = "";
+
+      for (const conference of day.data) {
+        let categorieHTML = "";
+        for (const categorie of conference.categories) {
+          categorieHTML += `    
+              <div style="
+              height: 28px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 0 20px;
+              border-radius: 0.25rem;
+              border: 1px solid #438cef;;
+              color: #438cef;
+              max-width: 200px;
+              overflow: hidden;">
+              <span style="overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;">${categorie}</span>
+             
+              </div>`;
+        }
+        conferences += `
+        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        border-radius: 0.5rem;
+        opacity: 1;
+        padding: 2rem; margin-bottom: 50px">
+             <div style="">
+                <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+                  conference.title
+                }</h3>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+                  conference.type
+                }</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 1rem 0">${convertToCertainTime(
+                  conference.startTime,
+                  conference.timezone
+                ).format("MMM, D, YYYY")}</span>
+    
+                  <div style="  
+                  display: flex;
+                  width: 70%;
+                  flex-wrap: wrap;
+                  margin-top: 1rem;"
+                  >
+                  ${categorieHTML}
+                  </div>
+
+                  <div style="display: flex;
+                  flex-direction: column;
+                  padding-top: 1rem;
+                  margin-top: 1rem;
+                  border-top: 1px solid #e1e2ee">
+
+                  <h4>Description</h4>
+                  <p>
+                  <p>${conference.description}<p>
+                  </p>
+
+                  </div>
+             </div>
+          </div>
+        `;
+      }
+
+      content += `  
+      <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
+          align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem;">
+          <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+            <img src=${LogoHackingHR} style="width: 70px; height: 70px">
             <div>
-            ${session.categories.map((categorie) => {
-              return `<span style="border: 1px solid #438cef; color: #438cef; max-width: 200
-              px
-              ;">${categorie}</span>`;
-            })}
+              <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+              <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
             </div>
-            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">Description</h3>
-            <p>${session.description}<p>
-         </div>
-      </div>`;
+          </div>
+
+             <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
+             ${day.period}
+             </p>
+
+          <div style="width: 100%"> ${conferences}</div>
+          </div>
+          `;
     }
 
     template.innerHTML = content;
@@ -180,6 +322,7 @@ const GlobalConference = ({
     await pdf.html(template);
 
     pdf.save("Personalizated Agenda.pdf");
+
     setLoading(false);
   };
 
