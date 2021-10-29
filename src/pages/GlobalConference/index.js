@@ -152,15 +152,15 @@ const GlobalConference = ({
       />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="global-conference-container">
-        <div className="global-conference-page__filters--button">
-          <CustomButton
-            text="Filters"
-            onClick={() => {
-              showFilterPanel();
-            }}
-          />
-        </div>
         <div className="global-conference-container-top-menu">
+          <div className="global-conference__filters--button">
+            <CustomButton
+              text="Filters"
+              onClick={() => {
+                showFilterPanel();
+              }}
+            />
+          </div>
           <div className="d-flex items-center">
             {userProfile.attendedToConference ? (
               <>
@@ -169,7 +169,7 @@ const GlobalConference = ({
                   <span>I'm attending</span>
                 </div>
                 <CustomButton
-                  className="not-going-btn"
+                  className="not-going-button"
                   text="Not attending"
                   size="xs"
                   type="remove"

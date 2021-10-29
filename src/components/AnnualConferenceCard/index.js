@@ -87,6 +87,7 @@ const AnnualConferenceCard = ({
             size="md"
             text="Remove"
             onClick={onRemoveSession}
+            className="remove-buttom"
           />
         ) : attended ? (
           <CustomButton

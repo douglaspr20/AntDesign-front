@@ -18,6 +18,17 @@
     display: none;
   }
 
+  &__filters--button {
+    display: none;
+    button {
+      width: 100%;
+    }
+    @media (max-width: 1023.98px) {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  }
+
   &-container {
     width: 100%;
     padding: 3rem 20%;
@@ -34,6 +45,14 @@
       padding: 3rem 10%;
     }
 
+    @media (max-width: 500px) {
+      padding: 3rem 2%;
+
+      .acc-session-added-tag {
+        right: -2px;
+      }
+    }
+
     &-top-menu {
       position: fixed !important;
       width: 50% !important;
@@ -41,6 +60,30 @@
       background: $color-background;
       padding-top: 50px;
       top: 73px;
+      @media (max-width: 1024px) {
+        width: 55% !important;
+      }
+
+      @media (max-width: 500px) {
+        width: 97% !important;
+        top: 60px;
+        padding-top: 20px;
+
+        & div {
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        & .not-going-button {
+          margin-bottom: 10px;
+          width: 200px;
+        }
+
+        & .attending-label {
+          text-align: center;
+          margin-bottom: 5px;
+        }
+      }
     }
 
     .attending-label {
@@ -113,15 +156,4 @@ a:active,
 .sub-menu-item-global-conference:active {
   border-bottom: 2px solid $color-primary !important;
   color: $color-primary !important;
-}
-
-.global-conference-page__filters--button {
-  display: none;
-  button {
-    width: 100%;
-  }
-  @media (max-width: 1023.98px) {
-    display: block;
-    margin-bottom: 1rem;
-  }
 }

@@ -16,6 +16,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap-reverse;
+
+    @media screen and (max-width: 500px) {
+      & .ant-btn {
+        width: 100%;
+      }
+    }
   }
 
   &-type {
@@ -44,7 +51,6 @@
     cursor: pointer;
 
     &-icon {
-      margin-left: 1rem;
       width: 1.5rem;
       height: 1.5rem;
       min-width: 1, 5rem;
@@ -96,8 +102,11 @@
     flex-wrap: wrap;
     margin-top: 1rem;
 
-    & .specialty-item {
-      max-width: 200px;
+    @media screen and (max-width: 500px) {
+      & .specialty-item {
+        min-width: 200px;
+        max-width: 200px;
+      }
     }
   }
 }
