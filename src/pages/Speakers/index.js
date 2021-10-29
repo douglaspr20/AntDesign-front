@@ -8,11 +8,11 @@ import { sessionSelector } from "redux/selectors/sessionSelector";
 
 import { EVENT_TYPES } from "enum";
 import { getAllSessions } from "redux/actions/session-actions";
-
+import { setLoading } from "redux/actions/home-actions";
 import "./style.scss";
 import { connect } from "react-redux";
 
-const Speakers = ({ allSessions, getAllSessions }) => {
+const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
   const [, setFilters] = useState({});
   const [, setMeta] = useState("");
   const [speakers, setSpeakers] = useState([]);
@@ -23,6 +23,7 @@ const Speakers = ({ allSessions, getAllSessions }) => {
 
   useEffect(() => {
     const getSpeakers = () => {
+      setLoading(true);
       const speakersSession = [];
 
       allSessions.forEach((session) => {
@@ -41,10 +42,11 @@ const Speakers = ({ allSessions, getAllSessions }) => {
       });
 
       setSpeakers(speakersSession);
+      setLoading(false);
     };
 
     getSpeakers();
-  }, [allSessions]);
+  }, [allSessions, setLoading]);
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -97,6 +99,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllSessions,
+  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Speakers);

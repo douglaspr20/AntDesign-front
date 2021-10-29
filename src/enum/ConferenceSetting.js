@@ -2,7 +2,7 @@ export default {
   SESSION_TYPE: [
     {
       text: "Keynote/Fireside Chat",
-      value: "Keynote",
+      value: "Keynote/Fireside Chat",
     },
     {
       text: "Presentation",
@@ -18,7 +18,7 @@ export default {
     // },
     {
       text: "Certificate Track and Panels",
-      value: "Certificate",
+      value: "Certificate Track and Panels",
     },
   ],
 };
