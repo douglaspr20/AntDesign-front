@@ -7,7 +7,11 @@ import { Modal, Dropdown, Space, Menu } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
 
-import { convertToLocalTime } from "utils/format";
+import {
+  convertToLocalTime,
+  getEventPeriod,
+  convertToCertainTime,
+} from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
@@ -17,7 +21,7 @@ import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
@@ -41,13 +45,15 @@ const PublicEventPage = ({
     if (isAuthenticated) {
       if (updatedEvent.ticket === "premium") {
         if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
-          addToMyEventList(updatedEvent);
+          const timezone = moment.tz.guess();
+          addToMyEventList(updatedEvent, timezone);
           history.push(INTERNAL_LINKS.EVENTS);
         } else {
           setShowFirewall(true);
         }
       } else {
-        addToMyEventList(updatedEvent);
+        const timezone = moment.tz.guess();
+        addToMyEventList(updatedEvent, timezone);
         history.push(INTERNAL_LINKS.EVENTS);
       }
     } else {
@@ -56,9 +62,9 @@ const PublicEventPage = ({
   };
 
   useEffect(() => {
-    getUser()
+    getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (updatedEvent.description && updatedEvent.description.blocks) {
@@ -130,50 +136,51 @@ const PublicEventPage = ({
   const handleOnClick = ({ item, key, domEvent }) => {
     domEvent.stopPropagation();
     domEvent.preventDefault();
-    const [day, time] = item.props.value;
 
-    let date = moment(updatedEvent?.startDate)
-      .add(day, "day")
-      .format("YYYY-MM-DD");
+    const [startTime, endTime, day] = item.props.value;
 
-    const startTime = moment(time.startTime).format("HH:mm:ss");
-    const startDate = moment(`${date}  ${startTime}`);
+    const timezone = TIMEZONE_LIST.find(
+      (item) => item.value === updatedEvent.timezone
+    );
+    const offset = timezone.offset;
 
-    const endTime = moment(time.endTime).format("HH:mm:ss");
-    const endDate = moment(`${date}  ${endTime}`);
+    const convertedStartTime = convertToLocalTime(
+      moment(startTime).utcOffset(offset, true)
+    );
+    const convertedEndTime = convertToLocalTime(
+      moment(endTime).utcOffset(offset, true)
+    );
 
     switch (key) {
       case "1":
         onClickDownloadCalendar(day);
         break;
       case "2":
-        onClickAddGoogleCalendar(startDate, endDate);
+        onClickAddGoogleCalendar(convertedStartTime, convertedEndTime);
         break;
       case "3":
-        onClickAddYahooCalendar(startDate, endDate);
+        onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
       //
     }
   };
 
-  const downloadDropdownOptions = (time, day) => {
+  const downloadDropdownOptions = (startTime, endTime, day) => {
     return (
       <Menu onClick={handleOnClick}>
-        <Menu.Item key="1" value={[day, time]}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
           Download ICS File
         </Menu.Item>
-        <Menu.Item key="2" value={[day, time]}>
+        <Menu.Item key="2" value={[startTime, endTime]}>
           Add to Google Calendar
         </Menu.Item>
-        <Menu.Item key="3" value={[day, time]}>
+        <Menu.Item key="3" value={[startTime, endTime]}>
           Add to Yahoo Calendar
         </Menu.Item>
       </Menu>
     );
   };
-
-  // console.log(userProfile, "sheesh");
 
   return (
     <div className="public-event-page">
@@ -184,8 +191,9 @@ const PublicEventPage = ({
         >
           <div className="upgrade-notification-panel" onClick={planUpgrade}>
             <h3>
-            This event requires a PREMIUM Membership to join. 
-            Click here to upgrate to a Premium Membership and get unlimited access to the LAB features.
+              This event requires a PREMIUM Membership to join. Click here to
+              upgrate to a Premium Membership and get unlimited access to the
+              LAB features.
             </h3>
           </div>
         </div>
@@ -259,10 +267,25 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes.map((time, index) => {
+                const startTime = convertToCertainTime(
+                  time.startTime,
+                  updatedEvent.timezone
+                );
+                const endTime = convertToCertainTime(
+                  time.endTime,
+                  updatedEvent.timezone
+                );
+
                 return (
                   <div className="d-flex calendar" key={index}>
                     <Space size="middle">
-                      <Dropdown overlay={downloadDropdownOptions(time, index)}>
+                      <Dropdown
+                        overlay={downloadDropdownOptions(
+                          startTime,
+                          endTime,
+                          index
+                        )}
+                      >
                         <a
                           href="/#"
                           className="ant-dropdown-link"
@@ -294,8 +317,11 @@ const PublicEventPage = ({
           {updatedEvent.title}
         </h1>
         <h3 className="event-date">
-          {moment(updatedEvent.startDate).format("LL")} -{" "}
-          {moment(updatedEvent.endDate).format("LL")} {updatedEvent.timezone}
+          {getEventPeriod(
+            updatedEvent.startDate,
+            updatedEvent.endDate,
+            updatedEvent.timezone
+          )}
         </h3>
         <h3 className="event-type">{`${(updatedEvent.location || []).join(
           ", "
