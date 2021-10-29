@@ -64,11 +64,6 @@ export default {
     //   url: INTERNAL_LINKS.JOURNEY,
     // },
     {
-      label: "Global Conference",
-      icon: IconReader,
-      url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
-    },
-    {
       label: "Podcast",
       icon: IconHeadsetOutline,
       url: INTERNAL_LINKS.PODCAST,
