@@ -19,7 +19,7 @@ export const constants = {
 // ------------------------------------
 export const getAllSessions = createAction(
   GET_ALL_SESSIONS,
-  (startTime, endTime) => ({ startTime, endTime })
+  (startTime, endTime, meta) => ({ startTime, endTime, meta })
 );
 
 export const getSessionsAddedbyUser = createAction(

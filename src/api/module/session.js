@@ -1,9 +1,11 @@
 import httpClient from "./httpClient";
 
-export const getAllSessions = ({ startTime, endTime }) => {
+export const getAllSessions = ({ startTime, endTime, meta }) => {
   if (startTime && endTime) {
     return httpClient.get(
-      `private/session?startTime=${startTime}&endTime=${endTime}`
+      `private/session?startTime=${startTime}&endTime=${endTime} ${
+        meta ? `&meta=${meta}` : ""
+      }`
     );
   }
   return httpClient.get(`private/session`);

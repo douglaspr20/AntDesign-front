@@ -39,27 +39,6 @@ const FilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
-          <h5 className="search-filter-title font-bold">Categories</h5>
-          <Checkbox.Group
-            value={
-              filterValues["categories"]
-                ? JSON.parse(filterValues["categories"])
-                : []
-            }
-            onChange={(values) => onFilterChange("Categories", values)}
-            style={{ marginBottom: "30px" }}
-          >
-            {allCategories.map((item) => (
-              <CustomCheckbox
-                key={item.value}
-                value={item.value}
-                size="sm"
-                disabled={userProfile.memberShip === "free"}
-              >
-                {item.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
           <h5 className="search-filter-title font-bold">Sessions</h5>
           <Checkbox.Group
             value={
@@ -67,6 +46,7 @@ const FilterPanel = ({
                 ? JSON.parse(filterValues["sessions"])
                 : []
             }
+            style={{ marginBottom: "30px" }}
             onChange={(values) => onFilterChange("Sessions", values)}
           >
             {SessionType.map((item) => (
@@ -77,6 +57,26 @@ const FilterPanel = ({
                 disabled={userProfile.memberShip === "free"}
               >
                 {item.text}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+          <h5 className="search-filter-title font-bold">Categories</h5>
+          <Checkbox.Group
+            value={
+              filterValues["categories"]
+                ? JSON.parse(filterValues["categories"])
+                : []
+            }
+            onChange={(values) => onFilterChange("Categories", values)}
+          >
+            {allCategories.map((item) => (
+              <CustomCheckbox
+                key={item.value}
+                value={item.value}
+                size="sm"
+                disabled={userProfile.memberShip === "free"}
+              >
+                {item.title}
               </CustomCheckbox>
             ))}
           </Checkbox.Group>
