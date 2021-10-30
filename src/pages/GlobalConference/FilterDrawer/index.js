@@ -13,8 +13,10 @@ import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
-
 import "./style.scss";
+import { CONFERENCE_SETTING } from "enum";
+
+const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
 const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
   const [visible, setVisible] = useState(false);
@@ -74,7 +76,29 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
           <div className="search-filter">
             <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />
-            <h5 className="search-filter-title font-bold">Topics</h5>
+            <h5 className="search-filter-title font-bold">Sessions</h5>
+            <Checkbox.Group
+              value={
+                filterValues["sessions"]
+                  ? JSON.parse(filterValues["sessions"])
+                  : []
+              }
+              style={{ marginBottom: "30px" }}
+              onChange={(values) => onFilterChange("Sessions", values)}
+            >
+              {SessionType.map((item) => (
+                <CustomCheckbox
+                  key={item.value}
+                  value={item.value}
+                  size="sm"
+                  disabled={userProfile.memberShip === "free"}
+                >
+                  {item.text}
+                </CustomCheckbox>
+              ))}
+            </Checkbox.Group>
+
+            <h5 className="search-filter-title font-bold">Categories</h5>
             <Checkbox.Group
               value={
                 filterValues["topics"] ? JSON.parse(filterValues["topics"]) : []

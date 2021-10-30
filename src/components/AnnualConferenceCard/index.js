@@ -80,12 +80,14 @@ const AnnualConferenceCard = ({
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
         <h3>{session.title}</h3>
+
         {added ? (
           <CustomButton
             type="primary outlined"
             size="md"
             text="Remove"
             onClick={onRemoveSession}
+            className="remove-buttom"
           />
         ) : attended ? (
           <CustomButton
