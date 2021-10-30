@@ -16,8 +16,8 @@ export const upgradePlan = ({ data }) => {
   });
 };
 
-export const addToMyEventListFromAPI = ({ event }) => {
-  return httpClient.put(`private/user/add-event/`, event);
+export const addToMyEventListFromAPI = ({ event, userTimezone }) => {
+  return httpClient.put(`private/user/add-event/`, {...event, userTimezone});
 };
 
 export const removeFromMyEventListFromAPI = ({ event }) => {

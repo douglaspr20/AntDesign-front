@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
+import { isEmpty } from "lodash";
+import moment from 'moment-timezone'
 
 import {
   DateAvatar,
@@ -11,11 +13,12 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { convertToLocalTime, getValidDescription } from "utils/format";
+
+import { convertToLocalTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
 
@@ -29,13 +32,27 @@ const EventDrawer = ({
   onConfirmCredit,
 }) => {
   const [editor, setEditor] = useState("froala");
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const onDrawerClose = () => {
+    setShowFirewall(false);
     onClose();
   };
 
-  const onAttend = () => {
-    addToMyEventList(event);
+  const onAttend = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (event.ticket === "premium") {
+      if (userProfile && userProfile.memberShip === "premium") {
+        const timezone = moment.tz.guess()
+        addToMyEventList(event, timezone);
+      } else {
+        setShowFirewall(true);
+      }
+    } else {
+      addToMyEventList(event);
+    }
   };
 
   const onCancelAttend = () => {
@@ -63,71 +80,82 @@ const EventDrawer = ({
     onConfirmCredit(event);
   };
 
-  const onClickDownloadCalendar = (e) => {
-    e.preventDefault();
+  const onClickDownloadCalendar = (day) => {
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}`,
       "_blank"
     );
   };
 
-  const onClickAddGoogleCalendar = (e) => {
-    e.preventDefault();
-    let description = "";
-    if (event.description) {
-      description = getValidDescription(event);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
-    }
+  const onClickAddGoogleCalendar = (startDate, endDate) => {
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       event.title
-    }&dates=${convertToLocalTime(event.startDate).format(
+    }&dates=${convertToLocalTime(startDate).format(
       "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(event.endDate).format(
-      "YYYYMMDDTHHmmss"
-    )}&details=${description}&location=${
+    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
       event.location
     }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+
     window.open(googleCalendarUrl, "_blank");
   };
 
-  const onCLickAddYahooCalendar = (e) => {
-    e.preventDefault();
-    let description = "";
-    if (event.description) {
-      description = getValidDescription(event);
-      description = description?.replace(/(\r\n|\n|\r)/gm, "");
-    }
+  const onClickAddYahooCalendar = (startDate, endDate) => {
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       event.title
-    }&st=${convertToLocalTime(event.startDate).format(
+    }&st=${convertToLocalTime(startDate).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(event.endDate).format(
-      "HHmmss"
-    )}&desc=${description}&in_loc=${event.location}`;
+    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
+      event.location
+    }`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
-  const downloadDropdownOptions = () => (
-    <Menu>
-      <Menu.Item key="1">
-        <a href="/#" onClick={onClickDownloadCalendar}>
-          Download ICS File
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a href="/#" onClick={onClickAddGoogleCalendar}>
-          Add to Google Calendar
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="/#" onClick={onCLickAddYahooCalendar}>
-          Add to Yahoo Calendar
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
+  const handleOnClick = ({ item, key, domEvent }) => {
+    domEvent.stopPropagation();
+    domEvent.preventDefault();
 
-  const planUpgrade = () => {
+    const [startTime, endTime, day] = item.props.value;
+
+    const timezone = TIMEZONE_LIST.find(item => item.value === event.timezone)
+    const offset = timezone.offset
+
+    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
+    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+
+    switch (key) {
+      case "1":
+        onClickDownloadCalendar(day);
+        break;
+      case "2":
+        onClickAddGoogleCalendar(convertedStartTime, convertedEndTime);
+        break;
+      case "3":
+        onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
+        break;
+      default:
+      //
+    }
+  };
+
+  const downloadDropdownOptions = (startTime, endTime, day) => {
+    return (
+      <Menu onClick={handleOnClick}>
+        <Menu.Item key="1" value={[startTime, endTime, day]}>
+          Download ICS File
+        </Menu.Item>
+        <Menu.Item key="2" value={[startTime, endTime]}>
+          Add to Google Calendar
+        </Menu.Item>
+        <Menu.Item key="3" value={[startTime, endTime]}>
+          Add to Yahoo Calendar
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
+  const planUpgrade = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
@@ -147,6 +175,19 @@ const EventDrawer = ({
       onClose={onDrawerClose}
     >
       <div className="event-details">
+        {showFirewall && (
+          <div
+            className="event-details-firewall"
+            onClick={() => setShowFirewall(false)}
+          >
+            <div className="upgrade-notification-panel" onClick={planUpgrade}>
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
+          </div>
+        )}
         <div className="event-details-header">
           {event.image2 && <img src={event.image2} alt="event-img" />}
           {!event.image2 && event.image && (
@@ -226,17 +267,31 @@ const EventDrawer = ({
               <h3 className="event-date">{event.period}</h3>
             </div>
             {event.status !== "past" && event.status !== "confirmed" && (
-              <Dropdown overlay={downloadDropdownOptions}>
-                <a
-                  href="/#"
-                  className="ant-dropdown-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  Download calendar <DownOutlined />
-                </a>
-              </Dropdown>
+              <Space direction="vertical">
+                {!isEmpty(event.startAndEndTimes) &&
+                  event.startAndEndTimes.map((time, index) => {
+                    const startTime = convertToCertainTime(time.startTime, event.timezone)
+                    const endTime = convertToCertainTime(time.endTime, event.timezone)
+
+                    return (
+                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
+                        <a
+                          href="/#"
+                          className="ant-dropdown-link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          {event.startAndEndTimes.length > 1
+                            ? `Download Day ${index + 1}`
+                            : "Download Calendar"}
+                          <DownOutlined />
+                        </a>
+                      </Dropdown>
+                    );
+                  })}
+              </Space>
             )}
             {/* {event.status === "going" && event.status !== "past" && (
               <Dropdown overlay={menu}>
