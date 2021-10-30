@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
+import moment from "moment-timezone";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
@@ -64,8 +64,9 @@ const EventsPage = ({
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
+     const timezone = moment.tz.guess()
     if (event.going) {
-      addToMyEventList(event);
+       addToMyEventList(event, timezone);
       if (event?.isAnnualConference && event.isAnnualConference === 0) {
         attendToGlobalConference();
       }
@@ -121,6 +122,7 @@ const EventsPage = ({
           data={filteredEvents}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -132,6 +134,7 @@ const EventsPage = ({
           data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -145,6 +148,7 @@ const EventsPage = ({
           )}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           onConfirmAttendance={onConfirmAttendance}
           onConfirmCredit={onConfirmCredit}
           showFilter={() => setVisibleFilter(true)}

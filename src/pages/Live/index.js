@@ -7,7 +7,7 @@ import { liveSelector } from "redux/selectors/liveSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import Emitter from "services/emitter";
-
+import Interweave from "interweave"
 import "./style.scss";
 import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 
@@ -45,7 +45,7 @@ const LivePage = ({ history, live, userProfile }) => {
               <h2>{live.title}</h2>
             </div>
             <div className="live-item">
-              <p>{live.description}</p>
+              <Interweave content={live.description} />
             </div>
           </div>
         </div>
