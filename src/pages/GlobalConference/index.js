@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { connect } from "react-redux";
-import { Menu } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
-import { CustomButton, Tabs } from "components";
+import moment from "moment";
 import jsPdf from "jspdf";
-import { convertToCertainTime } from "utils/format";
-
+import { Menu, notification } from "antd";
+import { CheckOutlined } from "@ant-design/icons";
+import { CustomButton, Tabs, GlobalConferenceFilterPanel } from "components";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
-import { GlobalConferenceFilterPanel } from "components";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -22,17 +19,16 @@ import {
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
-
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { formatAnnualConference } from "utils/formatPdf";
 
 const Description = `
   Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.
 `;
-const TAB_NUM = 7;
+const TAB_NUM = 6;
 
 const GlobalConference = ({
   allSessions,
@@ -60,10 +56,9 @@ const GlobalConference = ({
   };
 
   const onSearch = (value) => {
-    // getAllSessions({
-    //   ...filters,
-    //   meta: value,
-    // });
+    const startTime = convertToUTCTime(firstTabDate.clone());
+    const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
+    getAllSessions(startTime, endTime, value);
     setMeta(value);
   };
 
@@ -77,6 +72,13 @@ const GlobalConference = ({
 
   const onAttend = () => {
     attendToGlobalConference();
+  };
+
+  const comingSoon = (section) => {
+    notification.open({
+      message: "Coming Soon",
+      description: `Soon you will have access to the section of ${section}`,
+    });
   };
 
   useEffect(() => {
@@ -117,57 +119,15 @@ const GlobalConference = ({
   }, [firstTabDate, allSessions, filters, meta]);
 
   useEffect(() => {
-    getSessionsAddedbyUser(1);
-  }, [getSessionsAddedbyUser]);
+    if (userProfile.id) {
+      getSessionsAddedbyUser(userProfile.id);
+    }
+  }, [getSessionsAddedbyUser, userProfile]);
 
   const downloadPdf = async () => {
     setLoading(true);
 
-    const template = document.createElement("div");
-
-    template.setAttribute("id", "template-agenda");
-    template.style = "width: 750px; margin-top: 1rem";
-
-    let content = `<h1 style="text-align: center">My personalizated agenda</h1>`;
-
-    const sessionsOrdered = sessionsUser.sort((a, b) => {
-      if (a.startTime > b.startTime) {
-        return 1;
-      } else if (a.startTime > b.startTime) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    for (const session of sessionsOrdered) {
-      content += `<div style="margin: 20px 100px; border: 1px solid #e1e2ee; border-radius: 4px">
-         <div style="">
-            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
-              session.title
-            }</h3>
-            <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
-              session.type
-            }</span>
-            <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 1rem 0">${convertToCertainTime(
-              session.startTime,
-              session.timezone
-            ).format("MMM, D, YYYY")}</span>
-
-            <div>
-            ${session.categories.map((categorie) => {
-              return `<span style="border: 1px solid #438cef; color: #438cef; max-width: 200
-              px
-              ;">${categorie}</span>`;
-            })}
-            </div>
-            <h3 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">Description</h3>
-            <p>${session.description}<p>
-         </div>
-      </div>`;
-    }
-
-    template.innerHTML = content;
+    const template = formatAnnualConference(userProfile, sessionsUser);
 
     const pdf = new jsPdf({
       orientation: "p",
@@ -180,6 +140,7 @@ const GlobalConference = ({
     await pdf.html(template);
 
     pdf.save("Personalizated Agenda.pdf");
+
     setLoading(false);
   };
 
@@ -191,15 +152,15 @@ const GlobalConference = ({
       />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="global-conference-container">
-        <div className="global-conference-page__filters--button">
-          <CustomButton
-            text="Filters"
-            onClick={() => {
-              showFilterPanel();
-            }}
-          />
-        </div>
         <div className="global-conference-container-top-menu">
+          <div className="global-conference__filters--button">
+            <CustomButton
+              text="Filters"
+              onClick={() => {
+                showFilterPanel();
+              }}
+            />
+          </div>
           <div className="d-flex items-center">
             {userProfile.attendedToConference ? (
               <>
@@ -208,7 +169,7 @@ const GlobalConference = ({
                   <span>I'm attending</span>
                 </div>
                 <CustomButton
-                  className="not-going-btn"
+                  className="not-going-button"
                   text="Not attending"
                   size="xs"
                   type="remove"
@@ -234,13 +195,14 @@ const GlobalConference = ({
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
             <Menu
-              // onClick={this.handleClick}
-              //selectedKeys={"speakers"}
               mode="horizontal"
               style={{
                 lineHeight: "35px",
                 background: "none",
-                width: "80%",
+                margin: "0px auto",
+                width: "70%",
+                display: "flex",
+                justifyContent: "center",
               }}
             >
               <Menu.Item
@@ -255,11 +217,7 @@ const GlobalConference = ({
                 key="participants"
                 className="sub-menu-item-global-conference"
               >
-                <Link
-                  to="/participants"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link onClick={() => comingSoon("Participants")}>
                   Participants
                 </Link>
               </Menu.Item>
@@ -267,20 +225,16 @@ const GlobalConference = ({
                 key="partners"
                 className="sub-menu-item-global-conference"
               >
-                <Link to="/partners" target="_blank" rel="noopener noreferrer">
-                  Partners
-                </Link>
+                <Link onClick={() => comingSoon("Partners")}>Partners</Link>
               </Menu.Item>
               <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
               >
-                <Link href="/bonfire" target="_blank" rel="noopener noreferrer">
-                  Bonfire
-                </Link>
+                <Link onClick={() => comingSoon("Bonfire")}>Bonfire</Link>
               </Menu.Item>
             </Menu>
-            <div>
+            <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"
                 size="xs"
