@@ -131,7 +131,7 @@ function convertToUTCTime(date, tz) {
 function convertToLocalTime(date) {
   const localTimezone = moment.tz.guess();
 
-  return moment.utc(date).tz(localTimezone);
+  return moment.utc(date).tz(localTimezone).local();
 }
 
 const convertBlobToBase64 = (blob) => {
@@ -147,7 +147,7 @@ const getValidDescription = (item) => {
   let description = "";
 
   if (item.description && item.description.blocks) {
-    description = item.description.blocks.map((item) => item.text).join('\n');
+    description = item.description.blocks.map((item) => item.text).join("\n");
   } else if (item.description && item.description.html) {
     description = item.description.html;
   }

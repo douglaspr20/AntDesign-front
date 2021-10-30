@@ -18,6 +18,10 @@ import {
 } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import {
+  addToMyEventList,
+  removeFromMyEventList,
+} from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
@@ -41,6 +45,8 @@ const GlobalConference = ({
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
+  addToMyEventList,
+  removeFromMyEventList,
   sessionsUser,
   setLoading,
   attendToGlobalConference,
@@ -75,6 +81,14 @@ const GlobalConference = ({
   // };
 
   const onAttend = () => {
+    const globalEvent = userProfile.events.find(
+      (event) => event.isAnnualConference === 1
+    );
+    if (userProfile.attendedToConference === 0 && globalEvent) {
+      addToMyEventList(userProfile.attendedToConference === 1 && globalEvent);
+    } else if (globalEvent) {
+      removeFromMyEventList(globalEvent);
+    }
     attendToGlobalConference();
   };
 
@@ -306,6 +320,8 @@ const mapDispatchToProps = {
   getSessionsAddedbyUser,
   attendToGlobalConference,
   setLoading,
+  addToMyEventList,
+  removeFromMyEventList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);
