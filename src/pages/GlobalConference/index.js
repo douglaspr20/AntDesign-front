@@ -26,7 +26,13 @@ import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
 
 const Description = `
-  Developing Talent & Leadership behaviors. Positive Design Thinking & Strategy through Positive Leadership Strategy and POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and behavior transformation in organizations, sports clubs, PYMES, and corporations.
+Welcome to the Hacking HR 2022 Global Online Conference 
+planner. Here you will find all the sessions for the conference. You 
+can add sessions to your personalized agenda and then download a
+PDF. Notice that you can’t add two sessions that are happening the 
+same day at the same time. You can also download the calendar 
+invites to save the date. Finally, you can find the speakers and 
+connect with other participants. Enjoy!
 `;
 const TAB_NUM = 6;
 
@@ -40,9 +46,7 @@ const GlobalConference = ({
   attendToGlobalConference,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate, setFirstTabDate] = useState(
-    moment("2022-03-07", "YYYY-MM-DD")
-  );
+  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
@@ -62,13 +66,13 @@ const GlobalConference = ({
     setMeta(value);
   };
 
-  const goToPrevPage = () => {
-    setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
-  };
+  // const goToPrevPage = () => {
+  //   setFirstTabDate(firstTabDate.clone().subtract(TAB_NUM, "days"));
+  // };
 
-  const goToNextPage = () => {
-    setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
-  };
+  // const goToNextPage = () => {
+  //   setFirstTabDate(firstTabDate.clone().add(TAB_NUM, "days"));
+  // };
 
   const onAttend = () => {
     attendToGlobalConference();
@@ -126,6 +130,16 @@ const GlobalConference = ({
 
   const downloadPdf = async () => {
     setLoading(true);
+
+    if (sessionsUser.length < 1) {
+      setLoading(false);
+      return notification.warning({
+        message: "You have no sessions",
+        description: `Add your first session before downloading personalized agenda” if 
+        someone tries to download it without having added any session to 
+        their agenda`,
+      });
+    }
 
     const template = formatAnnualConference(userProfile, sessionsUser);
 
@@ -185,12 +199,14 @@ const GlobalConference = ({
               />
             )}
 
-            <CustomButton
-              size="xs"
-              text="Download  Personalized Agenda"
-              style={{ marginLeft: "1rem" }}
-              onClick={downloadPdf}
-            />
+            {userProfile.attendedToConference ? (
+              <CustomButton
+                size="xs"
+                text="Download  Personalized Agenda"
+                style={{ marginLeft: "1rem" }}
+                onClick={downloadPdf}
+              />
+            ) : null}
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
@@ -217,7 +233,10 @@ const GlobalConference = ({
                 key="participants"
                 className="sub-menu-item-global-conference"
               >
-                <Link onClick={() => comingSoon("Participants")}>
+                <Link
+                  to="/global-conference"
+                  onClick={() => comingSoon("Participants")}
+                >
                   Participants
                 </Link>
               </Menu.Item>
@@ -225,16 +244,26 @@ const GlobalConference = ({
                 key="partners"
                 className="sub-menu-item-global-conference"
               >
-                <Link onClick={() => comingSoon("Partners")}>Partners</Link>
+                <Link
+                  to="/global-conference"
+                  onClick={() => comingSoon("Partners")}
+                >
+                  Partners
+                </Link>
               </Menu.Item>
               <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
               >
-                <Link onClick={() => comingSoon("Bonfire")}>Bonfire</Link>
+                <Link
+                  to="/global-conference"
+                  onClick={() => comingSoon("Bonfire")}
+                >
+                  Bonfire
+                </Link>
               </Menu.Item>
             </Menu>
-            <div style={{ display: "flex" }}>
+            {/* <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"
                 size="xs"
@@ -247,7 +276,7 @@ const GlobalConference = ({
                 text=">"
                 onClick={goToNextPage}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 

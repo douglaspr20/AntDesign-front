@@ -130,69 +130,70 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
   for (const day of sData) {
     let conferences = "";
 
-    for (const conference of day.data) {
+    for (let i = 0; i < day.data.length; i++) {
       let categorieHTML = "";
-      for (const categorie of conference.categories) {
+      for (const categorie of day.data[i].categories) {
         categorieHTML += `    
-                <div style="
-                height: 28px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 0 20px;
-                border-radius: 0.25rem;
-                border: 1px solid #438cef;;
-                color: #438cef;
-                max-width: 200px;
-                overflow: hidden;">
-                <span style="overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;">${categorie}</span>
-               
-                </div>`;
+          <div style="
+          height: 28px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 20px;
+          border-radius: 0.25rem;
+          border: 1px solid #438cef;;
+          color: #438cef;
+          max-width: 200px;
+          overflow: hidden;">
+          <span style="overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;">${categorie}</span>
+         
+          </div>`;
       }
-      conferences += `
-          <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
-          border-radius: 0.5rem;
-          opacity: 1;
-          padding: 2rem; margin-bottom: 50px">
-               <div style="display: flex; flex-direction: column; flex-wrap: wrap">
-                  <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${conference.title}</h2>
-                  <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${conference.type}</span>
-                  <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${conference.date}</span>
-                  <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
-                  ${conference.period} ${conference.tz}
-                  </span>
-      
-                    <div style="  
-                    display: flex;
-                    width: 70%;
-                    flex-wrap: wrap;
-                    margin-top: 1rem;"
-                    >
-                    ${categorieHTML}
-                    </div>
-  
-                    <div style="display: flex;
-                    flex-direction: column;
-                    padding-top: 1rem;
-                    margin-top: 1rem;
-                    border-top: 1px solid #e1e2ee">
-  
-                    <h4>Description</h4>
-                    <p>
-                    <p>${conference.description}<p>
-                    </p>
-  
-                    </div>
-               </div>
-            </div>
-          `;
-    }
 
-    content += `  
+      if (day.data[i + 1] && i % 2 !== 0) {
+        conferences += `
+        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        border-radius: 0.5rem;
+        opacity: 1;
+        padding: 2rem; margin-bottom: 50px">
+             <div style="display: flex; flex-direction: column; flex-wrap: wrap">
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
+                ${day.data[i].period} ${day.data[i].tz}
+                </span>
+    
+                  <div style="  
+                  display: flex;
+                  width: 70%;
+                  flex-wrap: wrap;
+                  margin-top: 1rem;"
+                  >
+                  ${categorieHTML}
+                  </div>
+  
+                  <div style="display: flex;
+                  flex-direction: column;
+                  padding-top: 1rem;
+                  margin-top: 1rem;
+                  border-top: 1px solid #e1e2ee">
+  
+                  <h4>Description</h4>
+                  <p>
+                  <p>${day.data[i].description}<p>
+                  </p>
+  
+                  </div>
+             </div>
+          </div>
+        `;
+
+        content += `  
         <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
-            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem;">
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
             <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
@@ -200,14 +201,112 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
                 <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
               </div>
             </div>
-  
+    
                <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
                ${day.period}
                </p>
-  
+    
             <div style="width: 100%"> ${conferences}</div>
             </div>
             `;
+      } else if (!day.data[i + 1] && i % 2 === 0) {
+        conferences = "";
+        conferences += `
+        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        border-radius: 0.5rem;
+        opacity: 1;
+        padding: 2rem; margin-bottom: 50px">
+             <div style="display: flex; flex-direction: column; flex-wrap: wrap">
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
+                ${day.data[i].period} ${day.data[i].tz}
+                </span>
+    
+                  <div style="  
+                  display: flex;
+                  width: 70%;
+                  flex-wrap: wrap;
+                  margin-top: 1rem;"
+                  >
+                  ${categorieHTML}
+                  </div>
+  
+                  <div style="display: flex;
+                  flex-direction: column;
+                  padding-top: 1rem;
+                  margin-top: 1rem;
+                  border-top: 1px solid #e1e2ee">
+  
+                  <h4>Description</h4>
+                  <p>
+                  <p>${day.data[i].description}<p>
+                  </p>
+  
+                  </div>
+             </div>
+          </div>
+        `;
+
+        content += `  
+        <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
+            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+              <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+              <div>
+                <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+              </div>
+            </div>
+    
+               <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
+               ${day.period}
+               </p>
+    
+            <div style="width: 100%"> ${conferences}</div>
+            </div>
+            `;
+      } else {
+        conferences += `
+        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        border-radius: 0.5rem;
+        opacity: 1;
+        padding: 2rem; margin-bottom: 50px">
+             <div style="display: flex; flex-direction: column; flex-wrap: wrap">
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
+                ${day.data[i].period} ${day.data[i].tz}
+                </span>
+    
+                  <div style="  
+                  display: flex;
+                  width: 70%;
+                  flex-wrap: wrap;
+                  margin-top: 1rem;"
+                  >
+                  ${categorieHTML}
+                  </div>
+  
+                  <div style="display: flex;
+                  flex-direction: column;
+                  padding-top: 1rem;
+                  margin-top: 1rem;
+                  border-top: 1px solid #e1e2ee">
+  
+                  <h4>Description</h4>
+                  <p>
+                  <p>${day.data[i].description}<p>
+                  </p>
+  
+                  </div>
+             </div>
+          </div>
+        `;
+      }
+    }
   }
 
   template.innerHTML = content;
