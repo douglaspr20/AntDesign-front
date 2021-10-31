@@ -120,7 +120,8 @@
     .ant-tabs > div > .ant-tabs-nav {
       position: fixed;
       width: 50%;
-      margin-top: 175px;
+      padding-top: 20px;
+      margin-top: 210px;
       z-index: 19;
       background: $color-background;
     }

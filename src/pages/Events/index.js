@@ -22,7 +22,10 @@ import {
   claimEventAttendance,
   claimEventCredit,
 } from "redux/actions/event-actions";
-import { setLoading } from "redux/actions/home-actions";
+import {
+  setLoading,
+  attendToGlobalConference,
+} from "redux/actions/home-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import EventFilterDrawer from "./EventFilterDrawer";
@@ -61,11 +64,17 @@ const EventsPage = ({
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
+     const timezone = moment.tz.guess()
     if (event.going) {
-      const timezone = moment.tz.guess()
-      addToMyEventList(event, timezone);
+       addToMyEventList(event, timezone);
+      if (event?.isAnnualConference && event.isAnnualConference === 0) {
+        attendToGlobalConference();
+      }
     } else {
       removeFromMyEventList(event);
+      if (event?.isAnnualConference === 1) {
+        attendToGlobalConference();
+      }
     }
   };
 
