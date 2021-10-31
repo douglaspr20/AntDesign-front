@@ -12,11 +12,15 @@
 
 .acc-session {
   &-header {
-    height: 52px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap-reverse;
+
+    h3 {
+      max-width: 50%;
+    }
 
     @media screen and (max-width: 500px) {
       & .ant-btn {
