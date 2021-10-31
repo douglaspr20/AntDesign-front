@@ -41,7 +41,17 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
         }
       });
 
-      setSpeakers(speakersSession);
+      setSpeakers(
+        speakersSession.sort((a, b) => {
+          if (a.name > b.name) {
+            return 1;
+          } else if (b.name > a.name) {
+            return -1;
+          }
+
+          return 0;
+        })
+      );
       setLoading(false);
     };
 

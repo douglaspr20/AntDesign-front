@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-// import { Link } from "react-router-dom";
 
 import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
@@ -8,11 +7,10 @@ import { Dropdown, Menu } from "antd";
 import { CustomButton, SpecialtyItem } from "components";
 import { DownOutlined } from "@ant-design/icons";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
-
-// import { INTERNAL_LINKS } from "../../enum";
-
+import { TIMEZONE_LIST } from "../../enum";
 import "./style.scss";
 import { convertToLocalTime } from "utils/format";
+import moment from "moment-timezone";
 
 const AnnualConferenceCard = ({
   session,
@@ -22,6 +20,18 @@ const AnnualConferenceCard = ({
   onRemoveSession,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
+
+  const timezone = TIMEZONE_LIST.find(
+    (item) => item.value === session.timezone
+  );
+  const offset = timezone.offset;
+
+  const convertedStartTime = convertToLocalTime(
+    moment(session.startTime).utcOffset(offset, true)
+  );
+  const convertedEndTime = convertToLocalTime(
+    moment(session.endTime).utcOffset(offset, true)
+  );
 
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
@@ -35,11 +45,12 @@ const AnnualConferenceCard = ({
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       session.title
-    }&dates=${convertToLocalTime(session.startTime).format(
+    }&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(session.endTime).format(
+    )}/${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmmss"
     )}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
@@ -48,11 +59,12 @@ const AnnualConferenceCard = ({
   const onClickAddYahooCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
     let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
       session.title
-    }&st=${convertToLocalTime(session.startTime).format(
+    }&st=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(session.endTime).format("HHmmss")}`;
+    )}&dur${convertToLocalTime(convertedEndTime).format("HHmmss")}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
