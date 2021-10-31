@@ -28,6 +28,7 @@ import { EVENT_TYPES } from "enum";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
+import PersonalAgenda from "./PersonalAgenda";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -56,6 +57,7 @@ const GlobalConference = ({
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
+  const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -97,6 +99,10 @@ const GlobalConference = ({
       message: "Coming Soon",
       description: `Soon you will have access to the section of ${section}`,
     });
+  };
+
+  const handleView = (view) => {
+    setCurrentView(view);
   };
 
   useEffect(() => {
@@ -213,14 +219,14 @@ const GlobalConference = ({
               />
             )}
 
-            {userProfile.attendedToConference ? (
+            {currentView === "personal-agenda" && (
               <CustomButton
                 size="xs"
                 text="Download  Personalized Agenda"
                 style={{ marginLeft: "1rem" }}
                 onClick={downloadPdf}
               />
-            ) : null}
+            )}
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
@@ -230,11 +236,19 @@ const GlobalConference = ({
                 lineHeight: "35px",
                 background: "none",
                 margin: "0px auto",
-                width: "70%",
+                width: "90%",
                 display: "flex",
                 justifyContent: "center",
               }}
             >
+              <Menu.Item
+                key="conferences-schedule"
+                className="sub-menu-item-global-conference"
+                onClick={() => handleView("conference-schedule")}
+              >
+                <Link to="/global-conference">Conference Schedule</Link>
+              </Menu.Item>
+
               <Menu.Item
                 key="speakers"
                 className="sub-menu-item-global-conference"
@@ -276,6 +290,13 @@ const GlobalConference = ({
                   Bonfire
                 </Link>
               </Menu.Item>
+              <Menu.Item
+                key="personal-agenda"
+                className="sub-menu-item-global-conference"
+                onClick={() => handleView("personal-agenda")}
+              >
+                <Link to="/global-conference">My personal agenda</Link>
+              </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
               <CustomButton
@@ -293,10 +314,17 @@ const GlobalConference = ({
             </div> */}
           </div>
         </div>
-
-        <div className="global-conference-tabs">
-          <Tabs data={tabData} current={currentTab} onChange={setCurrentTab} />
-        </div>
+        {currentView === "conference-schedule" ? (
+          <div className="global-conference-tabs">
+            <Tabs
+              data={tabData}
+              current={currentTab}
+              onChange={setCurrentTab}
+            />
+          </div>
+        ) : currentView === "personal-agenda" ? (
+          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
+        ) : null}
       </div>
     </div>
   );
