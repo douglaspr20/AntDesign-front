@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
-import moment from 'moment-timezone'
+import moment from "moment-timezone";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -15,7 +15,7 @@ import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
 import { convertToCertainTime, convertToLocalTime } from "utils/format";
-import { TIMEZONE_LIST } from '../../enum'
+import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
 
@@ -135,11 +135,17 @@ class EventCard extends React.Component {
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(item => item.value === this.props.data.timezone)
-    const offset = timezone.offset
+    const timezone = TIMEZONE_LIST.find(
+      (item) => item.value === this.props.data.timezone
+    );
+    const offset = timezone.offset;
 
-    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
-    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+    const convertedStartTime = convertToLocalTime(
+      moment(startTime).utcOffset(offset, true)
+    );
+    const convertedEndTime = convertToLocalTime(
+      moment(endTime).utcOffset(offset, true)
+    );
 
     switch (key) {
       case "1":
@@ -192,6 +198,8 @@ class EventCard extends React.Component {
       onMenuClick,
     } = this.props;
 
+    console.log(status);
+
     return (
       <div
         className={clsx("event-card", className)}
@@ -229,14 +237,24 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(time.startTime, timezone)
-                    const endTime = convertToCertainTime(time.endTime, timezone)
+                    const startTime = convertToCertainTime(
+                      time.startTime,
+                      timezone
+                    );
+                    const endTime = convertToCertainTime(
+                      time.endTime,
+                      timezone
+                    );
 
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
-                            overlay={this.downloadDropdownOptions(startTime, endTime, index)}
+                            overlay={this.downloadDropdownOptions(
+                              startTime,
+                              endTime,
+                              index
+                            )}
                           >
                             <a
                               href="/#"
@@ -252,7 +270,9 @@ class EventCard extends React.Component {
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format("HH:mm")} - ${moment(endTime).format("HH:mm")}`}</div>
+                          <div>{`${moment(startTime).format(
+                            "HH:mm"
+                          )} - ${moment(endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
