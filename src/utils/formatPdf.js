@@ -156,7 +156,7 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
       if (
         i % 2 === 0 &&
         day.data[i + 1] &&
-        day.data[i].description.length < 300
+        day.data[i].description?.length < 300
       ) {
         conferences += `
         <div style="background: #fff; 
@@ -197,7 +197,7 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
              </div>
           </div>
         `;
-      } else if (i % 2 !== 0 && day.data[i].description.length < 300) {
+      } else if (i % 2 !== 0 && day.data[i].description?.length < 300) {
         conferences += `
         <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
         border-radius: 0.5rem;
@@ -255,7 +255,7 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
             </div>
             `;
         conferences = "";
-      } else if (i % 2 !== 0 && day.data[i].description.length > 300) {
+      } else if (i % 2 !== 0 && day.data[i].description?.length > 300) {
         content += `
         <div style="height: 950px; width: 90%; display: flex; flex-direction: column;
             align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
@@ -342,9 +342,15 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
         opacity: 1;
         padding: 2rem; margin-bottom: 50px">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
-                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
-                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
-                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+                  day.data[i].title
+                }</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+                  day.data[i].type
+                }</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${
+                  day.data[i].date
+                }</span>
                 <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
                 ${day.data[i].period} ${day.data[i].tz}
                 </span>
@@ -365,9 +371,13 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
                   border-top: 1px solid #e1e2ee">
   
                   <h4>Description</h4>
-                  <p>
-                  <p>${day.data[i].description}<p>
-                  </p>
+              
+                  <p>${
+                    day.data[i].description !== null
+                      ? day.data[i].description
+                      : ""
+                  }<p>
+                
   
                   </div>
              </div>
