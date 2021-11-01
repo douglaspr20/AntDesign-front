@@ -66,7 +66,7 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
     "width: 800px; height: auto; display: flex; flex-direction: column;align-items: center";
 
   let content = `<div style="height: 1000px; width: 100%; display: flex; flex-direction: column; 
-    align-items: center; justify-content: center; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
+    align-items: center; justify-content: center; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
     <img src=${LogoHackingHR} style="width: 250px; height: 250px">
     <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center">2022</p>
     <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center; padding: 0px 150px">HR Innovation
@@ -87,8 +87,8 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
     </div>
 
     <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
-    align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
-        <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+    align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+        <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 15px 10px 0px">
           <img src=${LogoHackingHR} style="width: 70px; height: 70px">
           <div>
             <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
@@ -153,12 +153,18 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
           </div>`;
       }
 
-      if (i % 2 === 0 && day.data[i + 1]) {
+      if (
+        i % 2 === 0 &&
+        day.data[i + 1] &&
+        day.data[i].description.length < 300
+      ) {
         conferences += `
-        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        <div style="background: #fff; 
+        border: 1px solid #cfd3d6; 
+        box-shadow: 4px 0px 14px #37215714; 
         border-radius: 0.5rem;
         opacity: 1;
-        padding: 2rem; margin-bottom: 50px">
+        padding: 2rem; margin-bottom: 30px;" class="conference">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
                 <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
                 <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
@@ -184,14 +190,14 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
   
                   <h4>Description</h4>
                   <p>
-                  <p>${day.data[i].description}<p>
+                  <p style="white-space: pre-line;">${day.data[i].description}<p>
                   </p>
   
                   </div>
              </div>
           </div>
         `;
-      } else if (i % 2 !== 0) {
+      } else if (i % 2 !== 0 && day.data[i].description.length < 300) {
         conferences += `
         <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
         border-radius: 0.5rem;
@@ -230,24 +236,104 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
           </div>
         `;
 
-        content += `  
-        <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
-            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
-            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+        content += `
+        <div style="height: 950px; width: 90%; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
                 <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
               </div>
             </div>
-    
+
                <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
                ${day.period}
                </p>
-    
+
             <div style="width: 100%"> ${conferences}</div>
             </div>
             `;
+        conferences = "";
+      } else if (i % 2 !== 0 && day.data[i].description.length > 300) {
+        content += `
+        <div style="height: 950px; width: 90%; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
+              <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+              <div>
+                <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+              </div>
+            </div>
+
+               <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
+               ${day.period}
+               </p>
+
+            <div style="width: 100%"> ${conferences}</div>
+            </div>
+            `;
+
+        conferences = "";
+
+        conferences += `
+        <div style="background: #fff; border: 1px solid #cfd3d6; box-shadow: 4px 0px 14px #37215714; 
+        border-radius: 0.5rem;
+        opacity: 1;
+        padding: 2rem; margin-bottom: 50px">
+             <div style="display: flex; flex-direction: column; flex-wrap: wrap">
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
+                ${day.data[i].period} ${day.data[i].tz}
+                </span>
+    
+                  <div style="  
+                  display: flex;
+                  width: 70%;
+                  flex-wrap: wrap;
+                  margin-top: 1rem;"
+                  >
+                  ${categorieHTML}
+                  </div>
+  
+                  <div style="display: flex;
+                  flex-direction: column;
+                  padding-top: 1rem;
+                  margin-top: 1rem;
+                  border-top: 1px solid #e1e2ee">
+  
+                  <h4>Description</h4>
+                  <p>
+                  <p>${day.data[i].description}<p>
+                  </p>
+  
+                  </div>
+             </div>
+          </div>
+        `;
+
+        content += `
+        <div style="height: 950px; width: 90%; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
+              <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+              <div>
+                <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+              </div>
+            </div>
+
+               <p style="align-self: flex-start;font-weight: 800 !important; font-size: 2.5rem !important; margin-left: 40px">
+               ${day.period}
+               </p>
+
+            <div style="width: 100%"> ${conferences}</div>
+            </div>
+            `;
+
         conferences = "";
       } else {
         conferences += `
@@ -289,8 +375,8 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
         `;
         content += `  
         <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
-            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 200px">
-            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 30px 10px 0px">
+            align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+            <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
