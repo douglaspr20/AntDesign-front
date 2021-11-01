@@ -37,7 +37,6 @@ const getEventStatus = (data, userId) => {
   } else if (!res) {
     res = moment().isBefore(moment(data.startDate)) ? "attend" : "";
   }
-
   return res;
 };
 

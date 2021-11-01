@@ -64,10 +64,10 @@ const EventsPage = ({
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
-     const timezone = moment.tz.guess()
+    const timezone = moment.tz.guess();
     if (event.going) {
-       addToMyEventList(event, timezone);
-      if (event?.isAnnualConference && event.isAnnualConference === 0) {
+      addToMyEventList(event, timezone);
+      if (event?.isAnnualConference && event.isAnnualConference === 1) {
         attendToGlobalConference();
       }
     } else {

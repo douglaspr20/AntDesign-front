@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import moment from "moment";
 import jsPdf from "jspdf";
 import { Menu, notification } from "antd";
@@ -88,10 +89,10 @@ const GlobalConference = ({
     );
     if (userProfile.attendedToConference === 0 && globalEvent) {
       addToMyEventList(userProfile.attendedToConference === 1 && globalEvent);
-    } else if (globalEvent) {
+    } else if (userProfile.attendedToConference === 1 && globalEvent) {
       removeFromMyEventList(globalEvent);
-    }
-    attendToGlobalConference();
+      attendToGlobalConference();
+    } else attendToGlobalConference();
   };
 
   const comingSoon = (section) => {
@@ -177,6 +178,9 @@ const GlobalConference = ({
 
     setLoading(false);
   };
+
+  if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
+    return <Redirect to="/" />;
 
   return (
     <div className="global-conference">
