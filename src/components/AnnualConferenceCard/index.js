@@ -27,10 +27,10 @@ const AnnualConferenceCard = ({
   const offset = timezone.offset;
 
   const convertedStartTime = convertToLocalTime(
-    moment(session.startTime).utcOffset(offset, true)
+    moment(session.startTime).utcOffset(offset, false)
   );
   const convertedEndTime = convertToLocalTime(
-    moment(session.endTime).utcOffset(offset, true)
+    moment(session.endTime).utcOffset(offset, false)
   );
 
   const onClickDownloadCalendar = (e) => {
