@@ -52,10 +52,15 @@ const AnnualConferenceCard = ({
     }&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
     )}/${convertToLocalTime(convertedEndTime).format(
+<<<<<<< HEAD
       "YYYYMMDDTHHmm"
     )}&details=${
       session.description
     }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+=======
+      "YYYYMMDDTHHmmss"
+    )}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+>>>>>>> 3a732af (merge conflix fix)
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -67,11 +72,15 @@ const AnnualConferenceCard = ({
       session.title
     }&st=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
+<<<<<<< HEAD
     )}&dur${convertToLocalTime(convertedEndTime).format(
       "HHmmss"
     )}&description=${
       session.description
     }&location=${"https://www.hackinghrlab.io/global-conference"}`;
+=======
+    )}&dur${convertToLocalTime(convertedEndTime).format("HHmmss")}`;
+>>>>>>> 3a732af (merge conflix fix)
     window.open(yahooCalendarUrl, "_blank");
   };
 

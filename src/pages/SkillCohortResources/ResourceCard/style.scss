@@ -31,10 +31,8 @@
 	}
 
 	&-content {
-		flex: 1;
 		display: grid;
 		grid-template-rows: auto 1fr auto auto auto;
-		grid-row-gap: 0.5rem;
 		padding-top: 1.5rem;
 		overflow: hidden;
 		position: relative;
@@ -56,4 +54,24 @@
 
 .rating {
 	display: flex;
+}
+
+.card {
+	width: 319px;
+  min-height: 247px;
+	background: white;
+	padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+	--tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+		var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.description {
+  color: #697077;
+  font-size: 14px;
 }

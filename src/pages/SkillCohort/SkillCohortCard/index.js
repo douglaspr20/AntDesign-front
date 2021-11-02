@@ -37,7 +37,6 @@ const SkillCohortCard = (props) => {
 	};
 
 	let displayBtn;
-	console.log(hasCohortStarted && hasAccess);
 	if (hasCohortStarted && hasAccess) {
 		displayBtn = 'Enter Dashboard';
 	} else {
@@ -57,10 +56,13 @@ const SkillCohortCard = (props) => {
 					</p>
 				</div>
 				<h5 className="skill-cohort-card-hr">
-					{moment(startDate).format('LL')} to {moment(endDate).format('LL')}
+					Starting on {moment(startDate).format('LL')}
+				</h5>
+				<h5 className="skill-cohort-card-hr">
+					Finishing on {moment(endDate).format('LL')}
 				</h5>
 				<div className="skill-cohort-card-join-btn">
-					<CustomButton text={displayBtn} onClick={handleClickMore} size="xs"/>
+					<CustomButton text={displayBtn} onClick={handleClickMore} size="md" block={true}/>
 				</div>
 			</div>
 		</div>

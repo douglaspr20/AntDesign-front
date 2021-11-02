@@ -63,7 +63,7 @@ const SkillCohortResources = ({
 			<div className="skill-cohort-resources-page-container">
 				<div className="container-header d-flex justify-between items-start">
 					<div>
-						<h3>Today's Resource</h3>
+						<h3 className="todays-resource">Today's Resource</h3>
 						{displayTodaysResource}
 					</div>
 					<div>
@@ -71,7 +71,7 @@ const SkillCohortResources = ({
 						<a href="#">Test link</a>
 					</div>
 				</div>
-				<Row>
+				<Row className="previous">
 					<Col span={24}>
 						<div className="container-header d-flex justify-between items-center">
 							{!isEmpty(previousResources) && <h3>Previous Resources</h3>}
