@@ -194,14 +194,18 @@ const GlobalConference = ({
 
   const onAddBonfire = () => {
     setModalFormVisible(true);
-    // setIsUpdate(0);
-    // instructorForm.resetFields();
+    bonfireForm.resetFields();
   };
 
   const onCancelModalForm = () => {
     setModalFormVisible(false);
-    // setIsUpdate(0);
-    // instructorForm.resetFields();
+    bonfireForm.resetFields();
+  };
+
+  const handleBonfire = (data) => {
+    setModalFormVisible(false);
+
+    bonfireForm.resetFields();
   };
 
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
@@ -383,7 +387,7 @@ const GlobalConference = ({
           form={bonfireForm}
           layout="vertical"
           onFinish={(data) => {
-            //handleInstructor(data);
+            handleBonfire(data);
           }}
         >
           <Form.Item
