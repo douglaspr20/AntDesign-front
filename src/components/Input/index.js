@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Input } from "antd";
+import { Input, DatePicker } from "antd";
 
 import "./style.scss";
+
+const { RangePicker } = DatePicker;
 
 class CustomInput extends React.Component {
   render() {
@@ -21,6 +23,12 @@ class CustomInput extends React.Component {
         {...rest}
         className={clsx("custom-input", className, size)}
         onChange={(e) => onChange(e.target.value)}
+      />
+    ) : type === "time" ? (
+      <RangePicker
+        showTime
+        className={clsx("custom-input", className, size)}
+        format="YYYY/MM/DD HH:mm"
       />
     ) : (
       <Input

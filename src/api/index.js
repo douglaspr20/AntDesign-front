@@ -82,6 +82,7 @@ import {
   markeToUnRead,
 } from "./module/notification";
 import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import { createBonfire, getAllBonfires } from "./module/bonfire";
 
 import { getEditorSignature } from "./module/env";
 
@@ -157,4 +158,6 @@ export {
   markPodcastViewed,
   markPodcastseriesViewed,
   markeToUnRead,
+  createBonfire,
+  getAllBonfires,
 };

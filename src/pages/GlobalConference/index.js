@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import moment from "moment";
 import jsPdf from "jspdf";
-import { Menu, notification } from "antd";
+import { Menu, notification, Modal, Form } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { CustomButton, Tabs, GlobalConferenceFilterPanel } from "components";
-import ConferenceList from "./ConferenceList";
-import FilterDrawer from "./FilterDrawer";
+import {
+  CustomButton,
+  Tabs,
+  GlobalConferenceFilterPanel,
+  CustomInput,
+} from "components";
+
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -19,6 +23,7 @@ import {
 } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 import {
   addToMyEventList,
   removeFromMyEventList,
@@ -26,10 +31,15 @@ import {
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
-import "./style.scss";
-import { Link } from "react-router-dom";
+
+import ConferenceList from "./ConferenceList";
+import FilterDrawer from "./FilterDrawer";
 import { formatAnnualConference } from "utils/formatPdf";
 import PersonalAgenda from "./PersonalAgenda";
+import Bonfire from "./Bonfire";
+
+import "./style.scss";
+import CategoriesSelect from "components/CategoriesSelect";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -44,6 +54,7 @@ const TAB_NUM = 6;
 
 const GlobalConference = ({
   allSessions,
+  allCategories,
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
@@ -53,12 +64,14 @@ const GlobalConference = ({
   setLoading,
   attendToGlobalConference,
 }) => {
+  const [bonfireForm] = Form.useForm();
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
-  const [currentView, setCurrentView] = useState("conference-schedule");
+  const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [currentView, setCurrentView] = useState("bonfire");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -179,6 +192,18 @@ const GlobalConference = ({
     setLoading(false);
   };
 
+  const onAddBonfire = () => {
+    setModalFormVisible(true);
+    // setIsUpdate(0);
+    // instructorForm.resetFields();
+  };
+
+  const onCancelModalForm = () => {
+    setModalFormVisible(false);
+    // setIsUpdate(0);
+    // instructorForm.resetFields();
+  };
+
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
@@ -231,6 +256,15 @@ const GlobalConference = ({
                 onClick={downloadPdf}
               />
             )}
+
+            {currentView === "bonfire" && (
+              <CustomButton
+                size="xs"
+                text="Create Bonfire"
+                style={{ marginLeft: "1rem" }}
+                onClick={() => onAddBonfire()}
+              />
+            )}
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
@@ -244,6 +278,7 @@ const GlobalConference = ({
                 display: "flex",
                 justifyContent: "center",
               }}
+              selectedKeys={currentView}
             >
               <Menu.Item
                 key="conferences-schedule"
@@ -289,7 +324,7 @@ const GlobalConference = ({
               >
                 <Link
                   to="/global-conference"
-                  onClick={() => comingSoon("Bonfire")}
+                  onClick={() => handleView("bonfire")}
                 >
                   Bonfire
                 </Link>
@@ -318,7 +353,7 @@ const GlobalConference = ({
             </div> */}
           </div>
         </div>
-        {currentView === "conference-schedule" ? (
+        {currentView === "conference-schedule" && (
           <div className="global-conference-tabs">
             <Tabs
               data={tabData}
@@ -326,10 +361,64 @@ const GlobalConference = ({
               onChange={setCurrentTab}
             />
           </div>
-        ) : currentView === "personal-agenda" ? (
+        )}
+
+        {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        ) : null}
+        )}
+
+        {currentView === "bonfire" && <Bonfire />}
       </div>
+
+      <Modal
+        visible={modalFormVisible}
+        onCancel={() => {
+          onCancelModalForm();
+        }}
+        onOk={() => {
+          //instructorForm.submit();
+        }}
+      >
+        <Form
+          form={bonfireForm}
+          layout="vertical"
+          onFinish={(data) => {
+            //handleInstructor(data);
+          }}
+        >
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[{ required: true, message: "Title is required." }]}
+          >
+            <CustomInput />
+          </Form.Item>
+
+          <Form.Item label="Description" name="description">
+            <CustomInput multiple={true} />
+          </Form.Item>
+
+          <Form.Item
+            name="time"
+            label="Time"
+            rules={[{ required: true, message: "Time is required." }]}
+          >
+            <CustomInput type="time" />
+          </Form.Item>
+
+          <Form.Item name="categories" label="Categories">
+            <CategoriesSelect options={allCategories} />
+          </Form.Item>
+
+          <Form.Item
+            label="Link"
+            name="link"
+            rules={[{ required: true, message: "Link is required." }]}
+          >
+            <CustomInput />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -345,6 +434,7 @@ GlobalConference.defaultProps = {
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {
