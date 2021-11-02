@@ -19,8 +19,10 @@ import {
 } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 import {
   addToMyEventList,
+  getAllEvent,
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
@@ -30,6 +32,7 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
 import PersonalAgenda from "./PersonalAgenda";
+import Speakers from "./Speakers";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -44,6 +47,8 @@ const TAB_NUM = 6;
 
 const GlobalConference = ({
   allSessions,
+  allEvents,
+  getAllEvent,
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
@@ -84,15 +89,17 @@ const GlobalConference = ({
   // };
 
   const onAttend = () => {
-    const globalEvent = userProfile.events.find(
+    const globalEvent = allEvents.find(
       (event) => event.isAnnualConference === 1
     );
-    if (userProfile.attendedToConference === 0 && globalEvent) {
-      addToMyEventList(userProfile.attendedToConference === 1 && globalEvent);
-    } else if (userProfile.attendedToConference === 1 && globalEvent) {
+
+    if (userProfile.attendedToConference === 0) {
+      attendToGlobalConference();
+      addToMyEventList(globalEvent);
+    } else {
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
-    } else attendToGlobalConference();
+    }
   };
 
   const comingSoon = (section) => {
@@ -148,6 +155,10 @@ const GlobalConference = ({
       getSessionsAddedbyUser(userProfile.id);
     }
   }, [getSessionsAddedbyUser, userProfile]);
+
+  useEffect(() => {
+    getAllEvent();
+  }, [getAllEvent]);
 
   const downloadPdf = async () => {
     setLoading(true);
@@ -234,17 +245,7 @@ const GlobalConference = ({
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
-            <Menu
-              mode="horizontal"
-              style={{
-                lineHeight: "35px",
-                background: "none",
-                margin: "0px auto",
-                width: "90%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <Menu mode="horizontal" className="sub-menu">
               <Menu.Item
                 key="conferences-schedule"
                 className="sub-menu-item-global-conference"
@@ -257,7 +258,10 @@ const GlobalConference = ({
                 key="speakers"
                 className="sub-menu-item-global-conference"
               >
-                <Link to="/speakers" target="_blank" rel="noopener noreferrer">
+                <Link
+                  to="/global-conference"
+                  onClick={() => handleView("speakers")}
+                >
                   Speakers
                 </Link>
               </Menu.Item>
@@ -299,7 +303,7 @@ const GlobalConference = ({
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("personal-agenda")}
               >
-                <Link to="/global-conference">My personal agenda</Link>
+                <Link to="/global-conference">My Personal Agenda</Link>
               </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
@@ -318,7 +322,8 @@ const GlobalConference = ({
             </div> */}
           </div>
         </div>
-        {currentView === "conference-schedule" ? (
+
+        {currentView === "conference-schedule" && (
           <div className="global-conference-tabs">
             <Tabs
               data={tabData}
@@ -326,9 +331,12 @@ const GlobalConference = ({
               onChange={setCurrentTab}
             />
           </div>
-        ) : currentView === "personal-agenda" ? (
+        )}
+        {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        ) : null}
+        )}
+
+        {currentView === "speakers" && <Speakers />}
       </div>
     </div>
   );
@@ -345,12 +353,14 @@ GlobalConference.defaultProps = {
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allEvents: eventSelector(state).allEvents,
 });
 
 const mapDispatchToProps = {
   getAllSessions,
   getSessionsAddedbyUser,
   attendToGlobalConference,
+  getAllEvent,
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
