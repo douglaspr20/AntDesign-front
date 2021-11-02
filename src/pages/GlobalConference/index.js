@@ -32,6 +32,7 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
 import PersonalAgenda from "./PersonalAgenda";
+import Speakers from "./Speakers";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -267,7 +268,10 @@ const GlobalConference = ({
                 key="speakers"
                 className="sub-menu-item-global-conference"
               >
-                <Link to="/speakers" target="_blank" rel="noopener noreferrer">
+                <Link
+                  to="/global-conference"
+                  onClick={() => handleView("speakers")}
+                >
                   Speakers
                 </Link>
               </Menu.Item>
@@ -328,7 +332,8 @@ const GlobalConference = ({
             </div> */}
           </div>
         </div>
-        {currentView === "conference-schedule" ? (
+
+        {currentView === "conference-schedule" && (
           <div className="global-conference-tabs">
             <Tabs
               data={tabData}
@@ -336,9 +341,12 @@ const GlobalConference = ({
               onChange={setCurrentTab}
             />
           </div>
-        ) : currentView === "personal-agenda" ? (
+        )}
+        {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        ) : null}
+        )}
+
+        {currentView === "speakers" && <Speakers />}
       </div>
     </div>
   );
