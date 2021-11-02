@@ -245,17 +245,7 @@ const GlobalConference = ({
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
-            <Menu
-              mode="horizontal"
-              style={{
-                lineHeight: "35px",
-                background: "none",
-                margin: "0px auto",
-                width: "90%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <Menu mode="horizontal" className="sub-menu">
               <Menu.Item
                 key="conferences-schedule"
                 className="sub-menu-item-global-conference"

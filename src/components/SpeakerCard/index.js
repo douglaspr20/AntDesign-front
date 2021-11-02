@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Avatar } from "antd";
+import { Card, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import "./style.scss";
 
