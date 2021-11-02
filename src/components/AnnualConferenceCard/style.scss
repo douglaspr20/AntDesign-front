@@ -12,16 +12,27 @@
 
 .acc-session {
   &-header {
-    height: 52px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap-reverse;
+
+    h3 {
+      max-width: 50%;
+    }
+
+    @media screen and (max-width: 500px) {
+      & .ant-btn {
+        width: 100%;
+      }
+    }
   }
 
   &-type {
     @include app-font(14px, 19px);
     color: $color-text-secondary;
-    margin-top: 1rem;
+    //margin-top: 1rem;
   }
 
   &-date {
@@ -44,7 +55,6 @@
     cursor: pointer;
 
     &-icon {
-      margin-left: 1rem;
       width: 1.5rem;
       height: 1.5rem;
       min-width: 1, 5rem;
@@ -89,21 +99,34 @@
     top: -14px;
     right: -24px;
   }
+
+  &-categories {
+    display: flex;
+    width: 70%;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+
+    @media screen and (max-width: 500px) {
+      & .specialty-item {
+        min-width: 200px;
+        max-width: 200px;
+      }
+    }
+  }
 }
 
 .acc-details {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  grid-column-gap: 1fr;
-  padding-top: 2rem;
-  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  margin-top: 1rem;
   border-top: 1px solid $color-border;
-
   &-speaker {
     display: grid;
     grid-template-columns: 80px 1fr;
     grid-row-gap: 2rem;
     grid-column-gap: 1.5rem;
+    margin-top: 0.5rem;
     margin-bottom: 2rem;
 
     &-image {
@@ -131,29 +154,6 @@
 
       h5 {
         color: $color-text-secondary !important;
-      }
-    }
-  }
-
-  &-other {
-    margin: 0.5rem 0 2rem;
-
-    p {
-      color: $color-text-secondary;
-      @include app-font(14px, 24px);
-    }
-
-    &-brands {
-      display: flex;
-
-      .session-brand {
-        height: 80px;
-        object-fit: cover;
-        margin: 0 1rem 1rem 0;
-
-        img {
-          height: 100%;
-        }
       }
     }
   }

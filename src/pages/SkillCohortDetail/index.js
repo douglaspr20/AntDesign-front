@@ -115,7 +115,11 @@ const SkillCohortDetail = ({
 					displayBtn = 'Enter Dashboard';
 				}
 			} else {
-				displayBtn = 'Cohort has started.';
+				if (!isEmpty(skillCohortParticipant)) {
+					displayBtn = 'You missed this cohort';
+				} else {
+					displayBtn = 'Cohort has started.';
+				}
 			}
 		} else {
 			if (skillCohortParticipant.hasAccess) {
@@ -138,54 +142,30 @@ const SkillCohortDetail = ({
 	const disabled =
 		(hasCohortStarted && !skillCohortParticipant.hasAccess) ||
 		(!hasCohortStarted && skillCohortParticipant.hasAccess);
-	const displayStartDateAndEndDate = `${moment(skillCohort.startDate).format(
-		'LL',
-	)} - ${moment(skillCohort.endDate).format('LL')}`;
 
 	return (
 		<>
 			<div className="skill-cohort-detail-page">
-				<Space direction="vertical" size="large">
-					<div
-						className="back-btn"
-						onClick={() =>
-							history.push(INTERNAL_LINKS.SKILL_COHORTS)
-						}
-					>
-						<div className="skill-cohort-detail-page-back">
-							<div className="skill-cohort-detail-page-back-img">
-								<img src={IconBack} alt="icon-back" />
+				<div className="skill-cohort-detail-page-header">
+					<div className="skill-cohort-detail-page-header-content">
+						<div>
+							<div
+								className="skill-cohort-detail-page-header-content-back-btn"
+								onClick={() =>
+									history.push(INTERNAL_LINKS.SKILL_COHORTS)
+								}
+							>
+								<div className="skill-cohort-detail-page-header-content-back">
+									<div className="skill-cohort-detail-page-header-content-back-img">
+										<img src={IconBack} alt="icon-back" />
+									</div>
+									<h4>Back to List</h4>
+								</div>
 							</div>
-							<h4>Back to Podcast Series</h4>
-						</div>
-					</div>
-					<div>
-						<Space direction="vertical" size="large">
-							<div>
-								<Space direction="vertical">
-									<h2>Title</h2>
-									<div>{skillCohort.title}</div>
-								</Space>
+							<div className="title">
+								<h2>{skillCohort.title}</h2>
 							</div>
-							<div>
-								<Space direction="vertical">
-									<h2>Description</h2>
-									<div>{skillCohort.description}</div>
-								</Space>
-							</div>
-							<div>
-								<Space direction="vertical">
-									<h2>Learning Objectives</h2>
-									<div>{skillCohort.objectives}</div>
-								</Space>
-							</div>
-							<div>
-								<Space direction="vertical">
-									<h2>Schedule</h2>
-									<div>{displayStartDateAndEndDate}</div>
-								</Space>
-							</div>
-							<div className="skill-cohort-bottom-btn">
+							<div className="skill-cohort-btn">
 								<CustomButton
 									text={displayBtn}
 									htmlType="button"
@@ -193,11 +173,30 @@ const SkillCohortDetail = ({
 									disabled={disabled || isDayBeforeStartDate}
 								/>
 							</div>
-							{displayFirewall}
+						</div>
+					</div>
+				</div>
+				<div className="skill-cohort-detail-page-body">
+					<div className="skill-cohort-detail-page-body-content">
+						<Space direction="vertical" size="large">
+							<Space direction='vertical'>
+								<h3>Description</h3>
+								<div className="details">{skillCohort.description}</div>
+							</Space>
+							<Space direction='vertical'>
+								<h3>Learning Objectives</h3>
+								<div className="details">{skillCohort.objectives}</div>
+							</Space>
+							<Space direction='vertical'>
+								<h3>Schedule</h3>
+								<div className="details">Starting on {moment(skillCohort.startDate).format('LL')}</div>
+								<div className="details">Finishing on on {moment(skillCohort.endDate).format('LL')}</div>
+							</Space>
 						</Space>
 					</div>
-				</Space>
-				<CustomModal
+				</div>
+        {displayFirewall}
+        <CustomModal
 					visible={confirmModal}
 					title="Join this cohort?"
 					subTitle="Click confirm if you want to join"

@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 import { Form } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 
+import { EVENT_TYPES } from "enum";
 import { CustomButton } from "components";
+import Emitter from "services/emitter";
 
+import { getUser } from "redux/actions/home-actions";
 import { actions as authActions } from "redux/actions/auth-actions";
 import { authSelector } from "redux/selectors/authSelector";
 import { addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { INTERNAL_LINKS } from "enum";
 
 import LoginForm from "./LoginForm";
@@ -34,13 +39,17 @@ const Login = ({
   addToMyEventList,
   onClose,
   live,
+  userProfile,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [showFirewall, setShowFirewall] = useState(false);
+
   const [signupStep, setSignupStep] = useState(0);
   const [prevAreaValues, setPrevAreaVaues] = useState([]);
   const [signupValues, setSignupValues] = useState({});
 
   const refForm = React.useRef(null);
+
 
   const onFinish = (values) => {
     if (isLogin) {
@@ -93,6 +102,12 @@ const Login = ({
     setIsLogin((prev) => !prev);
   };
 
+  const planUpgrade = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  }
+  
   const onBackSignup = () => {
     setSignupStep(Math.max(signupStep - 1, 0));
   };
@@ -106,14 +121,26 @@ const Login = ({
           history.push(INTERNAL_LINKS.HOME);
         }
       } else {
-        addToMyEventList(updatedEvent);
-        if (onClose) {
-          onClose();
+        if (updatedEvent.ticket === "premium") {
+          if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
+            setShowFirewall(false);
+            addToMyEventList(updatedEvent);
+            if (onClose) {
+              onClose();
+            }
+          } else {
+            setShowFirewall(true);
+          }
+        } else {
+          addToMyEventList(updatedEvent);
+          if (onClose) {
+            onClose();
+          }
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [isAuthenticated, userProfile]);
 
   useEffect(() => {
     setIsLogin(!signup);
@@ -121,8 +148,26 @@ const Login = ({
     return () => {};
   }, [signup]);
 
+  const closeFirewall = () => {
+    setShowFirewall(false);
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
     <div className="login-page">
+      {showFirewall && (
+        <div className="event-card-firewall" onClick={closeFirewall}>
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              This event requires a PREMIUM Membership to join. Click here to
+              upgrate to a Premium Membership and get unlimited access to the
+              LAB features.
+            </h3>
+          </div>
+        </div>
+      )}
       <div className="login-dialog">
         <div className="login-dialog-header">
           <h3>{isLogin ? "Log In" : "Sign up"}</h3>
@@ -204,11 +249,13 @@ const mapStateToProps = (state) => ({
   error: authSelector(state).error,
   updatedEvent: eventSelector(state).updatedEvent,
   live: liveSelector(state).live,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   ...authActions,
   addToMyEventList,
+  getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

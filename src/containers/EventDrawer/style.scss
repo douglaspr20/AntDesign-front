@@ -1,188 +1,222 @@
-@import "styles/main.scss";
+@import 'styles/main.scss';
 
 .event-details {
-  margin: -24px;
+	margin: -24px;
 
-  &-header {
-    width: 100%;
-    height: 305px;
-    position: relative;
-    border-radius: 0 0 0.5rem 0.5rem;
-    overflow: hidden;
-    background-color: $color-background-dark;
+	&-header {
+		width: 100%;
+		height: 305px;
+		position: relative;
+		border-radius: 0 0 0.5rem 0.5rem;
+		overflow: hidden;
+		background-color: $color-background-dark;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
 
-  &-content {
-    padding: 72px 20px 120px;
+	&-content {
+		padding: 72px 20px 120px;
 
-    .event-title {
-      margin-bottom: 1.5rem !important;
-      line-height: 48px !important;
-      font-weight: bold !important;
-    }
+		.event-title {
+			margin-bottom: 1.5rem !important;
+			line-height: 48px !important;
+			font-weight: bold !important;
+		}
 
-    .event-info {
-      .ant-dropdown-link {
-        margin-left: 1rem;
-      }
-    }
+		.event-info {
+			.ant-dropdown-link {
+				margin-left: 1rem;
+			}
+		}
 
-    .event-date {
-      @include app-font(20px, 26px, 500);
-      color: $color-text-secondary !important;
-    }
+		.event-date {
+			@include app-font(20px, 26px, 500);
+			color: $color-text-secondary !important;
+		}
 
-    .add-to-calendar {
-      margin-left: 1rem !important;
-      color: $color-accent !important;
-      cursor: pointer;
-    }
+		.add-to-calendar {
+			margin-left: 1rem !important;
+			color: $color-accent !important;
+			cursor: pointer;
+		}
 
-    .event-type {
-      margin-top: 20px !important;
-      font-weight: 500 !important;
-      color: $color-text-secondary !important;
-    }
+		.event-type {
+			margin-top: 20px !important;
+			font-weight: 500 !important;
+			color: $color-text-secondary !important;
+		}
 
-    .event-description {
-      margin-top: 20px;
-    }
+		.event-description {
+			margin-top: 20px;
+		}
 
-    i.fa-circle {
-      color: $color-text-secondary;
-      font-size: 3px;
-      padding: 0 8px;
-    }
+		i.fa-circle {
+			color: $color-text-secondary;
+			font-size: 3px;
+			padding: 0 8px;
+		}
 
-    .event-cost {
-      margin-top: 20px !important;
-      font-weight: 500 !important;
-      color: $color-text-third !important;
-    }
+		.event-cost {
+			margin-top: 20px !important;
+			font-weight: 500 !important;
+			color: $color-text-third !important;
+		}
 
-    .event-topics {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 4px -10px 0;
+		.event-topics {
+			display: flex;
+			flex-wrap: wrap;
+			margin: 4px -10px 0;
 
-      .specialty-item {
-        margin: 16px 10px 0;
-      }
-    }
+			.specialty-item {
+				margin: 16px 10px 0;
+			}
+		}
 
-    &-actions {
-      margin-top: -100px;
-      margin-bottom: 40px;
-      display: flex;
-      align-items: center;
+		&-actions {
+			margin-top: -100px;
+			margin-bottom: 40px;
+			display: flex;
+			align-items: center;
 
-      .date-avatar {
-        margin-right: 20px;
-      }
+			.date-avatar {
+				margin-right: 20px;
+			}
 
-      .going-label {
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 4px;
-        padding: 0 28px;
-        margin-right: 20px;
-        background: white;
-        @include app-font(20px, 26px, 600);
-        color: $color-success;
-        z-index: 9;
+			.going-label {
+				height: 40px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 4px;
+				padding: 0 28px;
+				margin-right: 20px;
+				background: white;
+				@include app-font(20px, 26px, 600);
+				color: $color-success;
+				z-index: 9;
 
-        .anticon {
-          margin-right: 0.5rem;
-        }
-      }
+				.anticon {
+					margin-right: 0.5rem;
+				}
+			}
 
-      .claim-digital-certificate {
-        margin-right: 20px !important;
-      }
+			.claim-digital-certificate {
+				margin-right: 20px !important;
+			}
 
-      @media (max-width: 575.98px) {
-        flex-direction: column;
+			@media (max-width: 575.98px) {
+				flex-direction: column;
 
-        .date-avatar {
-          margin-bottom: 28px;
-        }
+				.date-avatar {
+					margin-bottom: 28px;
+				}
 
-        .going-label {
-          margin-bottom: 20px;
-          @include app-font(16px, 21px, 600);
-        }
+				.going-label {
+					margin-bottom: 20px;
+					@include app-font(16px, 21px, 600);
+				}
 
-        .custom-button {
-          width: 100%;
-          @include app-font(16px, 21px, 600);
-        }
+				.custom-button {
+					width: 100%;
+					@include app-font(16px, 21px, 600);
+				}
 
-        .claim-digital-certificate {
-          margin: 0 0 28px !important;
-        }
-      }
-    }
+				.claim-digital-certificate {
+					margin: 0 0 28px !important;
+				}
+			}
+		}
 
-    &-subtitle {
-      margin-top: 60px !important;
-      @include app-font(20px, 48px, bold);
-      color: $color-text-primary !important;
-    }
+		&-subtitle {
+			margin-top: 60px !important;
+			@include app-font(20px, 48px, bold);
+			color: $color-text-primary !important;
+		}
 
-    &-subtext {
-      margin-top: 1.5rem;
-      @include app-font(20px, 30px);
-      color: $color-text-secondary !important;
-    }
+		&-subtext {
+			margin-top: 1.5rem;
+			@include app-font(20px, 30px);
+			color: $color-text-secondary !important;
+		}
 
-    @media (max-width: 575.98px) {
-      .event-title {
-        @include app-font(20px, 30px);
-      }
+		@media (max-width: 575.98px) {
+			.event-title {
+				@include app-font(20px, 30px);
+			}
 
-      .event-info {
-        flex-direction: column;
-        align-items: flex-start !important;
+			.event-info {
+				flex-direction: column;
+				align-items: flex-start !important;
 
-        .ant-dropdown-link {
-          margin: 1rem auto;
-        }
+				.ant-dropdown-link {
+					margin: 1rem auto;
+				}
 
-        .add-to-calendar {
-          margin-left: 0 !important;
-          margin-top: 1rem !important;
-        }
-      }
+				.add-to-calendar {
+					margin-left: 0 !important;
+					margin-top: 1rem !important;
+				}
+			}
 
-      .event-date,
-      .add-to-calendar,
-      .event-type,
-      .event-cost {
-        @include app-font(16px, 21px);
-        margin-top: 16px !important;
-      }
+			.event-date,
+			.add-to-calendar,
+			.event-type,
+			.event-cost {
+				@include app-font(16px, 21px);
+				margin-top: 16px !important;
+			}
 
-      .event-date {
-        margin-top: 0 !important;
-      }
+			.event-date {
+				margin-top: 0 !important;
+			}
 
-      .event-details-content-subtitle {
-        margin-top: 28px !important;
-        @include app-font(16px, 24px, bold);
-      }
+			.event-details-content-subtitle {
+				margin-top: 28px !important;
+				@include app-font(16px, 24px, bold);
+			}
 
-      .event-details-content-subtext {
-        margin-top: 20px !important;
-        @include app-font(16px, 24px);
-      }
-    }
-  }
+			.event-details-content-subtext {
+				margin-top: 20px !important;
+				@include app-font(16px, 24px);
+			}
+		}
+	}
+
+	&-firewall {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #3c475252;
+		z-index: 99;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+
+		.upgrade-notification-panel {
+			padding: 1rem 3rem;
+			border-radius: 0.5rem;
+			background: $color-primary;
+			text-align: center;
+			width: fit-content;
+
+			h3 {
+				color: $color-white !important;
+			}
+
+			@media (max-width: 575.98px) {
+				padding: 1rem;
+
+				h3 {
+					@include app-font(16px, 21px, 600);
+				}
+			}
+		}
+	}
 }

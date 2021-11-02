@@ -20,4 +20,16 @@
       width: 95%;
     }
   }
+
+  &--podcast-library {
+    .podcast-episode__card {
+      min-width: 100% !important;
+    }
+    margin: 0 auto;
+    width: 1000px;
+
+    @media (max-width: 1023.98px) {
+      width: 95%;
+    }
+  }
 }

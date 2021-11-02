@@ -26,11 +26,11 @@ class NavBar extends Component {
 
     this.state = {
       showFirewall: false,
-      isAddStoryEvent: false,
+      module: "",
     };
 
-    Emitter.on(EVENT_TYPES.SHOW_FIREWALL, () => {
-      this.setState({ showFirewall: true, isAddStoryEvent: true });
+    Emitter.on(EVENT_TYPES.SHOW_FIREWALL, (module) => {
+      this.setState({ showFirewall: true, module });
     });
   }
 
@@ -50,6 +50,18 @@ class NavBar extends Component {
     ) {
       e.preventDefault();
       this.setState({ showFirewall: true });
+    } else if (
+      url === INTERNAL_LINKS.CONFERENCE_LIBRARY &&
+      this.props.userProfile.percentOfCompletion !== 100
+    ) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "conference-library" });
+    } else if (
+      url === INTERNAL_LINKS.GLOBAL_CONFERENCE &&
+      this.props.userProfile.percentOfCompletion !== 100
+    ) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "global-conference" });
     } else if (isMobile) {
       this.props.setCollapsed(true);
     }
@@ -128,18 +140,41 @@ class NavBar extends Component {
         {showFirewall && (
           <div
             className="sidebar-firewall"
-            onClick={() =>
-              this.setState({ showFirewall: false, isAddStoryEvent: false })
-            }
+            onClick={() => this.setState({ showFirewall: false, module: "" })}
           >
             <div className="upgrade-notification-panel">
               <h3>
-                {this.state.isAddStoryEvent === true ? (
-                  <>You must fully complete your profile before adding story or comment.</>
-                ) : (
+                {this.state.module === "" && (
                   <>
                     You must fully complete your profile before joining the
                     mentoring feature.
+                  </>
+                )}
+                {(this.state.module === "story" ||
+                  this.state.module === "comment") && (
+                  <>
+                    You must fully complete your profile before adding story or
+                    comment.
+                  </>
+                )}
+
+                {this.state.module === "conference-library" && (
+                  <>
+                    You must fully complete your profile before joining the
+                    conference library feature.
+                  </>
+                )}
+                {this.state.module === "live" && (
+                  <>
+                    You must fully complete your profile before joining the live
+                    feature.
+                  </>
+                )}
+
+                {this.state.module === "global-conference" && (
+                  <>
+                    You must fully complete your profile before joining the
+                    Annual Conference feature.
                   </>
                 )}
               </h3>

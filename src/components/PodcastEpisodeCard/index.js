@@ -4,12 +4,17 @@ import { connect } from "react-redux";
 import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
+import ReactPlayer from "react-player";
 
-import { SpecialtyItem } from "components";
-import { categorySelector } from "redux/selectors/categorySelector";
-import { CARD_TYPE } from "enum";
-import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import { SpecialtyItem, CustomButton } from "components";
 import CardMenu from "../CardMenu";
+import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { setPodcastViewed } from "redux/actions/podcast-actions";
+
+import { CARD_TYPE, INTERNAL_LINKS } from "enum";
+
+import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
@@ -17,22 +22,32 @@ import "./style.scss";
 const DATE_FORMAT = "MMMM DD, YYYY";
 
 function EpisodeCard({
-  created_at,
-  episode_number,
-  episode_cover,
-  categories,
   links,
   allCategories,
-  title,
   type,
   keyword,
   frequency,
   onAdd,
   onMenuClick,
+  userProfile,
+  setPodcastViewed,
+  isInternalLink,
+  episode,
 }) {
+  const {
+    id,
+    title,
+    created_at,
+    order: episode_number,
+    imageUrl: episode_cover,
+    topics: categories,
+    viewed,
+  } = episode;
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
+    } else if (isInternalLink === false) {
+      window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`;
     }
   };
 
@@ -48,10 +63,20 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            {episode_cover ? (
-              <img src={episode_cover} alt="header-img" />
+            {isInternalLink === false ? (
+              <>
+                {episode_cover ? (
+                  <img src={episode_cover} alt="header-img" />
+                ) : (
+                  <div />
+                )}
+              </>
             ) : (
-              <div />
+              <ReactPlayer
+                className="podcast-episode__player"
+                controls={isInternalLink === true}
+                url={episode.vimeoLink}
+              />
             )}
           </div>
           <div className="podcast-episode__card-body">
@@ -106,6 +131,32 @@ function EpisodeCard({
                 );
               })}
             </div>
+            <div className="d-flex justify-end">
+              <CustomButton
+                className="mark-viewed"
+                type={
+                  viewed && viewed[userProfile.id] === "mark"
+                    ? "remove"
+                    : "secondary"
+                }
+                size="xs"
+                text={
+                  viewed && viewed[userProfile.id] === "mark"
+                    ? "Viewed"
+                    : "Mark As Completed"
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPodcastViewed(
+                    id,
+                    viewed && viewed[userProfile.id] === "mark"
+                      ? "unmark"
+                      : "mark"
+                  );
+                }}
+              />
+            </div>
             {type === CARD_TYPE.EDIT && (
               <CardMenu onClick={onMenuClick}>
                 <div className="podcast-episode__card-menu">
@@ -139,6 +190,8 @@ EpisodeCard.propTypes = {
   keyword: PropTypes.string,
   onAdd: PropTypes.func,
   onMenuClick: PropTypes.func,
+  isInternalLink: PropTypes.bool,
+  episode: PropTypes.object,
 };
 
 EpisodeCard.defaultProps = {
@@ -153,10 +206,17 @@ EpisodeCard.defaultProps = {
   keyword: "",
   onAdd: () => {},
   onMenuClick: () => {},
+  isInternalLink: false,
+  episode: null,
 };
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(EpisodeCard);
+const mapDispatchToProps = {
+  setPodcastViewed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EpisodeCard);

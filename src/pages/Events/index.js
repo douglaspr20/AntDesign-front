@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import moment from "moment";
+import moment from "moment-timezone";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import clsx from "clsx";
@@ -22,7 +22,10 @@ import {
   claimEventAttendance,
   claimEventCredit,
 } from "redux/actions/event-actions";
-import { setLoading } from "redux/actions/home-actions";
+import {
+  setLoading,
+  attendToGlobalConference,
+} from "redux/actions/home-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import EventFilterDrawer from "./EventFilterDrawer";
@@ -61,10 +64,17 @@ const EventsPage = ({
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
+    const timezone = moment.tz.guess();
     if (event.going) {
-      addToMyEventList(event);
+      addToMyEventList(event, timezone);
+      if (event?.isAnnualConference && event.isAnnualConference === 1) {
+        attendToGlobalConference();
+      }
     } else {
       removeFromMyEventList(event);
+      if (event?.isAnnualConference === 1) {
+        attendToGlobalConference();
+      }
     }
   };
 
@@ -112,6 +122,7 @@ const EventsPage = ({
           data={filteredEvents}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -123,6 +134,7 @@ const EventsPage = ({
           data={myEvents.filter((event) => event.status === "going")}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           showFilter={() => setVisibleFilter(true)}
         />
       ),
@@ -136,6 +148,7 @@ const EventsPage = ({
           )}
           onAttend={addMyEvents}
           onClick={onEventClick}
+          userProfile={userProfile}
           onConfirmAttendance={onConfirmAttendance}
           onConfirmCredit={onConfirmCredit}
           showFilter={() => setVisibleFilter(true)}

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment-timezone';
 import { isEmpty } from 'lodash';
-import { Space, Form, Card, Radio } from 'antd';
+import { Space, Form, Radio } from 'antd';
 import { LikeOutlined, DislikeOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 
@@ -19,8 +19,6 @@ import Comment from './Comment';
 import './style.scss';
 
 const requiredRule = [{ required: true, message: 'This field is required.' }];
-
-const { Meta } = Card;
 
 const ResourceCard = (props) => {
 	const {
@@ -53,11 +51,17 @@ const ResourceCard = (props) => {
 	useEffect(() => {
 		if (!isPreviousResource) {
 			if (!isEmpty(skillCohortParticipant)) {
-				getResourceResponse(skillCohortResource.id, skillCohortParticipant.id);
+				getResourceResponse(
+					skillCohortResource.id,
+					skillCohortParticipant.id,
+				);
 			}
 		} else {
 			if (isYesterday) {
-				getAllResourceResponses(skillCohortResource.id, skillCohortParticipant.id);
+				getAllResourceResponses(
+					skillCohortResource.id,
+					skillCohortParticipant.id,
+				);
 			}
 		}
 		// eslint-disable-next-line
@@ -67,12 +71,21 @@ const ResourceCard = (props) => {
 		if (isPreviousResource) {
 			if (!isEmpty(allSkillCohortResourceResponses)) {
 				if (isYesterday) {
-					const ids = allSkillCohortResourceResponses.map((response) => {
-						return response.id;
-					});
-					console.log('ids', ids);
-					getSkillCohortResourceResponseAssessment(skillCohortResource.id, skillCohortParticipant.id, ids);
-					getAllResponseRating(skillCohortResource.id, skillCohortParticipant.id);
+					const ids = allSkillCohortResourceResponses.map(
+						(response) => {
+							return response.id;
+						},
+					);
+
+					getSkillCohortResourceResponseAssessment(
+						skillCohortResource.id,
+						skillCohortParticipant.id,
+						ids,
+					);
+					getAllResponseRating(
+						skillCohortResource.id,
+						skillCohortParticipant.id,
+					);
 				}
 			}
 		}
@@ -86,10 +99,18 @@ const ResourceCard = (props) => {
 
 	const handleRespondSubmit = async (values) => {
 		if (isEmpty(skillCohortResourceResponse)) {
-			createResourceResponse(skillCohortResource.id, skillCohortParticipant.id, values.response);
+			createResourceResponse(
+				skillCohortResource.id,
+				skillCohortParticipant.id,
+				values.response,
+			);
 			setShowRespondModal(false);
 		} else {
-			updateResourceResponse(skillCohortResourceResponse.id, values.response, history);
+			updateResourceResponse(
+				skillCohortResourceResponse.id,
+				values.response,
+				history,
+			);
 		}
 	};
 
@@ -102,23 +123,32 @@ const ResourceCard = (props) => {
 			rating: values.rating,
 		};
 
-		if (!isEmpty(allSkillCohortResourceResponseAssessments[currentCommentIndx])) {
+		if (
+			!isEmpty(
+				allSkillCohortResourceResponseAssessments[currentCommentIndx],
+			)
+		) {
 			assessment = {
-				...allSkillCohortResourceResponseAssessments[currentCommentIndx],
+				...allSkillCohortResourceResponseAssessments[
+					currentCommentIndx
+				],
 				...assessment,
 			};
 		} else {
 			assessment = {
 				...assessment,
 				SkillCohortResourceId: skillCohortResource.id,
-				SkillCohortResourceResponseId: allSkillCohortResourceResponses[currentCommentIndx].id,
+				SkillCohortResourceResponseId:
+					allSkillCohortResourceResponses[currentCommentIndx].id,
 				SkillCohortParticipantId: skillCohortParticipant.id,
 			};
 		}
 
 		upsertSkillCohortResourceResponseAssessment(assessment);
 
-		if (!isEmpty(allSkillCohortResourceResponseRatings[currentCommentIndx])) {
+		if (
+			!isEmpty(allSkillCohortResourceResponseRatings[currentCommentIndx])
+		) {
 			rating = {
 				...allSkillCohortResourceResponseRatings[currentCommentIndx],
 				...rating,
@@ -127,7 +157,8 @@ const ResourceCard = (props) => {
 			rating = {
 				...rating,
 				SkillCohortResourceId: skillCohortResource.id,
-				SkillCohortResourceResponseId: allSkillCohortResourceResponses[currentCommentIndx].id,
+				SkillCohortResourceResponseId:
+					allSkillCohortResourceResponses[currentCommentIndx].id,
 				SkillCohortParticipantId: skillCohortParticipant.id,
 			};
 		}
@@ -145,6 +176,18 @@ const ResourceCard = (props) => {
 		form2.resetFields();
 	};
 
+	const handleShowResponseModal = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setShowRespondModal(true)
+	};
+
+  const handleShowCommentModal = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setShowCommentModal(true)
+	};
+
 	const assessments = allSkillCohortResourceResponses.map((response) => {
 		return allSkillCohortResourceResponseAssessments.find((assessment) => {
 			return assessment.SkillCohortResourceResponseId === response.id;
@@ -157,23 +200,39 @@ const ResourceCard = (props) => {
 		});
 	});
 
-	const isEqual = currentCommentIndx === allSkillCohortResourceResponses.length - 1;
-	const displayRespondButtonText = !isEmpty(skillCohortResourceResponse) ? 'Edit response' : 'Respond';
-	const displayDate =
-		!isEmpty(skillCohortResource) && moment(skillCohortResource.releaseDate).tz('America/Los_Angeles').format('LL');
+	const isEqual =
+		currentCommentIndx === allSkillCohortResourceResponses.length - 1;
+	const displayRespondButtonText = !isEmpty(skillCohortResourceResponse)
+		? 'Edit response'
+		: 'Respond';
 
 	const displayResourcesBtn = isPreviousResource ? (
 		<>
-			<div className="skill-cohort-resource-card-release-date">Date: {displayDate}</div>
 			<div className="skill-cohort-resource-card-content">
 				<div className="skill-cohort-resource-card-join-btn">
-					{!isEmpty(allSkillCohortResourceResponses) && isYesterday && (
-						<CustomButton text="Comment" size="md" onClick={() => setShowCommentModal(true)} />
+					{!isEmpty(allSkillCohortResourceResponses) &&
+						isYesterday && (
+							<CustomButton
+								text="Comment"
+								size="md"
+								onClick={handleShowCommentModal}
+								block={true}
+							/>
+						)}
+					{!isYesterday && (
+						<CustomButton
+							text="View all comments"
+							size="md"
+							block={true}
+						/>
 					)}
-					{!isYesterday && <CustomButton text="View all comments" size="md" />}
 				</div>
 			</div>
-			<CustomModal visible={showCommentModal} onCancel={closeCommentModal} width={540}>
+			<CustomModal
+				visible={showCommentModal}
+				onCancel={closeCommentModal}
+				width={540}
+			>
 				<div className="other-user-comment">
 					<Comment
 						comment={
@@ -187,7 +246,9 @@ const ResourceCard = (props) => {
 						<Form.Item
 							name="rating"
 							rules={requiredRule}
-							initialValue={ratings[currentCommentIndx]?.rating ?? ''}
+							initialValue={
+								ratings[currentCommentIndx]?.rating ?? ''
+							}
 						>
 							<Radio.Group buttonStyle="solid">
 								<Space>
@@ -206,12 +267,23 @@ const ResourceCard = (props) => {
 						<Form.Item
 							name="assessment"
 							rules={requiredRule}
-							initialValue={assessments[currentCommentIndx]?.assessment ?? ''}
+							initialValue={
+								assessments[currentCommentIndx]?.assessment ??
+								''
+							}
 						>
-							<CustomInput multiple={true} placeholder="What are your thoughts?" />
+							<CustomInput
+								multiple={true}
+								placeholder="What are your thoughts?"
+							/>
 						</Form.Item>
 						<Form.Item>
-							<CustomButton text="Reply" size="md" type="primary outlined" htmlType="submit" />
+							<CustomButton
+								text="Reply"
+								size="md"
+								type="primary outlined"
+								htmlType="submit"
+							/>
 						</Form.Item>
 						{!isEqual && (
 							<CustomButton
@@ -230,13 +302,12 @@ const ResourceCard = (props) => {
 		<>
 			<div className="skill-cohort-resource-card-content">
 				<div className="skill-cohort-resource-card-join-btn">
-					<Space>
-						<CustomButton
-							text={displayRespondButtonText}
-							size="md"
-							onClick={() => setShowRespondModal(true)}
-						/>
-					</Space>
+					<CustomButton
+						text={displayRespondButtonText}
+						size="md"
+						onClick={handleShowResponseModal}
+						block={true}
+					/>
 				</div>
 			</div>
 			<CustomModal
@@ -247,21 +318,32 @@ const ResourceCard = (props) => {
 			>
 				<div className="question-modal">
 					<div className="question">
-						What did you learn from this resource and how are you planning to apply it in your day-to-day
-						and long-term HR practice?
+						What did you learn from this resource and how are you
+						planning to apply it in your day-to-day and long-term HR
+						practice?
 					</div>
 					<Form form={form1} onFinish={handleRespondSubmit}>
 						<Form.Item
 							name="response"
 							rules={requiredRule}
 							initialValue={
-								!isEmpty(skillCohortResourceResponse) ? skillCohortResourceResponse.response : ''
+								!isEmpty(skillCohortResourceResponse)
+									? skillCohortResourceResponse.response
+									: ''
 							}
 						>
-							<CustomInput multiple={true} placeholder="Input your answers here." />
+							<CustomInput
+								multiple={true}
+								placeholder="Input your answers here."
+							/>
 						</Form.Item>
 						<Form.Item>
-							<CustomButton text="Post" size="md" type="primary" htmlType="submit" />
+							<CustomButton
+								text="Post"
+								size="md"
+								type="primary"
+								htmlType="submit"
+							/>
 						</Form.Item>
 					</Form>
 				</div>
@@ -271,16 +353,20 @@ const ResourceCard = (props) => {
 
 	return (
 		<div>
-			<a href={skillCohortResource.resourceLink} target="_blank" rel="noopener noreferrer">
-				<Card hoverable>
-					<Meta title={skillCohortResource.title} />
-					<h4>{skillCohortResource.description}</h4>
-					<div>{skillCohortResource.level}</div>
-					<div>{skillCohortResource.type}</div>
-					<div>{skillCohortResource.duration}</div>
-				</Card>
+			<a
+				href={skillCohortResource.resourceLink}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<div className="card">
+					<Space direction="vertical" size='middle'>
+						<h3>{skillCohortResource.title}</h3>
+						<div className='description'>{skillCohortResource.description}</div>
+						{isPreviousResource && <div className='description'>{moment(skillCohortResource.releaseDate).format('LL')}</div>}
+					</Space>
+					{displayResourcesBtn}
+				</div>
 			</a>
-			{displayResourcesBtn}
 		</div>
 	);
 };

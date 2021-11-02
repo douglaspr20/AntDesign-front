@@ -8,7 +8,7 @@ import {
 } from "../actions/session-actions";
 import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { getAllSessions } from "../../api";
+import { getAllSessions, getSessionsAddedbyUser } from "../../api";
 
 export function* getAllSessionsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -23,14 +23,21 @@ export function* getAllSessionsSaga({ payload }) {
         return session.reduce(
           (res, item) => ({
             ...res,
-            ...omit(item, ["userid", "name", "image", "description"]),
+            ...omit(item, [
+              "userid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
             speakers: [
               ...(res.speakers || []),
               {
                 id: item.userid,
                 name: item.name,
                 img: item.image,
-                description: item.description,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
               },
             ],
           }),
@@ -50,8 +57,32 @@ export function* getAllSessionsSaga({ payload }) {
   }
 }
 
+export function* getSessionsAddedbyUserSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+  try {
+    let response = yield call(getSessionsAddedbyUser, { ...payload });
+    if (response.status === 200) {
+      const sessionData = response.data.sessionsUser.map((session) => session);
+
+      yield put(sessionActions.setSessionsAddedByUser(sessionData));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
+  yield takeLatest(
+    sessionConstants.GET_SESSIONS_ADDED_BY_USER,
+    getSessionsAddedbyUserSaga
+  );
 }
 
 export const sessionSaga = [fork(watchSession)];

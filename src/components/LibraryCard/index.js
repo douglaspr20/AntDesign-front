@@ -9,7 +9,7 @@ import { notification } from "antd";
 import CustomButton from "../Button";
 import LibraryClaimModal from "./LibraryClaimModal";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { claimLibrary } from "redux/actions/library-actions";
+import { setLibraryViewed, claimLibrary } from "redux/actions/library-actions";
 import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS, EVENT_TYPES } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
@@ -32,7 +32,9 @@ const LibraryCard = ({
   onAdd,
   onMenuClick,
   claimLibrary,
+  setLibraryViewed,
 }) => {
+  const { viewed } = data;
   const [lineClamp, setLineClamp] = useState(3);
   const [modalVisible, setModalVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
@@ -149,15 +151,44 @@ const LibraryCard = ({
                 </div>
                 <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
               </div>
-              {data.showClaim === 1 && (
-                <CustomButton
-                  className="claim-credits"
-                  type="primary"
-                  size="xs"
-                  text="Claim HR Credits"
-                  onClick={onClaimCredits}
-                />
-              )}
+
+              <div className="d-flex flex-column">
+                {contentType === "video" && (
+                  <CustomButton
+                    className="mark-viewed"
+                    type={
+                      viewed && viewed[userProfile.id] === "mark"
+                        ? "remove"
+                        : "secondary"
+                    }
+                    size="xs"
+                    text={
+                      viewed && viewed[userProfile.id] === "mark"
+                        ? "Viewed"
+                        : "Mark As Completed"
+                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setLibraryViewed(
+                        data.id,
+                        viewed && viewed[userProfile.id] === "mark"
+                          ? "unmark"
+                          : "mark"
+                      );
+                    }}
+                  />
+                )}
+                {data.showClaim === 1 && (
+                  <CustomButton
+                    className="claim-credits"
+                    type="primary"
+                    size="xs"
+                    text="Claim HR Credits"
+                    onClick={onClaimCredits}
+                  />
+                )}
+              </div>
               {/* <div className="d-flex items-center">
                 <SvgIcon name="star" className="library-card-icon" />
                 <SvgIcon name="bookmark" className="library-card-icon" />
@@ -227,6 +258,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = {
   claimLibrary,
+  setLibraryViewed,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryCard);

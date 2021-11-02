@@ -2,20 +2,90 @@
 
 .global-conference {
   background: $color-background;
-  padding: 3rem 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
   height: calc(100vh - 72px);
   overflow: auto;
+
+  @media (max-width: 1023.98px) {
+    .global-conference-filter-panel {
+      display: none;
+    }
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
 
+  &__filters--button {
+    display: none;
+    button {
+      width: 100%;
+    }
+    @media (max-width: 1023.98px) {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  }
+
   &-container {
-    max-width: 1024px;
+    width: 100%;
+    padding: 3rem 20%;
     margin: 0 auto;
     height: 100%;
     display: grid;
     grid-template-rows: auto auto 1fr;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      padding: 3rem 10%;
+    }
+
+    @media (max-width: 500px) {
+      padding: 3rem 2%;
+
+      .acc-session-added-tag {
+        right: -2px;
+      }
+    }
+
+    &-top-menu {
+      position: fixed !important;
+      width: 65% !important;
+      z-index: 20 !important;
+      background: $color-background;
+      padding-top: 50px;
+      top: 73px;
+      left: 27%;
+      @media (max-width: 1024px) {
+        width: 55% !important;
+      }
+
+      @media (max-width: 500px) {
+        width: 97% !important;
+        top: 60px;
+        padding-top: 20px;
+
+        & div {
+          width: 100%;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        & .not-going-button {
+          margin-bottom: 10px;
+          width: 200px;
+        }
+
+        & .attending-label {
+          text-align: center;
+          margin-bottom: 5px;
+        }
+      }
+    }
 
     .attending-label {
       margin-right: 37px;
@@ -37,7 +107,7 @@
 
   &-pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
     .custom-button {
       margin-left: 0.5rem;
@@ -47,6 +117,15 @@
 
   &-tabs {
     overflow-x: visible;
+    .ant-tabs > .ant-tabs-nav,
+    .ant-tabs > div > .ant-tabs-nav {
+      position: fixed;
+      width: 50%;
+      padding-top: 20px;
+      margin-top: 183px;
+      z-index: 19;
+      background: $color-background;
+    }
 
     .ant-tabs-nav-list {
       width: 100%;
@@ -62,4 +141,21 @@
       overflow: visible;
     }
   }
+}
+
+.sub-menu-item-global-conference {
+  font-size: 18px;
+  margin: 0px 40px !important;
+}
+a:hover,
+a:active,
+.ant-menu-item-selected a {
+  color: $color-primary !important;
+}
+
+.sub-menu-item-global-conference:hover,
+.ant-menu-horizontal > .ant-menu-item-selected,
+.sub-menu-item-global-conference:active {
+  border-bottom: 2px solid $color-primary !important;
+  color: $color-primary !important;
 }

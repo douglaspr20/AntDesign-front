@@ -1,7 +1,7 @@
 @import "../../../styles/main.scss";
 
 .conference-list {
-  margin-top: 3rem;
+  margin-top: 20rem;
 
   &::-webkit-scrollbar {
     display: none;
@@ -25,9 +25,9 @@
   &-container {
     margin: 2rem 0 3rem;
     display: grid;
+    position: relative;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
-
     .session-step,
     .annual-conference-card {
       margin-bottom: 2rem !important;

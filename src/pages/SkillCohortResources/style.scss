@@ -15,23 +15,31 @@
 			padding: 1rem;
 		}
 	}
+
+	.todays-resource {
+		padding-bottom: 24px;
+	}
+
+	.skill-cohort-resources-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		grid-gap: 2rem;
+		margin-bottom: 36px;
+		margin-top: 24px;
+
+		@media (max-width: 1023.98px) {
+			margin: 1rem 4rem 44px;
+			justify-items: center;
+		}
+
+		@media (max-width: 767.98px) {
+			margin: 1rem 1rem 44px;
+			grid-row-gap: 42px;
+			grid-column-gap: 1rem;
+		}
+	}
 }
 
-.skill-cohort-resources-list {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-	grid-gap: 2rem;
-	margin-bottom: 44px;
-	margin-top: 3rem;
-
-	@media (max-width: 1023.98px) {
-		margin: 1rem 4rem 44px;
-		justify-items: center;
-	}
-
-	@media (max-width: 767.98px) {
-		margin: 1rem 1rem 44px;
-		grid-row-gap: 42px;
-		grid-column-gap: 1rem;
-	}
+.previous {
+  margin-top: 81px;
 }

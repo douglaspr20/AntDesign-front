@@ -60,6 +60,22 @@ export const reducers = {
       countOfResults: payload.total,
     });
   },
+  [libraryConstants.UPDATE_LIBRARY_VIEWED]: (state, { payload }) => {
+    let allLibraries = state.get("allLibraries");
+    const index = allLibraries.findIndex(
+      (item) => item.id === payload.data.id
+    );
+
+    if (index >= 0) {
+      allLibraries[index] = {
+        ...payload.data,
+      };
+    }
+
+    return state.merge({
+      allLibraries: cloneDeep([...allLibraries]),
+    })
+  },
 };
 
 export const initialState = () =>

@@ -21,6 +21,7 @@ import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg"
+import IconLibrary from "images/icon-library.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -110,7 +111,7 @@ class MainHeader extends React.Component {
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
       pathInfo = {
-        icon: IconMedal,
+        icon: IconLibrary,
         label: `Library Item`,
       };
     }
@@ -130,16 +131,25 @@ class MainHeader extends React.Component {
               <i className="fal fa-bars" />
             </div>
           )}
-          {pathInfo && (
+          {pathInfo ? (
             <>
               <div className="page-icon">
                 <img src={pathInfo.icon} alt="page-icon" />
               </div>
               <span className="page-label">
-                {pathInfo.url === INTERNAL_LINKS.GLOBAL_CONFERENCE
+                {pathInfo.label === "Global Conference"
                   ? "Hacking HR 2022 Global Online Conference"
                   : pathInfo.label}
               </span>
+            </>
+          ) : (
+            <>
+              {/* <div className="page-icon">
+                <img src={IconReader} alt="page-icon" />
+              </div>
+              <span className="page-label">
+                Hacking HR 2022 Global Online Conference
+              </span> */}
             </>
           )}
         </div>
