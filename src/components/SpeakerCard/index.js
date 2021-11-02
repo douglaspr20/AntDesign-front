@@ -9,7 +9,7 @@ const SpeakerCard = ({ speaker }) => {
       href={speaker.linkSpeaker}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ maxWidth: "250px" }}
+      style={{ maxWidth: "250px", marginBottom: "1rem" }}
     >
       <Card
         hoverable
