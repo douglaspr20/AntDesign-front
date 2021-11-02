@@ -19,8 +19,10 @@ import {
 } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 import {
   addToMyEventList,
+  getAllEvent,
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
@@ -44,6 +46,8 @@ const TAB_NUM = 6;
 
 const GlobalConference = ({
   allSessions,
+  allEvents,
+  getAllEvent,
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
@@ -84,15 +88,17 @@ const GlobalConference = ({
   // };
 
   const onAttend = () => {
-    const globalEvent = userProfile.events.find(
+    const globalEvent = allEvents.find(
       (event) => event.isAnnualConference === 1
     );
-    if (userProfile.attendedToConference === 0 && globalEvent) {
-      addToMyEventList(userProfile.attendedToConference === 1 && globalEvent);
-    } else if (userProfile.attendedToConference === 1 && globalEvent) {
+
+    if (userProfile.attendedToConference === 0) {
+      attendToGlobalConference();
+      addToMyEventList(globalEvent);
+    } else {
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
-    } else attendToGlobalConference();
+    }
   };
 
   const comingSoon = (section) => {
@@ -148,6 +154,10 @@ const GlobalConference = ({
       getSessionsAddedbyUser(userProfile.id);
     }
   }, [getSessionsAddedbyUser, userProfile]);
+
+  useEffect(() => {
+    getAllEvent();
+  }, [getAllEvent]);
 
   const downloadPdf = async () => {
     setLoading(true);
@@ -299,7 +309,7 @@ const GlobalConference = ({
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("personal-agenda")}
               >
-                <Link to="/global-conference">My personal agenda</Link>
+                <Link to="/global-conference">My Personal Agenda</Link>
               </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
@@ -345,12 +355,14 @@ GlobalConference.defaultProps = {
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allEvents: eventSelector(state).allEvents,
 });
 
 const mapDispatchToProps = {
   getAllSessions,
   getSessionsAddedbyUser,
   attendToGlobalConference,
+  getAllEvent,
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
