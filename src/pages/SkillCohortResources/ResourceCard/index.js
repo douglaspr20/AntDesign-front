@@ -1,6 +1,7 @@
 import { CustomButton, CustomModal, CustomInput } from "components";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Empty } from 'antd'
 import moment from "moment-timezone";
 import { isEmpty } from "lodash";
 import { Space, Form, Radio } from "antd";
@@ -40,6 +41,7 @@ const ResourceCard = (props) => {
   } = props;
   const [showRespondModal, setShowRespondModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showViewComments, setShowViewComments] = useState(false);
   const [currentCommentIndx, setCurrentCommentIndx] = useState(0);
 
   const [form1] = Form.useForm();
@@ -176,6 +178,12 @@ const ResourceCard = (props) => {
     setShowCommentModal(true);
   };
 
+  const handleShowViewComments = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowViewComments(true);
+  };
+
   const assessments = allSkillCohortResourceResponses.map((response) => {
     return allSkillCohortResourceResponseAssessments.find((assessment) => {
       return assessment.SkillCohortResourceResponseId === response.id;
@@ -207,7 +215,12 @@ const ResourceCard = (props) => {
             />
           )}
           {!isYesterday && (
-            <CustomButton text="View all comments" size="md" block={true} />
+            <CustomButton
+              text="View all comments"
+              size="md"
+              block={true}
+              onClick={handleShowViewComments}
+            />
           )}
         </div>
       </div>
@@ -348,6 +361,19 @@ const ResourceCard = (props) => {
           {displayResourcesBtn}
         </div>
       </a>
+      <CustomModal
+        visible={showViewComments}
+        title="Comments"
+        onCancel={() => setShowViewComments(false)}
+        width={613}
+      >
+        <div className="view-comments">
+          {skillCohortResource.SkillCohortResourceResponses.map((response, index) => {
+            return <div key={index}>{`${index + 1} - ${response.response}`}</div>;
+          }) || []}
+          {isEmpty(skillCohortResource.SkillCohortResourceResponses) && <Empty />}
+        </div>
+      </CustomModal>
     </div>
   );
 };
