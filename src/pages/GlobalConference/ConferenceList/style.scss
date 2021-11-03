@@ -2,6 +2,7 @@
 
 .conference-list {
   margin-top: 20rem;
+  width: 100%;
 
   @media (max-width: 1100px) {
     margin-top: 23rem;
@@ -32,6 +33,10 @@
     position: relative;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
+
+    @media (max-width: 500px) {
+      margin: 2rem 0rem;
+    }
     .session-step,
     .annual-conference-card {
       margin-bottom: 2rem !important;
