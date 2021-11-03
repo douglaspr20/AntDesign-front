@@ -61,11 +61,15 @@
        background: $color-background;
        top: 73px;
        padding: 2rem 10px;
-       left: 30%;
-       max-width: 1200px;
+       left: 29%;
+       @media (max-width: 3000px) {
+         width: 60%;
+         left: 30%;
+       }
+       //max-width: 1200px;
 
-       @media (max-width: 1440px){
-        left: 30%;
+       @media (max-width: 1500px){
+        left: 32%;
         padding: 20px 10px;
       }
 
@@ -76,12 +80,14 @@
 
       @media (max-width: 800px){
         left: 15%;
-        padding: 20px 10px;
+        width: 85%;
+        padding: 20px 20px;
       }
 
       @media (max-width: 500px){
         left: 1%;
         padding: 20px 0px;
+        width: 100%;
       }
       
     }
@@ -111,13 +117,18 @@
 
   &-pagination {
     display: flex;
-    justify-content: space-between;
-
+    justify-content: center;
     .sub-menu{
       background: none;
       display: flex;
       justify-content: center;
-     width: 90%;
+
+      @media (max-width: 1025px){
+      position: relative;
+      width: 100%
+    
+      }
+ 
     }
 
     .custom-button {
@@ -134,29 +145,46 @@
       position: fixed;
       padding-top: 20px;
       margin-top: 170px;
-      left: 30%;
+      left: 37%;
       z-index: 19;
       background: $color-background;
 
+      @media (max-width: 2600px){
+        left: 30%;
+        width: 60%;
+        margin-top: 200px;
+       }
+
       @media (max-width: 1500px){
        left: 30%;
-       margin-top: 183px;
+       margin-top: 190px;
+       width: 100%;
+       max-width: 900px;
+    
       }
+
+
+      @media (max-width: 1300px){
+        margin-top: 200px;
+        width: 100%;
+       }
 
       @media (max-width: 1100px){
         margin-top: 220px;
         left: 40%;
-        overflow-x: scroll;
+        width: 100%;
+        max-width: 600px;
       }
 
       @media (max-width: 800px){
-        margin-top: 250px;
+        margin-top: 275px;
         left: 18%;
         overflow-x: scroll;
       }
 
       @media (max-width: 500px){
-        left: 5%;
+        left: 0%;
+        margin-top: 250px;
       }
 
      
@@ -167,7 +195,11 @@
 
 .sub-menu-item-global-conference {
   font-size: 16px;
-  margin: 0px 25px !important;
+  margin: 0px 35px !important;
+
+  @media (max-width: 1300px){
+    margin: 0px 20px !important;
+  }
 }
 a:hover,
 a:active,
