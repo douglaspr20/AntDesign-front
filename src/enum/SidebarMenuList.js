@@ -4,8 +4,8 @@ import IconHome from "images/icon-home.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
-import IconMedal from "images/icon-medal.svg";
-import IconReader from "images/icon-reader.svg";
+// import IconMedal from "images/icon-medal.svg";
+// import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 // import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
@@ -24,9 +24,9 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     // {
-    //   label: "Global Conference",
-    //   icon: IconGlobal,
-    //   url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
+    //    label: "Global Conference",
+    //    icon: IconGlobal,
+    //    url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
     // },
     {
       label: "Channels",
@@ -53,11 +53,11 @@ export default {
       icon: IconCalendar,
       url: INTERNAL_LINKS.EVENTS,
     },
-    {
-      label: "Classes",
-      icon: IconMedal,
-      url: INTERNAL_LINKS.CLASSES,
-    },
+    // {
+    //   label: "Classes",
+    //   icon: IconMedal,
+    //   url: INTERNAL_LINKS.CLASSES,
+    // },
     // {
     //   label: "Learning Journeys",
     //   icon: IconJourney,

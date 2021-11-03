@@ -47,6 +47,7 @@ const EventsPage = ({
   getAllEvent,
   getMyEvents,
   addToMyEventList,
+  attendToGlobalConference,
   removeFromMyEventList,
   claimEventAttendance,
   claimEventCredit,
@@ -65,9 +66,10 @@ const EventsPage = ({
 
   const addMyEvents = (event) => {
     const timezone = moment.tz.guess();
+
     if (event.going) {
       addToMyEventList(event, timezone);
-      if (event?.isAnnualConference && event.isAnnualConference === 1) {
+      if (event.isAnnualConference === 1) {
         attendToGlobalConference();
       }
     } else {
@@ -387,6 +389,7 @@ const mapDispatchToProps = {
   getMyEvents,
   addToMyEventList,
   removeFromMyEventList,
+  attendToGlobalConference,
   claimEventAttendance,
   claimEventCredit,
   setLoading,
