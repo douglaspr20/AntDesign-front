@@ -72,8 +72,8 @@ export default [
     isdst: false,
     text: "(UTC-08:00) Pacific Time (US & Canada)",
     utc: [
-      "America/Los_Angeles",
       "America/Dawson",
+      "America/Los_Angeles",
       "America/Tijuana",
       "America/Vancouver",
       "America/Whitehorse",
