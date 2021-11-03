@@ -162,10 +162,10 @@ const SkillCohortDetail = ({
 									<h4>Back to List</h4>
 								</div>
 							</div>
-							<div className="skill-cohort-detail-page-header-content-title">
+							<div className="title">
 								<h2>{skillCohort.title}</h2>
 							</div>
-							<div className="skill-cohort-detail-page-header-content-skill-cohort-btn">
+							<div className="skill-cohort-btn">
 								<CustomButton
 									text={displayBtn}
 									htmlType="button"

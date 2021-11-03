@@ -34,21 +34,6 @@
 					}
 				}
 			}
-
-			&-title {
-				text-align: center;
-				padding-top: 46px;
-			}
-
-			&-skill-cohort-btn {
-				position: absolute;
-				bottom: -1rem;
-				margin-left: auto;
-				margin-right: auto;
-				left: 0;
-				right: 0;
-				text-align: center;
-			}
 		}
 	}
 
@@ -109,4 +94,19 @@
 .confirm-modal {
 	display: flex;
 	justify-content: space-between;
+}
+
+.title {
+  text-align: center;
+  padding-top: 46px;
+}
+
+.skill-cohort-btn {
+  position: absolute;
+  bottom: -1rem;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
