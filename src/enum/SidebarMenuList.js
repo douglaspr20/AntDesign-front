@@ -34,7 +34,7 @@ export default {
       url: INTERNAL_LINKS.CHANNELS,
     },
     {
-      label: "Skill Cohorts",
+      label: "Project X",
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.SKILL_COHORTS,
     },
