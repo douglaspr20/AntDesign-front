@@ -75,3 +75,23 @@
   color: #697077;
   font-size: 14px;
 }
+
+.response-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.rating-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.commentCtr {
+  font-weight: 700;
+}
+
+.assessmentBtn {
+  display: flex;
+  justify-content: space-between;
+}
