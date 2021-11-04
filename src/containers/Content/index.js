@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
+import { connect } from "react-redux";
 // Pages
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
@@ -42,6 +43,10 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import { INTERNAL_LINKS } from "enum";
 
 import { PrivateRoute } from "components";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { injectIntl } from "react-intl";
+
+import { homeSelector } from "redux/selectors/homeSelector";
 
 class Content extends Component {
   render() {
@@ -203,11 +208,17 @@ class Content extends Component {
             path={INTERNAL_LINKS.SKILL_COHORTS}
             render={(props) => <SkillCohortPage {...props} />}
           />
-          <Route
-            exact
-            path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id/resources`}
-            render={(props) => <SkillCohortResourcePage {...props} />}
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
+            render={(props) => <LibraryItemPage {...props} />}
           />
+          {this.props.userProfile.memberShip === "premium" && (
+            <Route
+              exact
+              path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id/resources`}
+              render={(props) => <SkillCohortResourcePage {...props} />}
+            />
+          )}
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
@@ -220,4 +231,8 @@ class Content extends Component {
   }
 }
 
-export default Content;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default withRouter(connect(mapStateToProps)(injectIntl(Content)));

@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import { useParams } from "react-router-dom";
 import { initial, isEmpty } from "lodash";
 import { CustomButton } from "components";
-import { SETTINGS } from "enum";
+import { SETTINGS  } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
