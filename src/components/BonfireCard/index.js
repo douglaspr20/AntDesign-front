@@ -10,10 +10,10 @@ const BonfireCard = ({ bonfire }) => {
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // window.open(
-    //   `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
-    //   "_blank"
-    // );
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${bonfire.id}`,
+      "_blank"
+    );
   };
 
   const onClickAddGoogleCalendar = (e) => {
@@ -25,7 +25,9 @@ const BonfireCard = ({ bonfire }) => {
       "YYYYMMDDTHHmm"
     )}/${convertToLocalTime(bonfire.endTime).format(
       "YYYYMMDDTHHmmss"
-    )}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    )}&details=${
+      bonfire.description
+    }&location=https://www.hackinghrlab.io/global-conference&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -37,7 +39,9 @@ const BonfireCard = ({ bonfire }) => {
       bonfire.title
     }&st=${convertToLocalTime(bonfire.startTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(bonfire.endTime).format("HHmmss")}`;
+    )}&dur${convertToLocalTime(bonfire.endTime).format("HHmmss")}&details=${
+      bonfire.description
+    }&location=https://www.hackinghrlab.io/global-conference`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -101,7 +105,9 @@ const BonfireCard = ({ bonfire }) => {
       </div>
       <div className="acc-details">
         <h4>Description</h4>
-        <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>Description</p>
+        <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+          {bonfire.description}
+        </p>
       </div>
     </div>
   );

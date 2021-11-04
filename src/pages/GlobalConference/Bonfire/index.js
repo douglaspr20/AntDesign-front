@@ -5,8 +5,7 @@ import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getBonfires } from "redux/actions/bonfire-actions";
 import { setLoading } from "redux/actions/home-actions";
-import moment from "moment-timezone";
-import { convertToCertainTime } from "utils/format";
+import { convertToLocalTime } from "utils/format";
 
 const Bonfire = ({ getBonfires, bonfires }) => {
   const [bonfiresData, setBonfiresData] = useState([]);
@@ -20,11 +19,10 @@ const Bonfire = ({ getBonfires, bonfires }) => {
 
   useEffect(() => {
     if (bonfires) {
-      const localTimezone = moment.tz.guess();
       const sData = (bonfires || [])
         .map((item) => {
-          const sTime = convertToCertainTime(item.startTime, localTimezone);
-          const eTime = convertToCertainTime(item.endTime, localTimezone);
+          const sTime = convertToLocalTime(item.startTime);
+          const eTime = convertToLocalTime(item.endTime);
 
           return {
             ...item,

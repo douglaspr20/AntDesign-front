@@ -42,7 +42,7 @@ export function* getAllBonfiresSaga() {
         return bonfire.reduce(
           (res, item) => ({
             ...res,
-            ...omit(item, ["id", "createdAt", "updatedAt"]),
+            ...omit(item, ["createdAt", "updatedAt"]),
           }),
           {}
         );
