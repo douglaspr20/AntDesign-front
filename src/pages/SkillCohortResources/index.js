@@ -89,10 +89,10 @@ const SkillCohortResources = ({
               <h3 className="todays-resource-text">Today's Resource</h3>
               {displayTodaysResource}
             </div>
-            <div className="meeting-link">
+            {/* <div className="meeting-link">
               <h3>Meeting Date this week: October 31, 2021 12 AM</h3>
               <a href="#">Test link</a>
-            </div>
+            </div> */}
           </div>
         </div>
         <Row className="previous">
