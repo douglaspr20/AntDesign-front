@@ -62,6 +62,9 @@ class NavBar extends Component {
     ) {
       e.preventDefault();
       this.setState({ showFirewall: true, module: "global-conference" });
+    } else if (url === INTERNAL_LINKS.SKILL_COHORTS && this.props.userProfile.percentOfCompletion !== 100) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "skill-cohorts" });
     } else if (isMobile) {
       this.props.setCollapsed(true);
     }
@@ -175,6 +178,13 @@ class NavBar extends Component {
                   <>
                     You must fully complete your profile before joining the
                     Annual Conference feature.
+                  </>
+                )}
+
+                {this.state.module === "skill-cohorts" && (
+                  <>
+                    You must fully complete your profile before joining the
+                    Project-X feature.
                   </>
                 )}
               </h3>
