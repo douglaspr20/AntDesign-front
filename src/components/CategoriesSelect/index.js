@@ -41,6 +41,7 @@ const CategoriesSelect = ({ options, ...rest }) => {
       mode="multiple"
       showArrow
       tagRender={tagRender}
+      value={rest.value?.slice(0, 2)}
       filterOption={(inputValue, option) => {
         if (inputValue) {
           const selectedCategory = options.find(

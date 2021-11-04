@@ -456,7 +456,7 @@ const GlobalConference = ({
           <Form.Item
             name="categories"
             label="Categories"
-            rules={[{ required: true, message: "Time is required." }]}
+            rules={[{ required: true, message: "Categories is required." }]}
           >
             <CategoriesSelect options={allCategories} />
           </Form.Item>
