@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import moment from "moment";
 import jsPdf from "jspdf";
 import { Menu, notification } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
 import { CustomButton, Tabs, GlobalConferenceFilterPanel } from "components";
-import ConferenceList from "./ConferenceList";
-import FilterDrawer from "./FilterDrawer";
+
+import { sessionSelector } from "redux/selectors/sessionSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -17,22 +19,21 @@ import {
   attendToGlobalConference,
   setLoading,
 } from "redux/actions/home-actions";
-import { sessionSelector } from "redux/selectors/sessionSelector";
-import { homeSelector } from "redux/selectors/homeSelector";
-import { eventSelector } from "redux/selectors/eventSelector";
 import {
   addToMyEventList,
   getAllEvent,
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
-import "./style.scss";
-import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
+import Emitter from "services/emitter";
+
+import { EVENT_TYPES } from "enum";
+import ConferenceList from "./ConferenceList";
+import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
 import Speakers from "./Speakers";
+import "./style.scss";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -43,7 +44,7 @@ same day at the same time. You can also download the calendar
 invites to save the date. Finally, you can find the speakers and 
 connect with other participants. Enjoy!
 `;
-const TAB_NUM = 6;
+const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
@@ -245,9 +246,13 @@ const GlobalConference = ({
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
-            <Menu mode="horizontal" className="sub-menu">
+            <Menu
+              mode="horizontal"
+              className="sub-menu"
+              selectedKeys={currentView}
+            >
               <Menu.Item
-                key="conferences-schedule"
+                key="conference-schedule"
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("conference-schedule")}
               >
