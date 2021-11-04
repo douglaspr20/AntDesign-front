@@ -13,8 +13,7 @@ export function* createBonfireSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    let response = yield call(createBonfire, { ...payload });
-
+    let response = yield call(createBonfire, { ...payload.bonfire });
     if (response.status === 200) {
       if (payload.callback) {
         payload.callback();
@@ -26,44 +25,30 @@ export function* createBonfireSaga({ payload }) {
       payload.callback(error);
     }
   } finally {
+    yield getAllBonfiresSaga();
     yield put(homeActions.setLoading(false));
   }
 }
 
-export function* getAllBonfiresSaga({ payload }) {
+export function* getAllBonfiresSaga() {
   yield put(homeActions.setLoading(true));
 
   try {
     let response = yield call(getAllBonfires);
     if (response.status === 200) {
-      //   const bonfiresData = Object.values(
-      //     groupBy(response.data.conferences || [], "id")
-      //   ).map((session) => {
-      //     return session.reduce(
-      //       (res, item) => ({
-      //         ...res,
-      //         ...omit(item, [
-      //           "userid",
-      //           "name",
-      //           "image",
-      //           "linkspeaker",
-      //           "descriptionspeaker",
-      //         ]),
-      //         speakers: [
-      //           ...(res.speakers || []),
-      //           {
-      //             id: item.userid,
-      //             name: item.name,
-      //             img: item.image,
-      //             link: item.linkspeaker,
-      //             description: item.descriptionspeaker,
-      //           },
-      //         ],
-      //       }),
-      //       {}
-      //     );
-      //   });
-      //   yield put(bonfireActions.setBonfires(bonfiresData));
+      const bonfiresData = Object.values(
+        groupBy(response.data.bonfires || [], "id")
+      ).map((bonfire) => {
+        return bonfire.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, ["id", "createdAt", "updatedAt"]),
+          }),
+          {}
+        );
+      });
+
+      yield put(bonfireActions.setBonfires(bonfiresData));
     }
   } catch (error) {
     console.log(error);
@@ -77,4 +62,4 @@ function* watchSession() {
   yield takeLatest(bonfireConstants.GET_BONFIRES, getAllBonfiresSaga);
 }
 
-export const sessionSaga = [fork(watchSession)];
+export const bonfireSaga = [fork(watchSession)];

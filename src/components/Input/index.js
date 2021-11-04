@@ -28,6 +28,7 @@ class CustomInput extends React.Component {
       <RangePicker
         showTime
         className={clsx("custom-input", className, size)}
+        onChange={(e) => onChange(e)}
         format="YYYY/MM/DD HH:mm"
       />
     ) : (

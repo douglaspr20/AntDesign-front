@@ -2,36 +2,43 @@ import React from "react";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { SpecialtyItem, CustomButton } from "components";
+import moment from "moment-timezone";
+import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
-const BonfireCard = () => {
-  const onClickDownloadCalendar = (day) => {
+const BonfireCard = ({ bonfire }) => {
+  const onClickDownloadCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     // window.open(
     //   `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
     //   "_blank"
     // );
   };
 
-  const onClickAddGoogleCalendar = (startDate, endDate) => {
-    // let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-    //   this.props.data.title
-    // }&dates=${convertToLocalTime(startDate).format(
-    //   "YYYYMMDDTHHmm"
-    // )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-    //   this.props.data.location
-    // }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
-    // window.open(googleCalendarUrl, "_blank");
+  const onClickAddGoogleCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+      bonfire.title
+    }&dates=${convertToLocalTime(bonfire.startTime).format(
+      "YYYYMMDDTHHmm"
+    )}/${convertToLocalTime(bonfire.endTime).format(
+      "YYYYMMDDTHHmmss"
+    )}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    window.open(googleCalendarUrl, "_blank");
   };
 
-  const onClickAddYahooCalendar = (startDate, endDate) => {
-    // let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-    //   this.props.data.title
-    // }&st=${convertToLocalTime(startDate).format(
-    //   "YYYYMMDDTHHmm"
-    // )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-    //   this.props.data.location
-    // }`;
-    // window.open(yahooCalendarUrl, "_blank");
+  const onClickAddYahooCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
+      bonfire.title
+    }&st=${convertToLocalTime(bonfire.startTime).format(
+      "YYYYMMDDTHHmm"
+    )}&dur${convertToLocalTime(bonfire.endTime).format("HHmmss")}`;
+    window.open(yahooCalendarUrl, "_blank");
   };
 
   const downloadDropdownOptions = () => (
@@ -57,17 +64,17 @@ const BonfireCard = () => {
   return (
     <div className="bonfire-card">
       <div className="acc-session-header">
-        <h3>Bonfire</h3>
+        <h3>{bonfire.title}</h3>
 
         <CustomButton size="sm" text="JOIN" />
       </div>
 
       <div className="d-flex justify-between">
         <div>
-          <div className="acc-session-date">Mar, 7, 2022</div>
-          <div className="acc-session-time">
-            From 1:00 pm to 2:00 pm SPST (GMT-5)
+          <div className="acc-session-date">
+            {moment(bonfire.startTime).format("MMM, D, YYYY")}
           </div>
+          <div className="acc-session-time">{bonfire.hours}</div>
         </div>
 
         <Dropdown overlay={downloadDropdownOptions}>
@@ -87,9 +94,9 @@ const BonfireCard = () => {
 
       <div className="d-flex justify-between align-center">
         <div className="acc-session-categories">
-          <SpecialtyItem title="design-thinking" />
-          <SpecialtyItem title="agility" />
-          <SpecialtyItem title="strategy-and-transformation" />
+          {bonfire.categories.map((category, i) => (
+            <SpecialtyItem title={category} key={i} />
+          ))}
         </div>
       </div>
       <div className="acc-details">

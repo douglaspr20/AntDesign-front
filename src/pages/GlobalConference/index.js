@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
-import moment from "moment";
+import moment from "moment-timezone";
 import jsPdf from "jspdf";
 import { Menu, notification, Modal, Form } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
@@ -44,6 +44,7 @@ import Bonfire from "./Bonfire";
 import "./style.scss";
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
+import { createBonfire } from "redux/actions/bonfire-actions";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -61,6 +62,7 @@ const GlobalConference = ({
   allCategories,
   allEvents,
   getAllEvent,
+  createBonfire,
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
@@ -215,7 +217,36 @@ const GlobalConference = ({
   };
 
   const handleBonfire = (data) => {
+    const localTimezone = moment.tz.guess();
+
+    const convertedStartTime = moment(data.time[0])
+      .tz(localTimezone)
+      .utc()
+      .format("YYYY-MM-DD:HH:mm");
+
+    const convertedEndTime = moment(data.time[1])
+      .tz(localTimezone)
+      .utc()
+      .format("YYYY-MM-DD:HH:mm");
+
+    const bonfireInfo = {
+      title: data.title,
+      description: data.description,
+      link: data.link,
+      startTime: convertedStartTime,
+      endTime: convertedEndTime,
+      categories: data.categories,
+    };
+
     setModalFormVisible(false);
+
+    createBonfire(bonfireInfo, (error) => {
+      if (error) {
+        notification.error({
+          message: error || "Something went wrong. Please try again.",
+        });
+      }
+    });
 
     bonfireForm.resetFields();
   };
@@ -383,7 +414,7 @@ const GlobalConference = ({
           onCancelModalForm();
         }}
         onOk={() => {
-          //instructorForm.submit();
+          bonfireForm.submit();
         }}
       >
         <Form
@@ -449,6 +480,7 @@ const mapDispatchToProps = {
   getAllSessions,
   getSessionsAddedbyUser,
   attendToGlobalConference,
+  createBonfire,
   getAllEvent,
   setLoading,
   addToMyEventList,

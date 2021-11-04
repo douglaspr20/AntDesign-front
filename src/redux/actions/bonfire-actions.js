@@ -23,6 +23,7 @@ export const setBonfires = createAction(SET_BONFIRES, (bonfires) => ({
 }));
 
 export const actions = {
+  createBonfire,
   getBonfires,
   setBonfires,
 };
