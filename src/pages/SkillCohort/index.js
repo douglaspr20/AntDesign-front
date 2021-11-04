@@ -28,7 +28,7 @@ const SkillCohort = ({
     getAllSkillCohorts([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [currentTab, setCurrentTab] = useState("1")
+  const [currentTab, setCurrentTab] = useState("0")
 
   useEffect(() => {
     if (userProfile.id) {
