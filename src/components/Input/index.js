@@ -5,8 +5,6 @@ import { Input, DatePicker } from "antd";
 
 import "./style.scss";
 
-const { RangePicker } = DatePicker;
-
 class CustomInput extends React.Component {
   render() {
     const { className, multiple, type, onChange, size, ...rest } = this.props;
@@ -25,7 +23,7 @@ class CustomInput extends React.Component {
         onChange={(e) => onChange(e.target.value)}
       />
     ) : type === "time" ? (
-      <RangePicker
+      <DatePicker
         showTime
         className={clsx("custom-input", className, size)}
         onChange={(e) => onChange(e)}

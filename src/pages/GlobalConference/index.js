@@ -79,7 +79,7 @@ const GlobalConference = ({
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
-  const [currentView, setCurrentView] = useState("bonfire");
+  const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -207,6 +207,12 @@ const GlobalConference = ({
   };
 
   const onAddBonfire = () => {
+    if (userProfile.memberShip !== "preemiun") {
+      return notification.warning({
+        message: "Warning",
+        description: `you need to be a premium user to create a bonfire`,
+      });
+    }
     setModalFormVisible(true);
     bonfireForm.resetFields();
   };
@@ -219,14 +225,13 @@ const GlobalConference = ({
   const handleBonfire = (data) => {
     const localTimezone = moment.tz.guess();
 
-    const convertedStartTime = moment(data.time[0])
+    const convertedStartTime = moment(data.time)
       .tz(localTimezone)
       .utc()
       .format("YYYY-MM-DD:HH:mm");
 
-    const convertedEndTime = moment(data.time[1])
-      .tz(localTimezone)
-      .utc()
+    const convertedEndTime = moment(convertedStartTime)
+      .add("hour", 1)
       .format("YYYY-MM-DD:HH:mm");
 
     const bonfireInfo = {
@@ -432,19 +437,27 @@ const GlobalConference = ({
             <CustomInput />
           </Form.Item>
 
-          <Form.Item label="Description" name="description">
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: "Description is required." }]}
+          >
             <CustomInput multiple={true} />
           </Form.Item>
 
           <Form.Item
             name="time"
-            label="Time"
+            label="Start time"
             rules={[{ required: true, message: "Time is required." }]}
           >
             <CustomInput type="time" />
           </Form.Item>
 
-          <Form.Item name="categories" label="Categories">
+          <Form.Item
+            name="categories"
+            label="Categories"
+            rules={[{ required: true, message: "Time is required." }]}
+          >
             <CategoriesSelect options={allCategories} />
           </Form.Item>
 
