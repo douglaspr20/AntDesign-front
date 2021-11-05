@@ -170,7 +170,7 @@ const SkillCohortResources = ({
     },
     {
       title: "Meetings",
-      content: () => "Meeting",
+      content: () => "Meeting Links"
     },
     {
       title: "Participants",
