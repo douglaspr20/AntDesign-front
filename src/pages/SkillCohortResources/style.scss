@@ -145,3 +145,21 @@
     }
   }
 }
+
+.participant-col {
+  margin-top: 20px;
+}
+
+.participant-name {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+.display-participants {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
