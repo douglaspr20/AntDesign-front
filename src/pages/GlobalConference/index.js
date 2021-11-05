@@ -11,6 +11,7 @@ import {
   Tabs,
   GlobalConferenceFilterPanel,
   CustomInput,
+  CustomCheckbox,
 } from "components";
 import {
   getAllSessions,
@@ -77,6 +78,7 @@ const GlobalConference = ({
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
@@ -220,6 +222,10 @@ const GlobalConference = ({
     bonfireForm.resetFields();
   };
 
+  const handleChecked = (checked) => {
+    setIsConsultantOrHRTech(checked);
+  };
+
   const handleBonfire = (data) => {
     const localTimezone = moment.tz.guess();
 
@@ -238,7 +244,9 @@ const GlobalConference = ({
       link: data.link,
       startTime: convertedStartTime,
       endTime: convertedEndTime,
+      isConsultantOrHRTech,
       categories: data.categories,
+      bonfireCreator: userProfile.id,
     };
 
     setModalFormVisible(false);
@@ -469,6 +477,25 @@ const GlobalConference = ({
             rules={[{ required: true, message: "Link is required." }]}
           >
             <CustomInput />
+          </Form.Item>
+
+          <Form.Item name="isConsultantOrHRTech">
+            <CustomCheckbox
+              onChange={handleChecked}
+              checked={isConsultantOrHRTech}
+            >
+              Are you a consultant or HR tech/service vendor?
+            </CustomCheckbox>
+
+            {isConsultantOrHRTech && (
+              <p style={{ color: "#e61e47" }}>
+                Please note: you should not use the bonfire feature to sell
+                services or products. These are networking conversations. This
+                is a mandatory requirement. Bonfires are not the venues for
+                selling and you will be banned from using this feature if you
+                use it for a purpose other than networking
+              </p>
+            )}
           </Form.Item>
         </Form>
       </Modal>

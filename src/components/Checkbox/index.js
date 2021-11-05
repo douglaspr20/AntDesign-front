@@ -4,10 +4,18 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import "./style.scss";
 
-const CustomCheckbox = ({ type, className, children, size, ...params }) => (
+const CustomCheckbox = ({
+  type,
+  className,
+  children,
+  onChange,
+  size,
+  ...params
+}) => (
   <Checkbox
     className={clsx("custom-checkbox", type, className, size)}
     {...params}
+    onChange={(e) => onChange(e.target.checked)}
   >
     {children}
   </Checkbox>

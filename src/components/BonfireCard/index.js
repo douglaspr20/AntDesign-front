@@ -70,7 +70,11 @@ const BonfireCard = ({ bonfire }) => {
       <div className="acc-session-header">
         <h3>{bonfire.title}</h3>
 
-        <CustomButton size="sm" text="JOIN" />
+        <CustomButton
+          size="sm"
+          text="JOIN"
+          onClick={() => window.open(bonfire.link, "_blank")}
+        />
       </div>
 
       <div className="d-flex justify-between">

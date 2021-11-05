@@ -26,6 +26,7 @@ class CustomInput extends React.Component {
       <DatePicker
         showTime
         className={clsx("custom-input", className, size)}
+        style={{ width: "100%" }}
         onChange={(e) => onChange(e)}
         format="YYYY/MM/DD HH:mm"
       />
