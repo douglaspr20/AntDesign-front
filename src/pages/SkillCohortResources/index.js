@@ -1,18 +1,19 @@
 import { Row, Col } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
 import { useParams } from "react-router-dom";
-import { initial, isEmpty } from "lodash";
-import { CustomButton } from "components";
-import { SETTINGS  } from "enum";
+import { CustomButton, Tabs } from "components";
+import { SETTINGS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
+import { isEmpty } from 'lodash'
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import { actions as skillCohortResourceActions } from "redux/actions/skillCohortResource-actions";
+import { actions as skillCohortActions } from "redux/actions/skillCohort-actions";
 import { actions as skillCohortParticipantActions } from "redux/actions/skillCohortParticipant-actions";
 
 import ResourceCard from "./ResourceCard";
@@ -28,9 +29,15 @@ const SkillCohortResources = ({
   getMoreSkillCohortResources,
   loading,
   countOfResults,
+  getSkillCohort,
+  getSkillCohortResource,
+  skillCohortResource,
+  getAllSkillCohortParticipants,
+  allSkillCohortParticipants
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
+  const [currentTab, setCurrentTab] = useState("0");
 
   useEffect(() => {
     getAllSkillCohortResources(id, {
@@ -39,6 +46,9 @@ const SkillCohortResources = ({
     if (userProfile.id) {
       getSkillCohortParticipant(id, userProfile.id);
     }
+    getSkillCohort(id);
+    getSkillCohortResource(id)
+    getAllSkillCohortParticipants(id)
     // eslint-disable-next-line
   }, [userProfile]);
 
@@ -49,79 +59,106 @@ const SkillCohortResources = ({
     });
   };
 
-  const todayResource = allSkillCohortResources.at(-1) || {};
-  const previousResources = initial(allSkillCohortResources) || [];
-
-  const displayTodaysResource = !isEmpty(todayResource) && (
+  const displayTodaysResource = !isEmpty(skillCohortResource) && (
     <ResourceCard
-      skillCohortResource={todayResource}
+      skillCohortResource={skillCohortResource}
       isPreviousResource={false}
       skillCohortParticipant={skillCohortParticipant}
     />
   );
 
-  const displayPreviousResources = previousResources
-    .reverse()
-    .map((resource) => {
-      const diff = dateToday.diff(
-        moment(resource.releaseDate).tz("America/Los_Angeles"),
-        "day"
-      );
-      const isYesterday = diff === 1;
+  const displayPreviousResources = allSkillCohortResources.map((resource) => {
+    const diff = dateToday.diff(moment(resource.releaseDate), "day");
+    const isYesterday = diff === 1;
 
-      return (
-        <ResourceCard
-          skillCohortResource={resource}
-          key={resource.id}
-          isPreviousResource={true}
-          skillCohortParticipant={skillCohortParticipant}
-          isYesterday={isYesterday}
-        />
-      );
-    });
+    return (
+      <ResourceCard
+        skillCohortResource={resource}
+        key={resource.id}
+        isPreviousResource={true}
+        skillCohortParticipant={skillCohortParticipant}
+        isYesterday={isYesterday}
+      />
+    );
+  });
+
+  const displayResources = (
+    <div className="wrapper">
+      <div className="container-header d-flex justify-between items-start">
+        <div className="todays-resource">
+          <div>
+            <h3 className="todays-resource-text">Today's Resource</h3>
+            {displayTodaysResource}
+          </div>
+        </div>
+      </div>
+      <Row className="previous">
+        <Col span={24}>
+          <div className="container-header-previous d-flex justify-between items-center">
+            {!isEmpty(allSkillCohortResources) && <h3>Previous Resources</h3>}
+          </div>
+        </Col>
+      </Row>
+      <div className="skill-cohort-resources-list previous-resource">
+        {displayPreviousResources}
+      </div>
+      {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+        <div className="search-results-container-footer d-flex justify-center items-center">
+          {loading && (
+            <div className="resources-page-loading-more">
+              <img src={IconLoadingMore} alt="loading-more-img" />
+            </div>
+          )}
+          {!loading && (
+            <CustomButton
+              text="Show More"
+              type="primary outlined"
+              size="lg"
+              onClick={showMore}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  const displayParticipants = allSkillCohortParticipants.map((participant, index) => {
+    return <div key={index}>{`${index+1}. ${participant.User.firstName} ${participant.User.lastName}`}</div>
+  })
+
+  const TabData = [
+    {
+      title: "Daily Resources",
+      content: () => displayResources,
+    },
+    {
+      title: "Meetings",
+      content: () => "Meeting",
+    },
+    {
+      title: "Participants",
+      content: () => <div className="content">{displayParticipants}</div>,
+    },
+    {
+      title: "Cohort Analytics",
+      content: () => "Cohort Analytics",
+    },
+  ];
 
   return (
     <div className="skill-cohort-resources-page">
       <div className="skill-cohort-resources-page-container">
-        <div className="container-header d-flex justify-between items-start">
-          <div className="todays-resource">
-            <div>
-              <h3 className="todays-resource-text">Today's Resource</h3>
-              {displayTodaysResource}
-            </div>
-            {/* <div className="meeting-link">
-              <h3>Meeting Date this week: October 31, 2021 12 AM</h3>
-              <a href="#">Test link</a>
-            </div> */}
-          </div>
+        <div className="skill-cohort-resources-page-container-header">
+          TEXT = TBD
         </div>
-        <Row className="previous">
-          <Col span={24}>
-            <div className="container-header-previous d-flex justify-between items-center">
-              {!isEmpty(previousResources) && <h3>Previous Resources</h3>}
-            </div>
-          </Col>
-        </Row>
-        <div className="skill-cohort-resources-list previous-resource">
-          {displayPreviousResources}
+        <div className="wrapper">
+          <Tabs
+            data={TabData}
+            current={currentTab}
+            onChange={setCurrentTab}
+            centered
+          />
         </div>
-        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
-          <div className="search-results-container-footer d-flex justify-center items-center">
-            {loading && (
-              <div className="resources-page-loading-more">
-                <img src={IconLoadingMore} alt="loading-more-img" />
-              </div>
-            )}
-            {!loading && (
-              <CustomButton
-                text="Show more"
-                type="primary outlined"
-                size="lg"
-                onClick={showMore}
-              />
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -136,6 +173,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   ...skillCohortResourceActions,
   ...skillCohortParticipantActions,
+  ...skillCohortActions,
 };
 
 export default connect(

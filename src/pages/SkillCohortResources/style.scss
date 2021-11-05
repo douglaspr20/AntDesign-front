@@ -2,27 +2,40 @@
 
 .skill-cohort-resources-page {
 	width: 100%;
+  background: $color-background;
+
+  .wrapper {
+    // background-color: green;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
 	&-container {
 		height: calc(100vh - 72px);
-		background: $color-background;
 		overflow: auto;
-		padding: 4rem;
 		position: relative;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     
 		@media (max-width: 576px) {
 			padding: 1rem;
 		}
+
+    &-header {
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      font-weight: 500;
+    }
 	}
 
 	.todays-resource {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
 		padding-bottom: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
+    margin-top: 4rem;
 
     &-text {
       padding-bottom: 1rem;
@@ -46,7 +59,7 @@
     row-gap: 1rem;
 		margin-bottom: 36px;
 		margin-top: 24px;
-    width: 80%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     justify-items: start;
@@ -81,13 +94,13 @@
 
 .previous {
   margin-top: 81px;
-  width: 80%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .show-more-container {
-  width: 80%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }

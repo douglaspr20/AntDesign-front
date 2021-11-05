@@ -30,6 +30,7 @@ import { channelSelector } from "redux/selectors/channelSelector";
 import { courseSelector } from "redux/selectors/courseSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
 import { podcastSelector } from "redux/selectors/podcastSelector";
+import { skillCohortSelector } from "redux/selectors/skillCohortSelector"
 
 import "./style.scss";
 
@@ -120,7 +121,7 @@ class MainHeader extends React.Component {
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SKILL_COHORTS}/`)) {
       pathInfo = {
         icon: IconStoreFrontOutline,
-        label: `Skill Cohort`,
+        label: `ProjectX - Cohort: ${this.props.skillCohort.title || ''}`,
       };
     }
 
@@ -226,6 +227,7 @@ const mapStateToProps = (state) => ({
   selectedCourse: courseSelector(state).course,
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
+  skillCohort: skillCohortSelector(state).skillCohort,
 });
 
 const mapDispatchToProps = {

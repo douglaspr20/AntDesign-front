@@ -1,7 +1,7 @@
 import { put, fork, call, takeLatest } from 'redux-saga/effects';
 import { notification } from 'antd';
 
-import { getSkillCohortParticipant, getAllSkillCohortParticipants, createSkillCohortParticipant } from '../../api';
+import { getSkillCohortParticipant, getAllSkillCohortParticipants, createSkillCohortParticipant, getParticipated } from '../../api';
 
 import {
 	actions as skillCohortParticipantActions,
@@ -22,6 +22,24 @@ export function* getSkillCohortParticipantSaga({ payload }) {
 	} catch (error) {
 		console.log(error);
 		yield put(skillCohortParticipantActions.setSkillCohortParticipant({}));
+	} finally {
+		yield put(homeActions.setLoading(false));
+	}
+}
+
+export function* getParticipatedSaga({ payload }) {
+	yield put(homeActions.setLoading(true));
+
+	try {
+		const response = yield call(getParticipated, { ...payload });
+
+		if (response.status === 200) {
+			yield put(
+				skillCohortParticipantActions.setAllSkillCohortParticipants(response.data.allSkillCohortParticipants),
+			);
+		}
+	} catch (error) {
+		console.log(error);
 	} finally {
 		yield put(homeActions.setLoading(false));
 	}
@@ -81,8 +99,12 @@ function* watchParticipant() {
 		createSkillCohortParticipantSaga,
 	);
 	yield takeLatest(
-		skillCohortParticipantsConstants.GET_ALL_SKILL_COHORT_PARTICIPANTS,
+		skillCohortParticipantsConstants.GET_ALL_PARTICIPANT,
 		getAllSkillCohortParticipantsSaga,
+	);
+	yield takeLatest(
+		skillCohortParticipantsConstants.GET_PARTICIPATED,
+		getParticipatedSaga,
 	);
 }
 

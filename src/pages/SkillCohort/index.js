@@ -21,7 +21,7 @@ const SkillCohort = ({
   allSkillCohorts,
   getAllSkillCohorts,
   userProfile,
-  getAllSkillCohortParticipants,
+  getAllParticipated,
   allSkillCohortParticipants,
 }) => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const SkillCohort = ({
 
   useEffect(() => {
     if (userProfile.id) {
-      getAllSkillCohortParticipants(userProfile.id);
+      getAllParticipated(userProfile.id);
     }
     // eslint-disable-next-line
   }, [userProfile]);

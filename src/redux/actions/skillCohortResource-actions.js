@@ -29,8 +29,8 @@ export const getMoreSkillCohortResources = createAction(
   GET_MORE,
   (SkillCohortId, filter) => ({ SkillCohortId, filter })
 );
-export const getSkillCohortResource = createAction(GET_RESOURCE, (id) => ({
-  id,
+export const getSkillCohortResource = createAction(GET_RESOURCE, (SkillCohortId) => ({
+  SkillCohortId,
 }));
 export const setAllSkillCohortResources = createAction(
   SET_ALL_RESOURCE,
