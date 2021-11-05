@@ -90,6 +90,7 @@ import {
   getSkillCohortParticipant,
   getAllSkillCohortParticipants,
   createSkillCohortParticipant,
+  getParticipated
 } from "./module/skillCohortParticipant"
 
 import {
@@ -191,6 +192,7 @@ export {
   getSkillCohort,
   markeToUnRead,
   getSkillCohortParticipant,
+  getParticipated,
   getAllSkillCohortParticipants,
   createSkillCohortParticipant,
   getResource,

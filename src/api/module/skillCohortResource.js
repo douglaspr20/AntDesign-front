@@ -2,7 +2,6 @@ import httpClient from './httpClient';
 import { SETTINGS } from "enum";
 
 export const getAllResources = async (data) => {
-  console.log(data)
 	let newFilter = {
     page: 1,
     num: SETTINGS.MAX_SEARCH_ROW_NUM
@@ -20,7 +19,7 @@ export const getAllResources = async (data) => {
 };
 
 export const getResource = async (data) => {
-	const { id } = data;
+	const { SkillCohortId } = data;
 
-	return await httpClient.get(`private/skill-cohort/resource/${id}`);
+	return await httpClient.get(`private/skill-cohort/${SkillCohortId}/resource/`);
 };

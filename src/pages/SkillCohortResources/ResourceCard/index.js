@@ -55,7 +55,7 @@ const ResourceCard = (props) => {
         getResourceResponse(skillCohortResource.id, skillCohortParticipant.id);
       }
     } else {
-      if (isYesterday) {
+      if (isYesterday && !isEmpty(skillCohortParticipant)) {
         getAllResourceResponses(
           skillCohortResource.id,
           skillCohortParticipant.id

@@ -1,9 +1,15 @@
 import httpClient from './httpClient';
 
-export const getAllSkillCohortParticipants = async (data) => {
+export const getParticipated = async (data) => {
 	const { UserId } = data;
 
 	return await httpClient.get(`private/skill-cohort/participant/${UserId}`);
+};
+
+export const getAllSkillCohortParticipants = async (data) => {
+	const { SkillCohortId } = data;
+
+	return await httpClient.get(`private/skill-cohort/${SkillCohortId}/participants`);
 };
 
 export const getSkillCohortParticipant = async (data) => {
