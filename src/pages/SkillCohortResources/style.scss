@@ -3,9 +3,11 @@
 .skill-cohort-resources-page {
 	width: 100%;
   background: $color-background;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   .wrapper {
-    // background-color: green;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -162,4 +164,3 @@
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
