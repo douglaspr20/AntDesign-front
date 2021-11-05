@@ -12,7 +12,6 @@ import {
   GlobalConferenceFilterPanel,
   CustomInput,
 } from "components";
-
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -25,26 +24,25 @@ import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { eventSelector } from "redux/selectors/eventSelector";
-
 import {
   addToMyEventList,
   getAllEvent,
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
+import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
 
+import { EVENT_TYPES } from "enum";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
-import { formatAnnualConference } from "utils/formatPdf";
 import PersonalAgenda from "./PersonalAgenda";
 import Bonfire from "./Bonfire";
 
-import "./style.scss";
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
 import { createBonfire } from "redux/actions/bonfire-actions";
+import "./style.scss";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -55,7 +53,7 @@ same day at the same time. You can also download the calendar
 invites to save the date. Finally, you can find the speakers and 
 connect with other participants. Enjoy!
 `;
-const TAB_NUM = 6;
+const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
@@ -320,9 +318,13 @@ const GlobalConference = ({
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
-            <Menu mode="horizontal" className="sub-menu">
+            <Menu
+              mode="horizontal"
+              className="sub-menu"
+              selectedKeys={currentView}
+            >
               <Menu.Item
-                key="conferences-schedule"
+                key="conference-schedule"
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("conference-schedule")}
               >
