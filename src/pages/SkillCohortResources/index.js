@@ -1,4 +1,4 @@
-import { Row, Col } from "antd";
+import { Row, Col, Card, Avatar } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { CustomButton, Tabs } from "components";
 import { SETTINGS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
-import { isEmpty } from 'lodash'
+import { isEmpty } from "lodash";
+import { UserOutlined } from "@ant-design/icons";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
@@ -33,7 +34,7 @@ const SkillCohortResources = ({
   getSkillCohortResource,
   skillCohortResource,
   getAllSkillCohortParticipants,
-  allSkillCohortParticipants
+  allSkillCohortParticipants,
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
@@ -47,8 +48,8 @@ const SkillCohortResources = ({
       getSkillCohortParticipant(id, userProfile.id);
     }
     getSkillCohort(id);
-    getSkillCohortResource(id)
-    getAllSkillCohortParticipants(id)
+    getSkillCohortResource(id);
+    getAllSkillCohortParticipants(id);
     // eslint-disable-next-line
   }, [userProfile]);
 
@@ -122,9 +123,45 @@ const SkillCohortResources = ({
     </div>
   );
 
-  const displayParticipants = allSkillCohortParticipants.map((participant, index) => {
-    return <div key={index}>{`${index+1}. ${participant.User.firstName} ${participant.User.lastName}`}</div>
-  })
+  const displayParticipants = allSkillCohortParticipants.map(
+    (participant, index) => {
+      const user = participant.User;
+      const name = `${user.firstName} ${user.lastName}`;
+
+      return (
+        <Col className="participant-col">
+          <a
+            href={user.personalLinks.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Card
+              hoverable
+              bordered
+              type="inner"
+              extra={<UserOutlined />}
+              bodyStyle={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {user.img ? (
+                <Avatar size={180} src={user.img} alt={name} />
+              ) : (
+                <Avatar size={180} icon={<UserOutlined />} />
+              )}
+
+              <div style={{ textAlign: "center" }}>
+                <p className="participant-name">{name}</p>
+                <p>{user.titleProfessions}</p>
+              </div>
+            </Card>
+          </a>
+        </Col>
+      );
+    }
+  );
 
   const TabData = [
     {
@@ -137,7 +174,7 @@ const SkillCohortResources = ({
     },
     {
       title: "Participants",
-      content: () => <div className="content">{displayParticipants}</div>,
+      content: () => <div className="display-participants">{displayParticipants}</div>,
     },
     {
       title: "Cohort Analytics",
