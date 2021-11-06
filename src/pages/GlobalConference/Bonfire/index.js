@@ -13,6 +13,10 @@ const Bonfire = ({ getBonfires, bonfires, userProfile }) => {
   const onAddBonfire = (bonfire) => {
     console.log(bonfire);
   };
+
+  const onRemoveBonfire = (bonfire) => {
+    console.log(bonfire);
+  };
   useEffect(() => {
     const getAllBonfires = async () => {
       getBonfires();
@@ -84,6 +88,7 @@ const Bonfire = ({ getBonfires, bonfires, userProfile }) => {
                   bonfire={b}
                   added={(userProfile.bonfires || []).includes(b.id)}
                   onAddBonfire={() => onAddBonfire(b)}
+                  onRemoveBonfire={() => onRemoveBonfire(b)}
                 />
               ))}
             </div>

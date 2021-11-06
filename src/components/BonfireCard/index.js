@@ -8,7 +8,7 @@ import moment from "moment-timezone";
 import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
-const BonfireCard = ({ bonfire, added, onAddBonfire }) => {
+const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -75,6 +75,30 @@ const BonfireCard = ({ bonfire, added, onAddBonfire }) => {
         {!added && (
           <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
         )}
+
+        {added && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "80px",
+            }}
+          >
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Disjoin"
+              onClick={onRemoveBonfire}
+              className="remove-buttom"
+            />
+            <CustomButton
+              size="sm"
+              text="Go to Bonfire"
+              onClick={() => window.open(bonfire.link, "_blank")}
+            />
+          </div>
+        )}
       </div>
 
       <div className="d-flex justify-between">
@@ -122,12 +146,14 @@ BonfireCard.propTypes = {
   bonfire: PropTypes.object,
   added: PropTypes.bool,
   onAddBonfire: PropTypes.func,
+  onRemoveBonfire: PropTypes.func,
 };
 
 BonfireCard.defaultProps = {
   bonfire: {},
   added: false,
   onAddSession: () => {},
+  onRemoveBonfire: () => {},
 };
 
 export default BonfireCard;
