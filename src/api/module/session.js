@@ -14,3 +14,9 @@ export const getAllSessions = ({ startTime, endTime, meta }) => {
 export const getSessionsAddedbyUser = ({ id }) => {
   return httpClient.get(`private/sessions-user?userId=${id}`);
 };
+
+export const getParticipants = ({ filters }) => {
+  return httpClient.get(`private/session/participants`, {
+    ...filters,
+  });
+};

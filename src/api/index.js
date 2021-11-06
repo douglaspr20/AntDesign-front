@@ -81,7 +81,11 @@ import {
   markeToRead,
   markeToUnRead,
 } from "./module/notification";
-import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import {
+  getAllSessions,
+  getSessionsAddedbyUser,
+  getParticipants,
+} from "./module/session";
 
 import { getEditorSignature } from "./module/env";
 
@@ -137,6 +141,7 @@ export {
   getNotifications,
   getAllSessions,
   getSessionsAddedbyUser,
+  getParticipants,
   attendToGlobalConference,
   addSession,
   removeSession,

@@ -33,6 +33,7 @@ import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
 import Speakers from "./Speakers";
+import Participants from "./Participants";
 import "./style.scss";
 
 const Description = `
@@ -64,7 +65,7 @@ const GlobalConference = ({
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
-  const [currentView, setCurrentView] = useState("conference-schedule");
+  const [currentView, setCurrentView] = useState("participants");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -276,7 +277,7 @@ const GlobalConference = ({
               >
                 <Link
                   to="/global-conference"
-                  onClick={() => comingSoon("Participants")}
+                  onClick={() => handleView("participants")}
                 >
                   Participants
                 </Link>
@@ -342,6 +343,8 @@ const GlobalConference = ({
         )}
 
         {currentView === "speakers" && <Speakers />}
+
+        {currentView === "participants" && <Participants />}
       </div>
     </div>
   );
