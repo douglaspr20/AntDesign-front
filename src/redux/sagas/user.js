@@ -14,6 +14,8 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   uploadResume,
   deleteResume,
 } from "../../api";
@@ -199,6 +201,49 @@ export function* removeSessionSaga({ payload }) {
   }
 }
 
+export function* addBonfireSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addBonfire, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else {
+      notification.error({
+        message: "You not joined to bonfire",
+        description: error.response.data.msg,
+      });
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* removeBonfireSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removeBonfire, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* uploadResumeSaga({ payload }) {
   try {
     const response = yield call(uploadResume, { ...payload });
@@ -252,6 +297,8 @@ function* watchLogin() {
   );
   yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
   yield takeLatest(homeConstants.REMOVE_SESSION, removeSessionSaga);
+  yield takeLatest(homeConstants.ADD_BONFIRE, addBonfireSaga);
+  yield takeLatest(homeConstants.REMOVE_BONFIRE, removeBonfireSaga);
   yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);
   yield takeLatest(homeConstants.DELETE_RESUME, deleteResumeSaga);
 }

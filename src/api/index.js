@@ -10,6 +10,8 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   uploadResume,
   deleteResume,
 } from "./module/user";
@@ -141,6 +143,8 @@ export {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   markeToRead,
   uploadResume,
   deleteResume,

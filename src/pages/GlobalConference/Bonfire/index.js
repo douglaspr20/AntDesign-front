@@ -4,18 +4,25 @@ import { BonfireCard } from "components";
 import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getBonfires } from "redux/actions/bonfire-actions";
+import { addBonfire, removeBonfire } from "redux/actions/home-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { convertToLocalTime } from "utils/format";
 
-const Bonfire = ({ getBonfires, bonfires, userProfile }) => {
+const Bonfire = ({
+  getBonfires,
+  addBonfire,
+  removeBonfire,
+  bonfires,
+  userProfile,
+}) => {
   const [bonfiresData, setBonfiresData] = useState([]);
 
   const onAddBonfire = (bonfire) => {
-    console.log(bonfire);
+    addBonfire(bonfire);
   };
 
   const onRemoveBonfire = (bonfire) => {
-    console.log(bonfire);
+    removeBonfire(bonfire);
   };
   useEffect(() => {
     const getAllBonfires = async () => {
@@ -108,6 +115,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getBonfires,
   setLoading,
+  addBonfire,
+  removeBonfire,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Bonfire);
