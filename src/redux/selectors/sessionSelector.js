@@ -7,6 +7,7 @@ const resultSelector = createSelector(sessionDataSelector, (payload) => {
     sessionLoading: payload.get("sessionLoading"),
     allSessions: payload.get("allSessions"),
     sessionsUser: payload.get("sessionsUser"),
+    participants: payload.get("participants"),
   };
 });
 

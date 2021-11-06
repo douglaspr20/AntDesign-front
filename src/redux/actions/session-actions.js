@@ -5,6 +5,7 @@ const SET_ALL_SESSIONS = "SET_ALL_SESSIONS";
 const GET_SESSIONS_ADDED_BY_USER = "GET_SESSIONS_ADDED_BY_USER ";
 const SET_SESSIONS_ADDED_BY_USER = "SET_SESSIONS_ADDED_BY_USER";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
+const SET_PARTICIPANTS = "SET_PARTICIPANTS";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
 
 export const constants = {
@@ -13,6 +14,7 @@ export const constants = {
   GET_SESSIONS_ADDED_BY_USER,
   SET_SESSIONS_ADDED_BY_USER,
   GET_PARTICIPANTS,
+  SET_PARTICIPANTS,
   SET_SESSION_LOADING,
 };
 
@@ -39,6 +41,17 @@ export const setSessionsAddedByUser = createAction(
   })
 );
 
+export const getParticipants = createAction(GET_PARTICIPANTS, (filters) => ({
+  filters,
+}));
+
+export const setParticipants = createAction(
+  SET_PARTICIPANTS,
+  (participants) => ({
+    participants,
+  })
+);
+
 export const setSessionLoading = createAction(
   SET_SESSION_LOADING,
   (loading) => ({ loading })
@@ -46,8 +59,10 @@ export const setSessionLoading = createAction(
 
 export const actions = {
   getAllSessions,
+  setAllSessions,
   getSessionsAddedbyUser,
   setSessionsAddedByUser,
-  setAllSessions,
+  getParticipants,
+  setParticipants,
   setSessionLoading,
 };
