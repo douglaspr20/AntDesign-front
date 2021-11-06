@@ -207,7 +207,10 @@ const GlobalConference = ({
   };
 
   const onAddBonfire = () => {
-    if (userProfile.memberShip !== "premiun") {
+    if (
+      userProfile.memberShip !== "premiun" &&
+      userProfile.memberShip !== "preemiun"
+    ) {
       return notification.warning({
         message: "Warning",
         description: `you need to be a premium user to create a bonfire`,
