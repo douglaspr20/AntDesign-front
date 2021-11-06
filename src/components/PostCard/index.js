@@ -175,7 +175,7 @@ const PostCard = ({
             );
             return (
               <div
-                key={`hashtag-key-${index}-${category.title}`}
+                key={`hashtag-key-${index}-${category ? category.title : dataTopic}`}
                 className="custom-post-card--item"
               >
                 #{category ? category.title : dataTopic}

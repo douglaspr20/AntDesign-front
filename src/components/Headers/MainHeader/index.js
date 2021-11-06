@@ -160,7 +160,11 @@ class MainHeader extends React.Component {
             <div
               className="live-button"
               onClick={() => {
-                this.props.history.push(INTERNAL_LINKS.LIVE);
+                if(user.completed === true){
+                  this.props.history.push(INTERNAL_LINKS.LIVE);
+                }else{
+                  Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "live");
+                }
               }}
             >
               <div className="live-container">
