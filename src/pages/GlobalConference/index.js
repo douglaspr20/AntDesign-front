@@ -12,6 +12,7 @@ import {
   GlobalConferenceFilterPanel,
   CustomInput,
   CustomCheckbox,
+  CustomSelect,
 } from "components";
 import {
   getAllSessions,
@@ -34,7 +35,7 @@ import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
 
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
@@ -79,7 +80,7 @@ const GlobalConference = ({
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("bonfire");
+  const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -227,10 +228,12 @@ const GlobalConference = ({
   };
 
   const handleBonfire = (data) => {
-    const localTimezone = moment.tz.guess();
+    const timezone = TIMEZONE_LIST.find(
+      (timezone) => timezone.value === data.timezone
+    );
 
     const convertedStartTime = moment(data.time)
-      .tz(localTimezone)
+      .tz(timezone.utc[0])
       .utc()
       .format();
 
@@ -462,6 +465,22 @@ const GlobalConference = ({
             rules={[{ required: true, message: "Time is required." }]}
           >
             <CustomInput type="time" />
+          </Form.Item>
+
+          <Form.Item
+            name={"timezone"}
+            label="Timezone"
+            rules={[{ required: true, message: "Timezone is required." }]}
+          >
+            <CustomSelect
+              showSearch
+              options={TIMEZONE_LIST}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              className="border"
+            />
           </Form.Item>
 
           <Form.Item

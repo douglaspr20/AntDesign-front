@@ -39,7 +39,6 @@ const CategoriesSelect = ({ options, ...rest }) => {
       {...rest}
       className="category-select"
       mode="multiple"
-      showArrow
       tagRender={tagRender}
       value={rest.value?.slice(0, 2)}
       filterOption={(inputValue, option) => {

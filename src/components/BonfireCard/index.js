@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { SpecialtyItem, CustomButton } from "components";
@@ -6,7 +8,7 @@ import moment from "moment-timezone";
 import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
-const BonfireCard = ({ bonfire }) => {
+const BonfireCard = ({ bonfire, added, onAddBonfire }) => {
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -70,11 +72,9 @@ const BonfireCard = ({ bonfire }) => {
       <div className="acc-session-header">
         <h3>{bonfire.title}</h3>
 
-        <CustomButton
-          size="sm"
-          text="JOIN"
-          onClick={() => window.open(bonfire.link, "_blank")}
-        />
+        {!added && (
+          <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
+        )}
       </div>
 
       <div className="d-flex justify-between">
@@ -84,22 +84,23 @@ const BonfireCard = ({ bonfire }) => {
           </div>
           <div className="acc-session-time">{bonfire.hours}</div>
         </div>
-
-        <Dropdown overlay={downloadDropdownOptions}>
-          <a
-            href="/#"
-            className="ant-dropdown-link"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            style={{ marginTop: ".5rem" }}
-          >
-            Download calendar <DownOutlined />
-          </a>
-        </Dropdown>
+        {added && (
+          <Dropdown overlay={downloadDropdownOptions}>
+            <a
+              href="/#"
+              className="ant-dropdown-link"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              style={{ marginTop: ".5rem" }}
+            >
+              Download calendar <DownOutlined />
+            </a>
+          </Dropdown>
+        )}
       </div>
-
+      {added && <div className="acc-session-added-tag">I am joining</div>}
       <div className="d-flex justify-between align-center">
         <div className="acc-session-categories">
           {bonfire.categories.map((category, i) => (
@@ -115,6 +116,18 @@ const BonfireCard = ({ bonfire }) => {
       </div>
     </div>
   );
+};
+
+BonfireCard.propTypes = {
+  bonfire: PropTypes.object,
+  added: PropTypes.bool,
+  onAddBonfire: PropTypes.func,
+};
+
+BonfireCard.defaultProps = {
+  bonfire: {},
+  added: false,
+  onAddSession: () => {},
 };
 
 export default BonfireCard;

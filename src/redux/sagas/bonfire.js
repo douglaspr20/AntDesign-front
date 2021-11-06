@@ -7,7 +7,7 @@ import {
   actions as bonfireActions,
 } from "../actions/bonfire-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { createBonfire, getAllBonfires } from "../../api";
+import { createBonfire, getAllBonfires, getUserFromId } from "../../api";
 
 export function* createBonfireSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -18,6 +18,14 @@ export function* createBonfireSaga({ payload }) {
       if (payload.callback) {
         payload.callback();
       }
+
+      const response = yield call(getUserFromId);
+      const { user } = response.data;
+      yield put(
+        homeActions.updateUserInformation({
+          ...user,
+        })
+      );
     }
   } catch (error) {
     console.log(error);

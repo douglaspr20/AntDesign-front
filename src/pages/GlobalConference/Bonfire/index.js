@@ -7,8 +7,12 @@ import { getBonfires } from "redux/actions/bonfire-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { convertToLocalTime } from "utils/format";
 
-const Bonfire = ({ getBonfires, bonfires }) => {
+const Bonfire = ({ getBonfires, bonfires, userProfile }) => {
   const [bonfiresData, setBonfiresData] = useState([]);
+
+  const onAddBonfire = (bonfire) => {
+    console.log(bonfire);
+  };
   useEffect(() => {
     const getAllBonfires = async () => {
       getBonfires();
@@ -75,7 +79,12 @@ const Bonfire = ({ getBonfires, bonfires }) => {
             <div key={i}>
               <h3 className="session-step">{bonfire.step}</h3>
               {bonfire.data.map((b, i) => (
-                <BonfireCard key={i} bonfire={b} />
+                <BonfireCard
+                  key={i}
+                  bonfire={b}
+                  added={(userProfile.bonfires || []).includes(b.id)}
+                  onAddBonfire={() => onAddBonfire(b)}
+                />
               ))}
             </div>
           ) : null
