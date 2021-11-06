@@ -79,7 +79,7 @@ const GlobalConference = ({
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("conference-schedule");
+  const [currentView, setCurrentView] = useState("bonfire");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -232,11 +232,12 @@ const GlobalConference = ({
     const convertedStartTime = moment(data.time)
       .tz(localTimezone)
       .utc()
-      .format("YYYY-MM-DD:HH:mm");
+      .format();
 
     const convertedEndTime = moment(convertedStartTime)
+      .utc()
       .add("hour", 1)
-      .format("YYYY-MM-DD:HH:mm");
+      .format();
 
     const bonfireInfo = {
       title: data.title,
