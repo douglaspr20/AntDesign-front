@@ -24,7 +24,7 @@ export function* getAllSessionsSaga({ payload }) {
           (res, item) => ({
             ...res,
             ...omit(item, [
-              "userid",
+              "instructorid",
               "name",
               "image",
               "descriptionspeaker",
@@ -33,7 +33,7 @@ export function* getAllSessionsSaga({ payload }) {
             speakers: [
               ...(res.speakers || []),
               {
-                id: item.userid,
+                id: item.instructorid,
                 name: item.name,
                 img: item.image,
                 linkSpeaker: item.linkspeaker,
@@ -62,7 +62,33 @@ export function* getSessionsAddedbyUserSaga({ payload }) {
   try {
     let response = yield call(getSessionsAddedbyUser, { ...payload });
     if (response.status === 200) {
-      const sessionData = response.data.sessionsUser.map((session) => session);
+      const sessionData = Object.values(
+        groupBy(response.data.sessionsUser || [], "id")
+      ).map((session) => {
+        return session.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "instructorid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
+            speakers: [
+              ...(res.speakers || []),
+              {
+                id: item.instructorid,
+                name: item.name,
+                img: item.image,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
+              },
+            ],
+          }),
+          {}
+        );
+      });
 
       yield put(sessionActions.setSessionsAddedByUser(sessionData));
     }
