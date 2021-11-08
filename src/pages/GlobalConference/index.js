@@ -65,7 +65,7 @@ const GlobalConference = ({
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
-  const [currentView, setCurrentView] = useState("participants");
+  const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
     setFilters(filter);

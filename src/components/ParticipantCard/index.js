@@ -19,7 +19,7 @@ const ParticipantCard = ({ participant }) => {
       }}
       style={{ marginTop: "1rem" }}
     >
-      {img ? (
+      {participant.img ? (
         <Avatar size={180} src={participant.img} />
       ) : (
         <Avatar size={180} style={{ fontSize: "2rem" }}>
