@@ -21,6 +21,12 @@ import { liveSaga } from "./live";
 import { postSaga } from "./post";
 import { postCommentSaga } from "./postComment";
 import { envSaga } from "./env";
+import { skillCohortSaga } from "./skillCohort"
+import { skillCohortParticipantSaga } from "./skillCohortParticipant"
+import { skillCohortResourceSaga } from "./skillCohortResource"
+import { skillCohortResourceResponseSaga } from './skillCohortResourceResponse'
+import { SkillCohortResourceResponseAssessmentSaga } from './skillCohortResourceResponseAssessment'
+import { SkillCohortResourceResponseRatingSaga } from './skillCohortResourceResponseRating'
 
 export default function* sagas() {
   yield all([
@@ -46,5 +52,11 @@ export default function* sagas() {
     ...postSaga,
     ...postCommentSaga,
     ...envSaga,
+    ...skillCohortSaga,
+    ...skillCohortParticipantSaga,
+    ...skillCohortResourceSaga,
+    ...skillCohortResourceResponseSaga,
+    ...SkillCohortResourceResponseAssessmentSaga,
+    ...SkillCohortResourceResponseRatingSaga
   ]);
 }
