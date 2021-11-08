@@ -14,7 +14,7 @@ const reducers = {
   },
   [resourcesConstants.SET_MORE]: (state, { payload }) => {
     const allSkillCohortResources = state.get("allSkillCohortResources");
-    console.log('payloadmore', payload.currentPage)
+
     return state.merge({
       allSkillCohortResources: cloneDeep([
         ...allSkillCohortResources,

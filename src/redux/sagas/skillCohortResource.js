@@ -15,7 +15,6 @@ export function* getAllResourceSaga({ payload }) {
     const response = yield call(getAllResources, { ...payload });
 
     if (response.status === 200) {
-      console.log(response.data);
       yield put(
         resourcesActions.setAllSkillCohortResources(
           response.data.skillCohortResources.count,
