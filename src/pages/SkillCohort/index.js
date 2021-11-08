@@ -23,6 +23,8 @@ const SkillCohort = ({
   userProfile,
   getAllParticipated,
   allSkillCohortParticipants,
+  allOfMySkillCohorts,
+  getAllOfMyCohort
 }) => {
   useEffect(() => {
     getAllSkillCohorts([]);
@@ -33,6 +35,7 @@ const SkillCohort = ({
   useEffect(() => {
     if (userProfile.id) {
       getAllParticipated(userProfile.id);
+      getAllOfMyCohort(userProfile.id)
     }
     // eslint-disable-next-line
   }, [userProfile]);
@@ -55,13 +58,11 @@ const SkillCohort = ({
     );
   });
 
-  const mySkillCohorts = allSkillCohorts.filter((skillCohort) => {
-    return allSkillCohortParticipants.some((participant) => {
-      return participant.SkillCohortId === skillCohort.id
-    })
+  const sortedAllOfMySkillCohorts = allOfMySkillCohorts.sort((a, b) => {
+    return a.startDate < b.startDate
   })
 
-  const displayMySkillCohorts = mySkillCohorts.map((skillCohort) => {
+  const displayMySkillCohorts = sortedAllOfMySkillCohorts.map((skillCohort) => {
 
     return (
       <SkillCohortCard

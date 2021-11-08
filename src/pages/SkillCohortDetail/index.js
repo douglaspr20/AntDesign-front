@@ -25,14 +25,23 @@ const SkillCohortDetail = ({
   createSkillCohortParticipant,
   getSkillCohortParticipant,
   skillCohortParticipant,
+  withdrawParticipation,
 }) => {
-  const [showFirewall, setShowFirewall] = useState(false);
+  const [showPremiumFirewall, setShowPremiumFirewall] = useState(false);
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
   const [hasCohortStarted, setHasCohortStarted] = useState(false);
-  const [confirmModal, setConfirmModal] = useState(false);
+  const [confirmJoinModal, setConfirmJoinModal] = useState(false);
+  const [confirmWithdrawModal, setConfirmWithdrawModal] = useState(false);
   const [isDayBeforeStartDate, setIsDayBeforeStartDate] = useState(false);
 
   const history = useHistory();
   const { id } = useParams();
+
+  const dateToday = moment()
+    .tz("America/Los_Angeles")
+    .startOf("day")
+    .format("YYYY-MM-DD HH:mm:ssZ");
 
   useEffect(() => {
     getSkillCohort(id);
@@ -42,11 +51,11 @@ const SkillCohortDetail = ({
   useEffect(() => {
     if (!isEmpty(skillCohort)) {
       const { startDate } = skillCohort;
-      const dateToday = moment().format("YYYY-MM-DD HH:mm:ssZ");
 
       if (
         dateToday ===
         moment(startDate)
+          .tz("America/Los_Angeles")
           .startOf("day")
           .subtract(1, "days")
           .format("YYYY-MM-DD HH:mm:ssZ")
@@ -54,7 +63,10 @@ const SkillCohortDetail = ({
         setHasCohortStarted(true);
         setIsDayBeforeStartDate(true);
       } else if (
-        dateToday >= moment(startDate).format("YYYY-MM-DD HH:mm:ssZ")
+        dateToday >=
+        moment(startDate)
+          .tz("America/Los_Angeles")
+          .format("YYYY-MM-DD HH:mm:ssZ")
       ) {
         setHasCohortStarted(true);
       } else {
@@ -76,31 +88,57 @@ const SkillCohortDetail = ({
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
   const handleOnJoin = () => {
     if (userProfile && userProfile.memberShip === "premium") {
       if (hasCohortStarted && skillCohortParticipant.hasAccess) {
         history.push(`${INTERNAL_LINKS.SKILL_COHORTS}/${id}/resources`);
       } else {
-        setConfirmModal(true);
+        if (!userProfile.completed) {
+          return setShowProfileCompletionFirewall(true);
+        }
+
+        setConfirmJoinModal(true);
       }
     } else {
-      setShowFirewall(true);
+      setShowPremiumFirewall(true);
     }
   };
 
-  const displayFirewall = showFirewall && (
+  const displayPremiumFirewall = showPremiumFirewall && (
     <div
       className="skill-cohort-firewall"
-      onClick={() => setShowFirewall(false)}
+      onClick={() => setShowPremiumFirewall(false)}
     >
       <div className="upgrade-notification-panel" onClick={planUpgrade}>
         <h3>
           Upgrade to a PREMIUM Membership and get unlimited access to the LAB
-          features
+          features. Click here to upgrade to PREMIUM Membership.
         </h3>
       </div>
     </div>
   );
+
+  const displayProfileCompletionFirewall = showProfileCompletionFirewall && (
+    <div
+      className="skill-cohort-firewall"
+      onClick={() => setShowProfileCompletionFirewall(false)}
+    >
+      <div className="upgrade-notification-panel" onClick={completeProfile}>
+        <h3>
+          You must fully complete your profile before joining the Project-X
+          feature. Click here to complete your profile.
+        </h3>
+      </div>
+    </div>
+  );
+
+  const withdraw = () => {
+    setConfirmWithdrawModal(true);
+  };
 
   let displayBtn;
 
@@ -135,8 +173,13 @@ const SkillCohortDetail = ({
   }
 
   const handleJoinSkillCohort = () => {
-    setConfirmModal(false);
+    setConfirmJoinModal(false);
     createSkillCohortParticipant(skillCohort.id, userProfile.id);
+  };
+
+  const handleWithdrawParticipation = () => {
+    setConfirmWithdrawModal(false);
+    withdrawParticipation(skillCohortParticipant.id);
   };
 
   const disabled =
@@ -178,6 +221,19 @@ const SkillCohortDetail = ({
           <div className="skill-cohort-detail-page-body-content">
             <Space direction="vertical" size="large">
               <Space direction="vertical">
+                <h3>How Project X works</h3>
+                <div className="details">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </div>
+              </Space>
+              <Space direction="vertical">
                 <h3>Description</h3>
                 <div className="details">{skillCohort.description}</div>
               </Space>
@@ -194,15 +250,30 @@ const SkillCohortDetail = ({
                   Finishing on on {moment(skillCohort.endDate).format("LL")}
                 </div>
               </Space>
+              {skillCohortParticipant.hasAccess &&
+                moment(skillCohort.startDate)
+                  .tz("America/Los_Angeles")
+                  .startOf("day")
+                  .format("YYYY-MM-DD HH:mm:ssZ") > dateToday && (
+                  <div className="withdraw-btn">
+                    <CustomButton
+                      text="Withdraw"
+                      htmlType="button"
+                      type="ghost"
+                      onClick={withdraw}
+                    />
+                  </div>
+                )}
             </Space>
           </div>
         </div>
-        {displayFirewall}
+        {displayPremiumFirewall}
+        {displayProfileCompletionFirewall}
         <CustomModal
-          visible={confirmModal}
+          visible={confirmJoinModal}
           title="Join this cohort?"
           subTitle="Click confirm if you want to join"
-          onCancel={() => setConfirmModal(false)}
+          onCancel={() => setConfirmJoinModal(false)}
           width={376}
         >
           <div className="confirm-modal">
@@ -210,13 +281,35 @@ const SkillCohortDetail = ({
               text="Cancel"
               type="primary outlined"
               htmlType="button"
-              onClick={() => setConfirmModal(false)}
+              onClick={() => setConfirmJoinModal(false)}
             />
             <CustomButton
               text="Confirm"
               type="primary"
               htmlType="button"
               onClick={handleJoinSkillCohort}
+            />
+          </div>
+        </CustomModal>
+        <CustomModal
+          visible={confirmWithdrawModal}
+          title="Withdraw participation?"
+          subTitle="Click confirm if you want to withdraw"
+          onCancel={() => setConfirmWithdrawModal(false)}
+          width={376}
+        >
+          <div className="confirm-modal">
+            <CustomButton
+              text="Cancel"
+              type="primary outlined"
+              htmlType="button"
+              onClick={() => setConfirmWithdrawModal(false)}
+            />
+            <CustomButton
+              text="Confirm"
+              type="primary"
+              htmlType="button"
+              onClick={handleWithdrawParticipation}
             />
           </div>
         </CustomModal>

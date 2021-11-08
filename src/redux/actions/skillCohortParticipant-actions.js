@@ -6,6 +6,7 @@ const GET_ALL_PARTICIPANT = 'GET_ALL_PARTICIPANT'
 const GET_PARTICIPATED = 'GET_PARTICIPATED';
 const SET_SKILL_COHORT_PARTICIPANT = 'SET_SKILL_COHORT_PARTICIPANT';
 const SET_ALL_SKILL_COHORT_PARTICIPANTS = 'SET_ALL_SKILL_COHORT_PARTICIPANTS';
+const WITHDRAW_PARTICIPATION = "WITHDRAW_PARTICIPATION"
 
 export const constants = {
 	GET_SKILL_COHORT_PARTICIPANT,
@@ -13,7 +14,8 @@ export const constants = {
 	SET_SKILL_COHORT_PARTICIPANT,
 	GET_PARTICIPATED,
 	SET_ALL_SKILL_COHORT_PARTICIPANTS,
-  GET_ALL_PARTICIPANT
+  GET_ALL_PARTICIPANT,
+  WITHDRAW_PARTICIPATION
 };
 
 const getSkillCohortParticipant = createAction(GET_SKILL_COHORT_PARTICIPANT, (SkillCohortId, UserId) => ({
@@ -32,6 +34,7 @@ const createSkillCohortParticipant = createAction(CREATE_SKILL_COHORT_PARTICIPAN
 	UserId,
 }));
 const getAllSkillCohortParticipants = createAction(GET_ALL_PARTICIPANT, (SkillCohortId) => ({ SkillCohortId }))
+const withdrawParticipation = createAction(WITHDRAW_PARTICIPATION, (SkillCohortParticipantId) => ({ SkillCohortParticipantId }))
 
 export const actions = {
 	getSkillCohortParticipant,
@@ -39,5 +42,6 @@ export const actions = {
 	setSkillCohortParticipant,
 	getAllParticipated,
 	setAllSkillCohortParticipants,
-  getAllSkillCohortParticipants
+  getAllSkillCohortParticipants,
+  withdrawParticipation
 };
