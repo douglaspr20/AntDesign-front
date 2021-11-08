@@ -19,14 +19,23 @@ const ParticipantCard = ({ participant }) => {
       }}
       style={{ marginTop: "1rem" }}
     >
-      <Avatar size={180} icon={<UserOutlined />} />
+      {img ? (
+        <Avatar size={180} src={participant.img} />
+      ) : (
+        <Avatar size={180} style={{ fontSize: "2rem" }}>
+          {participant.abbrName}
+        </Avatar>
+      )}
 
       <div style={{ textAlign: "center" }}>
-        <p className="participant-name">Douglas Perez</p>
+        <p className="participant-name">
+          {participant.firstName} {participant.lastName}
+        </p>
+        <p className="participant-name">{participant.about}</p>
         <div>
-          <SpecialtyItem title="agility" />
-          <SpecialtyItem title="Culture" />
-          <SpecialtyItem title="Design Thinking" />
+          {participant.topicsOfInterest.map((topic) => (
+            <SpecialtyItem title={topic} />
+          ))}
         </div>
       </div>
     </Card>

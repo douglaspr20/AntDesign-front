@@ -82,15 +82,22 @@ export function* getSessionsAddedbyUserSaga({ payload }) {
 }
 
 export function* getParticipantsSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-  try {
-    let response = yield call(getParticipants, { ...payload });
-    if (response.status === 200) {
-      const participants = response.data.participants.map(
-        (participant) => participant
-      );
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(sessionActions.setSessionLoading(true));
+  }
 
-      yield put(sessionActions.setParticipants(participants));
+  try {
+    let response = yield call(getParticipants, payload);
+    if (response.status === 200) {
+      yield put(
+        sessionActions.setParticipants(
+          response.data.participants.rows,
+          payload.page || 1,
+          response.data.participants.count
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -99,6 +106,7 @@ export function* getParticipantsSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
+    yield put(sessionActions.setSessionLoading(false));
   }
 }
 

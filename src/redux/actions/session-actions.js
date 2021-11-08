@@ -41,14 +41,17 @@ export const setSessionsAddedByUser = createAction(
   })
 );
 
-export const getParticipants = createAction(GET_PARTICIPANTS, (filters) => ({
-  filters,
-}));
+export const getParticipants = createAction(
+  GET_PARTICIPANTS,
+  (filters) => filters
+);
 
 export const setParticipants = createAction(
   SET_PARTICIPANTS,
-  (participants) => ({
+  (participants, page, total) => ({
     participants,
+    page,
+    total,
   })
 );
 

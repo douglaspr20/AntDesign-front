@@ -20,17 +20,15 @@ export const reducers = {
   [sessionConstants.SET_PARTICIPANTS]: (state, { payload }) => {
     if (payload.page === 1) {
       return state.merge({
-        participants: cloneDeep(payload.podcasts),
-        currentPage: payload.page,
+        participants: cloneDeep(payload.participants),
+        currentPageParticipants: payload.page,
         countOfResults: payload.total,
       });
     }
-
     const participants = state.get("participants");
-
     return state.merge({
       participants: cloneDeep([...participants, payload.participants]),
-      currentPage: payload.page,
+      currentPageParticipants: payload.page,
       countOfResults: payload.total,
     });
   },
@@ -48,7 +46,7 @@ export const initialState = () =>
     sessionsUser: [],
     participants: [],
     countOfResults: 0,
-    currentPage: 1,
+    currentPageParticipants: 1,
   });
 
 export default handleActions(reducers, initialState());
