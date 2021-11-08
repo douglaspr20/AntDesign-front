@@ -85,12 +85,14 @@ import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
 import {
   getAllSkillCohorts,
   getSkillCohort,
+  getAllOfMyCohort
 } from "./module/skillCohort"
 import {
   getSkillCohortParticipant,
   getAllSkillCohortParticipants,
   createSkillCohortParticipant,
-  getParticipated
+  getParticipated,
+  withdrawParticipation
 } from "./module/skillCohortParticipant"
 
 import {
@@ -192,6 +194,7 @@ export {
   getAllSkillCohorts,
   getSkillCohort,
   getSkillCohortParticipant,
+  withdrawParticipation,
   getParticipated,
   getAllSkillCohortParticipants,
   createSkillCohortParticipant,

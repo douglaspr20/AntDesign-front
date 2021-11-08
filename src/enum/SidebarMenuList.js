@@ -15,6 +15,8 @@ import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconGlobal from "images/icon-global.svg";
+import IconFlask from "images/icon-flask-outline.svg"
+// import IconGlobal from "images/icon-global.svg";
 
 export default {
   TOP_MENUS: [
@@ -35,7 +37,7 @@ export default {
     },
     {
       label: "Project X",
-      icon: IconStoreFrontOutline,
+      icon: IconFlask,
       url: INTERNAL_LINKS.SKILL_COHORTS,
     },
     {

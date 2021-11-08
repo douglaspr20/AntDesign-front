@@ -17,3 +17,9 @@ export const getAllSkillCohorts = async (filter) => {
 export const getSkillCohort = async (id) => {
 	return await httpClient.get(`private/skill-cohort/${id}`);
 };
+
+export const getAllOfMyCohort = async (data) => {
+  const { UserId } = data
+
+  return await httpClient.get(`private/skill-cohort/my-cohort/${UserId}`)
+}

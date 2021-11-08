@@ -21,3 +21,9 @@ export const getSkillCohortParticipant = async (data) => {
 export const createSkillCohortParticipant = async (data) => {
 	return await httpClient.post(`private/skill-cohort/participant`, { ...data });
 };
+
+export const withdrawParticipation = async (data) => {
+  const { SkillCohortParticipantId } = data
+
+  return await httpClient.delete(`private/skill-cohort/participant/${SkillCohortParticipantId}`)
+}

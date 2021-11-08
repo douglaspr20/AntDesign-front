@@ -7,6 +7,9 @@ export const reducers = {
 	[skillCohortConstants.SET_SKILL_COHORT]: (state, { payload }) => {
 		return state.merge({ ...payload });
 	},
+	[skillCohortConstants.SET_ALL_OF_MY_COHORT]: (state, { payload }) => {
+		return state.merge({ ...payload });
+	},
 	[skillCohortConstants.SET_ALL_SKILL_COHORT]: (state, { payload }) => {
 		return state.merge({ ...payload });
 	},
@@ -15,6 +18,7 @@ export const reducers = {
 export const initialState = () => {
 	return Map({
 		allSkillCohorts: [],
+    allOfMySkillCohorts: [],
 		skillCohort: {},
 	});
 };
