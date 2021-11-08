@@ -5,7 +5,7 @@ import { constants as responseRatingConstants } from '../actions/skillCohortReso
 
 const reducers = {
 	[responseRatingConstants.SET_ALL_RESPONSE_RATING]: (state, { payload }) => {
-		console.log('pretend', payload);
+
 		return state.merge({ ...payload });
 	},
 };
