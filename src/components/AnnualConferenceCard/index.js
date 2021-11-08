@@ -26,12 +26,13 @@ const AnnualConferenceCard = ({
   );
   const offset = timezone.offset;
 
-  const convertedStartTime = convertToLocalTime(
-    moment(session.startTime).utcOffset(offset, false)
-  );
-  const convertedEndTime = convertToLocalTime(
-    moment(session.endTime).utcOffset(offset, false)
-  );
+  const convertedStartTime = moment(session.startTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
+
+  const convertedEndTime = moment(session.endTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
 
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
@@ -51,8 +52,10 @@ const AnnualConferenceCard = ({
     }&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
     )}/${convertToLocalTime(convertedEndTime).format(
-      "YYYYMMDDTHHmmss"
-    )}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+      "YYYYMMDDTHHmm"
+    )}&details=${
+      session.description
+    }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -64,7 +67,11 @@ const AnnualConferenceCard = ({
       session.title
     }&st=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(convertedEndTime).format("HHmmss")}`;
+    )}&dur${convertToLocalTime(convertedEndTime).format(
+      "HHmmss"
+    )}&description=${
+      session.description
+    }&location=${"https://www.hackinghrlab.io/global-conference"}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 

@@ -198,8 +198,6 @@ class EventCard extends React.Component {
       onMenuClick,
     } = this.props;
 
-    console.log(status);
-
     return (
       <div
         className={clsx("event-card", className)}
