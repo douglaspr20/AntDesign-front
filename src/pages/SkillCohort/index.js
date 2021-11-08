@@ -59,7 +59,15 @@ const SkillCohort = ({
   });
 
   const sortedAllOfMySkillCohorts = allOfMySkillCohorts.sort((a, b) => {
-    return a.startDate < b.startDate
+    if (moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") > moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")) {
+      return 1
+    } 
+
+    if (moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") < moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")) {
+      return -1
+    } 
+
+    return 0
   })
 
   const displayMySkillCohorts = sortedAllOfMySkillCohorts.map((skillCohort) => {
