@@ -82,40 +82,6 @@ import {
   markeToUnRead,
 } from "./module/notification";
 import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
-import {
-  getAllSkillCohorts,
-  getSkillCohort,
-  getAllOfMyCohort
-} from "./module/skillCohort"
-import {
-  getSkillCohortParticipant,
-  getAllSkillCohortParticipants,
-  createSkillCohortParticipant,
-  getParticipated,
-  withdrawParticipation
-} from "./module/skillCohortParticipant"
-
-import {
-  getResource,
-  getAllResources
-} from './module/skillCohortResource'
-
-import {
-  getAllResourceResponses,
-  createResourceResponse,
-  getResourceResponse,
-  updateResourceResponse
-} from './module/skillCohortResourceResponse'
-
-import {
-  upsertSkillCohortResourceResponseAssessment,
-  getAllSkillCohortResourceResponseAssessment
-} from './module/skillCohortResourceResponseAssessment'
-
-import {
-  getAllResponseRating,
-  upsertResponseRating
-} from './module/skillCohortResourceResponseRating'
 
 import { getEditorSignature } from "./module/env";
 
@@ -190,23 +156,5 @@ export {
   markConferenceLibraryViewed,
   markPodcastViewed,
   markPodcastseriesViewed,
-  getAllSkillCohorts,
-  getSkillCohort,
-  getAllOfMyCohort,
   markeToUnRead,
-  getSkillCohortParticipant,
-  withdrawParticipation,
-  getParticipated,
-  getAllSkillCohortParticipants,
-  createSkillCohortParticipant,
-  getResource,
-  getAllResources,
-  getAllResourceResponses,
-  createResourceResponse,
-  getResourceResponse,
-  updateResourceResponse,
-  upsertSkillCohortResourceResponseAssessment,
-  getAllSkillCohortResourceResponseAssessment,
-  getAllResponseRating,
-  upsertResponseRating
 };
