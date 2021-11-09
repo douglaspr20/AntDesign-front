@@ -20,7 +20,6 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
-import IconStoreFrontOutline from "images/icon-storefront-outline.svg"
 import IconLibrary from "images/icon-library.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -29,7 +28,6 @@ import { channelSelector } from "redux/selectors/channelSelector";
 import { courseSelector } from "redux/selectors/courseSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
 import { podcastSelector } from "redux/selectors/podcastSelector";
-import { skillCohortSelector } from "redux/selectors/skillCohortSelector"
 
 import "./style.scss";
 
@@ -114,13 +112,6 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconLibrary,
         label: `Library Item`,
-      };
-    }
-
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SKILL_COHORTS}/`)) {
-      pathInfo = {
-        icon: IconStoreFrontOutline,
-        label: `ProjectX - Cohort: ${this.props.skillCohort.title || ''}`,
       };
     }
 
@@ -230,7 +221,6 @@ const mapStateToProps = (state) => ({
   selectedCourse: courseSelector(state).course,
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
-  skillCohort: skillCohortSelector(state).skillCohort,
 });
 
 const mapDispatchToProps = {

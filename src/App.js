@@ -93,9 +93,7 @@ class App extends Component {
 
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_EVENT, (data) => {
       if (data.UserId == null || data.UserId === this.props.userProfile.id) {
-        if (isEmpty(data.onlyFor) || data.onlyFor.includes(this.props.userProfile.id)) {
-          this.props.pushNotification(data);
-        }
+        this.props.pushNotification(data);
       }
     });
 

@@ -142,14 +142,6 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
-          path={INTERNAL_LINKS.SKILL_COHORTS}
-          render={(props) => <MainHeader {...props} />}
-        />
-        <PrivateRoute
-          path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id`}
-          render={(props) => <MainHeader {...props} />}
-        />
-        <PrivateRoute
           path={INTERNAL_LINKS.LIBRARY_ITEM}
           render={(props) => <MainHeader {...props} />}
         />
