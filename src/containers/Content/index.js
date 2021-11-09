@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
+import ReactGA from 'react-ga';
+
 // Pages
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
@@ -39,8 +41,16 @@ import LibraryItemPage from "pages/LibraryItem";
 import { INTERNAL_LINKS } from "enum";
 
 import { PrivateRoute } from "components";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 class Content extends Component {
+  componentDidMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
+    this.props.history.listen((location) => {
+      ReactGA.pageview(location.pathname);
+    }).bind(this);
+  }
+
   render() {
     return (
       <Layout.Content>
@@ -202,4 +212,4 @@ class Content extends Component {
   }
 }
 
-export default Content;
+export default withRouter(Content);
