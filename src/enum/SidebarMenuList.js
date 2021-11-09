@@ -36,7 +36,7 @@ export default {
       url: INTERNAL_LINKS.CHANNELS,
     },
     {
-      label: "Project X",
+      label: "ProjectX",
       icon: IconFlask,
       url: INTERNAL_LINKS.SKILL_COHORTS,
     },

@@ -192,6 +192,7 @@ export {
   markPodcastseriesViewed,
   markeToUnRead,
   getAllSkillCohorts,
+  getAllOfMyCohort,
   getSkillCohort,
   getSkillCohortParticipant,
   withdrawParticipation,
