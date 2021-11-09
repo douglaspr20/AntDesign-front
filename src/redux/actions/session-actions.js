@@ -48,10 +48,8 @@ export const getParticipants = createAction(
 
 export const setParticipants = createAction(
   SET_PARTICIPANTS,
-  (participants, page, total) => ({
+  (participants) => ({
     participants,
-    page,
-    total,
   })
 );
 

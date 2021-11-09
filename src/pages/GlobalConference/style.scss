@@ -30,12 +30,11 @@
   }
 
   &-container {
-    width: 100%;
-    padding: 3rem 20%;
+     padding: 3rem 20%;
     margin: 0 auto;
     height: 100%;
-    display: grid;
-    grid-template-rows: auto auto 1fr;
+    display: flex;
+    // grid-template-rows: auto auto 1fr;
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
@@ -66,7 +65,7 @@
          width: 60%;
          left: 30%;
        }
-       //max-width: 1200px;
+     
 
        @media (max-width: 1500px){
         left: 32%;

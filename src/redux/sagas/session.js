@@ -91,13 +91,7 @@ export function* getParticipantsSaga({ payload }) {
   try {
     let response = yield call(getParticipants, payload);
     if (response.status === 200) {
-      yield put(
-        sessionActions.setParticipants(
-          response.data.participants.rows,
-          payload.page || 1,
-          response.data.participants.count
-        )
-      );
+      yield put(sessionActions.setParticipants(response.data.participants));
     }
   } catch (error) {
     console.log(error);

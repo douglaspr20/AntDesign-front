@@ -18,18 +18,8 @@ export const reducers = {
     });
   },
   [sessionConstants.SET_PARTICIPANTS]: (state, { payload }) => {
-    if (payload.page === 1) {
-      return state.merge({
-        participants: cloneDeep(payload.participants),
-        currentPageParticipants: payload.page,
-        countOfResults: payload.total,
-      });
-    }
-    const participants = state.get("participants");
     return state.merge({
-      participants: cloneDeep([...participants, payload.participants]),
-      currentPageParticipants: payload.page,
-      countOfResults: payload.total,
+      participants: cloneDeep(payload.participants),
     });
   },
   [sessionConstants.SET_SESSION_LOADING]: (state, { payload }) => {
@@ -45,8 +35,6 @@ export const initialState = () =>
     allSessions: [],
     sessionsUser: [],
     participants: [],
-    countOfResults: 0,
-    currentPageParticipants: 1,
   });
 
 export default handleActions(reducers, initialState());
