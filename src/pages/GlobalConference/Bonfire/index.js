@@ -42,7 +42,7 @@ const Bonfire = ({
           return {
             ...item,
             date: sTime.format("MMM, D, YYYY"),
-            period: `${sTime.format("MMMM, D")} | From ${sTime.format(
+            period: `${sTime.format("MMMM D")} | From ${sTime.format(
               "h:mm a"
             )} to ${eTime.format("h:mm a")}`,
             hours: `From ${sTime.format("h:mm a")} to ${eTime.format(

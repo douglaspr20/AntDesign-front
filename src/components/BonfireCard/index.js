@@ -88,7 +88,7 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
             <CustomButton
               type="primary outlined"
               size="md"
-              text="Disjoin"
+              text="Withdraw"
               onClick={onRemoveBonfire}
               className="remove-buttom"
             />
