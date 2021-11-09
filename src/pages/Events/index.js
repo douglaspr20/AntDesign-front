@@ -284,8 +284,6 @@ const EventsPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("****** rendering ******");
-
   return (
     <div className="events-page">
       <EventFilterDrawer
