@@ -34,6 +34,7 @@ function EpisodeCard({
   isInternalLink,
   episode,
 }) {
+
   const {
     id,
     title,
@@ -42,7 +43,7 @@ function EpisodeCard({
     imageUrl: episode_cover,
     topics: categories,
     viewed,
-  } = episode;
+  } = episode || {};
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
