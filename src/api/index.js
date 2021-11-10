@@ -10,6 +10,8 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   uploadResume,
   deleteResume,
 } from "./module/user";
@@ -82,6 +84,7 @@ import {
   markeToUnRead,
 } from "./module/notification";
 import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import { createBonfire, getAllBonfires } from "./module/bonfire";
 import {
   getAllSkillCohorts,
   getSkillCohort,
@@ -171,6 +174,8 @@ export {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   markeToRead,
   uploadResume,
   deleteResume,
@@ -206,4 +211,6 @@ export {
   getAllSkillCohortResourceResponseAssessment,
   getAllResponseRating,
   upsertResponseRating,
+  createBonfire,
+  getAllBonfires,
 };

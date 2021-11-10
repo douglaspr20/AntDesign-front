@@ -206,6 +206,8 @@
     }
 
   }
+
+  
 }
 
 .sub-menu-item-global-conference {
@@ -227,4 +229,15 @@ a:active,
 .sub-menu-item-global-conference:active {
   border-bottom: 2px solid $color-primary !important;
   color: $color-primary !important;
+}
+
+
+.ant-modal-footer .ant-btn-primary{
+  background: $color-primary;
+  border: none;
+}
+
+.ant-modal-footer .ant-btn-primary:hover, .ant-btn-primary:focus{
+  background: $color-primary;
+  border-color: $color-primary;
 }
