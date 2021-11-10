@@ -43,6 +43,7 @@ import Bonfire from "./Bonfire";
 
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
+import Participants from "./Participants";
 import { createBonfire } from "redux/actions/bonfire-actions";
 import "./style.scss";
 
@@ -360,7 +361,7 @@ const GlobalConference = ({
               >
                 <Link
                   to="/global-conference"
-                  onClick={() => comingSoon("Participants")}
+                  onClick={() => handleView("participants")}
                 >
                   Participants
                 </Link>
@@ -425,6 +426,8 @@ const GlobalConference = ({
         )}
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "speakers" && <Speakers />}
+
+        {currentView === "participants" && <Participants />}
       </div>
 
       <Modal

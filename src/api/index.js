@@ -83,7 +83,11 @@ import {
   markeToRead,
   markeToUnRead,
 } from "./module/notification";
-import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import {
+  getAllSessions,
+  getSessionsAddedbyUser,
+  getParticipants,
+} from "./module/session";
 import { createBonfire, getAllBonfires } from "./module/bonfire";
 import {
   getAllSkillCohorts,
@@ -99,26 +103,21 @@ import {
 } from "./module/skillCohortParticipant";
 
 import { getResource, getAllResources } from "./module/skillCohortResource";
-
 import {
   getAllResourceResponses,
   createResourceResponse,
   getResourceResponse,
   updateResourceResponse,
 } from "./module/skillCohortResourceResponse";
-
 import {
   upsertSkillCohortResourceResponseAssessment,
   getAllSkillCohortResourceResponseAssessment,
 } from "./module/skillCohortResourceResponseAssessment";
-
 import {
   getAllResponseRating,
   upsertResponseRating,
 } from "./module/skillCohortResourceResponseRating";
-
 import { getEditorSignature } from "./module/env";
-
 export {
   signIn,
   signUp,
@@ -171,6 +170,7 @@ export {
   getNotifications,
   getAllSessions,
   getSessionsAddedbyUser,
+  getParticipants,
   attendToGlobalConference,
   addSession,
   removeSession,
