@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import { connect } from "react-redux";
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
@@ -53,9 +53,11 @@ import { homeSelector } from "redux/selectors/homeSelector";
 class Content extends Component {
   componentDidMount() {
     ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
-    this.props.history.listen((location) => {
-      ReactGA.pageview(location.pathname);
-    }).bind(this);
+    this.props.history
+      .listen((location) => {
+        ReactGA.pageview(location.pathname);
+      })
+      .bind(this);
   }
 
   render() {

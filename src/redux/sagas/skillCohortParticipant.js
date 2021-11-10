@@ -159,7 +159,7 @@ function* watchParticipant() {
   yield takeLatest(
     skillCohortParticipantsConstants.WITHDRAW_PARTICIPATION,
     withdrawParticipationSaga
-  )
+  );
 }
 
 export const skillCohortParticipantSaga = [fork(watchParticipant)];

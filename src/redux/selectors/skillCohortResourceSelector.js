@@ -10,7 +10,7 @@ const resultSelector = createSelector(
       skillCohortResource: payload.get("skillCohortResource"),
       countOfResults: payload.get("countOfResults"),
       currentPage: payload.get("currentPage"),
-      loading: payload.get("loading")
+      loading: payload.get("loading"),
     };
   }
 );

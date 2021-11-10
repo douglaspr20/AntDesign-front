@@ -170,11 +170,13 @@ const SkillCohortResources = ({
     },
     {
       title: "Meetings",
-      content: () => "Meeting Links"
+      content: () => "Meeting Links",
     },
     {
       title: "Participants",
-      content: () => <div className="display-participants">{displayParticipants}</div>,
+      content: () => (
+        <div className="display-participants">{displayParticipants}</div>
+      ),
     },
     {
       title: "Cohort Analytics",

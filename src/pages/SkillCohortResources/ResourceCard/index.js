@@ -1,7 +1,7 @@
 import { CustomButton, CustomModal, CustomInput } from "components";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Empty } from 'antd'
+import { Empty } from "antd";
 import moment from "moment-timezone";
 import { isEmpty } from "lodash";
 import { Space, Form, Radio } from "antd";
@@ -368,10 +368,16 @@ const ResourceCard = (props) => {
         width={613}
       >
         <div className="view-comments">
-          {skillCohortResource.SkillCohortResourceResponses.map((response, index) => {
-            return <div key={index}>{`${index + 1} - ${response.response}`}</div>;
-          }) || []}
-          {isEmpty(skillCohortResource.SkillCohortResourceResponses) && <Empty />}
+          {skillCohortResource.SkillCohortResourceResponses.map(
+            (response, index) => {
+              return (
+                <div key={index}>{`${index + 1} - ${response.response}`}</div>
+              );
+            }
+          ) || []}
+          {isEmpty(skillCohortResource.SkillCohortResourceResponses) && (
+            <Empty />
+          )}
         </div>
       </CustomModal>
     </div>

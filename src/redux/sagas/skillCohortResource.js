@@ -75,7 +75,7 @@ export function* getResourceSaga({ payload }) {
 function* watchResourceSaga() {
   yield takeLatest(resourcesConstants.GET_ALL_RESOURCE, getAllResourceSaga);
   yield takeLatest(resourcesConstants.GET_RESOURCE, getResourceSaga);
-  yield takeLatest(resourcesConstants.GET_MORE, getMoreResourceSaga)
+  yield takeLatest(resourcesConstants.GET_MORE, getMoreResourceSaga);
 }
 
 export const skillCohortResourceSaga = [fork(watchResourceSaga)];

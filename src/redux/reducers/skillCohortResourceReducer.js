@@ -29,7 +29,7 @@ const reducers = {
   },
   [resourcesConstants.SET_LOADING]: (state, { payload }) => {
     return state.merge({
-      loading: payload.loading
+      loading: payload.loading,
     });
   },
 };

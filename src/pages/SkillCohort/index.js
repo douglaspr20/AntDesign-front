@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
-import { Tabs } from 'components'
+import { Tabs } from "components";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
@@ -24,18 +24,18 @@ const SkillCohort = ({
   getAllParticipated,
   allSkillCohortParticipants,
   allOfMySkillCohorts,
-  getAllOfMyCohort
+  getAllOfMyCohort,
 }) => {
   useEffect(() => {
     getAllSkillCohorts([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [currentTab, setCurrentTab] = useState("0")
+  const [currentTab, setCurrentTab] = useState("0");
 
   useEffect(() => {
     if (userProfile.id) {
       getAllParticipated(userProfile.id);
-      getAllOfMyCohort(userProfile.id)
+      getAllOfMyCohort(userProfile.id);
     }
     // eslint-disable-next-line
   }, [userProfile]);
@@ -59,19 +59,24 @@ const SkillCohort = ({
   });
 
   const sortedAllOfMySkillCohorts = allOfMySkillCohorts.sort((a, b) => {
-    if (moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") > moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")) {
-      return 1
-    } 
+    if (
+      moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") >
+      moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")
+    ) {
+      return 1;
+    }
 
-    if (moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") < moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")) {
-      return -1
-    } 
+    if (
+      moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") <
+      moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")
+    ) {
+      return -1;
+    }
 
-    return 0
-  })
+    return 0;
+  });
 
   const displayMySkillCohorts = sortedAllOfMySkillCohorts.map((skillCohort) => {
-
     return (
       <SkillCohortCard
         key={skillCohort.id}
@@ -85,23 +90,23 @@ const SkillCohort = ({
     {
       title: "All Cohorts",
       content: () => {
-        return <div className="skill-cohort-list">{displaySkillCohorts}</div>
-      }
+        return <div className="skill-cohort-list">{displaySkillCohorts}</div>;
+      },
     },
     {
       title: "My Cohorts",
       content: () => {
-        return <div className="skill-cohort-list">{displayMySkillCohorts}</div>
-      }
-    }
-  ]
+        return <div className="skill-cohort-list">{displayMySkillCohorts}</div>;
+      },
+    },
+  ];
 
   return (
     <div className="skill-cohort-page">
       <SkillCohortFilterDrawer onChange={handleFilterChange} />
       <div className="skill-cohort-page-container">
         <div className="search-results-container">
-          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab}/>
+          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
         </div>
       </div>
     </div>
