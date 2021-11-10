@@ -140,6 +140,15 @@
 
   &-tabs {
     overflow-x: visible;
+    .ant-tabs > .ant-tabs-nav,
+    .ant-tabs > div > .ant-tabs-nav {
+      position: fixed;
+      width: 50%;
+      padding-top: 20px;
+      margin-top: 183px;
+      z-index: 19;
+      background: $color-background;
+    }
 
     .ant-tabs-nav-wrap {
       justify-content: center !important;
