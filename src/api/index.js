@@ -10,6 +10,8 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   uploadResume,
   deleteResume,
 } from "./module/user";
@@ -86,9 +88,36 @@ import {
   getSessionsAddedbyUser,
   getParticipants,
 } from "./module/session";
+import { createBonfire, getAllBonfires } from "./module/bonfire";
+import {
+  getAllSkillCohorts,
+  getSkillCohort,
+  getAllOfMyCohort,
+} from "./module/skillCohort";
+import {
+  getSkillCohortParticipant,
+  getAllSkillCohortParticipants,
+  createSkillCohortParticipant,
+  getParticipated,
+  withdrawParticipation,
+} from "./module/skillCohortParticipant";
 
+import { getResource, getAllResources } from "./module/skillCohortResource";
+import {
+  getAllResourceResponses,
+  createResourceResponse,
+  getResourceResponse,
+  updateResourceResponse,
+} from "./module/skillCohortResourceResponse";
+import {
+  upsertSkillCohortResourceResponseAssessment,
+  getAllSkillCohortResourceResponseAssessment,
+} from "./module/skillCohortResourceResponseAssessment";
+import {
+  getAllResponseRating,
+  upsertResponseRating,
+} from "./module/skillCohortResourceResponseRating";
 import { getEditorSignature } from "./module/env";
-
 export {
   signIn,
   signUp,
@@ -145,6 +174,8 @@ export {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   markeToRead,
   uploadResume,
   deleteResume,
@@ -162,4 +193,24 @@ export {
   markPodcastViewed,
   markPodcastseriesViewed,
   markeToUnRead,
+  getAllSkillCohorts,
+  getAllOfMyCohort,
+  getSkillCohort,
+  getSkillCohortParticipant,
+  withdrawParticipation,
+  getParticipated,
+  getAllSkillCohortParticipants,
+  createSkillCohortParticipant,
+  getResource,
+  getAllResources,
+  getAllResourceResponses,
+  createResourceResponse,
+  getResourceResponse,
+  updateResourceResponse,
+  upsertSkillCohortResourceResponseAssessment,
+  getAllSkillCohortResourceResponseAssessment,
+  getAllResponseRating,
+  upsertResponseRating,
+  createBonfire,
+  getAllBonfires,
 };
