@@ -14,6 +14,7 @@ import {
   removeBonfire,
   uploadResume,
   deleteResume,
+  changePassword
 } from "./module/user";
 import {
   getAllEvents,
@@ -123,6 +124,7 @@ export {
   signUp,
   getUserFromId,
   updateUser,
+  changePassword,
   upgradePlan,
   getAllEvents,
   getEvent,
