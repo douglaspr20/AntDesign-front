@@ -35,5 +35,5 @@ export default {
   POST: "/post",
   LIBRARY_ITEM: "/library-item",
   PARTICIPANTS: "/participants",
-  SKILL_COHORTS: "/skill-cohorts",
+  PROJECTX: "/projectx",
 };
