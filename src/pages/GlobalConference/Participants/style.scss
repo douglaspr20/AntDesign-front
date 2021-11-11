@@ -1,0 +1,27 @@
+@import "../../../styles/main.scss";
+
+.participants{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 14rem;
+   text-align: center;
+ 
+ h2{
+   width: 100%;
+ }
+ 
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    justify-content: center;
+    margin-bottom: 5rem;
+   
+  }
+}

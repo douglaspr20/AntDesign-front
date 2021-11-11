@@ -121,7 +121,18 @@ const NotificationPage = ({
             rel="noopener noreferrer"
             onClick={() => markNotificationToRead([noti.id], userProfile.id)}
           >
-            Go to event
+            Go to Event
+          </a>
+        )}
+        {noti.type === "resource" && (
+          <a
+            className="notification-list-item-link"
+            href={noti.meta.resourceLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => markNotificationToRead([noti.id], userProfile.id)}
+          >
+            Go to Resource
           </a>
         )}
         {noti.type === "podcast" && (

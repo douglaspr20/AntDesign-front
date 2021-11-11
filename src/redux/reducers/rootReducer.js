@@ -22,6 +22,13 @@ import sessionReducer from "./sessionReducer";
 import liveReducer from "./liveReducer";
 import postReducer from "./postReducer";
 import postCommentReducer from "./postCommentReducer";
+import bonfireReducer from "./bonfireReducer";
+import skillCohortReducer from "./skillCohortReducer"
+import skillCohortParticipantReducer from "./skillCohortParticipantReducer"
+import skillCohortResourceReducer from "./skillCohortResourceReducer"
+import skillCohortResourceResponseReducer from './skillCohortResourceResponseReducer'
+import skillCohortResourceResponseAssessmentReducer from './skillCohortResourceResponseAssessmentReducer'
+import skillCohortResourceResponseRating from './skillCohortResourceResponseRatingReducer'
 
 export default combineReducers({
   home: homeReducer,
@@ -46,4 +53,11 @@ export default combineReducers({
   live: liveReducer,
   post: postReducer,
   postComment: postCommentReducer,
+  bonfires: bonfireReducer,
+  skillCohort: skillCohortReducer,
+  skillCohortParticipant: skillCohortParticipantReducer,
+  skillCohortResource: skillCohortResourceReducer,
+  skillCohortResourceResponse: skillCohortResourceResponseReducer,
+  skillCohortResourceResponseAssessment: skillCohortResourceResponseAssessmentReducer,
+  skillCohortResourceResponseRating: skillCohortResourceResponseRating
 });
