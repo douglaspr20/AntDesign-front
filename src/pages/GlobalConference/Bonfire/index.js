@@ -7,6 +7,7 @@ import { getBonfires } from "redux/actions/bonfire-actions";
 import { addBonfire, removeBonfire } from "redux/actions/home-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { convertToLocalTime } from "utils/format";
+//import "./style.scss";
 
 const Bonfire = ({
   getBonfires,

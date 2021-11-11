@@ -19,7 +19,7 @@ const Participants = ({ participants, userProfile, getParticipants }) => {
   return (
     <div className="participants">
       <div className="participants-container">
-        <h2>Recommended Participants To Connect With</h2>
+        <h2>{participants.length} Recommended Participants To Connect With</h2>
         <div className="participants-list">
           {participants.map((participant, i) => (
             <ParticipantCard key={i} participant={participant} />
