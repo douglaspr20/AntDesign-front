@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import moment from "moment";
+import { Redirect, Link } from "react-router-dom";
+import moment from "moment-timezone";
 import jsPdf from "jspdf";
-import { Menu, notification } from "antd";
+import { Menu, notification, Modal, Form } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { CustomButton, Tabs, GlobalConferenceFilterPanel } from "components";
-import ConferenceList from "./ConferenceList";
-import FilterDrawer from "./FilterDrawer";
+import {
+  CustomButton,
+  Tabs,
+  GlobalConferenceFilterPanel,
+  CustomInput,
+  CustomCheckbox,
+  CustomSelect,
+} from "components";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -19,17 +24,28 @@ import {
 } from "redux/actions/home-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 import {
   addToMyEventList,
+  getAllEvent,
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
-import "./style.scss";
-import { Link } from "react-router-dom";
 import { formatAnnualConference } from "utils/formatPdf";
+import Emitter from "services/emitter";
+
+import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import ConferenceList from "./ConferenceList";
+import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
+import Bonfire from "./Bonfire";
+
+import CategoriesSelect from "components/CategoriesSelect";
+import Speakers from "./Speakers";
+import Participants from "./Participants";
+import { createBonfire } from "redux/actions/bonfire-actions";
+import "./style.scss";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -40,10 +56,14 @@ same day at the same time. You can also download the calendar
 invites to save the date. Finally, you can find the speakers and 
 connect with other participants. Enjoy!
 `;
-const TAB_NUM = 6;
+const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
+  allCategories,
+  allEvents,
+  getAllEvent,
+  createBonfire,
   userProfile,
   getAllSessions,
   getSessionsAddedbyUser,
@@ -53,11 +73,14 @@ const GlobalConference = ({
   setLoading,
   attendToGlobalConference,
 }) => {
+  const [bonfireForm] = Form.useForm();
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
+  const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
@@ -84,15 +107,17 @@ const GlobalConference = ({
   // };
 
   const onAttend = () => {
-    const globalEvent = userProfile.events.find(
+    const globalEvent = allEvents.find(
       (event) => event.isAnnualConference === 1
     );
-    if (userProfile.attendedToConference === 0 && globalEvent) {
-      addToMyEventList(userProfile.attendedToConference === 1 && globalEvent);
-    } else if (userProfile.attendedToConference === 1 && globalEvent) {
+
+    if (userProfile.attendedToConference === 0) {
+      attendToGlobalConference();
+      addToMyEventList(globalEvent);
+    } else {
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
-    } else attendToGlobalConference();
+    }
   };
 
   const comingSoon = (section) => {
@@ -149,6 +174,10 @@ const GlobalConference = ({
     }
   }, [getSessionsAddedbyUser, userProfile]);
 
+  useEffect(() => {
+    getAllEvent();
+  }, [getAllEvent]);
+
   const downloadPdf = async () => {
     setLoading(true);
 
@@ -177,6 +206,65 @@ const GlobalConference = ({
     pdf.save("Personalizated Agenda.pdf");
 
     setLoading(false);
+  };
+
+  const onAddBonfire = () => {
+    if (userProfile.memberShip && userProfile.memberShip !== "premium") {
+      return notification.warning({
+        message: "Warning",
+        description: `you need to be a premium user to create a bonfire`,
+      });
+    }
+    setModalFormVisible(true);
+    bonfireForm.resetFields();
+  };
+
+  const onCancelModalForm = () => {
+    setModalFormVisible(false);
+    bonfireForm.resetFields();
+  };
+
+  const handleChecked = (e) => {
+    setIsConsultantOrHRTech(e.target.checked);
+  };
+
+  const handleBonfire = (data) => {
+    const timezone = TIMEZONE_LIST.find(
+      (timezone) => timezone.value === data.timezone
+    );
+
+    const convertedStartTime = moment(data.time)
+      .tz(timezone.utc[0])
+      .utc()
+      .format();
+
+    const convertedEndTime = moment(convertedStartTime)
+      .utc()
+      .add("hour", 1)
+      .format();
+
+    const bonfireInfo = {
+      title: data.title,
+      description: data.description,
+      link: data.link,
+      startTime: convertedStartTime,
+      endTime: convertedEndTime,
+      isConsultantOrHRTech,
+      categories: data.categories,
+      bonfireCreator: userProfile.id,
+    };
+
+    setModalFormVisible(false);
+
+    createBonfire(bonfireInfo, (error) => {
+      if (error) {
+        notification.error({
+          message: error || "Something went wrong. Please try again.",
+        });
+      }
+    });
+
+    bonfireForm.resetFields();
   };
 
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
@@ -231,22 +319,25 @@ const GlobalConference = ({
                 onClick={downloadPdf}
               />
             )}
+
+            {currentView === "bonfire" && (
+              <CustomButton
+                size="xs"
+                text="Create Bonfire"
+                style={{ marginLeft: "1rem" }}
+                onClick={() => onAddBonfire()}
+              />
+            )}
           </div>
           <p className="global-conference-description">{Description}</p>
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
-              style={{
-                lineHeight: "35px",
-                background: "none",
-                margin: "0px auto",
-                width: "90%",
-                display: "flex",
-                justifyContent: "center",
-              }}
+              className="sub-menu"
+              selectedKeys={currentView}
             >
               <Menu.Item
-                key="conferences-schedule"
+                key="conference-schedule"
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("conference-schedule")}
               >
@@ -257,7 +348,10 @@ const GlobalConference = ({
                 key="speakers"
                 className="sub-menu-item-global-conference"
               >
-                <Link to="/speakers" target="_blank" rel="noopener noreferrer">
+                <Link
+                  to="/global-conference"
+                  onClick={() => handleView("speakers")}
+                >
                   Speakers
                 </Link>
               </Menu.Item>
@@ -267,7 +361,7 @@ const GlobalConference = ({
               >
                 <Link
                   to="/global-conference"
-                  onClick={() => comingSoon("Participants")}
+                  onClick={() => handleView("participants")}
                 >
                   Participants
                 </Link>
@@ -289,7 +383,7 @@ const GlobalConference = ({
               >
                 <Link
                   to="/global-conference"
-                  onClick={() => comingSoon("Bonfire")}
+                  onClick={() => handleView("bonfire")}
                 >
                   Bonfire
                 </Link>
@@ -299,7 +393,7 @@ const GlobalConference = ({
                 className="sub-menu-item-global-conference"
                 onClick={() => handleView("personal-agenda")}
               >
-                <Link to="/global-conference">My personal agenda</Link>
+                <Link to="/global-conference">My Personal Agenda</Link>
               </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
@@ -318,7 +412,7 @@ const GlobalConference = ({
             </div> */}
           </div>
         </div>
-        {currentView === "conference-schedule" ? (
+        {currentView === "conference-schedule" && (
           <div className="global-conference-tabs">
             <Tabs
               data={tabData}
@@ -326,10 +420,108 @@ const GlobalConference = ({
               onChange={setCurrentTab}
             />
           </div>
-        ) : currentView === "personal-agenda" ? (
+        )}
+        {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        ) : null}
+        )}
+        {currentView === "bonfire" && <Bonfire />}
+        {currentView === "speakers" && <Speakers />}
+
+        {currentView === "participants" && <Participants />}
       </div>
+
+      <Modal
+        visible={modalFormVisible}
+        onCancel={() => {
+          onCancelModalForm();
+        }}
+        onOk={() => {
+          bonfireForm.submit();
+        }}
+      >
+        <Form
+          form={bonfireForm}
+          layout="vertical"
+          onFinish={(data) => {
+            handleBonfire(data);
+          }}
+        >
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[{ required: true, message: "Title is required." }]}
+          >
+            <CustomInput />
+          </Form.Item>
+
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: "Description is required." }]}
+          >
+            <CustomInput multiple={true} />
+          </Form.Item>
+
+          <Form.Item
+            name="time"
+            label="Start time"
+            rules={[{ required: true, message: "Time is required." }]}
+          >
+            <CustomInput type="time" />
+          </Form.Item>
+
+          <Form.Item
+            name={"timezone"}
+            label="Timezone"
+            rules={[{ required: true, message: "Timezone is required." }]}
+          >
+            <CustomSelect
+              showSearch
+              options={TIMEZONE_LIST}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              className="border"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="categories"
+            label="Categories"
+            rules={[{ required: true, message: "Categories is required." }]}
+          >
+            <CategoriesSelect options={allCategories} />
+          </Form.Item>
+
+          <Form.Item
+            label="Link"
+            name="link"
+            rules={[{ required: true, message: "Link is required." }]}
+          >
+            <CustomInput />
+          </Form.Item>
+
+          <Form.Item name="isConsultantOrHRTech">
+            <CustomCheckbox
+              onChange={handleChecked}
+              checked={isConsultantOrHRTech}
+            >
+              Are you a consultant or HR tech/service vendor?
+            </CustomCheckbox>
+
+            {isConsultantOrHRTech && (
+              <p style={{ color: "#e61e47" }}>
+                Please note: you should not use the bonfire feature to sell
+                services or products. These are networking conversations. This
+                is a mandatory requirement. Bonfires are not the venues for
+                selling and you will be banned from using this feature if you
+                use it for a purpose other than networking
+              </p>
+            )}
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -345,12 +537,16 @@ GlobalConference.defaultProps = {
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
+  allEvents: eventSelector(state).allEvents,
 });
 
 const mapDispatchToProps = {
   getAllSessions,
   getSessionsAddedbyUser,
   attendToGlobalConference,
+  createBonfire,
+  getAllEvent,
   setLoading,
   addToMyEventList,
   removeFromMyEventList,

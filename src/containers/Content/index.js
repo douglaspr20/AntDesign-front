@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import { connect } from "react-redux";
+import ReactGA from "react-ga";
+
 // Pages
 import HomePage from "pages/Home";
 import LoginPage from "pages/Login";
@@ -35,11 +37,10 @@ import LivePage from "pages/Live";
 import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 import PostPage from "pages/Post";
+import LibraryItemPage from "pages/LibraryItem";
 import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
-import LibraryItemPage from "pages/LibraryItem";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
-
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -50,6 +51,15 @@ import { injectIntl } from "react-intl";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 class Content extends Component {
+  componentDidMount() {
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
+    this.props.history
+      .listen((location) => {
+        ReactGA.pageview(location.pathname);
+      })
+      .bind(this);
+  }
+
   render() {
     return (
       <Layout.Content>
@@ -194,6 +204,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.POST}/:id/:edit?`}
             render={(props) => <PostPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
+            render={(props) => <LibraryItemPage {...props} />}
           />
           <PrivateRoute
             exact

@@ -21,6 +21,7 @@ import { liveSaga } from "./live";
 import { postSaga } from "./post";
 import { postCommentSaga } from "./postComment";
 import { envSaga } from "./env";
+import { bonfireSaga } from "./bonfire";
 import { skillCohortSaga } from "./skillCohort"
 import { skillCohortParticipantSaga } from "./skillCohortParticipant"
 import { skillCohortResourceSaga } from "./skillCohortResource"
@@ -52,6 +53,7 @@ export default function* sagas() {
     ...postSaga,
     ...postCommentSaga,
     ...envSaga,
+    ...bonfireSaga,
     ...skillCohortSaga,
     ...skillCohortParticipantSaga,
     ...skillCohortResourceSaga,

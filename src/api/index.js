@@ -10,6 +10,8 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   uploadResume,
   deleteResume,
 } from "./module/user";
@@ -81,44 +83,41 @@ import {
   markeToRead,
   markeToUnRead,
 } from "./module/notification";
-import { getAllSessions, getSessionsAddedbyUser } from "./module/session";
+import {
+  getAllSessions,
+  getSessionsAddedbyUser,
+  getParticipants,
+} from "./module/session";
+import { createBonfire, getAllBonfires } from "./module/bonfire";
 import {
   getAllSkillCohorts,
   getSkillCohort,
-  getAllOfMyCohort
-} from "./module/skillCohort"
+  getAllOfMyCohort,
+} from "./module/skillCohort";
 import {
   getSkillCohortParticipant,
   getAllSkillCohortParticipants,
   createSkillCohortParticipant,
   getParticipated,
-  withdrawParticipation
-} from "./module/skillCohortParticipant"
+  withdrawParticipation,
+} from "./module/skillCohortParticipant";
 
-import {
-  getResource,
-  getAllResources
-} from './module/skillCohortResource'
-
+import { getResource, getAllResources } from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
   getResourceResponse,
-  updateResourceResponse
-} from './module/skillCohortResourceResponse'
-
+  updateResourceResponse,
+} from "./module/skillCohortResourceResponse";
 import {
   upsertSkillCohortResourceResponseAssessment,
-  getAllSkillCohortResourceResponseAssessment
-} from './module/skillCohortResourceResponseAssessment'
-
+  getAllSkillCohortResourceResponseAssessment,
+} from "./module/skillCohortResourceResponseAssessment";
 import {
   getAllResponseRating,
-  upsertResponseRating
-} from './module/skillCohortResourceResponseRating'
-
+  upsertResponseRating,
+} from "./module/skillCohortResourceResponseRating";
 import { getEditorSignature } from "./module/env";
-
 export {
   signIn,
   signUp,
@@ -171,9 +170,12 @@ export {
   getNotifications,
   getAllSessions,
   getSessionsAddedbyUser,
+  getParticipants,
   attendToGlobalConference,
   addSession,
   removeSession,
+  addBonfire,
+  removeBonfire,
   markeToRead,
   uploadResume,
   deleteResume,
@@ -190,10 +192,10 @@ export {
   markConferenceLibraryViewed,
   markPodcastViewed,
   markPodcastseriesViewed,
-  getAllSkillCohorts,
-  getSkillCohort,
-  getAllOfMyCohort,
   markeToUnRead,
+  getAllSkillCohorts,
+  getAllOfMyCohort,
+  getSkillCohort,
   getSkillCohortParticipant,
   withdrawParticipation,
   getParticipated,
@@ -208,5 +210,7 @@ export {
   upsertSkillCohortResourceResponseAssessment,
   getAllSkillCohortResourceResponseAssessment,
   getAllResponseRating,
-  upsertResponseRating
+  upsertResponseRating,
+  createBonfire,
+  getAllBonfires,
 };

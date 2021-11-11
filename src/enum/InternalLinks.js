@@ -33,7 +33,7 @@ export default {
   SPEAKERS: "/speakers",
   LIVE: "/live",
   POST: "/post",
-  SKILL_COHORTS: "/skill-cohorts",
   LIBRARY_ITEM: "/library-item",
   PARTICIPANTS: "/participants",
+  SKILL_COHORTS: "/skill-cohorts",
 };

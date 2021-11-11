@@ -15,7 +15,6 @@ export function* getAllResourceSaga({ payload }) {
     const response = yield call(getAllResources, { ...payload });
 
     if (response.status === 200) {
-      console.log(response.data);
       yield put(
         resourcesActions.setAllSkillCohortResources(
           response.data.skillCohortResources.count,
@@ -76,7 +75,7 @@ export function* getResourceSaga({ payload }) {
 function* watchResourceSaga() {
   yield takeLatest(resourcesConstants.GET_ALL_RESOURCE, getAllResourceSaga);
   yield takeLatest(resourcesConstants.GET_RESOURCE, getResourceSaga);
-  yield takeLatest(resourcesConstants.GET_MORE, getMoreResourceSaga)
+  yield takeLatest(resourcesConstants.GET_MORE, getMoreResourceSaga);
 }
 
 export const skillCohortResourceSaga = [fork(watchResourceSaga)];

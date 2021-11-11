@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import Emitter from "services/emitter";
-import { SpeakersFilterPanel } from "components";
-import SpeakerCard from "./SpeakerCard";
+import { SpeakersFilterPanel, SpeakerCard } from "components";
 import FilterDrawer from "./FilterDrawer";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 

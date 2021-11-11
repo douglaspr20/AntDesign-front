@@ -87,25 +87,26 @@
   //     }
   //   }
   // }
-}
-
-.speakers-page__container {
-  width: 100%;
-}
-
-.speakers-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  grid-gap: 2rem;
-  margin-bottom: 44px;
-
-  @media (max-width: 1023.98px) {
-    margin: 0 4rem 44px;
+  &__container {
+    width: 100%;
   }
-
-  @media (max-width: 767.98px) {
-    margin: 0 1rem 44px;
-    grid-row-gap: 42px;
-    grid-column-gap: 1rem;
+  
+  .speakers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-gap: 2rem;
+    margin-bottom: 44px;
+  
+    @media (max-width: 1023.98px) {
+      margin: 0 4rem 44px;
+    }
+  
+    @media (max-width: 767.98px) {
+      margin: 0 1rem 44px;
+      grid-row-gap: 42px;
+      grid-column-gap: 1rem;
+    }
   }
+  
 }
+

@@ -1,25 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Divider } from "antd";
 import ReactPlayer from "react-player/youtube";
 
 import { connect } from "react-redux";
 import { liveSelector } from "redux/selectors/liveSelector";
-import { homeSelector } from "redux/selectors/homeSelector";
 
-import Emitter from "services/emitter";
-import Interweave from "interweave"
+import Interweave from "interweave";
 import "./style.scss";
-import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
+import { INTERNAL_LINKS } from "enum";
 
-const LivePage = ({ history, live, userProfile }) => {
-  useEffect(() => {
-    if (userProfile.percentOfCompletion !== 100) {
-      Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "live");
-    }
-  });
+const LivePage = ({ history, live }) => {
   return (
     <>
-      {live.live === true && userProfile.percentOfCompletion === 100 ? (
+      {live.live === true ? (
         <div className="live-page">
           <div className="live-page--container">
             <div className="live-page--container--videoplayer">
@@ -56,9 +49,8 @@ const LivePage = ({ history, live, userProfile }) => {
   );
 };
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   live: liveSelector(state).live,
-  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {};

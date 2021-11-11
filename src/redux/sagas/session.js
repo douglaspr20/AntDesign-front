@@ -8,7 +8,11 @@ import {
 } from "../actions/session-actions";
 import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { getAllSessions, getSessionsAddedbyUser } from "../../api";
+import {
+  getAllSessions,
+  getSessionsAddedbyUser,
+  getParticipants,
+} from "../../api";
 
 export function* getAllSessionsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -24,7 +28,7 @@ export function* getAllSessionsSaga({ payload }) {
           (res, item) => ({
             ...res,
             ...omit(item, [
-              "userid",
+              "instructorid",
               "name",
               "image",
               "descriptionspeaker",
@@ -33,7 +37,7 @@ export function* getAllSessionsSaga({ payload }) {
             speakers: [
               ...(res.speakers || []),
               {
-                id: item.userid,
+                id: item.instructorid,
                 name: item.name,
                 img: item.image,
                 linkSpeaker: item.linkspeaker,
@@ -62,7 +66,33 @@ export function* getSessionsAddedbyUserSaga({ payload }) {
   try {
     let response = yield call(getSessionsAddedbyUser, { ...payload });
     if (response.status === 200) {
-      const sessionData = response.data.sessionsUser.map((session) => session);
+      const sessionData = Object.values(
+        groupBy(response.data.sessionsUser || [], "id")
+      ).map((session) => {
+        return session.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "instructorid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
+            speakers: [
+              ...(res.speakers || []),
+              {
+                id: item.instructorid,
+                name: item.name,
+                img: item.image,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
+              },
+            ],
+          }),
+          {}
+        );
+      });
 
       yield put(sessionActions.setSessionsAddedByUser(sessionData));
     }
@@ -77,12 +107,36 @@ export function* getSessionsAddedbyUserSaga({ payload }) {
   }
 }
 
+export function* getParticipantsSaga({ payload }) {
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(sessionActions.setSessionLoading(true));
+  }
+
+  try {
+    let response = yield call(getParticipants, payload);
+    if (response.status === 200) {
+      yield put(sessionActions.setParticipants(response.data.participants));
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+    yield put(sessionActions.setSessionLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(
     sessionConstants.GET_SESSIONS_ADDED_BY_USER,
     getSessionsAddedbyUserSaga
   );
+  yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
 }
 
 export const sessionSaga = [fork(watchSession)];

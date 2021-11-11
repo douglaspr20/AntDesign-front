@@ -4,7 +4,8 @@ import IconHome from "images/icon-home.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
-import IconMedal from "images/icon-medal.svg";
+// import IconMedal from "images/icon-medal.svg";
+// import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 // import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
@@ -13,7 +14,8 @@ import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
-import IconFlask from "images/icon-flask-outline.svg"
+import IconGlobal from "images/icon-global.svg";
+// import IconFlask from "images/icon-flask-outline.svg"
 // import IconGlobal from "images/icon-global.svg";
 
 export default {
@@ -23,21 +25,21 @@ export default {
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
     },
-    // {
-    //   label: "Global Conference",
-    //   icon: IconGlobal,
-    //   url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
-    // },
+    {
+      label: "Global Conference",
+      icon: IconGlobal,
+      url: INTERNAL_LINKS.GLOBAL_CONFERENCE,
+    },
     {
       label: "Channels",
       icon: IconTvOutline,
       url: INTERNAL_LINKS.CHANNELS,
     },
-    {
-      label: "Project X",
+    /* {
+      label: "ProjectX",
       icon: IconFlask,
       url: INTERNAL_LINKS.SKILL_COHORTS,
-    },
+    }, */
     {
       label: "Learning library",
       icon: IconLibrary,
@@ -58,11 +60,11 @@ export default {
       icon: IconCalendar,
       url: INTERNAL_LINKS.EVENTS,
     },
-    {
-      label: "Classes",
-      icon: IconMedal,
-      url: INTERNAL_LINKS.CLASSES,
-    },
+    // {
+    //   label: "Classes",
+    //   icon: IconMedal,
+    //   url: INTERNAL_LINKS.CLASSES,
+    // },
     // {
     //   label: "Learning Journeys",
     //   icon: IconJourney,
