@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
-import ReactGA from 'react-ga';
+import { connect } from "react-redux";
+import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
@@ -37,18 +38,26 @@ import PodcastSeriesPage from "pages/PodcastSeries";
 import PodcastSeriesDetailPage from "pages/PodcastSeriesDetail";
 import PostPage from "pages/Post";
 import LibraryItemPage from "pages/LibraryItem";
+import SkillCohortPage from "pages/SkillCohort";
+import SkillCohortDetailPage from "pages/SkillCohortDetail";
+import SkillCohortResourcePage from "pages/SkillCohortResources";
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
 import { PrivateRoute } from "components";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { injectIntl } from "react-intl";
+
+import { homeSelector } from "redux/selectors/homeSelector";
 
 class Content extends Component {
   componentDidMount() {
     ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_TRACKING_ID);
-    this.props.history.listen((location) => {
-      ReactGA.pageview(location.pathname);
-    }).bind(this);
+    this.props.history
+      .listen((location) => {
+        ReactGA.pageview(location.pathname);
+      })
+      .bind(this);
   }
 
   render() {
@@ -200,6 +209,27 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
             render={(props) => <LibraryItemPage {...props} />}
           />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id`}
+            render={(props) => <SkillCohortDetailPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.SKILL_COHORTS}
+            render={(props) => <SkillCohortPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
+            render={(props) => <LibraryItemPage {...props} />}
+          />
+          {this.props.userProfile.memberShip === "premium" && (
+            <Route
+              exact
+              path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id/resources`}
+              render={(props) => <SkillCohortResourcePage {...props} />}
+            />
+          )}
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
@@ -212,4 +242,8 @@ class Content extends Component {
   }
 }
 
-export default withRouter(Content);
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default withRouter(connect(mapStateToProps)(injectIntl(Content)));

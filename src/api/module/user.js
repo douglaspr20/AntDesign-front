@@ -17,7 +17,7 @@ export const upgradePlan = ({ data }) => {
 };
 
 export const addToMyEventListFromAPI = ({ event, userTimezone }) => {
-  return httpClient.put(`private/user/add-event/`, {...event, userTimezone});
+  return httpClient.put(`private/user/add-event/`, { ...event, userTimezone });
 };
 
 export const removeFromMyEventListFromAPI = ({ event }) => {
@@ -44,6 +44,14 @@ export const addSession = ({ session }) => {
 
 export const removeSession = ({ session }) => {
   return httpClient.put(`private/user/remove-session/${session.id}`);
+};
+
+export const addBonfire = ({ bonfire }) => {
+  return httpClient.put(`private/user/add-bonfire/${bonfire.id}`);
+};
+
+export const removeBonfire = ({ bonfire }) => {
+  return httpClient.put(`private/user/remove-bonfire/${bonfire.id}`);
 };
 
 export const uploadResume = ({ resume }) => {
