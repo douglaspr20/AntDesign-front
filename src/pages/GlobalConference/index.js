@@ -224,8 +224,8 @@ const GlobalConference = ({
     bonfireForm.resetFields();
   };
 
-  const handleChecked = (checked) => {
-    setIsConsultantOrHRTech(checked);
+  const handleChecked = (e) => {
+    setIsConsultantOrHRTech(e.target.checked);
   };
 
   const handleBonfire = (data) => {
