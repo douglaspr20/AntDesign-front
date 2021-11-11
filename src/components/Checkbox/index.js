@@ -25,12 +25,14 @@ CustomCheckbox.propTypes = {
   type: PropTypes.string,
   size: PropTypes.string,
   className: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 CustomCheckbox.defaultProps = {
   type: "primary",
   size: "md",
   className: "",
+  onChange: () => {},
 };
 
 export default CustomCheckbox;
