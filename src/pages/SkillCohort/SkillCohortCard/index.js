@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 import moment from "moment-timezone";
-import { RichEdit } from "components";
 
 import "./style.scss";
 
