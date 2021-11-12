@@ -95,7 +95,7 @@ const SkillCohortDetail = ({
   const handleOnJoin = () => {
     if (userProfile && userProfile.memberShip === "premium") {
       if (hasCohortStarted && skillCohortParticipant.hasAccess) {
-        history.push(`${INTERNAL_LINKS.SKILL_COHORTS}/${id}/resources`);
+        history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources`);
       } else {
         if (!userProfile.completed) {
           return setShowProfileCompletionFirewall(true);
@@ -194,7 +194,7 @@ const SkillCohortDetail = ({
             <div>
               <div
                 className="skill-cohort-detail-page-header-content-back-btn"
-                onClick={() => history.push(INTERNAL_LINKS.SKILL_COHORTS)}
+                onClick={() => history.push(INTERNAL_LINKS.PROJECTX)}
               >
                 <div className="skill-cohort-detail-page-header-content-back">
                   <div className="skill-cohort-detail-page-header-content-back-img">
@@ -221,26 +221,27 @@ const SkillCohortDetail = ({
           <div className="skill-cohort-detail-page-body-content">
             <Space direction="vertical" size="large">
               <Space direction="vertical">
-                <h3>How Project X works</h3>
-                <div className="details">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </div>
+                <h3>How ProjectX works</h3>
+                <div
+                  className="details"
+                  dangerouslySetInnerHTML={{
+                    __html: (skillCohort.howProjectXWorks || {}).html || "",
+                  }}
+                />
               </Space>
               <Space direction="vertical">
                 <h3>Description</h3>
-                <div className="details">{skillCohort.description}</div>
+                <div
+                  className="details"
+                  dangerouslySetInnerHTML={{
+                    __html: (skillCohort.description || {}).html || "",
+                  }}
+                />
               </Space>
-              <Space direction="vertical">
+              {/* <Space direction="vertical">
                 <h3>Learning Objectives</h3>
                 <div className="details">{skillCohort.objectives}</div>
-              </Space>
+              </Space> */}
               <Space direction="vertical">
                 <h3>Schedule</h3>
                 <div className="details">

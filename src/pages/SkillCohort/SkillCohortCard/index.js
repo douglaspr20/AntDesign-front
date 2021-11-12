@@ -39,9 +39,9 @@ const SkillCohortCard = (props) => {
 
   const handleClickMore = () => {
     if (hasAccess && hasCohortStarted) {
-      history.push(`${INTERNAL_LINKS.SKILL_COHORTS}/${id}/resources`);
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources`);
     } else {
-      history.push(`${INTERNAL_LINKS.SKILL_COHORTS}/${id}`);
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
     }
   };
 
@@ -64,12 +64,12 @@ const SkillCohortCard = (props) => {
       <div className="skill-cohort-card-content">
         <h3 className="skill-cohort-card-title">{title}</h3>
         <div id={randomId} className="d-flex">
-          <p
+          <div
             className="skill-cohort-card-desc"
-            style={{ WebkitLineClamp: 12, maxHeight: 50 * 12 }}
-          >
-            {description}
-          </p>
+            dangerouslySetInnerHTML={{
+              __html: (description || {}).html || "",
+            }}
+          />
         </div>
         <h5 className="skill-cohort-card-hr">
           Starting on {moment(startDate).format("LL")}
