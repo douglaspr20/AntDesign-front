@@ -1,20 +1,5 @@
 .participant-col {
     margin-top: 20px;
   }
-  
-  .participant-name {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-top: 20px;
-  }
 
-.category-container{
-  max-width: 200px;
-  min-height: 150px;
-  max-height: 150px;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
   

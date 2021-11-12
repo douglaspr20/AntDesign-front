@@ -5,9 +5,10 @@ import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getBonfires } from "redux/actions/bonfire-actions";
 import { addBonfire, removeBonfire } from "redux/actions/home-actions";
+
 import { setLoading } from "redux/actions/home-actions";
-import { convertToLocalTime } from "utils/format";
-//import "./style.scss";
+import { TIMEZONE_LIST } from "enum";
+import { convertToCertainTime } from "utils/format";
 
 const Bonfire = ({
   getBonfires,
@@ -37,8 +38,20 @@ const Bonfire = ({
     if (bonfires) {
       const sData = (bonfires || [])
         .map((item) => {
-          const sTime = convertToLocalTime(item.startTime);
-          const eTime = convertToLocalTime(item.endTime);
+          const sTime = convertToCertainTime(item.startTime, item.timezone);
+          const eTime = convertToCertainTime(item.endTime, item.timezone);
+          let tz = TIMEZONE_LIST.find((t) => t.value === item.timezone);
+          if (tz) {
+            if (tz.offset > 0) {
+              tz = `${tz.abbr} (GMT+${tz.offset})`;
+            } else if (tz.offset < 0) {
+              tz = `${tz.abbr} (GMT-${-tz.offset})`;
+            } else {
+              tz = `${tz.abbr} (GMT)`;
+            }
+          } else {
+            tz = "";
+          }
 
           return {
             ...item,
@@ -49,6 +62,7 @@ const Bonfire = ({
             hours: `From ${sTime.format("h:mm a")} to ${eTime.format(
               "h:mm a"
             )}`,
+            tz: `${tz}`,
           };
         })
         .sort((a, b) => {

@@ -3,7 +3,6 @@ import { Card, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { SpecialtyItem } from "components";
 import "./style.scss";
 
 const ParticipantCard = ({ participant, userProfile }) => {
@@ -22,6 +21,7 @@ const ParticipantCard = ({ participant, userProfile }) => {
         bodyStyle={{
           display: "flex",
           flexDirection: "column",
+          justifyContent: "flex-start",
           alignItems: "center",
         }}
         style={{ marginTop: "1rem" }}
@@ -35,21 +35,11 @@ const ParticipantCard = ({ participant, userProfile }) => {
         )}
 
         <div style={{ textAlign: "center" }}>
-          <p className="participant-name">
+          <p style={{ fontWeight: 500 }}>
             {participant.firstName} {participant.lastName}
           </p>
-          <p className="participant-name">{participant.titleProfessions}</p>
-          <p className="participant-name">{participant.company}</p>
-
-          <div className="category-container">
-            {participant.topicsOfInterest.map((topic, i) => {
-              if (userProfile.topicsOfInterest.includes(topic)) {
-                return <SpecialtyItem title={topic} key={i} />;
-              }
-
-              return null;
-            })}
-          </div>
+          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
+          <p style={{ marginTop: -10 }}>{participant.company}</p>
         </div>
       </Card>
     </a>
