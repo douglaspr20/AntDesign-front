@@ -1,16 +1,19 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
+import { notification } from "antd";
 
 import {
   constants as conferenceConstants,
   actions as conferenceActions,
 } from "../actions/conference-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import { logout } from "../actions/auth-actions";
 import {
   searchConferenceLibrary,
   claimConferenceLibrary,
   markConferenceLibraryViewed,
   getConferenceLibrary,
+  saveForLaterConference,
 } from "../../api";
 
 export function* getMoreConferenceLibrariesSaga({ payload }) {
@@ -99,6 +102,18 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
           response.data.affectedRows
         )
       );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allConferenceLibraries"
+        )
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(
+          response.data.affectedRows,
+          "allConferenceLibraries"
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -125,6 +140,43 @@ export function* getConferenceLibrarySaga({ payload }) {
   }
 }
 
+export function* saveForLaterConferenceSaga({ payload }) {
+  try {
+    const response = yield call(saveForLaterConference, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        conferenceActions.updateSaveForLaterConference(
+          response.data.affectedRows
+        )
+      );
+
+      if (payload.status === "not saved") {
+        yield put(
+          myLearningActions.updateSaveForLaterLibrary(
+            response.data.affectedRows,
+            "allConferenceLibraries"
+          )
+        );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchConference() {
   yield takeLatest(
     conferenceConstants.GET_MORE_CONFERENCE_LIBRARIES,
@@ -145,6 +197,10 @@ function* watchConference() {
   yield takeLatest(
     conferenceConstants.GET_CONFERENCE_LIBRARY,
     getConferenceLibrarySaga
+  );
+  yield takeLatest(
+    conferenceConstants.SAVE_FOR_LATER_CONFERENCE,
+    saveForLaterConferenceSaga
   );
 }
 

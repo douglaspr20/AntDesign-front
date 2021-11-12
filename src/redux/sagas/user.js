@@ -18,6 +18,7 @@ import {
   removeBonfire,
   uploadResume,
   deleteResume,
+  changePassword,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -286,6 +287,35 @@ export function* deleteResumeSaga({ payload }) {
   }
 }
 
+export function* changePasswordSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(changePassword, { ...payload });
+
+    if (response.status === 200) {
+      yield put(authActions.logout());
+      notification.success({
+        title: "Success",
+        description: "Password changed."
+      })
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: "Changing password failed."
+    })
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -301,6 +331,7 @@ function* watchLogin() {
   yield takeLatest(homeConstants.REMOVE_BONFIRE, removeBonfireSaga);
   yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);
   yield takeLatest(homeConstants.DELETE_RESUME, deleteResumeSaga);
+  yield takeLatest(homeConstants.CHANGE_PASSWORD, changePasswordSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

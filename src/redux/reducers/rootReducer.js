@@ -29,6 +29,7 @@ import skillCohortResourceReducer from "./skillCohortResourceReducer"
 import skillCohortResourceResponseReducer from './skillCohortResourceResponseReducer'
 import skillCohortResourceResponseAssessmentReducer from './skillCohortResourceResponseAssessmentReducer'
 import skillCohortResourceResponseRating from './skillCohortResourceResponseRatingReducer'
+import myLearningReducer from './myLearningReducer'
 
 export default combineReducers({
   home: homeReducer,
@@ -59,5 +60,6 @@ export default combineReducers({
   skillCohortResource: skillCohortResourceReducer,
   skillCohortResourceResponse: skillCohortResourceResponseReducer,
   skillCohortResourceResponseAssessment: skillCohortResourceResponseAssessmentReducer,
-  skillCohortResourceResponseRating: skillCohortResourceResponseRating
+  skillCohortResourceResponseRating: skillCohortResourceResponseRating,
+  myLearning: myLearningReducer,
 });

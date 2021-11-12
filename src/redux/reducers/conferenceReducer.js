@@ -54,6 +54,22 @@ export const reducers = {
       conferenceLibrary: payload.data,
     });
   },
+  [conferenceConstants.UPDATE_SAVE_FOR_LATER_CONFERENCE]: (state, { payload }) => {
+    const allConferenceLibraries = state.get("allConferenceLibraries")
+    const index = allConferenceLibraries.findIndex((item) => {
+      return item.id === payload.data.id
+    })
+
+    if (index >= 0) {
+      allConferenceLibraries[index] = {
+        ...payload.data
+      }
+    }
+
+    return state.merge({
+      allConferenceLibraries: cloneDeep([ ...allConferenceLibraries ])
+    })
+  }
 };
 
 export const initialState = () =>

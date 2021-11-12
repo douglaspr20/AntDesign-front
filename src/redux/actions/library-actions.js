@@ -21,6 +21,9 @@ const SHARE_CHANNEL_LIBRARY = "SHARE_CHANNEL_LIBRARY";
 const CLAIM_LIBRARY = "CLAIM_LIBRARY";
 const SET_LIBRARY_VIEWED = "SET_LIBRARY_VIEWED";
 const UPDATE_LIBRARY_VIEWED = "UPDATE_LIBRARY_VIEWED";
+const SAVE_FOR_LATER_LIBRARY = "SAVE_FOR_LATER_LIBRARY";
+const SET_SAVE_FOR_LATER_LIBRARY = "SET_SAVE_FOR_LATER_LIBRARY";
+const UPDATE_LIBRARY_SAVE_FOR_LATER = "UPDATE_LIBRARY_SAVE_FOR_LATER"
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -44,6 +47,9 @@ export const constants = {
   CLAIM_LIBRARY,
   SET_LIBRARY_VIEWED,
   UPDATE_LIBRARY_VIEWED,
+  SAVE_FOR_LATER_LIBRARY,
+  SET_SAVE_FOR_LATER_LIBRARY,
+  UPDATE_LIBRARY_SAVE_FOR_LATER
 };
 
 // ------------------------------------
@@ -135,6 +141,16 @@ export const updateLibraryViewed = createAction(
   UPDATE_LIBRARY_VIEWED,
   (data) => ({ data })
 );
+export const saveForLaterLibrary = createAction(
+  SAVE_FOR_LATER_LIBRARY,
+  (id, UserId, status) => ({ id, UserId, status })
+);
+export const setSaveForLaterLibrary = createAction(
+  SET_SAVE_FOR_LATER_LIBRARY,
+  (allLearningLibraries) => ({ allLearningLibraries })
+);
+
+export const updateLibrarySaveForLater = createAction(UPDATE_LIBRARY_SAVE_FOR_LATER, (data) => ({ data }))
 
 export const actions = {
   getMoreLibraries,
@@ -157,4 +173,7 @@ export const actions = {
   claimLibrary,
   setLibraryViewed,
   updateLibraryViewed,
+  saveForLaterLibrary,
+  setSaveForLaterLibrary,
+  updateLibrarySaveForLater
 };

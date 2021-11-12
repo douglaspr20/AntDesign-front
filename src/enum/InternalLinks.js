@@ -35,5 +35,6 @@ export default {
   POST: "/post",
   LIBRARY_ITEM: "/library-item",
   PARTICIPANTS: "/participants",
+  MY_LEARNINGS: "/my-learnings",
   PROJECTX: "/projectx",
 };
