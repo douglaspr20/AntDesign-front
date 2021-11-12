@@ -38,7 +38,7 @@ export default {
     /* {
       label: "ProjectX",
       icon: IconFlask,
-      url: INTERNAL_LINKS.SKILL_COHORTS,
+      url: INTERNAL_LINKS.PROJECTX,
     }, */
     {
       label: "Learning library",
