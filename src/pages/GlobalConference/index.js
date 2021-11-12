@@ -335,6 +335,7 @@ const GlobalConference = ({
                 text="Create Bonfire"
                 style={{ marginLeft: "1rem" }}
                 onClick={() => onAddBonfire()}
+                disabled={true}
               />
             )}
           </div>
