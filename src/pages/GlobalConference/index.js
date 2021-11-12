@@ -229,9 +229,27 @@ const GlobalConference = ({
   };
 
   const handleBonfire = (data) => {
-    const convertedStartTime = moment(data.time).format();
+    const timezone = TIMEZONE_LIST.find(
+      (timezone) => timezone.value === data.timezone
+    );
+    const convertedStartTime = moment
+      .tz(
+        data.time.format("YYYY-MM-DD h:mm a"),
+        "YYYY-MM-DD h:mm a",
+        timezone.utc[0]
+      )
+      .utc()
+      .format();
 
-    const convertedEndTime = moment(convertedStartTime).add("hour", 1).format();
+    const convertedEndTime = moment(convertedStartTime)
+      .tz(
+        data.time.format("YYYY-MM-DD h:mm a"),
+        "YYYY-MM-DD h:mm a",
+        timezone.utc[0]
+      )
+      .utc()
+      .add("hour", 1)
+      .format();
 
     const bonfireInfo = {
       title: data.title,
@@ -316,8 +334,8 @@ const GlobalConference = ({
                 size="xs"
                 text="Create Bonfire"
                 style={{ marginLeft: "1rem" }}
-                disabled={true}
                 onClick={() => onAddBonfire()}
+                disabled={true}
               />
             )}
           </div>

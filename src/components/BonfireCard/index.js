@@ -106,7 +106,9 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
           <div className="acc-session-date">
             {moment(bonfire.startTime).format("MMM, D, YYYY")}
           </div>
-          <div className="acc-session-time">{bonfire.hours}</div>
+          <div className="acc-session-time">
+            {bonfire.hours} {bonfire.tz}
+          </div>
         </div>
         {added && (
           <Dropdown overlay={downloadDropdownOptions}>

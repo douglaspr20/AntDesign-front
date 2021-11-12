@@ -90,7 +90,6 @@ export function* createSkillCohortParticipantSaga({ payload }) {
 
       notification.success({
         message: "You have joined this cohort.",
-        description: "Test description",
       });
 
       yield put(
@@ -123,7 +122,6 @@ function* withdrawParticipationSaga({ payload }) {
 
       notification.success({
         message: "You have withdrawn your participation in this cohort.",
-        description: "Test description",
       });
 
       yield put(skillCohortParticipantActions.setSkillCohortParticipant({}));

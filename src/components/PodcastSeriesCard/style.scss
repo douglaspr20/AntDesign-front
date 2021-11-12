@@ -40,8 +40,22 @@
     overflow: hidden;
     position: relative;
 
+    .card-btn {
+      margin-left: auto;
+    }
+    
     .mark-viewed {
       padding: 0 12px;
+      text-align: center !important;
+      display: flex !important;
+    }
+    
+    .save-for-later {
+      padding: 0 12px;
+      margin-top: 0.5rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
     }
   }
 
