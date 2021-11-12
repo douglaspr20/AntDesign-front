@@ -97,7 +97,7 @@ class Sider extends Component {
           render={() => <Sidebar />}
         />
         <PrivateRoute
-          path={INTERNAL_LINKS.SKILL_COHORTS}
+          path={INTERNAL_LINKS.PROJECTX}
           render={() => <Sidebar />}
         />
         <PrivateRoute

@@ -229,19 +229,9 @@ const GlobalConference = ({
   };
 
   const handleBonfire = (data) => {
-    const timezone = TIMEZONE_LIST.find(
-      (timezone) => timezone.value === data.timezone
-    );
+    const convertedStartTime = moment(data.time).format();
 
-    const convertedStartTime = moment(data.time)
-      .tz(timezone.utc[0])
-      .utc()
-      .format();
-
-    const convertedEndTime = moment(convertedStartTime)
-      .utc()
-      .add("hour", 1)
-      .format();
+    const convertedEndTime = moment(convertedStartTime).add("hour", 1).format();
 
     const bonfireInfo = {
       title: data.title,
@@ -252,6 +242,7 @@ const GlobalConference = ({
       isConsultantOrHRTech,
       categories: data.categories,
       bonfireCreator: userProfile.id,
+      timezone: data.timezone,
     };
 
     setModalFormVisible(false);
@@ -325,6 +316,7 @@ const GlobalConference = ({
                 size="xs"
                 text="Create Bonfire"
                 style={{ marginLeft: "1rem" }}
+                disabled={true}
                 onClick={() => onAddBonfire()}
               />
             )}
@@ -426,7 +418,6 @@ const GlobalConference = ({
         )}
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "speakers" && <Speakers />}
-
         {currentView === "participants" && <Participants />}
       </div>
 

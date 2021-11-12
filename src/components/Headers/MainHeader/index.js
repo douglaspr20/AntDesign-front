@@ -117,7 +117,7 @@ class MainHeader extends React.Component {
       };
     }
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SKILL_COHORTS}/`)) {
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PROJECTX}/`)) {
       pathInfo = {
         icon: IconFlaskOutline,
         label: `ProjectX - Cohort: ${this.props.skillCohort.title || ""}`,

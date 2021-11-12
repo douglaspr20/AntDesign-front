@@ -213,12 +213,12 @@ class Content extends Component {
           />
           <PrivateRoute
             exact
-            path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id`}
+            path={`${INTERNAL_LINKS.PROJECTX}/:id`}
             render={(props) => <SkillCohortDetailPage {...props} />}
           />
           <PrivateRoute
             exact
-            path={INTERNAL_LINKS.SKILL_COHORTS}
+            path={INTERNAL_LINKS.PROJECTX}
             render={(props) => <SkillCohortPage {...props} />}
           />
           <PrivateRoute
@@ -228,7 +228,7 @@ class Content extends Component {
           {this.props.userProfile.memberShip === "premium" && (
             <Route
               exact
-              path={`${INTERNAL_LINKS.SKILL_COHORTS}/:id/resources`}
+              path={`${INTERNAL_LINKS.PROJECTX}/:id/resources`}
               render={(props) => <SkillCohortResourcePage {...props} />}
             />
           )}

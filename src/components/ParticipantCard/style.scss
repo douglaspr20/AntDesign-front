@@ -7,4 +7,14 @@
     font-weight: 500;
     margin-top: 20px;
   }
+
+.category-container{
+  max-width: 200px;
+  min-height: 150px;
+  max-height: 150px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
   

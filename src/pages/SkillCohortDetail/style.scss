@@ -1,7 +1,9 @@
 @import "styles/main.scss";
 
 .skill-cohort-detail-page {
-	height: 100%;
+  height: 100%;
+  overflow: auto;
+  background: $color-white;
 
 	&-header {
 		height: 193px;
