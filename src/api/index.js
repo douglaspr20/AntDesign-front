@@ -14,7 +14,7 @@ import {
   removeBonfire,
   uploadResume,
   deleteResume,
-  changePassword
+  changePassword,
 } from "./module/user";
 import {
   getAllEvents,
@@ -39,6 +39,7 @@ import {
   shareChannelLibrary,
   claimLibrary,
   markLibraryViewed,
+  saveForLater,
 } from "./module/library";
 import {
   setMentorInfo,
@@ -60,6 +61,8 @@ import {
   markPodcastViewed,
   markPodcastseriesViewed,
   getPodcast,
+  saveForLaterPodcast,
+  saveForLaterPodcastSeries,
 } from "./module/podcast";
 import { getAllMarketplace } from "./module/marketplace";
 import { getAllMarketplaceCategories } from "./module/marketplaceCategories";
@@ -69,6 +72,7 @@ import {
   claimConferenceLibrary,
   markConferenceLibraryViewed,
   getConferenceLibrary,
+  saveForLaterConference,
 } from "./module/conference";
 import {
   createChannel,
@@ -118,6 +122,9 @@ import {
   getAllResponseRating,
   upsertResponseRating,
 } from "./module/skillCohortResourceResponseRating";
+
+import { getAllCompleted, getAllSaved } from "./module/myLearning";
+
 import { getEditorSignature } from "./module/env";
 export {
   signIn,
@@ -138,6 +145,8 @@ export {
   getRecommendations,
   setMentorInfo,
   getAllPodcasts,
+  saveForLaterPodcast,
+  saveForLaterPodcastSeries,
   getAllMarketplace,
   getAllMarketplaceCategories,
   getMentoringInfo,
@@ -148,6 +157,7 @@ export {
   getCategories,
   searchConferenceLibrary,
   getConferenceLibrary,
+  saveForLaterConference,
   createChannel,
   searchChannels,
   getChannelCategories,
@@ -162,6 +172,7 @@ export {
   deleteChannelLibrary,
   updateChannelLibrary,
   shareChannelLibrary,
+  saveForLater,
   deleteChannelPodcast,
   updateChannelPodcast,
   deleteEvent,
@@ -215,4 +226,6 @@ export {
   upsertResponseRating,
   createBonfire,
   getAllBonfires,
+  getAllCompleted,
+  getAllSaved
 };

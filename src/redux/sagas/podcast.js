@@ -1,4 +1,5 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
+import { notification } from "antd";
 
 import {
   constants as podcastConstants,
@@ -6,6 +7,7 @@ import {
 } from "../actions/podcast-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { logout } from "../actions/auth-actions";
+import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 
 import {
   getAllPodcasts,
@@ -19,6 +21,8 @@ import {
   markPodcastseriesViewed,
   markPodcastViewed,
   getPodcast,
+  saveForLaterPodcast,
+  saveForLaterPodcastSeries,
 } from "../../api";
 
 export function* getAllPodcastsSaga({ payload }) {
@@ -246,6 +250,18 @@ export function* markPodcastSeriesViewedSaga({ payload }) {
       yield put(
         podcastActions.updatePodcastseriesViewed(response.data.affectedRows)
       );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allPodcastSeries"
+        )
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(
+          response.data.affectedRows,
+          "allPodcastSeries"
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -277,9 +293,99 @@ export function* markPodcastViewedSaga({ payload }) {
     if (response.status === 200) {
       yield put(podcastActions.updatePodcastViewed(response.data.affectedRows));
       yield put(podcastActions.setPodcast(response.data.affectedRows));
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allPodcasts"
+        )
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(
+          response.data.affectedRows,
+          "allPodcasts"
+        )
+      );
     }
   } catch (error) {
     console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* saveForLaterPodcastSaga({ payload }) {
+  try {
+    const response = yield call(saveForLaterPodcast, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        podcastActions.updateSaveForLaterPodcast(response.data.affectedRows)
+      );
+
+      if (payload.status === "not saved") {
+        yield put(
+          myLearningActions.updateSaveForLaterLibrary(
+            response.data.affectedRows,
+            "allPodcasts"
+          )
+        );
+        yield put(
+          myLearningActions.updateCompletedLibrary(
+            response.data.affectedRows,
+            "allPodcasts"
+          )
+        );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* saveForLaterPodcastSeriesSaga({ payload }) {
+  try {
+    const response = yield call(saveForLaterPodcastSeries, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        podcastActions.updateSaveForLaterPodcastSeries(
+          response.data.affectedRows
+        )
+      );
+
+      if (payload.status === "not saved") {
+        yield put(
+          myLearningActions.updateSaveForLaterLibrary(
+            response.data.affectedRows,
+            "allPodcastSeries"
+          )
+        );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
@@ -317,15 +423,20 @@ function* watchPodcast() {
     podcastConstants.CLAIM_PODCAST_SERIES,
     claimPodcastSeriesSaga
   );
-  yield takeLatest(
-    podcastConstants.SET_PODCAST_VIEWED,
-    markPodcastViewedSaga
-  );
+  yield takeLatest(podcastConstants.SET_PODCAST_VIEWED, markPodcastViewedSaga);
   yield takeLatest(
     podcastConstants.SET_PODCAST_SERIES_VIEWED,
     markPodcastSeriesViewedSaga
   );
   yield takeLatest(podcastConstants.GET_PODCAST, getPodcastSaga);
+  yield takeLatest(
+    podcastConstants.SAVE_FOR_LATER_PODCAST,
+    saveForLaterPodcastSaga
+  );
+  yield takeLatest(
+    podcastConstants.SAVE_FOR_LATER_PODCAST_SERIES,
+    saveForLaterPodcastSeriesSaga
+  );
 }
 
 export const podcastSaga = [fork(watchPodcast)];

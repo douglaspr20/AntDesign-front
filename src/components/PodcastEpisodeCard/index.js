@@ -5,12 +5,16 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
+import { isEmpty } from "lodash";
 
 import { SpecialtyItem, CustomButton } from "components";
 import CardMenu from "../CardMenu";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { setPodcastViewed } from "redux/actions/podcast-actions";
+import {
+  setPodcastViewed,
+  saveForLaterPodcast,
+} from "redux/actions/podcast-actions";
 
 import { CARD_TYPE, INTERNAL_LINKS } from "enum";
 
@@ -33,8 +37,8 @@ function EpisodeCard({
   setPodcastViewed,
   isInternalLink,
   episode,
+  saveForLaterPodcast,
 }) {
-
   const {
     id,
     title,
@@ -43,6 +47,7 @@ function EpisodeCard({
     imageUrl: episode_cover,
     topics: categories,
     viewed,
+    saveForLater: saveForLaterData,
   } = episode || {};
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
@@ -50,6 +55,17 @@ function EpisodeCard({
     } else if (isInternalLink === false) {
       window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`;
     }
+  };
+
+  const handleSaveForLater = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isSavedForLater =
+      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
+    const status = isSavedForLater ? "not saved" : "saved";
+
+    saveForLaterPodcast(id, userProfile.id, status);
   };
 
   return (
@@ -132,7 +148,7 @@ function EpisodeCard({
                 );
               })}
             </div>
-            <div className="d-flex justify-end">
+            <div className="d-flex flex-column card-btn">
               <CustomButton
                 className="mark-viewed"
                 type={
@@ -157,6 +173,25 @@ function EpisodeCard({
                   );
                 }}
               />
+              {viewed && viewed[userProfile.id] !== "mark" && (
+                <CustomButton
+                  className="save-for-later"
+                  type={
+                    !isEmpty(saveForLaterData) &&
+                    saveForLaterData.includes(userProfile.id)
+                      ? "remove"
+                      : "third"
+                  }
+                  size="xs"
+                  text={
+                    !isEmpty(saveForLaterData) &&
+                    saveForLaterData.includes(userProfile.id)
+                      ? "Unsave"
+                      : "Save for later"
+                  }
+                  onClick={handleSaveForLater}
+                />
+              )}
             </div>
             {type === CARD_TYPE.EDIT && (
               <CardMenu onClick={onMenuClick}>
@@ -218,6 +253,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setPodcastViewed,
+  saveForLaterPodcast,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EpisodeCard);

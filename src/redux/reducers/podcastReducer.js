@@ -60,7 +60,7 @@ export const reducers = {
 
     return state.merge({
       allEpisodes: cloneDeep([...allEpisodes]),
-    })
+    });
   },
   [podcastConstants.UPDATE_PODCAST_SERIES_VIEWED]: (state, { payload }) => {
     let allPodcastSeries = state.get("allPodcastSeries");
@@ -76,11 +76,43 @@ export const reducers = {
 
     return state.merge({
       allPodcastSeries: cloneDeep([...allPodcastSeries]),
-    })
+    });
   },
   [podcastConstants.SET_PODCAST]: (state, { payload }) => {
     return state.merge({
       podcast: payload.data,
+    });
+  },
+  [podcastConstants.UPDATE_SAVE_FOR_LATER_PODCAST]: (state, { payload }) => {
+    const allEpisodes = state.get("allEpisodes");
+    const index = allEpisodes.findIndex((item) => {
+      return item.id === payload.data.id;
+    });
+
+    if (index >= 0) {
+      allEpisodes[index] = {
+        ...payload.data,
+      };
+    }
+
+    return state.merge({
+      allEpisodes: cloneDeep([...allEpisodes]),
+    });
+  },
+  [podcastConstants.UPDATE_SAVE_FOR_LATER_PODCAST_SERIES]: (state, { payload }) => {
+    const allPodcastSeries = state.get("allPodcastSeries");
+    const index = allPodcastSeries.findIndex((item) => {
+      return item.id === payload.data.id;
+    });
+
+    if (index >= 0) {
+      allPodcastSeries[index] = {
+        ...payload.data,
+      };
+    }
+
+    return state.merge({
+      allPodcastSeries: cloneDeep([...allPodcastSeries]),
     });
   },
 };

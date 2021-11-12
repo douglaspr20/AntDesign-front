@@ -1,4 +1,5 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
+import { notification } from "antd";
 
 import {
   constants as libraryConstants,
@@ -6,6 +7,8 @@ import {
 } from "../actions/library-actions";
 import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { actions as myLearningActions } from "../actions/myLearning-actions";
+
 import {
   addLibrary,
   getLibrary,
@@ -18,6 +21,7 @@ import {
   shareChannelLibrary,
   claimLibrary,
   markLibraryViewed,
+  saveForLater,
 } from "../../api";
 
 export function* getMoreLibrariesSaga({ payload }) {
@@ -304,9 +308,56 @@ export function* markLibraryViewedSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(libraryActions.updateLibraryViewed(response.data.affectedRows));
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allLibraries"
+        )
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(
+          response.data.affectedRows,
+          "allLibraries"
+        )
+      );
     }
   } catch (error) {
     console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* saveForLaterSaga({ payload }) {
+  try {
+    const response = yield call(saveForLater, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.updateLibrarySaveForLater(response.data.affectedRows)
+      );
+
+      if (payload.status === "not saved") {
+        yield put(
+          myLearningActions.updateSaveForLaterLibrary(
+            response.data.affectedRows,
+            "allLibraries"
+          )
+        );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
@@ -344,10 +395,8 @@ function* watchLogin() {
     shareChannelLibrarySaga
   );
   yield takeLatest(libraryConstants.CLAIM_LIBRARY, claimLibrarySaga);
-  yield takeLatest(
-    libraryConstants.SET_LIBRARY_VIEWED,
-    markLibraryViewedSaga
-  );
+  yield takeLatest(libraryConstants.SET_LIBRARY_VIEWED, markLibraryViewedSaga);
+  yield takeLatest(libraryConstants.SAVE_FOR_LATER_LIBRARY, saveForLaterSaga);
 }
 
 export const librarySaga = [fork(watchLogin)];

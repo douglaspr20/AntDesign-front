@@ -4,16 +4,16 @@ import clsx from "clsx";
 import { Popover, Form } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { isValidPassword } from "utils/format";
 
 import { CustomButton, CustomModal, CustomInput } from "components";
-import { EVENT_TYPES, USER_ROLES } from "enum";
+import { EVENT_TYPES, USER_ROLES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
-import { actions as homeActions } from "redux/actions/home-actions"
+import { actions as homeActions } from "redux/actions/home-actions";
 import UploadResumeModal from "../UploadResumeModal";
 
 import "./style.scss";
@@ -49,13 +49,23 @@ const confirmPasswordRules = [
 ];
 
 const ProfilePopupMenu = (props) => {
-  const { className, children, logout, userProfile: user, changePassword, userProfile, ...rest } = props;
+  const {
+    className,
+    children,
+    logout,
+    userProfile: user,
+    changePassword,
+    userProfile,
+    ...rest
+  } = props;
 
   const [visible, setVisible] = useState(false);
   const [portalSession, setPortalSession] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+  const history = useHistory()
 
   const [form] = Form.useForm();
 
@@ -121,7 +131,7 @@ const ProfilePopupMenu = (props) => {
   };
 
   const handleOnFinish = (values) => {
-    changePassword(userProfile.id, values.oldPassword ,values.newPassword)
+    changePassword(userProfile.id, values.oldPassword, values.newPassword);
   };
 
   const TitleSection = () => (
@@ -212,6 +222,14 @@ const ProfilePopupMenu = (props) => {
             -{" "}
             {moment(user.channelsSubscription_enddate).format("MMMM DD, yyyy")}
           </div>
+        </div>
+      )}
+      {user.percentOfCompletion === 100 && (
+        <div
+          className="profile-popover-content-menu"
+          onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
+        >
+          My Learnings
         </div>
       )}
       {user.percentOfCompletion === 100 && (
@@ -347,7 +365,7 @@ const mapStateToProps = (state) => homeSelector(state);
 
 const mapDispatchToProps = {
   logout: authActions.logout,
-  ...homeActions
+  ...homeActions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePopupMenu);

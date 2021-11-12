@@ -62,9 +62,7 @@ export const reducers = {
   },
   [libraryConstants.UPDATE_LIBRARY_VIEWED]: (state, { payload }) => {
     let allLibraries = state.get("allLibraries");
-    const index = allLibraries.findIndex(
-      (item) => item.id === payload.data.id
-    );
+    const index = allLibraries.findIndex((item) => item.id === payload.data.id);
 
     if (index >= 0) {
       allLibraries[index] = {
@@ -74,8 +72,47 @@ export const reducers = {
 
     return state.merge({
       allLibraries: cloneDeep([...allLibraries]),
+    });
+  },
+  [libraryConstants.SET_ALL_COMPLETED_LIBRARY]: (state, { payload }) => {
+    return state.merge({
+      allCompletedLibraries: cloneDeep([...payload.allCompletedLibraries]),
+      currentPage: payload.currentPage,
+      countOfResults: payload.countOfResults
+    });
+  },
+  [libraryConstants.SET_MORE_COMPLETED_LIBRARY]: (state, { payload }) => {
+    const allCompletedLibraries = state.get("allCompletedLibraries")
+
+    return state.merge({
+      allCompletedLibraries: cloneDeep([
+        ...allCompletedLibraries,
+        ...payload.allCompletedLibraries
+      ]),
+      currentPage: payload.currentPage,
+      countOfResults: payload.countOfResults
     })
   },
+  [libraryConstants.SET_SAVE_FOR_LATER]: (state, { payload }) => {
+    return state.merge({
+      allSaveForLaterLibraries: payload.allSaveForLaterLibraries
+    })
+  },
+  [libraryConstants.UPDATE_LIBRARY_SAVE_FOR_LATER]: (state, { payload }) => {
+    const allLibraries = state.get("allLibraries")
+
+    const index = allLibraries.findIndex((item) => item.id === payload.data.id)
+
+    if (index >= 0) {
+      allLibraries[index] = {
+        ...payload.data
+      }
+    }
+
+    return state.merge({
+      allLibraries: cloneDeep([ ...allLibraries ])
+    })
+  }
 };
 
 export const initialState = () =>
@@ -87,6 +124,8 @@ export const initialState = () =>
     currentPage: 1,
     selectedLibrary: {},
     recommendations: {},
+    allCompletedLibraries: [],
+    allSaveForLaterLibraries: []
   });
 
 export default handleActions(reducers, initialState());

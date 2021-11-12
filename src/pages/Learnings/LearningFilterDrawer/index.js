@@ -9,7 +9,7 @@ import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const SkillCohortFilterPanel = ({
+const LearningFilterDrawer = ({
   title = "Filters",
   allCategories,
   onChange,
@@ -25,9 +25,9 @@ const SkillCohortFilterPanel = ({
   };
 
   return (
-    <div className="skill-cohort-filter-panel">
+    <div className="my-learnings-filter-panel">
       <h2 className="font-regular">{title}</h2>
-      <div className="skill-cohort-filter-panel-content">
+      <div className="my-learnings-filter-panel-content">
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group
@@ -46,12 +46,12 @@ const SkillCohortFilterPanel = ({
   );
 };
 
-SkillCohortFilterPanel.propTypes = {
+LearningFilterDrawer.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
 };
 
-SkillCohortFilterPanel.defaultProps = {
+LearningFilterDrawer.defaultProps = {
   title: "Filters",
   onChange: () => {},
 };
@@ -65,4 +65,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SkillCohortFilterPanel);
+)(LearningFilterDrawer);

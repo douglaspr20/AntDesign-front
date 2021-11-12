@@ -5,11 +5,12 @@ import clsx from "clsx";
 import ReactPlayer from "react-player";
 import Emitter from "services/emitter";
 import { notification } from "antd";
+import { isEmpty } from 'lodash'
 
 import CustomButton from "../Button";
 import LibraryClaimModal from "./LibraryClaimModal";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { setLibraryViewed, claimLibrary } from "redux/actions/library-actions";
+import { setLibraryViewed, claimLibrary, saveForLaterLibrary } from "redux/actions/library-actions";
 import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS, EVENT_TYPES } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
@@ -33,8 +34,9 @@ const LibraryCard = ({
   onMenuClick,
   claimLibrary,
   setLibraryViewed,
+  saveForLaterLibrary
 }) => {
-  const { viewed } = data;
+  const { viewed, saveForLater: saveForLaterData } = data;
   const [lineClamp, setLineClamp] = useState(3);
   const [modalVisible, setModalVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
@@ -84,6 +86,16 @@ const LibraryCard = ({
       setShowFirewall(true);
     }
   };
+
+  const handleSaveForLater = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const isSavedForLater = !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)
+    const status = isSavedForLater ? "not saved": "saved"
+
+    saveForLaterLibrary(data.id, userProfile.id, status)
+  }
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -188,6 +200,17 @@ const LibraryCard = ({
                     onClick={onClaimCredits}
                   />
                 )}
+                {contentType === "video" &&
+                  viewed &&
+                  viewed[userProfile.id] !== "mark" && (
+                    <CustomButton
+                      className="save-for-later"
+                      type={(!isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)) ? "remove": "third"}
+                      size="xs"
+                      text={(!isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)) ? "Unsave": "Save for later"}
+                      onClick={handleSaveForLater}
+                    />
+                  )}
               </div>
               {/* <div className="d-flex items-center">
                 <SvgIcon name="star" className="library-card-icon" />
@@ -259,6 +282,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   claimLibrary,
   setLibraryViewed,
+  saveForLaterLibrary
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryCard);

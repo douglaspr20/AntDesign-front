@@ -41,6 +41,8 @@ import LibraryItemPage from "pages/LibraryItem";
 import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
+import MyLearningPage from "pages/Learnings";
+
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -230,6 +232,11 @@ class Content extends Component {
               render={(props) => <SkillCohortResourcePage {...props} />}
             />
           )}
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
+            render={(props) => <MyLearningPage {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}

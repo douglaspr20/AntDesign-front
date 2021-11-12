@@ -36,4 +36,5 @@ export default {
   LIBRARY_ITEM: "/library-item",
   PARTICIPANTS: "/participants",
   SKILL_COHORTS: "/skill-cohorts",
+  MY_LEARNINGS: "/my-learnings",
 };

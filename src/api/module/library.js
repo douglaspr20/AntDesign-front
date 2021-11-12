@@ -78,5 +78,15 @@ export const claimLibrary = ({ id }) => {
 };
 
 export const markLibraryViewed = ({ id, viewed }) => {
-  return httpClient.put('private/library/viewed', { id, mark: viewed });
+  return httpClient.put("private/library/viewed", { id, mark: viewed });
+};
+
+export const saveForLater = (data) => {
+  const { id, UserId, status } = data;
+
+
+  return httpClient.put(`private/library/${id}/save-for-later`, {
+    UserId,
+    status,
+  });
 };
