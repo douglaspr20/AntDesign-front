@@ -22,12 +22,13 @@ import { postSaga } from "./post";
 import { postCommentSaga } from "./postComment";
 import { envSaga } from "./env";
 import { bonfireSaga } from "./bonfire";
-import { skillCohortSaga } from "./skillCohort"
-import { skillCohortParticipantSaga } from "./skillCohortParticipant"
-import { skillCohortResourceSaga } from "./skillCohortResource"
-import { skillCohortResourceResponseSaga } from './skillCohortResourceResponse'
-import { SkillCohortResourceResponseAssessmentSaga } from './skillCohortResourceResponseAssessment'
-import { SkillCohortResourceResponseRatingSaga } from './skillCohortResourceResponseRating'
+import { skillCohortSaga } from "./skillCohort";
+import { skillCohortParticipantSaga } from "./skillCohortParticipant";
+import { skillCohortResourceSaga } from "./skillCohortResource";
+import { skillCohortResourceResponseSaga } from "./skillCohortResourceResponse";
+import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResourceResponseAssessment";
+import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
+import { learningSaga } from "./myLearning";
 
 export default function* sagas() {
   yield all([
@@ -59,6 +60,7 @@ export default function* sagas() {
     ...skillCohortResourceSaga,
     ...skillCohortResourceResponseSaga,
     ...SkillCohortResourceResponseAssessmentSaga,
-    ...SkillCohortResourceResponseRatingSaga
+    ...SkillCohortResourceResponseRatingSaga,
+    ...learningSaga,
   ]);
 }

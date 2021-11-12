@@ -61,3 +61,12 @@ export const uploadResume = ({ resume }) => {
 export const deleteResume = () => {
   return httpClient.put("private/user/delete-resume");
 };
+
+export const changePassword = (data) => {
+  const { UserId, oldPassword, newPassword } = data;
+
+  return httpClient.post(`private/user/${UserId}/change-password`, {
+    oldPassword,
+    newPassword,
+  });
+};

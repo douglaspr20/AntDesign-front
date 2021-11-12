@@ -29,3 +29,12 @@ export const markConferenceLibraryViewed = ({ id, viewed }) => {
 export const getConferenceLibrary = ({ id }) => {
   return httpClient.get(`private/conference/${id}`);
 };
+
+export const saveForLaterConference = (data) => {
+  const { id, UserId, status } = data;
+
+  return httpClient.put(`private/conference/${id}/save-for-later`, {
+    UserId,
+    status,
+  });
+};

@@ -21,6 +21,10 @@ const UPDATE_PODCAST_VIEWED = "UPDATE_PODCAST_VIEWED";
 const UPDATE_PODCAST_SERIES_VIEWED = "UPDATE_PODCAST_SERIES_VIEWED";
 const GET_PODCAST = "GET_PODCAST";
 const SET_PODCAST = "SET_PODCAST";
+const SAVE_FOR_LATER_PODCAST = "SAVE_FOR_LATER_PODCAST";
+const UPDATE_SAVE_FOR_LATER_PODCAST = "UPDATE_SAVE_FOR_LATER_PODCAST";
+const SAVE_FOR_LATER_PODCAST_SERIES = "SAVE_FOR_LATER_PODCAST_SERIES";
+const UPDATE_SAVE_FOR_LATER_PODCAST_SERIES = "UPDATE_SAVE_FOR_LATER_PODCAST_SERIES";
 
 export const constants = {
   GET_ALL_PODCASTS,
@@ -44,6 +48,10 @@ export const constants = {
   UPDATE_PODCAST_SERIES_VIEWED,
   GET_PODCAST,
   SET_PODCAST,
+  SAVE_FOR_LATER_PODCAST,
+  UPDATE_SAVE_FOR_LATER_PODCAST,
+  SAVE_FOR_LATER_PODCAST_SERIES,
+  UPDATE_SAVE_FOR_LATER_PODCAST_SERIES,
 };
 
 // ------------------------------------
@@ -140,6 +148,26 @@ export const setPodcast = createAction(SET_PODCAST, (data) => ({
   data,
 }));
 
+export const saveForLaterPodcast = createAction(
+  SAVE_FOR_LATER_PODCAST,
+  (id, UserId, status) => ({ id, UserId, status })
+);
+
+export const updateSaveForLaterPodcast = createAction(
+  UPDATE_SAVE_FOR_LATER_PODCAST,
+  (data) => ({ data })
+);
+
+export const saveForLaterPodcastSeries = createAction(
+  SAVE_FOR_LATER_PODCAST_SERIES,
+  (id, UserId, status) => ({ id, UserId, status })
+);
+
+export const updateSaveForLaterPodcastSeries = createAction(
+  UPDATE_SAVE_FOR_LATER_PODCAST_SERIES,
+  (data) => ({ data })
+);
+
 export const actions = {
   getAllPodcasts,
   setAllPodcasts,
@@ -162,4 +190,8 @@ export const actions = {
   updatePodcastseriesViewed,
   getPodcast,
   setPodcast,
+  saveForLaterPodcast,
+  updateSaveForLaterPodcast,
+  saveForLaterPodcastSeries,
+  updateSaveForLaterPodcastSeries
 };

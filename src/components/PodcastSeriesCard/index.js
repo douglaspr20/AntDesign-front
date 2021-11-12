@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 
 import { SpecialtyItem, CustomButton } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { setPodcastseriesViewed } from "redux/actions/podcast-actions";
+import {
+  setPodcastseriesViewed,
+  saveForLaterPodcastSeries,
+} from "redux/actions/podcast-actions";
 
 import "./style.scss";
 
@@ -15,10 +19,19 @@ const PodcastSeriesCard = ({
   userProfile,
   onClick,
   setPodcastseriesViewed,
+  saveForLaterPodcastSeries,
 }) => {
   const [lineClamp, setLineClamp] = useState(12);
-  const { title, img, description, hrCreditOffered, categories, viewed } =
-    data || {};
+  const {
+    id,
+    title,
+    img,
+    description,
+    hrCreditOffered,
+    categories,
+    viewed,
+    saveForLater: saveForLaterData,
+  } = data || {};
   const randomId = `podcastseries-description-${Math.floor(
     Math.random() * 1000
   )}`;
@@ -46,6 +59,17 @@ const PodcastSeriesCard = ({
       const maxRow = Math.floor(descElement.offsetHeight / 18);
       setLineClamp(maxRow ? maxRow : 1);
     }
+  };
+
+  const handleSaveForLater = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isSavedForLater =
+      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
+    const status = isSavedForLater ? "not saved" : "saved";
+
+    saveForLaterPodcastSeries(id, userProfile.id, status);
   };
 
   return (
@@ -86,7 +110,7 @@ const PodcastSeriesCard = ({
             );
           })}
         </div>
-        <div className="d-flex justify-end">
+        <div className="d-flex flex-column card-btn">
           <CustomButton
             className="mark-viewed"
             type={
@@ -109,6 +133,25 @@ const PodcastSeriesCard = ({
               );
             }}
           />
+          {viewed && viewed[userProfile.id] !== "mark" && (
+            <CustomButton
+              className="save-for-later"
+              type={
+                !isEmpty(saveForLaterData) &&
+                saveForLaterData.includes(userProfile.id)
+                  ? "remove"
+                  : "third"
+              }
+              size="xs"
+              text={
+                !isEmpty(saveForLaterData) &&
+                saveForLaterData.includes(userProfile.id)
+                  ? "Unsave"
+                  : "Save for later"
+              }
+              onClick={handleSaveForLater}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -132,6 +175,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setPodcastseriesViewed,
+  saveForLaterPodcastSeries,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastSeriesCard);

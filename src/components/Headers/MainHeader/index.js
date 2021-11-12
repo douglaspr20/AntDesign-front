@@ -124,6 +124,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MY_LEARNINGS}`)) {
+      pathInfo = {
+        icon: IconFlaskOutline,
+        label: "My Learnings",
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Emitter from "services/emitter";
 import { notification } from "antd";
+import { isEmpty } from "lodash";
 
 import ReactPlayer from "react-player";
 import { SpecialtyItem, CustomButton } from "components";
@@ -11,6 +12,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import {
   claimConferenceLibrary,
   setConferenceLibraryViewed,
+  saveForLaterConference,
 } from "redux/actions/conference-actions";
 import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
@@ -29,6 +31,7 @@ const ConferenceCard = ({
   setConferenceLibraryViewed,
   afterUpdate,
   isInternalLink,
+  saveForLaterConference,
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -74,6 +77,17 @@ const ConferenceCard = ({
         setModalVisible(false);
       }
     });
+  };
+
+  const handleSaveForLater = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isSavedForLater =
+      !isEmpty(data.saveForLater) && data.saveForLater.includes(userProfile.id);
+    const status = isSavedForLater ? "not saved" : "saved";
+
+    saveForLaterConference(data.id, userProfile.id, status);
   };
 
   return (
@@ -145,6 +159,25 @@ const ConferenceCard = ({
                 onClick={onClaimCredits}
               />
             )}
+            {data.viewed && data.viewed[userProfile.id] !== "mark" && (
+              <CustomButton
+                className="save-for-later"
+                type={
+                  !isEmpty(data.saveForLater) &&
+                  data.saveForLater.includes(userProfile.id)
+                    ? "remove"
+                    : "third"
+                }
+                size="xs"
+                text={
+                  !isEmpty(data.saveForLater) &&
+                  data.saveForLater.includes(userProfile.id)
+                    ? "Unsave"
+                    : "Save for later"
+                }
+                onClick={handleSaveForLater}
+              />
+            )}
           </div>
           {/* <div className="d-flex items-center">
             <SvgIcon name="star" className="conference-card-icon" />
@@ -208,6 +241,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   claimConferenceLibrary,
   setConferenceLibraryViewed,
+  saveForLaterConference,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceCard);

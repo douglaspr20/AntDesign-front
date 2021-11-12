@@ -10,6 +10,8 @@ const SET_CONFERENCE_VIEWED = "SET_CONFERENCE_VIEWED";
 const UPDATE_CONFERENCE_VIEWED = "UPDATE_CONFERENCE_VIEWED";
 const GET_CONFERENCE_LIBRARY = "GET_CONFERENCE_LIBRARY";
 const SET_CONFERENCE_LIBRARY = "SET_CONFERENCE_LIBRARY";
+const SAVE_FOR_LATER_CONFERENCE = "SAVE_FOR_LATER_CONFERENCE";
+const UPDATE_SAVE_FOR_LATER_CONFERENCE = "UPDATE_SAVE_FOR_LATER_CONFERENCE"
 
 export const constants = {
   GET_MORE_CONFERENCE_LIBRARIES,
@@ -22,6 +24,8 @@ export const constants = {
   UPDATE_CONFERENCE_VIEWED,
   GET_CONFERENCE_LIBRARY,
   SET_CONFERENCE_LIBRARY,
+  SAVE_FOR_LATER_CONFERENCE,
+  UPDATE_SAVE_FOR_LATER_CONFERENCE
 };
 
 // ------------------------------------
@@ -89,6 +93,13 @@ export const setConferenceLibrary = createAction(
   })
 );
 
+export const saveForLaterConference = createAction(
+  SAVE_FOR_LATER_CONFERENCE,
+  (id, UserId, status) => ({ id, UserId, status })
+);
+
+export const updateSaveForLaterConference = createAction(UPDATE_SAVE_FOR_LATER_CONFERENCE, (data) => ({ data }))
+
 export const actions = {
   getMoreConferenceLibraries,
   setMoreConferenceLibraries,
@@ -100,4 +111,6 @@ export const actions = {
   updateConferenceLibraryViewed,
   getConferenceLibrary,
   setConferenceLibrary,
+  saveForLaterConference,
+  updateSaveForLaterConference
 };

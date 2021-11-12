@@ -76,3 +76,21 @@ export const markPodcastseriesViewed = ({ id, viewed }) => {
 export const getPodcast = ({ id }) => {
   return httpClient.get(`private/podcast/episode/${id}`);
 };
+
+export const saveForLaterPodcast = (data) => {
+  const { id, UserId, status } = data;
+
+  return httpClient.put(`private/podcast/${id}/save-for-later`, {
+    UserId,
+    status,
+  });
+};
+
+export const saveForLaterPodcastSeries = (data) => {
+  const { id, UserId, status } = data;
+
+  return httpClient.put(`private/podcast-series/${id}/save-for-later`, {
+    UserId,
+    status,
+  });
+};
