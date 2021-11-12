@@ -81,7 +81,7 @@ const GlobalConference = ({
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("bonfire");
+  const [currentView, setCurrentView] = useState("conference-schedule");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
