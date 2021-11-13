@@ -50,9 +50,9 @@ const AnnualConferenceCard = ({
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       session.title
     }&dates=${convertToLocalTime(convertedStartTime).format(
-      "YYYYMMDDTHHmm"
+      "YYYYMMDDTHHmmSSS"
     )}/${convertToLocalTime(convertedEndTime).format(
-      "YYYYMMDDTHHmm"
+      "YYYYMMDDTHHmmSSS"
     )}&details=${
       session.description
     }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
