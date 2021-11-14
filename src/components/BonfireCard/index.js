@@ -36,14 +36,13 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
   const onClickAddYahooCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&TITLE=${
-      bonfire.title
-    }&st=${convertToLocalTime(bonfire.startTime).format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      bonfire.startTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(bonfire.endTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(bonfire.endTime).format("HHmmss")}&DESC=${
+    )}&title=${bonfire.title}&desc=${
       bonfire.description
-    }&in?loc=https://www.hackinghrlab.io/global-conference`;
+    }&in_loc=https://www.hackinghrlab.io/global-conference`;
     window.open(yahooCalendarUrl, "_blank");
   };
 

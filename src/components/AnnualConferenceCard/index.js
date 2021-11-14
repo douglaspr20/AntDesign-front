@@ -63,15 +63,14 @@ const AnnualConferenceCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      session.title
-    }&st=${convertToLocalTime(convertedStartTime).format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      convertedStartTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(convertedEndTime).format(
-      "HHmmss"
-    )}&description=${
+    )}&title=${session.title}&desc=${
       session.description
-    }&location=${"https://www.hackinghrlab.io/global-conference"}`;
+    }&in_loc=https://www.hackinghrlab.io/global-conference`;
+
     window.open(yahooCalendarUrl, "_blank");
   };
 

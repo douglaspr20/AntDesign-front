@@ -119,13 +119,11 @@ class EventCard extends React.Component {
   };
 
   onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      this.props.data.title
-    }&st=${convertToLocalTime(startDate).format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      startDate
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(endDate).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-      this.props.data.location
-    }`;
+    )}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
