@@ -216,7 +216,7 @@ export function* addBonfireSaga({ payload }) {
       yield put(authActions.logout());
     } else {
       notification.error({
-        message: "You not joined to bonfire",
+        message: "You can't join this bonfire",
         description: error.response.data.msg,
       });
     }
@@ -297,16 +297,16 @@ export function* changePasswordSaga({ payload }) {
       yield put(authActions.logout());
       notification.success({
         title: "Success",
-        description: "Password changed."
-      })
+        description: "Password changed.",
+      });
     }
   } catch (error) {
     console.log(error);
 
     notification.error({
       title: "Error",
-      description: "Changing password failed."
-    })
+      description: "Changing password failed.",
+    });
 
     if (error && error.response && error.response.status === 401) {
       yield put(authActions.logout());

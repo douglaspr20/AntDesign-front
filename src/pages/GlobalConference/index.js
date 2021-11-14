@@ -241,7 +241,7 @@ const GlobalConference = ({
       .utc()
       .format();
 
-    const convertedEndTime = moment(convertedStartTime)
+    const convertedEndTime = moment
       .tz(
         data.time.format("YYYY-MM-DD h:mm a"),
         "YYYY-MM-DD h:mm a",

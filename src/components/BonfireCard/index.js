@@ -8,7 +8,15 @@ import moment from "moment-timezone";
 import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
-const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
+const BonfireCard = ({
+  bonfire,
+  added,
+  isBonfireCreator,
+  onAddBonfire,
+  onRemoveBonfire,
+  editBonfire,
+  deleteBonfire,
+}) => {
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -75,7 +83,39 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
           <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
         )}
 
-        {added && (
+        {added && isBonfireCreator && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "110px",
+            }}
+          >
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Edit"
+              onClick={editBonfire}
+              className="remove-buttom"
+            />
+
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Delete"
+              onClick={deleteBonfire}
+              className="remove-buttom"
+            />
+            <CustomButton
+              size="sm"
+              text="Go to Bonfire"
+              onClick={() => window.open(bonfire.link, "_blank")}
+            />
+          </div>
+        )}
+
+        {added && !isBonfireCreator && (
           <div
             style={{
               display: "flex",
