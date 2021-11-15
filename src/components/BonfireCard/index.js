@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
 import { SpecialtyItem, CustomButton } from "components";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 import { convertToLocalTime } from "utils/format";
+import { TIMEZONE_LIST } from "../../enum";
 import "./style.scss";
 
 const BonfireCard = ({
@@ -17,25 +20,38 @@ const BonfireCard = ({
   onRemoveBonfire,
   editBonfire,
   deleteBonfire,
+  userProfile,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
+
+  const timezone = TIMEZONE_LIST.find(
+    (item) => item.value === bonfire.timezone
+  );
+  const offset = timezone.offset;
+
+  const convertedStartTime = moment(bonfire.startTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
+
+  const convertedEndTime = moment(bonfire.endTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${bonfire.id}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${bonfire.id}?userTimezone=${userProfile.timezone}`,
       "_blank"
     );
   };
-
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       bonfire.title
-    }&dates=${convertToLocalTime(bonfire.startTime).format(
+    }&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(bonfire.endTime).format(
+    )}/${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmmss"
     )}&details=${
       bonfire.description
@@ -47,8 +63,8 @@ const BonfireCard = ({
     e.preventDefault();
     e.stopPropagation();
     let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
-      bonfire.startTime
-    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(bonfire.endTime).format(
+      convertedStartTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
     )}&title=${bonfire.title}&desc=${
       bonfire.description
@@ -248,4 +264,8 @@ BonfireCard.defaultProps = {
   onRemoveBonfire: () => {},
 };
 
-export default BonfireCard;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default connect(mapStateToProps)(BonfireCard);
