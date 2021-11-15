@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import moment from "moment-timezone";
 import { SpecialtyItem, CustomButton } from "components";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
-import moment from "moment-timezone";
 import { convertToLocalTime } from "utils/format";
 import "./style.scss";
 
