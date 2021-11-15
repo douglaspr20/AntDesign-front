@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
+import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { SpecialtyItem, CustomButton } from "components";
+import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 import moment from "moment-timezone";
 import { convertToLocalTime } from "utils/format";
 import "./style.scss";
@@ -17,6 +18,7 @@ const BonfireCard = ({
   editBonfire,
   deleteBonfire,
 }) => {
+  const [hideInfo, setHideInfo] = useState(true);
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -79,11 +81,11 @@ const BonfireCard = ({
       <div className="acc-session-header">
         <h3>{bonfire.title}</h3>
 
-        {!added && (
+        {!added && !isBonfireCreator && (
           <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
         )}
 
-        {added && isBonfireCreator && (
+        {isBonfireCreator && (
           <div
             style={{
               display: "flex",
@@ -172,13 +174,62 @@ const BonfireCard = ({
             <SpecialtyItem title={category} key={i} />
           ))}
         </div>
+        <div
+          className="acc-session-toggle"
+          onClick={() => setHideInfo(!hideInfo)}
+        >
+          {hideInfo ? "Review session" : "Hide information"}
+          <div className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}>
+            <IconChevronDown />
+          </div>
+        </div>
       </div>
-      <div className="acc-details">
-        <h4>Description</h4>
-        <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
-          {bonfire.description}
-        </p>
-      </div>
+      {!hideInfo && (
+        <div className="acc-details">
+          {bonfire.description && (
+            <>
+              <h4>Description</h4>
+              <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+                {bonfire.description}
+              </p>
+            </>
+          )}
+
+          <div className="acc-details">
+            {bonfire.bonfireOrganizer && (
+              <>
+                <h4>Bonfire Organizer</h4>
+                <a
+                  href={bonfire.bonfireOrganizer.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="acc-details-speaker">
+                    <div className="acc-details-speaker-image">
+                      {bonfire.bonfireOrganizer.img ? (
+                        <img
+                          src={bonfire.bonfireOrganizer.img}
+                          alt="bonfire organizer"
+                        />
+                      ) : (
+                        <div className="empty" />
+                      )}
+                    </div>
+                    <div className="acc-details-speaker-desc">
+                      <h4>
+                        {bonfire.bonfireOrganizer.firstName}{" "}
+                        {bonfire.bonfireOrganizer.lastName}
+                      </h4>
+                      <h5>{bonfire.bonfireOrganizer.company}</h5>
+                      <h5>{bonfire.bonfireOrganizer.titleProfessions}</h5>
+                    </div>
+                  </div>
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
-import groupBy from "lodash/groupBy";
 import omit from "lodash/omit";
 
 import {
@@ -50,16 +49,25 @@ export function* getAllBonfiresSaga() {
   try {
     let response = yield call(getAllBonfires);
     if (response.status === 200) {
-      const bonfiresData = Object.values(
-        groupBy(response.data.bonfires || [], "id")
-      ).map((bonfire) => {
-        return bonfire.reduce(
-          (res, item) => ({
-            ...res,
-            ...omit(item, ["createdAt", "updatedAt"]),
-          }),
-          {}
-        );
+      const bonfiresData = response.data.bonfires.map((bonfire) => {
+        return {
+          ...omit(bonfire, [
+            "firstName",
+            "lastName",
+            "img",
+            "company",
+            "titleProfessions",
+            "personalLinks",
+          ]),
+          bonfireOrganizer: {
+            firstName: bonfire.firstName,
+            lastName: bonfire.lastName,
+            img: bonfire.img,
+            company: bonfire.company,
+            titleProfessions: bonfire.titleProfessions,
+            link: bonfire.personalLinks.linkedin,
+          },
+        };
       });
 
       yield put(bonfireActions.setBonfires(bonfiresData));
