@@ -76,7 +76,6 @@ export function* getAllSavedSaga({ payload }) {
   }
 }
 
-
 function* watchLearning() {
   yield takeLatest(myLearningConstants.GET_ALL_COMPLETED, getAllCompletedSaga);
   yield takeLatest(
