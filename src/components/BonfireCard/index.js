@@ -178,7 +178,7 @@ const BonfireCard = ({
           className="acc-session-toggle"
           onClick={() => setHideInfo(!hideInfo)}
         >
-          {hideInfo ? "Review session" : "Hide information"}
+          {hideInfo ? "More Information" : "Hide information"}
           <div className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}>
             <IconChevronDown />
           </div>
