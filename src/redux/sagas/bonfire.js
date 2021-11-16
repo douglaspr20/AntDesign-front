@@ -1,5 +1,4 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
-import groupBy from "lodash/groupBy";
 import omit from "lodash/omit";
 
 import {
@@ -7,7 +6,13 @@ import {
   actions as bonfireActions,
 } from "../actions/bonfire-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { createBonfire, getAllBonfires, getUserFromId } from "../../api";
+import {
+  createBonfire,
+  getAllBonfires,
+  getUserFromId,
+  updateBonfire,
+  deleteBonfire,
+} from "../../api";
 
 export function* createBonfireSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -44,16 +49,25 @@ export function* getAllBonfiresSaga() {
   try {
     let response = yield call(getAllBonfires);
     if (response.status === 200) {
-      const bonfiresData = Object.values(
-        groupBy(response.data.bonfires || [], "id")
-      ).map((bonfire) => {
-        return bonfire.reduce(
-          (res, item) => ({
-            ...res,
-            ...omit(item, ["createdAt", "updatedAt"]),
-          }),
-          {}
-        );
+      const bonfiresData = response.data.bonfires.map((bonfire) => {
+        return {
+          ...omit(bonfire, [
+            "firstName",
+            "lastName",
+            "img",
+            "company",
+            "titleProfessions",
+            "personalLinks",
+          ]),
+          bonfireOrganizer: {
+            firstName: bonfire.firstName,
+            lastName: bonfire.lastName,
+            img: bonfire.img,
+            company: bonfire.company,
+            titleProfessions: bonfire.titleProfessions,
+            link: bonfire.personalLinks.linkedin,
+          },
+        };
       });
 
       yield put(bonfireActions.setBonfires(bonfiresData));
@@ -65,9 +79,53 @@ export function* getAllBonfiresSaga() {
   }
 }
 
+export function* updateBonfireSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    let response = yield call(updateBonfire, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* deleteBonfireSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    let response = yield call(deleteBonfire, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(bonfireConstants.CREATE_BONFIRE, createBonfireSaga);
   yield takeLatest(bonfireConstants.GET_BONFIRES, getAllBonfiresSaga);
+  yield takeLatest(bonfireConstants.UPDATE_BONFIRE, updateBonfireSaga);
+  yield takeLatest(bonfireConstants.DELETE_BONFIRE, deleteBonfireSaga);
 }
 
 export const bonfireSaga = [fork(watchSession)];

@@ -19,13 +19,16 @@ const reducers = {
     let newAllSaved = { ...allSaved };
 
     const filteredItem =
-      newAllSaved[payload.item].filter((item) => item.id !== payload.data.id) ||
-      -1;
+      newAllSaved[payload.item]?.filter(
+        (item) => item.id !== payload.data.id
+      ) || -1;
 
-    newAllSaved = {
-      ...newAllSaved,
-      [payload.item]: filteredItem,
-    };
+    if (filteredItem !== -1) {
+      newAllSaved = {
+        ...newAllSaved,
+        [payload.item]: filteredItem,
+      };
+    }
 
     return state.merge({
       allSaved: newAllSaved,
@@ -35,10 +38,9 @@ const reducers = {
     const allCompleted = state.get("allCompleted");
     let newAllCompleted = { ...allCompleted };
 
-    const index =
-      newAllCompleted[payload.item].findIndex(
-        (item) => item.id === payload.data.id
-      );
+    const index = newAllCompleted[payload.item].findIndex(
+      (item) => item.id === payload.data.id
+    );
 
     if (index >= 0) {
       const filteredItem =
@@ -50,14 +52,10 @@ const reducers = {
         ...newAllCompleted,
         [payload.item]: filteredItem,
       };
-
     } else {
       newAllCompleted = {
         ...newAllCompleted,
-        [payload.item]: [
-          ...newAllCompleted[payload.item],
-          payload.data
-        ],
+        [payload.item]: [...newAllCompleted[payload.item], payload.data],
       };
     }
 
