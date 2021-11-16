@@ -15,7 +15,7 @@ export const constants = {
   SET_ALL_SAVED,
   SET_ALL_COMPLETED,
   UPDATE_SAVE_FOR_LATER_LIBRARY,
-  UPDATE_COMPLETED_LIBRARY
+  UPDATE_COMPLETED_LIBRARY,
 };
 
 const getAllSaved = createAction(GET_ALL_SAVED, (filter) => ({ filter }));
@@ -48,5 +48,5 @@ export const actions = {
   setAllSaved,
   setAllCompleted,
   updateSaveForLaterLibrary,
-  updateCompletedLibrary
+  updateCompletedLibrary,
 };

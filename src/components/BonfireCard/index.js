@@ -1,31 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { SpecialtyItem, CustomButton } from "components";
 import moment from "moment-timezone";
+import { SpecialtyItem, CustomButton } from "components";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 import { convertToLocalTime } from "utils/format";
+import { TIMEZONE_LIST } from "../../enum";
 import "./style.scss";
 
-const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
+const BonfireCard = ({
+  bonfire,
+  added,
+  isBonfireCreator,
+  onAddBonfire,
+  onRemoveBonfire,
+  editBonfire,
+  deleteBonfire,
+  userProfile,
+}) => {
+  const [hideInfo, setHideInfo] = useState(true);
+
+  const timezone = TIMEZONE_LIST.find(
+    (item) => item.value === bonfire.timezone
+  );
+  const offset = timezone.offset;
+
+  const convertedStartTime = moment(bonfire.startTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
+
+  const convertedEndTime = moment(bonfire.endTime)
+    .tz(timezone.utc[0])
+    .utcOffset(offset, true);
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${bonfire.id}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${bonfire.id}?userTimezone=${userProfile.timezone}`,
       "_blank"
     );
   };
-
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       bonfire.title
-    }&dates=${convertToLocalTime(bonfire.startTime).format(
+    }&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(bonfire.endTime).format(
+    )}/${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmmss"
     )}&details=${
       bonfire.description
@@ -36,14 +62,13 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
   const onClickAddYahooCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      bonfire.title
-    }&st=${convertToLocalTime(bonfire.startTime).format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      convertedStartTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(bonfire.endTime).format("HHmmss")}&details=${
+    )}&title=${bonfire.title}&desc=${
       bonfire.description
-    }&location=https://www.hackinghrlab.io/global-conference`;
+    }&in_loc=https://www.hackinghrlab.io/global-conference`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -72,11 +97,43 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
       <div className="acc-session-header">
         <h3>{bonfire.title}</h3>
 
-        {!added && (
+        {!added && !isBonfireCreator && (
           <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
         )}
 
-        {added && (
+        {isBonfireCreator && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "110px",
+            }}
+          >
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Edit"
+              onClick={editBonfire}
+              className="remove-buttom"
+            />
+
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Delete"
+              onClick={deleteBonfire}
+              className="remove-buttom"
+            />
+            <CustomButton
+              size="sm"
+              text="Go to Bonfire"
+              onClick={() => window.open(bonfire.link, "_blank")}
+            />
+          </div>
+        )}
+
+        {added && !isBonfireCreator && (
           <div
             style={{
               display: "flex",
@@ -133,13 +190,62 @@ const BonfireCard = ({ bonfire, added, onAddBonfire, onRemoveBonfire }) => {
             <SpecialtyItem title={category} key={i} />
           ))}
         </div>
+        <div
+          className="acc-session-toggle"
+          onClick={() => setHideInfo(!hideInfo)}
+        >
+          {hideInfo ? "More Information" : "Hide information"}
+          <div className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}>
+            <IconChevronDown />
+          </div>
+        </div>
       </div>
-      <div className="acc-details">
-        <h4>Description</h4>
-        <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
-          {bonfire.description}
-        </p>
-      </div>
+      {!hideInfo && (
+        <div className="acc-details">
+          {bonfire.description && (
+            <>
+              <h4>Description</h4>
+              <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+                {bonfire.description}
+              </p>
+            </>
+          )}
+
+          <div className="acc-details">
+            {bonfire.bonfireOrganizer && (
+              <>
+                <h4>Bonfire Organizer</h4>
+                <a
+                  href={bonfire.bonfireOrganizer.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="acc-details-speaker">
+                    <div className="acc-details-speaker-image">
+                      {bonfire.bonfireOrganizer.img ? (
+                        <img
+                          src={bonfire.bonfireOrganizer.img}
+                          alt="bonfire organizer"
+                        />
+                      ) : (
+                        <div className="empty" />
+                      )}
+                    </div>
+                    <div className="acc-details-speaker-desc">
+                      <h4>
+                        {bonfire.bonfireOrganizer.firstName}{" "}
+                        {bonfire.bonfireOrganizer.lastName}
+                      </h4>
+                      <h5>{bonfire.bonfireOrganizer.company}</h5>
+                      <h5>{bonfire.bonfireOrganizer.titleProfessions}</h5>
+                    </div>
+                  </div>
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -158,4 +264,8 @@ BonfireCard.defaultProps = {
   onRemoveBonfire: () => {},
 };
 
-export default BonfireCard;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default connect(mapStateToProps)(BonfireCard);

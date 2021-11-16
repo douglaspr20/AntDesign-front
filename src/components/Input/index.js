@@ -29,6 +29,7 @@ class CustomInput extends React.Component {
         style={{ width: "100%" }}
         onChange={(e) => onChange(e)}
         format="YYYY/MM/DD HH:mm"
+        {...rest}
       />
     ) : (
       <Input

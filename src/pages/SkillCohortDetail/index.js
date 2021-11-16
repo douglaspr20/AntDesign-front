@@ -220,8 +220,8 @@ const SkillCohortDetail = ({
         <div className="skill-cohort-detail-page-body">
           <div className="skill-cohort-detail-page-body-content">
             <Space direction="vertical" size="large">
-              <Space direction="vertical">
-                <h3>How ProjectX works</h3>
+              <Space direction="vertical" size="large">
+                <h3>How ProjectX Works</h3>
                 <div
                   className="details"
                   dangerouslySetInnerHTML={{
@@ -229,8 +229,8 @@ const SkillCohortDetail = ({
                   }}
                 />
               </Space>
-              <Space direction="vertical">
-                <h3>Description</h3>
+              <Space direction="vertical" size="large">
+                <h3>Description </h3>
                 <div
                   className="details"
                   dangerouslySetInnerHTML={{
@@ -242,7 +242,7 @@ const SkillCohortDetail = ({
                 <h3>Learning Objectives</h3>
                 <div className="details">{skillCohort.objectives}</div>
               </Space> */}
-              <Space direction="vertical">
+              <Space direction="vertical" size="large">
                 <h3>Schedule</h3>
                 <div className="details">
                   Starting on {moment(skillCohort.startDate).format("LL")}
