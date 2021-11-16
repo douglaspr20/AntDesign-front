@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
+import { connect } from "react-redux";
 import clsx from "clsx";
 import { Dropdown, Menu } from "antd";
-
 import { CustomButton, SpecialtyItem } from "components";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 import { TIMEZONE_LIST } from "../../enum";
@@ -18,6 +18,7 @@ const AnnualConferenceCard = ({
   added,
   onAddSession,
   onRemoveSession,
+  userProfile,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
 
@@ -38,7 +39,7 @@ const AnnualConferenceCard = ({
     e.preventDefault();
     e.stopPropagation();
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/global-conference/ics/${session.id}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/global-conference/ics/${session.id}?userTimezone=${userProfile.timezone}`,
       "_blank"
     );
   };
@@ -63,15 +64,14 @@ const AnnualConferenceCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      session.title
-    }&st=${convertToLocalTime(convertedStartTime).format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      convertedStartTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(convertedEndTime).format(
-      "HHmmss"
-    )}&description=${
+    )}&title=${session.title}&desc=${
       session.description
-    }&location=${"https://www.hackinghrlab.io/global-conference"}`;
+    }&in_loc=https://www.hackinghrlab.io/global-conference`;
+
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -222,4 +222,8 @@ AnnualConferenceCard.defaultProps = {
   onRemoveSession: () => {},
 };
 
-export default AnnualConferenceCard;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default connect(mapStateToProps)(AnnualConferenceCard);

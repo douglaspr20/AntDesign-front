@@ -93,7 +93,12 @@ import {
   getSessionsAddedbyUser,
   getParticipants,
 } from "./module/session";
-import { createBonfire, getAllBonfires } from "./module/bonfire";
+import {
+  createBonfire,
+  getAllBonfires,
+  updateBonfire,
+  deleteBonfire,
+} from "./module/bonfire";
 import {
   getAllSkillCohorts,
   getSkillCohort,
@@ -189,6 +194,8 @@ export {
   removeSession,
   addBonfire,
   removeBonfire,
+  updateBonfire,
+  deleteBonfire,
   markeToRead,
   uploadResume,
   deleteResume,
@@ -227,5 +234,5 @@ export {
   createBonfire,
   getAllBonfires,
   getAllCompleted,
-  getAllSaved
+  getAllSaved,
 };
