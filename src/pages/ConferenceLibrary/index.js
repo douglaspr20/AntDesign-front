@@ -5,7 +5,7 @@ import { Row, Col } from "antd";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { ConferenceCard, CustomButton } from "components";
+import { ConferenceCard, CustomButton, Tabs } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { SETTINGS } from "enum";
 import {
@@ -20,44 +20,111 @@ import "./style.scss";
 
 const ConferenceLibrary = ({
   loading,
-  countOfResults,
-  currentPage,
   allConferenceLibraries,
   getMoreConferenceLibraries,
   searchConferenceLibraries,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
+  const [currentTab, setCurrentTab] = useState("0");
+  const [countOfResults, setCountOfResults] = useState(0);
   const [meta, setMeta] = useState("");
+  const [listOfYears, setListOfYears] = useState([2020]);
 
   const onShowMore = () => {
-    getMoreConferenceLibraries({
-      ...filters,
-      page: currentPage + 1,
-      meta,
-    });
+    getMoreConferenceLibraries(
+      {
+        ...filters,
+        page: allConferenceLibraries?.[+currentTab].currentPage + 1,
+        meta,
+      },
+      [listOfYears[+currentTab]],
+      +currentTab
+    );
   };
 
   const onFilterChange = (filters) => {
-    searchConferenceLibraries({
-      ...filters,
-      meta,
-    });
+    searchConferenceLibraries(
+      {
+        ...filters,
+        meta,
+      },
+      listOfYears
+    );
     setFilters(filters);
   };
 
   const onSearch = (value) => {
-    searchConferenceLibraries({
-      ...filters,
-      meta: value,
-    });
+    searchConferenceLibraries(
+      {
+        ...filters,
+        meta: value,
+      },
+      listOfYears
+    );
     setMeta(value);
   };
 
   useEffect(() => {
-    searchConferenceLibraries({});
+    const getListOfYears = (startYear) => {
+      const currentYear = new Date().getFullYear();
+      const years = [];
+
+      while (startYear <= currentYear) {
+        years.push(startYear++);
+      }
+
+      return years;
+    };
+
+    const listOfYears = getListOfYears(2020);
+    setListOfYears(listOfYears.reverse());
+    searchConferenceLibraries({}, listOfYears);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
+
+    // eslint-disable-next-line
+  }, [currentTab, allConferenceLibraries]);
+
+  const displayData = (index) => {
+    const libraries = allConferenceLibraries[index]?.rows || [];
+
+    return libraries.map((item, indx) => {
+      let frequency = 0;
+
+      if (item.meta && meta) {
+        frequency = [...item.meta.toLowerCase().matchAll(meta)].length;
+      }
+
+      return (
+        <ConferenceCard
+          listOfYearsIndex={index}
+          key={indx}
+          data={item}
+          keyword={meta}
+          frequency={frequency}
+        />
+      );
+    });
+  };
+
+  const TabData =
+    listOfYears?.map((year, index) => {
+      return {
+        title: year,
+        content: () => (
+          <div className="search-results-list">{displayData(index)}</div>
+        ),
+      };
+    }) || [];
+
+  // const countOfResults = allConferenceLibraries
+  //   .map((library) => library.count)
+  //   .reduce((a, b) => a + b, 0);
 
   return (
     <div className="conference-library-page">
@@ -72,20 +139,6 @@ const ConferenceLibrary = ({
         onSearch={setMeta}
       />
       <div className="search-results-container">
-        {/* <Row>
-          <Col span={24}>
-            <div className="conference-library-page-about">
-              <h2 className="about-title">About the conference library</h2>
-              <p className="about-content">
-                Developing Talent & Leadership behaviors. Positive Design
-                Thinking & Strategy through Positive Leadership Strategy and
-                POSITIVE & AGILE coaching | 2 hack habits, goal achievement, and
-                behavior transformation in organizations, sports clubs, PYMES,
-                and corporations.
-              </p>
-            </div>
-          </Col>
-        </Row> */}
         <Row>
           <Col span={24}>
             <div className="search-results-container-mobile-header">
@@ -107,24 +160,10 @@ const ConferenceLibrary = ({
             </div>
           </Col>
         </Row>
-        <div className="search-results-list">
-          {allConferenceLibraries.map((item, index) => {
-            let frequency = 0;
-            if (item.meta && meta) {
-              frequency = [...item.meta.toLowerCase().matchAll(meta)].length;
-            }
-
-            return (
-              <ConferenceCard
-                key={index}
-                data={item}
-                keyword={meta}
-                frequency={frequency}
-              />
-            );
-          })}
-        </div>
-        {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
+        <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+        {allConferenceLibraries[+currentTab]?.currentPage *
+          SETTINGS.MAX_SEARCH_ROW_NUM <
+          allConferenceLibraries[+currentTab]?.count && (
           <div className="search-results-container-footer d-flex justify-center items-center">
             {loading && (
               <div className="conference-library-page-loading-more">

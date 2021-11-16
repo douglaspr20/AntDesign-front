@@ -33,29 +33,29 @@ export const constants = {
 // ------------------------------------
 export const getMoreConferenceLibraries = createAction(
   GET_MORE_CONFERENCE_LIBRARIES,
-  (filter) => ({
+  (filter, years, index) => ({
     filter,
+    years,
+    index
   })
 );
 export const setMoreConferenceLibraries = createAction(
   SET_MORE_CONFERENCE_LIBRARIES,
-  (countOfResults, currentPage, libraries) => ({
-    countOfResults,
-    currentPage,
+  (libraries, index) => ({
     libraries,
+    index
   })
 );
 export const searchConferenceLibraries = createAction(
   SEARCH_CONFERENCE_LIBRARIES,
-  (filter) => ({
+  (filter, years) => ({
     filter,
+    years
   })
 );
 export const setSearchConferenceLibraries = createAction(
   SET_SEARCH_CONFERENCE_LIBRARIES,
-  (countOfResults, currentPage, libraries) => ({
-    countOfResults,
-    currentPage,
+  (libraries) => ({
     libraries,
   })
 );
@@ -69,14 +69,15 @@ export const claimConferenceLibrary = createAction(
 );
 export const setConferenceLibraryViewed = createAction(
   SET_CONFERENCE_VIEWED,
-  (id, viewed) => ({
+  (id, viewed, index) => ({
     id,
     viewed,
+    index
   })
 );
 export const updateConferenceLibraryViewed = createAction(
   UPDATE_CONFERENCE_VIEWED,
-  (data) => ({ data })
+  (data, index) => ({ data, index })
 );
 
 export const getConferenceLibrary = createAction(
@@ -95,10 +96,10 @@ export const setConferenceLibrary = createAction(
 
 export const saveForLaterConference = createAction(
   SAVE_FOR_LATER_CONFERENCE,
-  (id, UserId, status) => ({ id, UserId, status })
+  (id, UserId, status, index) => ({ id, UserId, status, index })
 );
 
-export const updateSaveForLaterConference = createAction(UPDATE_SAVE_FOR_LATER_CONFERENCE, (data) => ({ data }))
+export const updateSaveForLaterConference = createAction(UPDATE_SAVE_FOR_LATER_CONFERENCE, (data, index) => ({ data, index }))
 
 export const actions = {
   getMoreConferenceLibraries,
