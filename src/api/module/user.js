@@ -70,3 +70,18 @@ export const changePassword = (data) => {
     newPassword,
   });
 };
+
+export const createInvitation = ({ email, username }) => {
+  return httpClient.post(`private/user/create-invitation`, {
+    username,
+    email,
+  });
+};
+
+export const acceptInvitationJoin = ({ newUser, hostUser }) => {
+  return httpClient.get(`private/user/accept-invitation/${newUser}`, {
+    params: {
+      hostUser,
+    },
+  });
+};

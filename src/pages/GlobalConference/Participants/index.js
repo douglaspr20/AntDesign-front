@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { bonfireSelector } from "redux/selectors/bonfireSelector";
-import { getBonfires } from "redux/actions/bonfire-actions";
+import { getBonfires, inviteUser } from "redux/actions/bonfire-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
 import { CustomButton, ParticipantCard } from "components";
-import { Modal, List, Skeleton } from "antd";
+import { Modal, List, Skeleton, notification } from "antd";
 import "./style.scss";
 
 const Participants = ({
@@ -15,6 +15,7 @@ const Participants = ({
   userProfile,
   getParticipants,
   getBonfires,
+  inviteUser,
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const [participantToInvite, setParticipantToInvite] = useState(null);
@@ -22,6 +23,7 @@ const Participants = ({
     if (userProfile.topicsOfInterest.length > 0) {
       getParticipants({
         topics: userProfile.topicsOfInterest,
+        userId: userProfile.id,
       });
 
       getBonfires();
@@ -33,7 +35,20 @@ const Participants = ({
     setParticipantToInvite(participantId);
   };
 
-  console.log(bonfires);
+  const onInviteUser = (bonfireId, participantId) => {
+    inviteUser(bonfireId, participantId, (error) => {
+      if (error) {
+        notification.error({
+          message: error || "Something went wrong. Please try again.",
+        });
+      } else {
+        getBonfires();
+        notification.success({
+          message: "Bonfire updated succesfully",
+        });
+      }
+    });
+  };
 
   return (
     <div className="participants">
@@ -45,6 +60,14 @@ const Participants = ({
               key={i}
               participant={participant}
               onOpenModalBonfires={onOpenModalBonfires}
+              invitedAllBonfires={bonfires
+                .filter((bonfire) => bonfire.bonfireCreator === userProfile.id)
+                .every(
+                  (bonfire) =>
+                    bonfire.invitedUsers.includes(participant.id) ||
+                    bonfire.uninvitedJoinedUsers.includes(participant.id) ||
+                    bonfire?.usersInvitedByOrganizer?.includes(participant.id)
+                )}
             />
           ))}
         </div>
@@ -65,7 +88,8 @@ const Participants = ({
           renderItem={(bonfire) => {
             if (
               bonfire.invitedUsers.includes(participantToInvite) ||
-              bonfire.uninvitedJoinedUsers.includes(participantToInvite)
+              bonfire.uninvitedJoinedUsers.includes(participantToInvite) ||
+              bonfire?.usersInvitedByOrganizer?.includes(participantToInvite)
             ) {
               return (
                 <List.Item
@@ -88,7 +112,17 @@ const Participants = ({
             }
 
             return (
-              <List.Item extra={<CustomButton size="sm" text="Invite User" />}>
+              <List.Item
+                extra={
+                  <CustomButton
+                    size="sm"
+                    text="Invite User"
+                    onClick={() =>
+                      onInviteUser(bonfire.id, participantToInvite)
+                    }
+                  />
+                }
+              >
                 <Skeleton title={false} loading={false}>
                   <List.Item.Meta
                     title={bonfire.title}
@@ -113,6 +147,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getParticipants,
   getBonfires,
+  inviteUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Participants);

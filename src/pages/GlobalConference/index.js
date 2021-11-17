@@ -21,7 +21,9 @@ import {
 import {
   attendToGlobalConference,
   setLoading,
+  createInvitation,
 } from "redux/actions/home-actions";
+import { createBonfire } from "redux/actions/bonfire-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -44,7 +46,8 @@ import Bonfire from "./Bonfire";
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
 import Participants from "./Participants";
-import { createBonfire } from "redux/actions/bonfire-actions";
+import ConferenceLeaderboard from "./ConferenceLeaderboard";
+
 import "./style.scss";
 
 const Description = `
@@ -72,14 +75,21 @@ const GlobalConference = ({
   sessionsUser,
   setLoading,
   attendToGlobalConference,
+  createInvitation,
 }) => {
   const [bonfireForm] = Form.useForm();
+  const [emailForm] = Form.useForm();
+
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [
+    modalFormInviteColleaguesVisible,
+    setModalFormInviteColleaguesVisible,
+  ] = useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
 
@@ -221,7 +231,20 @@ const GlobalConference = ({
 
   const onCancelModalForm = () => {
     setModalFormVisible(false);
+    setModalFormInviteColleaguesVisible(false);
+    emailForm.resetFields();
     bonfireForm.resetFields();
+  };
+
+  const onInviteColleague = () => {
+    if (userProfile.memberShip && userProfile.memberShip !== "premium") {
+      return notification.warning({
+        message: "Warning",
+        description: `you need to be a premium user to invite a user`,
+      });
+    }
+    setModalFormInviteColleaguesVisible(true);
+    emailForm.resetFields();
   };
 
   const handleChecked = (e) => {
@@ -276,6 +299,14 @@ const GlobalConference = ({
     bonfireForm.resetFields();
   };
 
+  const handleSubmitEmailColleague = (data) => {
+    createInvitation(data.email, userProfile.username);
+
+    setModalFormInviteColleaguesVisible(false);
+
+    emailForm.resetFields();
+  };
+
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
@@ -310,6 +341,12 @@ const GlobalConference = ({
                   type="remove"
                   remove={true}
                   onClick={onAttend}
+                />
+                <CustomButton
+                  size="xs"
+                  text="Invite Your Colleagues"
+                  onClick={() => onInviteColleague()}
+                  style={{ marginLeft: "1rem" }}
                 />
               </>
             ) : (
@@ -404,6 +441,14 @@ const GlobalConference = ({
               >
                 <Link to="/global-conference">My Personal Agenda</Link>
               </Menu.Item>
+
+              <Menu.Item
+                key="conference-leaderboard"
+                className="sub-menu-item-global-conference"
+                onClick={() => handleView("conference-leaderboard")}
+              >
+                <Link to="/global-conference">Conference Leaderboard</Link>
+              </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
               <CustomButton
@@ -436,6 +481,7 @@ const GlobalConference = ({
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "speakers" && <Speakers />}
         {currentView === "participants" && <Participants />}
+        {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
 
       <Modal
@@ -530,6 +576,33 @@ const GlobalConference = ({
           </Form.Item>
         </Form>
       </Modal>
+      <Modal
+        visible={modalFormInviteColleaguesVisible}
+        footer={null}
+        onCancel={() => {
+          onCancelModalForm();
+        }}
+      >
+        <Form
+          layout="vertical"
+          onFinish={(data) => {
+            handleSubmitEmailColleague(data);
+          }}
+        >
+          <Form.Item
+            label="Enter Email Addresses"
+            name="email"
+            rules={[
+              { required: true, type: "email", message: "is not valid Email" },
+            ]}
+          >
+            <CustomInput />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <CustomButton size="xs" text="Invite" htmlType="submit" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -558,6 +631,7 @@ const mapDispatchToProps = {
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
+  createInvitation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

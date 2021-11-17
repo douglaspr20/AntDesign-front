@@ -19,6 +19,8 @@ import {
   uploadResume,
   deleteResume,
   changePassword,
+  createInvitation,
+  acceptInvitationJoin,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -316,6 +318,62 @@ export function* changePasswordSaga({ payload }) {
   }
 }
 
+export function* createInvitationSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(createInvitation, { ...payload });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* acceptInvitationSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(acceptInvitationJoin, { ...payload });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -332,6 +390,8 @@ function* watchLogin() {
   yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);
   yield takeLatest(homeConstants.DELETE_RESUME, deleteResumeSaga);
   yield takeLatest(homeConstants.CHANGE_PASSWORD, changePasswordSaga);
+  yield takeLatest(homeConstants.CREATE_INVITATION, createInvitationSaga);
+  yield takeLatest(homeConstants.ACCEPT_INVITATION, acceptInvitationSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

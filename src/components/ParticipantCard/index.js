@@ -7,7 +7,11 @@ import { CustomButton } from "components";
 
 import "./style.scss";
 
-const ParticipantCard = ({ participant, onOpenModalBonfires }) => {
+const ParticipantCard = ({
+  participant,
+  onOpenModalBonfires,
+  invitedAllBonfires,
+}) => {
   return (
     <Card
       hoverable
@@ -22,12 +26,15 @@ const ParticipantCard = ({ participant, onOpenModalBonfires }) => {
       }}
       style={{ marginTop: "1rem" }}
     >
-      <CustomButton
-        size="sm"
-        text="Invite to bonfire"
-        style={{ marginTop: "-30px", marginBottom: "30px" }}
-        onClick={() => onOpenModalBonfires(participant.id)}
-      />
+      {!invitedAllBonfires && (
+        <CustomButton
+          size="sm"
+          text="Invite to bonfire"
+          style={{ marginTop: "-30px", marginBottom: "30px" }}
+          onClick={() => onOpenModalBonfires(participant.id)}
+        />
+      )}
+
       <a
         href={participant.personalLinks.linkedin}
         target="_blank"

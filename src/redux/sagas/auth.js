@@ -136,6 +136,11 @@ export function* signUpUser({ payload }) {
         })
       );
 
+      if (payload.hostUser) {
+        console.log(payload);
+        yield put(homeActions.acceptInvitation(user.id, payload.hostUser));
+      }
+
       yield put(
         homeActions.updateUserInformation({
           ...defaultUserInfo,

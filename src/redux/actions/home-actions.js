@@ -16,7 +16,9 @@ const ADD_BONFIRE = "ADD_BONFIRE";
 const REMOVE_BONFIRE = "REMOVE_BONFIRE";
 const UPLOAD_RESUME = "UPLOAD_RESUME";
 const DELETE_RESUME = "DELETE_RESUME";
-const CHANGE_PASSWORD = "CHANGE_PASSWORD"
+const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+const CREATE_INVITATION = "CREATE_INVITATION";
+const ACCEPT_INVITATION = "ACCEPT_INVITATION";
 
 export const constants = {
   SET_LOADING,
@@ -34,7 +36,9 @@ export const constants = {
   REMOVE_BONFIRE,
   UPLOAD_RESUME,
   DELETE_RESUME,
-  CHANGE_PASSWORD
+  CHANGE_PASSWORD,
+  CREATE_INVITATION,
+  ACCEPT_INVITATION,
 };
 
 // ------------------------------------
@@ -74,7 +78,20 @@ export const uploadResume = createAction(UPLOAD_RESUME, (resume, callback) => ({
 export const deleteResume = createAction(DELETE_RESUME, (callback) => ({
   callback,
 }));
-export const changePassword = createAction(CHANGE_PASSWORD, (UserId, oldPassword, newPassword) => ({ UserId, oldPassword, newPassword }))
+export const changePassword = createAction(
+  CHANGE_PASSWORD,
+  (UserId, oldPassword, newPassword) => ({ UserId, oldPassword, newPassword })
+);
+
+export const createInvitation = createAction(
+  CREATE_INVITATION,
+  (email, username) => ({ email, username })
+);
+
+export const acceptInvitation = createAction(
+  ACCEPT_INVITATION,
+  (newUser, hostUser) => ({ newUser, hostUser })
+);
 
 export const actions = {
   setLoading,
@@ -91,5 +108,7 @@ export const actions = {
   removeBonfire,
   uploadResume,
   deleteResume,
-  changePassword
+  changePassword,
+  createInvitation,
+  acceptInvitation,
 };

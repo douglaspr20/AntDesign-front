@@ -34,10 +34,16 @@ export const getParticipants = (filters) => {
     };
   }
 
+  if (filters.order) {
+    newFilter = {
+      ...newFilter,
+      order: ["pointsConferenceLeaderboard", "DESC"],
+    };
+  }
+
   return httpClient.get(`private/session/participants`, {
     params: {
       ...newFilter,
-      filters,
     },
   });
 };

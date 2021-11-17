@@ -15,6 +15,8 @@ import {
   uploadResume,
   deleteResume,
   changePassword,
+  createInvitation,
+  acceptInvitationJoin,
 } from "./module/user";
 import {
   getAllEvents,
@@ -98,6 +100,7 @@ import {
   getAllBonfires,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
 } from "./module/bonfire";
 import {
   getAllSkillCohorts,
@@ -137,6 +140,8 @@ export {
   getUserFromId,
   updateUser,
   changePassword,
+  createInvitation,
+  acceptInvitationJoin,
   upgradePlan,
   getAllEvents,
   getEvent,
@@ -196,6 +201,7 @@ export {
   removeBonfire,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
   markeToRead,
   uploadResume,
   deleteResume,
