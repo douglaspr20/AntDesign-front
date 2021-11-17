@@ -9,13 +9,17 @@ import { constants as conferenceConstants } from "../actions/conference-actions"
 export const reducers = {
   [conferenceConstants.SET_MORE_CONFERENCE_LIBRARIES]: (state, { payload }) => {
     const allConferenceLibraries = state.get("allConferenceLibraries");
+    const libraries = payload.libraries
+
+    allConferenceLibraries[payload.index] = {
+      rows: cloneDeep([
+        ...allConferenceLibraries[payload.index].rows,
+        ...libraries.libraries
+      ])
+    }
+
     return state.merge({
-      allConferenceLibraries: cloneDeep([
-        ...allConferenceLibraries,
-        ...payload.libraries,
-      ]),
-      currentPage: payload.currentPage,
-      countOfResults: payload.countOfResults,
+      allConferenceLibraries: cloneDeep([...allConferenceLibraries])
     });
   },
   [conferenceConstants.SET_SEARCH_CONFERENCE_LIBRARIES]: (
@@ -24,8 +28,6 @@ export const reducers = {
   ) => {
     return state.merge({
       allConferenceLibraries: cloneDeep([...payload.libraries]),
-      currentPage: payload.currentPage,
-      countOfResults: payload.countOfResults,
     });
   },
   [conferenceConstants.SET_LOADING]: (state, { payload }) => {
@@ -35,12 +37,12 @@ export const reducers = {
   },
   [conferenceConstants.UPDATE_CONFERENCE_VIEWED]: (state, { payload }) => {
     let allConferenceLibraries = state.get("allConferenceLibraries");
-    const index = allConferenceLibraries.findIndex(
+    const index = allConferenceLibraries[payload.index].rows.findIndex(
       (clibrary) => clibrary.id === payload.data.id
     );
 
     if (index >= 0) {
-      allConferenceLibraries[index] = {
+      allConferenceLibraries[payload.index].rows[index] = {
         ...payload.data,
       };
     }
@@ -56,12 +58,12 @@ export const reducers = {
   },
   [conferenceConstants.UPDATE_SAVE_FOR_LATER_CONFERENCE]: (state, { payload }) => {
     const allConferenceLibraries = state.get("allConferenceLibraries")
-    const index = allConferenceLibraries.findIndex((item) => {
+    const index = allConferenceLibraries[payload.index].rows.findIndex((item) => {
       return item.id === payload.data.id
     })
 
     if (index >= 0) {
-      allConferenceLibraries[index] = {
+      allConferenceLibraries[payload.index].rows[index] = {
         ...payload.data
       }
     }
@@ -77,8 +79,6 @@ export const initialState = () =>
     loading: false,
     error: null,
     allConferenceLibraries: [],
-    countOfResults: 0,
-    currentPage: 1,
     conferenceLibrary: null,
   });
 

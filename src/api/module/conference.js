@@ -1,7 +1,7 @@
 import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
-export const searchConferenceLibrary = ({ filter }) => {
+export const searchConferenceLibrary = ({ filter, years }) => {
   let newFilter = {
     page: 1,
     num: SETTINGS.MAX_SEARCH_ROW_NUM,
@@ -15,7 +15,7 @@ export const searchConferenceLibrary = ({ filter }) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/conference?${parsedFilter}`);
+  return httpClient.get(`private/conference?${parsedFilter}&listOfYears=[${years}]`);
 };
 
 export const claimConferenceLibrary = ({ id }) => {
