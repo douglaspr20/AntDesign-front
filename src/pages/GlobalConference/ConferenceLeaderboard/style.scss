@@ -1,7 +1,7 @@
 @import "../../../styles/main.scss";
 
 .conference-leaderboard {
-  margin-top: 15rem;
+  margin-top: 20rem;
   width: 100%;
   position: relative;
 
@@ -39,4 +39,9 @@
 }
 span{
   font-weight: bold !important;
+}
+
+.ant-modal-footer{
+  display: flex;
+  justify-content: flex-end;
 }
