@@ -88,7 +88,7 @@ const setLearningLoading = createAction(LEARNING_LOADING, (loading) => ({
   loading,
 }));
 
-const getAllEventVideos = createAction(GET_ALL_EVENT_VIDEOS);
+const getAllEventVideos = createAction(GET_ALL_EVENT_VIDEOS, (filter) => ({ filter }));
 
 const setAllEventVideos = createAction(SET_ALL_EVENT_VIDEOS, (videos) => ({
   videos,

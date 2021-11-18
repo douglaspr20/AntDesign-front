@@ -60,7 +60,7 @@ export const getAllItemsWithHRCredits = ({ filter }) => {
   );
 };
 
-export const getEventVideos = ({ filter }) => {
+export const getEventVideos = (filter) => {
   let newFilter = {
     page: 1,
     num: SETTINGS.MAX_SEARCH_ROW_NUM,

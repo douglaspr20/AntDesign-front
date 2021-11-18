@@ -45,7 +45,7 @@ const MyLearingPage = ({
     getAllSaved([]);
     getAllCompleted([]);
     getAllItemsWithHRCredits({});
-    getAllEventVideos();
+    getAllEventVideos({});
 
     const getListOfYears = (startYear) => {
       const currentYear = new Date().getFullYear();
@@ -219,7 +219,7 @@ const MyLearingPage = ({
             );
           })}
         </div>
-        {allEventVideosCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allEventVideos.count && (
+        {/* {allEventVideosCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allEventVideos.count && (
         <div className="search-results-container-footer d-flex justify-center items-center">
           {loading && (
             <div className="my-learnings-page-loading-more">
@@ -235,7 +235,7 @@ const MyLearingPage = ({
             />
           )}
         </div>
-      )}
+      )} */}
       </>
     );
   };
