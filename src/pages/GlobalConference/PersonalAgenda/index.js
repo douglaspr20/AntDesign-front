@@ -152,7 +152,7 @@ const PersonalAgenda = ({
   }, [sessionsUser, filters]);
 
   return (
-    <div className="conference-list" style={{ marginTop: "12rem" }}>
+    <div className="conference-list" style={{ marginTop: "14rem" }}>
       <div className="conference-list-container">
         {sessionData.map((session, index) =>
           session.data.length > 0 ? (

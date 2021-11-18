@@ -113,6 +113,17 @@
     }
   }
 
+  .button-requirements{
+    background: $color-accent !important;
+    border: none !important;
+    color: #fff;
+
+    &:hover, &:active{
+      color: #fff !important;
+      background-color: $color-info !important;
+    }
+  }
+
   &-pagination {
     display: flex;
     justify-content: center;
@@ -156,7 +167,7 @@
     .ant-tabs > div > .ant-tabs-nav {
       position: fixed;
       padding-top: 20px;
-      margin-top: 170px;
+      margin-top: 200px;
       left: 37%;
       z-index: 19;
       background: $color-background;
@@ -165,12 +176,12 @@
       @media (max-width: 2600px){
         left: 30%;
         width: 60%;
-        margin-top: 180px;
+        margin-top: 200px;
        }
 
       @media (max-width: 1500px){
        left: 30%;
-       margin-top: 190px;
+       margin-top: 210px;
        width: 100%;
        max-width: 900px;
     
@@ -178,12 +189,12 @@
 
 
       @media (max-width: 1300px){
-        margin-top: 200px;
+        margin-top: 220px;
         width: 100%;
        }
 
       @media (max-width: 1100px){
-        margin-top: 220px;
+        margin-top: 250px;
         left: 40%;
         width: 100%;
         max-width: 600px;
@@ -210,7 +221,7 @@
 
 .sub-menu-item-global-conference {
   font-size: 16px;
-  margin: 0px 35px !important;
+  margin: 0px 25px !important;
 
   @media (max-width: 1300px){
     margin: 0px 20px !important;

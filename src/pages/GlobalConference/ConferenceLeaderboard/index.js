@@ -51,6 +51,7 @@ const ConferenceLeaderboard = ({ getParticipants, participants }) => {
         visible={openModal}
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}
+        className="modal-earn-points"
       >
         <Timeline>
           <Timeline.Item>
@@ -71,7 +72,6 @@ const ConferenceLeaderboard = ({ getParticipants, participants }) => {
             Every session you add to your agenda: <span>20 points</span>
           </Timeline.Item>
         </Timeline>
-        ,
       </Modal>
     </div>
   );
