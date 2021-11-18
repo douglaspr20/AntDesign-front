@@ -47,15 +47,15 @@ const BonfireCard = ({
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
       bonfire.title
-    }&dates=${convertToLocalTime(convertedStartTime).format(
+    )}&dates=${convertToLocalTime(convertedStartTime).format(
       "YYYYMMDDTHHmm"
     )}/${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmmss"
-    )}&details=${
+    )}&details=${encodeURIComponent(
       bonfire.description
-    }&location=https://www.hackinghrlab.io/global-conference&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    )}&location=https://www.hackinghrlab.io/global-conference&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -66,9 +66,9 @@ const BonfireCard = ({
       convertedStartTime
     ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
-    )}&title=${bonfire.title}&desc=${
+    )}&title=${encodeURIComponent(bonfire.title)}&desc=${encodeURIComponent(
       bonfire.description
-    }&in_loc=https://www.hackinghrlab.io/global-conference`;
+    )}&in_loc=https://www.hackinghrlab.io/global-conference`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
