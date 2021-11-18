@@ -248,7 +248,7 @@ const SkillCohortDetail = ({
                   Starting on {moment(skillCohort.startDate).format("LL")}
                 </div>
                 <div className="details">
-                  Finishing on on {moment(skillCohort.endDate).format("LL")}
+                  Finishing on {moment(skillCohort.endDate).format("LL")}
                 </div>
               </Space>
               {skillCohortParticipant.hasAccess &&
