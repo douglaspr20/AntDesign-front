@@ -34,7 +34,8 @@ const LibraryCard = ({
   onMenuClick,
   claimLibrary,
   setLibraryViewed,
-  saveForLaterLibrary
+  saveForLaterLibrary,
+  isInHRCredits = false
 }) => {
   const { viewed, saveForLater: saveForLaterData } = data;
   const [lineClamp, setLineClamp] = useState(3);
@@ -94,7 +95,7 @@ const LibraryCard = ({
     const isSavedForLater = !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)
     const status = isSavedForLater ? "not saved": "saved"
 
-    saveForLaterLibrary(data.id, userProfile.id, status)
+    saveForLaterLibrary(data.id, userProfile.id, status, isInHRCredits)
   }
 
   const planUpgrade = () => {
@@ -212,10 +213,6 @@ const LibraryCard = ({
                     />
                   )}
               </div>
-              {/* <div className="d-flex items-center">
-                <SvgIcon name="star" className="library-card-icon" />
-                <SvgIcon name="bookmark" className="library-card-icon" />
-              </div> */}
             </div>
             {type === CARD_TYPE.EDIT && (
               <CardMenu menus={CARD_MENUS} onClick={onMenuClick}>

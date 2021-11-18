@@ -54,9 +54,13 @@ export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
 export const setEvent = createAction(SET_EVENT, (event) => ({ event }));
 export const setError = createAction(SET_ERROR, (error) => ({ error }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
-export const addToMyEventList = createAction(ADD_TO_MY_EVENT_LIST, (event, userTimezone) => ({
-  event, userTimezone,
-}));
+export const addToMyEventList = createAction(
+  ADD_TO_MY_EVENT_LIST,
+  (event, userTimezone) => ({
+    event,
+    userTimezone,
+  })
+);
 export const removeFromMyEventList = createAction(
   REMOVE_FROM_MY_EVENT_LIST,
   (event) => ({ event })

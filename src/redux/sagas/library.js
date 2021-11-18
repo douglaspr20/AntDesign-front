@@ -311,7 +311,9 @@ export function* markLibraryViewedSaga({ payload }) {
       yield put(
         myLearningActions.updateSaveForLaterLibrary(
           response.data.affectedRows,
-          "allLibraries"
+          "allLibraries",
+          payload.index,
+          'libraries'
         )
       );
       yield put(
@@ -338,11 +340,21 @@ export function* saveForLaterSaga({ payload }) {
         libraryActions.updateLibrarySaveForLater(response.data.affectedRows)
       );
 
-      if (payload.status === "not saved") {
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allLibraries",
+          -1,
+          'libraries'
+        )
+      );
+
+      if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveForLaterLibrary(
+          myLearningActions.updateSaveMoreInHRCredits(
+            payload.id,
             response.data.affectedRows,
-            "allLibraries"
+            1
           )
         );
       }

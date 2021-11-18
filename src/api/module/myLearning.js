@@ -22,18 +22,60 @@ export const getAllCompleted = ({ filter }) => {
 };
 
 export const getAllSaved = ({ filter }) => {
-  let newFilter = {}
+  let newFilter = {};
 
   if (filter) {
     newFilter = {
       ...newFilter,
-      ...filter
-    }
+      ...filter,
+    };
   }
 
   const parsedFilter = Object.keys(newFilter)
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/my-learnings/saved?${parsedFilter}`)
-}
+  return httpClient.get(`private/my-learnings/saved?${parsedFilter}`);
+};
+
+export const getAllItemsWithHRCredits = ({ filter }) => {
+  let newFilter = {
+    page: 1,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
+  };
+
+  if (filter) {
+    newFilter = {
+      ...newFilter,
+      ...filter,
+    };
+  }
+
+  const parsedFilter = Object.keys(newFilter)
+    .map((item) => `${item}=${newFilter[item]}`)
+    .join("&");
+
+  return httpClient.get(
+    `private/my-learnings/items-with-hr-credits?${parsedFilter}`
+  );
+};
+
+export const getEventVideos = ({ filter }) => {
+  let newFilter = {
+    page: 1,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
+  };
+
+  if (filter) {
+    newFilter = {
+      ...newFilter,
+      ...filter,
+    };
+  }
+
+  const parsedFilter = Object.keys(newFilter)
+    .map((item) => `${item}=${newFilter[item]}`)
+    .join("&");
+
+  return httpClient.get(`private/events/event-videos?${parsedFilter}`);
+};

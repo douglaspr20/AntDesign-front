@@ -32,7 +32,8 @@ const ConferenceCard = ({
   afterUpdate,
   isInternalLink,
   saveForLaterConference,
-  listOfYearsIndex
+  listOfYearsIndex,
+  isInHRCredits = false
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +46,7 @@ const ConferenceCard = ({
       }
 
       if (data.viewed && !data.viewed[userProfile.id]) {
-        setConferenceLibraryViewed(data.id, "unmark");
+        setConferenceLibraryViewed(data.id, "unmark", listOfYearsIndex);
       }
     }
   };
@@ -88,7 +89,7 @@ const ConferenceCard = ({
       !isEmpty(data.saveForLater) && data.saveForLater.includes(userProfile.id);
     const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterConference(data.id, userProfile.id, status, listOfYearsIndex);
+    saveForLaterConference(data.id, userProfile.id, status, listOfYearsIndex, isInHRCredits);
   };
 
   return (

@@ -32,7 +32,7 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
       yield put(
         conferenceActions.setMoreConferenceLibraries(
           moreConferenceLibraries,
-          payload.index
+          payload.yearIndex
         )
       );
     }
@@ -54,7 +54,7 @@ export function* searchConferenceLibrarySaga({ payload }) {
     const response = yield call(searchConferenceLibrary, { ...payload });
 
     if (response.status === 200) {
-      const allConferenceLibraries = response.data.conferences.map(
+      const allConferenceLibraries = response.data?.conferences?.map(
         (conference) => {
           return {
             ...conference,
@@ -117,7 +117,8 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
         myLearningActions.updateSaveForLaterLibrary(
           response.data.affectedRows,
           "allConferenceLibraries",
-          payload.index
+          payload.index,
+          'conferences'
         )
       );
       yield put(
@@ -156,19 +157,29 @@ export function* getConferenceLibrarySaga({ payload }) {
 export function* saveForLaterConferenceSaga({ payload }) {
   try {
     const response = yield call(saveForLaterConference, { ...payload });
+
     if (response.status === 200) {
       yield put(
         conferenceActions.updateSaveForLaterConference(
           response.data.affectedRows,
-          payload.index
+          payload.yearIndex
         )
       );
 
-      if (payload.status === "not saved") {
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(
+          response.data.affectedRows,
+          "allConferenceLibraries",
+          -1,
+          'conferences'
+        )
+      );
+
+      if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveForLaterLibrary(
+          myLearningActions.updateSaveMoreInHRCredits(
+            payload.id,
             response.data.affectedRows,
-            "allConferenceLibraries"
           )
         );
       }

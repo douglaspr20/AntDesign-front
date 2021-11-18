@@ -128,7 +128,12 @@ import {
   upsertResponseRating,
 } from "./module/skillCohortResourceResponseRating";
 
-import { getAllCompleted, getAllSaved } from "./module/myLearning";
+import {
+  getAllCompleted,
+  getAllSaved,
+  getAllItemsWithHRCredits,
+  getEventVideos,
+} from "./module/myLearning";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -235,4 +240,6 @@ export {
   getAllBonfires,
   getAllCompleted,
   getAllSaved,
+  getAllItemsWithHRCredits,
+  getEventVideos,
 };
