@@ -17,6 +17,7 @@ import {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  confirmAccessibilityRequirements,
 } from "./module/user";
 import {
   getAllEvents,
@@ -142,6 +143,7 @@ export {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
   getEvent,

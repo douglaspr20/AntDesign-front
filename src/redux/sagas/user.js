@@ -21,6 +21,7 @@ import {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  confirmAccessibilityRequirements,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -374,6 +375,33 @@ export function* acceptInvitationSaga({ payload }) {
   }
 }
 
+export function* confirmAccessibilityRequirementsSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+  try {
+    const response = yield call(confirmAccessibilityRequirements, payload);
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -392,6 +420,10 @@ function* watchLogin() {
   yield takeLatest(homeConstants.CHANGE_PASSWORD, changePasswordSaga);
   yield takeLatest(homeConstants.CREATE_INVITATION, createInvitationSaga);
   yield takeLatest(homeConstants.ACCEPT_INVITATION, acceptInvitationSaga);
+  yield takeLatest(
+    homeConstants.CONFIRM_ACCESSIBILITY_REQUIREMENTS,
+    confirmAccessibilityRequirementsSaga
+  );
 }
 
 export const userSaga = [fork(watchLogin)];

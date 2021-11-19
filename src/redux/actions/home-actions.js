@@ -19,6 +19,7 @@ const DELETE_RESUME = "DELETE_RESUME";
 const CHANGE_PASSWORD = "CHANGE_PASSWORD";
 const CREATE_INVITATION = "CREATE_INVITATION";
 const ACCEPT_INVITATION = "ACCEPT_INVITATION";
+const CONFIRM_ACCESSIBILITY_REQUIREMENTS = "CONFIRM_ACCESSIBILITY_REQUIREMENTS";
 
 export const constants = {
   SET_LOADING,
@@ -39,6 +40,7 @@ export const constants = {
   CHANGE_PASSWORD,
   CREATE_INVITATION,
   ACCEPT_INVITATION,
+  CONFIRM_ACCESSIBILITY_REQUIREMENTS,
 };
 
 // ------------------------------------
@@ -91,6 +93,11 @@ export const createInvitation = createAction(
 export const acceptInvitation = createAction(
   ACCEPT_INVITATION,
   (newUser, hostUser) => ({ newUser, hostUser })
+);
+
+export const confirmAccessibilityRequirements = createAction(
+  CONFIRM_ACCESSIBILITY_REQUIREMENTS,
+  (userId) => ({ userId })
 );
 
 export const actions = {

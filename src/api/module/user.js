@@ -85,3 +85,9 @@ export const acceptInvitationJoin = ({ newUser, hostUser }) => {
     },
   });
 };
+
+export const confirmAccessibilityRequirements = ({ userId }) => {
+  return httpClient.get(
+    `private/user/confirm-accessibility-requirements/${userId}`
+  );
+};
