@@ -32,7 +32,7 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
       yield put(
         conferenceActions.setMoreConferenceLibraries(
           moreConferenceLibraries,
-          payload.yearIndex
+          payload.index
         )
       );
     }
@@ -119,6 +119,12 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
       yield put(
         myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
+      yield put(
+        myLearningActions.updateHRCredits(
+          payload.id,
+          response.data.affectedRows
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -163,7 +169,7 @@ export function* saveForLaterConferenceSaga({ payload }) {
 
       if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveMoreInHRCredits(
+          myLearningActions.updateHRCredits(
             payload.id,
             response.data.affectedRows
           )

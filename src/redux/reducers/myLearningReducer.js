@@ -16,12 +16,7 @@ const reducers = {
   },
   [myLearningConstants.UPDATE_SAVE_FOR_LATER_LIBRARY]: (state, { payload }) => {
     const allSaved = state.get("allSaved");
-    const allItemsWithHRCredits = state.get("allItemsWithHRCredits");
-    const allEventVideos = state.get("allEventVideos");
-
     let newAllSaved = { ...allSaved };
-    let newAllItemsWithHRCredits = { ...allItemsWithHRCredits };
-    let newAllEventVideos = { ...allEventVideos };
 
     const newAllSavedIndex =
       newAllSaved &&
@@ -37,38 +32,11 @@ const reducers = {
             item.id !== payload.data.id || item.type !== payload.data.type
         ) || [];
 
-      newAllSaved.count -= 1;
       newAllSaved.rows = filteredItem;
-    } else {
-      newAllSaved.count += 1;
-      newAllSaved.rows = [payload.data, ...newAllSaved.rows];
-    }
-
-    const newAllItemsWithHRCreditsIndex =
-      newAllItemsWithHRCredits &&
-      newAllItemsWithHRCredits.rows &&
-      newAllItemsWithHRCredits.rows.findIndex(
-        (item) => item.id === payload.data.id
-      );
-
-    if (newAllItemsWithHRCreditsIndex >= 0) {
-      newAllItemsWithHRCredits.rows[newAllItemsWithHRCreditsIndex] =
-        payload.data;
-    }
-
-    const newAllEventVideosIndex =
-      newAllEventVideos &&
-      newAllEventVideos.rows &&
-      newAllEventVideos.rows.findIndex((item) => item.id === payload.data.id);
-
-    if (newAllEventVideosIndex >= 0) {
-      newAllEventVideos.rows[newAllEventVideosIndex] = payload.data;
     }
 
     return state.merge({
       allSaved: newAllSaved,
-      allItemsWithHRCredits: newAllItemsWithHRCredits,
-      allEventVideos: newAllEventVideos,
     });
   },
   [myLearningConstants.UPDATE_COMPLETED_LIBRARY]: (state, { payload }) => {
@@ -89,10 +57,8 @@ const reducers = {
             item.id !== payload.data.id || item.type !== payload.data.type
         ) || [];
 
-      newAllCompleted.count -= 1;
       newAllCompleted.rows = filteredItem;
     } else {
-      newAllCompleted.count += 1;
       newAllCompleted.rows = [payload.data, ...newAllCompleted.rows];
     }
 
@@ -105,7 +71,7 @@ const reducers = {
       allItemsWithHRCredits: payload.items,
     });
   },
-  [myLearningConstants.UPDATE_SAVE_MORE_IN_HR_CREDITS]: (
+  [myLearningConstants.UPDATE_HR_CREDITS]: (
     state,
     { payload }
   ) => {
@@ -183,6 +149,26 @@ const reducers = {
     return state.merge({
       allSaved,
       allSavedCurrentPage: payload.page,
+    });
+  },
+  [myLearningConstants.UPDATE_EVENT_VIDEOS]: (
+    state,
+    { payload }
+  ) => {
+    const allEventVideos = state.get("allEventVideos");
+    const newAllEventVideos = { ...allEventVideos };
+
+    const index =
+      allEventVideos &&
+      allEventVideos.rows &&
+      allEventVideos.rows.findIndex((item) => item.id === payload.id);
+
+    if (index >= 0) {
+      newAllEventVideos.rows[index] = payload.data;
+    }
+
+    return state.merge({
+      allEventVideos: newAllEventVideos,
     });
   },
 };

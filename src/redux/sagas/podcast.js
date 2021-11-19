@@ -256,6 +256,12 @@ export function* markPodcastSeriesViewedSaga({ payload }) {
       yield put(
         myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
+      yield put(
+        myLearningActions.updateHRCredits(
+          payload.id,
+          response.data.affectedRows
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -356,10 +362,9 @@ export function* saveForLaterPodcastSeriesSaga({ payload }) {
 
       if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveMoreInHRCredits(
+          myLearningActions.updateHRCredits(
             payload.id,
-            response.data.affectedRows,
-            2
+            response.data.affectedRows
           )
         );
       }

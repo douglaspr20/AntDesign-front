@@ -314,6 +314,18 @@ export function* markLibraryViewedSaga({ payload }) {
       yield put(
         myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
+      yield put(
+        myLearningActions.updateEventVideos(
+          payload.id,
+          response.data.affectedRows
+        )
+      );
+      yield put(
+        myLearningActions.updateHRCredits(
+          payload.id,
+          response.data.affectedRows,
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -336,12 +348,18 @@ export function* saveForLaterSaga({ payload }) {
         myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
 
+      yield put(
+        myLearningActions.updateEventVideos(
+          payload.id,
+          response.data.affectedRows
+        )
+      );
+
       if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveMoreInHRCredits(
+          myLearningActions.updateHRCredits(
             payload.id,
-            response.data.affectedRows,
-            1
+            response.data.affectedRows
           )
         );
       }

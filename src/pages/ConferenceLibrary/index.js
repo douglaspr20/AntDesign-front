@@ -122,10 +122,6 @@ const ConferenceLibrary = ({
       };
     }) || [];
 
-  // const countOfResults = allConferenceLibraries
-  //   .map((library) => library.count)
-  //   .reduce((a, b) => a + b, 0);
-
   return (
     <div className="conference-library-page">
       <ConferenceLibraryFilterPanel

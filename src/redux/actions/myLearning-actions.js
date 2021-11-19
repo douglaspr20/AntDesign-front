@@ -12,7 +12,7 @@ const GET_ALL_ITEMS_WITH_HR_CREDITS = "GET_ALL_ITEMS_WITH_HR_CREDITS";
 const GET_MORE_ITEMS_WITH_HR_CREDITS = "GET_MORE_ITEMS_WITH_HR_CREDITS";
 const SET_ALL_ITEMS_WITH_HR_CREDITS = "SET_ALL_ITEMS_WITH_HR_CREDITS";
 const SET_MORE_ALL_ITEMS_WITH_HR_CREDITS = "SET_MORE_ALL_ITEMS_WITH_HR_CREDITS";
-const UPDATE_SAVE_MORE_IN_HR_CREDITS = "UPDATE_SAVE_MORE_IN_HR_CREDITS";
+const UPDATE_HR_CREDITS = "UPDATE_HR_CREDITS";
 const LEARNING_LOADING = "LEARNING_LOADING";
 const GET_ALL_EVENT_VIDEOS = "GET_ALL_EVENT_VIDEOS";
 const SET_ALL_EVENT_VIDEOS = "SET_ALL_EVENT_VIDEOS";
@@ -20,6 +20,8 @@ const GET_MORE_ALL_EVENT_VIDEOS = "GET_MORE_ALL_EVENT_VIDEOS";
 const SET_MORE_EVENT_VIDEOS = "SET_MORE_EVENT_VIDEOS";
 const GET_MORE_SAVED = "GET_MORE_SAVED";
 const SET_MORE_SAVED = "SET_MORE_SAVED";
+const UPDATE_EVENT_VIDEOS =
+  "UPDATE_EVENT_VIDEOS";
 
 export const constants = {
   GET_ALL_SAVED,
@@ -33,7 +35,7 @@ export const constants = {
   GET_MORE_ITEMS_WITH_HR_CREDITS,
   SET_ALL_ITEMS_WITH_HR_CREDITS,
   SET_MORE_ALL_ITEMS_WITH_HR_CREDITS,
-  UPDATE_SAVE_MORE_IN_HR_CREDITS,
+  UPDATE_HR_CREDITS,
   LEARNING_LOADING,
   GET_ALL_EVENT_VIDEOS,
   SET_ALL_EVENT_VIDEOS,
@@ -42,6 +44,7 @@ export const constants = {
   SET_MORE_COMPLETED,
   GET_MORE_SAVED,
   SET_MORE_SAVED,
+  UPDATE_EVENT_VIDEOS,
 };
 
 const getAllSaved = createAction(GET_ALL_SAVED, (filter) => ({ filter }));
@@ -99,8 +102,8 @@ const setMoreItemsWithHrCredits = createAction(
   SET_MORE_ALL_ITEMS_WITH_HR_CREDITS,
   (items, page) => ({ items, page })
 );
-const updateSaveMoreInHRCredits = createAction(
-  UPDATE_SAVE_MORE_IN_HR_CREDITS,
+const updateHRCredits = createAction(
+  UPDATE_HR_CREDITS,
   (id, data) => ({ id, data })
 );
 
@@ -126,6 +129,12 @@ const setMoreEventVideos = createAction(
   (items, page) => ({ items, page })
 );
 
+const updateEventVideos = createAction(
+  UPDATE_EVENT_VIDEOS,
+  (id, data) => ({ id, data })
+);
+
+
 export const actions = {
   getAllSaved,
   getAllCompleted,
@@ -138,7 +147,7 @@ export const actions = {
   getMoreItemsWithHRCredits,
   setAllItemsWithHRCredits,
   setMoreItemsWithHrCredits,
-  updateSaveMoreInHRCredits,
+  updateHRCredits,
   setLearningLoading,
   getAllEventVideos,
   setAllEventVideos,
@@ -146,5 +155,6 @@ export const actions = {
   setMoreEventVideos,
   setMoreCompleted,
   getMoreSaved,
-  setMoreSaved
+  setMoreSaved,
+  updateEventVideos
 };

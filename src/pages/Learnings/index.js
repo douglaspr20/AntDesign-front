@@ -47,8 +47,8 @@ const MyLearingPage = ({
   const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    getAllSaved([]);
-    getAllCompleted([]);
+    getAllSaved({});
+    getAllCompleted({});
     getAllItemsWithHRCredits({});
     getAllEventVideos({});
 
@@ -69,6 +69,28 @@ const MyLearingPage = ({
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (currentTab === "0") {
+      getAllEventVideos({
+        ...filters,
+      });
+    } else if (currentTab === "1") {
+      getAllItemsWithHRCredits({
+        ...filters,
+      });
+    } else if (currentTab === "2") {
+      getAllSaved({
+        ...filters,
+      });
+    } else {
+      getAllCompleted({
+        ...filters,
+      });
+    }
+
+    // eslint-disable-next-line
+  }, [currentTab])
 
   const planUpdate = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -134,7 +156,7 @@ const MyLearingPage = ({
         }) || []}
       </div>
       <>
-        {allSaved?.rows?.length < allSaved.count && (
+        {allSavedCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allSaved.count && (
           <div className="search-results-container-footer d-flex justify-center items-center">
             {loading && (
               <div className="my-learnings-page-loading-more">
@@ -187,7 +209,7 @@ const MyLearingPage = ({
         }) || []}
       </div>
       <>
-        {allCompleted?.rows?.length < allCompleted.count && (
+        {allCompletedCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allCompleted.count && (
           <div className="search-results-container-footer d-flex justify-center items-center">
             {loading && (
               <div className="my-learnings-page-loading-more">
