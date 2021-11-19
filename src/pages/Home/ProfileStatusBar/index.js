@@ -8,9 +8,7 @@ import { EVENT_TYPES, TIMEZONE_LIST, COUNTRIES } from "enum";
 
 import "./style.scss";
 
-const ProfileStatusBar = ({
-  user
-}) => {
+const ProfileStatusBar = ({ user }) => {
   const timezone = (
     TIMEZONE_LIST.find((item) => item.value === user.timezone) || {}
   ).text;
@@ -22,7 +20,6 @@ const ProfileStatusBar = ({
   };
 
   return (
-    
     <>
       <div className="profile-status-bar">
         <div className="section-left">
@@ -35,27 +32,64 @@ const ProfileStatusBar = ({
           />
         </div>
         <div className="section-right">
-          <CircularProgressbar percent={user ? user.percentOfCompletion : 0} color="#fe5621" />
+          <CircularProgressbar
+            percent={user ? user.percentOfCompletion : 0}
+            color="#fe5621"
+          />
         </div>
       </div>
-      <Alert message="Missing information: " description={
-        <ul>
-        {!user.img ? <li>Image Profile</li> : null}
-        {!user.titleProfessions ? <li>Title</li> : null}
-        {!user.company ? <li>Company</li> : null}
-        {!location ? <li>Location</li> : null}
-        {!user.city ? <li>City</li>: null}
-        {!timezone ? <li>Time zone</li> : null}
-        {!user.languages ? <li>Main language</li> : Object.keys(user.languages).length === 0 ? <li>Main languages</li> : null }
-        {!user.about ? <li>Tell us more about you</li> : null}
-        {Object.keys(user.topicsOfInterest).length === 0 ? <li>Topics of interest</li> : null }
-        {!user.personalLinks.hasOwnProperty("linkedin") ? <li>Personal links</li> : null }
-        {user.isOpenReceivingEmail === -1 ? <li>Are open to receiving information/being contacted via email about open job positions?</li> : null}
-        {!user.recentJobLevel ? <li>What best defines your current or most recent job level?</li> : null}
-        {Array.isArray(user.recentWorkArea) ? user.recentWorkArea.length === 0 ? <li>In what area of HR do you currently work or most recently worked?</li> : null : null }
-        {!user.sizeOfOrganization ? <li>What is the size of the organization your work for?</li> : null }
-        </ul>
-      } type="info" showIcon />
+      <Alert
+        message="Missing information: "
+        description={
+          <ul>
+            {!user.img ? <li>Image Profile</li> : null}
+            {!user.firstName ? <li>First name</li> : null}
+            {!user.lastName ? <li>Last name</li> : null}
+            {!user.titleProfessions ? <li>Title</li> : null}
+            {!user.company ? <li>Company</li> : null}
+            {!location ? <li>Location</li> : null}
+            {!user.city ? <li>City</li> : null}
+            {!timezone ? <li>Time zone</li> : null}
+            {!user.languages ? (
+              <li>Main language</li>
+            ) : Object.keys(user.languages).length === 0 ? (
+              <li>Main languages</li>
+            ) : null}
+            {!user.about ? <li>Tell us more about you</li> : null}
+            {Object.keys(user.topicsOfInterest).length === 0 ? (
+              <li>Topics of interest</li>
+            ) : null}
+            {!user.personalLinks.hasOwnProperty("linkedin") ? (
+              <li>Personal links</li>
+            ) : user.personalLinks.linkedin.toString().trim() === "" ||
+              user.personalLinks.linkedin.toString().trim() === "https://" ? (
+              <li>Personal links</li>
+            ) : null}
+            {user.isOpenReceivingEmail === -1 ? (
+              <li>
+                Are open to receiving information/being contacted via email
+                about open job positions?
+              </li>
+            ) : null}
+            {!user.recentJobLevel ? (
+              <li>What best defines your current or most recent job level?</li>
+            ) : null}
+            {Array.isArray(user.recentWorkArea) ? (
+              user.recentWorkArea.length === 0 ? (
+                <li>
+                  In what area of HR do you currently work or most recently
+                  worked?
+                </li>
+              ) : null
+            ) : null}
+            {!user.sizeOfOrganization ? (
+              <li>What is the size of the organization your work for?</li>
+            ) : null}
+          </ul>
+        }
+        type="info"
+        showIcon
+      />
     </>
   );
 };
