@@ -41,7 +41,7 @@ const reducers = {
       newAllSaved.rows = filteredItem;
     } else {
       newAllSaved.count += 1;
-      newAllSaved.rows = [...newAllSaved.rows, payload.data];
+      newAllSaved.rows = [payload.data, ...newAllSaved.rows];
     }
 
     const newAllItemsWithHRCreditsIndex =
@@ -93,7 +93,7 @@ const reducers = {
       newAllCompleted.rows = filteredItem;
     } else {
       newAllCompleted.count += 1;
-      newAllCompleted.rows = [...newAllCompleted.rows, payload.data];
+      newAllCompleted.rows = [payload.data, ...newAllCompleted.rows];
     }
 
     return state.merge({
