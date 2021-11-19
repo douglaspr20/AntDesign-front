@@ -35,7 +35,12 @@ const MyLearingPage = ({
   loading,
   getAllEventVideos,
   allEventVideos,
-  allEventVideosCurrentPage
+  allEventVideosCurrentPage,
+  getMoreEventVideos,
+  allCompletedCurrentPage,
+  getMoreCompleted,
+  allSavedCurrentPage,
+  getMoreSaved
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [listOfYears, setListOfYears] = useState([2020]);
@@ -69,24 +74,43 @@ const MyLearingPage = ({
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
-  const showMore = () => {
+  const showMoreItemsWithHRCredits = () => {
     getMoreItemsWithHRCredits({
       ...filters,
       page: allItemsWithHRCreditsCurrentPage + 1,
     });
   };
 
+  const showMoreEventVideos = () => {
+    getMoreEventVideos({
+      ...filters,
+      page: allEventVideosCurrentPage + 1,
+    });
+  };
+
+  const showMoreCompleted = () => {
+    getMoreCompleted({
+      ...filters,
+      page: allCompletedCurrentPage + 1,
+    });
+  };
+
+  const showMoreSaved = () => {
+    getMoreSaved({
+      ...filters,
+      page: allSavedCurrentPage + 1
+    })
+  }
+
   const displaySavedItems = () => (
-    <div className="saved-for-later">
-      {Object.keys(allSaved).map((key, indx) => {
-        if (key === "allLibraries") {
-          return allSaved[key].map((item, index) => {
+    <>
+      <div className="saved-for-later">
+        {allSaved?.rows?.map((item, index) => {
+          if (item.type === "libraries") {
             return (
               <LibraryCard key={index} data={item} onClickAccess={planUpdate} />
             );
-          });
-        } else if (key === "allConferenceLibraries") {
-          return allSaved[key].map((item, index) => {
+          } else if (item.type === "conferences") {
             return (
               <ConferenceCard
                 key={index}
@@ -96,9 +120,7 @@ const MyLearingPage = ({
                 )}
               />
             );
-          });
-        } else if (key === "allPodcasts") {
-          return allSaved[key].map((item, index) => {
+          } else if (item.type === "podcasts") {
             return (
               <EpisodeCard
                 key={index}
@@ -106,27 +128,42 @@ const MyLearingPage = ({
                 episode={item}
               />
             );
-          });
-        } else {
-          return allSaved[key].map((item, index) => {
+          } else {
             return <PodcastSeriesCard key={index} data={item} />;
-          });
-        }
-      })}
-    </div>
+          }
+        }) || []}
+      </div>
+      <>
+        {allSaved?.rows?.length < allSaved.count && (
+          <div className="search-results-container-footer d-flex justify-center items-center">
+            {loading && (
+              <div className="my-learnings-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
+            {!loading && (
+              <CustomButton
+                text="Show More"
+                type="primary outlined"
+                size="lg"
+                onClick={showMoreSaved}
+              />
+            )}
+          </div>
+        )}
+      </>
+    </>
   );
 
   const displayCompletedItems = () => (
-    <div className="completed-items">
-      {Object.keys(allCompleted).map((key, indx) => {
-        if (key === "allLibraries") {
-          return allCompleted[key].map((item, index) => {
+    <>
+      <div className="completed-items">
+        {allCompleted?.rows?.map((item, index) => {
+          if (item.type === "libraries") {
             return (
               <LibraryCard key={index} data={item} onClickAccess={planUpdate} />
             );
-          });
-        } else if (key === "allConferenceLibraries") {
-          return allCompleted[key].map((item, index) => {
+          } else if (item.type === "conferences") {
             return (
               <ConferenceCard
                 key={index}
@@ -136,9 +173,7 @@ const MyLearingPage = ({
                 )}
               />
             );
-          });
-        } else if (key === "allPodcasts") {
-          return allCompleted[key].map((item, index) => {
+          } else if (item.type === "podcasts") {
             return (
               <EpisodeCard
                 key={index}
@@ -146,14 +181,31 @@ const MyLearingPage = ({
                 episode={item}
               />
             );
-          });
-        } else {
-          return allCompleted[key].map((item, index) => {
+          } else {
             return <PodcastSeriesCard key={index} data={item} />;
-          });
-        }
-      })}
-    </div>
+          }
+        }) || []}
+      </div>
+      <>
+        {allCompleted?.rows?.length < allCompleted.count && (
+          <div className="search-results-container-footer d-flex justify-center items-center">
+            {loading && (
+              <div className="my-learnings-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
+            {!loading && (
+              <CustomButton
+                text="Show More"
+                type="primary outlined"
+                size="lg"
+                onClick={showMoreCompleted}
+              />
+            )}
+          </div>
+        )}
+      </>
+    </>
   );
 
   const allItemWithHRCreditsCount = allItemsWithHRCredits?.rows?.length || 0;
@@ -201,7 +253,7 @@ const MyLearingPage = ({
               text="Show More"
               type="primary outlined"
               size="lg"
-              onClick={showMore}
+              onClick={showMoreItemsWithHRCredits}
             />
           )}
         </div>
@@ -219,23 +271,24 @@ const MyLearingPage = ({
             );
           })}
         </div>
-        {/* {allEventVideosCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allEventVideos.count && (
-        <div className="search-results-container-footer d-flex justify-center items-center">
-          {loading && (
-            <div className="my-learnings-page-loading-more">
-              <img src={IconLoadingMore} alt="loading-more-img" />
-            </div>
-          )}
-          {!loading && (
-            <CustomButton
-              text="Show More"
-              type="primary outlined"
-              size="lg"
-              onClick={showMore}
-            />
-          )}
-        </div>
-      )} */}
+        {allEventVideosCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM <
+          allEventVideos.count && (
+          <div className="search-results-container-footer d-flex justify-center items-center">
+            {loading && (
+              <div className="my-learnings-page-loading-more">
+                <img src={IconLoadingMore} alt="loading-more-img" />
+              </div>
+            )}
+            {!loading && (
+              <CustomButton
+                text="Show More"
+                type="primary outlined"
+                size="lg"
+                onClick={showMoreEventVideos}
+              />
+            )}
+          </div>
+        )}
       </>
     );
   };
@@ -263,6 +316,7 @@ const MyLearingPage = ({
     getAllSaved(filter);
     getAllCompleted(filter);
     getAllItemsWithHRCredits(filter);
+    getAllEventVideos(filter);
 
     setFilters(filter);
   };

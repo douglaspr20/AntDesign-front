@@ -5,6 +5,7 @@ const GET_ALL_COMPLETED = "GET_ALL_COMPLETED";
 const GET_MORE_COMPLETED = "GET_MORE_COMPLETED";
 const SET_ALL_SAVED = "SET_ALL_SAVED";
 const SET_ALL_COMPLETED = "SET_ALL_COMPLETED";
+const SET_MORE_COMPLETED = "SET_MORE_COMPLETED";
 const UPDATE_SAVE_FOR_LATER_LIBRARY = "UPDATE_SAVE_FOR_LATER_LIBRARY";
 const UPDATE_COMPLETED_LIBRARY = "UPDATE_COMPLETED_LIBRARY";
 const GET_ALL_ITEMS_WITH_HR_CREDITS = "GET_ALL_ITEMS_WITH_HR_CREDITS";
@@ -17,6 +18,8 @@ const GET_ALL_EVENT_VIDEOS = "GET_ALL_EVENT_VIDEOS";
 const SET_ALL_EVENT_VIDEOS = "SET_ALL_EVENT_VIDEOS";
 const GET_MORE_ALL_EVENT_VIDEOS = "GET_MORE_ALL_EVENT_VIDEOS";
 const SET_MORE_EVENT_VIDEOS = "SET_MORE_EVENT_VIDEOS";
+const GET_MORE_SAVED = "GET_MORE_SAVED";
+const SET_MORE_SAVED = "SET_MORE_SAVED";
 
 export const constants = {
   GET_ALL_SAVED,
@@ -36,14 +39,31 @@ export const constants = {
   SET_ALL_EVENT_VIDEOS,
   GET_MORE_ALL_EVENT_VIDEOS,
   SET_MORE_EVENT_VIDEOS,
+  SET_MORE_COMPLETED,
+  GET_MORE_SAVED,
+  SET_MORE_SAVED,
 };
 
 const getAllSaved = createAction(GET_ALL_SAVED, (filter) => ({ filter }));
+
+const getMoreSaved = createAction(GET_MORE_SAVED, (filter) => ({ filter }));
+
+const setMoreSaved = createAction(SET_MORE_SAVED, (items, page) => ({
+  items,
+  page,
+}));
+
 const getAllCompleted = createAction(GET_ALL_COMPLETED, (filter) => ({
   filter,
 }));
-const getMoreCompleted = createAction(GET_ALL_COMPLETED, (filter) => ({
+
+const getMoreCompleted = createAction(GET_MORE_COMPLETED, (filter) => ({
   filter,
+}));
+
+const setMoreCompleted = createAction(SET_MORE_COMPLETED, (items, page) => ({
+  items,
+  page,
 }));
 
 const setAllSaved = createAction(SET_ALL_SAVED, (allSaved) => ({
@@ -56,12 +76,12 @@ const setAllCompleted = createAction(SET_ALL_COMPLETED, (allCompleted) => ({
 
 const updateSaveForLaterLibrary = createAction(
   UPDATE_SAVE_FOR_LATER_LIBRARY,
-  (data, item, yearIndex, type) => ({ data, item, yearIndex, type })
+  (data, item) => ({ data, item })
 );
 
 const updateCompletedLibrary = createAction(
   UPDATE_COMPLETED_LIBRARY,
-  (data, item) => ({ data, item })
+  (data) => ({ data })
 );
 const getAllItemsWithHRCredits = createAction(
   GET_ALL_ITEMS_WITH_HR_CREDITS,
@@ -88,7 +108,9 @@ const setLearningLoading = createAction(LEARNING_LOADING, (loading) => ({
   loading,
 }));
 
-const getAllEventVideos = createAction(GET_ALL_EVENT_VIDEOS, (filter) => ({ filter }));
+const getAllEventVideos = createAction(GET_ALL_EVENT_VIDEOS, (filter) => ({
+  filter,
+}));
 
 const setAllEventVideos = createAction(SET_ALL_EVENT_VIDEOS, (videos) => ({
   videos,
@@ -121,5 +143,8 @@ export const actions = {
   getAllEventVideos,
   setAllEventVideos,
   getMoreEventVideos,
-  setMoreEventVideos
+  setMoreEventVideos,
+  setMoreCompleted,
+  getMoreSaved,
+  setMoreSaved
 };

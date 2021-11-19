@@ -309,18 +309,10 @@ export function* markLibraryViewedSaga({ payload }) {
     if (response.status === 200) {
       yield put(libraryActions.updateLibraryViewed(response.data.affectedRows));
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allLibraries",
-          payload.index,
-          'libraries'
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
       yield put(
-        myLearningActions.updateCompletedLibrary(
-          response.data.affectedRows,
-          "allLibraries"
-        )
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
     }
   } catch (error) {
@@ -341,12 +333,7 @@ export function* saveForLaterSaga({ payload }) {
       );
 
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allLibraries",
-          -1,
-          'libraries'
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
 
       if (payload.isInHRCredits) {

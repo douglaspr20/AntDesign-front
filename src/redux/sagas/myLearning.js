@@ -35,18 +35,16 @@ export function* getAllCompletedSaga({ payload }) {
   }
 }
 
-export function* getMoreCompletedSaga({ payload }) {
-  yield put(myLearningActions.setLoading(true));
+export function* getMoreSavedSaga({ payload }) {
+  yield put(myLearningActions.setLearningLoading(true));
 
   try {
-    const response = yield call(getAllCompleted, { ...payload });
-
+    const response = yield call(getAllSaved, { ...payload });
     if (response.status === 200) {
       yield put(
-        myLearningActions.setAllCompleted(
-          response.data.allCompleted.count,
-          payload.filter.page,
-          response.data.allCompleted.rows
+        myLearningActions.setMoreSaved(
+          response.data.allSaved.rows,
+          payload.filter.page
         )
       );
     }
@@ -57,7 +55,31 @@ export function* getMoreCompletedSaga({ payload }) {
       yield put(logout());
     }
   } finally {
-    yield put(myLearningActions.setLoading(false));
+    yield put(myLearningActions.setLearningLoading(false));
+  }
+}
+
+export function* getMoreCompletedSaga({ payload }) {
+  yield put(myLearningActions.setLearningLoading(true));
+
+  try {
+    const response = yield call(getAllCompleted, { ...payload });
+    if (response.status === 200) {
+      yield put(
+        myLearningActions.setMoreCompleted(
+          response.data.allCompleted.rows,
+          payload.filter.page
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(myLearningActions.setLearningLoading(false));
   }
 }
 
@@ -124,11 +146,11 @@ export function* getMoreItemsWithHRCreditsSaga({ payload }) {
   }
 }
 
-export function* getEventVideosSaga() {
+export function* getEventVideosSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getEventVideos);
+    const response = yield call(getEventVideos, { ...payload });
 
     if (response.status === 200) {
       yield put(myLearningActions.setAllEventVideos(response.data.libraries));
@@ -141,11 +163,10 @@ export function* getEventVideosSaga() {
 }
 
 export function* getMoreEventVideoSaga({ payload }) {
-  yield put(myLearningActions.setLoading(true));
+  yield put(myLearningActions.setLearningLoading(true));
 
   try {
     const response = yield call(getEventVideos, { ...payload });
-
     if (response.status === 200) {
       yield put(
         myLearningActions.setMoreEventVideos(
@@ -161,12 +182,16 @@ export function* getMoreEventVideoSaga({ payload }) {
       yield put(logout());
     }
   } finally {
-    yield put(myLearningActions.setLoading(false));
+    yield put(myLearningActions.setLearningLoading(false));
   }
 }
 
 function* watchLearning() {
   yield takeLatest(myLearningConstants.GET_ALL_COMPLETED, getAllCompletedSaga);
+  yield takeLatest(
+    myLearningConstants.GET_MORE_SAVED,
+    getMoreSavedSaga
+  );
   yield takeLatest(
     myLearningConstants.GET_MORE_COMPLETED,
     getMoreCompletedSaga

@@ -251,18 +251,10 @@ export function* markPodcastSeriesViewedSaga({ payload }) {
         podcastActions.updatePodcastseriesViewed(response.data.affectedRows)
       );
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allPodcastSeries",
-          payload.index,
-          'podcastSeries'
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
       yield put(
-        myLearningActions.updateCompletedLibrary(
-          response.data.affectedRows,
-          "allPodcastSeries"
-        )
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
     }
   } catch (error) {
@@ -296,16 +288,10 @@ export function* markPodcastViewedSaga({ payload }) {
       yield put(podcastActions.updatePodcastViewed(response.data.affectedRows));
       yield put(podcastActions.setPodcast(response.data.affectedRows));
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allPodcasts"
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
       yield put(
-        myLearningActions.updateCompletedLibrary(
-          response.data.affectedRows,
-          "allPodcasts"
-        )
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
       );
     }
   } catch (error) {
@@ -328,15 +314,11 @@ export function* saveForLaterPodcastSaga({ payload }) {
       if (payload.status === "not saved") {
         yield put(
           myLearningActions.updateSaveForLaterLibrary(
-            response.data.affectedRows,
-            "allPodcasts"
+            response.data.affectedRows
           )
         );
         yield put(
-          myLearningActions.updateCompletedLibrary(
-            response.data.affectedRows,
-            "allPodcasts"
-          )
+          myLearningActions.updateCompletedLibrary(response.data.affectedRows)
         );
       }
 
@@ -369,14 +351,9 @@ export function* saveForLaterPodcastSeriesSaga({ payload }) {
       );
 
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allPodcastSeries",
-          -1,
-          'podcastSeries'
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
-  
+
       if (payload.isInHRCredits) {
         yield put(
           myLearningActions.updateSaveMoreInHRCredits(

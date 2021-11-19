@@ -7,15 +7,19 @@ const resultSelector = createSelector(myLearningDataSelector, (payload) => {
     allSaved: payload.get("allSaved"),
     allCompleted: payload.get("allCompleted"),
     allItemsWithHRCredits: payload.get("allItemsWithHRCredits"),
-    allItemsWithHRCreditsCurrentPage: payload.get("allItemsWithHRCreditsCurrentPage"),
+    allItemsWithHRCreditsCurrentPage: payload.get(
+      "allItemsWithHRCreditsCurrentPage"
+    ),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
     loading: payload.get("loading"),
     allEventVideos: payload.get("allEventVideos"),
-    allEventVideosCurrentPage: payload.get("allEventVideosCurrentPage")
+    allEventVideosCurrentPage: payload.get("allEventVideosCurrentPage"),
+    allCompletedCurrentPage: payload.get("allCompletedCurrentPage"),
+    allSavedCurrentPage: payload.get("allSavedCurrentPage")
   };
 });
 
 export const myLearningSelector = (state) => ({
-  ...resultSelector(state)
-})
+  ...resultSelector(state),
+});

@@ -22,7 +22,10 @@ export const getAllCompleted = ({ filter }) => {
 };
 
 export const getAllSaved = ({ filter }) => {
-  let newFilter = {};
+  let newFilter = {
+    page: 1,
+    num: SETTINGS.MAX_SEARCH_ROW_NUM,
+  };
 
   if (filter) {
     newFilter = {
@@ -69,7 +72,7 @@ export const getEventVideos = (filter) => {
   if (filter) {
     newFilter = {
       ...newFilter,
-      ...filter,
+      ...filter.filter,
     };
   }
 
@@ -77,5 +80,5 @@ export const getEventVideos = (filter) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/events/event-videos?${parsedFilter}`);
+  return httpClient.get(`private/my-learnings/event-videos?${parsedFilter}`);
 };
