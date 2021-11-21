@@ -33,6 +33,7 @@ const Login = ({
   error,
   login,
   signUp,
+  logout,
   isInvitation,
   history,
   match,
@@ -124,6 +125,8 @@ const Login = ({
       if (history != null) {
         if (live && live.live === true) {
           history.push(INTERNAL_LINKS.LIVE);
+        } else if (history.location.pathname.includes("/invitation")) {
+          logout();
         } else {
           history.push(INTERNAL_LINKS.HOME);
         }
@@ -261,6 +264,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   ...authActions,
+  logout: authActions.logout,
   addToMyEventList,
   getUser,
   acceptInvitation,

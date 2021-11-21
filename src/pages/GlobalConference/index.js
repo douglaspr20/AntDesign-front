@@ -5,8 +5,12 @@ import { Redirect, Link } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
-import { Menu, notification, Modal, Form, Timeline } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
+import { Menu, notification, Modal, Form, Timeline, Space } from "antd";
+import {
+  CheckOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   CustomButton,
   Tabs,
@@ -306,7 +310,7 @@ const GlobalConference = ({
   };
 
   const handleSubmitEmailColleague = (data) => {
-    createInvitation(data.email, userProfile.username);
+    createInvitation(data.usersInvited, userProfile.username);
 
     setModalFormInviteColleaguesVisible(false);
 
@@ -603,8 +607,15 @@ const GlobalConference = ({
       <Modal
         visible={modalFormInviteColleaguesVisible}
         footer={null}
+        width={800}
         onCancel={() => {
           onCancelModalForm();
+        }}
+        bodyStyle={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <Form
@@ -612,21 +623,72 @@ const GlobalConference = ({
           onFinish={(data) => {
             handleSubmitEmailColleague(data);
           }}
+          autoComplete="off"
         >
-          <Form.Item
-            label="Enter Email Addresses"
-            name="email"
-            rules={[
-              { required: true, type: "email", message: "is not valid Email" },
-            ]}
+          <Form.List
+            name="usersInvited"
+            initialValue={[{ name: "", email: "" }]}
           >
-            <CustomInput />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, fieldKey, ...restField }) => (
+                  <Space
+                    Space
+                    key={key}
+                    style={{ display: "flex", marginBottom: 8 }}
+                    align="baseline"
+                  >
+                    <Form.Item
+                      label="Enter the Name of Invited"
+                      name={[name, "name"]}
+                      fieldKey={[fieldKey, "name"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please Enter the Name of Invited",
+                        },
+                      ]}
+                    >
+                      <CustomInput />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Enter Email Addresses"
+                      name={[name, "email"]}
+                      fieldKey={[fieldKey, "email"]}
+                      rules={[
+                        {
+                          required: true,
+                          type: "email",
+                          message: "is not valid Email",
+                        },
+                      ]}
+                    >
+                      <CustomInput />
+                    </Form.Item>
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </Space>
+                ))}
+                <Form.Item style={{ textAlign: "center" }}>
+                  <CustomButton
+                    type="info"
+                    text="Invite another colleague"
+                    size="xs"
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                    className="button-invite-colleague"
+                  />
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+
+          <Form.Item style={{ textAlign: "center" }}>
             <CustomButton size="xs" text="Invite" htmlType="submit" />
           </Form.Item>
         </Form>
       </Modal>
+
       <Modal
         title="We would love to hear about your access requirements. The ways we can help are:"
         centered

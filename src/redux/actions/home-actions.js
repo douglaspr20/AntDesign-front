@@ -87,7 +87,7 @@ export const changePassword = createAction(
 
 export const createInvitation = createAction(
   CREATE_INVITATION,
-  (email, username) => ({ email, username })
+  (usersInvited, username) => ({ usersInvited, username })
 );
 
 export const acceptInvitation = createAction(

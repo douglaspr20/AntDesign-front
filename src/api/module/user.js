@@ -71,10 +71,10 @@ export const changePassword = (data) => {
   });
 };
 
-export const createInvitation = ({ email, username }) => {
+export const createInvitation = ({ usersInvited, username }) => {
   return httpClient.post(`private/user/create-invitation`, {
     username,
-    email,
+    usersInvited,
   });
 };
 

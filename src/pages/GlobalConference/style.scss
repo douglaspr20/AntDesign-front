@@ -119,6 +119,7 @@
   .button-requirements{
     background: $color-accent !important;
     border: none !important;
+    align-self: center;
     color: #fff;
 
     &:hover, &:active{
@@ -126,6 +127,8 @@
       background-color: $color-info !important;
     }
   }
+
+
 
   &-pagination {
     display: flex;
@@ -227,6 +230,17 @@
   height: 25px !important; 
   padding: 0px 5px !important;
   margin-bottom: 5px;
+}
+
+.button-invite-colleague{
+  background: $color-accent !important;
+  border: none !important;
+  color: #fff !important;
+
+  &:hover, &:active{
+    color: #fff !important;
+    background-color: $color-info !important;
+  }
 }
 
 .sub-menu-item-global-conference {
