@@ -71,17 +71,17 @@ export const changePassword = (data) => {
   });
 };
 
-export const createInvitation = ({ usersInvited, username }) => {
+export const createInvitation = ({ usersInvited, hostUserId }) => {
   return httpClient.post(`private/user/create-invitation`, {
-    username,
+    hostUserId,
     usersInvited,
   });
 };
 
-export const acceptInvitationJoin = ({ newUser, hostUser }) => {
+export const acceptInvitationJoin = ({ newUser, hostUserId }) => {
   return httpClient.get(`private/user/accept-invitation/${newUser}`, {
     params: {
-      hostUser,
+      hostUserId,
     },
   });
 };

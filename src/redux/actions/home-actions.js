@@ -87,12 +87,12 @@ export const changePassword = createAction(
 
 export const createInvitation = createAction(
   CREATE_INVITATION,
-  (usersInvited, username) => ({ usersInvited, username })
+  (usersInvited, hostUserId) => ({ usersInvited, hostUserId })
 );
 
 export const acceptInvitation = createAction(
   ACCEPT_INVITATION,
-  (newUser, hostUser) => ({ newUser, hostUser })
+  (newUser, hostUserId) => ({ newUser, hostUserId })
 );
 
 export const confirmAccessibilityRequirements = createAction(

@@ -85,7 +85,7 @@ const GlobalConference = ({
   confirmAccessibilityRequirements,
 }) => {
   const [bonfireForm] = Form.useForm();
-  const [emailForm] = Form.useForm();
+  const [colleaguesForm] = Form.useForm();
 
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
@@ -138,13 +138,6 @@ const GlobalConference = ({
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
     }
-  };
-
-  const comingSoon = (section) => {
-    notification.open({
-      message: "Coming Soon",
-      description: `Soon you will have access to the section of ${section}`,
-    });
   };
 
   const handleView = (view) => {
@@ -242,7 +235,7 @@ const GlobalConference = ({
   const onCancelModalForm = () => {
     setModalFormVisible(false);
     setModalFormInviteColleaguesVisible(false);
-    emailForm.resetFields();
+    colleaguesForm.resetFields();
     bonfireForm.resetFields();
   };
 
@@ -254,7 +247,7 @@ const GlobalConference = ({
       });
     }
     setModalFormInviteColleaguesVisible(true);
-    emailForm.resetFields();
+    colleaguesForm.resetFields();
   };
 
   const handleChecked = (e) => {
@@ -309,12 +302,12 @@ const GlobalConference = ({
     bonfireForm.resetFields();
   };
 
-  const handleSubmitEmailColleague = (data) => {
-    createInvitation(data.usersInvited, userProfile.username);
+  const handleSubmitEmailColleagues = (data) => {
+    createInvitation(data.usersInvited, userProfile.id);
 
     setModalFormInviteColleaguesVisible(false);
 
-    emailForm.resetFields();
+    colleaguesForm.resetFields();
   };
 
   const handleConfirmAccessibilityRequirements = (userId) => {
@@ -440,17 +433,7 @@ const GlobalConference = ({
                   Participants
                 </Link>
               </Menu.Item>
-              <Menu.Item
-                key="partners"
-                className="sub-menu-item-global-conference"
-              >
-                <Link
-                  to="/global-conference"
-                  onClick={() => comingSoon("Partners")}
-                >
-                  Partners
-                </Link>
-              </Menu.Item>
+
               <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
@@ -621,9 +604,16 @@ const GlobalConference = ({
         <Form
           layout="vertical"
           onFinish={(data) => {
-            handleSubmitEmailColleague(data);
+            handleSubmitEmailColleagues(data);
           }}
           autoComplete="off"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          form={colleaguesForm}
         >
           <Form.List
             name="usersInvited"
@@ -639,7 +629,7 @@ const GlobalConference = ({
                     align="baseline"
                   >
                     <Form.Item
-                      label="Enter the Name of Invited"
+                      label="Name"
                       name={[name, "name"]}
                       fieldKey={[fieldKey, "name"]}
                       rules={[
@@ -653,7 +643,7 @@ const GlobalConference = ({
                     </Form.Item>
 
                     <Form.Item
-                      label="Enter Email Addresses"
+                      label="Email"
                       name={[name, "email"]}
                       fieldKey={[fieldKey, "email"]}
                       rules={[
@@ -669,7 +659,7 @@ const GlobalConference = ({
                     <MinusCircleOutlined onClick={() => remove(name)} />
                   </Space>
                 ))}
-                <Form.Item style={{ textAlign: "center" }}>
+                <Form.Item>
                   <CustomButton
                     type="info"
                     text="Invite another colleague"
@@ -683,7 +673,7 @@ const GlobalConference = ({
             )}
           </Form.List>
 
-          <Form.Item style={{ textAlign: "center" }}>
+          <Form.Item>
             <CustomButton size="xs" text="Invite" htmlType="submit" />
           </Form.Item>
         </Form>

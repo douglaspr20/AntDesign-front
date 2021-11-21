@@ -91,7 +91,7 @@ class Content extends Component {
 
           <Route
             exact
-            path={`${INTERNAL_LINKS.INVITATION}/:username/:email`}
+            path={`${INTERNAL_LINKS.INVITATION}/:hostUserId/:email`}
             render={(props) => (
               <LoginPage signup={true} isInvitation={true} {...props} />
             )}

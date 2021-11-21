@@ -70,7 +70,7 @@ const Login = ({
         if (isInvitation) {
           newSignupValues = {
             ...newSignupValues,
-            hostUser: match.params.username,
+            hostUserId: match.params.hostUserId,
           };
         }
         signUp({ ...newSignupValues });
@@ -121,12 +121,16 @@ const Login = ({
   };
 
   useEffect(() => {
+    if (history.location.pathname.includes("/invitation")) {
+      logout();
+    }
+  }, [history, logout]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       if (history != null) {
         if (live && live.live === true) {
           history.push(INTERNAL_LINKS.LIVE);
-        } else if (history.location.pathname.includes("/invitation")) {
-          logout();
         } else {
           history.push(INTERNAL_LINKS.HOME);
         }
