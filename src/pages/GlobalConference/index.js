@@ -631,9 +631,10 @@ const GlobalConference = ({
         title="We would love to hear about your access requirements. The ways we can help are:"
         centered
         visible={modalRequirementsVisible}
+        width={800}
         footer={[
           <CustomButton
-            text="Confirm need for accessibility requirements"
+            text="Click here to confirm (we will get in touch with you)"
             onClick={() =>
               handleConfirmAccessibilityRequirements(userProfile.id)
             }
@@ -642,15 +643,11 @@ const GlobalConference = ({
         ]}
         onCancel={() => setModalRequirementsVisible(false)}
       >
-        <TransformWrapper
-          initialScale={1}
-          defaultPositionX={200}
-          defaultPositionY={100}
-        >
+        <TransformWrapper initialScale={1}>
           {({ zoomIn, zoomOut }) => (
             <div style={{ display: "flex" }}>
               <TransformComponent>
-                <Timeline>
+                <Timeline style={{ padding: "20px" }}>
                   <Timeline.Item>
                     Help reviewing or selecting your sessions to build your own
                     agenda (perhaps due to a vision, hearing or learning

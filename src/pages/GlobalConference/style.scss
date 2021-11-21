@@ -57,6 +57,9 @@
        position: fixed !important;
        z-index: 20 !important;
        background: $color-background;
+       display: flex;
+       justify-content: center;
+       flex-direction: column;
        top: 73px;
        padding: 2rem 10px;
        left: 29%;
@@ -223,6 +226,7 @@
   width: 25px !important;
   height: 25px !important; 
   padding: 0px 5px !important;
+  margin-bottom: 5px;
 }
 
 .sub-menu-item-global-conference {

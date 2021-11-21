@@ -25,12 +25,15 @@ export const getParticipants = (filters) => {
     newFilter = {
       ...newFilter,
       page: 1,
+      topics: filters.topics,
+      userId: filters.userId,
     };
   } else {
     newFilter = {
       ...newFilter,
       page: filters.page,
-      filters: filters.topics,
+      topics: filters.topics,
+      userId: filters.userId,
     };
   }
 

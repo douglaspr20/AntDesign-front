@@ -44,7 +44,7 @@ const Participants = ({
       } else {
         getBonfires();
         notification.success({
-          message: "Bonfire updated succesfully",
+          message: "Participant has been invited",
         });
       }
     });
@@ -78,7 +78,7 @@ const Participants = ({
         visible={openModal}
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}
-        width={1000}
+        width={800}
       >
         <List
           itemLayout="horizontal"
