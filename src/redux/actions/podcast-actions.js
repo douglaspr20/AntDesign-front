@@ -24,7 +24,8 @@ const SET_PODCAST = "SET_PODCAST";
 const SAVE_FOR_LATER_PODCAST = "SAVE_FOR_LATER_PODCAST";
 const UPDATE_SAVE_FOR_LATER_PODCAST = "UPDATE_SAVE_FOR_LATER_PODCAST";
 const SAVE_FOR_LATER_PODCAST_SERIES = "SAVE_FOR_LATER_PODCAST_SERIES";
-const UPDATE_SAVE_FOR_LATER_PODCAST_SERIES = "UPDATE_SAVE_FOR_LATER_PODCAST_SERIES";
+const UPDATE_SAVE_FOR_LATER_PODCAST_SERIES =
+  "UPDATE_SAVE_FOR_LATER_PODCAST_SERIES";
 
 export const constants = {
   GET_ALL_PODCASTS,
@@ -160,7 +161,7 @@ export const updateSaveForLaterPodcast = createAction(
 
 export const saveForLaterPodcastSeries = createAction(
   SAVE_FOR_LATER_PODCAST_SERIES,
-  (id, UserId, status) => ({ id, UserId, status })
+  (id, UserId, status, isInHRCredits) => ({ id, UserId, status, isInHRCredits })
 );
 
 export const updateSaveForLaterPodcastSeries = createAction(
@@ -193,5 +194,5 @@ export const actions = {
   saveForLaterPodcast,
   updateSaveForLaterPodcast,
   saveForLaterPodcastSeries,
-  updateSaveForLaterPodcastSeries
+  updateSaveForLaterPodcastSeries,
 };

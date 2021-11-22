@@ -54,7 +54,7 @@ export function* searchConferenceLibrarySaga({ payload }) {
     const response = yield call(searchConferenceLibrary, { ...payload });
 
     if (response.status === 200) {
-      const allConferenceLibraries = response.data.conferences.map(
+      const allConferenceLibraries = response.data?.conferences?.map(
         (conference) => {
           return {
             ...conference,
@@ -114,17 +114,15 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
         )
       );
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allConferenceLibraries",
-          payload.index
-        )
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
       );
       yield put(
-        myLearningActions.updateCompletedLibrary(
-          response.data.affectedRows,
-          "allConferenceLibraries",
-          payload.index
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateHRCredits(
+          payload.id,
+          response.data.affectedRows
         )
       );
     }
@@ -156,19 +154,24 @@ export function* getConferenceLibrarySaga({ payload }) {
 export function* saveForLaterConferenceSaga({ payload }) {
   try {
     const response = yield call(saveForLaterConference, { ...payload });
+
     if (response.status === 200) {
       yield put(
         conferenceActions.updateSaveForLaterConference(
           response.data.affectedRows,
-          payload.index
+          payload.yearIndex
         )
       );
 
-      if (payload.status === "not saved") {
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+
+      if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveForLaterLibrary(
-            response.data.affectedRows,
-            "allConferenceLibraries"
+          myLearningActions.updateHRCredits(
+            payload.id,
+            response.data.affectedRows
           )
         );
       }

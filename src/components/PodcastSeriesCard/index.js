@@ -20,6 +20,7 @@ const PodcastSeriesCard = ({
   onClick,
   setPodcastseriesViewed,
   saveForLaterPodcastSeries,
+  isInHRCredits = false
 }) => {
   const [lineClamp, setLineClamp] = useState(12);
   const {
@@ -69,7 +70,7 @@ const PodcastSeriesCard = ({
       !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
     const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterPodcastSeries(id, userProfile.id, status);
+    saveForLaterPodcastSeries(id, userProfile.id, status, isInHRCredits);
   };
 
   return (

@@ -51,7 +51,7 @@ export const reducers = {
     return state.merge({ ...payload });
   },
   [eventConstants.SET_CHANNEL_EVENTS]: (state, { payload }) => {
-    return state.merge({ ...payload })
+    return state.merge({ ...payload });
   },
 };
 

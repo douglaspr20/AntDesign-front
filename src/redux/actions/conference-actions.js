@@ -96,7 +96,7 @@ export const setConferenceLibrary = createAction(
 
 export const saveForLaterConference = createAction(
   SAVE_FOR_LATER_CONFERENCE,
-  (id, UserId, status, index) => ({ id, UserId, status, index })
+  (id, UserId, status, yearIndex, isInHRCredits) => ({ id, UserId, status, yearIndex, isInHRCredits })
 );
 
 export const updateSaveForLaterConference = createAction(UPDATE_SAVE_FOR_LATER_CONFERENCE, (data, index) => ({ data, index }))
