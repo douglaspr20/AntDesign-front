@@ -486,13 +486,13 @@ const GlobalConference = ({
             />
           </div>
         )}
-        {/* {currentView === "personal-agenda" && (
-          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        )}
-        {currentView === "bonfire" && <Bonfire />}
         {currentView === "speakers" && <Speakers />}
         {currentView === "participants" && <Participants />}
-        {currentView === "conference-leaderboard" && <ConferenceLeaderboard />} */}
+        {currentView === "bonfire" && <Bonfire />}
+        {currentView === "personal-agenda" && (
+          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
+        )}
+        {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
 
       <Modal

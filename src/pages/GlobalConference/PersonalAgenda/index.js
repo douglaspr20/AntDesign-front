@@ -7,6 +7,7 @@ import { TIMEZONE_LIST } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
+import "./style.scss";
 
 const PersonalAgenda = ({
   sessionsUser,
@@ -152,8 +153,8 @@ const PersonalAgenda = ({
   }, [sessionsUser, filters]);
 
   return (
-    <div className="conference-list" style={{ marginTop: "14rem" }}>
-      <div className="conference-list-container">
+    <div className="personal-agenda">
+      <div className="personal-agenda-container">
         {sessionData.map((session, index) =>
           session.data.length > 0 ? (
             <div key={index}>
