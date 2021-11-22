@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
-import { Menu, notification, Modal, Form } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
+import { Menu, notification, Modal, Form, Timeline, Space } from "antd";
+import {
+  CheckOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   CustomButton,
   Tabs,
@@ -21,7 +26,10 @@ import {
 import {
   attendToGlobalConference,
   setLoading,
+  createInvitation,
+  confirmAccessibilityRequirements,
 } from "redux/actions/home-actions";
+import { createBonfire } from "redux/actions/bonfire-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -44,7 +52,8 @@ import Bonfire from "./Bonfire";
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
 import Participants from "./Participants";
-import { createBonfire } from "redux/actions/bonfire-actions";
+import ConferenceLeaderboard from "./ConferenceLeaderboard";
+
 import "./style.scss";
 
 const Description = `
@@ -72,14 +81,25 @@ const GlobalConference = ({
   sessionsUser,
   setLoading,
   attendToGlobalConference,
+  createInvitation,
+  confirmAccessibilityRequirements,
 }) => {
   const [bonfireForm] = Form.useForm();
+  const [colleaguesForm] = Form.useForm();
+
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [
+    modalFormInviteColleaguesVisible,
+    setModalFormInviteColleaguesVisible,
+  ] = useState(false);
+  const [modalRequirementsVisible, setModalRequirementsVisible] =
+    useState(false);
+
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
 
@@ -118,13 +138,6 @@ const GlobalConference = ({
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
     }
-  };
-
-  const comingSoon = (section) => {
-    notification.open({
-      message: "Coming Soon",
-      description: `Soon you will have access to the section of ${section}`,
-    });
   };
 
   const handleView = (view) => {
@@ -221,7 +234,20 @@ const GlobalConference = ({
 
   const onCancelModalForm = () => {
     setModalFormVisible(false);
+    setModalFormInviteColleaguesVisible(false);
+    colleaguesForm.resetFields();
     bonfireForm.resetFields();
+  };
+
+  const onInviteColleague = () => {
+    if (userProfile.memberShip && userProfile.memberShip !== "premium") {
+      return notification.warning({
+        message: "Warning",
+        description: `you need to be a premium user to invite a user`,
+      });
+    }
+    setModalFormInviteColleaguesVisible(true);
+    colleaguesForm.resetFields();
   };
 
   const handleChecked = (e) => {
@@ -276,6 +302,25 @@ const GlobalConference = ({
     bonfireForm.resetFields();
   };
 
+  const handleSubmitEmailColleagues = (data) => {
+    createInvitation(data.usersInvited, userProfile.id);
+
+    setModalFormInviteColleaguesVisible(false);
+
+    colleaguesForm.resetFields();
+  };
+
+  const handleConfirmAccessibilityRequirements = (userId) => {
+    confirmAccessibilityRequirements(userId, (error) => {
+      if (error) {
+        notification.error({
+          message: error || "Something went wrong. Please try again.",
+        });
+      }
+    });
+    setModalRequirementsVisible(false);
+  };
+
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
@@ -311,6 +356,12 @@ const GlobalConference = ({
                   remove={true}
                   onClick={onAttend}
                 />
+                <CustomButton
+                  size="xs"
+                  text="Invite Your Colleagues"
+                  onClick={() => onInviteColleague()}
+                  style={{ marginLeft: "1rem" }}
+                />
               </>
             ) : (
               <CustomButton
@@ -339,6 +390,13 @@ const GlobalConference = ({
             )}
           </div>
           <p className="global-conference-description">{Description}</p>
+          <CustomButton
+            text="Accessibility Requirements"
+            size="xs"
+            type="info"
+            className="button-requirements"
+            onClick={() => setModalRequirementsVisible(true)}
+          />
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
@@ -375,17 +433,7 @@ const GlobalConference = ({
                   Participants
                 </Link>
               </Menu.Item>
-              <Menu.Item
-                key="partners"
-                className="sub-menu-item-global-conference"
-              >
-                <Link
-                  to="/global-conference"
-                  onClick={() => comingSoon("Partners")}
-                >
-                  Partners
-                </Link>
-              </Menu.Item>
+
               <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
@@ -403,6 +451,14 @@ const GlobalConference = ({
                 onClick={() => handleView("personal-agenda")}
               >
                 <Link to="/global-conference">My Personal Agenda</Link>
+              </Menu.Item>
+
+              <Menu.Item
+                key="conference-leaderboard"
+                className="sub-menu-item-global-conference"
+                onClick={() => handleView("conference-leaderboard")}
+              >
+                <Link to="/global-conference">Conference Leaderboard</Link>
               </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
@@ -436,6 +492,7 @@ const GlobalConference = ({
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "speakers" && <Speakers />}
         {currentView === "participants" && <Participants />}
+        {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
 
       <Modal
@@ -530,6 +587,152 @@ const GlobalConference = ({
           </Form.Item>
         </Form>
       </Modal>
+      <Modal
+        visible={modalFormInviteColleaguesVisible}
+        footer={null}
+        width={800}
+        onCancel={() => {
+          onCancelModalForm();
+        }}
+        bodyStyle={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Form
+          layout="vertical"
+          onFinish={(data) => {
+            handleSubmitEmailColleagues(data);
+          }}
+          autoComplete="off"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          form={colleaguesForm}
+        >
+          <Form.List
+            name="usersInvited"
+            initialValue={[{ name: "", email: "" }]}
+          >
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, fieldKey, ...restField }) => (
+                  <Space
+                    Space
+                    key={key}
+                    style={{ display: "flex", marginBottom: 8 }}
+                    align="baseline"
+                  >
+                    <Form.Item
+                      label="Name"
+                      name={[name, "name"]}
+                      fieldKey={[fieldKey, "name"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please Enter the Name of Invited",
+                        },
+                      ]}
+                    >
+                      <CustomInput />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Email"
+                      name={[name, "email"]}
+                      fieldKey={[fieldKey, "email"]}
+                      rules={[
+                        {
+                          required: true,
+                          type: "email",
+                          message: "is not valid Email",
+                        },
+                      ]}
+                    >
+                      <CustomInput />
+                    </Form.Item>
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </Space>
+                ))}
+                <Form.Item>
+                  <CustomButton
+                    type="info"
+                    text="Invite another colleague"
+                    size="xs"
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                    className="button-invite-colleague"
+                  />
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+
+          <Form.Item>
+            <CustomButton size="xs" text="Invite" htmlType="submit" />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="We would love to hear about your access requirements. The ways we can help are:"
+        centered
+        visible={modalRequirementsVisible}
+        width={800}
+        footer={[
+          <CustomButton
+            text="Click here to confirm (we will get in touch with you)"
+            onClick={() =>
+              handleConfirmAccessibilityRequirements(userProfile.id)
+            }
+            size="xs"
+          />,
+        ]}
+        onCancel={() => setModalRequirementsVisible(false)}
+      >
+        <TransformWrapper initialScale={1}>
+          {({ zoomIn, zoomOut }) => (
+            <div style={{ display: "flex" }}>
+              <TransformComponent>
+                <Timeline style={{ padding: "20px" }}>
+                  <Timeline.Item>
+                    Help reviewing or selecting your sessions to build your own
+                    agenda (perhaps due to a vision, hearing or learning
+                    impairment)
+                  </Timeline.Item>
+                  <Timeline.Item>
+                    A transcript or only-audio file of the sessions (although
+                    autogenerated captions will be provided for all the panels
+                    during the conference, and for the presentations the week
+                    after the conference).
+                  </Timeline.Item>
+                  <p>
+                    Please confirm below and we will get in touch in touch with
+                    you via email. Thank you!
+                  </p>
+                </Timeline>
+              </TransformComponent>
+              <div>
+                <CustomButton
+                  className="zoom-button"
+                  text="+"
+                  onClick={(e) => zoomIn(e)}
+                />
+                <CustomButton
+                  className="zoom-button"
+                  text="-"
+                  onClick={(e) => zoomOut(e)}
+                />
+              </div>
+            </div>
+          )}
+        </TransformWrapper>
+      </Modal>
     </div>
   );
 };
@@ -558,6 +761,8 @@ const mapDispatchToProps = {
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
+  createInvitation,
+  confirmAccessibilityRequirements,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

@@ -11,6 +11,7 @@ import Emitter from "services/emitter";
 
 import { getUser } from "redux/actions/home-actions";
 import { actions as authActions } from "redux/actions/auth-actions";
+import { acceptInvitation } from "redux/actions/home-actions";
 import { authSelector } from "redux/selectors/authSelector";
 import { addToMyEventList } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
@@ -32,6 +33,8 @@ const Login = ({
   error,
   login,
   signUp,
+  logout,
+  isInvitation,
   history,
   match,
   signup,
@@ -50,13 +53,12 @@ const Login = ({
 
   const refForm = React.useRef(null);
 
-
   const onFinish = (values) => {
     if (isLogin) {
       const { email, password } = values;
       login(email, password);
     } else {
-      const newSignupValues = {
+      let newSignupValues = {
         ...signupValues,
         ...values,
       };
@@ -65,6 +67,12 @@ const Login = ({
         setSignupStep(signupStep + 1);
       }
       if (signupStep === 3) {
+        if (isInvitation) {
+          newSignupValues = {
+            ...newSignupValues,
+            hostUserId: match.params.hostUserId,
+          };
+        }
         signUp({ ...newSignupValues });
       }
     }
@@ -106,11 +114,17 @@ const Login = ({
     e.preventDefault();
     e.stopPropagation();
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
-  }
-  
+  };
+
   const onBackSignup = () => {
     setSignupStep(Math.max(signupStep - 1, 0));
   };
+
+  useEffect(() => {
+    if (history.location.pathname.includes("/invitation")) {
+      logout();
+    }
+  }, [history, logout]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -254,8 +268,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   ...authActions,
+  logout: authActions.logout,
   addToMyEventList,
   getUser,
+  acceptInvitation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

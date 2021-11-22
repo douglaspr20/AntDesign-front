@@ -88,6 +88,14 @@ class Content extends Component {
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.INVITATION}/:hostUserId/:email`}
+            render={(props) => (
+              <LoginPage signup={true} isInvitation={true} {...props} />
+            )}
+          />
           <Route
             path={INTERNAL_LINKS.PASSWORD_RECOVERY}
             render={(props) => <PasswordRecoveryPage {...props} />}
@@ -242,6 +250,7 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
             render={(props) => <PublicEventPage {...props} />}
           />
+
           <Route component={NoPageFound} />
         </Switch>
       </Layout.Content>
