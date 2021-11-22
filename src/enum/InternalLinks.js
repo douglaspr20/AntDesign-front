@@ -37,4 +37,5 @@ export default {
   PARTICIPANTS: "/participants",
   MY_LEARNINGS: "/my-learnings",
   PROJECTX: "/projectx",
+  INVITATION: "/invitation",
 };

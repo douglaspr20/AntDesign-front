@@ -18,16 +18,21 @@ const reducers = {
     const allSaved = state.get("allSaved");
     let newAllSaved = { ...allSaved };
 
-    const filteredItem =
-      newAllSaved[payload.item]?.filter(
-        (item) => item.id !== payload.data.id
-      ) || -1;
+    const newAllSavedIndex =
+      newAllSaved &&
+      newAllSaved.rows &&
+      newAllSaved.rows.findIndex(
+        (item) => item.id === payload.data.id && item.type === payload.data.type
+      );
 
-    if (filteredItem !== -1) {
-      newAllSaved = {
-        ...newAllSaved,
-        [payload.item]: filteredItem,
-      };
+    if (newAllSavedIndex >= 0) {
+      const filteredItem =
+        newAllSaved?.rows?.filter(
+          (item) =>
+            item.id !== payload.data.id || item.type !== payload.data.type
+        ) || [];
+
+      newAllSaved.rows = filteredItem;
     }
 
     return state.merge({
@@ -38,29 +43,132 @@ const reducers = {
     const allCompleted = state.get("allCompleted");
     let newAllCompleted = { ...allCompleted };
 
-    const index = newAllCompleted[payload.item].findIndex(
-      (item) => item.id === payload.data.id
-    );
+    const index =
+      newAllCompleted &&
+      newAllCompleted.rows &&
+      newAllCompleted.rows.findIndex(
+        (item) => item.id === payload.data.id && item.type === payload.data.type
+      );
 
     if (index >= 0) {
       const filteredItem =
-        newAllCompleted[payload.item]?.filter(
-          (item) => item.id !== payload.data.id
+        newAllCompleted?.rows.filter(
+          (item) =>
+            item.id !== payload.data.id || item.type !== payload.data.type
         ) || [];
 
-      newAllCompleted = {
-        ...newAllCompleted,
-        [payload.item]: filteredItem,
-      };
+      newAllCompleted.rows = filteredItem;
     } else {
-      newAllCompleted = {
-        ...newAllCompleted,
-        [payload.item]: [...newAllCompleted[payload.item], payload.data],
-      };
+      newAllCompleted.rows = [payload.data, ...newAllCompleted.rows];
     }
 
     return state.merge({
       allCompleted: newAllCompleted,
+    });
+  },
+  [myLearningConstants.SET_ALL_ITEMS_WITH_HR_CREDITS]: (state, { payload }) => {
+    return state.merge({
+      allItemsWithHRCredits: payload.items,
+    });
+  },
+  [myLearningConstants.UPDATE_HR_CREDITS]: (
+    state,
+    { payload }
+  ) => {
+    const allItemsWithHRCredits = state.get("allItemsWithHRCredits");
+    const indx =
+      allItemsWithHRCredits &&
+      allItemsWithHRCredits.rows &&
+      allItemsWithHRCredits.rows.findIndex((item) => item.id === payload.id);
+
+    const transformAllItemsWithHRCredits = {
+      ...allItemsWithHRCredits,
+    };
+
+    if (indx >= 0) {
+      transformAllItemsWithHRCredits.rows[indx] = {
+        ...payload.data,
+      };
+    }
+
+    return state.merge({
+      allItemsWithHRCredits: transformAllItemsWithHRCredits,
+    });
+  },
+  [myLearningConstants.LEARNING_LOADING]: (state, { payload }) => {
+    return state.merge({
+      loading: payload.loading,
+    });
+  },
+  [myLearningConstants.SET_MORE_ALL_ITEMS_WITH_HR_CREDITS]: (
+    state,
+    { payload }
+  ) => {
+    const allItemsWithHRCredits = state.get("allItemsWithHRCredits");
+
+    allItemsWithHRCredits.rows = [
+      ...allItemsWithHRCredits.rows,
+      ...(payload.items.rows || []),
+    ];
+
+    return state.merge({
+      allItemsWithHRCredits,
+      allItemsWithHRCreditsCurrentPage: payload.page,
+    });
+  },
+  [myLearningConstants.SET_ALL_EVENT_VIDEOS]: (state, { payload }) => {
+    return state.merge({
+      allEventVideos: payload.videos,
+    });
+  },
+  [myLearningConstants.SET_MORE_EVENT_VIDEOS]: (state, { payload }) => {
+    const allEventVideos = state.get("allEventVideos");
+
+    allEventVideos.rows = [...allEventVideos.rows, ...payload.items.rows];
+
+    return state.merge({
+      allEventVideos,
+      allEventVideosCurrentPage: payload.page,
+    });
+  },
+  [myLearningConstants.SET_MORE_COMPLETED]: (state, { payload }) => {
+    const allCompleted = state.get("allCompleted");
+
+    allCompleted.rows = [...allCompleted.rows, ...payload.items];
+
+    return state.merge({
+      allCompleted,
+      allCompletedCurrentPage: payload.page,
+    });
+  },
+  [myLearningConstants.SET_MORE_SAVED]: (state, { payload }) => {
+    const allSaved = state.get("allSaved");
+
+    allSaved.rows = [...allSaved.rows, ...payload.items];
+
+    return state.merge({
+      allSaved,
+      allSavedCurrentPage: payload.page,
+    });
+  },
+  [myLearningConstants.UPDATE_EVENT_VIDEOS]: (
+    state,
+    { payload }
+  ) => {
+    const allEventVideos = state.get("allEventVideos");
+    const newAllEventVideos = { ...allEventVideos };
+
+    const index =
+      allEventVideos &&
+      allEventVideos.rows &&
+      allEventVideos.rows.findIndex((item) => item.id === payload.id);
+
+    if (index >= 0) {
+      newAllEventVideos.rows[index] = payload.data;
+    }
+
+    return state.merge({
+      allEventVideos: newAllEventVideos,
     });
   },
 };
@@ -69,6 +177,12 @@ export const initialState = () => {
   return Map({
     allSaved: {},
     allCompleted: {},
+    allItemsWithHRCredits: {},
+    allEventVideos: {},
+    allSavedCurrentPage: 1,
+    allCompletedCurrentPage: 1,
+    allItemsWithHRCreditsCurrentPage: 1,
+    allEventVideosCurrentPage: 1,
     currentPage: 1,
     countOfResults: 0,
     loading: false,

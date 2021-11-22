@@ -32,6 +32,8 @@ const ConferenceCard = ({
   afterUpdate,
   isInternalLink,
   saveForLaterConference,
+  listOfYearsIndex,
+  isInHRCredits = false
 }) => {
   const { title, year, categories } = data || {};
   const [modalVisible, setModalVisible] = useState(false);
@@ -44,7 +46,7 @@ const ConferenceCard = ({
       }
 
       if (data.viewed && !data.viewed[userProfile.id]) {
-        setConferenceLibraryViewed(data.id, "unmark");
+        setConferenceLibraryViewed(data.id, "unmark", listOfYearsIndex);
       }
     }
   };
@@ -87,7 +89,7 @@ const ConferenceCard = ({
       !isEmpty(data.saveForLater) && data.saveForLater.includes(userProfile.id);
     const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterConference(data.id, userProfile.id, status);
+    saveForLaterConference(data.id, userProfile.id, status, listOfYearsIndex, isInHRCredits);
   };
 
   return (
@@ -143,7 +145,8 @@ const ConferenceCard = ({
                 e.stopPropagation();
                 setConferenceLibraryViewed(
                   data.id,
-                  data.viewed[userProfile.id] === "mark" ? "unmark" : "mark"
+                  data.viewed[userProfile.id] === "mark" ? "unmark" : "mark",
+                  listOfYearsIndex
                 );
                 setTimeout(() => {
                   afterUpdate();
@@ -179,10 +182,6 @@ const ConferenceCard = ({
               />
             )}
           </div>
-          {/* <div className="d-flex items-center">
-            <SvgIcon name="star" className="conference-card-icon" />
-            <SvgIcon name="bookmark" className="conference-card-icon" />
-          </div> */}
         </div>
       </div>
       {frequency ? (

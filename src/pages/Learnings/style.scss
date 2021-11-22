@@ -5,6 +5,13 @@
 	grid-template-columns: auto 1fr;
 	width: 100%;
 
+  &-loading-more {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
 	&-container {
 		height: calc(100vh - 72px);
 		background: $color-background;
@@ -45,6 +52,13 @@
 }
 
 .completed-items {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.items-with-hr-credits {
   margin-top: 1rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

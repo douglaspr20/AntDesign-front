@@ -190,7 +190,7 @@ const Bonfire = ({
   }, [bonfires]);
 
   return (
-    <div className="conference-list" style={{ marginTop: "12rem" }}>
+    <div className="conference-list" style={{ marginTop: "14rem" }}>
       <div className="conference-list-container">
         {bonfiresData.map((bonfire, i) =>
           bonfire.data.length > 0 ? (

@@ -15,3 +15,7 @@ export const updateBonfire = ({ id, bonfire }) => {
 export const deleteBonfire = ({ id }) => {
   return httpClient.delete(`private/bonfire/${id}`);
 };
+
+export const inviteUser = ({ id, userId }) => {
+  return httpClient.put(`private/bonfire/${id}/invitedUser/${userId}`);
+};

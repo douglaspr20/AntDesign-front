@@ -65,7 +65,7 @@ const ProfilePopupMenu = (props) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const [form] = Form.useForm();
 
@@ -224,14 +224,12 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
-      {user.percentOfCompletion === 100 && (
-        <div
-          className="profile-popover-content-menu"
-          onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
-        >
-          My Learnings
-        </div>
-      )}
+      <div
+        className="profile-popover-content-menu"
+        onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
+      >
+        My Learning
+      </div>
       {user.percentOfCompletion === 100 && (
         <div
           className="profile-popover-content-menu"
