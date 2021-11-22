@@ -90,6 +90,20 @@
         padding: 20px 0px;
         width: 100%;
       }
+
+      .button-containers{
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        
+        @media (max-width: 800px){
+          justify-content: center;
+
+          & .custom-button, & .attending-label{
+            margin-top: .5rem;
+          }
+        }
+      }
       
     }
 
@@ -111,7 +125,8 @@
     color: $color-text-secondary;
 
     @media (max-width: 500px){
-      max-height: 120px;
+      padding: 0px 10px;
+      max-height: 100px;
       overflow-y: scroll;
     }
   }
