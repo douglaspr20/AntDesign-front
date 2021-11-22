@@ -229,7 +229,7 @@ const ProfilePopupMenu = (props) => {
           className="profile-popover-content-menu"
           onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
         >
-          My Learnings
+          My Learning
         </div>
       )}
       {user.percentOfCompletion === 100 && (

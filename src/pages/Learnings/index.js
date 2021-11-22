@@ -14,16 +14,38 @@ import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import { myLearningSelector } from "redux/selectors/myLearningSelector";
 import { actions as myLearningActions } from "redux/actions/myLearning-actions";
+import { actions as conferenceActions } from "redux/actions/conference-actions";
 
 import LearningFilterDrawer from "./LearningFilterDrawer";
 import "./style.scss";
 
-const MyLearingPage = ({ getAllSaved, allSaved, getAllCompleted, allCompleted }) => {
+const MyLearingPage = ({
+  getAllSaved,
+  allSaved,
+  getAllCompleted,
+  allCompleted,
+  searchConferenceLibraries,
+}) => {
   const [currentTab, setCurrentTab] = useState("0");
+  const [listOfYears, setListOfYears] = useState([2020]);
 
   useEffect(() => {
     getAllSaved([]);
-    getAllCompleted([])
+    getAllCompleted([]);
+    const getListOfYears = (startYear) => {
+      const currentYear = new Date().getFullYear();
+      const years = [];
+
+      while (startYear <= currentYear) {
+        years.push(startYear++);
+      }
+
+      return years;
+    };
+
+    const listOfYears = getListOfYears([2020]);
+    searchConferenceLibraries({}, listOfYears);
+    setListOfYears(listOfYears.reverse());
     // eslint-disable-next-line
   }, []);
 
@@ -42,7 +64,15 @@ const MyLearingPage = ({ getAllSaved, allSaved, getAllCompleted, allCompleted })
           });
         } else if (key === "allConferenceLibraries") {
           return allSaved[key].map((item, index) => {
-            return <ConferenceCard key={index} data={item} />;
+            return (
+              <ConferenceCard
+                key={index}
+                data={item}
+                listOfYearsIndex={listOfYears.findIndex(
+                  (year) => year === item.year
+                )}
+              />
+            );
           });
         } else if (key === "allPodcasts") {
           return allSaved[key].map((item, index) => {
@@ -74,7 +104,15 @@ const MyLearingPage = ({ getAllSaved, allSaved, getAllCompleted, allCompleted })
           });
         } else if (key === "allConferenceLibraries") {
           return allCompleted[key].map((item, index) => {
-            return <ConferenceCard key={index} data={item} />;
+            return (
+              <ConferenceCard
+                key={index}
+                data={item}
+                listOfYearsIndex={listOfYears.findIndex(
+                  (year) => year === item.year
+                )}
+              />
+            );
           });
         } else if (key === "allPodcasts") {
           return allCompleted[key].map((item, index) => {
@@ -97,18 +135,22 @@ const MyLearingPage = ({ getAllSaved, allSaved, getAllCompleted, allCompleted })
 
   const TabData = [
     {
+      title: "Items w/ HR Credits",
+      content: () => <div>Coming soon.</div>,
+    },
+    {
       title: "Saved Items",
       content: displaySavedItems,
     },
     {
-      title: "Finished Items",
-      content: displayCompletedItems
+      title: "Completed Items",
+      content: displayCompletedItems,
     },
   ];
 
   const handleFilterChange = (filter) => {
     getAllSaved(filter);
-    getAllCompleted(filter)
+    getAllCompleted(filter);
   };
 
   return (
@@ -129,6 +171,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   ...myLearningActions,
+  ...conferenceActions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyLearingPage);

@@ -5,13 +5,9 @@ import { connect } from "react-redux";
 
 import { CustomCheckbox, SearchInput } from "components";
 
-import { SEARCH_FILTERS } from "enum";
-
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
-
-const YearOptions = SEARCH_FILTERS.ConferenceLibrary.year;
 
 const ConferenceLibraryFilterPanel = ({
   title,
@@ -37,17 +33,6 @@ const ConferenceLibraryFilterPanel = ({
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
-          <h5 className="search-filter-title font-bold">Year</h5>
-          <Checkbox.Group
-            value={filters["year"] ? JSON.parse(filters["year"]) : []}
-            onChange={(values) => onFilterChange("year", values)}
-          >
-            {YearOptions.map((item) => (
-              <CustomCheckbox key={item} value={item} size="sm">
-                {item}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
         </div>
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Topics</h5>
