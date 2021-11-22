@@ -54,6 +54,9 @@ const Notification = ({
       case "content":
         history.push(INTERNAL_LINKS.LEARNING_LIBRARY);
         break;
+      case "resource":
+        history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`);
+        break;
       default:
         break;
     }
@@ -108,6 +111,8 @@ const Notification = ({
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
   }, []);
+
+  console.log(unreadCount, 'anymore')
 
   return (
     <Popover
