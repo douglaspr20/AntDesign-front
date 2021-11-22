@@ -112,8 +112,6 @@ const Notification = ({
     getNotifications(1, MAX_NOTIFICATIONS);
   }, []);
 
-  console.log(unreadCount, 'anymore')
-
   return (
     <Popover
       placement="bottom"
