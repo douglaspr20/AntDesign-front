@@ -158,16 +158,22 @@ class ProfileViewPanel extends React.Component {
           </h3>
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
-            Object.keys(user.personalLinks).map((contact) => (
-              <div className="personal-link" key={contact}>
-                <div className="personal-link-icon">
-                  <i className={CONTACT_ICONS[contact]} />
-                </div>
-                <h3 className="textfield-value completed">
-                  {user.personalLinks[contact] || ""}
-                </h3>
-              </div>
-            ))}
+            Object.keys(user.personalLinks).map((contact) => {
+              if(contact === "linkedin"){
+                return(
+                  <div className="personal-link" key={contact}>
+                    <div className="personal-link-icon">
+                      <i className={CONTACT_ICONS[contact]} />
+                    </div>
+                    <h3 className="textfield-value completed">
+                      {user.personalLinks[contact] || ""}
+                    </h3>
+                  </div>
+                );
+              }else{
+                return null;
+              }
+          })}
           {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
           <h5 className="textfield-label">
             Are open to receiving information/being contacted via email about

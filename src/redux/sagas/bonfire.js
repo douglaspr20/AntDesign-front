@@ -12,6 +12,7 @@ import {
   getUserFromId,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
 } from "../../api";
 
 export function* createBonfireSaga({ payload }) {
@@ -121,11 +122,33 @@ export function* deleteBonfireSaga({ payload }) {
   }
 }
 
+export function* inviteUserSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    let response = yield call(inviteUser, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(bonfireConstants.CREATE_BONFIRE, createBonfireSaga);
   yield takeLatest(bonfireConstants.GET_BONFIRES, getAllBonfiresSaga);
   yield takeLatest(bonfireConstants.UPDATE_BONFIRE, updateBonfireSaga);
   yield takeLatest(bonfireConstants.DELETE_BONFIRE, deleteBonfireSaga);
+  yield takeLatest(bonfireConstants.INVITE_USER, inviteUserSaga);
 }
 
 export const bonfireSaga = [fork(watchSession)];

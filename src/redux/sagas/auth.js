@@ -142,6 +142,10 @@ export function* signUpUser({ payload }) {
           ...user,
         })
       );
+
+      if (payload.hostUserId) {
+        yield put(homeActions.acceptInvitation(user.id, payload.hostUserId));
+      }
     } else {
       yield put(
         authActions.setAuth({

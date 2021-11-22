@@ -5,6 +5,7 @@ const GET_BONFIRES = "GET_BONFIRES";
 const SET_BONFIRES = "SET_BONFIRES";
 const UPDATE_BONFIRE = "UPDATE_BONFIRE";
 const DELETE_BONFIRE = "DELETE_BONFIRE";
+const INVITE_USER = "INVITE_USER";
 
 export const constants = {
   CREATE_BONFIRE,
@@ -12,6 +13,7 @@ export const constants = {
   SET_BONFIRES,
   UPDATE_BONFIRE,
   DELETE_BONFIRE,
+  INVITE_USER,
 };
 
 // ------------------------------------
@@ -40,10 +42,17 @@ export const deleteBonfire = createAction(DELETE_BONFIRE, (id, callback) => ({
   callback,
 }));
 
+export const inviteUser = createAction(INVITE_USER, (id, userId, callback) => ({
+  id,
+  userId,
+  callback,
+}));
+
 export const actions = {
   createBonfire,
   getBonfires,
   setBonfires,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
 };
