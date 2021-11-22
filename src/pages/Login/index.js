@@ -121,8 +121,10 @@ const Login = ({
   };
 
   useEffect(() => {
-    if (history.location.pathname.includes("/invitation")) {
-      logout();
+    if (history != null) {
+      if (history.location.pathname.includes("/invitation")) {
+        logout();
+      }
     }
   }, [history, logout]);
 
