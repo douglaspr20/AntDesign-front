@@ -3,28 +3,43 @@ import { Card, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { CustomButton } from "components";
+
 import "./style.scss";
 
-const ParticipantCard = ({ participant, userProfile }) => {
+const ParticipantCard = ({
+  participant,
+  onOpenModalBonfires,
+  invitedAllBonfires,
+}) => {
   return (
-    <a
-      href={participant.personalLinks.linkedin}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ maxWidth: "250px", marginBottom: "1rem" }}
+    <Card
+      hoverable
+      bordered
+      type="inner"
+      extra={<UserOutlined />}
+      bodyStyle={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+      style={{ marginTop: "1rem" }}
     >
-      <Card
-        hoverable
-        bordered
-        type="inner"
-        extra={<UserOutlined />}
-        bodyStyle={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-        style={{ marginTop: "1rem" }}
+      {!invitedAllBonfires && (
+        <CustomButton
+          size="sm"
+          text="Invite to bonfire"
+          style={{ marginTop: "-30px", marginBottom: "30px" }}
+          onClick={() => onOpenModalBonfires(participant.id)}
+        />
+      )}
+
+      <a
+        href={participant.personalLinks.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="link-container"
       >
         {participant.img ? (
           <Avatar size={180} src={participant.img} />
@@ -41,8 +56,8 @@ const ParticipantCard = ({ participant, userProfile }) => {
           <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
           <p style={{ marginTop: -10 }}>{participant.company}</p>
         </div>
-      </Card>
-    </a>
+      </a>
+    </Card>
   );
 };
 

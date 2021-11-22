@@ -23,11 +23,16 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
     const response = yield call(searchConferenceLibrary, { ...payload });
 
     if (response.status === 200) {
+      const moreConferenceLibraries = {
+        libraries: response.data.conferences[0].rows,
+        currentPage: payload.filter.page,
+        countOfResults: response.data.conferences[0].count,
+      };
+
       yield put(
         conferenceActions.setMoreConferenceLibraries(
-          response.data.conferences.count,
-          payload.filter.page,
-          response.data.conferences.rows
+          moreConferenceLibraries,
+          payload.index
         )
       );
     }
@@ -49,12 +54,17 @@ export function* searchConferenceLibrarySaga({ payload }) {
     const response = yield call(searchConferenceLibrary, { ...payload });
 
     if (response.status === 200) {
+      const allConferenceLibraries = response.data?.conferences?.map(
+        (conference) => {
+          return {
+            ...conference,
+            currentPage: 1,
+          };
+        }
+      );
+
       yield put(
-        conferenceActions.setSearchConferenceLibraries(
-          response.data.conferences.count,
-          1,
-          response.data.conferences.rows
-        )
+        conferenceActions.setSearchConferenceLibraries(allConferenceLibraries)
       );
     }
   } catch (error) {
@@ -99,19 +109,20 @@ export function* markConferenceLibraryViewedSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         conferenceActions.updateConferenceLibraryViewed(
+          response.data.affectedRows,
+          payload.index
+        )
+      );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateHRCredits(
+          payload.id,
           response.data.affectedRows
-        )
-      );
-      yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allConferenceLibraries"
-        )
-      );
-      yield put(
-        myLearningActions.updateCompletedLibrary(
-          response.data.affectedRows,
-          "allConferenceLibraries"
         )
       );
     }
@@ -147,15 +158,20 @@ export function* saveForLaterConferenceSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         conferenceActions.updateSaveForLaterConference(
-          response.data.affectedRows
+          response.data.affectedRows,
+          payload.yearIndex
         )
       );
 
-      if (payload.status === "not saved") {
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+
+      if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveForLaterLibrary(
-            response.data.affectedRows,
-            "allConferenceLibraries"
+          myLearningActions.updateHRCredits(
+            payload.id,
+            response.data.affectedRows
           )
         );
       }

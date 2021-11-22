@@ -309,15 +309,21 @@ export function* markLibraryViewedSaga({ payload }) {
     if (response.status === 200) {
       yield put(libraryActions.updateLibraryViewed(response.data.affectedRows));
       yield put(
-        myLearningActions.updateSaveForLaterLibrary(
-          response.data.affectedRows,
-          "allLibraries"
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateEventVideos(
+          payload.id,
+          response.data.affectedRows
         )
       );
       yield put(
-        myLearningActions.updateCompletedLibrary(
+        myLearningActions.updateHRCredits(
+          payload.id,
           response.data.affectedRows,
-          "allLibraries"
         )
       );
     }
@@ -338,11 +344,22 @@ export function* saveForLaterSaga({ payload }) {
         libraryActions.updateLibrarySaveForLater(response.data.affectedRows)
       );
 
-      if (payload.status === "not saved") {
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+
+      yield put(
+        myLearningActions.updateEventVideos(
+          payload.id,
+          response.data.affectedRows
+        )
+      );
+
+      if (payload.isInHRCredits) {
         yield put(
-          myLearningActions.updateSaveForLaterLibrary(
-            response.data.affectedRows,
-            "allLibraries"
+          myLearningActions.updateHRCredits(
+            payload.id,
+            response.data.affectedRows
           )
         );
       }

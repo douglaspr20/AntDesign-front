@@ -139,7 +139,7 @@ const HomePage = ({
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
               <ProfileStatusBar
-                percent={userProfile ? userProfile.percentOfCompletion : 0}
+                user={userProfile}
               />
             </div>
           )}

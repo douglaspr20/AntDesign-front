@@ -23,7 +23,7 @@ const SET_LIBRARY_VIEWED = "SET_LIBRARY_VIEWED";
 const UPDATE_LIBRARY_VIEWED = "UPDATE_LIBRARY_VIEWED";
 const SAVE_FOR_LATER_LIBRARY = "SAVE_FOR_LATER_LIBRARY";
 const SET_SAVE_FOR_LATER_LIBRARY = "SET_SAVE_FOR_LATER_LIBRARY";
-const UPDATE_LIBRARY_SAVE_FOR_LATER = "UPDATE_LIBRARY_SAVE_FOR_LATER"
+const UPDATE_LIBRARY_SAVE_FOR_LATER = "UPDATE_LIBRARY_SAVE_FOR_LATER";
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -49,7 +49,7 @@ export const constants = {
   UPDATE_LIBRARY_VIEWED,
   SAVE_FOR_LATER_LIBRARY,
   SET_SAVE_FOR_LATER_LIBRARY,
-  UPDATE_LIBRARY_SAVE_FOR_LATER
+  UPDATE_LIBRARY_SAVE_FOR_LATER,
 };
 
 // ------------------------------------
@@ -143,14 +143,17 @@ export const updateLibraryViewed = createAction(
 );
 export const saveForLaterLibrary = createAction(
   SAVE_FOR_LATER_LIBRARY,
-  (id, UserId, status) => ({ id, UserId, status })
+  (id, UserId, status, isInHRCredits) => ({ id, UserId, status, isInHRCredits })
 );
 export const setSaveForLaterLibrary = createAction(
   SET_SAVE_FOR_LATER_LIBRARY,
   (allLearningLibraries) => ({ allLearningLibraries })
 );
 
-export const updateLibrarySaveForLater = createAction(UPDATE_LIBRARY_SAVE_FOR_LATER, (data) => ({ data }))
+export const updateLibrarySaveForLater = createAction(
+  UPDATE_LIBRARY_SAVE_FOR_LATER,
+  (data) => ({ data })
+);
 
 export const actions = {
   getMoreLibraries,
@@ -175,5 +178,5 @@ export const actions = {
   updateLibraryViewed,
   saveForLaterLibrary,
   setSaveForLaterLibrary,
-  updateLibrarySaveForLater
+  updateLibrarySaveForLater,
 };

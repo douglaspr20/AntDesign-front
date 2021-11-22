@@ -15,6 +15,9 @@ import {
   uploadResume,
   deleteResume,
   changePassword,
+  createInvitation,
+  acceptInvitationJoin,
+  confirmAccessibilityRequirements,
 } from "./module/user";
 import {
   getAllEvents,
@@ -98,6 +101,7 @@ import {
   getAllBonfires,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
 } from "./module/bonfire";
 import {
   getAllSkillCohorts,
@@ -128,7 +132,12 @@ import {
   upsertResponseRating,
 } from "./module/skillCohortResourceResponseRating";
 
-import { getAllCompleted, getAllSaved } from "./module/myLearning";
+import {
+  getAllCompleted,
+  getAllSaved,
+  getAllItemsWithHRCredits,
+  getEventVideos,
+} from "./module/myLearning";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -137,6 +146,9 @@ export {
   getUserFromId,
   updateUser,
   changePassword,
+  createInvitation,
+  acceptInvitationJoin,
+  confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
   getEvent,
@@ -196,6 +208,7 @@ export {
   removeBonfire,
   updateBonfire,
   deleteBonfire,
+  inviteUser,
   markeToRead,
   uploadResume,
   deleteResume,
@@ -235,4 +248,6 @@ export {
   getAllBonfires,
   getAllCompleted,
   getAllSaved,
+  getAllItemsWithHRCredits,
+  getEventVideos,
 };
