@@ -57,9 +57,13 @@ const ProfileStatusBar = ({ user }) => {
                 <li>Main languages</li>
               ) : null}
               {!user.about ? <li>Tell us more about you</li> : null}
-              {Object.keys(user.topicsOfInterest).length === 0 ? (
+              {user.topicsOfInterest ? (
+                Object.keys(user.topicsOfInterest).length === 0 ? (
+                  <li>Topics of interest</li>
+                ) : null
+              ) : (
                 <li>Topics of interest</li>
-              ) : null}
+              )}
               {!user.personalLinks.hasOwnProperty("linkedin") ? (
                 <li>Personal links</li>
               ) : user.personalLinks.linkedin.toString().trim() === "" ||
