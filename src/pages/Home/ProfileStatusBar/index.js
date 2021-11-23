@@ -64,11 +64,14 @@ const ProfileStatusBar = ({ user }) => {
               ) : (
                 <li>Topics of interest</li>
               )}
-              {!user.personalLinks.hasOwnProperty("linkedin") ? (
-                <li>Personal links</li>
-              ) : user.personalLinks.linkedin.toString().trim() === "" ||
-                user.personalLinks.linkedin.toString().trim() === "https://" ? (
-                <li>Personal links</li>
+              {user.personalLinks ? (
+                !user.personalLinks.hasOwnProperty("linkedin") ? (
+                  <li>Personal links</li>
+                ) : user.personalLinks.linkedin.toString().trim() === "" ||
+                  user.personalLinks.linkedin.toString().trim() ===
+                    "https://" ? (
+                  <li>Personal links</li>
+                ) : null
               ) : null}
               {user.isOpenReceivingEmail === -1 ? (
                 <li>
