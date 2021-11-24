@@ -10,9 +10,11 @@ const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
 const SkillCohortCard = (props) => {
-  const { id, title, description, image, startDate, endDate } =
+  const { id, title, description, image, startDate, endDate, hasAccess: participantHasAccess } =
     props.skillCohort;
-  const { hasAccess } = props;
+  const { hasAccess: hasAccessProps } = props;
+
+  const  hasAccess = participantHasAccess || hasAccessProps
 
   const [hasCohortStarted, setHasCohortStarted] = useState(false);
   const history = useHistory();
@@ -48,6 +50,8 @@ const SkillCohortCard = (props) => {
   let displayBtn;
   if (hasCohortStarted && hasAccess) {
     displayBtn = "Enter Dashboard";
+  } else if (hasCohortStarted && !hasAccess) {
+    displayBtn = "You missed 2 activities"
   } else {
     displayBtn = "More";
   }
@@ -83,6 +87,7 @@ const SkillCohortCard = (props) => {
             onClick={handleClickMore}
             size="md"
             block={true}
+            disabled={hasCohortStarted && !hasAccess}
           />
         </div>
       </div>

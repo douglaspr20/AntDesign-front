@@ -26,6 +26,10 @@
       & .ant-btn {
         width: 100%;
       }
+
+      h3{
+        max-width: 90% !important
+      }
     }
   }
 
@@ -107,9 +111,10 @@
     margin-top: 1rem;
 
     @media screen and (max-width: 500px) {
+      width: 30% !important;
       & .specialty-item {
-        min-width: 200px;
-        max-width: 200px;
+        min-width: 140px !important;
+        max-width: 140px !important;
       }
     }
   }

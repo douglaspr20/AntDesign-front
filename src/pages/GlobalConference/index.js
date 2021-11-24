@@ -341,7 +341,7 @@ const GlobalConference = ({
               }}
             />
           </div>
-          <div className="d-flex items-center">
+          <div className="button-containers">
             {userProfile.attendedToConference ? (
               <>
                 <div className="attending-label">
@@ -486,12 +486,12 @@ const GlobalConference = ({
             />
           </div>
         )}
+        {currentView === "speakers" && <Speakers />}
+        {currentView === "participants" && <Participants />}
+        {currentView === "bonfire" && <Bonfire />}
         {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
         )}
-        {currentView === "bonfire" && <Bonfire />}
-        {currentView === "speakers" && <Speakers />}
-        {currentView === "participants" && <Participants />}
         {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
 

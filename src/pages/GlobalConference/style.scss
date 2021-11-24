@@ -88,7 +88,22 @@
       @media (max-width: 500px){
         left: 1%;
         padding: 20px 0px;
+        top: 60px;
         width: 100%;
+      }
+
+      .button-containers{
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        
+        @media (max-width: 1100px){
+          justify-content: center;
+
+          & .custom-button, & .attending-label{
+            margin-top: .5rem;
+          }
+        }
       }
       
     }
@@ -110,8 +125,10 @@
     @include app-font(16px, 24px);
     color: $color-text-secondary;
 
-    @media (max-width: 500px){
-      max-height: 120px;
+    @media (max-width: 800px){
+      margin-top: 1rem;
+      padding: 0px 10px;
+      max-height: 100px;
       overflow-y: scroll;
     }
   }
@@ -201,9 +218,9 @@
 
       @media (max-width: 1100px){
         margin-top: 250px;
-        left: 40%;
-        width: 100%;
-        max-width: 600px;
+        left: 38%;
+       
+        max-width: 670px;
       }
 
       @media (max-width: 800px){
@@ -213,8 +230,10 @@
       }
 
       @media (max-width: 500px){
-        left: 0%;
-        margin-top: 250px;
+        left: 2%;
+        margin-top: 280px;
+        width: 110%;
+        max-width: 460px;
       }
 
      
