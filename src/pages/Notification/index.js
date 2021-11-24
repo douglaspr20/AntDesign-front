@@ -127,8 +127,7 @@ const NotificationPage = ({
         {noti.type === "resource" && (
           <a
             className="notification-list-item-link"
-            href={noti.meta.resourceLink}
-            target="_blank"
+            href={`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`}
             rel="noopener noreferrer"
             onClick={() => markNotificationToRead([noti.id], userProfile.id)}
           >

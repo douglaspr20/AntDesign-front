@@ -1,11 +1,9 @@
-@import "../../../styles/main.scss";
-
-.bonfire-list {
-    margin-top: 14rem;
+.personal-agenda {
+    margin-top: 15rem;
     width: 100%;
   
     @media (max-width: 1100px) {
-      margin-top: 20rem;
+      margin-top: 23rem;
     }
   
     &::-webkit-scrollbar {
@@ -37,7 +35,10 @@
       @media (max-width: 500px) {
         margin: 2rem 0rem;
       }
-
+      .session-step,
+      .annual-conference-card {
+        margin-bottom: 1rem !important;
+      }
     }
   }
   

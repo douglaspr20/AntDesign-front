@@ -16,8 +16,12 @@
     }
 
     @media (max-width: 1500px) {
-      padding: 18px 5% !important;
+      padding: 18px 2% !important;
       
+    }
+
+    @media (max-width: 500px) {
+      min-width: 100px;
     }
   
 
