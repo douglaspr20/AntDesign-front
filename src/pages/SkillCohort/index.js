@@ -81,7 +81,6 @@ const SkillCohort = ({
       <SkillCohortCard
         key={skillCohort.id}
         skillCohort={skillCohort}
-        hasAccess={true}
       />
     );
   });
