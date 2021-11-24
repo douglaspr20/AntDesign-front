@@ -17,6 +17,8 @@ import CategoriesSelect from "components/CategoriesSelect";
 import { TIMEZONE_LIST } from "enum";
 import { convertToCertainTime } from "utils/format";
 
+import "./style.scss";
+
 const Bonfire = ({
   getBonfires,
   addBonfire,
@@ -190,8 +192,8 @@ const Bonfire = ({
   }, [bonfires]);
 
   return (
-    <div className="conference-list" style={{ marginTop: "14rem" }}>
-      <div className="conference-list-container">
+    <div className="bonfire-list">
+      <div className="bonfire-list-container">
         {bonfiresData.map((bonfire, i) =>
           bonfire.data.length > 0 ? (
             <div key={i}>
