@@ -50,3 +50,7 @@ export const getParticipants = (filters) => {
     },
   });
 };
+
+export const getPartners = () => {
+  return httpClient.get(`private/session/partners`);
+};

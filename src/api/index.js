@@ -95,6 +95,7 @@ import {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
+  getPartners,
 } from "./module/session";
 import {
   createBonfire,
@@ -201,6 +202,7 @@ export {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
+  getPartners,
   attendToGlobalConference,
   addSession,
   removeSession,

@@ -12,6 +12,7 @@ import {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
+  getPartners,
 } from "../../api";
 
 export function* getAllSessionsSaga({ payload }) {
@@ -130,6 +131,25 @@ export function* getParticipantsSaga({ payload }) {
   }
 }
 
+export function* getPartnersSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+  try {
+    let response = yield call(getPartners, { ...payload });
+    if (response.status === 200) {
+      const partnersData = response.data.partners;
+
+      yield put(sessionActions.setPartners(partnersData));
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(
@@ -137,6 +157,7 @@ function* watchSession() {
     getSessionsAddedbyUserSaga
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
+  yield takeLatest(sessionConstants.GET_PARTNERS, getPartnersSaga);
 }
 
 export const sessionSaga = [fork(watchSession)];

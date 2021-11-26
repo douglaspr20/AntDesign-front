@@ -51,6 +51,7 @@ import Bonfire from "./Bonfire";
 
 import CategoriesSelect from "components/CategoriesSelect";
 import Speakers from "./Speakers";
+import Partners from "./Partners";
 import Participants from "./Participants";
 import ConferenceLeaderboard from "./ConferenceLeaderboard";
 
@@ -435,6 +436,18 @@ const GlobalConference = ({
               </Menu.Item>
 
               <Menu.Item
+                key="partners"
+                className="sub-menu-item-global-conference"
+              >
+                <Link
+                  to="/global-conference"
+                  onClick={() => handleView("partners")}
+                >
+                  Partners
+                </Link>
+              </Menu.Item>
+
+              <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
               >
@@ -488,6 +501,7 @@ const GlobalConference = ({
         )}
         {currentView === "speakers" && <Speakers />}
         {currentView === "participants" && <Participants />}
+        {currentView === "partners" && <Partners />}
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
