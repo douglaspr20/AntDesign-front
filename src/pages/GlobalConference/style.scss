@@ -150,6 +150,7 @@
   &-pagination {
     display: flex;
     justify-content: center;
+    position: relative;
     .sub-menu{
       background: none;
       display: flex;
@@ -171,72 +172,70 @@
   }
 
   &-tabs {
-    overflow-x: visible;
+    max-width: 1200px;
+    position: relative;
+
     .ant-tabs > .ant-tabs-nav,
-    .ant-tabs > div > .ant-tabs-nav {
-      position: fixed;
-      width: 50%;
-      padding-top: 20px;
-      margin-top: 183px;
-      z-index: 19;
-      background: $color-background;
+    .ant-tabs > div > .ant-tabs-nav{
+    position: fixed;
+    background: $color-background;
+    z-index: 19;
+    width: 100%;
+    max-width: 950px;
+    @media (max-width: 1500px){
+      max-width: 700px;
+      }
+
+      @media (max-width: 1100px){
+        max-width: 615px;
+        } 
+        
+        @media (max-width: 500px){
+          max-width: 615px;
+          }  
     }
+
 
     .ant-tabs-nav-wrap {
-      justify-content: center !important;
-   
-    }
-    .ant-tabs > .ant-tabs-nav,
-    .ant-tabs > div > .ant-tabs-nav {
-      position: fixed;
-      padding-top: 20px;
-      margin-top: 200px;
-      left: 37%;
-      z-index: 19;
-      background: $color-background;
-      
 
-      @media (max-width: 2600px){
-        left: 30%;
-        width: 60%;
+      & .ant-tabs-nav-list{
+        padding-top: 20px;
         margin-top: 200px;
-       }
+        z-index: 19;
+         margin-left: 15%;
 
-      @media (max-width: 1500px){
-       left: 30%;
-       margin-top: 210px;
-       width: 100%;
-       max-width: 900px;
+     @media (max-width: 1500px){
+      margin-left: 0%;
     
       }
 
-
-      @media (max-width: 1300px){
-        margin-top: 220px;
-        width: 100%;
-       }
-
       @media (max-width: 1100px){
-        margin-top: 250px;
-        left: 38%;
-       
-        max-width: 670px;
-      }
-
-      @media (max-width: 800px){
-        margin-top: 275px;
-        left: 18%;
-        overflow-x: scroll;
-      }
+        margin-top: 260px;
+      }  
 
       @media (max-width: 500px){
-        left: 2%;
         margin-top: 280px;
-        width: 110%;
-        max-width: 460px;
-      }
+        margin-left: 5%;
 
-     
+        & .ant-tabs-nav-operations{
+          display: none !important;
+        }
+      }  
+
+        & .ant-tabs-tab{
+          padding: 20px 12% !important;
+
+          @media (max-width: 1100px){
+            max-width: 120px;
+          
+            }  
+            @media (max-width: 500px){
+              width: 50px;
+              padding: 20px 30px !important
+              }  
+       
+        }
+      }
     }
 
   }
