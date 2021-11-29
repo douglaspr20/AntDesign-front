@@ -42,8 +42,8 @@ import {
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
-
-import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import SocketIO from "services/socket";
+import { EVENT_TYPES, SOCKET_EVENT_TYPE, TIMEZONE_LIST } from "enum";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
@@ -144,6 +144,18 @@ const GlobalConference = ({
     setCurrentView(view);
   };
 
+  const showModalMessage = (message) => {
+    const modal = Modal.info();
+
+    modal.update({
+      title: message,
+    });
+
+    setTimeout(() => {
+      modal.destroy();
+    }, 5000);
+  };
+
   useEffect(() => {
     if (firstTabDate) {
       // get sessions data
@@ -190,6 +202,12 @@ const GlobalConference = ({
   useEffect(() => {
     getAllEvent();
   }, [getAllEvent]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.SEND_MESSAGE_GLOBAL_CONFERENCE, (message) =>
+      showModalMessage(message)
+    );
+  }, []);
 
   const downloadPdf = async () => {
     setLoading(true);
