@@ -55,6 +55,7 @@ import Participants from "./Participants";
 import ConferenceLeaderboard from "./ConferenceLeaderboard";
 
 import "./style.scss";
+import RecommendedAgendaForm from "./RecommendedAgenda";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -99,9 +100,11 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
-
+  const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
+    useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
+  const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -321,6 +324,14 @@ const GlobalConference = ({
     setModalRequirementsVisible(false);
   };
 
+  const handleSubmitRecommendedAgenda = (data) => {
+    if (recommendedAgendaStep !== 1) {
+      setRecommendedAgendaStep(recommendedAgendaStep + 1);
+    } else {
+      console.log(data);
+    }
+  };
+
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
@@ -360,6 +371,13 @@ const GlobalConference = ({
                   size="xs"
                   text="Invite Your Colleagues"
                   onClick={() => onInviteColleague()}
+                  style={{ marginLeft: "1rem" }}
+                />
+
+                <CustomButton
+                  size="xs"
+                  text="Recommended Agenda"
+                  onClick={() => setModalRecommendeAgendaVisible(true)}
                   style={{ marginLeft: "1rem" }}
                 />
               </>
@@ -732,6 +750,35 @@ const GlobalConference = ({
             </div>
           )}
         </TransformWrapper>
+      </Modal>
+
+      <Modal
+        centered
+        visible={modalRecommendeAgendaVisible}
+        onCancel={() => {
+          setModalRecommendeAgendaVisible(false);
+          setRecommendedAgendaStep(0);
+        }}
+        footer={[
+          <CustomButton
+            htmlType="submit"
+            onClick={handleSubmitRecommendedAgenda}
+            text={recommendedAgendaStep === 1 ? "Send" : "Next"}
+            type="primary"
+            size="lg"
+          />,
+        ]}
+      >
+        <Form
+          layout="vertical"
+          onFinish={handleSubmitRecommendedAgenda}
+          //  form={colleaguesForm}
+        >
+          <RecommendedAgendaForm
+            allCategories={allCategories}
+            step={recommendedAgendaStep}
+          />
+        </Form>
       </Modal>
     </div>
   );
