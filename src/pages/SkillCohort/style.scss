@@ -4,7 +4,6 @@
 	display: grid;
 	grid-template-columns: auto 1fr;
 	width: 100%;
-  background-color: red;
 
 	&-container {
 		height: calc(100vh - 72px);
@@ -17,26 +16,6 @@
 			padding: 1rem;
 		}
 	}
-
-  &-mobile-header {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    height: 82px;
-    padding: 0 1rem;
-    background: $color-white;
-    margin-bottom: 28px;
-    border-bottom: 1px solid #e1e2ee;
-
-    .filters-btn {
-      color: $color-primary !important;
-
-      &.disabled {
-        color: $color-disabled !important;
-        cursor: not-allowed;
-      }
-    }
-  }
 
 	&__filters--button {
 		display: none;
