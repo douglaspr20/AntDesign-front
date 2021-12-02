@@ -756,7 +756,7 @@ const GlobalConference = ({
         width={500}
         onCancel={() => setModalMessageVisible(false)}
       >
-        <p style={{ textAlign: "center" }}>{messageAdmin}</p>
+        <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }}></div>
       </CustomModal>
     </div>
   );
