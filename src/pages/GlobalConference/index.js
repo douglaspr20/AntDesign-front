@@ -18,6 +18,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomSelect,
+  CustomModal,
 } from "components";
 import {
   getAllSessions,
@@ -99,9 +100,11 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
+  const [modalMessageVisible, setModalMessageVisible] = useState(false);
 
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
+  const [messageAdmin, setMessageAdmin] = useState("");
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -145,14 +148,10 @@ const GlobalConference = ({
   };
 
   const showModalMessage = (message) => {
-    const modal = Modal.info();
-
-    modal.update({
-      title: message,
-    });
-
+    setMessageAdmin(message);
+    setModalMessageVisible(true);
     setTimeout(() => {
-      modal.destroy();
+      setModalMessageVisible(false);
     }, 5000);
   };
 
@@ -751,6 +750,14 @@ const GlobalConference = ({
           )}
         </TransformWrapper>
       </Modal>
+      <CustomModal
+        visible={modalMessageVisible}
+        title="Attention!"
+        width={500}
+        onCancel={() => setModalMessageVisible(false)}
+      >
+        <p style={{ textAlign: "center" }}>{messageAdmin}</p>
+      </CustomModal>
     </div>
   );
 };
