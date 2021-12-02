@@ -13,12 +13,13 @@ import { EVENT_TYPES, INTERNAL_LINKS, CARD_TYPE } from "enum";
 import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
+import { actions as eventActions } from "redux/actions/event-actions";
 import IconMenu from "images/icon-menu.svg";
 import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from "../../enum";
+import { connect } from "react-redux";
 
 import "./style.scss";
-
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
@@ -42,6 +43,9 @@ class EventCard extends React.Component {
       }
     } else {
       this.props.onAttend(true);
+    }
+    if (window.location.pathname.includes("channels")) {
+      window.open(this.props.data?.externalLink, "_blank");
     }
   };
 
@@ -241,7 +245,7 @@ class EventCard extends React.Component {
                       time.endTime,
                       timezone
                     );
-
+                    
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
@@ -363,4 +367,9 @@ EventCard.defaultProps = {
   onConfirmCredit: () => {},
 };
 
+const mapDispatchToProps = {
+  ...eventActions,
+};
+
+connect(mapDispatchToProps);
 export default withRouter(EventCard);

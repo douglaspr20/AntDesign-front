@@ -41,7 +41,7 @@ import "./style.scss";
 
 const EventsPage = ({
   allEvents,
-  myEvents,
+  myEvents, 
   updatedEvent,
   userProfile,
   getAllEvent,
@@ -213,7 +213,7 @@ const EventsPage = ({
 
         flag = dateFilter(flag, params, item);
 
-        if (new Date(item.endDate) > new Date() || !item.isOverEmailSent) {
+        if (new Date(item.endDate) > new Date() || !item.status === 'attend') {
           flag = false;
         }
 

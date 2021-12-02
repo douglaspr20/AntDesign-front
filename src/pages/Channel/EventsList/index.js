@@ -14,6 +14,7 @@ import {
   deleteEvent,
   setEvent,
 } from "redux/actions/event-actions";
+import { actions as eventActions } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -32,6 +33,7 @@ const EventsList = ({
   const [editMode, setEditMode] = useState(false);
   const [visibleEventDrawer, setVisibleEventDrawer] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({});
+  const [futureDataFilter, setFutureDataFilter] = useState([]);
 
   const onAddEvent = () => {
     setEditMode(false);
@@ -77,8 +79,23 @@ const EventsList = ({
     if (channel && channel.id) {
       getChannelEvents({ ...filter, channel: channel.id });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channel, filter]);
+
+  useEffect(() => {
+    const dateFilter = () => {
+      setFutureDataFilter((prev) => {
+        prev = channelEvents.filter((item) => {
+          const flag = new Date(item.startDate) > new Date();
+          return flag;
+        });
+        return [...prev];
+      });
+    };
+
+    dateFilter();
+  }, [channelEvents]);
 
   return (
     <div className="channel-page__list-wrap channels-page__events-list-wrap">
@@ -94,10 +111,11 @@ const EventsList = ({
       <EventList
         edit={isOwner}
         type={CARD_TYPE.EDIT}
-        data={channelEvents}
+        data={futureDataFilter}
         onClick={onEventClick}
         onAddEvent={onAddEvent}
         onMenuClick={handleEvent}
+        setValue={setFutureDataFilter}
       />
       <EventDrawer
         visible={visibleEventDrawer}
@@ -121,6 +139,7 @@ EventsList.defaultProps = {
 const mapStateToProps = (state) => ({
   channelEvents: eventSelector(state).channelEvents,
   channel: channelSelector(state).selectedChannel,
+  ...eventActions,
 });
 
 const mapDispatchToProps = {
