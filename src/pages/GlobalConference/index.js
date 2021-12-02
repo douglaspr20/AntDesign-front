@@ -325,10 +325,12 @@ const GlobalConference = ({
   };
 
   const handleSubmitRecommendedAgenda = (data) => {
-    if (recommendedAgendaStep !== 1) {
-      setRecommendedAgendaStep(recommendedAgendaStep + 1);
-    } else {
-      console.log(data);
+    if (data.topics) {
+      if (recommendedAgendaStep !== 1) {
+        setRecommendedAgendaStep(recommendedAgendaStep + 1);
+      } else {
+        console.log(data);
+      }
     }
   };
 
@@ -759,15 +761,7 @@ const GlobalConference = ({
           setModalRecommendeAgendaVisible(false);
           setRecommendedAgendaStep(0);
         }}
-        footer={[
-          <CustomButton
-            htmlType="submit"
-            onClick={handleSubmitRecommendedAgenda}
-            text={recommendedAgendaStep === 1 ? "Send" : "Next"}
-            type="primary"
-            size="lg"
-          />,
-        ]}
+        footer={[]}
       >
         <Form
           layout="vertical"
@@ -777,6 +771,13 @@ const GlobalConference = ({
           <RecommendedAgendaForm
             allCategories={allCategories}
             step={recommendedAgendaStep}
+          />
+          <CustomButton
+            htmlType="submit"
+            onClick={handleSubmitRecommendedAgenda}
+            text={recommendedAgendaStep === 1 ? "Send" : "Next"}
+            type="primary"
+            size="lg"
           />
         </Form>
       </Modal>

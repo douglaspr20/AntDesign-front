@@ -4,6 +4,8 @@ import { Form, Checkbox, Slider } from "antd";
 
 import { CustomCheckbox } from "components";
 
+import "./style.scss";
+
 const RecommendedAgendaForm = ({ step, allCategories }) => {
   return (
     <React.Fragment>
@@ -40,8 +42,10 @@ const RecommendedAgendaForm = ({ step, allCategories }) => {
             ]}
           >
             <Slider
-              min={1}
-              max={20}
+              min={0}
+              max={56}
+              tipFormatter={(value) => `${value} hours`}
+              step={0.01}
               // onChange={this.onChange}
               //value={typeof inputValue === "number" ? inputValue : 0}
             />
