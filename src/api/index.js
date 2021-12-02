@@ -95,7 +95,6 @@ import {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
-  getPartners,
 } from "./module/session";
 import {
   createBonfire,
@@ -139,6 +138,8 @@ import {
   getAllItemsWithHRCredits,
   getEventVideos,
 } from "./module/myLearning";
+
+import { getPartners, getPartner } from "./module/partner";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -202,7 +203,6 @@ export {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
-  getPartners,
   attendToGlobalConference,
   addSession,
   removeSession,
@@ -252,4 +252,6 @@ export {
   getAllSaved,
   getAllItemsWithHRCredits,
   getEventVideos,
+  getPartners,
+  getPartner,
 };

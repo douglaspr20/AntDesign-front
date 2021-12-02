@@ -22,11 +22,6 @@ export const reducers = {
       participants: cloneDeep(payload.participants),
     });
   },
-  [sessionConstants.SET_PARTNERS]: (state, { payload }) => {
-    return state.merge({
-      partners: cloneDeep(payload.partners),
-    });
-  },
   [sessionConstants.SET_SESSION_LOADING]: (state, { payload }) => {
     return state.merge({
       sessionLoading: payload.loading,
@@ -40,7 +35,6 @@ export const initialState = () =>
     allSessions: [],
     sessionsUser: [],
     participants: [],
-    partners: [],
   });
 
 export default handleActions(reducers, initialState());

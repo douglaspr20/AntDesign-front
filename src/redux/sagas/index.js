@@ -29,6 +29,7 @@ import { skillCohortResourceResponseSaga } from "./skillCohortResourceResponse";
 import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResourceResponseAssessment";
 import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
 import { learningSaga } from "./myLearning";
+import { partnersSaga } from "./partners";
 
 export default function* sagas() {
   yield all([
@@ -62,5 +63,6 @@ export default function* sagas() {
     ...SkillCohortResourceResponseAssessmentSaga,
     ...SkillCohortResourceResponseRatingSaga,
     ...learningSaga,
+    ...partnersSaga,
   ]);
 }

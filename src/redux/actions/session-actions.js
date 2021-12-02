@@ -6,8 +6,6 @@ const GET_SESSIONS_ADDED_BY_USER = "GET_SESSIONS_ADDED_BY_USER ";
 const SET_SESSIONS_ADDED_BY_USER = "SET_SESSIONS_ADDED_BY_USER";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
 const SET_PARTICIPANTS = "SET_PARTICIPANTS";
-const GET_PARTNERS = "GET_PARTNERS";
-const SET_PARTNERS = "SET_PARTNERS";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
 
 export const constants = {
@@ -18,8 +16,6 @@ export const constants = {
   GET_PARTICIPANTS,
   SET_PARTICIPANTS,
   SET_SESSION_LOADING,
-  GET_PARTNERS,
-  SET_PARTNERS,
 };
 
 // ------------------------------------
@@ -57,12 +53,6 @@ export const setParticipants = createAction(
   })
 );
 
-export const getPartners = createAction(GET_PARTNERS, () => ({}));
-
-export const setPartners = createAction(SET_PARTNERS, (partners) => ({
-  partners,
-}));
-
 export const setSessionLoading = createAction(
   SET_SESSION_LOADING,
   (loading) => ({ loading })
@@ -75,7 +65,5 @@ export const actions = {
   setSessionsAddedByUser,
   getParticipants,
   setParticipants,
-  getPartners,
-  setPartners,
   setSessionLoading,
 };

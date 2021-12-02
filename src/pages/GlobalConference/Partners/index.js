@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { categorySelector } from "redux/selectors/categorySelector";
-import { sessionSelector } from "redux/selectors/sessionSelector";
-import { getPartners } from "redux/actions/session-actions";
+import { partnerSelector } from "redux/selectors/partnersSelector";
+import { getPartners } from "redux/actions/partner-actions";
 import { MarketplaceCard } from "components";
 import "./style.scss";
 const Partners = ({ partners, allCategories, getPartners }) => {
@@ -43,7 +43,7 @@ const Partners = ({ partners, allCategories, getPartners }) => {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
-  partners: sessionSelector(state).partners,
+  partners: partnerSelector(state).partners,
 });
 
 const mapDispatchToProps = {
