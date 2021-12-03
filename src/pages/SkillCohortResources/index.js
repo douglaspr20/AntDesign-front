@@ -168,20 +168,20 @@ const SkillCohortResources = ({
       title: "Daily Resources",
       content: () => displayResources,
     },
-    {
-      title: "Meetings",
-      content: () => "Meeting Links",
-    },
+    // {
+    //   title: "Meetings",
+    //   content: () => "Meeting Links",
+    // },
     {
       title: "Participants",
       content: () => (
         <div className="display-participants">{displayParticipants}</div>
       ),
     },
-    {
-      title: "Cohort Analytics",
-      content: () => "Cohort Analytics",
-    },
+    // {
+    //   title: "Cohort Analytics",
+    //   content: () => "Cohort Analytics",
+    // },
   ];
 
   return (
