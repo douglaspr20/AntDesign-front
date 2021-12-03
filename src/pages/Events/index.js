@@ -63,12 +63,12 @@ const EventsPage = ({
   const [event, setEvent] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [eventForCredit, setEventForCredit] = useState({});
-
+  
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
     const timezone = moment.tz.guess();
-
+    
     if (event.going) {
       addToMyEventList(event, timezone);
       if (event.isAnnualConference === 1) {

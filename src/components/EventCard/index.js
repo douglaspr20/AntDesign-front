@@ -13,11 +13,9 @@ import { EVENT_TYPES, INTERNAL_LINKS, CARD_TYPE } from "enum";
 import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
-import { actions as eventActions } from "redux/actions/event-actions";
 import IconMenu from "images/icon-menu.svg";
 import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from "../../enum";
-import { connect } from "react-redux";
 
 import "./style.scss";
 class EventCard extends React.Component {
@@ -34,7 +32,6 @@ class EventCard extends React.Component {
     e.stopPropagation();
 
     const userProfile = this.props.userProfile;
-
     if (this.props.data.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
         this.props.onAttend(true);
@@ -245,7 +242,7 @@ class EventCard extends React.Component {
                       time.endTime,
                       timezone
                     );
-                    
+
                     return (
                       <div className="d-flex" key={index}>
                         <Space size="middle">
@@ -367,9 +364,4 @@ EventCard.defaultProps = {
   onConfirmCredit: () => {},
 };
 
-const mapDispatchToProps = {
-  ...eventActions,
-};
-
-connect(mapDispatchToProps);
 export default withRouter(EventCard);

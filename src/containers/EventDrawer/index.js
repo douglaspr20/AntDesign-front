@@ -15,13 +15,18 @@ import {
 } from "components";
 import { EVENT_TYPES, MONTH_NAMES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
-import { actions as eventActions, setEvent } from "redux/actions/event-actions";
+import {
+  actions as eventActions,
+  getChannelEvents,
+  setEvent,
+} from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import { convertToLocalTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
+import { channelSelector } from "redux/selectors/channelSelector";
 
 const EventDrawer = ({
   addToMyEventList,
@@ -31,6 +36,9 @@ const EventDrawer = ({
   event,
   userProfile,
   onClose,
+  filter,
+  getChannelEvents,
+  channel,
   onConfirmCredit,
 }) => {
   const [editor, setEditor] = useState("froala");
@@ -49,15 +57,19 @@ const EventDrawer = ({
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
         const timezone = moment.tz.guess();
-        addToMyEventList(event, timezone);
+        addToMyEventList(event, timezone, () => {
+          getChannelEvents({ ...filter, channel: channel.id });
+        });
       } else {
         setShowFirewall(true);
       }
     } else {
-      addToMyEventList(event);
+      addToMyEventList(event, null, () => {
+        getChannelEvents({ ...filter, channel: channel.id });
+      });
     }
     if (window.location.pathname.includes("channels")) {
-      window.open(event.link, "_blank");
+      window.open(event.externalLink, "_blank");
     }
   };
 
@@ -189,7 +201,7 @@ const EventDrawer = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedEvent, event]);
-
+  
   return (
     <CustomDrawer
       title={""}
@@ -367,6 +379,7 @@ EventDrawer.propTypes = {
   event: PropTypes.object,
   onClose: PropTypes.func,
   onConfirmCredit: PropTypes.func,
+  filter: PropTypes.object,
 };
 
 EventDrawer.defaultProps = {
@@ -375,14 +388,17 @@ EventDrawer.defaultProps = {
   event: {},
   onClose: () => {},
   onConfirmCredit: () => {},
+  filter: {},
 };
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   updatedEvent: eventSelector(state).updatedEvent,
+  channel: channelSelector(state).selectedChannel,
 });
 
 const mapDispatchToProps = {
+  getChannelEvents,
   ...eventActions,
 };
 

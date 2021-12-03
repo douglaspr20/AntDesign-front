@@ -13,6 +13,7 @@ import {
   getChannelEvents,
   deleteEvent,
   setEvent,
+  addToMyEventList,
 } from "redux/actions/event-actions";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
@@ -27,6 +28,7 @@ const EventsList = ({
   channel,
   getChannelEvents,
   deleteEvent,
+  addToMyEventList,
   setEvent,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
@@ -38,6 +40,12 @@ const EventsList = ({
   const onAddEvent = () => {
     setEditMode(false);
     setVisibleDrawer(true);
+  };
+
+  const onEventChanged = (event) => {
+    addToMyEventList(event, null, () => {
+      getChannelEvents({ ...filter, channel: channel.id });
+    });
   };
 
   const handleEvent = (menu, event) => {
@@ -74,6 +82,18 @@ const EventsList = ({
       month: MONTH_NAMES[moment(event.date, DataFormat).month()],
     });
   };
+
+  useEffect(() => {
+    futureDataFilter.map((item) => {
+      if (item.id === selectedEvent.id) {
+        setSelectedEvent({
+          ...item,
+          day: moment(item.date, DataFormat).date(),
+          month: MONTH_NAMES[moment(item.date, DataFormat).month()],
+        });
+      }
+    });
+  }, [futureDataFilter, selectedEvent.id]);
 
   useEffect(() => {
     if (channel && channel.id) {
@@ -114,8 +134,8 @@ const EventsList = ({
         data={futureDataFilter}
         onClick={onEventClick}
         onAddEvent={onAddEvent}
+        onAttend={onEventChanged}
         onMenuClick={handleEvent}
-        setValue={setFutureDataFilter}
       />
       <EventDrawer
         visible={visibleEventDrawer}
@@ -145,6 +165,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getChannelEvents,
   deleteEvent,
+  addToMyEventList,
   setEvent,
 };
 
