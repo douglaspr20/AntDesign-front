@@ -49,6 +49,7 @@
   &-time {
     @include app-font(14px, 19px);
     color: $color-text-secondary;
+    max-width: 245px;
   }
 
   &-toggle {

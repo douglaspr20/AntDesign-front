@@ -162,22 +162,26 @@ const ConferenceList = ({
   return (
     <div className="conference-list">
       <div className="conference-list-container">
-        {sessionData.map((session, index) =>
-          session.data.length > 0 ? (
-            <div key={index}>
-              <h3 className="session-step">{session.step}</h3>
-              {session.data.map((s) => (
-                <AnnualConferenceCard
-                  key={s.id}
-                  session={s}
-                  attended={userProfile.attendedToConference}
-                  added={(userProfile.sessions || []).includes(s.id)}
-                  onAddSession={() => onAddSession(s)}
-                  onRemoveSession={() => onRemoveSession(s)}
-                />
-              ))}
-            </div>
-          ) : null
+        {sessionData.length > 0 ? (
+          sessionData.map((session, index) =>
+            session.data.length > 0 ? (
+              <div key={index}>
+                <h3 className="session-step">{session.step}</h3>
+                {session.data.map((s) => (
+                  <AnnualConferenceCard
+                    key={s.id}
+                    session={s}
+                    attended={userProfile.attendedToConference}
+                    added={(userProfile.sessions || []).includes(s.id)}
+                    onAddSession={() => onAddSession(s)}
+                    onRemoveSession={() => onRemoveSession(s)}
+                  />
+                ))}
+              </div>
+            ) : null
+          )
+        ) : (
+          <h1 style={{ textAlign: "center" }}>No Available Sessions Found</h1>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
 import { CustomButton, SpecialtyItem } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
@@ -121,9 +121,23 @@ const AnnualConferenceCard = ({
         <div>
           <div className="acc-session-type">{`Session type: ${session.type}`}</div>
           <div className="acc-session-date">{session.date}</div>
-          <div className="acc-session-time">
-            {session.period} {session.tz}
-          </div>
+          <Tooltip
+            placement="right"
+            title={
+              <a
+                href="https://www.timeanddate.com/worldclock/converter.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#fff" }}
+              >
+                Convert to your time zone here
+              </a>
+            }
+          >
+            <div className="acc-session-time">
+              {session.period} {session.tz}
+            </div>
+          </Tooltip>
         </div>
         {added && (
           <Dropdown overlay={downloadDropdownOptions}>

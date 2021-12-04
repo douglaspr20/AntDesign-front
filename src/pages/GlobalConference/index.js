@@ -22,6 +22,7 @@ import {
 import {
   getAllSessions,
   getSessionsAddedbyUser,
+  recommendedAgenda,
 } from "redux/actions/session-actions";
 import {
   attendToGlobalConference,
@@ -84,6 +85,7 @@ const GlobalConference = ({
   attendToGlobalConference,
   createInvitation,
   confirmAccessibilityRequirements,
+  recommendedAgenda,
 }) => {
   const [bonfireForm] = Form.useForm();
   const [colleaguesForm] = Form.useForm();
@@ -105,6 +107,7 @@ const GlobalConference = ({
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
   const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
+  const [recommendedAgendaForm, setRecommendedAgendaForm] = useState({});
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -328,9 +331,19 @@ const GlobalConference = ({
     if (data.topics) {
       if (recommendedAgendaStep !== 1) {
         setRecommendedAgendaStep(recommendedAgendaStep + 1);
-      } else {
-        console.log(data);
+        setRecommendedAgendaForm({
+          ...recommendedAgendaForm,
+          ...data,
+        });
       }
+    } else if (recommendedAgendaForm.topics && data.time) {
+      const newRecomendedAgendaValues = {
+        ...recommendedAgendaForm,
+        ...data,
+      };
+      recommendedAgenda(newRecomendedAgendaValues);
+      setModalRecommendeAgendaVisible(false);
+      setRecommendedAgendaStep(0);
     }
   };
 
@@ -498,13 +511,29 @@ const GlobalConference = ({
           </div>
         </div>
         {currentView === "conference-schedule" && (
-          <div className="global-conference-tabs">
-            <Tabs
-              data={tabData}
-              current={currentTab}
-              onChange={setCurrentTab}
-            />
-          </div>
+          <>
+            {allSessions.length > 0 ? (
+              <div className="global-conference-tabs">
+                <Tabs
+                  data={tabData}
+                  current={currentTab}
+                  onChange={setCurrentTab}
+                />
+              </div>
+            ) : (
+              <div className="sessions-not-found">
+                <h1 style={{ textAlign: "center" }}>
+                  No Sessions Found For Your Recommended Agenda
+                </h1>
+                <CustomButton
+                  type="primary"
+                  text="Reload"
+                  size="md"
+                  onClick={() => getAllSessions()}
+                />
+              </div>
+            )}
+          </>
         )}
         {currentView === "speakers" && <Speakers />}
         {currentView === "participants" && <Participants />}
@@ -761,12 +790,12 @@ const GlobalConference = ({
           setModalRecommendeAgendaVisible(false);
           setRecommendedAgendaStep(0);
         }}
-        footer={[]}
+        footer={null}
       >
         <Form
           layout="vertical"
-          onFinish={handleSubmitRecommendedAgenda}
-          //  form={colleaguesForm}
+          onFinish={(data) => handleSubmitRecommendedAgenda(data)}
+          style={{ textAlign: "center" }}
         >
           <RecommendedAgendaForm
             allCategories={allCategories}
@@ -774,10 +803,9 @@ const GlobalConference = ({
           />
           <CustomButton
             htmlType="submit"
-            onClick={handleSubmitRecommendedAgenda}
             text={recommendedAgendaStep === 1 ? "Send" : "Next"}
             type="primary"
-            size="lg"
+            size="md"
           />
         </Form>
       </Modal>
@@ -811,6 +839,7 @@ const mapDispatchToProps = {
   removeFromMyEventList,
   createInvitation,
   confirmAccessibilityRequirements,
+  recommendedAgenda,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

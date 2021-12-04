@@ -45,7 +45,7 @@ const RecommendedAgendaForm = ({ step, allCategories }) => {
               min={0}
               max={56}
               tipFormatter={(value) => `${value} hours`}
-              step={0.01}
+              step={0.25}
               // onChange={this.onChange}
               //value={typeof inputValue === "number" ? inputValue : 0}
             />
