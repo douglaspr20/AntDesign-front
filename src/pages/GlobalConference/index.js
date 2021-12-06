@@ -389,12 +389,15 @@ const GlobalConference = ({
                   style={{ marginLeft: "1rem" }}
                 />
 
-                <CustomButton
-                  size="xs"
-                  text="Recommended Agenda"
-                  onClick={() => setModalRecommendeAgendaVisible(true)}
-                  style={{ marginLeft: "1rem" }}
-                />
+                {(userProfile.email === "douglas.eduardo2000@gmail.com" ||
+                  "enrique@hackinghr.io") && (
+                  <CustomButton
+                    size="xs"
+                    text="Recommended Agenda"
+                    onClick={() => setModalRecommendeAgendaVisible(true)}
+                    style={{ marginLeft: "1rem" }}
+                  />
+                )}
               </>
             ) : (
               <CustomButton
