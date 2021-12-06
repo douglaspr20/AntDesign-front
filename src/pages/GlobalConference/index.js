@@ -522,9 +522,7 @@ const GlobalConference = ({
               </div>
             ) : (
               <div className="sessions-not-found">
-                <h1 style={{ textAlign: "center" }}>
-                  No Sessions Found For Your Recommended Agenda
-                </h1>
+                <h1>No Sessions Found For Your Recommended Agenda</h1>
                 <CustomButton
                   type="primary"
                   text="Reload"
