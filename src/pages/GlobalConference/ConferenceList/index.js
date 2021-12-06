@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
@@ -169,14 +170,26 @@ const ConferenceList = ({
               <div key={index}>
                 <h3 className="session-step">
                   {session.step}{" "}
-                  <a
-                    href="https://www.timeanddate.com/worldclock/converter.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="conference-list-info-icon"
+                  <Tooltip
+                    placement="right"
+                    title={
+                      <span>
+                        Where are you located? If you are not located in the
+                        West Coast of the United States, Canada or Mexico, then
+                        you are NOT in Pacific Time Zone. Please convert to your
+                        corresponding time zone here:{" "}
+                        <a
+                          href="https://www.timeanddate.com/worldclock/converter.html"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          www.timeanddate.com
+                        </a>
+                      </span>
+                    }
                   >
-                    <InfoCircleOutlined />
-                  </a>
+                    <InfoCircleOutlined className="conference-list-info-icon" />
+                  </Tooltip>
                 </h3>
                 {session.data.map((s) => (
                   <AnnualConferenceCard
