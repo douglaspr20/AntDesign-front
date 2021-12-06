@@ -67,7 +67,7 @@ function EpisodeCard({
 
     saveForLaterPodcast(id, userProfile.id, status);
   };
-
+  
   return (
     <div
       className={clsx("podcast-episode__card", { add: type === CARD_TYPE.ADD })}
@@ -80,7 +80,8 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            {isInternalLink === false ? (
+            {(episode.vimeoLink.includes("youtube") ||
+              episode.vimeoLink.includes("vimeo")) === false ? (
               <>
                 {episode_cover ? (
                   <img src={episode_cover} alt="header-img" />
