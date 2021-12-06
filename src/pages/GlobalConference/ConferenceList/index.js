@@ -79,7 +79,7 @@ const ConferenceList = ({
 
         if (isEmpty) {
           filteredData.push({
-            step: `${sData[i].period} ${sData[i].tz}`,
+            step: `${sData[i].period} ${sData[i].timezone}`,
             data: [sData[i]],
           });
         }
@@ -159,6 +159,7 @@ const ConferenceList = ({
       setSessionData([]);
     }
   }, [data, filters]);
+
   return (
     <div className="conference-list">
       <div className="conference-list-container">

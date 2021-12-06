@@ -123,7 +123,7 @@ const AnnualConferenceCard = ({
           <div className="acc-session-type">{`Session type: ${session.type}`}</div>
           <div className="acc-session-date">{session.date}</div>
           <div className="acc-session-time">
-            {session.period} {session.tz}{" "}
+            {session.period} {session.timezone}{" "}
             <a
               href="https://www.timeanddate.com/worldclock/converter.html"
               target="_blank"
