@@ -67,7 +67,7 @@ function EpisodeCard({
 
     saveForLaterPodcast(id, userProfile.id, status);
   };
-
+  
   return (
     <div
       className={clsx("podcast-episode__card", { add: type === CARD_TYPE.ADD })}
@@ -80,9 +80,7 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            {episode.vimeoLink === null ||
-            episode.vimeoLink?.includes("youtube") ||
-            episode.vimeoLink?.includes("vimeo") === false ? (
+            {isInternalLink === false ? (
               <>
                 {episode_cover ? (
                   <img src={episode_cover} alt="header-img" />
@@ -90,6 +88,15 @@ function EpisodeCard({
                   <div />
                 )}
               </>
+            ) : (episode.vimeoLink?.includes("youtube") ||
+                episode.vimeoLink?.includes("vimeo")) === false ? (
+              <div>
+                <img
+                  src={episode_cover}
+                  className="podcast-episode__player"
+                  alt="header-img"
+                />
+              </div>
             ) : (
               <ReactPlayer
                 className="podcast-episode__player"
