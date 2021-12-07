@@ -3,8 +3,16 @@
 .conference-list {
   margin-top: 20rem;
 
+  @media (max-width: 1300px) {
+    margin-top: 24rem;
+  }
+
   @media (max-width: 1100px) {
-    margin-top: 23rem;
+    margin-top: 24rem;
+  }
+
+  @media (max-width: 800px) {
+    margin-top: 26rem;
   }
 
   @media (max-width: 500px) {

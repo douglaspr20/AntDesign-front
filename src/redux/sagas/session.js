@@ -165,8 +165,7 @@ export function* recommendedAgendaSaga({ payload }) {
           {}
         );
       });
-
-      yield put(sessionActions.setAllSessions(sessionData));
+      yield put(sessionActions.setRecommendedAgenda(sessionData));
     }
   } catch (error) {
     console.log(error);
