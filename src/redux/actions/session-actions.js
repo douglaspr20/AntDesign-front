@@ -7,6 +7,7 @@ const SET_SESSIONS_ADDED_BY_USER = "SET_SESSIONS_ADDED_BY_USER";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
 const SET_PARTICIPANTS = "SET_PARTICIPANTS";
 const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
+const SET_RECOMMENDED_AGENDA = "SET_RECOMMENDED_AGENDA";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
 
 export const constants = {
@@ -17,6 +18,7 @@ export const constants = {
   GET_PARTICIPANTS,
   SET_PARTICIPANTS,
   RECOMMENDED_AGENDA,
+  SET_RECOMMENDED_AGENDA,
   SET_SESSION_LOADING,
 };
 
@@ -60,6 +62,11 @@ export const recommendedAgenda = createAction(
   (filters) => ({ filters })
 );
 
+export const setRecommendedAgenda = createAction(
+  SET_RECOMMENDED_AGENDA,
+  (recommendedAgendaSessions) => ({ recommendedAgendaSessions })
+);
+
 export const setSessionLoading = createAction(
   SET_SESSION_LOADING,
   (loading) => ({ loading })
@@ -73,5 +80,6 @@ export const actions = {
   getParticipants,
   setParticipants,
   recommendedAgenda,
+  setRecommendedAgenda,
   setSessionLoading,
 };

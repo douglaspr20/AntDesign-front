@@ -86,6 +86,7 @@ const GlobalConference = ({
   createInvitation,
   confirmAccessibilityRequirements,
   recommendedAgenda,
+  recommendedAgendaSessions,
 }) => {
   const [bonfireForm] = Form.useForm();
   const [colleaguesForm] = Form.useForm();
@@ -344,6 +345,7 @@ const GlobalConference = ({
       recommendedAgenda(newRecomendedAgendaValues);
       setModalRecommendeAgendaVisible(false);
       setRecommendedAgendaStep(0);
+      setCurrentView("recommended-agenda");
     }
   };
 
@@ -387,15 +389,18 @@ const GlobalConference = ({
                   text="Invite Your Colleagues"
                   onClick={() => onInviteColleague()}
                   style={{ marginLeft: "1rem" }}
+                  className="global-conference-buttom-options"
                 />
 
-                {(userProfile.email === "douglas.eduardo2000@gmail.com" ||
-                  "enrique@hackinghr.io") && (
+                {userProfile.email ===
+                  ("douglas.eduardo2000@gmail.com" ||
+                    "enrique@hackinghr.io") && (
                   <CustomButton
                     size="xs"
                     text="Recommended Agenda"
                     onClick={() => setModalRecommendeAgendaVisible(true)}
                     style={{ marginLeft: "1rem" }}
+                    className="global-conference-buttom-options"
                   />
                 )}
               </>
@@ -514,15 +519,28 @@ const GlobalConference = ({
           </div>
         </div>
         {currentView === "conference-schedule" && (
+          <div className="global-conference-tabs">
+            <Tabs
+              data={tabData}
+              current={currentTab}
+              onChange={setCurrentTab}
+            />
+          </div>
+        )}
+        {currentView === "speakers" && <Speakers />}
+        {currentView === "participants" && <Participants />}
+        {currentView === "bonfire" && <Bonfire />}
+        {currentView === "personal-agenda" && (
+          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
+        )}
+
+        {currentView === "recommended-agenda" && (
           <>
-            {allSessions.length > 0 ? (
-              <div className="global-conference-tabs">
-                <Tabs
-                  data={tabData}
-                  current={currentTab}
-                  onChange={setCurrentTab}
-                />
-              </div>
+            {recommendedAgendaSessions.length > 0 ? (
+              <PersonalAgenda
+                sessionsUser={recommendedAgendaSessions}
+                filters={filters}
+              />
             ) : (
               <div className="sessions-not-found">
                 <h1>No Sessions Found For Your Recommended Agenda</h1>
@@ -530,17 +548,11 @@ const GlobalConference = ({
                   type="primary"
                   text="Reload"
                   size="md"
-                  onClick={() => getAllSessions()}
+                  onClick={() => setCurrentView("conference-schedule")}
                 />
               </div>
             )}
           </>
-        )}
-        {currentView === "speakers" && <Speakers />}
-        {currentView === "participants" && <Participants />}
-        {currentView === "bonfire" && <Bonfire />}
-        {currentView === "personal-agenda" && (
-          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
         )}
         {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
