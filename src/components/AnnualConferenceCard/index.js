@@ -17,8 +17,10 @@ const AnnualConferenceCard = ({
   session,
   attended,
   added,
+  joinedOtherSession,
   onAddSession,
   onRemoveSession,
+  onJoinedSession,
   userProfile,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
@@ -120,14 +122,15 @@ const AnnualConferenceCard = ({
               text="Remove"
               onClick={onRemoveSession}
               className="remove-buttom"
+              disabled={joinedOtherSession}
             />
 
-            {timeLeft >= 5 && (
+            {timeLeft <= 5 && (
               <CustomButton
                 type="primary"
                 size="md"
                 text="Join"
-                onClick={() => window.open(session.link, "_blank")}
+                onClick={onJoinedSession}
                 style={{ marginTop: "5px" }}
               />
             )}
@@ -137,6 +140,7 @@ const AnnualConferenceCard = ({
             size="sm"
             text="Add To My Personalized Agenda"
             onClick={onAddSession}
+            disabled={joinedOtherSession}
           />
         ) : null}
       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Tooltip } from "antd";
+import { notification, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
@@ -36,7 +36,17 @@ const ConferenceList = ({
   };
 
   const onJoinedSession = (session) => {
-    joinedSession(session);
+    if (!userProfile.sessionsJoined.includes(session.id)) {
+      return joinedSession(session, (error) => {
+        if (error) {
+          return notification.error({
+            message: error || "Somethign was wrong",
+          });
+        }
+        window.open(session.link, "_blank");
+      });
+    }
+    window.open(session.link, "_blank");
   };
 
   useEffect(() => {
@@ -170,15 +180,12 @@ const ConferenceList = ({
     }
   }, [data, filters]);
 
-  console.log(userProfile);
-  console.log(sessionData);
-
   return (
     <div className="conference-list">
       <div className="conference-list-container">
         {sessionData.length > 0 ? (
-          sessionData.map((session, index) =>
-            session.data.length > 0 ? (
+          sessionData.map((session, index) => {
+            return session.data.length > 0 ? (
               <div key={index}>
                 <h3 className="session-step">
                   {session.step}{" "}
@@ -209,15 +216,17 @@ const ConferenceList = ({
                     session={s}
                     attended={userProfile.attendedToConference}
                     added={(userProfile.sessions || []).includes(s.id)}
-                    // joinedOtherSession={(userProfile.sessionsJoined || []).includes(s.id)}
+                    joinedOtherSession={session.data.some((s) =>
+                      (userProfile.sessionsJoined || []).includes(s.id)
+                    )}
                     onAddSession={() => onAddSession(s)}
                     onRemoveSession={() => onRemoveSession(s)}
                     onJoinedSession={() => onJoinedSession(s)}
                   />
                 ))}
               </div>
-            ) : null
-          )
+            ) : null;
+          })
         ) : (
           <h1 style={{ textAlign: "center" }}>No Available Sessions Found</h1>
         )}

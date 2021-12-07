@@ -72,9 +72,13 @@ export const removeSession = createAction(REMOVE_SESSION, (session) => ({
   session,
 }));
 
-export const joinedSession = createAction(JOINED_SESSION, (session) => ({
-  session,
-}));
+export const joinedSession = createAction(
+  JOINED_SESSION,
+  (session, callback) => ({
+    session,
+    callback,
+  })
+);
 export const addBonfire = createAction(ADD_BONFIRE, (bonfire) => ({ bonfire }));
 export const removeBonfire = createAction(REMOVE_BONFIRE, (bonfire) => ({
   bonfire,
