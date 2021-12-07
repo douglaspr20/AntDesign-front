@@ -74,6 +74,11 @@
         padding: 20px 10px;
       }
 
+      @media (max-width: 1400px){
+        left: 32%;
+        padding: 20px 10px;
+      }
+
       @media (max-width: 1100px){
         left: 40%;
         padding: 20px 10px;
@@ -156,6 +161,12 @@
       display: flex;
       justify-content: center;
 
+      @media (max-width: 1400px){
+        position: relative;
+        width: 130%
+      
+        }
+
       @media (max-width: 1025px){
       position: relative;
       width: 100%
@@ -187,6 +198,10 @@
       max-width: 700px;
       }
 
+      @media (max-width: 1300px){
+        margin-left: -5%
+        }
+
       @media (max-width: 1100px){
         max-width: 615px;
         } 
@@ -214,9 +229,22 @@
       margin-left: 0%;
       }
 
-      @media (max-width: 1100px){
-        margin-top: 260px;
-      }  
+      @media (max-width: 1350px) {
+        
+        margin-top: 16rem;
+      }
+
+      @media (max-width: 1100px) {
+        margin-top: 23rem;
+      }
+
+      @media (max-width: 1050px) {
+        margin-top: 18rem;
+      }
+
+      @media (max-width: 800px) {
+        margin-top: 18rem;
+      }
 
       @media (max-width: 500px){
         margin-top: 280px;
@@ -245,6 +273,11 @@
 
   }
 
+  &-buttom-options{
+    @media (max-width: 500px){
+      padding: 5px 10px !important
+      }  
+  }
   
 }
 
@@ -287,6 +320,13 @@ a:hover,
 a:active,
 .ant-menu-item-selected a {
   color: $color-primary !important;
+}
+
+.sub-menu-item-global-conference{
+  @media (max-width: 1400px){
+    margin: 0 10px !important;
+    }
+
 }
 
 .sub-menu-item-global-conference:hover,
