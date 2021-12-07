@@ -137,7 +137,7 @@ const NotificationPage = ({
         {noti.type === "podcast" && (
           <Link
             className="notification-list-item-link"
-            to={INTERNAL_LINKS.PODCAST}
+            to={`${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${noti.meta.dataValues.id}`}
             onClick={() => markNotificationToRead([noti.id], userProfile.id)}
           >
             Go to Podcast
