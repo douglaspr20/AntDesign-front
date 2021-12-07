@@ -12,6 +12,7 @@ import {
   getAllSessions,
   getSessionsAddedbyUser,
   getParticipants,
+  recommendedAgenda,
 } from "../../api";
 
 export function* getAllSessionsSaga({ payload }) {
@@ -130,6 +131,53 @@ export function* getParticipantsSaga({ payload }) {
   }
 }
 
+export function* recommendedAgendaSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    let response = yield call(recommendedAgenda, { ...payload });
+
+    if (response.status === 200) {
+      const sessionData = Object.values(
+        groupBy(response.data.recommendedAgenda || [], "id")
+      ).map((session) => {
+        return session.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "instructorid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
+            speakers: [
+              ...(res.speakers || []),
+              {
+                id: item.instructorid,
+                name: item.name,
+                img: item.image,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
+              },
+            ],
+          }),
+          {}
+        );
+      });
+
+      yield put(sessionActions.setAllSessions(sessionData));
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(
@@ -137,6 +185,7 @@ function* watchSession() {
     getSessionsAddedbyUserSaga
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
+  yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
 }
 
 export const sessionSaga = [fork(watchSession)];
