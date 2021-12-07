@@ -45,4 +45,12 @@
       margin-bottom: 2rem !important;
     }
   }
+
+  &-info-icon{
+    color: $color-accent !important;
+
+    &:hover{
+      color: $color-info !important
+    }
+  }
 }
