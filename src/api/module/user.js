@@ -46,6 +46,9 @@ export const removeSession = ({ session }) => {
   return httpClient.put(`private/user/remove-session/${session.id}`);
 };
 
+export const joinedASession = ({ session }) => {
+  return httpClient.put(`private/user/session-joined/${session.id}`);
+};
 export const addBonfire = ({ bonfire }) => {
   return httpClient.put(`private/user/add-bonfire/${bonfire.id}`);
 };

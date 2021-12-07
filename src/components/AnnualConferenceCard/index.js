@@ -36,6 +36,10 @@ const AnnualConferenceCard = ({
     .tz(timezone.utc[0])
     .utcOffset(offset, true);
 
+  const timeLeft = moment
+    .duration(moment(session.startTime).diff(moment.now()))
+    .asMinutes();
+
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -102,13 +106,32 @@ const AnnualConferenceCard = ({
         <h3>{session.title}</h3>
 
         {added ? (
-          <CustomButton
-            type="primary outlined"
-            size="md"
-            text="Remove"
-            onClick={onRemoveSession}
-            className="remove-buttom"
-          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "auto",
+            }}
+          >
+            <CustomButton
+              type="primary outlined"
+              size="md"
+              text="Remove"
+              onClick={onRemoveSession}
+              className="remove-buttom"
+            />
+
+            {timeLeft >= 5 && (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="Join"
+                onClick={() => window.open(session.link, "_blank")}
+                style={{ marginTop: "5px" }}
+              />
+            )}
+          </div>
         ) : attended ? (
           <CustomButton
             size="sm"

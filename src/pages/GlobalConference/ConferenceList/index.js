@@ -8,7 +8,11 @@ import { TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { addSession, removeSession } from "redux/actions/home-actions";
+import {
+  addSession,
+  removeSession,
+  joinedSession,
+} from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
@@ -19,6 +23,7 @@ const ConferenceList = ({
   userProfile,
   addSession,
   removeSession,
+  joinedSession,
 }) => {
   const [sessionData, setSessionData] = useState([]);
 
@@ -28,6 +33,10 @@ const ConferenceList = ({
 
   const onRemoveSession = (session) => {
     removeSession(session);
+  };
+
+  const onJoinedSession = (session) => {
+    joinedSession(session);
   };
 
   useEffect(() => {
@@ -161,6 +170,9 @@ const ConferenceList = ({
     }
   }, [data, filters]);
 
+  console.log(userProfile);
+  console.log(sessionData);
+
   return (
     <div className="conference-list">
       <div className="conference-list-container">
@@ -197,8 +209,10 @@ const ConferenceList = ({
                     session={s}
                     attended={userProfile.attendedToConference}
                     added={(userProfile.sessions || []).includes(s.id)}
+                    // joinedOtherSession={(userProfile.sessionsJoined || []).includes(s.id)}
                     onAddSession={() => onAddSession(s)}
                     onRemoveSession={() => onRemoveSession(s)}
+                    onJoinedSession={() => onJoinedSession(s)}
                   />
                 ))}
               </div>
@@ -228,6 +242,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addSession,
   removeSession,
+  joinedSession,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceList);

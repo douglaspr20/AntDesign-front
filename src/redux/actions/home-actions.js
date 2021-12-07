@@ -14,6 +14,7 @@ const ADD_SESSION = "ADD_SESSION";
 const REMOVE_SESSION = "REMOVE_SESSION";
 const ADD_BONFIRE = "ADD_BONFIRE";
 const REMOVE_BONFIRE = "REMOVE_BONFIRE";
+const JOINED_SESSION = "JOINED_SESSION";
 const UPLOAD_RESUME = "UPLOAD_RESUME";
 const DELETE_RESUME = "DELETE_RESUME";
 const CHANGE_PASSWORD = "CHANGE_PASSWORD";
@@ -33,6 +34,7 @@ export const constants = {
   ATTEND_TO_GLOBAL_CONFERENCE,
   ADD_SESSION,
   REMOVE_SESSION,
+  JOINED_SESSION,
   ADD_BONFIRE,
   REMOVE_BONFIRE,
   UPLOAD_RESUME,
@@ -67,6 +69,10 @@ export const attendToGlobalConference = createAction(
 );
 export const addSession = createAction(ADD_SESSION, (session) => ({ session }));
 export const removeSession = createAction(REMOVE_SESSION, (session) => ({
+  session,
+}));
+
+export const joinedSession = createAction(JOINED_SESSION, (session) => ({
   session,
 }));
 export const addBonfire = createAction(ADD_BONFIRE, (bonfire) => ({ bonfire }));
@@ -111,6 +117,7 @@ export const actions = {
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedSession,
   addBonfire,
   removeBonfire,
   uploadResume,
