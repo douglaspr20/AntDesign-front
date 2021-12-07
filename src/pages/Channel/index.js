@@ -176,6 +176,7 @@ const mapStateToProps = (state, props) => ({
   selectedChannel: channelSelector(state).selectedChannel,
   channelLoading: channelSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
+  updateEvent: channelSelector(state).selectedChannel
 });
 
 const mapDispatchToProps = {
