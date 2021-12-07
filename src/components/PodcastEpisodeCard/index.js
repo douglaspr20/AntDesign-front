@@ -80,7 +80,9 @@ function EpisodeCard({
       ) : (
         <>
           <div className="podcast-episode__card-cover">
-            {isInternalLink === false ? (
+            {episode.vimeoLink === null ||
+            episode.vimeoLink?.includes("youtube") ||
+            episode.vimeoLink?.includes("vimeo") === false ? (
               <>
                 {episode_cover ? (
                   <img src={episode_cover} alt="header-img" />
