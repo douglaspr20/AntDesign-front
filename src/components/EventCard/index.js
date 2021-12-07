@@ -18,7 +18,6 @@ import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
-
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +32,6 @@ class EventCard extends React.Component {
     e.stopPropagation();
 
     const userProfile = this.props.userProfile;
-
     if (this.props.data.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
         this.props.onAttend(true);
@@ -42,6 +40,9 @@ class EventCard extends React.Component {
       }
     } else {
       this.props.onAttend(true);
+    }
+    if (window.location.pathname.includes("channels")) {
+      window.open(this.props.data?.externalLink, "_blank");
     }
   };
 

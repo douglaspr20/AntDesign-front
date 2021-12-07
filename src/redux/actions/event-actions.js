@@ -56,9 +56,10 @@ export const setError = createAction(SET_ERROR, (error) => ({ error }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addToMyEventList = createAction(
   ADD_TO_MY_EVENT_LIST,
-  (event, userTimezone) => ({
+  (event, userTimezone, callback) => ({
     event,
     userTimezone,
+    callback
   })
 );
 export const removeFromMyEventList = createAction(

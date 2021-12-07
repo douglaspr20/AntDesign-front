@@ -49,7 +49,7 @@ const Notification = ({
         window.open(noti.meta.publicLink, "_blank");
         break;
       case "podcast":
-        history.push(INTERNAL_LINKS.PODCAST);
+        history.push(`${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${noti.meta.dataValues.id}`);
         break;
       case "content":
         history.push(INTERNAL_LINKS.LEARNING_LIBRARY);

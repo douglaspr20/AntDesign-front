@@ -50,3 +50,11 @@ export const getParticipants = (filters) => {
     },
   });
 };
+
+export const recommendedAgenda = ({ filters }) => {
+  return httpClient.get(`private/session/recommended-agenda`, {
+    params: {
+      ...filters,
+    },
+  });
+};
