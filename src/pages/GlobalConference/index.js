@@ -22,6 +22,7 @@ import {
 import {
   getAllSessions,
   getSessionsAddedbyUser,
+  recommendedAgenda,
 } from "redux/actions/session-actions";
 import {
   attendToGlobalConference,
@@ -56,6 +57,7 @@ import Participants from "./Participants";
 import ConferenceLeaderboard from "./ConferenceLeaderboard";
 
 import "./style.scss";
+import RecommendedAgendaForm from "./RecommendedAgenda";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -84,6 +86,8 @@ const GlobalConference = ({
   attendToGlobalConference,
   createInvitation,
   confirmAccessibilityRequirements,
+  recommendedAgenda,
+  recommendedAgendaSessions,
 }) => {
   const [bonfireForm] = Form.useForm();
   const [colleaguesForm] = Form.useForm();
@@ -100,9 +104,12 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
-
+  const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
+    useState(false);
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
+  const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
+  const [recommendedAgendaForm, setRecommendedAgendaForm] = useState({});
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -322,6 +329,27 @@ const GlobalConference = ({
     setModalRequirementsVisible(false);
   };
 
+  const handleSubmitRecommendedAgenda = (data) => {
+    if (data.topics) {
+      if (recommendedAgendaStep !== 1) {
+        setRecommendedAgendaStep(recommendedAgendaStep + 1);
+        setRecommendedAgendaForm({
+          ...recommendedAgendaForm,
+          ...data,
+        });
+      }
+    } else if (recommendedAgendaForm.topics && data.time) {
+      const newRecomendedAgendaValues = {
+        ...recommendedAgendaForm,
+        ...data,
+      };
+      recommendedAgenda(newRecomendedAgendaValues);
+      setModalRecommendeAgendaVisible(false);
+      setRecommendedAgendaStep(0);
+      setCurrentView("recommended-agenda");
+    }
+  };
+
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
@@ -362,7 +390,20 @@ const GlobalConference = ({
                   text="Invite Your Colleagues"
                   onClick={() => onInviteColleague()}
                   style={{ marginLeft: "1rem" }}
+                  className="global-conference-buttom-options"
                 />
+
+                {userProfile.email ===
+                  ("douglas.eduardo2000@gmail.com" ||
+                    "enrique@hackinghr.io") && (
+                  <CustomButton
+                    size="xs"
+                    text="Recommended Agenda"
+                    onClick={() => setModalRecommendeAgendaVisible(true)}
+                    style={{ marginLeft: "1rem" }}
+                    className="global-conference-buttom-options"
+                  />
+                )}
               </>
             ) : (
               <CustomButton
@@ -505,6 +546,27 @@ const GlobalConference = ({
         {currentView === "bonfire" && <Bonfire />}
         {currentView === "personal-agenda" && (
           <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
+        )}
+
+        {currentView === "recommended-agenda" && (
+          <>
+            {recommendedAgendaSessions.length > 0 ? (
+              <PersonalAgenda
+                sessionsUser={recommendedAgendaSessions}
+                filters={filters}
+              />
+            ) : (
+              <div className="sessions-not-found">
+                <h1>No Sessions Found For Your Recommended Agenda</h1>
+                <CustomButton
+                  type="primary"
+                  text="Reload"
+                  size="md"
+                  onClick={() => setCurrentView("conference-schedule")}
+                />
+              </div>
+            )}
+          </>
         )}
         {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
@@ -747,6 +809,33 @@ const GlobalConference = ({
           )}
         </TransformWrapper>
       </Modal>
+
+      <Modal
+        centered
+        visible={modalRecommendeAgendaVisible}
+        onCancel={() => {
+          setModalRecommendeAgendaVisible(false);
+          setRecommendedAgendaStep(0);
+        }}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          onFinish={(data) => handleSubmitRecommendedAgenda(data)}
+          style={{ textAlign: "center" }}
+        >
+          <RecommendedAgendaForm
+            allCategories={allCategories}
+            step={recommendedAgendaStep}
+          />
+          <CustomButton
+            htmlType="submit"
+            text={recommendedAgendaStep === 1 ? "Send" : "Next"}
+            type="primary"
+            size="md"
+          />
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -777,6 +866,7 @@ const mapDispatchToProps = {
   removeFromMyEventList,
   createInvitation,
   confirmAccessibilityRequirements,
+  recommendedAgenda,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

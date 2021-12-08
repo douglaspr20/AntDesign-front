@@ -148,7 +148,7 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       creator: true,
     },
     {
-      text: "Access to learning journeys",
+      text: "Access to ProjectX: Hacking HR's cohort based learning",
       free: false,
       premium: true,
       creator: true,

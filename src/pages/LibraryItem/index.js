@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
+import IconBack from "images/icon-back.svg";
+import { INTERNAL_LINKS } from "enum";
 
 import { ConferenceCard, EpisodeCard } from "components";
 
@@ -23,10 +26,9 @@ const LibraryItemPage = ({
   setPodcast,
   conferenceLibrary,
   podcast,
-  match,
 }) => {
-  const [id] = useState(match.params.id);
-  const [type] = useState(match.params.type);
+  const { id, type } = useParams();
+  const history = useHistory()
 
   useEffect(() => {
     if (type === "conference-library") {
@@ -38,7 +40,7 @@ const LibraryItemPage = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   return (
     <div className="library-item-page-container">
@@ -58,6 +60,17 @@ const LibraryItemPage = ({
       )}
       {type === "podcast" && (
         <div className="library-item-page-container--podcast-library">
+          <div
+            className="skill-cohort-detail-page-header-content-back-btn mb-3"
+            onClick={() => history.push(INTERNAL_LINKS.PODCAST)}
+          >
+            <div className="skill-cohort-detail-page-header-content-back">
+              <div className="skill-cohort-detail-page-header-content-back-img">
+                <img src={IconBack} alt="icon-back" />
+              </div>
+              <h4>Back to Podcasts</h4>
+            </div>
+          </div>
           {podcast != null && (
             <EpisodeCard
               links={getPodcastLinks(podcast)}

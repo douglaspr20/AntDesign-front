@@ -22,6 +22,11 @@ export const reducers = {
       participants: cloneDeep(payload.participants),
     });
   },
+  [sessionConstants.SET_RECOMMENDED_AGENDA]: (state, { payload }) => {
+    return state.merge({
+      recommendedAgendaSessions: cloneDeep(payload.recommendedAgendaSessions),
+    });
+  },
   [sessionConstants.SET_SESSION_LOADING]: (state, { payload }) => {
     return state.merge({
       sessionLoading: payload.loading,
@@ -35,6 +40,7 @@ export const initialState = () =>
     allSessions: [],
     sessionsUser: [],
     participants: [],
+    recommendedAgendaSessions: [],
   });
 
 export default handleActions(reducers, initialState());

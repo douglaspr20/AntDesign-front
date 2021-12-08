@@ -1,7 +1,7 @@
 export default {
   STRIPE_PRICES: [
     {
-      price: '99.99',
+      price: '119',
       country: 'GLOBAL',
       character: '&#36;',
       priceId: process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID

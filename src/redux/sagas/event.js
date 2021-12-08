@@ -161,6 +161,10 @@ export function* addToMyEventList({ payload }) {
           status: getEventStatus(data, userId),
         })
       );
+
+      if(payload.callback){
+        payload.callback()
+      }
     }
   } catch (error) {
     console.log(error);
@@ -310,6 +314,7 @@ export function* getChannelEventsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
+    
     const response = yield call(getChannelEvents, { ...payload });
 
     if (response.status === 200) {

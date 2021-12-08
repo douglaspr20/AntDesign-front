@@ -111,10 +111,17 @@ class MainHeader extends React.Component {
     }
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
-      pathInfo = {
-        icon: IconLibrary,
-        label: `Library Item`,
-      };
+      if (pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/podcast`)) {
+        pathInfo = {
+          icon: IconHeadsetOutline,
+          label: `Podcast`,
+        };
+      } else {
+        pathInfo = {
+          icon: IconLibrary,
+          label: `Library Item`,
+        };
+      }
     }
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PROJECTX}/`)) {

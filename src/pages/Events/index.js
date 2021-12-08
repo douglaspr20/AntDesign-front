@@ -41,7 +41,7 @@ import "./style.scss";
 
 const EventsPage = ({
   allEvents,
-  myEvents,
+  myEvents, 
   updatedEvent,
   userProfile,
   getAllEvent,
@@ -57,16 +57,18 @@ const EventsPage = ({
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
   const [filterParams, setFilterParams] = useState({});
+  const [pastFilterData, setPastFilterData] = useState([]);
+  const [allEventFilterData, setAllEventFilterData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [event, setEvent] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [eventForCredit, setEventForCredit] = useState({});
-
+  
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
     const timezone = moment.tz.guess();
-
+    
     if (event.going) {
       addToMyEventList(event, timezone);
       if (event.isAnnualConference === 1) {
@@ -133,7 +135,8 @@ const EventsPage = ({
       title: "My events",
       content: () => (
         <EventList
-          data={myEvents.filter((event) => event.status === "going")}
+          // data={myEvents.filter((event) => event.status === "going")}
+          data={allEventFilterData}
           onAttend={addMyEvents}
           onClick={onEventClick}
           userProfile={userProfile}
@@ -145,9 +148,7 @@ const EventsPage = ({
       title: "My past events",
       content: () => (
         <EventList
-          data={myEvents.filter(
-            (event) => !["going", "attend"].includes(event.status)
-          )}
+          data={pastFilterData}
           onAttend={addMyEvents}
           onClick={onEventClick}
           userProfile={userProfile}
@@ -161,47 +162,96 @@ const EventsPage = ({
 
   const onFilterChange = (params, redirect = false) => {
     setFilterParams(params);
+    if (moment(params.date).isAfter(moment())) {
+      return futureFilter(params);
+    } else if (moment(params.date).isBefore(moment())) {
+      return pastFilter(params);
+    }
+
+    if (!params.date) {
+      futureFilter(params);
+      pastFilter(params);
+    }
+
+    setAllEventFilterData((prev) => {
+      prev = allEvents.filter((item) => {
+        let flag = true;
+        flag = dateFilter(flag, params, item);
+
+        if (new Date(item.startDate) < new Date() || !item.isOverEmailSent) {
+          flag = false;
+        }
+        return flag;
+      });
+      return [...prev];
+    });
+    // if (redirect) {
+    //   setCurrentTab("0");
+    // }
+  };
+
+  const futureFilter = (params) => {
     setFilteredEvents((prev) => {
       prev = allEvents.filter((item) => {
         let flag = true;
 
-        if (params.date) {
-          const res = moment(item.date, "YYYY.MM.DD h:mm a");
-          const eventDate = {
-            year: res.year(),
-            month: res.month(),
-            day: res.date(),
-          };
+        flag = dateFilter(flag, params, item);
 
-          const currentDate = {
-            year: params.date.year(),
-            month: params.date.month(),
-            day: params.date.date(),
-          };
-
-          flag = isEqual(eventDate, currentDate);
+        if (new Date(item.startDate) < new Date()) {
+          flag = false;
         }
+        return flag;
+      });
+      return [...prev]
+    });
+  };
 
-        if (params["Topics"] && params["Topics"].length > 0) {
-          flag =
-            flag &&
-            (params["Topics"] || []).some((tpc) =>
-              item.categories.includes(tpc)
-            );
-        }
+  const pastFilter = (params) => {
+    setPastFilterData((prev) => {
+      prev = allEvents.filter((item) => {
+        let flag = true;
 
-        if (isEmpty(params)) {
-          const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
-          flag = eventDate.isAfter(moment());
+        flag = dateFilter(flag, params, item);
+
+        if (new Date(item.endDate) > new Date() || !item.status === 'attend') {
+          flag = false;
         }
 
         return flag;
       });
       return [...prev];
     });
-    if (redirect) {
-      setCurrentTab("0");
+  };
+
+  const dateFilter = (flag, params, item) => {
+    if (params.date) {
+      const res = moment(item.date, "YYYY.MM.DD h:mm a");
+      const eventDate = {
+        year: res.year(),
+        month: res.month(),
+        day: res.date(),
+      };
+
+      const currentDate = {
+        year: params.date.year(),
+        month: params.date.month(),
+        day: params.date.date(),
+      };
+
+      flag = isEqual(eventDate, currentDate);
     }
+
+    if (params["Topics"] && params["Topics"].length > 0) {
+      flag =
+        flag &&
+        (params["Topics"] || []).some((tpc) => item.categories.includes(tpc));
+    }
+
+    if (isEmpty(params)) {
+      const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+      flag = eventDate.isAfter(moment());
+    }
+    return flag;
   };
 
   const onEventDrawerClose = () => {
@@ -283,7 +333,6 @@ const EventsPage = ({
     onFilterChange({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <div className="events-page">
       <EventFilterDrawer
