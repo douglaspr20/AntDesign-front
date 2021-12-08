@@ -69,7 +69,8 @@ const LibraryItemPage = ({
           {type === "podcast" && (
             <div className="library-item-page-container--podcast-library">
               <div
-                className="skill-cohort-detail-page-header-content-back-btn mb-3"
+                className="skill-cohort-detail-page-header-content-back-btn"
+                style={{ marginBottom: 12 }}
                 onClick={() =>
                   history.push(
                     query.get("channel")
