@@ -8,6 +8,7 @@
   opacity: 1;
   padding: 2rem;
   position: relative;
+  width: 100%;
 }
 
 .acc-session {
@@ -49,6 +50,7 @@
   &-time {
     @include app-font(14px, 19px);
     color: $color-text-secondary;
+    max-width: 280px;
   }
 
   &-toggle {

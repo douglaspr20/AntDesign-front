@@ -221,25 +221,47 @@ const EventAddEditForm = ({
             <RichEdit readOnly={false} data={selectedEvent.description} />
           )}
         </Form.Item>
-        <Form.Item
-          name="link"
-          label="Link to connect"
-          rules={[
-            {
-              required: false,
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || isValidURL(value)) {
-                  return Promise.resolve();
-                }
-                return Promise.reject("This is not a valid URL!");
+        {window.location.pathname.includes("channels") ? (
+          <Form.Item
+            name="externalLink"
+            label="External Link"
+            rules={[
+              {
+                required: false,
               },
-            }),
-          ]}
-        >
-          <CustomInput size="sm" />
-        </Form.Item>
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || isValidURL(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject("This is not a valid URL!");
+                },
+              }),
+            ]}
+          >
+            <CustomInput size="sm" />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            name="link"
+            label="Connect to link"
+            rules={[
+              {
+                required: false,
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || isValidURL(value)) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject("This is not a valid URL!");
+                },
+              }),
+            ]}
+          >
+            <CustomInput size="sm" />
+          </Form.Item>
+        )}
         <Form.Item name="credit" label="Apply for credits">
           <CreditSelect />
         </Form.Item>
