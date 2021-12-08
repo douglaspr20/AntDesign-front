@@ -30,6 +30,6 @@ export const updateResourceResponse = async (data) => {
 
   return await httpClient.put(
     `private/skill-cohort/response/${SkillCohortResourceResponseId}`,
-    { response }
+    { ...response }
   );
 };
