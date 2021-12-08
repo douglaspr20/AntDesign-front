@@ -91,8 +91,8 @@ const EventsList = ({
           day: moment(item.date, DataFormat).date(),
           month: MONTH_NAMES[moment(item.date, DataFormat).month()],
         });
-      } 
-      return  futureDataFilter
+      }
+      return futureDataFilter;
     });
   }, [futureDataFilter, selectedEvent.id]);
 

@@ -41,7 +41,7 @@ import "./style.scss";
 
 const EventsPage = ({
   allEvents,
-  myEvents,
+  myEvents, 
   updatedEvent,
   userProfile,
   getAllEvent,
@@ -63,12 +63,12 @@ const EventsPage = ({
   const [event, setEvent] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [eventForCredit, setEventForCredit] = useState({});
-
+  
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
     const timezone = moment.tz.guess();
-
+    
     if (event.going) {
       addToMyEventList(event, timezone);
       if (event.isAnnualConference === 1) {
@@ -213,7 +213,7 @@ const EventsPage = ({
 
         flag = dateFilter(flag, params, item);
 
-        if (new Date(item.endDate) > new Date() || !item.isOverEmailSent) {
+        if (new Date(item.endDate) > new Date() || !item.status === 'attend') {
           flag = false;
         }
 

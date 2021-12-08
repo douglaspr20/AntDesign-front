@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router-dom";
+import { INTERNAL_LINKS } from "enum";
 
 import { ConferenceCard, EpisodeCard } from "components";
 
@@ -14,7 +15,6 @@ import {
 import { getPodcast, setPodcast } from "redux/actions/podcast-actions";
 import { conferenceSelector } from "redux/selectors/conferenceSelector";
 import { podcastSelector } from "redux/selectors/podcastSelector";
-import { INTERNAL_LINKS } from "enum";
 
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
@@ -35,6 +35,7 @@ const LibraryItemPage = ({
 
   const { search } = useLocation();
   const query = new URLSearchParams(search);
+  // const { id, type } = useParams();
 
   useEffect(() => {
     if (type === "conference-library") {
@@ -46,7 +47,7 @@ const LibraryItemPage = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   return (
     <div className="library-item-page-container">
@@ -69,8 +70,7 @@ const LibraryItemPage = ({
           {type === "podcast" && (
             <div className="library-item-page-container--podcast-library">
               <div
-                className="skill-cohort-detail-page-header-content-back-btn"
-                style={{ marginBottom: 12 }}
+                className="skill-cohort-detail-page-header-content-back-btn mb-3"
                 onClick={() =>
                   history.push(
                     query.get("channel")
