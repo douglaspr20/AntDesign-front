@@ -392,16 +392,13 @@ const GlobalConference = ({
                   className="global-conference-buttom-options"
                 />
 
-                {userProfile.email === "enrique@hackinghr.io" ||
-                userProfile.email === "douglas.eduardo2000@gmail.com" ? (
-                  <CustomButton
-                    size="xs"
-                    text="Recommended Agenda"
-                    onClick={() => setModalRecommendeAgendaVisible(true)}
-                    style={{ marginLeft: "1rem" }}
-                    className="global-conference-buttom-options"
-                  />
-                ) : null}
+                <CustomButton
+                  size="xs"
+                  text="Recommended Agenda"
+                  onClick={() => setModalRecommendeAgendaVisible(true)}
+                  style={{ marginLeft: "1rem" }}
+                  className="global-conference-buttom-options"
+                />
               </>
             ) : (
               <CustomButton
