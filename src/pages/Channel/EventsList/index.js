@@ -13,7 +13,9 @@ import {
   getChannelEvents,
   deleteEvent,
   setEvent,
+  addToMyEventList,
 } from "redux/actions/event-actions";
+import { actions as eventActions } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -26,16 +28,24 @@ const EventsList = ({
   channel,
   getChannelEvents,
   deleteEvent,
+  addToMyEventList,
   setEvent,
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [visibleEventDrawer, setVisibleEventDrawer] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({});
+  const [futureDataFilter, setFutureDataFilter] = useState([]);
 
   const onAddEvent = () => {
     setEditMode(false);
     setVisibleDrawer(true);
+  };
+
+  const onEventChanged = (event) => {
+    addToMyEventList(event, null, () => {
+      getChannelEvents({ ...filter, channel: channel.id });
+    });
   };
 
   const handleEvent = (menu, event) => {
@@ -74,11 +84,39 @@ const EventsList = ({
   };
 
   useEffect(() => {
+    futureDataFilter.map((item) => {
+      if (item.id === selectedEvent.id) {
+        setSelectedEvent({
+          ...item,
+          day: moment(item.date, DataFormat).date(),
+          month: MONTH_NAMES[moment(item.date, DataFormat).month()],
+        });
+      } 
+      return  futureDataFilter
+    });
+  }, [futureDataFilter, selectedEvent.id]);
+
+  useEffect(() => {
     if (channel && channel.id) {
       getChannelEvents({ ...filter, channel: channel.id });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channel, filter]);
+
+  useEffect(() => {
+    const dateFilter = () => {
+      setFutureDataFilter((prev) => {
+        prev = channelEvents.filter((item) => {
+          const flag = new Date(item.startDate) > new Date();
+          return flag;
+        });
+        return [...prev];
+      });
+    };
+
+    dateFilter();
+  }, [channelEvents]);
 
   return (
     <div className="channel-page__list-wrap channels-page__events-list-wrap">
@@ -94,9 +132,10 @@ const EventsList = ({
       <EventList
         edit={isOwner}
         type={CARD_TYPE.EDIT}
-        data={channelEvents}
+        data={futureDataFilter}
         onClick={onEventClick}
         onAddEvent={onAddEvent}
+        onAttend={onEventChanged}
         onMenuClick={handleEvent}
       />
       <EventDrawer
@@ -121,11 +160,13 @@ EventsList.defaultProps = {
 const mapStateToProps = (state) => ({
   channelEvents: eventSelector(state).channelEvents,
   channel: channelSelector(state).selectedChannel,
+  ...eventActions,
 });
 
 const mapDispatchToProps = {
   getChannelEvents,
   deleteEvent,
+  addToMyEventList,
   setEvent,
 };
 

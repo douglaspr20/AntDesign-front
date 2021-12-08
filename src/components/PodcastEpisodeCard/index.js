@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Tooltip } from "antd";
@@ -49,6 +49,8 @@ function EpisodeCard({
     viewed,
     saveForLater: saveForLaterData,
   } = episode || {};
+  const [linkValue, setLinkValue] = useState("img");
+
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
@@ -67,7 +69,24 @@ function EpisodeCard({
 
     saveForLaterPodcast(id, userProfile.id, status);
   };
-  
+
+  useEffect(() => {
+    const selectImageOrVideoLink = () => {
+      if (!episode?.vimeoLink || episode?.vimeoLink === " ") {
+        setLinkValue("img");
+        return linkValue;
+      }
+      if (
+        episode.vimeoLink?.includes("youtube") ||
+        episode.vimeoLink?.includes("vimeo")
+      ) {
+        setLinkValue("video");
+      }
+    };
+
+    selectImageOrVideoLink();
+  }, [episode, linkValue]);
+
   return (
     <div
       className={clsx("podcast-episode__card", { add: type === CARD_TYPE.ADD })}
@@ -88,8 +107,7 @@ function EpisodeCard({
                   <div />
                 )}
               </>
-            ) : (episode.vimeoLink?.includes("youtube") ||
-                episode.vimeoLink?.includes("vimeo")) === false ? (
+            ) : linkValue === "img" ? (
               <div>
                 <img
                   src={episode_cover}
