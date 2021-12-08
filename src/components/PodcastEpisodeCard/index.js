@@ -5,6 +5,7 @@ import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
+import { useHistory, useParams } from "react-router";
 import { isEmpty } from "lodash";
 
 import { SpecialtyItem, CustomButton } from "components";
@@ -50,12 +51,18 @@ function EpisodeCard({
     saveForLater: saveForLaterData,
   } = episode || {};
   const [linkValue, setLinkValue] = useState("img");
+  const history = useHistory();
+  const params = useParams();
 
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
     } else if (isInternalLink === false) {
-      window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`;
+      history.push(
+        params.id
+          ? `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}?channel=${params.id}`
+          : `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`
+      );
     }
   };
 

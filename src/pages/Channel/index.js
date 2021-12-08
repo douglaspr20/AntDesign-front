@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 
 import { Tabs, CustomButton } from "components";
@@ -32,7 +32,10 @@ const Channel = ({
   setFollowChannel,
   unsetFollowChannel,
 }) => {
-  const [currentTab, setCurrentTab] = useState("0");
+  const { search } = useLocation();
+  const query = new URLSearchParams(search)
+
+  const [currentTab, setCurrentTab] = useState(query.get('tab') || '0');
   const [isChannelOwner, setIsChannelOwner] = useState(true);
   const [filter, setFilter] = useState({});
   const [followed, setFollowed] = useState(false);
