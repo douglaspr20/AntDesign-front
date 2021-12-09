@@ -8,7 +8,7 @@
   }
 
   .wrapper {
-    width: 80%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     overflow: auto;
@@ -165,6 +165,15 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.display-conversation-container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .display-conversation {
@@ -180,7 +189,6 @@
 }
 
 .comment-container {
-  // width: 66.667%;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -238,11 +246,12 @@
 
 .skill-cohort-resource-panel {
   width: 266px;
-  height: calc(100vh - 72px);
   background: $color-white;
+  height: 100%;
   box-shadow: 4px 0px 14px #37215714;
   padding: 44px 0 2rem;
   z-index: 9;
+  position: absolute;
   overflow: auto;
 
   & > .font-regular {
@@ -264,4 +273,18 @@
       border-right: 3px solid $color-primary !important;
     }
   }
+}
+
+.panel {
+  width: 100%;
+}
+
+.conversation-container {
+  width: 100%;
+}
+
+.wrapper-2 {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }

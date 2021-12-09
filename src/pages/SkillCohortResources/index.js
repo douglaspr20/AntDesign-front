@@ -71,24 +71,6 @@ const SkillCohortResources = ({
     // eslint-disable-next-line
   }, [allSkillCohortResources]);
 
-  useEffect(() => {
-    // if (currentTab === "1") {
-    //   getAllSkillCohortResources(id, {
-    //     date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
-    //     page: 1,
-    //     num: 66,
-    //   });
-    // } else if (currentTab === "0") {
-    //   getAllSkillCohortResources(id, {
-    //     date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
-    //   });
-    // }
-    // getAllSkillCohortResources(id, {
-    //   date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
-    // });
-    // eslint-disable-next-line
-  }, []);
-
   const showMore = () => {
     getMoreSkillCohortResources(id, {
       date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
@@ -200,7 +182,7 @@ const SkillCohortResources = ({
   );
 
   const displayConversation = (
-    <div>
+    <div className="display-conversation-container">
       <div className="display-conversation">
         <OpengraphReactComponent
           key={skillCohortResource.id}
@@ -229,7 +211,13 @@ const SkillCohortResources = ({
   const TabData = [
     {
       title: "Resources",
-      content: () => displayResources,
+      content: () => {
+        return (
+        <div className="wrapper-2">
+          {displayResources}
+        </div>
+        )
+      },
     },
     {
       title: "Conversations",
@@ -243,7 +231,7 @@ const SkillCohortResources = ({
     },
     {
       title: "Playgrounds",
-      content: () => <div className="display-participants">Playground</div>,
+      content: () => <div className="wrapper-2">Playground</div>,
     },
   ];
 
