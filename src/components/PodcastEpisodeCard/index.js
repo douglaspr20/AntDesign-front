@@ -118,7 +118,6 @@ function EpisodeCard({
               <div>
                 <img
                   src={episode_cover}
-                  className="podcast-episode__player"
                   alt="header-img"
                 />
               </div>
