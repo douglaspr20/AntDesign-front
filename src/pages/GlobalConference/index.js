@@ -18,6 +18,7 @@ import {
   CustomInput,
   CustomCheckbox,
   CustomSelect,
+  CustomModal,
 } from "components";
 import {
   getAllSessions,
@@ -43,8 +44,8 @@ import {
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
-
-import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import SocketIO from "services/socket";
+import { EVENT_TYPES, SOCKET_EVENT_TYPE, TIMEZONE_LIST } from "enum";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
 import PersonalAgenda from "./PersonalAgenda";
@@ -104,10 +105,13 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
-  const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
-    useState(false);
+
+  const [modalMessageVisible, setModalMessageVisible] = useState(false);
+  const [messageAdmin, setMessageAdmin] = useState("");
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
   const [currentView, setCurrentView] = useState("conference-schedule");
+  const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
+    useState(false);
   const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
   const [recommendedAgendaForm, setRecommendedAgendaForm] = useState({});
 
@@ -150,6 +154,14 @@ const GlobalConference = ({
 
   const handleView = (view) => {
     setCurrentView(view);
+  };
+
+  const showModalMessage = (message) => {
+    setMessageAdmin(message);
+    setModalMessageVisible(true);
+    setTimeout(() => {
+      setModalMessageVisible(false);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -198,6 +210,12 @@ const GlobalConference = ({
   useEffect(() => {
     getAllEvent();
   }, [getAllEvent]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.SEND_MESSAGE_GLOBAL_CONFERENCE, (message) =>
+      showModalMessage(message)
+    );
+  }, []);
 
   const downloadPdf = async () => {
     setLoading(true);
@@ -809,6 +827,15 @@ const GlobalConference = ({
           )}
         </TransformWrapper>
       </Modal>
+      <CustomModal
+        visible={modalMessageVisible}
+        title="Attention!"
+        width={500}
+        onCancel={() => setModalMessageVisible(false)}
+      >
+        <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }} />
+      </CustomModal>
+
 
       <Modal
         centered
