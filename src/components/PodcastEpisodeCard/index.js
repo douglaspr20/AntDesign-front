@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Tooltip } from "antd";
 import moment from "moment";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
+import { useHistory, useParams } from "react-router";
 import { isEmpty } from "lodash";
 
 import { SpecialtyItem, CustomButton } from "components";
@@ -49,11 +50,19 @@ function EpisodeCard({
     viewed,
     saveForLater: saveForLaterData,
   } = episode || {};
+  const [linkValue, setLinkValue] = useState("img");
+  const history = useHistory();
+  const params = useParams();
+
   const onCardClick = () => {
     if (type === CARD_TYPE.ADD) {
       onAdd();
     } else if (isInternalLink === false) {
-      window.location = `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`;
+      history.push(
+        params.id
+          ? `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}?channel=${params.id}`
+          : `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${episode.id}`
+      );
     }
   };
 
@@ -67,7 +76,24 @@ function EpisodeCard({
 
     saveForLaterPodcast(id, userProfile.id, status);
   };
-  
+
+  useEffect(() => {
+    const selectImageOrVideoLink = () => {
+      if (!episode?.vimeoLink || episode?.vimeoLink === " ") {
+        setLinkValue("img");
+        return linkValue;
+      }
+      if (
+        episode.vimeoLink?.includes("youtube") ||
+        episode.vimeoLink?.includes("vimeo")
+      ) {
+        setLinkValue("video");
+      }
+    };
+
+    selectImageOrVideoLink();
+  }, [episode, linkValue]);
+
   return (
     <div
       className={clsx("podcast-episode__card", { add: type === CARD_TYPE.ADD })}
@@ -88,8 +114,7 @@ function EpisodeCard({
                   <div />
                 )}
               </>
-            ) : (episode.vimeoLink?.includes("youtube") ||
-                episode.vimeoLink?.includes("vimeo")) === false ? (
+            ) : linkValue === "img" ? (
               <div>
                 <img
                   src={episode_cover}
