@@ -32,6 +32,11 @@ export const reducers = {
       sessionLoading: payload.loading,
     });
   },
+  [sessionConstants.SET_MESSAGE_ERROR]: (state, { payload }) => {
+    return state.merge({
+      messageError: payload.message,
+    });
+  },
 };
 
 export const initialState = () =>
@@ -41,6 +46,7 @@ export const initialState = () =>
     sessionsUser: [],
     participants: [],
     recommendedAgendaSessions: [],
+    messageError: "",
   });
 
 export default handleActions(reducers, initialState());
