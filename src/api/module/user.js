@@ -28,6 +28,10 @@ export const getAllMyEventsFromAPI = () => {
   return httpClient.get(`private/user/my-events/`);
 };
 
+export const getCouncilMembersFromAPI = () => {
+  return httpClient.get(`private/user/council-members/`);
+};
+
 export const inviteFriend = (email) => {
   return httpClient.post(`private/user/invite-friend`, {
     email,

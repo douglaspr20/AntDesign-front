@@ -164,6 +164,7 @@ class NavBar extends Component {
                     conference library feature.
                   </>
                 )}
+      
                 {this.state.module === "live" && (
                   <>
                     You must fully complete your profile before joining the live

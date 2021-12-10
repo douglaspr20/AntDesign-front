@@ -241,7 +241,7 @@ const ProfilePopupMenu = (props) => {
       {user.councilMember && (
         <div
           className="profile-popover-content-menu"
-          onClick={() => openChangePasswordModal(true)}
+          onClick={() => history.push(INTERNAL_LINKS.COUNCIL)}
         >
           Experts Council
         </div>

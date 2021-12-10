@@ -6,6 +6,7 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
+import CouncilPage from "pages/Council";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import PasswordRecoveryPage from "pages/PasswordRecovery";
@@ -123,6 +124,11 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CLASS}/:id`}
             render={(props) => <MicroClassPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.COUNCIL}
+            render={(props) => <CouncilPage {...props} />}
           />
           <PrivateRoute
             exact

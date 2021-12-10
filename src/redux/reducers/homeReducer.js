@@ -13,6 +13,11 @@ export const reducers = {
   [homeConstants.SET_PLAN_UPDATED]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
+  [homeConstants.SET_COUNCIL_MEMBERS]: (state, { payload }) => {
+    return state.merge({
+      councilMembers: payload.councilMembers
+     });
+  },
   [homeConstants.UPDATE_USER_INFO]: (state, { payload }) => {
     return state.merge({
       userProfile: cloneDeep(payload.userProfile),

@@ -6,6 +6,7 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
     userProfile: payload.get("userProfile"),
+    councilMembers: payload.get("councilMembers"),
     setting: payload.get("setting"),
   };
 });

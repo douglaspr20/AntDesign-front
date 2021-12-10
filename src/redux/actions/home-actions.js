@@ -6,6 +6,8 @@ const SET_PLAN_UPDATED = "SET_PLAN_UPDATED";
 const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 const SET_SETTING_COLLAPSED = "SET_SETTING_COLLAPSED";
 const GET_USER = "GET_USER";
+const GET_COUNCIL_MEMBERS = "GET_COUNCIL_MEMBERS";
+const SET_COUNCIL_MEMBERS = "SET_COUNCIL_MEMBERS";
 const UPDATE_USER = "UPDATE_USER";
 const UPGRADE_PLAN = "UPGRADE_PLAN";
 const INVITE_FRIEND = "INVITE_FRIEND";
@@ -27,6 +29,8 @@ export const constants = {
   UPDATE_USER_INFO,
   SET_SETTING_COLLAPSED,
   GET_USER,
+  GET_COUNCIL_MEMBERS,
+  SET_COUNCIL_MEMBERS,
   UPDATE_USER,
   UPGRADE_PLAN,
   INVITE_FRIEND,
@@ -55,6 +59,13 @@ export const setSettingCollapsed = createAction(
   SET_SETTING_COLLAPSED,
   (collapsed) => ({ collapsed })
 );
+
+export const getCouncilMembers = createAction(GET_COUNCIL_MEMBERS);
+export const setCouncilMembers = createAction(
+  SET_COUNCIL_MEMBERS,
+  (councilMembers) => ({ councilMembers })
+);
+
 export const getUser = createAction(GET_USER);
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
@@ -105,6 +116,8 @@ export const actions = {
   updateUserInformation,
   setSettingCollapsed,
   getUser,
+  getCouncilMembers,
+  setCouncilMembers,
   updateUser,
   upgradePlan,
   inviteFriend,
