@@ -38,4 +38,5 @@ export default {
   MY_LEARNINGS: "/my-learnings",
   PROJECTX: "/projectx",
   INVITATION: "/invitation",
+  SPONSOR_DASHBOARD: "/sponsor-dashboard"
 };
