@@ -92,6 +92,7 @@ const EventsList = ({
           month: MONTH_NAMES[moment(item.date, DataFormat).month()],
         });
       }
+      return futureDataFilter;
     });
   }, [futureDataFilter, selectedEvent.id]);
 

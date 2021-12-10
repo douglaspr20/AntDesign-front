@@ -141,6 +141,8 @@ import {
   getEventVideos,
 } from "./module/myLearning";
 
+import { getPartners, getPartner } from "./module/partner";
+
 import { getEditorSignature } from "./module/env";
 export {
   signIn,
@@ -254,4 +256,6 @@ export {
   getAllSaved,
   getAllItemsWithHRCredits,
   getEventVideos,
+  getPartners,
+  getPartner,
 };
