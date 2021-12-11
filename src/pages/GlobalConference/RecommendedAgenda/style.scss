@@ -8,3 +8,9 @@
 .ant-slider-handle{
     border-color: $color-accent !important;
 }
+
+.form-recent-workarea{
+   .ant-checkbox-wrapper:first-child {
+        margin-left: 8px;
+    }
+}

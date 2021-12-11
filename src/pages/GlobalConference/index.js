@@ -832,7 +832,6 @@ const GlobalConference = ({
         <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }} />
       </CustomModal>
 
-
       <Modal
         centered
         visible={modalRecommendeAgendaVisible}
@@ -845,7 +844,12 @@ const GlobalConference = ({
         <Form
           layout="vertical"
           onFinish={(data) => handleSubmitRecommendedAgenda(data)}
-          style={{ textAlign: "center" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            width: "100%",
+          }}
         >
           <RecommendedAgendaForm
             allCategories={allCategories}

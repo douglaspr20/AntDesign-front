@@ -11,7 +11,7 @@ const RecommendedAgendaForm = ({ step, allCategories }) => {
     <React.Fragment>
       {step === 0 && (
         <Form.Item
-          label="What topics interest you"
+          label="how many hours do you have available for learning during conference week?"
           name="topics"
           rules={[
             {
