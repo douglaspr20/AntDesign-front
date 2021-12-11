@@ -59,6 +59,7 @@ export function* getAllSessionsSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
+    yield put(sessionActions.setMessageError("No Available Sessions Found"));
   }
 }
 
