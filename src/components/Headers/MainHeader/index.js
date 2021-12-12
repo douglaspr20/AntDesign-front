@@ -22,6 +22,7 @@ import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
+import IconGlobal from "images/icon-global.svg";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -92,6 +93,13 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconMedal,
         label: `Class - ${(selectedCourse || {}).title || ""}`,
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CONFERENCE}/`)) {
+      pathInfo = {
+        icon: IconGlobal,
+        label: `Hacking HR 2022 Global Online Conference - prueba`,
       };
     }
 

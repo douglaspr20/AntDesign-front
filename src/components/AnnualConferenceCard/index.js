@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import { Dropdown, Menu, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton, SpecialtyItem, CustomModal } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
@@ -24,6 +24,8 @@ const AnnualConferenceCard = ({
   userProfile,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
+  const [visibleErrorJoinedOtherSession, setVisibleJoinedOtherSession] =
+    useState(false);
 
   const timezone = TIMEZONE_LIST.find(
     (item) => item.value === session.timezone
@@ -102,6 +104,20 @@ const AnnualConferenceCard = ({
     </Menu>
   );
 
+  const joinedSession = () => {
+    if (
+      joinedOtherSession &&
+      !userProfile.sessionsJoined.includes(session.id)
+    ) {
+      setVisibleJoinedOtherSession(true);
+      return setTimeout(() => {
+        setVisibleJoinedOtherSession(false);
+      }, 5000);
+    }
+
+    onJoinedSession(session);
+  };
+
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
@@ -122,15 +138,19 @@ const AnnualConferenceCard = ({
               text="Remove"
               onClick={onRemoveSession}
               className="remove-buttom"
-              disabled={joinedOtherSession}
             />
 
-            {timeLeft <= 5 && (
+            {timeLeft > 5 && (
               <CustomButton
                 type="primary"
                 size="md"
                 text="Join"
-                onClick={onJoinedSession}
+                className={
+                  !userProfile.sessionsJoined.includes(session.id)
+                    ? "custom-button-disabled"
+                    : null
+                }
+                onClick={() => joinedSession()}
                 style={{ marginTop: "5px" }}
               />
             )}
@@ -140,7 +160,6 @@ const AnnualConferenceCard = ({
             size="sm"
             text="Add To My Personalized Agenda"
             onClick={onAddSession}
-            disabled={joinedOtherSession}
           />
         ) : null}
       </div>
@@ -250,6 +269,18 @@ const AnnualConferenceCard = ({
           </div>
         </div>
       )}
+
+      <CustomModal
+        visible={visibleErrorJoinedOtherSession}
+        title="Error"
+        width={500}
+        onCancel={() => setVisibleJoinedOtherSession(false)}
+      >
+        <p>
+          You can’t join this session since you are registered for another
+          session at this same time
+        </p>
+      </CustomModal>
     </div>
   );
 };

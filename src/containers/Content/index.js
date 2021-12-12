@@ -31,6 +31,7 @@ import ChannelsPage from "pages/Channels";
 import ChannelPage from "pages/Channel";
 import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
+import MicroConferencePage from "pages/MicroConference";
 import SpeakersPage from "pages/Speakers";
 import ParticipantsPage from "pages/Participants";
 import LivePage from "pages/Live";
@@ -197,6 +198,11 @@ class Content extends Component {
           <PrivateRoute
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
+          />
+
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
+            render={(props) => <MicroConferencePage {...props} />}
           />
           <PrivateRoute
             path={`${INTERNAL_LINKS.SPEAKERS}`}
