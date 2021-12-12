@@ -94,6 +94,7 @@ import {
 } from "./module/notification";
 import {
   getAllSessions,
+  getSession,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
@@ -203,6 +204,7 @@ export {
   updateChannel,
   getNotifications,
   getAllSessions,
+  getSession,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,

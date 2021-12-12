@@ -31,14 +31,14 @@ function MicroConferenceVideoWrapper({
   };
 
   return (
-    <div className="micro-class__player-wrapper">
+    <div className="micro-conference__player-wrapper">
       <img
         src={LoadingGif}
-        className="micro-class__player-loading"
+        className="micro-conference__player-loading"
         alt="Loading"
       />
       <ReactPlayer
-        className="micro-class__react-player"
+        className="micro-conference__react-player"
         controls={true}
         width="100%"
         height="100%"

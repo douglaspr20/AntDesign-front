@@ -1,26 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
-import html2canvas from "html2canvas";
-import jsPdf from "jspdf";
-import { Tabs, notification } from "antd";
-import CustomButton from "components/Button";
+import { Tabs } from "antd";
 
 import MicroConferenceSkeleton from "./MicroConferenceSkeleton";
 import MicroConferenceVideosList from "./MicroConferenceVideosList";
+import MicroConferenceVideoWrapper from "./MicroConferenceVideoWrapper";
 
-import { setLoading } from "redux/actions/home-actions";
+import { getSession } from "redux/actions/session-actions";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 
-import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
-import { convertBlobToBase64 } from "utils/format";
+import { INTERNAL_LINKS } from "enum";
 
 import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
-import ImgHHRLogo from "images/img-certificate-logo.png";
-import ImgSignature from "images/img-signature.png";
-import MicroConferenceVideoWrapper from "./MicroConferenceVideoWrapper";
 
 import "./style.scss";
 
@@ -49,39 +42,43 @@ const useMicroConferenceQuery = (id) => {
   };
 };
 
-const MicroConference = ({ history, match, setLoading }) => {
+const MicroConference = ({ history, match, user, session, getSession }) => {
   const { status } = useMicroConferenceQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
+  if (user.sessions && !user.sessions.includes(+match.params.id)) {
+    history.push("/global-conference");
+  }
+
+  useEffect(() => {
+    getSession(match.params.id);
+  }, [getSession, match]);
+
   const activeVideoUrl = useMemo(() => {
-    // if (classes && classes.length) {
-    //   let videoObject = classes.find((item) => item.id === activeVideoId);
-    //   if (videoObject && videoObject.videoUrl) {
-    //     return videoObject.videoUrl;
-    //   }
-    //   return null;
-    // }
+    if (session) {
+      return session.link;
+    }
     return null;
-  }, [activeVideoId]);
+  }, [session]);
 
   return (
-    <div className="micro-class__page">
-      <div className="micro-class__container">
+    <div className="micro-conference__page">
+      <div className="micro-conference__container">
         {status === "loading" && <MicroConferenceSkeleton />}
 
         {status === "success" && (
           <>
-            <div className="micro-class__row">
-              <div className="micro-class__row-1">
-                <div className="micro-class__row-1--video-list">
-                  <div className="micro-class__row-1--video-list--title">
+            <div className="micro-conference__row">
+              <div className="micro-conference__row-1">
+                <div className="micro-conference__row-1--video-list">
+                  <div className="micro-conference__row-1--video-list--title">
                     <IconArrowBackCircleOutline
                       title="Back to Global Conference"
                       onClick={() => {
                         history.push(INTERNAL_LINKS.GLOBAL_CONFERENCE);
                       }}
                     />{" "}
-                    <h2>titulo</h2>
+                    <h2>{session.title}</h2>
                   </div>
 
                   <MicroConferenceVideosList
@@ -101,10 +98,10 @@ const MicroConference = ({ history, match, setLoading }) => {
                   <Tabs defaultActiveKey="1">
                     <TabPane tab="Session Information" key="1">
                       <div>
-                        <div className="micro-class__description-card">
+                        <div className="micro-conference__description-card">
                           <h3>Session Description</h3>
-                          <p className="micro-class__description-p">
-                            description test
+                          <p className="micro-conference__description-p">
+                            {session.description}
                           </p>
                         </div>
                       </div>
@@ -121,7 +118,7 @@ const MicroConference = ({ history, match, setLoading }) => {
 };
 
 const mapStateToProps = (state, props) => ({
-  // course: courseSelector(state).course,
+  session: sessionSelector(state).session,
   // classes: courseSelector(state).classes,
   // instructors: courseSelector(state).instructors,
   // sponsors: courseSelector(state).sponsors,
@@ -130,12 +127,11 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = {
-  // getCourse,
+  getSession,
   // getCourseClasses,
   // getCourseInstructors,
   // getCourseSponsors,
   // claimCourse,
-  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MicroConference);

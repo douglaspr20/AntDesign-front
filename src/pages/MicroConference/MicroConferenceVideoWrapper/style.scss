@@ -1,7 +1,7 @@
 @import "styles/_colors.scss";
 @import "styles/_mixins.scss";
 
-.micro-class__player-wrapper {
+.micro-conference__player-wrapper {
   position: relative;
   padding-top: 56.25%;
   box-shadow: 4px 0px 14px #37215714;
@@ -11,7 +11,7 @@
   background-color: $color-white;
 }
 
-.micro-class__react-player {
+.micro-conference__react-player {
   position: absolute;
   z-index: 2;
   top: 0;
@@ -27,7 +27,7 @@
   }
 }
 
-.micro-class__player-loading {
+.micro-conference__player-loading {
   position: absolute;
   display: block;
   width: 100%;

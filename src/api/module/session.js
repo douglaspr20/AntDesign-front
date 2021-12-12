@@ -12,6 +12,10 @@ export const getAllSessions = ({ startTime, endTime, meta }) => {
   return httpClient.get(`private/session`);
 };
 
+export const getSession = ({ id }) => {
+  return httpClient.get(`private/session/${id}`);
+};
+
 export const getSessionsAddedbyUser = ({ id }) => {
   return httpClient.get(`private/sessions-user?userId=${id}`);
 };

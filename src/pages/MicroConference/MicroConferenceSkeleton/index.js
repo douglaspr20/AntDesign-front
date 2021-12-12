@@ -4,14 +4,14 @@ import "./style.scss";
 
 function MicroConferenceSkeleton() {
   return (
-    <div className="micro-class-skeleton__row">
-      <div className="micro-class-skeleton__col-1">
+    <div className="micro-conference-skeleton__row">
+      <div className="micro-conference-skeleton__col-1">
         <Skeleton active />
         <Skeleton active />
         <Skeleton active />
       </div>
 
-      <div className="micro-class-skeleton__col-2">
+      <div className="micro-conference-skeleton__col-2">
         <Skeleton.Input
           active
           shape="round"

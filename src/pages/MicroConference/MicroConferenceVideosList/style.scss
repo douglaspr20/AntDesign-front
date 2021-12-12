@@ -1,7 +1,7 @@
 @import "styles/_colors.scss";
 @import "styles/_mixins.scss";
 
-.micro-class__videos-list {
+.micro-conference__videos-list {
   box-shadow: 4px 0px 14px #37215714;
   border: 1px solid #e1e2ee;
   border-radius: 0.5rem;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.micro-class__videos-list-inner {
+.micro-conference__videos-list-inner {
   max-height: 400px;
   overflow-y: auto;
 
@@ -29,7 +29,7 @@
     background: rgba($color-dark-purple, 0.5);
   }
 
-  > * + .micro-class__videos-list-button {
+  > * + .micro-conference__videos-list-button {
     border-top: 1px solid $color-border;
   }
 
@@ -38,7 +38,7 @@
   }
 }
 
-.micro-class__videos-list-button {
+.micro-conference__videos-list-button {
   display: block;
   width: 100%;
   background-color: transparent;
@@ -52,19 +52,19 @@
     background-color: rgba($color-border, 0.2);
   }
 
-  &.micro-class__videos-list-button--active {
+  &.micro-conference__videos-list-button--active {
     background-color: rgba($color-border, 0.4);
   }
 
-  &.micro-class__videos-list-button--watched {
+  &.micro-conference__videos-list-button--watched {
 
-    .micro-class__videos-list-button-indicator {
+    .micro-conference__videos-list-button-indicator {
       background-color: $color-success;
     }
   }
 }
 
-.micro-class__videos-list-button-indicator {
+.micro-conference__videos-list-button-indicator {
   display: block;
   width: 0.75rem;
   height: 0.75rem;
@@ -79,13 +79,13 @@
   border: 1px solid #e1e2ee;
 }
 
-.micro-class__videos-list-button-title {
+.micro-conference__videos-list-button-title {
   display: inline-block;
   font-size: 0.95rem;
   line-height: 1.2em;
 }
 
-.micro-class__videos-list-button-duration {
+.micro-conference__videos-list-button-duration {
   display: inline-block;
   position: absolute;
   top: 50%;

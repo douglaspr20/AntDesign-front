@@ -12,6 +12,11 @@ export const reducers = {
       allSessions: payload.allSessions,
     });
   },
+  [sessionConstants.SET_SESSION]: (state, { payload }) => {
+    return state.merge({
+      session: payload.session,
+    });
+  },
   [sessionConstants.SET_SESSIONS_ADDED_BY_USER]: (state, { payload }) => {
     return state.merge({
       sessionsUser: payload.sessionsUser,
@@ -38,6 +43,7 @@ export const initialState = () =>
   Map({
     sessionLoading: false,
     allSessions: [],
+    session: {},
     sessionsUser: [],
     participants: [],
     recommendedAgendaSessions: [],

@@ -31,8 +31,8 @@ function MicroConferenceVideosList({
   }, [activeVideoId, list, setActiveVideoId]);
 
   return (
-    <div className="micro-class__videos-list">
-      <div className="micro-class__videos-list-inner">
+    <div className="micro-conference__videos-list">
+      <div className="micro-conference__videos-list-inner">
         {list.map((item) => {
           let isViewed = false;
           for (let courseClassUserItem of courseUserProgress) {
@@ -47,21 +47,21 @@ function MicroConferenceVideosList({
             <button
               key={item.id}
               className={`
-              micro-class__videos-list-button
-              ${isViewed ? "micro-class__videos-list-button--watched" : ""}
+              micro-conference__videos-list-button
+              ${isViewed ? "micro-conference__videos-list-button--watched" : ""}
               ${
                 activeVideoId === item.id
-                  ? "micro-class__videos-list-button--active"
+                  ? "micro-conference__videos-list-button--active"
                   : ""
               }
             `}
               onClick={() => setActiveVideoId(item.id)}
             >
-              <span className="micro-class__videos-list-button-indicator"></span>
-              <span className="micro-class__videos-list-button-title">
+              <span className="micro-conference__videos-list-button-indicator"></span>
+              <span className="micro-conference__videos-list-button-title">
                 {item.title}
               </span>
-              <span className="micro-class__videos-list-button-duration">
+              <span className="micro-conference__videos-list-button-duration">
                 {fmtMSS(item.duration)}
               </span>
             </button>
