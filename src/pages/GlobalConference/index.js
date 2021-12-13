@@ -109,7 +109,7 @@ const GlobalConference = ({
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("participants");
+  const [currentView, setCurrentView] = useState("conference-schedule");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
     useState(false);
   const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
