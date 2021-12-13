@@ -26,16 +26,15 @@
     }
   
     &-container {
-      margin: 2rem 3rem;
+      margin: 1rem 3rem;
       display: grid;
       position: relative;
       grid-template-columns: 1fr;
-      grid-gap: 2rem;
   
       @media (max-width: 500px) {
         margin: 2rem 0rem;
       }
-      .session-step,
+ 
       .annual-conference-card {
         margin-bottom: 1rem !important;
       }

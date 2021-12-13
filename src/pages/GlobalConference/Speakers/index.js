@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Pagination } from "antd";
 import { SpeakerCard } from "components";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { getAllSessions } from "redux/actions/session-actions";
@@ -8,6 +9,7 @@ import "./style.scss";
 
 const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
   const [speakers, setSpeakers] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     getAllSessions();
@@ -50,14 +52,26 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
     getSpeakers();
   }, [allSessions, setLoading]);
 
+  const handlePaginated = (value) => {
+    setPage(value);
+  };
+
   return (
     <div className="speakers-list">
       <div className="speakers-list-container">
         {speakers.length > 0 &&
-          speakers.map((speaker) => (
-            <SpeakerCard key={speaker.id} speaker={speaker} />
-          ))}
+          speakers
+            .slice(page - 1 * 10, page * 10)
+            .map((speaker) => (
+              <SpeakerCard key={speaker.id} speaker={speaker} />
+            ))}
       </div>
+      <Pagination
+        defaultCurrent={page}
+        total={speakers.length}
+        showSizeChanger={false}
+        onChange={handlePaginated}
+      />
     </div>
   );
 };
