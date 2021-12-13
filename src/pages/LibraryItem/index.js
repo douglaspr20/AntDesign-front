@@ -73,6 +73,7 @@ const LibraryItemPage = ({
           </div>
           {podcast != null && (
             <EpisodeCard
+              key={podcast.id}
               links={getPodcastLinks(podcast)}
               episode={podcast}
               isInternalLink={true}
