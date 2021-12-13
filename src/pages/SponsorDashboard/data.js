@@ -412,7 +412,7 @@ export const topicsOfInterestOption = {
 const findTopicOfInterest = (topic) => {
   const retVal = PROFILE_SETTINGS.TOPICS.find((tpc) => tpc.value === topic);
 
-  return retVal.text || null;
+  return retVal.text;
 };
 
 export function topicsOfInterestChart(allUsers) {
@@ -420,13 +420,29 @@ export function topicsOfInterestChart(allUsers) {
 
   allUsers.map((user) => {
     return user.topicsOfInterest.map((topic) => {
-      return (topicsOfInterestCount[topic] = 0);
+      const itExists = PROFILE_SETTINGS.TOPICS.some(
+        (tpc) => tpc.value === topic
+      );
+
+      if (itExists) {
+        return (topicsOfInterestCount[topic] = 0);
+      }
+
+      return null;
     });
   });
 
   allUsers.map((user) => {
     return user.topicsOfInterest.map((topic) => {
-      return (topicsOfInterestCount[topic] += 1);
+      const itExists = PROFILE_SETTINGS.TOPICS.some(
+        (tpc) => tpc.value === topic
+      );
+
+      if (itExists) {
+        return (topicsOfInterestCount[topic] += 1);
+      }
+
+      return null;
     });
   });
 
@@ -440,13 +456,10 @@ export function topicsOfInterestChart(allUsers) {
   let data = [];
 
   for (let [key, value] of Object.entries(topicsOfInterestCount)) {
-    console.log(key, "key");
     const topic = findTopicOfInterest(key);
 
-    if (topic) {
-      labels.push(topic);
-      data.push(getPercentage(value, allUsers.length));
-    }
+    labels.push(topic);
+    data.push(getPercentage(value, allUsers.length));
   }
 
   return {
