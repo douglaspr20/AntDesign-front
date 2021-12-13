@@ -412,7 +412,7 @@ export const topicsOfInterestOption = {
 const findTopicOfInterest = (topic) => {
   const retVal = PROFILE_SETTINGS.TOPICS.find((tpc) => tpc.value === topic);
 
-  return retVal.text;
+  return retVal.text || null;
 };
 
 export function topicsOfInterestChart(allUsers) {
@@ -440,13 +440,14 @@ export function topicsOfInterestChart(allUsers) {
   let data = [];
 
   for (let [key, value] of Object.entries(topicsOfInterestCount)) {
+    console.log(key, "key");
     const topic = findTopicOfInterest(key);
 
-    labels.push(topic);
-    data.push(getPercentage(value, allUsers.length));
+    if (topic) {
+      labels.push(topic);
+      data.push(getPercentage(value, allUsers.length));
+    }
   }
-
-  console.log(labels, 'label')
 
   return {
     labels: labels,
