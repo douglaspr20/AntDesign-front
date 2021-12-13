@@ -1,5 +1,4 @@
-import COUNTRIES from "enum/Countries";
-import { isEmpty } from "lodash";
+import { COUNTRIES, PROFILE_SETTINGS } from "enum";
 
 function getCount(allUsers, field, value) {
   return allUsers.reduce((previousValue, currentValue) => {
@@ -128,6 +127,7 @@ export const options3 = {
   plugins: {
     legend: {
       position: "top",
+      display: false,
     },
     title: {
       display: true,
@@ -198,19 +198,6 @@ export function getDoughnutData3(allUsers) {
     "all"
   );
 
-  const noData =
-    allUsers.length -
-    (compensationBenefits +
-      cultureEmployeeExperience +
-      laborRelationsPolicy +
-      learningTalentDevelopment +
-      organizationalChange +
-      organizationalDesign +
-      peopleAnalytics +
-      talentAcquisition +
-      talentManagement +
-      allOfTheAbove);
-
   return {
     labels: [
       "Compensation/Benefits",
@@ -223,12 +210,9 @@ export function getDoughnutData3(allUsers) {
       "Talent acquisition/recruitment",
       "Talent Management",
       "All of the Above",
-      "No Data",
     ],
     datasets: [
       {
-        label:
-          "In what area of HR do you currently work or most recently worked?",
         data: [
           getPercentage(compensationBenefits, allUsers.length),
           getPercentage(cultureEmployeeExperience, allUsers.length),
@@ -240,7 +224,6 @@ export function getDoughnutData3(allUsers) {
           getPercentage(talentAcquisition, allUsers.length),
           getPercentage(talentManagement, allUsers.length),
           getPercentage(allOfTheAbove, allUsers.length),
-          getPercentage(noData, allUsers.length),
         ],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -252,8 +235,7 @@ export function getDoughnutData3(allUsers) {
           "rgba(22, 159, 64, 0.2)",
           "rgba(11, 72, 134, 0.2)",
           "rgba(14, 69, 222, 0.2)",
-          "rgba(199, 19, 64, 0.2)",
-          "rgba(7, 12, 64, 0.2)",
+          "rgba(39, 39, 64, 0.2)",
         ],
         borderColor: [
           "rgba(255, 99, 132, 1)",
@@ -265,8 +247,7 @@ export function getDoughnutData3(allUsers) {
           "rgba(22, 159, 64, 1)",
           "rgba(11, 72, 134, 1)",
           "rgba(14, 69, 222, 1)",
-          "rgba(199, 19, 64, 1)",
-          "rgba(7, 12, 64, 1)",
+          "rgba(39, 39, 64, 1)",
         ],
         borderWidth: 1,
       },
@@ -290,7 +271,7 @@ export const optionCountry = {
 function findCountry(country) {
   const retVal = COUNTRIES.find((cntry) => cntry.value === country);
 
-  return !isEmpty(retVal) ? retVal.text : "Rest of the world";
+  return retVal.text;
 }
 
 function random_rgba() {
@@ -307,7 +288,7 @@ function random_rgba() {
 
 export function getCountries(allUsers) {
   let countriesCount = {
-    restOfTheWorld: 0,
+    // restOfTheWorld: 0,
   };
 
   allUsers.map((user) => {
@@ -320,7 +301,6 @@ export function getCountries(allUsers) {
 
   for (let [key, value] of Object.entries(countriesCount)) {
     if (value === 0) {
-      countriesCount.restOfTheWorld += 1;
       delete countriesCount[key];
     }
   }
@@ -340,6 +320,138 @@ export function getCountries(allUsers) {
     datasets: [
       {
         label: "Countries",
+        data: data,
+        backgroundColor: labels.map(() => {
+          return random_rgba().backgroundColor;
+        }),
+        borderColor: labels.map(() => {
+          return random_rgba().borderColor;
+        }),
+        borderWidth: 1,
+      },
+    ],
+  };
+}
+
+export const sizeOfOrganizationOption = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "What is the size of the organization your work for?",
+    },
+  },
+};
+
+export function sizeOfOrganizationChart(allUsers) {
+  const _1_100 = getCount(allUsers, "sizeOfOrganization", "1-100");
+  const _101_500 = getCount(allUsers, "sizeOfOrganization", "101 - 500");
+  const _501_1000 = getCount(allUsers, "sizeOfOrganization", "501-1000");
+  const _1001_5000 = getCount(allUsers, "sizeOfOrganization", "1001 - 5000");
+  const _5001_10000 = getCount(allUsers, "sizeOfOrganization", "5001-1000");
+  const over10000 = getCount(allUsers, "sizeOfOrganization", "Over 10000");
+
+  return {
+    labels: [
+      "1 - 100",
+      "101 - 500",
+      "501 - 1000",
+      "1001 - 5000",
+      "5001 - 10000",
+      "Over 10000",
+    ],
+    datasets: [
+      {
+        data: [
+          getPercentage(_1_100, allUsers.length),
+          getPercentage(_101_500, allUsers.length),
+          getPercentage(_501_1000, allUsers.length),
+          getPercentage(_1001_5000, allUsers.length),
+          getPercentage(_5001_10000, allUsers.length),
+          getPercentage(over10000, allUsers.length),
+        ],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+}
+
+export const topicsOfInterestOption = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+      display: false,
+    },
+    title: {
+      display: true,
+      text: "Topics of interest",
+    },
+  },
+};
+
+const findTopicOfInterest = (topic) => {
+  const retVal = PROFILE_SETTINGS.TOPICS.find((tpc) => tpc.value === topic);
+
+  return retVal.text;
+};
+
+export function topicsOfInterestChart(allUsers) {
+  let topicsOfInterestCount = {};
+
+  allUsers.map((user) => {
+    return user.topicsOfInterest.map((topic) => {
+      return (topicsOfInterestCount[topic] = 0);
+    });
+  });
+
+  allUsers.map((user) => {
+    return user.topicsOfInterest.map((topic) => {
+      return (topicsOfInterestCount[topic] += 1);
+    });
+  });
+
+  for (let [key, value] of Object.entries(topicsOfInterestCount)) {
+    if (value === 0) {
+      delete topicsOfInterestCount[key];
+    }
+  }
+
+  let labels = [];
+  let data = [];
+
+  for (let [key, value] of Object.entries(topicsOfInterestCount)) {
+    const topic = findTopicOfInterest(key);
+
+    labels.push(topic);
+    data.push(getPercentage(value, allUsers.length));
+  }
+
+  console.log(labels, 'label')
+
+  return {
+    labels: labels,
+    datasets: [
+      {
         data: data,
         backgroundColor: labels.map(() => {
           return random_rgba().backgroundColor;
