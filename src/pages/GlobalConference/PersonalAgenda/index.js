@@ -5,7 +5,7 @@ import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
 
 import { homeSelector } from "redux/selectors/homeSelector";
-import { removeSession } from "redux/actions/home-actions";
+import { addSession, removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 import "./style.scss";
 
@@ -14,8 +14,13 @@ const PersonalAgenda = ({
   filters,
   removeSession,
   userProfile,
+  addSession,
 }) => {
   const [sessionData, setSessionData] = useState([]);
+
+  const onAddSession = (session) => {
+    addSession(session);
+  };
 
   const onRemoveSession = (session) => {
     removeSession(session);
@@ -165,6 +170,7 @@ const PersonalAgenda = ({
                   session={s}
                   attended={userProfile.attendedToConference}
                   added={(userProfile.sessions || []).includes(s.id)}
+                  onAddSession={() => onAddSession(s)}
                   onRemoveSession={() => onRemoveSession(s)}
                 />
               ))}
@@ -189,6 +195,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  addSession,
   removeSession,
 };
 

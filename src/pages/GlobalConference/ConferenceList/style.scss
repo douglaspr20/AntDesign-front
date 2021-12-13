@@ -1,15 +1,21 @@
 @import "../../../styles/main.scss";
 
 .conference-list {
-  margin-top: 20rem;
+  margin-top: 8rem;
+  padding-top: 10rem;
+  width: 100%;
 
-  @media (max-width: 1100px) {
-    margin-top: 23rem;
-  }
+  @media (max-width: 1100px){
+    padding-top: 16rem;
+    } 
 
-  @media (max-width: 500px) {
-    margin-top: 24rem;
-  }
+  @media (max-width: 800px){
+    padding-top: 15rem;
+    } 
+
+    @media (max-width: 500px){
+      padding-top: 8rem;
+      } 
 
   &::-webkit-scrollbar {
     display: none;
@@ -39,10 +45,19 @@
 
     @media (max-width: 500px) {
       margin: 2rem 0rem;
+      margin-top: 10rem;
     }
     .session-step,
     .annual-conference-card {
       margin-bottom: 2rem !important;
+    }
+  }
+
+  &-info-icon{
+    color: $color-accent !important;
+
+    &:hover{
+      color: $color-info !important
     }
   }
 }

@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
-import IconBack from "images/icon-back.svg";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 
 import { ConferenceCard, EpisodeCard } from "components";
+
+import IconBack from "images/icon-back.svg";
 
 import {
   getConferenceLibrary,
@@ -26,9 +27,13 @@ const LibraryItemPage = ({
   setPodcast,
   conferenceLibrary,
   podcast,
+  match,
 }) => {
   const { id, type } = useParams();
-  const history = useHistory()
+  const history = useHistory();
+
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
 
   useEffect(() => {
     if (type === "conference-library") {
@@ -40,7 +45,7 @@ const LibraryItemPage = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, type]);
 
   return (
     <div className="library-item-page-container">
@@ -60,24 +65,36 @@ const LibraryItemPage = ({
       )}
       {type === "podcast" && (
         <div className="library-item-page-container--podcast-library">
-          <div
-            className="skill-cohort-detail-page-header-content-back-btn mb-3"
-            onClick={() => history.push(INTERNAL_LINKS.PODCAST)}
-          >
-            <div className="skill-cohort-detail-page-header-content-back">
-              <div className="skill-cohort-detail-page-header-content-back-img">
-                <img src={IconBack} alt="icon-back" />
+          {type === "podcast" && (
+            <div className="library-item-page-container--podcast-library">
+              <div
+                className="skill-cohort-detail-page-header-content-back-btn mb-3"
+                onClick={() =>
+                  history.push(
+                    query.get("channel")
+                      ? `${INTERNAL_LINKS.CHANNELS}/${query.get(
+                          "channel"
+                        )}?tab=1`
+                      : INTERNAL_LINKS.PODCAST
+                  )
+                }
+              >
+                <div className="skill-cohort-detail-page-header-content-back">
+                  <div className="skill-cohort-detail-page-header-content-back-img">
+                    <img src={IconBack} alt="icon-back" />
+                  </div>
+                  <h4>Back to podcasts</h4>
+                </div>
               </div>
-              <h4>Back to Podcasts</h4>
+              {podcast != null && (
+                <EpisodeCard
+                  key={podcast.id}
+                  links={getPodcastLinks(podcast)}
+                  episode={podcast}
+                  isInternalLink={true}
+                />
+              )}
             </div>
-          </div>
-          {podcast != null && (
-            <EpisodeCard
-              key={podcast.id}
-              links={getPodcastLinks(podcast)}
-              episode={podcast}
-              isInternalLink={true}
-            />
           )}
         </div>
       )}

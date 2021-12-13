@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { CustomButton, SpecialtyItem } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
@@ -122,7 +123,29 @@ const AnnualConferenceCard = ({
           <div className="acc-session-type">{`Session type: ${session.type}`}</div>
           <div className="acc-session-date">{session.date}</div>
           <div className="acc-session-time">
-            {session.period} {session.tz}
+            {session.period} {session.timezone}{" "}
+            <Tooltip
+              placement="right"
+              title={
+                <span>
+                  Where are you located? If you are not located in the West
+                  Coast of the United States, Canada or Mexico, then you are NOT
+                  in Pacific Time Zone. Please convert to your corresponding
+                  time zone here:{" "}
+                  <a
+                    href="https://www.timeanddate.com/worldclock/converter.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    www.timeanddate.com
+                  </a>
+                </span>
+              }
+              overlayStyle={{ background: "black" }}
+              overlayInnerStyle={{ background: "black" }}
+            >
+              <InfoCircleOutlined className="conference-list-info-icon" />
+            </Tooltip>
           </div>
         </div>
         {added && (

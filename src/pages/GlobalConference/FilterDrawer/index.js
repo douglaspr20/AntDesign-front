@@ -87,12 +87,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
               onChange={(values) => onFilterChange("Sessions", values)}
             >
               {SessionType.map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={userProfile.memberShip === "free"}
-                >
+                <CustomCheckbox key={item.value} value={item.value} size="sm">
                   {item.text}
                 </CustomCheckbox>
               ))}
@@ -106,12 +101,7 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
               onChange={(values) => onFilterChange("Topics", values)}
             >
               {allCategories.map((item) => (
-                <CustomCheckbox
-                  key={item.value}
-                  value={item.value}
-                  size="sm"
-                  disabled={userProfile.memberShip === "free"}
-                >
+                <CustomCheckbox key={item.value} value={item.value} size="sm">
                   {item.title}
                 </CustomCheckbox>
               ))}

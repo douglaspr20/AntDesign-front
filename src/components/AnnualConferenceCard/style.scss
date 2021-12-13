@@ -37,7 +37,6 @@
   &-type {
     @include app-font(14px, 19px);
     color: $color-text-secondary;
-    //margin-top: 1rem;
   }
 
   &-date {
@@ -50,6 +49,7 @@
   &-time {
     @include app-font(14px, 19px);
     color: $color-text-secondary;
+    max-width: 280px;
   }
 
   &-toggle {

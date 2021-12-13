@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
-import moment from 'moment-timezone'
+import moment from "moment-timezone";
 
 import {
   DateAvatar,
@@ -13,26 +13,37 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import { EVENT_TYPES, MONTH_NAMES, TIMEZONE_LIST } from "enum";
 import Emitter from "services/emitter";
-import { actions as eventActions } from "redux/actions/event-actions";
+import {
+  actions as eventActions,
+  getChannelEvents,
+  setEvent,
+} from "redux/actions/event-actions";
+import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import { convertToLocalTime, convertToCertainTime } from "utils/format";
 
 import "./style.scss";
+import { channelSelector } from "redux/selectors/channelSelector";
 
 const EventDrawer = ({
   addToMyEventList,
   removeFromMyEventList,
+  updatedEvent,
   visible,
   event,
   userProfile,
   onClose,
+  filter,
+  getChannelEvents,
+  channel,
   onConfirmCredit,
 }) => {
   const [editor, setEditor] = useState("froala");
   const [showFirewall, setShowFirewall] = useState(false);
+  const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const onDrawerClose = () => {
     setShowFirewall(false);
@@ -45,13 +56,20 @@ const EventDrawer = ({
 
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
-        const timezone = moment.tz.guess()
-        addToMyEventList(event, timezone);
+        const timezone = moment.tz.guess();
+        addToMyEventList(event, timezone, () => {
+          getChannelEvents({ ...filter, channel: channel.id });
+        });
       } else {
         setShowFirewall(true);
       }
     } else {
-      addToMyEventList(event);
+      addToMyEventList(event, null, () => {
+        getChannelEvents({ ...filter, channel: channel.id });
+      });
+    }
+    if (window.location.pathname.includes("channels")) {
+      window.open(event.externalLink, "_blank");
     }
   };
 
@@ -116,11 +134,17 @@ const EventDrawer = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(item => item.value === event.timezone)
-    const offset = timezone.offset
+    const timezone = TIMEZONE_LIST.find(
+      (item) => item.value === event.timezone
+    );
+    const offset = timezone.offset;
 
-    const convertedStartTime = convertToLocalTime(moment(startTime).utcOffset(offset, true))
-    const convertedEndTime = convertToLocalTime(moment(endTime).utcOffset(offset, true))
+    const convertedStartTime = convertToLocalTime(
+      moment(startTime).utcOffset(offset, true)
+    );
+    const convertedEndTime = convertToLocalTime(
+      moment(endTime).utcOffset(offset, true)
+    );
 
     switch (key) {
       case "1":
@@ -167,6 +191,17 @@ const EventDrawer = ({
     }
   }, [event]);
 
+  useEffect(() => {
+    if (event && updatedEvent && event.id === updatedEvent.id) {
+      setEvent({
+        ...updatedEvent,
+        day: moment(updatedEvent.date, DataFormat).date(),
+        month: MONTH_NAMES[moment(updatedEvent.date, DataFormat).month()],
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedEvent, event]);
+  
   return (
     <CustomDrawer
       title={""}
@@ -270,11 +305,23 @@ const EventDrawer = ({
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(time.startTime, event.timezone)
-                    const endTime = convertToCertainTime(time.endTime, event.timezone)
+                    const startTime = convertToCertainTime(
+                      time.startTime,
+                      event.timezone
+                    );
+                    const endTime = convertToCertainTime(
+                      time.endTime,
+                      event.timezone
+                    );
 
                     return (
-                      <Dropdown overlay={downloadDropdownOptions(startTime, endTime, index)}>
+                      <Dropdown
+                        overlay={downloadDropdownOptions(
+                          startTime,
+                          endTime,
+                          index
+                        )}
+                      >
                         <a
                           href="/#"
                           className="ant-dropdown-link"
@@ -332,6 +379,7 @@ EventDrawer.propTypes = {
   event: PropTypes.object,
   onClose: PropTypes.func,
   onConfirmCredit: PropTypes.func,
+  filter: PropTypes.object,
 };
 
 EventDrawer.defaultProps = {
@@ -340,13 +388,17 @@ EventDrawer.defaultProps = {
   event: {},
   onClose: () => {},
   onConfirmCredit: () => {},
+  filter: {},
 };
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  updatedEvent: eventSelector(state).updatedEvent,
+  channel: channelSelector(state).selectedChannel,
 });
 
 const mapDispatchToProps = {
+  getChannelEvents,
   ...eventActions,
 };
 
