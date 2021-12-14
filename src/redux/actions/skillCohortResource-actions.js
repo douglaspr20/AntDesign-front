@@ -7,6 +7,8 @@ const SET_RESOURCE = "SET_RESOURCE";
 const GET_MORE = "GET_MORE_RESOURCES";
 const SET_MORE = "SET_MORE_RESOURCES";
 const SET_LOADING = "SET_LOADING";
+const GET_ENTIRE_RESOURCES = "GET_ENTIRE_RESOURCES";
+const SET_ENTIRE_RESOURCES = "SET_ENTIRE_RESOURCES";
 
 export const constants = {
   GET_ALL_RESOURCE,
@@ -16,6 +18,8 @@ export const constants = {
   GET_MORE,
   SET_MORE,
   SET_LOADING,
+  GET_ENTIRE_RESOURCES,
+  SET_ENTIRE_RESOURCES,
 };
 
 export const getAllSkillCohortResources = createAction(
@@ -31,8 +35,8 @@ export const getMoreSkillCohortResources = createAction(
 );
 export const getSkillCohortResource = createAction(
   GET_RESOURCE,
-  (SkillCohortId) => ({
-    SkillCohortId,
+  (SkillCohortResourceId) => ({
+    SkillCohortResourceId,
   })
 );
 export const setAllSkillCohortResources = createAction(
@@ -55,6 +59,14 @@ export const setSkillCohortResource = createAction(
   SET_RESOURCE,
   (skillCohortResource) => ({ skillCohortResource })
 );
+export const getEntireResources = createAction(
+  GET_ENTIRE_RESOURCES,
+  (SkillCohortId, date) => ({ SkillCohortId, date })
+);
+export const setEntireResources = createAction(
+  SET_ENTIRE_RESOURCES,
+  (entireSkillCohortResources) => ({ entireSkillCohortResources })
+);
 
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 
@@ -66,4 +78,6 @@ export const actions = {
   getMoreSkillCohortResources,
   setMoreSkillCohortResources,
   setLoading,
+  getEntireResources,
+  setEntireResources
 };
