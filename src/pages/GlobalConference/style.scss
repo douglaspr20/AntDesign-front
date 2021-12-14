@@ -100,12 +100,11 @@
 
       .button-containers{
         display: flex !important;
-        flex-wrap: wrap;
         align-items: center;
         
         @media (max-width: 1100px){
           justify-content: center;
-
+          flex-wrap: wrap;
           & .custom-button, & .attending-label{
             margin-top: .5rem;
           }
@@ -164,7 +163,7 @@
 
       @media (max-width: 1400px){
         position: relative;
-        width: 130%
+        width: 105%
       
         }
 
