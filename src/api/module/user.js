@@ -91,3 +91,7 @@ export const confirmAccessibilityRequirements = ({ userId }) => {
     `private/user/confirm-accessibility-requirements/${userId}`
   );
 };
+
+export const getAllUsers = () => {
+  return httpClient.get(`private/users`);
+};
