@@ -22,6 +22,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
+  getAllUsers,
 } from "../../api";
 
 const defaultUserInfo = {
@@ -402,6 +403,21 @@ export function* confirmAccessibilityRequirementsSaga({ payload }) {
   }
 }
 
+export function* getAllUsersSaga() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllUsers);
+
+    if (response.status === 200) {
+      yield put(homeActions.setAllUsers(response.data.users));
+    }
+  } catch (error) {
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -424,6 +440,7 @@ function* watchLogin() {
     homeConstants.CONFIRM_ACCESSIBILITY_REQUIREMENTS,
     confirmAccessibilityRequirementsSaga
   );
+  yield takeLatest(homeConstants.GET_USERS, getAllUsersSaga)
 }
 
 export const userSaga = [fork(watchLogin)];

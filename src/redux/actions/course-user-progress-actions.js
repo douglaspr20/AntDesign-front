@@ -15,8 +15,14 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getCourseUserProgress = createAction(GET_COURSE_USER_PROGRESS, (courseId) => ({ courseId }));
-export const setCourseUserProgress = createAction(SET_COURSE_USER_PROGRESS, (courseUserProgress) => ({ courseUserProgress }));
+export const getCourseUserProgress = createAction(
+  GET_COURSE_USER_PROGRESS,
+  (courseId) => ({ courseId })
+);
+export const setCourseUserProgress = createAction(
+  SET_COURSE_USER_PROGRESS,
+  (courseUserProgress) => ({ courseUserProgress })
+);
 export const setProgress = createAction(SET_PROGRESS, (data) => ({ data }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 
