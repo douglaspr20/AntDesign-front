@@ -74,7 +74,9 @@ const ConferenceList = ({
       for (let i = 0; i < sData.length; i++) {
         let isEmpty = true;
         for (let j = 0; j <= filteredData.length; j++) {
-          if (sData[i].period === filteredData[j]?.step) {
+          if (
+            `${sData[i].period} ${sData[i].timezone}` === filteredData[j]?.step
+          ) {
             filteredData[j].data.push(sData[i]);
             isEmpty = false;
           }

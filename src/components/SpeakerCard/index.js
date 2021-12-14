@@ -9,7 +9,7 @@ const SpeakerCard = ({ speaker }) => {
       href={speaker.linkSpeaker}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ maxWidth: "250px", marginBottom: "1rem" }}
+      style={{ maxWidth: "200px", marginBottom: "1rem" }}
     >
       <Card
         hoverable
@@ -24,9 +24,9 @@ const SpeakerCard = ({ speaker }) => {
         }}
       >
         {speaker.img ? (
-          <Avatar size={180} src={speaker.img} alt={speaker.name} />
+          <Avatar size={150} src={speaker.img} alt={speaker.name} />
         ) : (
-          <Avatar size={180} icon={<UserOutlined />} />
+          <Avatar size={150} icon={<UserOutlined />} />
         )}
 
         <div style={{ textAlign: "center" }}>
