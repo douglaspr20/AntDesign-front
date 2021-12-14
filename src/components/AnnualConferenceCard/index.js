@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -26,6 +26,8 @@ const AnnualConferenceCard = ({
   const [hideInfo, setHideInfo] = useState(true);
   const [visibleErrorJoinedOtherSession, setVisibleJoinedOtherSession] =
     useState(false);
+  const [hoursStartSession, setHoursStartSession] = useState("");
+  const [visibleChronometer, setVisibleChronometer] = useState(false);
 
   const timezone = TIMEZONE_LIST.find(
     (item) => item.value === session.timezone
@@ -118,6 +120,29 @@ const AnnualConferenceCard = ({
     onJoinedSession(session);
   };
 
+  useMemo(() => {
+    const currentTime = moment().unix();
+    const diffTime = convertedStartTime.unix() - currentTime;
+    const interval = 1000;
+    let duration = moment.duration(diffTime * interval, "milliseconds");
+
+    setInterval(function () {
+      duration = moment.duration(duration - interval, "milliseconds");
+      setHoursStartSession(
+        `Starting in: ${duration
+          .asHours()
+          .toFixed()} hours and ${duration.minutes()} minutes`
+      );
+
+      if (
+        duration.asHours() < 120 &&
+        moment().format("DD-MM-YYYY") >= "06-03-2022"
+      ) {
+        setVisibleChronometer(true);
+      }
+    }, 1000);
+  }, [convertedStartTime]);
+
   return (
     <div className="annual-conference-card acc">
       <div className="acc-session-header">
@@ -138,9 +163,10 @@ const AnnualConferenceCard = ({
               text="Remove"
               onClick={onRemoveSession}
               className="remove-buttom"
+              style={{ maxWidth: "150px", alignSelf: "flex-end" }}
             />
 
-            {timeLeft > 5 && (
+            {timeLeft < 5 ? (
               <CustomButton
                 type="primary"
                 size="md"
@@ -153,7 +179,23 @@ const AnnualConferenceCard = ({
                 onClick={() => joinedSession()}
                 style={{ marginTop: "5px" }}
               />
-            )}
+            ) : visibleChronometer ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text={`${hoursStartSession}`}
+                disabled={true}
+                style={{ marginTop: "5px" }}
+              />
+            ) : timeLeft <= -10 ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="This Session Is Now Closed"
+                disabled={true}
+                style={{ marginTop: "5px" }}
+              />
+            ) : null}
           </div>
         ) : attended ? (
           <CustomButton

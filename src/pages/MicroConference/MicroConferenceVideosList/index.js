@@ -7,9 +7,9 @@ import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector
 
 import "./style.scss";
 
-function fmtMSS(s) {
-  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + Math.round(s);
-}
+// function fmtMSS(s) {
+//   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + Math.round(s);
+// }
 
 function MicroConferenceVideosList({
   list,
@@ -33,7 +33,52 @@ function MicroConferenceVideosList({
   return (
     <div className="micro-conference__videos-list">
       <div className="micro-conference__videos-list-inner">
-        {list.map((item) => {
+        <button
+          className={`
+              micro-conference__videos-list-button
+            
+            `}
+          // onClick={() => setActiveVideoId(1)}
+        >
+          <span className="micro-conference__videos-list-button-indicator"></span>
+          <span className="micro-conference__videos-list-button-title">
+            prueba
+          </span>
+          <span className="micro-conference__videos-list-button-duration">
+            58:55
+          </span>
+        </button>
+        <button
+          className={`
+              micro-conference__videos-list-button
+            
+            `}
+          // onClick={() => setActiveVideoId(1)}
+        >
+          <span className="micro-conference__videos-list-button-indicator"></span>
+          <span className="micro-conference__videos-list-button-title">
+            prueba
+          </span>
+          <span className="micro-conference__videos-list-button-duration">
+            58:55
+          </span>
+        </button>
+        <button
+          className={`
+              micro-conference__videos-list-button
+            
+            `}
+          // onClick={() => setActiveVideoId(1)}
+        >
+          <span className="micro-conference__videos-list-button-indicator"></span>
+          <span className="micro-conference__videos-list-button-title">
+            prueba
+          </span>
+          <span className="micro-conference__videos-list-button-duration">
+            58:55
+          </span>
+        </button>
+        {/* {list.map((item) => {
           let isViewed = false;
           for (let courseClassUserItem of courseUserProgress) {
             if (
@@ -66,7 +111,7 @@ function MicroConferenceVideosList({
               </span>
             </button>
           );
-        })}
+        })} */}
       </div>
     </div>
   );

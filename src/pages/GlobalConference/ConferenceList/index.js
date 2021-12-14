@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { notification, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
-import { TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -26,6 +27,7 @@ const ConferenceList = ({
   joinedSession,
 }) => {
   const [sessionData, setSessionData] = useState([]);
+  const history = useHistory();
 
   const onAddSession = (session) => {
     addSession(session);
@@ -43,10 +45,19 @@ const ConferenceList = ({
             message: error || "Somethign was wrong",
           });
         }
-        window.open(session.link, "_blank");
+
+        if (session.type === "Certificate Track and Panels") {
+          history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+        } else {
+          window.open(`${session.link}`);
+        }
       });
     }
-    window.open(session.link, "_blank");
+    if (session.type === "Certificate Track and Panels") {
+      history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+    } else {
+      window.open(`${session.link}`);
+    }
   };
 
   useEffect(() => {
