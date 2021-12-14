@@ -6,7 +6,25 @@ import {
 } from "../actions/skillCohortResource-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import { getAllResources, getResource } from "../../api";
+import { getAllResources, getResource, getEntireResources } from "../../api";
+
+export function* getEntireResourceSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getEntireResources, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        resourcesActions.setEntireResources(response.data.entireSkillCohortResources)
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
 
 export function* getAllResourceSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -73,6 +91,7 @@ export function* getResourceSaga({ payload }) {
 }
 
 function* watchResourceSaga() {
+  yield takeLatest(resourcesConstants.GET_ENTIRE_RESOURCES, getEntireResourceSaga);
   yield takeLatest(resourcesConstants.GET_ALL_RESOURCE, getAllResourceSaga);
   yield takeLatest(resourcesConstants.GET_RESOURCE, getResourceSaga);
   yield takeLatest(resourcesConstants.GET_MORE, getMoreResourceSaga);

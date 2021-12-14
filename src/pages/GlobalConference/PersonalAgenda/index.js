@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Tooltip } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
 
@@ -68,7 +70,9 @@ const PersonalAgenda = ({
       for (let i = 0; i < sData.length; i++) {
         let isEmpty = true;
         for (let j = 0; j <= filteredData.length; j++) {
-          if (sData[i].period === filteredData[j]?.step) {
+          if (
+            `${sData[i].period} ${sData[i].timezone}` === filteredData[j]?.step
+          ) {
             filteredData[j].data.push(sData[i]);
             isEmpty = false;
           }
@@ -76,7 +80,7 @@ const PersonalAgenda = ({
 
         if (isEmpty) {
           filteredData.push({
-            step: sData[i].period,
+            step: `${sData[i].period} ${sData[i].timezone}`,
             data: [sData[i]],
           });
         }
@@ -163,7 +167,31 @@ const PersonalAgenda = ({
         {sessionData.map((session, index) =>
           session.data.length > 0 ? (
             <div key={index}>
-              <h3 className="session-step">{session.step}</h3>
+              <h3 className="session-step">
+                {session.step}{" "}
+                <Tooltip
+                  placement="right"
+                  title={
+                    <span>
+                      Where are you located? If you are not located in the West
+                      Coast of the United States, Canada or Mexico, then you are
+                      NOT in Pacific Time Zone. Please convert to your
+                      corresponding time zone here:{" "}
+                      <a
+                        href="https://www.timeanddate.com/worldclock/converter.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        www.timeanddate.com
+                      </a>
+                    </span>
+                  }
+                  overlayStyle={{ background: "black" }}
+                  overlayInnerStyle={{ background: "black" }}
+                >
+                  <InfoCircleOutlined className="conference-list-info-icon" />
+                </Tooltip>
+              </h3>
               {session.data.map((s) => (
                 <AnnualConferenceCard
                   key={s.id}

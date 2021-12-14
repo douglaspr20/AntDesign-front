@@ -11,16 +11,15 @@ import {
 } from "components";
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
-import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 import "./style.scss";
 import { CONFERENCE_SETTING } from "enum";
 
 const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
-const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
+const FilterDrawer = ({ allCategories, onChange, onSearch, filters }) => {
   const [visible, setVisible] = useState(false);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState(filters);
 
   const onClickDone = () => {
     onChange(filterValues);
@@ -54,6 +53,10 @@ const FilterDrawer = ({ userProfile, allCategories, onChange, onSearch }) => {
       Emitter.off(EVENT_TYPES.OPEN_FILTER_PANEL);
     };
   }, []);
+
+  useEffect(() => {
+    setFilterValues(filters);
+  }, [filters]);
 
   return (
     <CustomDrawer
@@ -126,16 +129,17 @@ FilterDrawer.propTypes = {
   title: PropTypes.string,
   onChange: PropTypes.func,
   onSearch: PropTypes.func,
+  filters: PropTypes.object,
 };
 
 FilterDrawer.defaultProps = {
   title: "",
   onChange: () => {},
   onSearch: () => {},
+  filters: {},
 };
 
 const mapStateToProps = (state) => ({
-  userProfile: homeSelector(state).userProfile,
   allCategories: categorySelector(state).categories,
 });
 

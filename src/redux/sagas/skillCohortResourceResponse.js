@@ -65,12 +65,6 @@ export function* createResourceResponseSaga({ payload }) {
         message: "Success",
         description: "Successfully submitted your response.",
       });
-
-      yield put(
-        responseActions.setResourceResponse(
-          response.data.skillCohortResourceResponse
-        )
-      );
     }
   } catch (error) {
     console.log(error);

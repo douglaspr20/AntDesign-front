@@ -154,6 +154,7 @@ const GlobalConference = ({
 
   const handleView = (view) => {
     setCurrentView(view);
+    setFilters({});
   };
 
   const showModalMessage = (message) => {
@@ -376,8 +377,13 @@ const GlobalConference = ({
       <GlobalConferenceFilterPanel
         onChange={onFilterChange}
         onSearch={onSearch}
+        filters={filters}
       />
-      <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
+      <FilterDrawer
+        onChange={onFilterChange}
+        onSearch={setMeta}
+        filters={filters}
+      />
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
