@@ -25,6 +25,11 @@ export const reducers = {
       },
     });
   },
+  [homeConstants.SET_USERS]: (state, { payload }) => {
+    return state.merge({
+      allUsers: cloneDeep([...payload.users])
+    })
+  }
 };
 
 export const initialState = () =>
@@ -52,6 +57,7 @@ export const initialState = () =>
         mentee: false,
       },
     },
+    allUsers: []
   });
 
 export default handleActions(reducers, initialState());

@@ -42,6 +42,7 @@ import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
+import SponsorDashboardPage from "pages/SponsorDashboard";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -245,12 +246,16 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
             render={(props) => <MyLearningPage {...props} />}
           />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
+            render={(props) => <SponsorDashboardPage {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
             render={(props) => <PublicEventPage {...props} />}
           />
-
           <Route component={NoPageFound} />
         </Switch>
       </Layout.Content>

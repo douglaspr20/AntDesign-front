@@ -1,0 +1,23 @@
+.sponsor-dashboard-page {
+  height: 100vh;
+  max-height: 100%;
+  width: 100%;
+  padding: 24px 0;
+  overflow: auto;
+}
+
+.sponsor-dashboard-container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-container {
+  margin-top: 24px;
+}
+
+.demographic-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
