@@ -55,19 +55,19 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
   const handlePaginated = (value) => {
     setPage(value);
   };
-
   return (
     <div className="speakers-list">
       <div className="speakers-list-container">
         {speakers.length > 0 &&
           speakers
-            .slice(page - 1 * 10, page * 10)
+            .slice((page - 1) * 20, page * 20)
             .map((speaker) => (
               <SpeakerCard key={speaker.id} speaker={speaker} />
             ))}
       </div>
       <Pagination
         defaultCurrent={page}
+        defaultPageSize={20}
         total={speakers.length}
         showSizeChanger={false}
         onChange={handlePaginated}
