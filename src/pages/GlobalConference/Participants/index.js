@@ -63,7 +63,7 @@ const Participants = ({
         <div className="speakers-list-container">
           {participants.length > 0 &&
             participants
-              .slice(page - 1 * 10, page * 10)
+              .slice((page - 1) * 20, page * 20)
               .map((participant, i) => (
                 <ParticipantCard
                   key={i}
@@ -86,6 +86,7 @@ const Participants = ({
         </div>
         <Pagination
           defaultCurrent={page}
+          defaultPageSize={20}
           total={participants.length}
           showSizeChanger={false}
           onChange={handlePaginated}
