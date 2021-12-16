@@ -148,15 +148,15 @@ const AnnualConferenceCard = ({
       <div className="acc-session-header">
         <h3>{session.title}</h3>
 
-        {added ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "auto",
-            }}
-          >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "auto",
+          }}
+        >
+          {added ? (
             <CustomButton
               type="primary outlined"
               size="md"
@@ -165,45 +165,45 @@ const AnnualConferenceCard = ({
               className="remove-buttom"
               style={{ maxWidth: "150px", alignSelf: "flex-end" }}
             />
+          ) : attended ? (
+            <CustomButton
+              size="sm"
+              text="Add To My Personalized Agenda"
+              onClick={onAddSession}
+            />
+          ) : null}
 
-            {timeLeft < 5 ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="Join"
-                className={
-                  !userProfile?.sessionsJoined?.includes(session.id)
-                    ? "custom-button-disabled"
-                    : null
-                }
-                onClick={() => joinedSession()}
-                style={{ marginTop: "5px" }}
-              />
-            ) : visibleChronometer ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text={`${hoursStartSession}`}
-                disabled={true}
-                style={{ marginTop: "5px" }}
-              />
-            ) : timeLeft <= -10 ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="This Session Is Now Closed"
-                disabled={true}
-                style={{ marginTop: "5px" }}
-              />
-            ) : null}
-          </div>
-        ) : attended ? (
-          <CustomButton
-            size="sm"
-            text="Add To My Personalized Agenda"
-            onClick={onAddSession}
-          />
-        ) : null}
+          {timeLeft < 5 ? (
+            <CustomButton
+              type="primary"
+              size="md"
+              text="Join"
+              className={
+                !userProfile?.sessionsJoined?.includes(session.id)
+                  ? "custom-button-disabled"
+                  : null
+              }
+              onClick={() => joinedSession()}
+              style={{ marginTop: "5px" }}
+            />
+          ) : visibleChronometer ? (
+            <CustomButton
+              type="primary"
+              size="md"
+              text={`${hoursStartSession}`}
+              disabled={true}
+              style={{ marginTop: "5px" }}
+            />
+          ) : timeLeft <= -10 ? (
+            <CustomButton
+              type="primary"
+              size="md"
+              text="This Session Is Now Closed"
+              disabled={true}
+              style={{ marginTop: "5px" }}
+            />
+          ) : null}
+        </div>
       </div>
       {added && <div className="acc-session-added-tag">Added</div>}
       <div className="d-flex justify-between">
