@@ -172,7 +172,7 @@ const AnnualConferenceCard = ({
                 size="md"
                 text="Join"
                 className={
-                  !userProfile.sessionsJoined.includes(session.id)
+                  !userProfile?.sessionsJoined?.includes(session.id)
                     ? "custom-button-disabled"
                     : null
                 }
