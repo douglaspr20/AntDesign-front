@@ -24,6 +24,7 @@ const ParticipantCard = ({
         justifyContent: "flex-start",
         alignItems: "center",
       }}
+      className="participant-card-container"
     >
       {!invitedAllBonfires && (
         <CustomButton
