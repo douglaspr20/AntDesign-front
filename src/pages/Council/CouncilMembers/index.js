@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { sessionSelector } from "redux/selectors/sessionSelector";
+import { councilSelector } from "redux/selectors/councilSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
-import { getCouncilMembers } from "redux/actions/home-actions";
+import { getCouncilMembers } from "redux/actions/council-actions";
 import { ParticipantCard } from "components";
 import "./style.scss";
 
@@ -34,11 +35,10 @@ const CouncilMembers = ({
     </div>
   );
 };
-
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
-  councilMembers: homeSelector(state).councilMembers,
+  councilMembers: councilSelector(state).councilMembers,
 });
 
 const mapDispatchToProps = {

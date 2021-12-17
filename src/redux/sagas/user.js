@@ -10,7 +10,6 @@ import {
   getUserFromId,
   updateUser,
   upgradePlan,
-  getCouncilMembersFromAPI,
   inviteFriend,
   attendToGlobalConference,
   addSession,
@@ -63,23 +62,6 @@ export function* getUser() {
     }
   } finally {
     yield put(homeActions.setLoading(false));
-  }
-}
-
-export function* getCouncilMemberSagas() {
-  try {
-    const response = yield call(getCouncilMembersFromAPI);
-    if (response.status === 200) {
-      const { councilMembers } = response.data;
-
-      yield put(
-        homeActions.setCouncilMembers(councilMembers)
-      );
-    }
-  } catch (error) {
-    if (error && error.response && error.response.status === 401) {
-      yield put(authActions.logout());
-    }
   }
 }
 
@@ -422,7 +404,6 @@ export function* confirmAccessibilityRequirementsSaga({ payload }) {
 
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
-  yield takeLatest(homeConstants.GET_COUNCIL_MEMBERS, getCouncilMemberSagas);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
   yield takeLatest(homeConstants.UPGRADE_PLAN, upgradeUserPlan);
   yield takeLatest(homeConstants.INVITE_FRIEND, sendInvitationEmail);

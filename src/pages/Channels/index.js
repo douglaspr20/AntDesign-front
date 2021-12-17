@@ -41,7 +41,6 @@ const Channels = ({
   const [editMode, setEditMode] = useState(false);
 
   const onFilterChange = (filter) => {
-    console.log("Filter Change", filter);
     setFilters(filter);
     getFirstChannelList({ filter });
   };

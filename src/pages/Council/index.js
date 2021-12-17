@@ -1,38 +1,49 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
-import { Tabs } from "components";
-import NoItemsMessageCard from "components/NoItemsMessageCard";
-import { INTERNAL_LINKS } from "enum";
-import ChannelFilterPanel from "../Channel/ChannelFilterPanel";
+import { Link, useLocation } from "react-router-dom";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import { councilSelector } from "redux/selectors/councilSelector";
+import { LibraryFilterPanel, Tabs } from "components";
+import NoItemsMessageCard from "components/NoItemsMessageCard";
+import { INTERNAL_LINKS } from "enum";
 
 import IconBack from "images/icon-back.svg";
 
-import "./style.scss";
 import CouncilMembers from "./CouncilMembers";
+import CouncilList from "./CouncilList.js";
+import "./style.scss";
 
-const CouncilPage = ({ userProfile }) => {
-  const [currentTab, setCurrentTab] = useState("0");
-  const [, setFilter] = useState({});
+const CouncilPage = ({ userProfile, councilResources }) => {
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
+  const [filter, setFilter] = useState({});
 
   const onFilterChange = (values) => {
     setFilter(values);
   };
-
   const TabData = [
     {
       title: "Resources",
       content: () => (
-        <>
-          <div className="council-page__list-wrap">
-            <NoItemsMessageCard
-              message={`There are no resources for you at the moment`}
-            />
-          </div>
-        </>
+        <CouncilList
+          type="article"
+          refresh={currentTab === "0"}
+          setCurrentValue={setCurrentTab}
+          filter={filter}
+        />
+      ),
+    },
+    {
+      title: "Conversations",
+      content: () => (
+        <NoItemsMessageCard
+          message={`There are no 
+        conversations
+      for you at the moment`}
+        />
       ),
     },
     {
@@ -45,7 +56,7 @@ const CouncilPage = ({ userProfile }) => {
     <>
       {userProfile.councilMember || userProfile.role === "admin" ? (
         <div className="council-page">
-          <ChannelFilterPanel onChange={onFilterChange} />
+          <LibraryFilterPanel onChange={onFilterChange} />
           <div className="council-page__container">
             <div className="council-page__results">
               <div className="council-page__row">
@@ -71,10 +82,10 @@ const CouncilPage = ({ userProfile }) => {
         </div>
       ) : (
         <div className="council-page__list-wrap">
-        <NoItemsMessageCard
-          message={`You must be a council member to see this view.`}
-        />
-      </div>
+          <NoItemsMessageCard
+            message={`You must be a council member to see this view.`}
+          />
+        </div>
       )}
     </>
   );
@@ -82,6 +93,7 @@ const CouncilPage = ({ userProfile }) => {
 
 const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
+  councilResources: councilSelector(state).councilResources,
 });
 
 const mapDispatchToProps = {};

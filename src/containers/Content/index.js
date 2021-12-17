@@ -43,6 +43,7 @@ import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
+import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -129,6 +130,11 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.COUNCIL}
             render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COUNCIL}/resource`}
+            render={(props) => <CouncilConversationsCard {...props} />}
           />
           <PrivateRoute
             exact

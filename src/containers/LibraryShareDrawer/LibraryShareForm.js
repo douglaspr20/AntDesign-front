@@ -14,6 +14,7 @@ import {
 import { SEARCH_FILTERS } from "enum";
 
 import { addLibrary } from "redux/actions/library-actions";
+import { createCouncilResource } from "redux/actions/council-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
@@ -22,9 +23,19 @@ import "./style.scss";
 const SearchFilters = SEARCH_FILTERS.library;
 // const Languages = LANGUAGES.ParsedLanguageData;
 
-const LibraryShareForm = ({ allCategories, onCancel, addLibrary }) => {
+const LibraryShareForm = ({
+  allCategories,
+  onCancel,
+  addLibrary,
+  createCouncilResource,
+}) => {
+  const isCouncil = document.location.href.includes("council");
+
   const onFinish = (values) => {
-    console.log("values", values);
+    if (isCouncil) {
+      onCancel();
+      return createCouncilResource(values);
+    }
     onCancel();
     addLibrary(values);
   };
@@ -75,9 +86,13 @@ const LibraryShareForm = ({ allCategories, onCancel, addLibrary }) => {
             ))}
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="image" label="Upload image">
-          <ImageUpload aspect={400 / 152} />
-        </Form.Item>
+        {isCouncil ? (
+          ""
+        ) : (
+          <Form.Item name="image" label="Upload image">
+            <ImageUpload aspect={400 / 152} />
+          </Form.Item>
+        )}
         {/* <Form.Item name="language" label="Main language">
           <CustomSelect
             showSearch
@@ -122,6 +137,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addLibrary,
+  createCouncilResource,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryShareForm);
