@@ -32,7 +32,7 @@ const FilterPanel = ({
   };
 
   const onOpenPostFormModal = () => {
-    if (userProfile.completed === true) {
+    if (userProfile.completed === true && userProfile.memberShip === "premium") {
       Emitter.emit(EVENT_TYPES.OPEN_POST_MODAL);
     } else {
       Emitter.emit(EVENT_TYPES.SHOW_FIREWALL, "story");
