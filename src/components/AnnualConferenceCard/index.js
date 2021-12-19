@@ -247,6 +247,8 @@ const AnnualConferenceCard = React.memo(
                     </a>
                   </span>
                 }
+                overlayStyle={{ background: "black" }}
+                overlayInnerStyle={{ background: "black" }}
               >
                 <InfoCircleOutlined className="conference-list-info-icon" />
               </Tooltip>
