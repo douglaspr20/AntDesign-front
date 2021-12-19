@@ -214,8 +214,6 @@ export function* joinedASessionSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(homeActions.updateUserInformation(response.data.user));
-
-      if (payload.callback) payload.callback();
     }
   } catch (error) {
     console.log(error);
@@ -225,6 +223,7 @@ export function* joinedASessionSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
+    if (payload.callback) payload.callback();
   }
 }
 

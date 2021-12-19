@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Dropdown, Menu, Tooltip } from "antd";
+import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { CustomButton, SpecialtyItem, CustomModal } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
@@ -13,319 +13,341 @@ import "./style.scss";
 import { convertToLocalTime } from "utils/format";
 import moment from "moment-timezone";
 
-const AnnualConferenceCard = ({
-  session,
-  attended,
-  added,
-  joinedOtherSession,
-  onAddSession,
-  onRemoveSession,
-  onJoinedSession,
-  userProfile,
-}) => {
-  const [hideInfo, setHideInfo] = useState(true);
-  const [visibleErrorJoinedOtherSession, setVisibleJoinedOtherSession] =
-    useState(false);
-  const [hoursStartSession, setHoursStartSession] = useState("");
-  const [visibleChronometer, setVisibleChronometer] = useState(false);
-
-  const timezone = TIMEZONE_LIST.find(
-    (item) => item.value === session.timezone
-  );
-  const offset = timezone.offset;
-
-  const convertedStartTime = moment(session.startTime)
-    .tz(timezone.utc[0])
-    .utcOffset(offset, true);
-
-  const convertedEndTime = moment(session.endTime)
-    .tz(timezone.utc[0])
-    .utcOffset(offset, true);
-
-  const timeLeft = moment
-    .duration(moment(session.startTime).diff(moment.now()))
-    .asMinutes();
-
-  const onClickDownloadCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/global-conference/ics/${session.id}?userTimezone=${userProfile.timezone}`,
-      "_blank"
+const AnnualConferenceCard = React.memo(
+  ({
+    session,
+    attended,
+    added,
+    joinedOtherSession,
+    onAddSession,
+    onRemoveSession,
+    onJoinedSession,
+    userProfile,
+  }) => {
+    const [hideInfo, setHideInfo] = useState(true);
+    const [
+      visibleConfirmJoinedOtherSession,
+      setVisibleConfirmJoinedOtherSession,
+    ] = useState(false);
+    const [hoursStartSession, setHoursStartSession] = useState("");
+    const [visibleChronometer, setVisibleChronometer] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(
+      moment.duration(moment(session.startTime).diff(moment.now())).asMinutes()
     );
-  };
 
-  const onClickAddGoogleCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    const timezone = TIMEZONE_LIST.find(
+      (item) => item.value === session.timezone
+    );
+    const offset = timezone.offset;
 
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      session.title
-    }&dates=${convertToLocalTime(convertedStartTime).format(
-      "YYYYMMDDTHHmmSSS"
-    )}/${convertToLocalTime(convertedEndTime).format(
-      "YYYYMMDDTHHmmSSS"
-    )}&details=${
-      session.description
-    }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
-    window.open(googleCalendarUrl, "_blank");
-  };
+    const convertedStartTime = moment(session.startTime)
+      .tz(timezone.utc[0])
+      .utcOffset(offset, true);
 
-  const onClickAddYahooCalendar = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    const convertedEndTime = moment(session.endTime)
+      .tz(timezone.utc[0])
+      .utcOffset(offset, true);
 
-    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
-      convertedStartTime
-    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
-      "YYYYMMDDTHHmm"
-    )}&title=${session.title}&desc=${
-      session.description
-    }&in_loc=https://www.hackinghrlab.io/global-conference`;
-
-    window.open(yahooCalendarUrl, "_blank");
-  };
-
-  const downloadDropdownOptions = () => (
-    <Menu style={{ position: "relative", bottom: "70px" }}>
-      <Menu.Item key="1">
-        <a href="/#" onClick={(e) => onClickDownloadCalendar(e)}>
-          Download ICS File
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a href="/#" onClick={(e) => onClickAddGoogleCalendar(e)}>
-          Add to Google Calendar
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="/#" onClick={(e) => onClickAddYahooCalendar(e)}>
-          Add to Yahoo Calendar
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
-
-  const joinedSession = () => {
-    if (
-      joinedOtherSession &&
-      !userProfile.sessionsJoined.includes(session.id)
-    ) {
-      setVisibleJoinedOtherSession(true);
-      return setTimeout(() => {
-        setVisibleJoinedOtherSession(false);
-      }, 5000);
-    }
-
-    onJoinedSession(session);
-  };
-
-  useMemo(() => {
-    const currentTime = moment().unix();
-    const diffTime = convertedStartTime.unix() - currentTime;
-    const interval = 1000;
-    let duration = moment.duration(diffTime * interval, "milliseconds");
-
-    setInterval(function () {
-      duration = moment.duration(duration - interval, "milliseconds");
-      setHoursStartSession(
-        `Starting in: ${duration
-          .asHours()
-          .toFixed()} hours and ${duration.minutes()} minutes`
+    const onClickDownloadCalendar = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(
+        `${process.env.REACT_APP_API_ENDPOINT}/public/global-conference/ics/${session.id}?userTimezone=${userProfile.timezone}`,
+        "_blank"
       );
+    };
 
+    const onClickAddGoogleCalendar = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+        session.title
+      }&dates=${convertToLocalTime(convertedStartTime).format(
+        "YYYYMMDDTHHmmSSS"
+      )}/${convertToLocalTime(convertedEndTime).format(
+        "YYYYMMDDTHHmmSSS"
+      )}&details=${
+        session.description
+      }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+      window.open(googleCalendarUrl, "_blank");
+    };
+
+    const onClickAddYahooCalendar = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+        convertedStartTime
+      ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(
+        convertedEndTime
+      ).format("YYYYMMDDTHHmm")}&title=${session.title}&desc=${
+        session.description
+      }&in_loc=https://www.hackinghrlab.io/global-conference`;
+
+      window.open(yahooCalendarUrl, "_blank");
+    };
+
+    const downloadDropdownOptions = () => (
+      <Menu style={{ position: "relative", bottom: "70px" }}>
+        <Menu.Item key="1">
+          <a href="/#" onClick={(e) => onClickDownloadCalendar(e)}>
+            Download ICS File
+          </a>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <a href="/#" onClick={(e) => onClickAddGoogleCalendar(e)}>
+            Add to Google Calendar
+          </a>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <a href="/#" onClick={(e) => onClickAddYahooCalendar(e)}>
+            Add to Yahoo Calendar
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
+
+    const joinedSession = () => {
       if (
-        duration.asHours() < 120 &&
-        moment().format("DD-MM-YYYY") >= "06-03-2022"
+        joinedOtherSession &&
+        !userProfile.sessionsJoined.includes(session.id)
       ) {
-        setVisibleChronometer(true);
+        return notification.error({
+          message: "Error",
+          description:
+            "You can’t join this session since you are registered for another session at this same time",
+        });
+      } else if (userProfile.sessionsJoined.includes(session.id)) {
+        return onJoinedSession(session);
       }
-    }, 1000);
-  }, [convertedStartTime]);
 
-  return (
-    <div className="annual-conference-card acc">
-      <div className="acc-session-header">
-        <h3>{session.title}</h3>
+      setVisibleConfirmJoinedOtherSession(true);
+    };
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: "auto",
-          }}
-        >
-          {added ? (
-            <CustomButton
-              type="primary outlined"
-              size="md"
-              text="Remove"
-              onClick={onRemoveSession}
-              className="remove-buttom"
-              style={{ maxWidth: "150px", alignSelf: "flex-end" }}
-            />
-          ) : attended ? (
-            <CustomButton
-              size="sm"
-              text="Add To My Personalized Agenda"
-              onClick={onAddSession}
-            />
-          ) : null}
+    useEffect(() => {
+      const currentTime = moment().unix();
+      const diffTime = convertedStartTime.unix() - currentTime;
+      const interval = 1000;
+      let duration = moment.duration(diffTime * interval, "milliseconds");
 
-          {timeLeft < 5 ? (
-            <CustomButton
-              type="primary"
-              size="md"
-              text="Join"
-              className={
-                !userProfile?.sessionsJoined?.includes(session.id)
-                  ? "custom-button-disabled"
-                  : null
-              }
-              onClick={() => joinedSession()}
-              style={{ marginTop: "5px" }}
-            />
-          ) : visibleChronometer ? (
-            <CustomButton
-              type="primary"
-              size="md"
-              text={`${hoursStartSession}`}
-              disabled={true}
-              style={{ marginTop: "5px" }}
-            />
-          ) : timeLeft <= -10 ? (
-            <CustomButton
-              type="primary"
-              size="md"
-              text="This Session Is Now Closed"
-              disabled={true}
-              style={{ marginTop: "5px" }}
-            />
-          ) : null}
-        </div>
-      </div>
-      {added && <div className="acc-session-added-tag">Added</div>}
-      <div className="d-flex justify-between">
-        <div>
-          <div className="acc-session-type">{`Session type: ${session.type}`}</div>
-          <div className="acc-session-date">{session.date}</div>
-          <div className="acc-session-time">
-            {session.period} {session.timezone}{" "}
-            <Tooltip
-              placement="right"
-              title={
-                <span>
-                  Where are you located? If you are not located in the West
-                  Coast of the United States, Canada or Mexico, then you are NOT
-                  in Pacific Time Zone. Please convert to your corresponding
-                  time zone here:{" "}
-                  <a
-                    href="https://www.timeanddate.com/worldclock/converter.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    www.timeanddate.com
-                  </a>
-                </span>
-              }
-            >
-              <InfoCircleOutlined className="conference-list-info-icon" />
-            </Tooltip>
+      setInterval(function () {
+        duration = moment.duration(duration - interval, "milliseconds");
+
+        setHoursStartSession(
+          `Starting in: ${
+            duration.hours().toFixed() > 0
+              ? `${duration.hours().toFixed()} hours and `
+              : ""
+          } ${duration.minutes()} minutes`
+        );
+
+        setTimeLeft(duration.asMinutes());
+
+        if (
+          duration.asHours() < 120 &&
+          moment().date() >= 16 &&
+          moment().month() >= 11 &&
+          moment().year() >= 2021
+        ) {
+          setVisibleChronometer(true);
+        }
+      }, 1000);
+    }, [convertedStartTime]);
+
+    return (
+      <div className="annual-conference-card acc">
+        <div className="acc-session-header">
+          <h3>{session.title}</h3>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "auto",
+            }}
+          >
+            {added ? (
+              <CustomButton
+                type="primary outlined"
+                size="md"
+                text="Remove"
+                onClick={onRemoveSession}
+                className="remove-buttom"
+                style={{ maxWidth: "150px", alignSelf: "flex-end" }}
+              />
+            ) : attended ? (
+              <CustomButton
+                size="sm"
+                text="Add To My Personalized Agenda"
+                onClick={onAddSession}
+              />
+            ) : null}
+
+            {timeLeft < 5 && timeLeft >= -10 ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="Join"
+                className={
+                  joinedOtherSession &&
+                  !userProfile.sessionsJoined.includes(session.id)
+                    ? "custom-button-disabled"
+                    : null
+                }
+                onClick={() => joinedSession()}
+                style={{
+                  marginTop: "5px",
+                  maxWidth: "150px",
+                  width: "100%",
+                  alignSelf: "flex-end",
+                }}
+              />
+            ) : visibleChronometer && timeLeft >= -10 ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text={`${hoursStartSession}`}
+                disabled={true}
+                style={{ marginTop: "5px" }}
+              />
+            ) : timeLeft <= -10 ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="This Session Is Now Closed"
+                disabled={true}
+                style={{ marginTop: "5px" }}
+              />
+            ) : null}
           </div>
         </div>
-        {added && (
-          <Dropdown overlay={downloadDropdownOptions}>
-            <a
-              href="/#"
-              className="ant-dropdown-link"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >
-              Download calendar <DownOutlined />
-            </a>
-          </Dropdown>
-        )}
-      </div>
-
-      <div className="d-flex justify-between align-center">
-        <div className="acc-session-categories">
-          {session.categories.map((category, i) => (
-            <SpecialtyItem key={i} title={category} />
-          ))}
-        </div>
-        <div
-          className="acc-session-toggle"
-          onClick={() => setHideInfo(!hideInfo)}
-        >
-          {hideInfo ? "Review session" : "Hide information"}
-          <div className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}>
-            <IconChevronDown />
-          </div>
-        </div>
-      </div>
-      {!hideInfo && (
-        <div className="acc-details">
-          {session.description && (
-            <>
-              <h4>Description</h4>
-              <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
-                {session.description}
-              </p>
-            </>
-          )}
-          <div className="acc-details-other-brands">
-            {(session.brands || []).map((brand, index) => (
-              <div className="session-brand" key={index}>
-                <img src={brand} alt="brand-img" />
-              </div>
-            ))}
-          </div>
-
-          <div className="acc-details">
-            {session.speakers && <h4>Speakers</h4>}
-            {(session.speakers || []).map((speaker, index) => (
-              <a
-                href={speaker.linkSpeaker}
-                target="_blank"
-                rel="noopener noreferrer"
-                key={index}
+        {added && <div className="acc-session-added-tag">Added</div>}
+        <div className="d-flex justify-between">
+          <div>
+            <div className="acc-session-type">{`Session type: ${session.type}`}</div>
+            <div className="acc-session-date">{session.date}</div>
+            <div className="acc-session-time">
+              {session.period} {session.timezone}{" "}
+              <Tooltip
+                placement="right"
+                title={
+                  <span>
+                    Where are you located? If you are not located in the West
+                    Coast of the United States, Canada or Mexico, then you are
+                    NOT in Pacific Time Zone. Please convert to your
+                    corresponding time zone here:{" "}
+                    <a
+                      href="https://www.timeanddate.com/worldclock/converter.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      www.timeanddate.com
+                    </a>
+                  </span>
+                }
               >
-                <div className="acc-details-speaker">
-                  <div className="acc-details-speaker-image">
-                    {speaker.img ? (
-                      <img src={speaker.img} alt="speaker-img" />
-                    ) : (
-                      <div className="empty" />
-                    )}
-                  </div>
-                  <div className="acc-details-speaker-desc">
-                    <h4>{speaker.name}</h4>
-                    <h5>{speaker.description}</h5>
-                  </div>
-                </div>
+                <InfoCircleOutlined className="conference-list-info-icon" />
+              </Tooltip>
+            </div>
+          </div>
+          {added && (
+            <Dropdown overlay={downloadDropdownOptions}>
+              <a
+                href="/#"
+                className="ant-dropdown-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
+                Download calendar <DownOutlined />
               </a>
+            </Dropdown>
+          )}
+        </div>
+
+        <div className="d-flex justify-between align-center">
+          <div className="acc-session-categories">
+            {session.categories.map((category, i) => (
+              <SpecialtyItem key={i} title={category} />
             ))}
           </div>
+          <div
+            className="acc-session-toggle"
+            onClick={() => setHideInfo(!hideInfo)}
+          >
+            {hideInfo ? "Review session" : "Hide information"}
+            <div
+              className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}
+            >
+              <IconChevronDown />
+            </div>
+          </div>
         </div>
-      )}
+        {!hideInfo && (
+          <div className="acc-details">
+            {session.description && (
+              <>
+                <h4>Description</h4>
+                <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+                  {session.description}
+                </p>
+              </>
+            )}
+            <div className="acc-details-other-brands">
+              {(session.brands || []).map((brand, index) => (
+                <div className="session-brand" key={index}>
+                  <img src={brand} alt="brand-img" />
+                </div>
+              ))}
+            </div>
 
-      <CustomModal
-        visible={visibleErrorJoinedOtherSession}
-        title="Error"
-        width={500}
-        onCancel={() => setVisibleJoinedOtherSession(false)}
-      >
-        <p>
-          You can’t join this session since you are registered for another
-          session at this same time
-        </p>
-      </CustomModal>
-    </div>
-  );
-};
+            <div className="acc-details">
+              {session.speakers && <h4>Speakers</h4>}
+              {(session.speakers || []).map((speaker, index) => (
+                <a
+                  href={speaker.linkSpeaker}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={index}
+                >
+                  <div className="acc-details-speaker">
+                    <div className="acc-details-speaker-image">
+                      {speaker.img ? (
+                        <img src={speaker.img} alt="speaker-img" />
+                      ) : (
+                        <div className="empty" />
+                      )}
+                    </div>
+                    <div className="acc-details-speaker-desc">
+                      <h4>{speaker.name}</h4>
+                      <h5>{speaker.description}</h5>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <Modal
+          visible={visibleConfirmJoinedOtherSession}
+          title="Are you sure you want to join this session?"
+          width={500}
+          onCancel={() => setVisibleConfirmJoinedOtherSession(false)}
+          onOk={() => onJoinedSession(session)}
+          okText="Confirm"
+        >
+          <p>
+            You will not be able to join any other session at the same time.
+          </p>
+        </Modal>
+      </div>
+    );
+  }
+);
 
 AnnualConferenceCard.propTypes = {
   session: PropTypes.object,

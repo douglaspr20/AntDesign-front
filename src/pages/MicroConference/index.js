@@ -46,7 +46,7 @@ const MicroConference = ({ history, match, user, session, getSession }) => {
   const { status } = useMicroConferenceQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
-  if (user.sessions && !user.sessions.includes(+match.params.id)) {
+  if (user.sessionsJoined && !user.sessionsJoined.includes(+match.params.id)) {
     history.push("/global-conference");
   }
 
