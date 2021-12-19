@@ -2,28 +2,13 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { getCourseUserProgress } from "redux/actions/course-user-progress-actions";
-import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
-
 import "./style.scss";
 
-// function fmtMSS(s) {
-//   return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + Math.round(s);
-// }
+function fmtMSS(s) {
+  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + Math.round(s);
+}
 
-function MicroConferenceVideosList({
-  list,
-  setActiveVideoId,
-  activeVideoId,
-  getCourseUserProgress,
-  courseUserProgress,
-  courseId,
-}) {
-  useEffect(() => {
-    getCourseUserProgress(courseId);
-    // eslint-disable-next-line
-  }, []);
-
+function MicroConferenceVideosList({ list, setActiveVideoId, activeVideoId }) {
   useEffect(() => {
     if (activeVideoId === null && list.length > 0) {
       setActiveVideoId(list[0].id);
@@ -33,67 +18,12 @@ function MicroConferenceVideosList({
   return (
     <div className="micro-conference__videos-list">
       <div className="micro-conference__videos-list-inner">
-        <button
-          className={`
-              micro-conference__videos-list-button
-            
-            `}
-          // onClick={() => setActiveVideoId(1)}
-        >
-          <span className="micro-conference__videos-list-button-indicator"></span>
-          <span className="micro-conference__videos-list-button-title">
-            prueba
-          </span>
-          <span className="micro-conference__videos-list-button-duration">
-            58:55
-          </span>
-        </button>
-        <button
-          className={`
-              micro-conference__videos-list-button
-            
-            `}
-          // onClick={() => setActiveVideoId(1)}
-        >
-          <span className="micro-conference__videos-list-button-indicator"></span>
-          <span className="micro-conference__videos-list-button-title">
-            prueba
-          </span>
-          <span className="micro-conference__videos-list-button-duration">
-            58:55
-          </span>
-        </button>
-        <button
-          className={`
-              micro-conference__videos-list-button
-            
-            `}
-          // onClick={() => setActiveVideoId(1)}
-        >
-          <span className="micro-conference__videos-list-button-indicator"></span>
-          <span className="micro-conference__videos-list-button-title">
-            prueba
-          </span>
-          <span className="micro-conference__videos-list-button-duration">
-            58:55
-          </span>
-        </button>
-        {/* {list.map((item) => {
-          let isViewed = false;
-          for (let courseClassUserItem of courseUserProgress) {
-            if (
-              item.id === courseClassUserItem.CourseClassId &&
-              courseClassUserItem.viewed === true
-            ) {
-              isViewed = true;
-            }
-          }
+        {list.map((item) => {
           return (
             <button
               key={item.id}
               className={`
               micro-conference__videos-list-button
-              ${isViewed ? "micro-conference__videos-list-button--watched" : ""}
               ${
                 activeVideoId === item.id
                   ? "micro-conference__videos-list-button--active"
@@ -111,7 +41,7 @@ function MicroConferenceVideosList({
               </span>
             </button>
           );
-        })} */}
+        })}
       </div>
     </div>
   );
@@ -129,13 +59,9 @@ MicroConferenceVideosList.defaultProps = {
   activeVideoId: null,
 };
 
-const mapStateToProps = (state, props) => ({
-  courseUserProgress: courseClassUserSelector(state).courseUserProgress,
-});
+const mapStateToProps = (state, props) => ({});
 
-const mapDispatchToProps = {
-  getCourseUserProgress,
-};
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,

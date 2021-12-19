@@ -12,14 +12,17 @@ import "./style.scss";
 function MicroConferenceVideoWrapper({
   url,
   id,
-  courseId,
-  setProgress,
+  sessionId,
   courseUserProgress,
 }) {
   const player = useRef(null);
 
   function handleProgress({ playedSeconds }) {
-    setProgress({ courseId, CourseClassId: id, progressVideo: playedSeconds });
+    setProgress({
+      sessionId,
+      SessionClassId: id,
+      progressVideo: playedSeconds,
+    });
   }
 
   const setProgressVideoPlayer = () => {
@@ -51,7 +54,7 @@ function MicroConferenceVideoWrapper({
         }}
         ref={player}
         onEnded={() => {
-          setProgress({ courseId, CourseClassId: id, viewed: true });
+          setProgress({ sessionId, CourseClassId: id, viewed: true });
         }}
       />
     </div>

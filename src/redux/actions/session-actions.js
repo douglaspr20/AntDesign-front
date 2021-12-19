@@ -4,6 +4,8 @@ const GET_ALL_SESSIONS = "GET_ALL_SESSIONS";
 const SET_ALL_SESSIONS = "SET_ALL_SESSIONS";
 const GET_SESSION = "GET_SESSION";
 const SET_SESSION = "SET_SESSION";
+const GET_SESSION_CLASSES = "GET_SESSION_CLASSES";
+const SET_SESSION_CLASSES = "SET_SESSION_CLASSES";
 const GET_SESSIONS_ADDED_BY_USER = "GET_SESSIONS_ADDED_BY_USER ";
 const SET_SESSIONS_ADDED_BY_USER = "SET_SESSIONS_ADDED_BY_USER";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
@@ -18,6 +20,8 @@ export const constants = {
   SET_ALL_SESSIONS,
   GET_SESSION,
   SET_SESSION,
+  GET_SESSION_CLASSES,
+  SET_SESSION_CLASSES,
   GET_SESSIONS_ADDED_BY_USER,
   SET_SESSIONS_ADDED_BY_USER,
   GET_PARTICIPANTS,
@@ -43,6 +47,16 @@ export const setAllSessions = createAction(SET_ALL_SESSIONS, (allSessions) => ({
 export const getSession = createAction(GET_SESSION, (id) => ({ id }));
 
 export const setSession = createAction(SET_SESSION, (session) => ({ session }));
+
+export const getSessionClasses = createAction(GET_SESSION_CLASSES, (id) => ({
+  id,
+}));
+export const setSessionClasses = createAction(
+  SET_SESSION_CLASSES,
+  (classes) => ({
+    classes,
+  })
+);
 
 export const getSessionsAddedbyUser = createAction(
   GET_SESSIONS_ADDED_BY_USER,
@@ -91,6 +105,8 @@ export const actions = {
   setAllSessions,
   getSession,
   setSession,
+  getSessionClasses,
+  setSessionClasses,
   getSessionsAddedbyUser,
   setSessionsAddedByUser,
   getParticipants,

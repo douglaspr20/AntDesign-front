@@ -6,7 +6,7 @@ import MicroConferenceSkeleton from "./MicroConferenceSkeleton";
 import MicroConferenceVideosList from "./MicroConferenceVideosList";
 import MicroConferenceVideoWrapper from "./MicroConferenceVideoWrapper";
 
-import { getSession } from "redux/actions/session-actions";
+import { getSession, getSessionClasses } from "redux/actions/session-actions";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
@@ -42,7 +42,15 @@ const useMicroConferenceQuery = (id) => {
   };
 };
 
-const MicroConference = ({ history, match, user, session, getSession }) => {
+const MicroConference = ({
+  history,
+  match,
+  user,
+  session,
+  classes,
+  getSession,
+  getSessionClasses,
+}) => {
   const { status } = useMicroConferenceQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
 
@@ -52,14 +60,19 @@ const MicroConference = ({ history, match, user, session, getSession }) => {
 
   useEffect(() => {
     getSession(match.params.id);
-  }, [getSession, match]);
+    getSessionClasses(match.params.id);
+  }, [getSession, getSessionClasses, match]);
 
   const activeVideoUrl = useMemo(() => {
-    if (session) {
-      return session.link;
+    if (classes && classes.length) {
+      let videoObject = classes.find((item) => item.id === activeVideoId);
+      if (videoObject && videoObject.videoUrl) {
+        return videoObject.videoUrl;
+      }
+      return null;
     }
     return null;
-  }, [session]);
+  }, [activeVideoId, classes]);
 
   return (
     <div className="micro-conference__page">
@@ -82,17 +95,16 @@ const MicroConference = ({ history, match, user, session, getSession }) => {
                   </div>
 
                   <MicroConferenceVideosList
-                    list={[]}
+                    list={classes}
                     setActiveVideoId={(id) => setActiveVideoId(id)}
                     activeVideoId={activeVideoId}
-                    courseId={match.params.id}
                   />
                 </div>
                 <div className="micro-class__row-1--video-player">
                   <MicroConferenceVideoWrapper
                     url={activeVideoUrl ? activeVideoUrl : null}
                     id={activeVideoId}
-                    courseId={match.params.id}
+                    sessionId={match.params.id}
                   />
 
                   <Tabs defaultActiveKey="1">
@@ -119,19 +131,13 @@ const MicroConference = ({ history, match, user, session, getSession }) => {
 
 const mapStateToProps = (state, props) => ({
   session: sessionSelector(state).session,
-  // classes: courseSelector(state).classes,
-  // instructors: courseSelector(state).instructors,
-  // sponsors: courseSelector(state).sponsors,
-  // courseUserProgress: courseClassUserSelector(state).courseUserProgress,
+  classes: sessionSelector(state).classes,
   user: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   getSession,
-  // getCourseClasses,
-  // getCourseInstructors,
-  // getCourseSponsors,
-  // claimCourse,
+  getSessionClasses,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MicroConference);

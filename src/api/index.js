@@ -19,7 +19,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
-  getAllUsers
+  getAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -96,6 +96,7 @@ import {
 import {
   getAllSessions,
   getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
@@ -120,7 +121,11 @@ import {
   withdrawParticipation,
 } from "./module/skillCohortParticipant";
 
-import { getResource, getAllResources, getEntireResources } from "./module/skillCohortResource";
+import {
+  getResource,
+  getAllResources,
+  getEntireResources,
+} from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
@@ -207,6 +212,7 @@ export {
   getNotifications,
   getAllSessions,
   getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,

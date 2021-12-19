@@ -13,6 +13,7 @@ import {
   getSessionsAddedbyUser,
   getParticipants,
   getSession,
+  getSessionClasses,
   recommendedAgenda,
 } from "../../api";
 
@@ -75,6 +76,28 @@ export function* getSessionSaga({ payload }) {
     }
 
     yield put(homeActions.setLoading(false));
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getSessionClassesSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getSessionClasses, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        sessionActions.setSessionClasses(response.data.annualConferenceClasses)
+      );
+    }
   } catch (error) {
     console.log(error);
 
@@ -204,6 +227,7 @@ export function* recommendedAgendaSaga({ payload }) {
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(sessionConstants.GET_SESSION, getSessionSaga);
+  yield takeLatest(sessionConstants.GET_SESSION_CLASSES, getSessionClassesSaga);
   yield takeLatest(
     sessionConstants.GET_SESSIONS_ADDED_BY_USER,
     getSessionsAddedbyUserSaga
