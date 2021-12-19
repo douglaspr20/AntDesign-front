@@ -19,6 +19,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
+  getAllUsers
 } from "./module/user";
 import {
   getAllEvents,
@@ -119,7 +120,7 @@ import {
   withdrawParticipation,
 } from "./module/skillCohortParticipant";
 
-import { getResource, getAllResources } from "./module/skillCohortResource";
+import { getResource, getAllResources, getEntireResources } from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
@@ -150,6 +151,7 @@ export {
   signUp,
   getUserFromId,
   updateUser,
+  getAllUsers,
   changePassword,
   createInvitation,
   acceptInvitationJoin,
@@ -236,6 +238,7 @@ export {
   markeToUnRead,
   getAllSkillCohorts,
   getAllOfMyCohort,
+  getEntireResources,
   getSkillCohort,
   getSkillCohortParticipant,
   withdrawParticipation,

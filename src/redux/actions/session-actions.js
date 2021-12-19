@@ -11,6 +11,7 @@ const SET_PARTICIPANTS = "SET_PARTICIPANTS";
 const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
 const SET_RECOMMENDED_AGENDA = "SET_RECOMMENDED_AGENDA";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
+const SET_MESSAGE_ERROR = "SET_MESSAGE_ERROR";
 
 export const constants = {
   GET_ALL_SESSIONS,
@@ -24,6 +25,7 @@ export const constants = {
   RECOMMENDED_AGENDA,
   SET_RECOMMENDED_AGENDA,
   SET_SESSION_LOADING,
+  SET_MESSAGE_ERROR,
 };
 
 // ------------------------------------
@@ -80,6 +82,10 @@ export const setSessionLoading = createAction(
   (loading) => ({ loading })
 );
 
+export const setMessageError = createAction(SET_MESSAGE_ERROR, (message) => ({
+  message,
+}));
+
 export const actions = {
   getAllSessions,
   setAllSessions,
@@ -92,4 +98,5 @@ export const actions = {
   recommendedAgenda,
   setRecommendedAgenda,
   setSessionLoading,
+  setMessageError,
 };

@@ -24,7 +24,7 @@ const ParticipantCard = ({
         justifyContent: "flex-start",
         alignItems: "center",
       }}
-      style={{ marginTop: "1rem" }}
+      className="participant-card-container"
     >
       {!invitedAllBonfires && (
         <CustomButton
@@ -42,9 +42,9 @@ const ParticipantCard = ({
         className="link-container"
       >
         {participant.img ? (
-          <Avatar size={180} src={participant.img} />
+          <Avatar size={150} src={participant.img} />
         ) : (
-          <Avatar size={180} style={{ fontSize: "2rem" }}>
+          <Avatar size={150} style={{ fontSize: "2rem" }}>
             {participant.abbrName}
           </Avatar>
         )}

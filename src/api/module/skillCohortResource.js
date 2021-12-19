@@ -20,10 +20,17 @@ export const getAllResources = async (data) => {
   );
 };
 
-export const getResource = async (data) => {
-  const { SkillCohortId } = data;
+export const getEntireResources = async (data) => {
 
   return await httpClient.get(
-    `private/skill-cohort/${SkillCohortId}/resource/`
+    `private/skill-cohort/resources/${data.SkillCohortId}/entire`
+  );
+};
+
+export const getResource = async (data) => {
+  const { SkillCohortResourceId } = data;
+
+  return await httpClient.get(
+    `private/skill-cohort/resource/${SkillCohortResourceId}`
   );
 };

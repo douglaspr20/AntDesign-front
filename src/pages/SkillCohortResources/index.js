@@ -1,4 +1,4 @@
-import { Row, Col, Card, Avatar } from "antd";
+import { Row, Col, Card, Avatar, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
@@ -8,6 +8,7 @@ import { SETTINGS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
 import { UserOutlined } from "@ant-design/icons";
+import OpengraphReactComponent from "opengraph-react";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
@@ -17,41 +18,58 @@ import { actions as skillCohortResourceActions } from "redux/actions/skillCohort
 import { actions as skillCohortActions } from "redux/actions/skillCohort-actions";
 import { actions as skillCohortParticipantActions } from "redux/actions/skillCohortParticipant-actions";
 
+import SkillCohortPanel from "./SkillCohortPanel";
 import ResourceCard from "./ResourceCard";
+import SkillCohortResourceForm from "./SkillCohortResourceForm";
+import SkillCohortResourceReply from "./SkillCohortResourceReply";
 import "./style.scss";
 
 const SkillCohortResources = ({
   getAllSkillCohortResources,
   allSkillCohortResources,
   getSkillCohortParticipant,
-  skillCohortParticipant,
   userProfile,
   currentPage,
   getMoreSkillCohortResources,
   loading,
   countOfResults,
   getSkillCohort,
-  getSkillCohortResource,
   skillCohortResource,
   getAllSkillCohortParticipants,
   allSkillCohortParticipants,
+  getSkillCohortResource,
+  getEntireResources,
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
   const [currentTab, setCurrentTab] = useState("0");
 
   useEffect(() => {
+    getSkillCohort(id);
+    getAllSkillCohortParticipants(id);
     getAllSkillCohortResources(id, {
       date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
     });
+    getEntireResources(id, dateToday.format("YYYY-MM-DD HH:mm:ssZ"));
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     if (userProfile.id) {
       getSkillCohortParticipant(id, userProfile.id);
     }
-    getSkillCohort(id);
-    getSkillCohortResource(id);
-    getAllSkillCohortParticipants(id);
+
     // eslint-disable-next-line
   }, [userProfile]);
+
+  useEffect(() => {
+    if (!isEmpty(allSkillCohortResources)) {
+      getSkillCohortResource(allSkillCohortResources[0].id);
+    }
+
+    // eslint-disable-next-line
+  }, [allSkillCohortResources]);
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {
@@ -60,28 +78,28 @@ const SkillCohortResources = ({
     });
   };
 
-  const displayTodaysResource = !isEmpty(skillCohortResource) && (
+  const switchToConversationtab = () => {
+    setCurrentTab("1");
+  };
+
+  const displayTodaysResource = !isEmpty(allSkillCohortResources[0]) && (
     <ResourceCard
-      skillCohortResource={skillCohortResource}
-      isPreviousResource={false}
-      skillCohortParticipant={skillCohortParticipant}
+      skillCohortResource={allSkillCohortResources[0]}
+      switchTab={switchToConversationtab}
     />
   );
 
-  const displayPreviousResources = allSkillCohortResources.map((resource) => {
-    const diff = dateToday.diff(moment(resource.releaseDate), "day");
-    const isYesterday = diff === 1;
-
-    return (
-      <ResourceCard
-        skillCohortResource={resource}
-        key={resource.id}
-        isPreviousResource={true}
-        skillCohortParticipant={skillCohortParticipant}
-        isYesterday={isYesterday}
-      />
-    );
-  });
+  const displayPreviousResources = allSkillCohortResources
+    .slice(1, allSkillCohortResources.length)
+    .map((resource) => {
+      return (
+        <ResourceCard
+          key={resource.id}
+          skillCohortResource={resource}
+          switchTab={switchToConversationtab}
+        />
+      );
+    });
 
   const displayResources = (
     <div className="wrapper">
@@ -129,7 +147,7 @@ const SkillCohortResources = ({
       const name = `${user.firstName} ${user.lastName}`;
 
       return (
-        <Col className="participant-col">
+        <Col className="participant-col" key={index}>
           <a
             href={user.personalLinks.linkedin}
             target="_blank"
@@ -163,14 +181,47 @@ const SkillCohortResources = ({
     }
   );
 
+  const displayConversation = (
+    <div className="display-conversation-container">
+      <div className="display-conversation">
+        <OpengraphReactComponent
+          key={skillCohortResource.id}
+          site={skillCohortResource.resourceLink}
+          appId={process.env.REACT_APP_OPENGRAPH_KEY}
+          loader={<Spin></Spin>}
+          size="large"
+          acceptLang="auto"
+        />
+      </div>
+      <div className="comment-container-1">
+        <SkillCohortResourceForm
+          key={skillCohortResource.id}
+          isResponse
+          resource={skillCohortResource}
+        />
+      </div>
+      {skillCohortResource?.SkillCohortResourceResponses?.map((response) => {
+        return (
+          <SkillCohortResourceReply key={response.id} response={response} />
+        );
+      }) || []}
+    </div>
+  );
+
   const TabData = [
     {
-      title: "Daily Resources",
-      content: () => displayResources,
+      title: "Resources",
+      content: () => {
+        return (
+        <div className="wrapper-2">
+          {displayResources}
+        </div>
+        )
+      },
     },
     {
-      title: "Meetings",
-      content: () => "Meeting Links",
+      title: "Conversations",
+      content: () => displayConversation,
     },
     {
       title: "Participants",
@@ -179,17 +230,15 @@ const SkillCohortResources = ({
       ),
     },
     {
-      title: "Cohort Analytics",
-      content: () => "Cohort Analytics",
+      title: "Playgrounds",
+      content: () => <div className="wrapper-2">Playground</div>,
     },
   ];
 
   return (
     <div className="skill-cohort-resources-page">
       <div className="skill-cohort-resources-page-container">
-        <div className="skill-cohort-resources-page-container-header">
-          TEXT = TBD
-        </div>
+        {currentTab === "1" && <SkillCohortPanel />}
         <div className="wrapper">
           <Tabs
             data={TabData}

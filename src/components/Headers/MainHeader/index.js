@@ -23,7 +23,7 @@ import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconGlobal from "images/icon-global.svg";
-
+import IconHomeOutline from "images/icon-home.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -148,6 +148,13 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconFlaskOutline,
         label: "My Learnings",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPONSOR_DASHBOARD}`)) {
+      pathInfo = {
+        icon: IconHomeOutline,
+        label: "Sponsor Dashboard",
       };
     }
 

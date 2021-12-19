@@ -6,7 +6,7 @@ import { getBonfires, inviteUser } from "redux/actions/bonfire-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
 import { CustomButton, ParticipantCard } from "components";
-import { Modal, List, Skeleton, notification } from "antd";
+import { Modal, List, Skeleton, notification, Pagination } from "antd";
 import "./style.scss";
 
 const Participants = ({
@@ -19,6 +19,8 @@ const Participants = ({
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const [participantToInvite, setParticipantToInvite] = useState(null);
+  const [page, setPage] = useState(1);
+
   useEffect(() => {
     if (userProfile.topicsOfInterest.length > 0) {
       getParticipants({
@@ -50,28 +52,48 @@ const Participants = ({
     });
   };
 
+  const handlePaginated = (value) => {
+    setPage(value);
+  };
+
   return (
-    <div className="participants">
-      <div className="participants-container">
+    <>
+      <div className="speakers-list">
         <h2>{participants.length} Recommended Participants To Connect With</h2>
-        <div className="participants-list">
-          {participants.map((participant, i) => (
-            <ParticipantCard
-              key={i}
-              participant={participant}
-              onOpenModalBonfires={onOpenModalBonfires}
-              invitedAllBonfires={bonfires
-                .filter((bonfire) => bonfire.bonfireCreator === userProfile.id)
-                .every(
-                  (bonfire) =>
-                    bonfire.invitedUsers.includes(participant.id) ||
-                    bonfire.uninvitedJoinedUsers.includes(participant.id) ||
-                    bonfire?.usersInvitedByOrganizer?.includes(participant.id)
-                )}
-            />
-          ))}
+        <div className="speakers-list-container">
+          {participants.length > 0 &&
+            participants
+              .slice((page - 1) * 20, page * 20)
+              .map((participant, i) => (
+                <ParticipantCard
+                  key={i}
+                  participant={participant}
+                  onOpenModalBonfires={onOpenModalBonfires}
+                  invitedAllBonfires={bonfires
+                    .filter(
+                      (bonfire) => bonfire.bonfireCreator === userProfile.id
+                    )
+                    .every(
+                      (bonfire) =>
+                        bonfire.invitedUsers.includes(participant.id) ||
+                        bonfire.uninvitedJoinedUsers.includes(participant.id) ||
+                        bonfire?.usersInvitedByOrganizer?.includes(
+                          participant.id
+                        )
+                    )}
+                />
+              ))}
         </div>
+        <Pagination
+          defaultCurrent={page}
+          defaultPageSize={20}
+          total={participants.length}
+          showSizeChanger={false}
+          onChange={handlePaginated}
+          style={{ marginTop: "1.5rem" }}
+        />
       </div>
+
       <Modal
         title="Bonfires creators for you"
         centered
@@ -134,7 +156,7 @@ const Participants = ({
           }}
         />
       </Modal>
-    </div>
+    </>
   );
 };
 

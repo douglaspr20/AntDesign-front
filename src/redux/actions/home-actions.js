@@ -21,6 +21,8 @@ const CHANGE_PASSWORD = "CHANGE_PASSWORD";
 const CREATE_INVITATION = "CREATE_INVITATION";
 const ACCEPT_INVITATION = "ACCEPT_INVITATION";
 const CONFIRM_ACCESSIBILITY_REQUIREMENTS = "CONFIRM_ACCESSIBILITY_REQUIREMENTS";
+const GET_USERS = "GET_USERS";
+const SET_USERS = "SET_USERS";
 
 export const constants = {
   SET_LOADING,
@@ -43,6 +45,8 @@ export const constants = {
   CREATE_INVITATION,
   ACCEPT_INVITATION,
   CONFIRM_ACCESSIBILITY_REQUIREMENTS,
+  GET_USERS,
+  SET_USERS,
 };
 
 // ------------------------------------
@@ -110,6 +114,9 @@ export const confirmAccessibilityRequirements = createAction(
   (userId) => ({ userId })
 );
 
+export const getAllUsers = createAction(GET_USERS);
+export const setAllUsers = createAction(SET_USERS, (users) => ({ users }));
+
 export const actions = {
   setLoading,
   updateUserInformation,
@@ -129,4 +136,6 @@ export const actions = {
   changePassword,
   createInvitation,
   acceptInvitation,
+  getAllUsers,
+  setAllUsers
 };

@@ -11,6 +11,7 @@ const resultSelector = createSelector(sessionDataSelector, (payload) => {
     participants: payload.get("participants"),
     partners: payload.get("partners"),
     recommendedAgendaSessions: payload.get("recommendedAgendaSessions"),
+    messageError: payload.get("messageError"),
   };
 });
 
