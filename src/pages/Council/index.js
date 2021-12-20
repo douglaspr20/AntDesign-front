@@ -36,16 +36,16 @@ const CouncilPage = ({ userProfile, councilResources }) => {
         />
       ),
     },
-    {
-      title: "Conversations",
-      content: () => (
-        <NoItemsMessageCard
-          message={`There are no 
-        conversations
-      for you at the moment`}
-        />
-      ),
-    },
+    // {
+    //   title: "Conversations",
+    //   content: () => (
+    //     <NoItemsMessageCard
+    //       message={`There are no 
+    //     conversations
+    //   for you at the moment`}
+    //     />
+    //   ),
+    // },
     {
       title: "Council Members",
       content: () => <CouncilMembers />,
