@@ -9,7 +9,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { CARD_TYPE, INTERNAL_LINKS } from "enum";
 import { getPublicationTime } from "utils/format";
 
-import { CustomButton } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
@@ -18,7 +18,7 @@ const CouncilCard = ({ data, type }) => {
 
   const history = useHistory();
 
-  const { title, description, createdAt } = data || {};
+  const { title, description, createdAt, topics } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -49,7 +49,6 @@ const CouncilCard = ({ data, type }) => {
   const onJoin = () => {
     history.push(`${INTERNAL_LINKS.COUNCIL}/resource?id=${data.id}`);
   };
-
   return (
     <div className={clsx("council-card", { add: type === CARD_TYPE.ADD })}>
       <div className="council-card-content">
@@ -58,12 +57,17 @@ const CouncilCard = ({ data, type }) => {
           <div id={randomId} className="d-flex items-center">
             <p className="council-card-desc">{description}</p>
           </div>
-          <div id={randomId} className="d-flex items-center mr-t">
+        </div>
+        <div className="council-card-topics">
+        {topics?.map((item, index) => (
+          <SpecialtyItem title={item} key={index} />
+        ))}
+        </div>
+          <div id={randomId} className="d-flex items-center d-rigth">
             <span className="council-card-desc">
               {getPublicationTime(createdAt)}
             </span>
           </div>
-        </div>
         <div className="council-card-content-footer">
           <CustomButton
             className="filter-drawer-content-share"

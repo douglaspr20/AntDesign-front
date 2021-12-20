@@ -7,7 +7,7 @@
   border-radius: 0.5rem;
   box-shadow: 4px 0px 14px #37215714;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  // grid-template-rows: auto 1fr auto;
   position: relative;
   cursor: pointer;
   width: 100%;
@@ -228,6 +228,20 @@
         }
       }
     }
+  }
+}
+
+.d-rigth {
+  justify-content: right;
+}
+
+.council-card-topics {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+
+  .specialty-item {
+    margin: 0 10px 16px;
   }
 }
 
