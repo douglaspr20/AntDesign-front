@@ -64,9 +64,9 @@ const CouncilConversationsCard = ({
               <OpengraphReactComponent
                 site={councilResource?.link}
                 appId={process.env.REACT_APP_OPENGRAPH_KEY}
-                loader={<Spin></Spin>}
+                loader={<Spin className="d-center"></Spin>}
                 size={"large"}
-                acceptLang="auto"
+                acceptLang="auto"                
               />
             </div>
             <div className="custom-comment-card-container">
