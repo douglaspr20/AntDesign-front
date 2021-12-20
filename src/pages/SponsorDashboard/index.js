@@ -25,42 +25,60 @@ import { homeSelector } from "redux/selectors/homeSelector";
 const SponsorDashboard = ({ getAllUsers, allUsers }) => {
   const [currentTab, setCurrentTab] = useState("0");
 
+  const generalDemographics = allUsers.filter(
+    (item) => item.percentOfCompletion === 100
+  );
+
+  const conferenceDemographics = allUsers.filter(
+    (item) => item.attendedToConference === 1
+  );
+
   useEffect(() => {
     getAllUsers();
-
     // eslint-disable-next-line
   }, []);
+  
+  const content = (totalUsers) => (
+    <div className="demographic-container">
+      <div className="chart-container">
+        <VerticalBar data={getDoughnutData3(totalUsers)} options={options3} />
+      </div>
+      <div className="chart-container">
+        <VerticalBar
+          data={topicsOfInterestChart(totalUsers)}
+          options={topicsOfInterestOption}
+        />
+      </div>
+      <div className="chart-container">
+        <Doughnut
+          data={sizeOfOrganizationChart(totalUsers)}
+          options={sizeOfOrganizationOption}
+        />
+      </div>
+      <div className="chart-container">
+        <Doughnut data={getCountries(totalUsers)} options={optionCountry} />
+      </div>
+      {/* <div className="chart-container">
+    <Doughnut data={getDoughnutData1(allUsers)} options={options1} />
+  </div> */}
+      <div className="chart-container">
+        <Doughnut data={getDoughnutData2(totalUsers)} options={options2} />
+      </div>
+    </div>
+  );
+
   const TabData = [
     {
       title: "Demographics",
-      content: () => (
-        <div className="demographic-container">
-          <div className="chart-container">
-            <VerticalBar data={getDoughnutData3(allUsers)} options={options3} />
-          </div>
-          <div className="chart-container">
-            <VerticalBar
-              data={topicsOfInterestChart(allUsers)}
-              options={topicsOfInterestOption}
-            />
-          </div>
-          <div className="chart-container">
-            <Doughnut
-              data={sizeOfOrganizationChart(allUsers)}
-              options={sizeOfOrganizationOption}
-            />
-          </div>
-          <div className="chart-container">
-            <Doughnut data={getCountries(allUsers)} options={optionCountry} />
-          </div>
-          {/* <div className="chart-container">
-            <Doughnut data={getDoughnutData1(allUsers)} options={options1} />
-          </div> */}
-          <div className="chart-container">
-            <Doughnut data={getDoughnutData2(allUsers)} options={options2} />
-          </div>
-        </div>
-      ),
+      content: () => content(allUsers),
+    },
+    {
+      title: "General demographics",
+      content: () => content(generalDemographics),
+    },
+    {
+      title: "Conference demographics",
+      content: () => content(conferenceDemographics),
     },
     // {
     //   title: "Engagements",
