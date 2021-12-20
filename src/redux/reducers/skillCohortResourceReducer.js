@@ -32,10 +32,18 @@ const reducers = {
       loading: payload.loading,
     });
   },
+  [resourcesConstants.SET_ENTIRE_RESOURCES]: (state, { payload }) => {
+    return state.merge({
+      entireSkillCohortResources: cloneDeep([
+        ...payload.entireSkillCohortResources,
+      ]),
+    });
+  },
 };
 
 export const initialState = () => {
   return Map({
+    entireSkillCohortResources: [],
     allSkillCohortResources: [],
     skillCohortResource: {},
     currentPage: 1,

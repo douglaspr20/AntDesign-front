@@ -150,11 +150,16 @@ class NavBar extends Component {
                     mentoring feature.
                   </>
                 )}
-                {(this.state.module === "story" ||
-                  this.state.module === "comment") && (
+
+                {this.state.module === "story" && (
                   <>
-                    You must fully complete your profile before adding story or
-                    comment.
+                    You must upgrade to premium and complete your full profile to add stories.
+                  </>
+                )}
+
+                {this.state.module === "comment" && (
+                  <>
+                    You must fully complete your profile before add comments.
                   </>
                 )}
 

@@ -224,6 +224,14 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
+      {user.isSponsor && (
+        <div
+          className="profile-popover-content-menu"
+          onClick={() => history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD)}
+        >
+          Sponsor Dashboard
+        </div>
+      )}
       <div
         className="profile-popover-content-menu"
         onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}

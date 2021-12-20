@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 
 import { ConferenceCard, EpisodeCard } from "components";
@@ -29,13 +29,11 @@ const LibraryItemPage = ({
   podcast,
   match,
 }) => {
-  const [id] = useState(match.params.id);
-  const [type] = useState(match.params.type);
+  const { id, type } = useParams();
   const history = useHistory();
 
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  // const { id, type } = useParams();
 
   useEffect(() => {
     if (type === "conference-library") {
@@ -47,7 +45,7 @@ const LibraryItemPage = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, type]);
 
   return (
     <div className="library-item-page-container">
@@ -90,6 +88,7 @@ const LibraryItemPage = ({
               </div>
               {podcast != null && (
                 <EpisodeCard
+                  key={podcast.id}
                   links={getPodcastLinks(podcast)}
                   episode={podcast}
                   isInternalLink={true}

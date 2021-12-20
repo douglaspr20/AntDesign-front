@@ -8,21 +8,20 @@
     flex: 1;
     margin-left: 0 !important;
     justify-content: center;
-    width: 100%;
-
     @media (max-width: 2600px) {
       padding: 18px 10% !important;
       
     }
 
-    @media (max-width: 1500px) {
+    @media (max-width: 1200px) {
       padding: 18px 2% !important;
       
     }
 
-    @media (max-width: 500px) {
-      min-width: 100px;
+    @media (max-width: 400px) {
+      padding: 18px 1% !important;
     }
+  
   
 
     .ant-tabs-tab-btn {
@@ -44,7 +43,6 @@
 
   .ant-tabs-nav {
     margin-bottom: 0 !important;
-    overflow-x: scroll;
 
     &::-webkit-scrollbar {
       display: none;
@@ -57,10 +55,6 @@
 
     @media (max-width: 800px) {
       width: 80%;
-    }
-    
-    @media (max-width: 500px) {
-      width: 90%;
     }
   }
 }

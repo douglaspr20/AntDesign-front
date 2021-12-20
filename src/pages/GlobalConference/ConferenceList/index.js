@@ -7,6 +7,7 @@ import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { addSession, removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
@@ -19,6 +20,7 @@ const ConferenceList = ({
   userProfile,
   addSession,
   removeSession,
+  messageError,
 }) => {
   const [sessionData, setSessionData] = useState([]);
 
@@ -72,7 +74,9 @@ const ConferenceList = ({
       for (let i = 0; i < sData.length; i++) {
         let isEmpty = true;
         for (let j = 0; j <= filteredData.length; j++) {
-          if (sData[i].period === filteredData[j]?.step) {
+          if (
+            `${sData[i].period} ${sData[i].timezone}` === filteredData[j]?.step
+          ) {
             filteredData[j].data.push(sData[i]);
             isEmpty = false;
           }
@@ -187,6 +191,8 @@ const ConferenceList = ({
                         </a>
                       </span>
                     }
+                    overlayStyle={{ background: "black" }}
+                    overlayInnerStyle={{ background: "black" }}
                   >
                     <InfoCircleOutlined className="conference-list-info-icon" />
                   </Tooltip>
@@ -205,7 +211,7 @@ const ConferenceList = ({
             ) : null
           )
         ) : (
-          <h1 style={{ textAlign: "center" }}>No Available Sessions Found</h1>
+          <h1 style={{ textAlign: "center" }}>{messageError}</h1>
         )}
       </div>
     </div>
@@ -223,6 +229,7 @@ ConferenceList.defaultProps = {
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
   userProfile: homeSelector(state).userProfile,
+  messageError: sessionSelector(state).messageError,
 });
 
 const mapDispatchToProps = {

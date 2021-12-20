@@ -60,11 +60,12 @@ const CouncilList = ({
     let filterResources = [];
     if (topics && !isEmpty(topics)) {
       topics.some((el) => {
-        councilResources.filter((item) =>
-          item.topics.map((topic) => {
+        return councilResources.filter((item) =>
+           item.topics.map((topic) => {
             if (topic === el) {
-              filterResources.push(item);
+              return filterResources.push(item)
             }
+            return filterResources
           })
         );
       });

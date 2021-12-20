@@ -7,6 +7,7 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
     loading: payload.get("loading"),
     userProfile: payload.get("userProfile"),
     setting: payload.get("setting"),
+    allUsers: payload.get("allUsers")
   };
 });
 

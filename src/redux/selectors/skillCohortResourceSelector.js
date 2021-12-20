@@ -6,6 +6,7 @@ const resultSelector = createSelector(
   skillCohortResourceDataSelector,
   (payload) => {
     return {
+      entireSkillCohortResources: payload.get("entireSkillCohortResources"),
       allSkillCohortResources: payload.get("allSkillCohortResources"),
       skillCohortResource: payload.get("skillCohortResource"),
       countOfResults: payload.get("countOfResults"),
