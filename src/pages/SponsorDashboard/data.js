@@ -24,7 +24,7 @@ export const options1 = {
 };
 
 function getPercentage(originalNum, totalNum) {
-  return (originalNum / totalNum) * 100;
+  return Math.round((originalNum / totalNum) * 100);
 }
 
 export function getDoughnutData1(allUsers) {
@@ -132,6 +132,20 @@ export const options3 = {
     title: {
       display: true,
       text: "In what area of HR do you currently work or most recently worked?",
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
+    },
+    y: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
     },
   },
 };
@@ -405,6 +419,20 @@ export const topicsOfInterestOption = {
     title: {
       display: true,
       text: "Topics of interest",
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
+    },
+    y: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
     },
   },
 };

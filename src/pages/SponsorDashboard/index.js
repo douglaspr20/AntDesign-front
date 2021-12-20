@@ -30,7 +30,6 @@ const SponsorDashboard = ({ getAllUsers, allUsers }) => {
 
     // eslint-disable-next-line
   }, []);
-
   const TabData = [
     {
       title: "Demographics",
@@ -54,19 +53,19 @@ const SponsorDashboard = ({ getAllUsers, allUsers }) => {
           <div className="chart-container">
             <Doughnut data={getCountries(allUsers)} options={optionCountry} />
           </div>
-          <div className="chart-container">
+          {/* <div className="chart-container">
             <Doughnut data={getDoughnutData1(allUsers)} options={options1} />
-          </div>
+          </div> */}
           <div className="chart-container">
             <Doughnut data={getDoughnutData2(allUsers)} options={options2} />
           </div>
         </div>
       ),
     },
-    {
-      title: "Engagements",
-      content: () => <div>Content 2</div>,
-    },
+    // {
+    //   title: "Engagements",
+    //   content: () => <div>Content 2</div>,
+    // },
   ];
 
   return (
