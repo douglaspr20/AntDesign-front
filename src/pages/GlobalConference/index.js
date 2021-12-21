@@ -59,6 +59,8 @@ import ConferenceLeaderboard from "./ConferenceLeaderboard";
 
 import "./style.scss";
 import RecommendedAgendaForm from "./RecommendedAgenda";
+import MyTalentMarketplaceProfile from "./MyTalentMarketplaceProfile";
+import TalentMarketplace from "./TalentMarketplace";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -109,7 +111,7 @@ const GlobalConference = ({
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
   const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("conference-schedule");
+  const [currentView, setCurrentView] = useState("talent-marketplace-profile");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
     useState(false);
   const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
@@ -424,6 +426,14 @@ const GlobalConference = ({
                   style={{ marginLeft: "1rem" }}
                   className="global-conference-buttom-options"
                 />
+
+                <CustomButton
+                  size="xs"
+                  text="Talent Marketplace"
+                  onClick={() => setCurrentView("talent-marketplace-profile")}
+                  style={{ marginLeft: "1rem" }}
+                  className="global-conference-buttom-options"
+                />
               </>
             ) : (
               <CustomButton
@@ -550,6 +560,34 @@ const GlobalConference = ({
               />
             </div> */}
           </div>
+          {(currentView === "talent-marketplace" ||
+            currentView === "talent-marketplace-profile") && (
+            <Menu
+              mode="horizontal"
+              className="sub-menu"
+              selectedKeys={currentView}
+            >
+              <>
+                <Menu.Item
+                  key="talent-marketplace-profile"
+                  className="sub-menu-item-global-conference"
+                  onClick={() => handleView("talent-marketplace-profile")}
+                >
+                  <Link to="/global-conference">
+                    My Talent Marketplace Profile
+                  </Link>
+                </Menu.Item>
+
+                <Menu.Item
+                  key="talent-marketplace"
+                  className="sub-menu-item-global-conference"
+                  onClick={() => handleView("talent-marketplace")}
+                >
+                  <Link to="/global-conference">Talent Marketplace</Link>
+                </Menu.Item>
+              </>
+            </Menu>
+          )}
         </div>
         {currentView === "conference-schedule" && (
           <div className="global-conference-tabs">
@@ -589,6 +627,11 @@ const GlobalConference = ({
           </>
         )}
         {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
+        {currentView === "talent-marketplace-profile" && (
+          <MyTalentMarketplaceProfile />
+        )}
+
+        {currentView === "talent-marketplace" && <TalentMarketplace />}
       </div>
 
       <Modal

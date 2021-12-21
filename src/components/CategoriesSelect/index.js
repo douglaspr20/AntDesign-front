@@ -5,7 +5,7 @@ import { Select, Tag } from "antd";
 
 import "./style.scss";
 
-const CategoriesSelect = ({ options, ...rest }) => {
+const CategoriesSelect = ({ options, slice, ...rest }) => {
   const tagRender = (props) => {
     const { label, value, closable, onClose } = props;
 
@@ -40,7 +40,7 @@ const CategoriesSelect = ({ options, ...rest }) => {
       className="category-select"
       mode="multiple"
       tagRender={tagRender}
-      value={rest.value?.slice(0, 2)}
+      value={slice ? rest.value?.slice(0, 2) : rest.value}
       filterOption={(inputValue, option) => {
         if (inputValue) {
           const selectedCategory = options.find(

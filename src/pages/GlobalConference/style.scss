@@ -156,30 +156,32 @@
     display: flex;
     justify-content: center;
     position: relative;
-    .sub-menu{
-      background: none;
-      display: flex;
-      justify-content: center;
-
-      @media (max-width: 1400px){
-        position: relative;
-        width: 105%
-      
-        }
-
-      @media (max-width: 1025px){
-      position: relative;
-      width: 100%
-      }
- 
-    }
-
+  
     .custom-button {
       margin-left: 0.5rem;
       padding: 0 1rem;
     }
 
   }
+
+  .sub-menu{
+    background: none;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 1400px){
+      position: relative;
+      width: 105%
+    
+      }
+
+    @media (max-width: 1025px){
+    position: relative;
+    width: 100%
+    }
+
+  }
+
 
   &-tabs {
     width: 100%;
