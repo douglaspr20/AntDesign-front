@@ -30,7 +30,7 @@ export const options1 = {
     title: {
       display: true,
       text: "Open to receiving information/being contacted via email about open job positions.",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
 };
@@ -84,7 +84,7 @@ export const options2 = {
     title: {
       display: true,
       text: "What best defines your current or most recent job level?",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
 };
@@ -167,7 +167,7 @@ export const options3 = {
     title: {
       display: true,
       text: "In what area of HR do you currently work or most recently worked?",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
   scales: {
@@ -325,7 +325,7 @@ export const optionCountry = {
     title: {
       display: true,
       text: "Countries",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
 };
@@ -415,7 +415,7 @@ export const sizeOfOrganizationOption = {
     title: {
       display: true,
       text: "What is the size of the organization your work for?",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
 };
@@ -490,7 +490,7 @@ export const topicsOfInterestOption = {
     title: {
       display: true,
       text: "Topics of interest",
-      font: { size: "15px" },
+      font: { size: "20px" },
     },
   },
   scales: {
