@@ -23,7 +23,7 @@ class LibraryShareDrawer extends React.Component {
   }
 
   onDrawerClose = () => {
-    this.setState({ visible: false });
+     this.setState({...this.state, visible: false });
   };
 
   render() {

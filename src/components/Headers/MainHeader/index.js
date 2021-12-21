@@ -88,6 +88,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if ( pathname.includes(`${INTERNAL_LINKS.COUNCIL}`)) {
+      pathInfo = {
+        icon: IconLibrary,
+        label: `Council`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
       const { selectedCourse } = this.props;
       pathInfo = {
