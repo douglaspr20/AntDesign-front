@@ -246,6 +246,14 @@ const ProfilePopupMenu = (props) => {
           Change Password
         </div>
       )}
+      {user.councilMember && (
+        <div
+          className="profile-popover-content-menu"
+          onClick={() => history.push(INTERNAL_LINKS.COUNCIL)}
+        >
+          Experts Council
+        </div>
+      )}
       {/* {user.percentOfCompletion === 100 && (
         <div
           className="profile-popover-content-menu"

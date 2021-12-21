@@ -13,6 +13,5 @@ export const post = async (data) => {
 };
 
 export const put = async (data) => {
-  console.log(data);
   return await httpClient.put(`private/journey/${data.id}`, data.journey);
 };
