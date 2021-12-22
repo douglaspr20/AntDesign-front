@@ -75,8 +75,8 @@
      
 
        @media (max-width: 1500px){
-        left: 32%;
-        width: 65%;
+        left: 27%;
+        width: 71.5%;
         padding: 20px 0px;
       }
 
@@ -168,11 +168,11 @@
     background: none;
     display: flex;
     justify-content: center;
+    max-width: 1200px;
 
-    @media (max-width: 1400px){
-      position: relative;
-      width: 105%
-    
+    @media (max-width: 1500px){
+      position: relative;    
+      max-width: 1100px;
       }
 
     @media (max-width: 1025px){
@@ -196,9 +196,9 @@
     left: 34%;
 
     @media (max-width: 1500px){
-      top: 22rem;
-      left: 33%;
-      width: 64%;
+      top: 20rem;
+      left: 29%;
+      width: 68%;
       }
 
     @media (max-width: 1100px){

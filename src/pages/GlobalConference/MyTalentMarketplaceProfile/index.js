@@ -18,6 +18,8 @@ import {
   CustomRadio,
 } from "components";
 
+import "./style.scss";
+
 const MyTalentMarketplaceProfile = ({
   allCategories,
   getMarketplaceProfile,
@@ -54,11 +56,12 @@ const MyTalentMarketplaceProfile = ({
   };
 
   return (
-    <div style={{ marginTop: "22rem" }}>
+    <div className="my-talent-marketplace-profile">
       <Form
         layout="vertical"
         ref={formControl}
         onFinish={(data) => handleSubmit(data)}
+        className="my-talent-marketplace-profile-form"
       >
         <Form.Item
           label="Are you a recruiter?"
@@ -73,7 +76,7 @@ const MyTalentMarketplaceProfile = ({
           valuePropName="checked"
           name="showMarketPlaceProfile"
         >
-          <Switch checked={marketplaceProfile.showMarketPlaceProfile} />
+          <Switch />
         </Form.Item>
         <Form.Item>
           <CustomButton
@@ -100,7 +103,11 @@ const MyTalentMarketplaceProfile = ({
           label="What areas in HR are you interested in?"
           name="topics"
         >
-          <CategoriesSelect options={allCategories} />
+          <CategoriesSelect
+            options={allCategories}
+            maxValues={allCategories.length}
+            style={{ maxWidth: "600px", height: "auto" }}
+          />
         </Form.Item>
         <Form.Item label="Location type?" name="location">
           <Checkbox.Group>

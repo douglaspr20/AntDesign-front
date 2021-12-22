@@ -1,47 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pagination } from "antd";
+
 import { connect } from "react-redux";
-import { homeSelector } from "redux/selectors/homeSelector";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import { ParticipantCard } from "components";
+
 import "./style.scss";
 
-const TalentMarketplace = (
-  userProfile,
+const TalentMarketplace = ({
   marketplaceProfiles,
-  getMarketplaceProfiles
-) => {
+  getMarketplaceProfiles,
+  userProfile,
+}) => {
   const [page, setPage] = useState(1);
 
-  // useEffect(() => {
-  //   getMarketplaceProfiles();
-  // }, [getMarketplaceProfiles]);
+  useEffect(() => {
+    getMarketplaceProfiles(userProfile.id);
+  }, [getMarketplaceProfiles, userProfile]);
 
   const handlePaginated = (value) => {
     setPage(value);
   };
 
-  console.log(marketplaceProfiles);
   return (
-    <div className="speakers-list">
-      <div className="speakers-list-container">
-        {/* {participants.length > 0 &&
-          participants
-            .slice((page - 1) * 20, page * 20)
-            .map((participant, i) => (
-              <ParticipantCard key={i} participant={participant} />
-            ))} */}
+    <>
+      <div className="speakers-list">
+        <div className="speakers-list-container">
+          {marketplaceProfiles.length > 0 &&
+            marketplaceProfiles
+              .slice((page - 1) * 20, page * 20)
+              .map((marketplaceProfile, i) => (
+                <ParticipantCard
+                  key={i}
+                  participant={marketplaceProfile}
+                  marketplaceProfile
+                />
+              ))}
+        </div>
+        <Pagination
+          defaultCurrent={page}
+          defaultPageSize={20}
+          total={marketplaceProfiles.length}
+          showSizeChanger={false}
+          onChange={handlePaginated}
+          style={{ marginTop: "1.5rem" }}
+        />
       </div>
-      <Pagination
-        defaultCurrent={page}
-        defaultPageSize={20}
-        // total={participants.length}
-        showSizeChanger={false}
-        onChange={handlePaginated}
-        style={{ marginTop: "1.5rem" }}
-      />
-    </div>
+    </>
   );
 };
 

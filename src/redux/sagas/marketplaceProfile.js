@@ -1,5 +1,5 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
-
+import { notification } from "antd";
 import {
   constants as marketlaceProfileConstants,
   actions as marketplaceProfileActions,
@@ -29,6 +29,11 @@ export function* createMarketplaceProfileSaga({ payload }) {
         })
       );
     }
+
+    notification.success({
+      message: "Success",
+      description: "Marketplace Profile updated succesfully",
+    });
   } catch (error) {
     console.log(error);
 
@@ -40,16 +45,23 @@ export function* createMarketplaceProfileSaga({ payload }) {
   }
 }
 
-export function* getMarketplaceProfilesSaga() {
+export function* getMarketplaceProfilesSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    let response = yield call(getMarketplaceProfiles);
+    let response = yield call(getMarketplaceProfiles, { ...payload });
+
     if (response.status === 200) {
+      const marketplaceProfileData = response.data.marketPlaceProfiles.map(
+        (marketplaceProfile) => {
+          const { User } = marketplaceProfile;
+          const newMarketplaceProfile = Object.assign(marketplaceProfile, User);
+          delete newMarketplaceProfile.User;
+          return newMarketplaceProfile;
+        }
+      );
       yield put(
-        marketplaceProfileActions.setMarketPlaceProfiles(
-          response.data.marketplaceProfiles
-        )
+        marketplaceProfileActions.setMarketPlaceProfiles(marketplaceProfileData)
       );
     }
   } catch (error) {
@@ -96,6 +108,11 @@ export function* updateMarketplaceProfileSaga({ payload }) {
     if (response.status === 200) {
       yield call(getMarketplaceProfile, {
         id: response.data.affectedRows.UserId,
+      });
+
+      notification.success({
+        message: "Success",
+        description: "Marketplace Profile updated succesfully",
       });
     }
   } catch (error) {

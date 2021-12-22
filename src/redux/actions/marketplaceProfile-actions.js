@@ -24,7 +24,10 @@ export const createMarketplaceProfile = createAction(
   (marketplaceProfile) => ({ marketplaceProfile })
 );
 
-export const getMarketplaceProfiles = createAction(GET_MARKETPLACE_PROFILES);
+export const getMarketplaceProfiles = createAction(
+  GET_MARKETPLACE_PROFILES,
+  (id) => ({ id })
+);
 
 export const setMarketPlaceProfiles = createAction(
   SET_MARKETPLACE_PROFILES,
