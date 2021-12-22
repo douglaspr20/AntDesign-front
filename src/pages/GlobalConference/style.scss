@@ -102,12 +102,13 @@
         display: flex !important;
         align-items: center;
         flex-wrap: wrap;
-        
-        @media (max-width: 1100px){
+
+        & .custom-button{
+          margin-top: .5rem;
+        }
+    
+        @media (max-width: 1440px){
           justify-content: center;
-          & .custom-button, & .attending-label{
-            margin-top: .5rem;
-          }
         }
       }
       
