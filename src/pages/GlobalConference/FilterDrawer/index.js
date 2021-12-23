@@ -91,12 +91,12 @@ const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
               <>
                 <Checkbox.Group
                   value={
-                    filterValues["jobLevels"]
-                      ? JSON.parse(filterValues["jobLevels"])
+                    filterValues["joblevels"]
+                      ? JSON.parse(filterValues["joblevels"])
                       : []
                   }
                   style={{ marginBottom: "30px" }}
-                  onChange={(values) => onFilterChange("JobLevels", values)}
+                  onChange={(values) => onFilterChange("joblevels", values)}
                 >
                   {PROFILE_SETTINGS.JOB_LEVELS.map((item) => (
                     <CustomCheckbox

@@ -13,8 +13,10 @@ const TalentMarketplace = ({
   marketplaceProfiles,
   getMarketplaceProfiles,
   userProfile,
+  filters,
 }) => {
   const [page, setPage] = useState(1);
+  const [marketplaceProfileData, setMarketplaceProfileData] = useState([]);
 
   useEffect(() => {
     getMarketplaceProfiles(userProfile.id);
@@ -24,12 +26,98 @@ const TalentMarketplace = ({
     setPage(value);
   };
 
+  useEffect(() => {
+    let dataFiltered = [];
+    function checkAvailability(arr, val) {
+      return arr.some((arrVal) => val === arrVal);
+    }
+
+    if (filters.categories) {
+      const categories = JSON.parse(filters.categories);
+      if (categories.length > 0) {
+        dataFiltered = marketplaceProfiles.filter((marketplaceProfile) => {
+          let canFiltered = false;
+          for (const category of categories) {
+            if (checkAvailability(marketplaceProfile.topics, category)) {
+              canFiltered = true;
+              break;
+            }
+          }
+          if (canFiltered) {
+            return marketplaceProfile;
+          }
+
+          return null;
+        });
+        setMarketplaceProfileData(dataFiltered);
+      } else {
+        dataFiltered = marketplaceProfiles;
+      }
+    } else {
+      dataFiltered = marketplaceProfiles;
+    }
+
+    if (filters.joblevels) {
+      const joblevels = JSON.parse(filters.joblevels);
+
+      if (joblevels.length > 0) {
+        const data = dataFiltered.filter((marketplaceProfile) => {
+          let canFiltered = false;
+
+          for (const jobLevel of joblevels) {
+            if (marketplaceProfile.lookingFor === jobLevel) {
+              canFiltered = true;
+              break;
+            }
+          }
+
+          if (canFiltered) {
+            return marketplaceProfile;
+          }
+
+          return null;
+        });
+
+        setMarketplaceProfileData(data);
+      } else {
+        setMarketplaceProfileData(dataFiltered);
+      }
+    } else {
+      setMarketplaceProfileData(dataFiltered);
+    }
+
+    if (filters.location) {
+      const locations = JSON.parse(filters.location);
+      if (locations.length > 0) {
+        dataFiltered = dataFiltered.filter((marketplaceProfile) => {
+          let canFiltered = false;
+          for (const location of locations) {
+            if (checkAvailability(marketplaceProfile.location, location)) {
+              canFiltered = true;
+              break;
+            }
+          }
+          if (canFiltered) {
+            return marketplaceProfile;
+          }
+
+          return null;
+        });
+        setMarketplaceProfileData(dataFiltered);
+      } else {
+        setMarketplaceProfileData(dataFiltered);
+      }
+    } else {
+      setMarketplaceProfileData(dataFiltered);
+    }
+  }, [filters, marketplaceProfiles]);
+
   return (
     <>
       <div className="speakers-list">
         <div className="speakers-list-container">
-          {marketplaceProfiles.length > 0 &&
-            marketplaceProfiles
+          {marketplaceProfileData.length > 0 &&
+            marketplaceProfileData
               .slice((page - 1) * 20, page * 20)
               .map((marketplaceProfile, i) => (
                 <ParticipantCard
@@ -39,11 +127,11 @@ const TalentMarketplace = ({
                 />
               ))}
         </div>
-        {marketplaceProfiles.length > 0 && (
+        {marketplaceProfileData.length > 0 && (
           <Pagination
             defaultCurrent={page}
             defaultPageSize={20}
-            total={marketplaceProfiles.length}
+            total={marketplaceProfileData.length}
             showSizeChanger={false}
             onChange={handlePaginated}
             style={{ marginTop: "1.5rem" }}

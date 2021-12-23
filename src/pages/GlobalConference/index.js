@@ -633,7 +633,9 @@ const GlobalConference = ({
           <MyTalentMarketplaceProfile />
         )}
 
-        {currentView === "talent-marketplace" && <TalentMarketplace />}
+        {currentView === "talent-marketplace" && (
+          <TalentMarketplace filters={filters} />
+        )}
       </div>
 
       <Modal
