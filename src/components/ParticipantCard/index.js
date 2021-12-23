@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { CustomButton } from "components";
+import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
@@ -30,6 +30,16 @@ const ParticipantCardInfo = ({ participant, marketplaceProfile }) => (
         {participant.titleProfessions || participant.lookingFor}
       </p>
       <p style={{ marginTop: -10 }}>{participant.company}</p>
+
+      {participant.location && (
+        <>
+          <span>Available locations:</span>
+
+          {participant.location.map((location, i) => (
+            <SpecialtyItem key={i} title={location} />
+          ))}
+        </>
+      )}
     </div>
     {marketplaceProfile && (
       <div className="participant-card-marketplaceprofile">

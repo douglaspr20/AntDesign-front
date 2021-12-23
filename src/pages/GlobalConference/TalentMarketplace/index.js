@@ -39,14 +39,16 @@ const TalentMarketplace = ({
                 />
               ))}
         </div>
-        <Pagination
-          defaultCurrent={page}
-          defaultPageSize={20}
-          total={marketplaceProfiles.length}
-          showSizeChanger={false}
-          onChange={handlePaginated}
-          style={{ marginTop: "1.5rem" }}
-        />
+        {marketplaceProfiles.length > 0 && (
+          <Pagination
+            defaultCurrent={page}
+            defaultPageSize={20}
+            total={marketplaceProfiles.length}
+            showSizeChanger={false}
+            onChange={handlePaginated}
+            style={{ marginTop: "1.5rem" }}
+          />
+        )}
       </div>
     </>
   );

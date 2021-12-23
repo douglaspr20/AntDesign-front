@@ -141,4 +141,18 @@ export default {
       value: "Over 10000",
     },
   ],
+  LOCATIONS: [
+    {
+      label: "Remote",
+      value: "remote",
+    },
+    {
+      label: "Hybrid",
+      value: "hybrid",
+    },
+    {
+      label: "On-Site",
+      value: "on-site",
+    },
+  ],
 };

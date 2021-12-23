@@ -380,11 +380,13 @@ const GlobalConference = ({
         onChange={onFilterChange}
         onSearch={onSearch}
         filters={filters}
+        view={currentView}
       />
       <FilterDrawer
         onChange={onFilterChange}
         onSearch={setMeta}
         filters={filters}
+        view={currentView}
       />
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">

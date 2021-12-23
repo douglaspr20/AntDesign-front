@@ -111,9 +111,11 @@ const MyTalentMarketplaceProfile = ({
         </Form.Item>
         <Form.Item label="Location type?" name="location">
           <Checkbox.Group>
-            <CustomCheckbox value="remote">Remote</CustomCheckbox>
-            <CustomCheckbox value="hybrid">Hybrid</CustomCheckbox>
-            <CustomCheckbox value="on-site">On-Site</CustomCheckbox>
+            {PROFILE_SETTINGS.LOCATIONS.map((location) => (
+              <CustomCheckbox key={location.value} value={location.value}>
+                {location.label}
+              </CustomCheckbox>
+            ))}
           </Checkbox.Group>
         </Form.Item>
         <Form.Item>
