@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Checkbox, Form, Radio, Switch } from "antd";
+import { CheckCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -84,6 +85,12 @@ const MyTalentMarketplaceProfile = ({
             text="Upload your resume"
             onClick={() => setShowResumeModal(true)}
           />
+          {marketplaceProfile.resumeFileName !== "" && (
+            <p>
+              <CheckCircleOutlined className="check-icon" />{" "}
+              {marketplaceProfile.resumeFileName}
+            </p>
+          )}
         </Form.Item>
 
         <Form.Item
@@ -119,11 +126,7 @@ const MyTalentMarketplaceProfile = ({
           </Checkbox.Group>
         </Form.Item>
         <Form.Item>
-          <CustomButton
-            size="lg"
-            text={marketplaceProfile.id ? "Update" : "Send"}
-            htmlType="submit"
-          />
+          <CustomButton size="lg" text="Save" htmlType="submit" />
         </Form.Item>
         <Form.Item hidden name="UserId" />
       </Form>

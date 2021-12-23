@@ -28,12 +28,12 @@ export function* createMarketplaceProfileSaga({ payload }) {
           ...marketplaceProfile,
         })
       );
-    }
 
-    notification.success({
-      message: "Success",
-      description: "Marketplace Profile updated succesfully",
-    });
+      notification.success({
+        message: "Success",
+        description: "Changes have been saved",
+      });
+    }
   } catch (error) {
     console.log(error);
 
@@ -82,10 +82,15 @@ export function* getMarketplaceProfileSaga({ payload }) {
     let response = yield call(getMarketplaceProfile, { ...payload });
 
     if (response.status === 200) {
+      const { User } = response.data.marketPlaceProfile;
+      const newMarketplaceProfile = Object.assign(
+        response.data.marketPlaceProfile,
+        User
+      );
+      delete newMarketplaceProfile.User;
+
       yield put(
-        marketplaceProfileActions.setMarketPlaceProfile(
-          response.data.marketPlaceProfile
-        )
+        marketplaceProfileActions.setMarketPlaceProfile(newMarketplaceProfile)
       );
     }
   } catch (error) {
@@ -112,7 +117,7 @@ export function* updateMarketplaceProfileSaga({ payload }) {
 
       notification.success({
         message: "Success",
-        description: "Marketplace Profile updated succesfully",
+        description: "Changes have been saved",
       });
     }
   } catch (error) {
