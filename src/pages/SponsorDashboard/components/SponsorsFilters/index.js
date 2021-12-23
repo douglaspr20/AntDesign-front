@@ -7,9 +7,9 @@ const SponsorsFilters = ({
   setUsers,
   setUsersGeneral,
   users,
-  usersGeneral,
   generalDemographics,
   conferenceDemographics,
+  usersGeneral,
   tab,
 }) => {
   const [filter, setFilter] = useState(0);
@@ -80,8 +80,10 @@ const SponsorsFilters = ({
   };
 
   useEffect(() => {
-    setUsers(conferenceDemographics);
-    setUsersGeneral(generalDemographics);
+    setUsers(allUsers.filter((item) => item.attendedToConference === 1));
+    setUsersGeneral(
+      allUsers.filter((item) => item.percentOfCompletion === 100)
+    );
   }, [allUsers, setUsers, setUsersGeneral]);
 
   const onTopicsFilterChange = (value) => {
