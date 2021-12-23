@@ -31,6 +31,7 @@ import skillCohortResourceResponseAssessmentReducer from "./skillCohortResourceR
 import skillCohortResourceResponseRating from "./skillCohortResourceResponseRatingReducer";
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
+import sessionClassUserReducer from "./sessionClassUserReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -65,4 +66,5 @@ export default combineReducers({
   skillCohortResourceResponseRating: skillCohortResourceResponseRating,
   myLearning: myLearningReducer,
   partner: partnerReducer,
+  sessionClassUser: sessionClassUserReducer,
 });

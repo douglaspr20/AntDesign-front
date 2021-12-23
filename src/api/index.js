@@ -150,6 +150,8 @@ import {
 
 import { getPartners, getPartner } from "./module/partner";
 
+import { getUserProgress, setProgress } from "./module/sessionClassUser";
+
 import { getEditorSignature } from "./module/env";
 export {
   signIn,
@@ -269,4 +271,6 @@ export {
   getEventVideos,
   getPartners,
   getPartner,
+  getUserProgress,
+  setProgress,
 };
