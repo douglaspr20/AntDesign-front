@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -24,17 +24,6 @@ const AnnualConferenceCard = React.memo(
     onJoinedSession,
     userProfile,
   }) => {
-    const [hideInfo, setHideInfo] = useState(true);
-    const [
-      visibleConfirmJoinedOtherSession,
-      setVisibleConfirmJoinedOtherSession,
-    ] = useState(false);
-    const [hoursStartSession, setHoursStartSession] = useState("");
-    const [visibleChronometer, setVisibleChronometer] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(
-      moment.duration(moment(session.startTime).diff(moment.now())).asMinutes()
-    );
-
     const timezone = TIMEZONE_LIST.find(
       (item) => item.value === session.timezone
     );
@@ -47,6 +36,40 @@ const AnnualConferenceCard = React.memo(
     const convertedEndTime = moment(session.endTime)
       .tz(timezone.utc[0])
       .utcOffset(offset, true);
+
+    const currentTime = moment().unix();
+    const diffTime = convertedStartTime.unix() - currentTime;
+    const interval = 1000;
+    let duration = moment.duration(diffTime * interval, "milliseconds");
+
+    const [hideInfo, setHideInfo] = useState(true);
+    const [
+      visibleConfirmJoinedOtherSession,
+      setVisibleConfirmJoinedOtherSession,
+    ] = useState(false);
+    const [hoursStartSession, setHoursStartSession] = useState(
+      `Starting in: ${
+        duration.hours().toFixed() > 0
+          ? `${duration.hours().toFixed()} hours and `
+          : ""
+      } ${duration.minutes()} minutes`
+    );
+    const [timeLeft, setTimeLeft] = useState(
+      moment.duration(moment(session.startTime).diff(moment.now())).asMinutes()
+    );
+
+    setInterval(() => {
+      duration = moment.duration(duration - 60000, "milliseconds");
+      setHoursStartSession(
+        `Starting in: ${
+          duration.hours().toFixed() > 0
+            ? `${duration.hours().toFixed()} hours and `
+            : ""
+        } ${duration.minutes()} minutes`
+      );
+
+      setTimeLeft(duration.asMinutes());
+    }, 60000);
 
     const onClickDownloadCalendar = (e) => {
       e.preventDefault();
@@ -125,36 +148,6 @@ const AnnualConferenceCard = React.memo(
       setVisibleConfirmJoinedOtherSession(true);
     };
 
-    useEffect(() => {
-      const currentTime = moment().unix();
-      const diffTime = convertedStartTime.unix() - currentTime;
-      const interval = 1000;
-      let duration = moment.duration(diffTime * interval, "milliseconds");
-
-      setInterval(function () {
-        duration = moment.duration(duration - interval, "milliseconds");
-
-        setHoursStartSession(
-          `Starting in: ${
-            duration.hours().toFixed() > 0
-              ? `${duration.hours().toFixed()} hours and `
-              : ""
-          } ${duration.minutes()} minutes`
-        );
-
-        setTimeLeft(duration.asMinutes());
-
-        if (
-          duration.asHours() < 120 &&
-          moment().date() >= 16 &&
-          moment().month() >= 11 &&
-          moment().year() >= 2021
-        ) {
-          setVisibleChronometer(true);
-        }
-      }, 1000);
-    }, [convertedStartTime]);
-
     return (
       <div className="annual-conference-card acc">
         <div className="acc-session-header">
@@ -204,7 +197,7 @@ const AnnualConferenceCard = React.memo(
                   alignSelf: "flex-end",
                 }}
               />
-            ) : visibleChronometer && timeLeft >= -10 ? (
+            ) : timeLeft >= -10 && timeLeft < 7200 ? (
               <CustomButton
                 type="primary"
                 size="md"
@@ -339,7 +332,10 @@ const AnnualConferenceCard = React.memo(
           title="Are you sure you want to join this session?"
           width={500}
           onCancel={() => setVisibleConfirmJoinedOtherSession(false)}
-          onOk={() => onJoinedSession(session)}
+          onOk={() => {
+            onJoinedSession(session);
+            setVisibleConfirmJoinedOtherSession(false);
+          }}
           okText="Confirm"
         >
           <p>

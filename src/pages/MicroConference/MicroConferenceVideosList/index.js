@@ -33,7 +33,8 @@ function MicroConferenceVideosList({
         for (const sessionUser of sessionUserProgress) {
           if (
             sessionUser.viewed === true &&
-            sessionUser.AnnualConferenceClassId === list[i].id
+            sessionUser.AnnualConferenceClassId === list[i].id &&
+            list[i + 1]
           ) {
             setActiveVideoId(list[i + 1].id);
           }

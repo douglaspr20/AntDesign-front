@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Tabs } from "antd";
 
@@ -13,7 +14,7 @@ import { sessionSelector } from "redux/selectors/sessionSelector";
 
 import { INTERNAL_LINKS } from "enum";
 
-import { ReactComponent as IconArrowBackCircleOutline } from "images/icon-arrow-back-circle-outline.svg";
+import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
 
@@ -83,21 +84,22 @@ const MicroConference = ({
               <div className="micro-conference__row-1">
                 <div className="micro-conference__row-1--video-list">
                   <div className="micro-conference__row-1--video-list--title">
-                    <IconArrowBackCircleOutline
-                      title="Back to Global Conference"
-                      onClick={() => {
-                        history.push(INTERNAL_LINKS.GLOBAL_CONFERENCE);
-                      }}
-                    />{" "}
                     <h2>{session.title}</h2>
                   </div>
-
                   <MicroConferenceVideosList
                     list={classes}
                     setActiveVideoId={(id) => setActiveVideoId(id)}
                     activeVideoId={activeVideoId}
                     sessionId={match.params.id}
                   />
+
+                  <Link
+                    to={INTERNAL_LINKS.GLOBAL_CONFERENCE}
+                    className="micro-conference__row-1--video-list--back-link"
+                  >
+                    <img src={IconBack} alt="icon-back" />
+                    <h2>Back to Global Conference</h2>
+                  </Link>
                 </div>
                 <div className="micro-class__row-1--video-player">
                   <MicroConferenceVideoWrapper
