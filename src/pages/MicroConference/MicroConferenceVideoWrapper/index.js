@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import ReactPlayer from "react-player/vimeo";
 import LoadingGif from "images/icon-loading.gif";
 
-import { setProgress } from "redux/actions/course-user-progress-actions";
-import { courseClassUserSelector } from "redux/selectors/courseClassUserSelector";
+import { setSessionProgress } from "redux/actions/session-class-user-action";
+import { sessionClassUserSelector } from "redux/selectors/sessionClassUserSelector";
 
 import "./style.scss";
 
@@ -13,12 +13,13 @@ function MicroConferenceVideoWrapper({
   url,
   id,
   sessionId,
-  courseUserProgress,
+  sessionUserProgress,
+  setSessionProgress,
 }) {
   const player = useRef(null);
 
   function handleProgress({ playedSeconds }) {
-    setProgress({
+    setSessionProgress({
       sessionId,
       SessionClassId: id,
       progressVideo: playedSeconds,
@@ -26,8 +27,8 @@ function MicroConferenceVideoWrapper({
   }
 
   const setProgressVideoPlayer = () => {
-    for (let item of courseUserProgress) {
-      if (id === item.CourseClassId) {
+    for (let item of sessionUserProgress) {
+      if (id === item.AnnualConferenceClassId) {
         player.current.seekTo(item.progressVideo);
       }
     }
@@ -54,7 +55,7 @@ function MicroConferenceVideoWrapper({
         }}
         ref={player}
         onEnded={() => {
-          setProgress({ sessionId, CourseClassId: id, viewed: true });
+          setSessionProgress({ sessionId, SessionClassId: id, viewed: true });
         }}
       />
     </div>
@@ -74,11 +75,11 @@ MicroConferenceVideoWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  courseUserProgress: courseClassUserSelector(state).courseUserProgress,
+  sessionUserProgress: sessionClassUserSelector(state).sessionUserProgress,
 });
 
 const mapDispatchToProps = {
-  setProgress,
+  setSessionProgress,
 };
 
 export default connect(

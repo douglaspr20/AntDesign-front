@@ -6,6 +6,7 @@ import {
   constants as sessionClassUserConstants,
   actions as sessionClassUserActions,
 } from "../actions/session-class-user-action";
+import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { setProgress, getUserProgress } from "../../api";
 
@@ -13,26 +14,26 @@ export function* getSessionUserProgressSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getUserProgress, payload.courseId);
-
-    console.log(response);
-
+    const response = yield call(getUserProgress, payload.sessionId);
     if (response.status === 200) {
       yield put(
         sessionClassUserActions.setSessionUserProgress(
-          response.data.courseClassUser
+          response.data.annualConferenceClassUser
         )
       );
     }
-
-    yield put(homeActions.setLoading(false));
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
     yield put(homeActions.setLoading(false));
   }
 }
 
-export function* setProgressSaga({ payload }) {
+export function* setSessionProgressSaga({ payload }) {
   try {
     let response = yield call(setProgress, payload.data);
     if (response.status === 200) {
@@ -40,7 +41,7 @@ export function* setProgressSaga({ payload }) {
       if (response.status === 200) {
         yield put(
           sessionClassUserActions.setSessionUserProgress(
-            response.data.courseClassUser
+            response.data.annualConferenceClassUser
           )
         );
       }
@@ -56,7 +57,10 @@ function* watchLogin() {
     sessionClassUserConstants.GET_SESSION_USER_PROGRESS,
     getSessionUserProgressSaga
   );
-  yield takeLatest(sessionClassUserConstants.SET_PROGRESS, setProgressSaga);
+  yield takeLatest(
+    sessionClassUserConstants.SET_SESSION_PROGRESS,
+    setSessionProgressSaga
+  );
 }
 
 export const sessionClassUserSaga = [fork(watchLogin)];

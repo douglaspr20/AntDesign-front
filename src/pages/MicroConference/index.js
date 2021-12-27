@@ -31,8 +31,6 @@ const useMicroConferenceQuery = (id) => {
     }, 1500);
 
     return () => clearTimeout(timeout);
-
-    // eslint-disable-next-line
   }, []);
 
   return {
@@ -98,6 +96,7 @@ const MicroConference = ({
                     list={classes}
                     setActiveVideoId={(id) => setActiveVideoId(id)}
                     activeVideoId={activeVideoId}
+                    sessionId={match.params.id}
                   />
                 </div>
                 <div className="micro-class__row-1--video-player">

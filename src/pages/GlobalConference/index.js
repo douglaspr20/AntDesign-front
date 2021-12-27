@@ -94,7 +94,7 @@ const GlobalConference = ({
   const [colleaguesForm] = Form.useForm();
 
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate] = useState(moment("2021-12-23", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2021-12-26", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
