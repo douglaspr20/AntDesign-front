@@ -4,7 +4,7 @@ import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
 import { CustomCheckbox, SearchInput } from "components";
-
+import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import { CONFERENCE_SETTING, PROFILE_SETTINGS } from "enum";
@@ -20,6 +20,7 @@ const FilterPanel = ({
   onSearch,
   filters,
   view,
+  userProfile,
 }) => {
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -63,7 +64,16 @@ const FilterPanel = ({
                 onChange={(values) => onFilterChange("joblevels", values)}
               >
                 {PROFILE_SETTINGS.JOB_LEVELS.map((item) => (
-                  <CustomCheckbox key={item.value} value={item.value} size="sm">
+                  <CustomCheckbox
+                    key={item.value}
+                    value={item.value}
+                    size="sm"
+                    disabled={
+                      (view === "talent-marketplace-profile" ||
+                        view === "talent-marketplace") &&
+                      !userProfile.memberShip === "premium"
+                    }
+                  >
                     {item.label}
                   </CustomCheckbox>
                 ))}
@@ -83,6 +93,11 @@ const FilterPanel = ({
                     key={location.value}
                     value={location.value}
                     size="sm"
+                    disabled={
+                      (view === "talent-marketplace-profile" ||
+                        view === "talent-marketplace") &&
+                      !userProfile.memberShip === "premium"
+                    }
                   >
                     {location.label}
                   </CustomCheckbox>
@@ -106,8 +121,12 @@ const FilterPanel = ({
               ))}
             </Checkbox.Group>
           )}
-
-          <h5 className="search-filter-title font-bold">Categories</h5>
+          <h5 className="search-filter-title font-bold">
+            {view === "talent-marketplace-profile" ||
+            view === "talent-marketplace"
+              ? "Areas of interest"
+              : "Categories"}
+          </h5>
           <Checkbox.Group
             value={
               filterValues["categories"]
@@ -117,7 +136,16 @@ const FilterPanel = ({
             onChange={(values) => onFilterChange("Categories", values)}
           >
             {allCategories.map((item) => (
-              <CustomCheckbox key={item.value} value={item.value} size="sm">
+              <CustomCheckbox
+                key={item.value}
+                value={item.value}
+                size="sm"
+                disabled={
+                  (view === "talent-marketplace-profile" ||
+                    view === "talent-marketplace") &&
+                  !userProfile.memberShip === "premium"
+                }
+              >
                 {item.title}
               </CustomCheckbox>
             ))}
@@ -148,6 +176,7 @@ FilterPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(FilterPanel);

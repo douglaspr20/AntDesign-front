@@ -428,14 +428,6 @@ const GlobalConference = ({
                   style={{ marginLeft: "1rem" }}
                   className="global-conference-buttom-options"
                 />
-
-                <CustomButton
-                  size="xs"
-                  text="Talent Marketplace"
-                  onClick={() => setCurrentView("talent-marketplace-profile")}
-                  style={{ marginLeft: "1rem" }}
-                  className="global-conference-buttom-options"
-                />
               </>
             ) : (
               <CustomButton
@@ -444,6 +436,14 @@ const GlobalConference = ({
                 onClick={onAttend}
               />
             )}
+
+            <CustomButton
+              size="xs"
+              text="Talent Marketplace"
+              onClick={() => setCurrentView("talent-marketplace-profile")}
+              style={{ marginLeft: "1rem" }}
+              className="global-conference-buttom-options"
+            />
 
             {currentView === "personal-agenda" && (
               <CustomButton

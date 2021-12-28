@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Avatar, Tooltip } from "antd";
+import { Card, Avatar, Tooltip, Button } from "antd";
 import {
   LinkedinOutlined,
   MailOutlined,
@@ -12,80 +12,104 @@ import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const ParticipantCardInfo = ({ participant, marketplaceProfile }) => (
-  <>
-    {participant.img ? (
-      <Avatar size={150} src={participant.img} />
-    ) : (
-      <Avatar size={150} style={{ fontSize: "2rem" }}>
-        {participant.abbrName}
-      </Avatar>
-    )}
+const ParticipantCardInfo = ({
+  participant,
+  userProfile,
+  marketplaceProfile,
+}) => {
+  const downloadFile = () => {
+    const link = document.createElement("a");
+    link.setAttribute("href", participant.resumeUrl);
+    link.setAttribute(
+      "download",
+      `${participant.firstName} ${participant.lastName}`
+    );
 
-    <div style={{ textAlign: "center" }}>
-      <p style={{ fontWeight: 500 }}>
-        {participant.firstName} {participant.lastName}
-      </p>
-      <p style={{ marginTop: -10 }}>
-        {participant.titleProfessions || participant.lookingFor}
-      </p>
-      <p style={{ marginTop: -10 }}>{participant.company}</p>
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
-      {participant.location && (
-        <>
-          <span>Available locations:</span>
-
-          {participant.location.map((location, i) => (
-            <SpecialtyItem key={i} title={location} />
-          ))}
-        </>
+  return (
+    <>
+      {participant.img ? (
+        <Avatar size={150} src={participant.img} />
+      ) : (
+        <Avatar size={150} style={{ fontSize: "2rem" }}>
+          {participant.abbrName}
+        </Avatar>
       )}
-    </div>
-    {marketplaceProfile && (
-      <div className="participant-card-marketplaceprofile">
-        {participant.resumeUrl !== "" && participant.resumeUrl && (
-          <Tooltip title="Download Resume">
-            <a
-              href={participant.resumeUrl}
-              download={`${participant.firstName} ${participant.lastName}`}
-              className="participant-card-marketplaceprofile-icon"
-            >
-              <ProfileOutlined />
-            </a>
-          </Tooltip>
+
+      <div style={{ textAlign: "center" }}>
+        <p style={{ fontWeight: 500 }}>
+          {participant.firstName} {participant.lastName}
+        </p>
+        <p style={{ marginTop: -10 }}>
+          {participant.titleProfessions || participant.lookingFor}
+        </p>
+        <p style={{ marginTop: -10 }}>{participant.company}</p>
+
+        {participant.location && (
+          <>
+            <span>Available locations:</span>
+
+            {participant.location.map((location, i) => (
+              <SpecialtyItem key={i} title={location} />
+            ))}
+          </>
         )}
-
-        <Tooltip title="Linkedin">
-          <a
-            href={participant.personalLinks.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="participant-card-marketplaceprofile-icon"
-          >
-            <LinkedinOutlined />
-          </a>
-        </Tooltip>
-
-        <Tooltip title="Contact Email">
-          <a
-            href={`mailto:${participant.email}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="participant-card-marketplaceprofile-icon"
-          >
-            <MailOutlined />
-          </a>
-        </Tooltip>
       </div>
-    )}
-  </>
-);
+      {marketplaceProfile && (
+        <div className="participant-card-marketplaceprofile">
+          {participant.resumeUrl !== "" && participant.resumeUrl && (
+            <Tooltip title="Download Resume">
+              <Button
+                shape="circle"
+                type="link"
+                icon={<ProfileOutlined />}
+                onClick={() => downloadFile()}
+                disabled={!userProfile.memberShip === "premium"}
+              />
+            </Tooltip>
+          )}
+
+          <Tooltip title="Linkedin">
+            <Button
+              shape="circle"
+              type="link"
+              icon={<LinkedinOutlined />}
+              onClick={() =>
+                window.open(participant.personalLinks.linkedin, "_blank")
+              }
+              className="participant-card-marketplaceprofile-icon"
+              disabled={!userProfile.memberShip === "premium"}
+            />
+          </Tooltip>
+
+          <Tooltip title="Contact Email">
+            <Button
+              shape="circle"
+              type="link"
+              icon={<MailOutlined />}
+              onClick={() =>
+                window.open(`mailto:${participant.email}`, "_blank")
+              }
+              className="participant-card-marketplaceprofile-icon"
+              disabled={!userProfile.memberShip === "premium"}
+            />
+          </Tooltip>
+        </div>
+      )}
+    </>
+  );
+};
 
 const ParticipantCard = ({
   participant,
   onOpenModalBonfires,
   invitedAllBonfires,
   marketplaceProfile,
+  userProfile,
 }) => {
   return (
     <Card
@@ -112,7 +136,11 @@ const ParticipantCard = ({
 
       {marketplaceProfile ? (
         <>
-          <ParticipantCardInfo participant={participant} marketplaceProfile />
+          <ParticipantCardInfo
+            participant={participant}
+            marketplaceProfile
+            userProfile={userProfile}
+          />
         </>
       ) : (
         <a

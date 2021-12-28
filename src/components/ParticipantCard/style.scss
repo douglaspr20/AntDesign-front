@@ -19,6 +19,10 @@
   &-icon{
     font-size: 2rem;
     margin-left: 15px;
+
+    & span{
+      font-size: 30px !important;
+    }
   }
 
   &-icon:first-child{

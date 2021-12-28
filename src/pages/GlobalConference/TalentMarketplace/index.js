@@ -27,41 +27,18 @@ const TalentMarketplace = ({
   };
 
   useEffect(() => {
-    let dataFiltered = [];
+    let dataFiltered = marketplaceProfiles;
     function checkAvailability(arr, val) {
       return arr.some((arrVal) => val === arrVal);
-    }
-
-    if (filters.categories) {
-      const categories = JSON.parse(filters.categories);
-      if (categories.length > 0) {
-        dataFiltered = marketplaceProfiles.filter((marketplaceProfile) => {
-          let canFiltered = false;
-          for (const category of categories) {
-            if (checkAvailability(marketplaceProfile.topics, category)) {
-              canFiltered = true;
-              break;
-            }
-          }
-          if (canFiltered) {
-            return marketplaceProfile;
-          }
-
-          return null;
-        });
-        setMarketplaceProfileData(dataFiltered);
-      } else {
-        dataFiltered = marketplaceProfiles;
-      }
-    } else {
-      dataFiltered = marketplaceProfiles;
     }
 
     if (filters.joblevels) {
       const joblevels = JSON.parse(filters.joblevels);
 
+      console.log(joblevels);
+
       if (joblevels.length > 0) {
-        const data = dataFiltered.filter((marketplaceProfile) => {
+        dataFiltered = dataFiltered.filter((marketplaceProfile) => {
           let canFiltered = false;
 
           for (const jobLevel of joblevels) {
@@ -78,7 +55,7 @@ const TalentMarketplace = ({
           return null;
         });
 
-        setMarketplaceProfileData(data);
+        setMarketplaceProfileData(dataFiltered);
       } else {
         setMarketplaceProfileData(dataFiltered);
       }
@@ -109,6 +86,31 @@ const TalentMarketplace = ({
       }
     } else {
       setMarketplaceProfileData(dataFiltered);
+    }
+
+    if (filters.categories) {
+      const categories = JSON.parse(filters.categories);
+      if (categories.length > 0) {
+        dataFiltered = marketplaceProfiles.filter((marketplaceProfile) => {
+          let canFiltered = false;
+          for (const category of categories) {
+            if (checkAvailability(marketplaceProfile.topics, category)) {
+              canFiltered = true;
+              break;
+            }
+          }
+          if (canFiltered) {
+            return marketplaceProfile;
+          }
+
+          return null;
+        });
+        setMarketplaceProfileData(dataFiltered);
+      } else {
+        dataFiltered = marketplaceProfiles;
+      }
+    } else {
+      dataFiltered = marketplaceProfiles;
     }
   }, [filters, marketplaceProfiles]);
 
