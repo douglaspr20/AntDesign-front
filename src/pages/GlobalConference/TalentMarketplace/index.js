@@ -35,8 +35,6 @@ const TalentMarketplace = ({
     if (filters.joblevels) {
       const joblevels = JSON.parse(filters.joblevels);
 
-      console.log(joblevels);
-
       if (joblevels.length > 0) {
         dataFiltered = dataFiltered.filter((marketplaceProfile) => {
           let canFiltered = false;
