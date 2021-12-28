@@ -111,12 +111,10 @@ class TopHeader extends Component {
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={(props) => <MainHeader {...props} />}
         />
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.SPEAKERS}`}
           render={(props) => <MainHeader {...props} />}
         />
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.PARTICIPANTS}/:idConference`}
           render={(props) => <MainHeader {...props} />}
@@ -157,8 +155,13 @@ class TopHeader extends Component {
           path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
           render={(props) => <MainHeader {...props} />}
         />
-                <PrivateRoute
+        <PrivateRoute
           path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.JOB_BOARD}
           exact
           render={(props) => <MainHeader {...props} />}
         />

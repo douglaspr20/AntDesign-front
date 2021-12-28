@@ -43,6 +43,7 @@ import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import SponsorDashboardPage from "pages/SponsorDashboard";
+import JobBoardPage from 'pages/JobBoard'
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -250,6 +251,11 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
             render={(props) => <SponsorDashboardPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.JOB_BOARD}
+            render={(props) => <JobBoardPage {...props} />}
           />
           <Route
             exact

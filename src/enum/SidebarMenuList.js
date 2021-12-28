@@ -26,6 +26,11 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
+      label: "Job Board",
+      icon: IconStoreFrontOutline,
+      url: INTERNAL_LINKS.JOB_BOARD,
+    },
+    {
       label: "Global Conference",
       icon: IconGlobal,
       url: INTERNAL_LINKS.GLOBAL_CONFERENCE,

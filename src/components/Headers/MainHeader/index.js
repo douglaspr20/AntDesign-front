@@ -146,6 +146,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.JOB_BOARD}`)) {
+      pathInfo = {
+        icon: IconHomeOutline,
+        label: "Job Board",
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">
