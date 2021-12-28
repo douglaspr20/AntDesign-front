@@ -24,6 +24,7 @@ const ParticipantCardInfo = ({
       "download",
       `${participant.firstName} ${participant.lastName}`
     );
+    link.setAttribute("target", "_blank");
 
     document.body.appendChild(link);
     link.click();
@@ -69,6 +70,7 @@ const ParticipantCardInfo = ({
                 icon={<ProfileOutlined />}
                 onClick={() => downloadFile()}
                 disabled={!userProfile.memberShip === "premium"}
+                className="participant-card-marketplaceprofile-icon"
               />
             </Tooltip>
           )}
