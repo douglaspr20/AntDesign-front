@@ -50,7 +50,7 @@ const ParticipantCardInfo = ({
         </p>
         <p style={{ marginTop: -10 }}>{participant.company}</p>
 
-        {participant.location && (
+        {participant.location && marketplaceProfile && (
           <>
             <span>Available locations:</span>
 
