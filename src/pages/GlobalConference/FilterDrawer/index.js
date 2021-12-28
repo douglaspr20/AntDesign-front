@@ -12,12 +12,20 @@ import {
 import { EVENT_TYPES } from "enum";
 import Emitter from "services/emitter";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import "./style.scss";
 import { CONFERENCE_SETTING, PROFILE_SETTINGS } from "enum";
 
 const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
-const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
+const FilterDrawer = ({
+  allCategories,
+  userProfile,
+  onChange,
+  onSearch,
+  filters,
+  view,
+}) => {
   const [visible, setVisible] = useState(false);
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -102,6 +110,11 @@ const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
                     <CustomCheckbox
                       key={item.value}
                       value={item.value}
+                      disabled={
+                        (view === "talent-marketplace-profile" ||
+                          view === "talent-marketplace") &&
+                        !userProfile.memberShip === "premium"
+                      }
                       size="sm"
                     >
                       {item.label}
@@ -123,6 +136,11 @@ const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
                       key={location.value}
                       value={location.value}
                       size="sm"
+                      disabled={
+                        (view === "talent-marketplace-profile" ||
+                          view === "talent-marketplace") &&
+                        !userProfile.memberShip === "premium"
+                      }
                     >
                       {location.label}
                     </CustomCheckbox>
@@ -147,7 +165,12 @@ const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
               </Checkbox.Group>
             )}
 
-            <h5 className="search-filter-title font-bold">Categories</h5>
+            <h5 className="search-filter-title font-bold">
+              {view === "talent-marketplace-profile" ||
+              view === "talent-marketplace"
+                ? "Areas of interest"
+                : "Categories"}
+            </h5>
             <Checkbox.Group
               value={
                 filterValues["topics"] ? JSON.parse(filterValues["topics"]) : []
@@ -155,7 +178,16 @@ const FilterDrawer = ({ allCategories, onChange, onSearch, filters, view }) => {
               onChange={(values) => onFilterChange("Topics", values)}
             >
               {allCategories.map((item) => (
-                <CustomCheckbox key={item.value} value={item.value} size="sm">
+                <CustomCheckbox
+                  key={item.value}
+                  value={item.value}
+                  size="sm"
+                  disabled={
+                    (view === "talent-marketplace-profile" ||
+                      view === "talent-marketplace") &&
+                    !userProfile.memberShip === "premium"
+                  }
+                >
                   {item.title}
                 </CustomCheckbox>
               ))}
@@ -192,6 +224,7 @@ FilterDrawer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(FilterDrawer);
