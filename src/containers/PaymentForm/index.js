@@ -71,13 +71,73 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                 <Button
                   loading={loading}
                   onClick={() => {
-                    requestCheckoutSessionTable(true, false);
+                    requestCheckoutSessionTable({
+                      premium: true,
+                      recruiter: false,
+                      creator: false,
+                    });
                   }}
                   className="pay-buttton"
                 >
                   Pay ${STRIPE_PRICES.STRIPE_PRICES[0].price}
                 </Button>
               );
+            }
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+    {
+      title: "Recruiter",
+      key: "recruiter",
+      dataIndex: "recruiter",
+      align: "center",
+      className: "payment-table-column",
+      width: 150,
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            if (userProfile.memberShip === "channel_admin") {
+              return "Creator";
+            } else {
+              if (userProfile.memberShip === "free") {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable({
+                        premium: true,
+                        recruiter: true,
+                        creator: false,
+                      });
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay $
+                    {parseFloat(
+                      STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price
+                    ) + parseFloat(STRIPE_PRICES.STRIPE_PRICES[0].price)}
+                  </Button>
+                );
+              } else {
+                return (
+                  <Button
+                    loading={loading}
+                    onClick={() => {
+                      requestCheckoutSessionTable({
+                        premium: false,
+                        recruiter: true,
+                        creator: false,
+                      });
+                    }}
+                    className="pay-buttton"
+                  >
+                    Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
+                  </Button>
+                );
+              }
             }
           }
         } else {
@@ -103,7 +163,11 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                   <Button
                     loading={loading}
                     onClick={() => {
-                      requestCheckoutSessionTable(true, true);
+                      requestCheckoutSessionTable({
+                        premium: true,
+                        recruiter: false,
+                        creator: true,
+                      });
                     }}
                     className="pay-buttton"
                   >
@@ -117,7 +181,11 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                   <Button
                     loading={loading}
                     onClick={() => {
-                      requestCheckoutSessionTable(false, true);
+                      requestCheckoutSessionTable({
+                        premium: false,
+                        recruiter: false,
+                        creator: true,
+                      });
                     }}
                     className="pay-buttton"
                   >
@@ -139,30 +207,42 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       text: "Participation in all Hacking HR online events",
       free: true,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "Access to: learning library, mentoring, conference library, classes, podcast and podcast series",
       free: true,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "Access to ProjectX: Hacking HR's cohort based learning",
       free: false,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "HR certification credits (for applicable learning items in the learning library, conference library, podcast series or classes)",
       free: false,
       premium: true,
+      recruiter: true,
       creator: true,
+    },
+    {
+      text: "Post jobs, access to profiles in Talent Marketplace and connect with candidates in the talent marketplace",
+      free: false,
+      premium: false,
+      recruiter: true,
+      creator: false,
     },
     {
       text: "Content sharing with the community: events, podcasts, videos, classes and other resources",
       free: false,
       premium: false,
+      recruiter: false,
       creator: true,
     },
     {
@@ -180,16 +260,22 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSessionTable = async (
-    premium = false,
-    creator = false
-  ) => {
+  const requestCheckoutSessionTable = async ({
+    premium,
+    creator,
+    recruiter,
+  }) => {
     setLoading(true);
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
     if (premium === true) {
       checkoutSessionPrices.push(STRIPE_PRICES.STRIPE_PRICES[0].priceId);
+    }
+    if (recruiter === true) {
+      checkoutSessionPrices.push(
+        STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].priceId
+      );
     }
     if (creator === true) {
       checkoutSessionPrices.push(

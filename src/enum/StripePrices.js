@@ -38,5 +38,13 @@ export default {
       character: '&#8358;',
       priceId: process.env.REACT_APP_STRIPE_YEARLY_NGN_PRICE_CHANNELS_ID
     }
+  ],
+  RECRUITER_STRIPE_PRICES: [
+    {
+      price: '250',
+      country: 'GLOBAL',
+      character: '&#36;',
+      priceId: process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_RECRUITER_ID
+    },
   ]
 }

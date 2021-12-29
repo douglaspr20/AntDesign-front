@@ -224,6 +224,23 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
+      {user.recruiterSubscription !== true && (
+        <div className="profile-popover-content-menu" onClick={onUpgrade}>
+          Become a RECRUITER
+        </div>
+      )}
+      {user.recruiterSubscription === true && (
+        <div className="profile-popover-content-menu">
+          <div>RECRUITER</div>
+          <div>
+            {moment(user.recruiterSubscription_startdate).format(
+              "MMMM DD, yyyy"
+            )}{" "}
+            -{" "}
+            {moment(user.recruiterSubscription_enddate).format("MMMM DD, yyyy")}
+          </div>
+        </div>
+      )}
       {user.isSponsor && (
         <div
           className="profile-popover-content-menu"
