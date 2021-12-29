@@ -45,14 +45,25 @@ const ParticipantCardInfo = ({
         <p style={{ fontWeight: 500 }}>
           {participant.firstName} {participant.lastName}
         </p>
-        <p style={{ marginTop: -10 }}>
-          {participant.titleProfessions || participant.lookingFor}
-        </p>
+        {participant.lookingFor ? (
+          <div style={{ marginTop: -10 }}>
+            <span className="participant-card-marketplaceprofile--title">
+              Looking For:
+            </span>
+            {participant.lookingFor.map((profesion, i) => (
+              <SpecialtyItem key={i} title={profesion} />
+            ))}
+          </div>
+        ) : (
+          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
+        )}
         <p style={{ marginTop: -10 }}>{participant.company}</p>
 
         {participant.location && marketplaceProfile && (
           <>
-            <span>Available locations:</span>
+            <span className="participant-card-marketplaceprofile--title">
+              Available locations:
+            </span>
 
             {participant.location.map((location, i) => (
               <SpecialtyItem key={i} title={location} />
