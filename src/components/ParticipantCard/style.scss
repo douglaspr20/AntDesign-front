@@ -7,4 +7,27 @@
   }
 }
 
+
+.participant-card-marketplaceprofile{
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(0,0,0, 0.1);
+  width: 133%;
+  padding-top: 10px;
+  margin-top: 10px;
+
+  &-icon{
+    font-size: 1.5rem;
+    margin-left: 15px;
+
+    & span{
+      font-size: 25px !important;
+    }
+  }
+
+  &-icon:first-child{
+    margin-left: 0px;
+  }
+  
+}
   

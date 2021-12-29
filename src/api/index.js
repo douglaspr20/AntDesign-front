@@ -18,7 +18,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
-  getAllUsers
+  getAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -118,7 +118,11 @@ import {
   withdrawParticipation,
 } from "./module/skillCohortParticipant";
 
-import { getResource, getAllResources, getEntireResources } from "./module/skillCohortResource";
+import {
+  getResource,
+  getAllResources,
+  getEntireResources,
+} from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
@@ -155,6 +159,13 @@ import {
 } from "./module/council-comments";
 
 import { getPartners, getPartner } from "./module/partner";
+
+import {
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
+} from "./module/marketplaceProfile";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -279,4 +290,8 @@ export {
   getEventVideos,
   getPartners,
   getPartner,
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
 };

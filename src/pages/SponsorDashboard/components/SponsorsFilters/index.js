@@ -7,12 +7,13 @@ const SponsorsFilters = ({
   setUsers,
   setUsersGeneral,
   users,
-  usersGeneral,
   generalDemographics,
   conferenceDemographics,
+  usersGeneral,
   tab,
 }) => {
   const [filter, setFilter] = useState(0);
+  const [prevValue, setPrevValue] = useState([]);
   const [externalFilter, setExternalFilter] = useState();
   const [prevFilter, setPrevFilter] = useState(0);
   const [prevGeneral, setPrevGeneral] = useState();
@@ -58,6 +59,12 @@ const SponsorsFilters = ({
 
   const handleFilter = (value) => {
     setExternalFilter(handleExternalFilter(value));
+    if (value.length < 2) {
+      const isValue = value.map((el) => prevValue?.includes(el));
+      if (isValue[0] === false || isValue.length === 0) {
+        setPrevValue((prev) => [...prev, ...value]);
+      }
+    }
     if (tab === "0") {
       setPrevGeneral(usersGeneral.length > 0 ? usersGeneral : prevGeneral);
       setPrevFilter(usersGeneral.length > 0 ? filter : prevFilter);
@@ -67,6 +74,7 @@ const SponsorsFilters = ({
     }
     if (value.length < 1) {
       setFilter((prev) => prev - 1);
+      setPrevValue(prevValue.splice(prevValue, 1));
       if (filter > 0 && filter - 1 === prevFilter) {
         if (tab === "0") {
           setUsersGeneral(prevGeneral);
@@ -77,11 +85,20 @@ const SponsorsFilters = ({
     } else {
       setFilter((prev) => prev + 1);
     }
+    if (prevValue.length === 0) {
+      if(tab === '0') {
+        setUsersGeneral(generalDemographics);
+      } else {
+        setUsers(conferenceDemographics)
+      }
+    }
   };
 
   useEffect(() => {
-    setUsers(conferenceDemographics);
-    setUsersGeneral(generalDemographics);
+    setUsers(allUsers.filter((item) => item.attendedToConference === 1));
+    setUsersGeneral(
+      allUsers.filter((item) => item.percentOfCompletion === 100)
+    );
   }, [allUsers, setUsers, setUsersGeneral]);
 
   const onTopicsFilterChange = (value) => {

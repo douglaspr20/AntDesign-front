@@ -277,7 +277,7 @@ const Bonfire = ({
             label="Categories"
             rules={[{ required: true, message: "Categories is required." }]}
           >
-            <CategoriesSelect options={allCategories} />
+            <CategoriesSelect options={allCategories} maxValues={2} />
           </Form.Item>
 
           <Form.Item
