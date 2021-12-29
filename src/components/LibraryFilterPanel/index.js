@@ -17,7 +17,7 @@ const FilterPanel = ({ title, userProfile, allCategories, onChange, onSearch }) 
 
   const onShareContent = () => {
     Emitter.emit(EVENT_TYPES.OPEN_SHARE_CONTENT);
-  };
+  }; 
 
   const onFilterChange = (field, values) => {
     const newFilter = {

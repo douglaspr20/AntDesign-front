@@ -8,6 +8,8 @@ import libraryReducer from "./libraryReducer";
 import mentoringReducer from "./mentoringReducer";
 import podcastReducer from "./podcastReducer";
 import marketplaceReducer from "./marketplaceReducer";
+import councilReducer from "./councilReducer";
+import councilCommentsReducer from "./councilCommentsReducer";
 import marketplaceCategoriesReducer from "./marketplaceCategoriesReducer";
 import categoryReducer from "./categoryReducer";
 import conferenceReducer from "./conferenceReducer";
@@ -35,6 +37,8 @@ import marketplaceProfileReducer from "./marketplaceProfileReducer";
 
 export default combineReducers({
   home: homeReducer,
+  council: councilReducer,
+  councilComment: councilCommentsReducer,
   env: envReducer,
   auth: authReducer,
   event: eventReducer,
