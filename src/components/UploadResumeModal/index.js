@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { FilePdfOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
 
 import { CustomModal, CustomButton } from "components";
 import { uploadResume, deleteResume } from "redux/actions/home-actions";
@@ -74,7 +74,11 @@ const UploadResumeModal = ({
         });
       });
       if (response) {
-        console.log("success upload");
+        notification.success({
+          message: "Success",
+          description: "Resume was saved",
+        });
+        onClose();
       } else {
         setErrorMessage("Something went wrong. Please try again!");
       }
