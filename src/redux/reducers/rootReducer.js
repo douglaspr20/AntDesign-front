@@ -33,6 +33,7 @@ import skillCohortResourceResponseAssessmentReducer from "./skillCohortResourceR
 import skillCohortResourceResponseRating from "./skillCohortResourceResponseRatingReducer";
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
+import marketplaceProfileReducer from "./marketplaceProfileReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -69,4 +70,5 @@ export default combineReducers({
   skillCohortResourceResponseRating: skillCohortResourceResponseRating,
   myLearning: myLearningReducer,
   partner: partnerReducer,
+  marketplaceProfile: marketplaceProfileReducer,
 });
