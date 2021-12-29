@@ -69,7 +69,7 @@ const ParticipantCardInfo = ({
                 type="link"
                 icon={<ProfileOutlined />}
                 onClick={() => downloadFile()}
-                disabled={!userProfile.memberShip === "premium"}
+                disabled={userProfile.memberShip !== "premium"}
                 className="participant-card-marketplaceprofile-icon"
               />
             </Tooltip>
@@ -84,7 +84,7 @@ const ParticipantCardInfo = ({
                 window.open(participant.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={!userProfile.memberShip === "premium"}
+              disabled={userProfile.memberShip !== "premium"}
             />
           </Tooltip>
 
@@ -97,7 +97,7 @@ const ParticipantCardInfo = ({
                 window.open(`mailto:${participant.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={!userProfile.memberShip === "premium"}
+              disabled={userProfile.memberShip !== "premium"}
             />
           </Tooltip>
         </div>

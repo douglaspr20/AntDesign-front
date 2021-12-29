@@ -71,7 +71,7 @@ const FilterPanel = ({
                     disabled={
                       (view === "talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
-                      !userProfile.memberShip === "premium"
+                      userProfile.memberShip !== "premium"
                     }
                   >
                     {item.label}
@@ -96,7 +96,7 @@ const FilterPanel = ({
                     disabled={
                       (view === "talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
-                      !userProfile.memberShip === "premium"
+                      userProfile.memberShip !== "premium"
                     }
                   >
                     {location.label}
@@ -143,7 +143,7 @@ const FilterPanel = ({
                 disabled={
                   (view === "talent-marketplace-profile" ||
                     view === "talent-marketplace") &&
-                  !userProfile.memberShip === "premium"
+                  userProfile.memberShip !== "premium"
                 }
               >
                 {item.title}
