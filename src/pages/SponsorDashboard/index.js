@@ -25,10 +25,6 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import SponsorsFilters from "./components/SponsorsFilters";
 
 const SponsorDashboard = ({ getAllUsers, allUsers }) => {
-  const [currentTab, setCurrentTab] = useState("0");
-  const [users, setUsers] = useState(null);
-  const [usersGeneral, setUsersGeneral] = useState(null);
-
   const generalDemographics = allUsers.filter(
     (item) => item.percentOfCompletion === 100
   );
@@ -36,6 +32,10 @@ const SponsorDashboard = ({ getAllUsers, allUsers }) => {
   const conferenceDemographics = allUsers.filter(
     (item) => item.attendedToConference === 1
   );
+
+  const [currentTab, setCurrentTab] = useState("0");
+  const [users, setUsers] = useState(conferenceDemographics);
+  const [usersGeneral, setUsersGeneral] = useState(generalDemographics);
 
   useEffect(() => {
     getAllUsers();
