@@ -57,6 +57,13 @@ const SponsorsFilters = ({
     }
   };
 
+  useEffect(() => {
+    setUsers(allUsers.filter((item) => item.attendedToConference === 1));
+    setUsersGeneral(
+      allUsers.filter((item) => item.percentOfCompletion === 100)
+    );
+  }, [allUsers, setUsers, setUsersGeneral]);
+
   const handleFilter = (value) => {
     setExternalFilter(handleExternalFilter(value));
     if (value.length < 2) {
@@ -85,21 +92,14 @@ const SponsorsFilters = ({
     } else {
       setFilter((prev) => prev + 1);
     }
-    if (prevValue.length === 0) {
-      if(tab === '0') {
+    if (prevValue.length === 0 && filter !== 0) {
+      if (tab === "0") {
         setUsersGeneral(generalDemographics);
       } else {
-        setUsers(conferenceDemographics)
+        setUsers(conferenceDemographics);
       }
     }
   };
-
-  useEffect(() => {
-    setUsers(allUsers.filter((item) => item.attendedToConference === 1));
-    setUsersGeneral(
-      allUsers.filter((item) => item.percentOfCompletion === 100)
-    );
-  }, [allUsers, setUsers, setUsersGeneral]);
 
   const onTopicsFilterChange = (value) => {
     if (tab === "0") {
