@@ -141,6 +141,13 @@ import {
   getEventVideos,
 } from "./module/myLearning";
 
+import {
+  getAllJobPosts,
+  getJobPost,
+  upsertJobPost,
+  getMyJobPosts
+} from './module/jobBoard'
+
 import { getPartners, getPartner } from "./module/partner";
 
 import { getEditorSignature } from "./module/env";
@@ -259,4 +266,8 @@ export {
   getEventVideos,
   getPartners,
   getPartner,
+  getAllJobPosts,
+  getJobPost,
+  upsertJobPost,
+  getMyJobPosts
 };

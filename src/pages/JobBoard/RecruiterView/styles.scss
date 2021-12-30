@@ -1,0 +1,12 @@
+.recruiter-view {
+  height: 100vh;
+  padding-bottom: 64px;
+
+  .job-posts-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 1rem;
+    gap: 1rem;
+    width: 100%;
+  }
+}

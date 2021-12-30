@@ -16,6 +16,7 @@ import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconGlobal from "images/icon-global.svg";
 import IconFlask from "images/icon-flask-outline.svg"
+import IconBriefcase from "images/icon-briefcase-outline.svg"
 // import IconGlobal from "images/icon-global.svg";
 
 export default {
@@ -27,7 +28,7 @@ export default {
     },
     {
       label: "Job Board",
-      icon: IconStoreFrontOutline,
+      icon: IconBriefcase,
       url: INTERNAL_LINKS.JOB_BOARD,
     },
     {

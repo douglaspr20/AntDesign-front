@@ -43,7 +43,8 @@ import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import SponsorDashboardPage from "pages/SponsorDashboard";
-import JobBoardPage from 'pages/JobBoard'
+import JobBoardPage from "pages/JobBoard";
+import JobPostDetailsPage from "pages/JobBoard/JobPostDetails";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -256,6 +257,11 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.JOB_BOARD}
             render={(props) => <JobBoardPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.JOB_BOARD}/:id`}
+            render={(props) => <JobPostDetailsPage {...props} />}
           />
           <Route
             exact

@@ -165,6 +165,11 @@ class TopHeader extends Component {
           exact
           render={(props) => <MainHeader {...props} />}
         />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.JOB_BOARD}/:id`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
         <Route
           exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
