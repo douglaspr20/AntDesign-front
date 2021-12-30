@@ -84,7 +84,7 @@ const JobBoardPage = ({
           <RecruiterView mainJobPosts={displayMainJobPosts} filter={filter}/>
         )}
         {!isEmpty(userProfile.memberShip) && !isPremium && (
-          <div className="job-posts-container">
+          <div>
             {displayMainJobPosts(allJobPosts)}
           </div>
         )}
