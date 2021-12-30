@@ -18,7 +18,7 @@ class CustomSelect extends React.Component {
       >
         {options.map((opt) => (
           <Select.Option key={opt.value} value={opt.value}>
-            {opt.text}
+            {opt.text || opt.label}
           </Select.Option>
         ))}
       </Select>

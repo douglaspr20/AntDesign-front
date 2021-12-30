@@ -1,6 +1,7 @@
 export default {
   HOME: "/",
   LOGIN: "/login",
+  COUNCIL: "/council",
   SIGNUP: "/signup",
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",

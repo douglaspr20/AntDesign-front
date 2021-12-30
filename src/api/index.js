@@ -18,7 +18,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
-  getAllUsers
+  getAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -118,7 +118,11 @@ import {
   withdrawParticipation,
 } from "./module/skillCohortParticipant";
 
-import { getResource, getAllResources, getEntireResources } from "./module/skillCohortResource";
+import {
+  getResource,
+  getAllResources,
+  getEntireResources,
+} from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
@@ -147,8 +151,27 @@ import {
   upsertJobPost,
   getMyJobPosts
 } from './module/jobBoard'
+import {
+  getCouncilMembersFromAPI,
+  getCouncilResourcesFromAPI,
+  createCouncilResourceFromAPI,
+  getCouncilResourceByIdFromAPI,
+} from "./module/council";
+
+import {
+  getAllCouncilCommentsFromAPI,
+  postCouncilCommentFromAPI,
+  removeCouncilCommentFromAPI,
+} from "./module/council-comments";
 
 import { getPartners, getPartner } from "./module/partner";
+
+import {
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
+} from "./module/marketplaceProfile";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -156,6 +179,13 @@ export {
   signUp,
   getUserFromId,
   updateUser,
+  getAllCouncilCommentsFromAPI,
+  postCouncilCommentFromAPI,
+  removeCouncilCommentFromAPI,
+  getCouncilMembersFromAPI,
+  getCouncilResourceByIdFromAPI,
+  getCouncilResourcesFromAPI,
+  createCouncilResourceFromAPI,
   getAllUsers,
   changePassword,
   createInvitation,
@@ -269,5 +299,9 @@ export {
   getAllJobPosts,
   getJobPost,
   upsertJobPost,
-  getMyJobPosts
+  getMyJobPosts,
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
 };

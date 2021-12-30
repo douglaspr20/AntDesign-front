@@ -6,6 +6,7 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
+import CouncilPage from "pages/Council";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import PasswordRecoveryPage from "pages/PasswordRecovery";
@@ -42,6 +43,7 @@ import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
+import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
 import JobBoardPage from "pages/JobBoard";
 import JobPostDetailsPage from "pages/JobBoard/JobPostDetails";
@@ -126,6 +128,16 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CLASS}/:id`}
             render={(props) => <MicroClassPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.COUNCIL}
+            render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COUNCIL}/resource`}
+            render={(props) => <CouncilConversationsCard {...props} />}
           />
           <PrivateRoute
             exact
