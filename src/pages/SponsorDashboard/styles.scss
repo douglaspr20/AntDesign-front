@@ -8,6 +8,17 @@
   gap: 20px;
 }
 
+.sponsor-page__list-wrap {
+  padding-top: 1rem;
+  overflow: auto;
+  height: calc(100vh - 200px);
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .sponsor-dashboard-container {
   width: 80%;
   margin-left: auto;

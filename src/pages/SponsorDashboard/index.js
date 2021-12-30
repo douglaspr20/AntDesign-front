@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Tabs } from "components";
 import { connect } from "react-redux";
+import { Tabs } from "components";
+import NoItemsMessageCard from "components/NoItemsMessageCard";
+
 import { Doughnut, VerticalBar } from "./components";
-import "./styles.scss";
-// import CategoriesSelect from "components/CategoriesSelect";
+import SponsorsFilters from "./components/SponsorsFilters";
 
 import {
   // options1,
@@ -22,9 +23,9 @@ import {
 
 import { actions as homeActions } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import SponsorsFilters from "./components/SponsorsFilters";
+import "./styles.scss";
 
-const SponsorDashboard = ({ getAllUsers, allUsers }) => {
+const SponsorDashboard = ({ getAllUsers, allUsers, userProfile }) => {
   const generalDemographics = allUsers.filter(
     (item) => item.percentOfCompletion === 100
   );
@@ -96,19 +97,23 @@ const SponsorDashboard = ({ getAllUsers, allUsers }) => {
 
   return (
     <div className="sponsor-dashboard-page">
-      {/* <SponsorFilterPanel
-        filters={filters}
-        setFilters={setFilters}
-        onChange={onTopicsFilterChange}
-      /> */}
-      <div className="sponsor-dashboard-container">
-        <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
-      </div>
+      {userProfile.isSponsor ? (
+        <div className="sponsor-dashboard-container">
+          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+        </div>
+      ) : (
+        <div className="sponsor-page__list-wrap">
+          <NoItemsMessageCard
+            message={`You must be a partner to see this view.`}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
   allUsers: homeSelector(state).allUsers,
 });
 
