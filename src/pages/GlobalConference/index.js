@@ -454,30 +454,6 @@ const GlobalConference = ({
             </Menu>
           )}
         </div>
-
-        {/* 
-
-        {currentView === "recommended-agenda" && (
-          <>
-            {recommendedAgendaSessions.length > 0 ? (
-              <PersonalAgenda
-                sessionsUser={recommendedAgendaSessions}
-                filters={filters}
-              />
-            ) : (
-              <div className="sessions-not-found">
-                <h1>No Sessions Found For Your Recommended Agenda</h1>
-                <CustomButton
-                  type="primary"
-                  text="Reload"
-                  size="md"
-                  onClick={() => setCurrentView("conference-schedule")}
-                />
-              </div>
-            )}
-          </>
-        )}
-       */}
         {childrenWithFilterProp ? (
           childrenWithFilterProp
         ) : (

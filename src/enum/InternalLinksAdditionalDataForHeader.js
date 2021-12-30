@@ -41,6 +41,11 @@ export default [
   {
     label: "Global Conference",
     icon: IconGlobal,
+    url: INTERNAL_LINKS.GLOBAL_CONFERENCE_RECOMMENDED_AGENDA,
+  },
+  {
+    label: "Global Conference",
+    icon: IconGlobal,
     url: INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD,
   },
   {

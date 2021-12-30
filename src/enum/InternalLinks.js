@@ -36,6 +36,7 @@ export default {
   GLOBAL_CONFERENCE_PARTNERS: "/global-conference/partners",
   GLOBAL_CONFERENCE_BONFIRE: "/global-conference/bonfires",
   GLOBAL_CONFERENCE_PERSONAL_AGENDA: "/global-conference/personal-agenda",
+  GLOBAL_CONFERENCE_RECOMMENDED_AGENDA: "/global-conference/recommended-agenda",
   GLOBAL_CONFERENCE_LEADERBOARD: "/global-conference/leaderboard",
   GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE:
     "/global-conference/my-talent-marketplace-profile",

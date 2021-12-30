@@ -272,6 +272,19 @@ class Content extends Component {
 
           <PrivateRoute
             exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_RECOMMENDED_AGENDA}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferencePersonalAgendaPage
+                  {...props}
+                  isRecommendedAgenda
+                />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}
             render={(props) => (
               <GlobalConferencePage {...props}>

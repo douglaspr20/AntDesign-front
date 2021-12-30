@@ -153,6 +153,12 @@ class TopHeader extends Component {
 
         <PrivateRoute
           exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_RECOMMENDED_AGENDA}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}
           render={(props) => <MainHeader {...props} />}
         />

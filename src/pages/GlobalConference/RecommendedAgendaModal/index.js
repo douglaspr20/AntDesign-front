@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+
 import { connect } from "react-redux";
 import { Modal, Form } from "antd";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -6,9 +8,15 @@ import { recommendedAgenda } from "redux/actions/session-actions";
 import { CustomButton } from "components";
 import RecommendedAgendaForm from "./RecommendedAgendaForm";
 
-const RecommendedAgendaModal = ({ visible, onCancel, allCategories }) => {
+const RecommendedAgendaModal = ({
+  visible,
+  onCancel,
+  allCategories,
+  recommendedAgenda,
+}) => {
   const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
   const [recommendedAgendaForm, setRecommendedAgendaForm] = useState({});
+  const history = useHistory();
 
   const handleSubmitRecommendedAgenda = (data) => {
     if (data.topics) {
@@ -27,7 +35,7 @@ const RecommendedAgendaModal = ({ visible, onCancel, allCategories }) => {
       recommendedAgenda(newRecomendedAgendaValues);
       onCancel();
       setRecommendedAgendaStep(0);
-      //   setCurrentView("recommended-agenda");
+      history.push("/global-conference/recommended-agenda");
     }
   };
 
@@ -67,10 +75,7 @@ const RecommendedAgendaModal = ({ visible, onCancel, allCategories }) => {
 };
 
 const mapStateToProps = (state) => ({
-  // ...sessionSelector(state),
-  // userProfile: homeSelector(state).userProfile,
   allCategories: categorySelector(state).categories,
-  // allEvents: eventSelector(state).allEvents,
 });
 
 const mapDispatchToProps = {
