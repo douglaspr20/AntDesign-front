@@ -30,13 +30,10 @@ import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResource
 import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
 import { learningSaga } from "./myLearning";
 import { partnersSaga } from "./partners";
-<<<<<<< HEAD
 import { jobBoardSaga } from "./jobBoard"
-=======
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
->>>>>>> c200013ab52be6bb86cc421d21cd64d95aeaf3ce
 
 export default function* sagas() {
   yield all([

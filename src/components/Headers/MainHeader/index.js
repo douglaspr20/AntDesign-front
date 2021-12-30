@@ -22,6 +22,7 @@ import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
+import IconBriefcaseOutline from 'images/icon-briefcase-outline.svg'
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -154,7 +155,7 @@ class MainHeader extends React.Component {
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.JOB_BOARD}`)) {
       pathInfo = {
-        icon: IconHomeOutline,
+        icon: IconBriefcaseOutline,
         label: "Job Board",
       };
     }
