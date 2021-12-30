@@ -17,22 +17,21 @@ export function* createMarketplaceProfileSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    let response = yield call(createMarketplaceProfile, {
+    const response = yield call(createMarketplaceProfile, {
       ...payload,
     });
+
     if (response.status === 200) {
-      const response = yield call(getMarketplaceProfile, payload.UserId);
+      notification.success({
+        message: "Success",
+        description: "Changes have been saved",
+      });
       const { marketplaceProfile } = response.data;
       yield put(
         marketplaceProfileActions.setMarketPlaceProfile({
           ...marketplaceProfile,
         })
       );
-
-      notification.success({
-        message: "Success",
-        description: "Changes have been saved",
-      });
     }
   } catch (error) {
     console.log(error);

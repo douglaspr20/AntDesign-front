@@ -46,8 +46,6 @@ const RecommendedAgendaForm = ({ step, allCategories }) => {
               max={56}
               tipFormatter={(value) => `${value} hours`}
               step={0.25}
-              // onChange={this.onChange}
-              //value={typeof inputValue === "number" ? inputValue : 0}
             />
           </Form.Item>
         </React.Fragment>
