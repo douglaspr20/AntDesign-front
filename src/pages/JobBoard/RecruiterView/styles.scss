@@ -1,12 +1,31 @@
-.recruiter-view {
-  height: 100vh;
-  padding-bottom: 64px;
+@import "styles/_colors.scss";
+@import "styles/main.scss";
 
-  .job-posts-container {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    padding: 1rem;
-    gap: 1rem;
-    width: 100%;
+.recruiter-view {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  padding: 1rem;
+  gap: 1rem;
+  width: 100%;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1536px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.job-post-card {
+  padding: 1rem;
+  height: 256px;
+  background: $color-white;
+  border: 1px solid $color-border;
+  border-radius: 0.5rem;
+  box-shadow: 4px 0px 14px #37215714;
 }

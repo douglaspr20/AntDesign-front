@@ -44,16 +44,13 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
   );
 
   const handleBtnClick = () => {
-    window.open(
-      jobPost?.linkToApply,
-      "_blank"
-    );
+    window.open(jobPost?.linkToApply, "_blank");
   };
 
   return (
     <div className="job-board-details-page">
       <div className="job-board-details-wrapper">
-        <div className="back-to-job-board">
+        {/* <div className="back-to-job-board">
           <div
             className="job-board-detail-page-header-content-back-btn"
             onClick={() => history.push(INTERNAL_LINKS.JOB_BOARD)}
@@ -65,11 +62,22 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
               <h4>Back to Job Board</h4>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="job-board-details-content">
+          <div
+            className="job-board-detail-page-header-content-back-btn"
+            onClick={() => history.push(INTERNAL_LINKS.JOB_BOARD)}
+          >
+            <div className="job-board-detail-page-header-content-back">
+              <div className="job-board-detail-page-header-content-back-img">
+                <img src={IconBack} alt="icon-back" />
+              </div>
+              <h4>Back to Job Board</h4>
+            </div>
+          </div>
           <div className="section1">
             <div>
-              <Image width={400} height={100} src={jobPost.companyLogo} />
+              <Image src={jobPost.companyLogo} width={225} height={100}/>
             </div>
             <div>
               <CustomButton text="Apply" onClick={handleBtnClick} />
@@ -83,7 +91,9 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
             <Space direction="vertical" size="middle">
               <h3>{jobPost.title}</h3>
               <section
-                dangerouslySetInnerHTML={{ __html: jobPost?.jobDescription?.html }}
+                dangerouslySetInnerHTML={{
+                  __html: jobPost?.jobDescription?.html,
+                }}
               />
               <div>{`${jobPost.city}, ${country?.text}`}</div>
               <div>{displayLocation}</div>

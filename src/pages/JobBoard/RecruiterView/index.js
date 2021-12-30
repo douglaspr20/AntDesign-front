@@ -9,7 +9,7 @@ import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
 
 import JobPost from "../JobPostCard";
-import "../styles.scss";
+import "./styles.scss";
 
 const RecruiterView = ({
   mainJobPosts,
@@ -47,7 +47,7 @@ const RecruiterView = ({
 
   const displayMyPostedJobs = () => {
     return (
-      <div className="job-posts-container">
+      <div className="recruiter-view">
         <div
           className="job-post-card"
           onClick={() => setIsDrawerVisible(true)}
@@ -64,11 +64,9 @@ const RecruiterView = ({
             }}
           />
         </div>
-        <>
-          {myJobPosts.map((post, index) => {
-            return <JobPost post={post} key={index} myPostedJobs />;
-          })}
-        </>
+        {myJobPosts.map((post, index) => {
+          return <JobPost post={post} key={index} myPostedJobs />;
+        })}
       </div>
     );
   };
