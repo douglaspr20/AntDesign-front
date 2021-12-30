@@ -14,6 +14,7 @@ import {
   CustomModal,
 } from "components";
 import { getAllSessions } from "redux/actions/session-actions";
+import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import {
   attendToGlobalConference,
   setLoading,
@@ -57,6 +58,7 @@ const GlobalConference = ({
   getAllEvent,
   userProfile,
   getAllSessions,
+  getMarketplaceProfiles,
   addToMyEventList,
   removeFromMyEventList,
   sessionsUser,
@@ -99,8 +101,11 @@ const GlobalConference = ({
   const onSearch = (value) => {
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
-    getAllSessions(startTime, endTime, value);
     setMeta(value);
+    if (localPathname.includes("talent-marketplace")) {
+      return getMarketplaceProfiles(userProfile.id, value);
+    }
+    getAllSessions(startTime, endTime, value);
   };
 
   // const goToPrevPage = () => {
@@ -237,7 +242,7 @@ const GlobalConference = ({
   const childrenWithFilterProp = children
     ? React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          return React.cloneElement(child, { filters });
+          return React.cloneElement(child, { filters, onSearch });
         }
         return child;
       })
@@ -256,7 +261,7 @@ const GlobalConference = ({
       />
       <FilterDrawer
         onChange={onFilterChange}
-        onSearch={setMeta}
+        onSearch={onSearch}
         filters={filters}
         view={localPathname}
       />
@@ -522,6 +527,7 @@ const mapDispatchToProps = {
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
+  getMarketplaceProfiles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

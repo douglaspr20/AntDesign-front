@@ -43,7 +43,14 @@ const FilterPanel = ({
       <div className="global-conference-filter-panel-content">
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
-          <SearchInput onSearch={onSearch} />
+          <SearchInput
+            onSearch={
+              view === "talent-marketplace" &&
+              userProfile.memberShip === "premium"
+                ? onSearch
+                : () => {}
+            }
+          />
           <h5 className="search-filter-title font-bold">
             {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace"
