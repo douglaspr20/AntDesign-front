@@ -52,7 +52,11 @@ const UploadResumeModal = ({
     if (fileRef && fileRef.current) {
       // check file type
       const file = fileRef.current.files[0];
-      const supportedTypes = ["application/pdf"];
+      const supportedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
 
       if (!supportedTypes.includes(file.type)) {
         setErrorMessage("Invalid format!");
@@ -157,7 +161,7 @@ const UploadResumeModal = ({
               style={{ display: "none" }}
               type="file"
               onChange={onFileChange}
-              accept=".pdf"
+              accept=".pdf,.doc,.docx"
             />
           </React.Fragment>
         )}

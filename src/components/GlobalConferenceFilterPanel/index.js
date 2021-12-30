@@ -43,15 +43,22 @@ const FilterPanel = ({
       <div className="global-conference-filter-panel-content">
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Search</h5>
-          <SearchInput onSearch={onSearch} />
+          <SearchInput
+            onSearch={
+              view === "talent-marketplace" &&
+              userProfile.memberShip === "premium"
+                ? onSearch
+                : () => {}
+            }
+          />
           <h5 className="search-filter-title font-bold">
-            {view === "talent-marketplace-profile" ||
+            {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace"
               ? "Job Levels"
               : "Sessions"}
           </h5>
 
-          {view === "talent-marketplace-profile" ||
+          {view === "my-talent-marketplace-profile" ||
           view === "talent-marketplace" ? (
             <>
               <Checkbox.Group
@@ -69,9 +76,9 @@ const FilterPanel = ({
                     value={item.value}
                     size="sm"
                     disabled={
-                      (view === "talent-marketplace-profile" ||
+                      (view === "my-talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
-                      !userProfile.memberShip === "premium"
+                      userProfile.memberShip !== "premium"
                     }
                   >
                     {item.label}
@@ -94,9 +101,9 @@ const FilterPanel = ({
                     value={location.value}
                     size="sm"
                     disabled={
-                      (view === "talent-marketplace-profile" ||
+                      (view === "my-talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
-                      !userProfile.memberShip === "premium"
+                      userProfile.memberShip !== "premium"
                     }
                   >
                     {location.label}
@@ -122,7 +129,7 @@ const FilterPanel = ({
             </Checkbox.Group>
           )}
           <h5 className="search-filter-title font-bold">
-            {view === "talent-marketplace-profile" ||
+            {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace"
               ? "Areas of interest"
               : "Categories"}
@@ -141,9 +148,9 @@ const FilterPanel = ({
                 value={item.value}
                 size="sm"
                 disabled={
-                  (view === "talent-marketplace-profile" ||
+                  (view === "my-talent-marketplace-profile" ||
                     view === "talent-marketplace") &&
-                  !userProfile.memberShip === "premium"
+                  userProfile.memberShip !== "premium"
                 }
               >
                 {item.title}
