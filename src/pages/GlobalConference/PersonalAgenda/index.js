@@ -5,8 +5,9 @@ import { Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
-
+import { getSessionsAddedbyUser } from "redux/actions/session-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 import { addSession, removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 import "./style.scss";
@@ -17,6 +18,7 @@ const PersonalAgenda = ({
   removeSession,
   userProfile,
   addSession,
+  getSessionsAddedbyUser,
 }) => {
   const [sessionData, setSessionData] = useState([]);
 
@@ -27,6 +29,12 @@ const PersonalAgenda = ({
   const onRemoveSession = (session) => {
     removeSession(session);
   };
+
+  useEffect(() => {
+    if (userProfile.id) {
+      getSessionsAddedbyUser(userProfile.id);
+    }
+  }, [getSessionsAddedbyUser, userProfile]);
 
   useEffect(() => {
     if (sessionsUser) {
@@ -219,12 +227,14 @@ PersonalAgenda.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  sessionsUser: sessionSelector(state).sessionsUser,
   userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
   addSession,
   removeSession,
+  getSessionsAddedbyUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalAgenda);

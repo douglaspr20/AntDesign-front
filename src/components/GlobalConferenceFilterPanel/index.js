@@ -45,13 +45,13 @@ const FilterPanel = ({
           <h5 className="search-filter-title font-bold">Search</h5>
           <SearchInput onSearch={onSearch} />
           <h5 className="search-filter-title font-bold">
-            {view === "talent-marketplace-profile" ||
+            {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace"
               ? "Job Levels"
               : "Sessions"}
           </h5>
 
-          {view === "talent-marketplace-profile" ||
+          {view === "my-talent-marketplace-profile" ||
           view === "talent-marketplace" ? (
             <>
               <Checkbox.Group
@@ -69,7 +69,7 @@ const FilterPanel = ({
                     value={item.value}
                     size="sm"
                     disabled={
-                      (view === "talent-marketplace-profile" ||
+                      (view === "my-talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
                       userProfile.memberShip !== "premium"
                     }
@@ -94,7 +94,7 @@ const FilterPanel = ({
                     value={location.value}
                     size="sm"
                     disabled={
-                      (view === "talent-marketplace-profile" ||
+                      (view === "my-talent-marketplace-profile" ||
                         view === "talent-marketplace") &&
                       userProfile.memberShip !== "premium"
                     }
@@ -122,7 +122,7 @@ const FilterPanel = ({
             </Checkbox.Group>
           )}
           <h5 className="search-filter-title font-bold">
-            {view === "talent-marketplace-profile" ||
+            {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace"
               ? "Areas of interest"
               : "Categories"}
@@ -141,7 +141,7 @@ const FilterPanel = ({
                 value={item.value}
                 size="sm"
                 disabled={
-                  (view === "talent-marketplace-profile" ||
+                  (view === "my-talent-marketplace-profile" ||
                     view === "talent-marketplace") &&
                   userProfile.memberShip !== "premium"
                 }
