@@ -88,13 +88,13 @@ const FilterDrawer = ({
             <h5 className="search-filter-title font-bold">Search</h5>
             <SearchInput onChange={onSearch} />
             <h5 className="search-filter-title font-bold">
-              {view === "talent-marketplace-profile" ||
+              {view === "my-talent-marketplace-profile" ||
               view === "talent-marketplace"
                 ? "Job Levels"
                 : "Sessions"}
             </h5>
 
-            {view === "talent-marketplace-profile" ||
+            {view === "my-talent-marketplace-profile" ||
             view === "talent-marketplace" ? (
               <>
                 <Checkbox.Group
@@ -111,9 +111,9 @@ const FilterDrawer = ({
                       key={item.value}
                       value={item.value}
                       disabled={
-                        (view === "talent-marketplace-profile" ||
+                        (view === "my-talent-marketplace-profile" ||
                           view === "talent-marketplace") &&
-                        !userProfile.memberShip === "premium"
+                        userProfile.memberShip !== "premium"
                       }
                       size="sm"
                     >
@@ -137,9 +137,9 @@ const FilterDrawer = ({
                       value={location.value}
                       size="sm"
                       disabled={
-                        (view === "talent-marketplace-profile" ||
+                        (view === "my-talent-marketplace-profile" ||
                           view === "talent-marketplace") &&
-                        !userProfile.memberShip === "premium"
+                        userProfile.memberShip !== "premium"
                       }
                     >
                       {location.label}
@@ -166,7 +166,7 @@ const FilterDrawer = ({
             )}
 
             <h5 className="search-filter-title font-bold">
-              {view === "talent-marketplace-profile" ||
+              {view === "my-talent-marketplace-profile" ||
               view === "talent-marketplace"
                 ? "Areas of interest"
                 : "Categories"}
@@ -183,9 +183,9 @@ const FilterDrawer = ({
                   value={item.value}
                   size="sm"
                   disabled={
-                    (view === "talent-marketplace-profile" ||
+                    (view === "my-talent-marketplace-profile" ||
                       view === "talent-marketplace") &&
-                    !userProfile.memberShip === "premium"
+                    userProfile.memberShip !== "premium"
                   }
                 >
                   {item.title}

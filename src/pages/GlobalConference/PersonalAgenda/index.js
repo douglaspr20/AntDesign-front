@@ -5,8 +5,9 @@ import { Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { TIMEZONE_LIST } from "enum";
-
+import { getSessionsAddedbyUser } from "redux/actions/session-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 import { addSession, removeSession } from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 import "./style.scss";
@@ -17,6 +18,9 @@ const PersonalAgenda = ({
   removeSession,
   userProfile,
   addSession,
+  getSessionsAddedbyUser,
+  isRecommendedAgenda,
+  recommendedAgendaSessions,
 }) => {
   const [sessionData, setSessionData] = useState([]);
 
@@ -29,8 +33,16 @@ const PersonalAgenda = ({
   };
 
   useEffect(() => {
-    if (sessionsUser) {
-      const sData = (sessionsUser || [])
+    if (userProfile.id) {
+      getSessionsAddedbyUser(userProfile.id);
+    }
+  }, [getSessionsAddedbyUser, userProfile]);
+
+  useEffect(() => {
+    if (sessionsUser || recommendedAgendaSessions) {
+      const sData = (
+        isRecommendedAgenda ? recommendedAgendaSessions : sessionsUser
+      )
         .map((item) => {
           const sTime = convertToCertainTime(item.startTime, item.timezone);
           const eTime = convertToCertainTime(item.endTime, item.timezone);
@@ -159,7 +171,7 @@ const PersonalAgenda = ({
     } else {
       setSessionData([]);
     }
-  }, [sessionsUser, filters]);
+  }, [sessionsUser, recommendedAgendaSessions, isRecommendedAgenda, filters]);
 
   return (
     <div className="personal-agenda">
@@ -206,6 +218,12 @@ const PersonalAgenda = ({
           ) : null
         )}
       </div>
+
+      {isRecommendedAgenda && sessionData.length === 0 && (
+        <div className="sessions-not-found">
+          <h1>No Sessions Found For Your Recommended Agenda</h1>
+        </div>
+      )}
     </div>
   );
 };
@@ -219,12 +237,15 @@ PersonalAgenda.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  sessionsUser: sessionSelector(state).sessionsUser,
   userProfile: homeSelector(state).userProfile,
+  recommendedAgendaSessions: sessionSelector(state).recommendedAgendaSessions,
 });
 
 const mapDispatchToProps = {
   addSession,
   removeSession,
+  getSessionsAddedbyUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalAgenda);
