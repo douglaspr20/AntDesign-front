@@ -92,6 +92,7 @@ const RecruiterView = ({
 
     upsertJobPost(values);
     form.resetFields();
+    setIsDrawerVisible(false);
   };
 
   const handlePostButton = () => {

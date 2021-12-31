@@ -39,10 +39,13 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  // .section1-img {
-  //   height: 100px;
-  //   width: 225px;
-  // }
+    .company-logo {
+      margin-top: 1rem;
+      object-fit: cover;
+      height: 150px;
+      width: 100%;
+      max-width: 250px;
+    }
 }
 
 .section2 {
@@ -91,4 +94,8 @@
       }
     }
   }
+}
+
+.recruiter {
+  margin-top: 1rem;
 }

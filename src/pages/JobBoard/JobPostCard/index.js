@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CustomButton } from "components";
 import JobPostDrawer from "containers/JobPostDrawer";
-import { Space, Form, Tag } from "antd";
+import { Form, Tag } from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
@@ -13,6 +13,7 @@ import "./styles.scss";
 
 const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [status, setStatus] = useState();
   const [form] = Form.useForm();
   const history = useHistory();
 
@@ -21,13 +22,22 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
       ...values,
       location: JSON.stringify(values.location),
       preferredSkills: JSON.stringify(values.preferredSkills),
+      status: status || values.status,
     };
+
+    if (status) {
+      form.setFieldsValue({
+        status,
+      });
+    }
 
     upsertJobPost({
       ...values,
       id: post.id,
     });
   };
+
+  console.log(post, 'post')
 
   const handlePostButton = () => {
     form.submit();
@@ -66,16 +76,46 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
     upsertJobPost(transformedPost);
   };
 
+  const handlePostJob = () => {
+    upsertJobPost({
+      ...post,
+      location: JSON.stringify(post.location),
+      preferredSkills: JSON.stringify(post.preferredSkills),
+      status: "active",
+    });
+  };
+
+  const handlePostDraftButton = () => {
+    setStatus("active");
+    form.submit();
+  };
+
   const displayMyPostedJobBtns = myPostedJobs && (
     <div className="job-post-btn">
-      <Space>
-        <CustomButton text="Edit" onClick={() => setIsDrawerVisible(true)} />
+      <CustomButton
+        text="Edit"
+        onClick={() => setIsDrawerVisible(true)}
+        block
+        size="sm"
+      />
+      {post.status === "draft" && (
         <CustomButton
-          text="Duplicate"
+          text="Post Job"
           type="secondary"
-          onClick={duplicateJobPost}
+          onClick={handlePostJob}
+          block
+          size="sm"
+          style={{ marginTop: "5px" }}
         />
-      </Space>
+      )}
+      <CustomButton
+        text="Duplicate"
+        type="third"
+        onClick={duplicateJobPost}
+        block
+        size="sm"
+        style={{ marginTop: "5px" }}
+      />
     </div>
   );
 
@@ -104,24 +144,25 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
       <div className="job-post">
         <div>
           <div className="job-post-card-title">
-            <h3>{post.title}</h3>
+            <h3>{post.jobTitle}</h3>
             {myPostedJobs && displayStatusTag()}
           </div>
           <div>{post.level}</div>
           <div>{displayLocation}</div>
-          <div>{post.salary}</div>
+          <div>{post.salaryRange}</div>
         </div>
         {displayMoreBtn}
         {displayMyPostedJobBtns}
       </div>
       <JobPostDrawer
+        isEdit
         form={form}
         isDrawerVisible={isDrawerVisible}
         setIsDrawerVisible={setIsDrawerVisible}
         handleOnFinish={handleOnFinish}
         post={post}
-        isEdit
         handlePostButton={handlePostButton}
+        handlePostDraftButton={handlePostDraftButton}
       />
     </div>
   );

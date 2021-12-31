@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Image, Space } from "antd";
+import { Card, Space, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { CustomButton, SpecialtyItem } from "components";
 import { COUNTRIES, PROFILE_SETTINGS, INTERNAL_LINKS, JOB_BOARD } from "enum";
 import IconBack from "images/icon-back.svg";
@@ -50,19 +51,6 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
   return (
     <div className="job-board-details-page">
       <div className="job-board-details-wrapper">
-        {/* <div className="back-to-job-board">
-          <div
-            className="job-board-detail-page-header-content-back-btn"
-            onClick={() => history.push(INTERNAL_LINKS.JOB_BOARD)}
-          >
-            <div className="job-board-detail-page-header-content-back">
-              <div className="job-board-detail-page-header-content-back-img">
-                <img src={IconBack} alt="icon-back" />
-              </div>
-              <h4>Back to Job Board</h4>
-            </div>
-          </div>
-        </div> */}
         <div className="job-board-details-content">
           <div
             className="job-board-detail-page-header-content-back-btn"
@@ -76,20 +64,34 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
             </div>
           </div>
           <div className="section1">
-            <div>
-              <Image src={jobPost.companyLogo} width={225} height={100}/>
+            <div className="img-container">
+              <img
+                src={jobPost.companyLogo}
+                alt="company-logo"
+                className="company-logo"
+              />
             </div>
-            <div>
-              <CustomButton text="Apply" onClick={handleBtnClick} />
-            </div>
+            <CustomButton text="Apply" onClick={handleBtnClick} />
           </div>
           <div className="section2">
             <h3>Company Description</h3>
             <div>{jobPost.companyDescription}</div>
+            <div>
+              <Space>
+                Link to apply:
+                <a
+                  href={jobPost.linkToApply}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {jobPost.linkToApply}
+                </a>
+              </Space>
+            </div>
           </div>
           <div className="section3">
             <Space direction="vertical" size="middle">
-              <h3>{jobPost.title}</h3>
+              <h3>{jobPost.jobTitle}</h3>
               <section
                 dangerouslySetInnerHTML={{
                   __html: jobPost?.jobDescription?.html,
@@ -97,12 +99,42 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
               />
               <div>{`${jobPost.city}, ${country?.text}`}</div>
               <div>{displayLocation}</div>
-              <div>{jobPost.salary}</div>
+              <div>{jobPost.salaryRange}</div>
               <div>{jobPost.level}</div>
               <div>
                 <Space wrap>{displayPreferredSkills}</Space>
               </div>
             </Space>
+          </div>
+          <div className="recruiter">
+            <a
+              href={jobPost?.User?.personalLinks.linkedin || ''}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Card
+                hoverable
+                bordered
+                type="inner"
+                extra={<UserOutlined />}
+                bodyStyle={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                {jobPost?.User?.img ? (
+                  <Avatar size={180} src={jobPost?.User?.img} alt={`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`} />
+                ) : (
+                  <Avatar size={180} icon={<UserOutlined />} />
+                )}
+
+                <div style={{ textAlign: "center" }}>
+                  <p className="participant-name">{`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}</p>
+                  <p>{jobPost?.User?.titleProfessions}</p>
+                </div>
+              </Card>
+            </a>
           </div>
           <div className="section4">
             <CustomButton text="Apply" onClick={handleBtnClick} />

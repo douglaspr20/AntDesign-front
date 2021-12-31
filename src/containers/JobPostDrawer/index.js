@@ -1,20 +1,22 @@
 /* eslint-disable no-template-curly-in-string */
-import { Form, Checkbox, Space, DatePicker } from "antd";
+import { Form, Checkbox, Space, DatePicker, Modal, Select } from "antd";
 import {
   CustomDrawer,
   CustomButton,
   CustomInput,
   CustomSelect,
   CustomCheckbox,
-  ImageUpload,
   FroalaEdit,
 } from "components";
-import { COUNTRIES, PROFILE_SETTINGS, TIMEZONE_LIST, JOB_BOARD } from "enum";
-import React, { useEffect } from "react";
+import CompanyLogoUploadForm from "../CompanyLogoUploadForm";
+import { COUNTRIES, PROFILE_SETTINGS, JOB_BOARD } from "enum";
+import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 
 import { envSelector } from "redux/selectors/envSelector";
+
+import "./styles.scss";
 
 const validateMessages = {
   required: "${label} is required!",
@@ -29,11 +31,14 @@ const JobPostDrawer = ({
   handleOnFinish,
   handlePostButton,
   handleDraftButton,
+  handlePostDraftButton,
   form,
   post,
   isEdit = false,
   s3Hash,
 }) => {
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [editImageUrl, setEditImageUrl] = useState();
 
   useEffect(() => {
     if (isEdit) {
@@ -41,37 +46,37 @@ const JobPostDrawer = ({
         (country) => country.value === post.country
       );
 
-      const timezone = TIMEZONE_LIST.find((tz) => tz.value === post.timezone);
-
       form.setFieldsValue({
-        title: post.title,
+        jobTitle: post.jobTitle,
         jobDescription: post.jobDescription,
         city: post.city,
         country: country.value,
         location: post.location,
-        salary: post.salary,
+        salaryRange: post.salaryRange,
         level: post.level,
         preferredSkills: post.preferredSkills,
         linkToApply: post.linkToApply,
         closingDate: moment(post.closingDate),
-        timezone: timezone.value,
         companyName: post.companyName,
-        companyLogo: post.companyLogo,
         companyDescription: post.companyDescription,
         status: post.status,
       });
     }
 
+    setEditImageUrl(post?.companyLogo);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const displayLocationsCheckbox = JOB_BOARD.LOCATIONS.map((location, index) => {
-    return (
-      <CustomCheckbox key={index} value={location.value}>
-        {location.text}
-      </CustomCheckbox>
-    );
-  });
+  const displayLocationsCheckbox = JOB_BOARD.LOCATIONS.map(
+    (location, index) => {
+      return (
+        <CustomCheckbox key={index} value={location.value}>
+          {location.text}
+        </CustomCheckbox>
+      );
+    }
+  );
 
   const levels = PROFILE_SETTINGS.JOB_LEVELS.map((level) => {
     return {
@@ -79,6 +84,18 @@ const JobPostDrawer = ({
       text: level.label,
     };
   });
+
+  const handleOnSave = (url, base64) => {
+    setEditImageUrl(url);
+    form.setFieldsValue({
+      companyLogo: base64,
+    });
+    setVisibleModal(false);
+  };
+
+  const handleDiscard = () => {
+    setIsDrawerVisible(false);
+  };
 
   return (
     <CustomDrawer
@@ -93,12 +110,19 @@ const JobPostDrawer = ({
         onFinish={handleOnFinish}
         validateMessages={validateMessages}
       >
-        <Form.Item name="title" label="Title" rules={[{ required: true }]}>
+        <div className="header-container">
+          <h3>JOB INFORMATION</h3>
+        </div>
+        <Form.Item
+          name="jobTitle"
+          label="Job Title"
+          rules={[{ required: true }]}
+        >
           <CustomInput />
         </Form.Item>
         <Form.Item
           name="jobDescription"
-          label="Description"
+          label="Full Job Description"
           rules={[{ required: true }]}
         >
           <FroalaEdit s3Hash={s3Hash} />
@@ -125,7 +149,11 @@ const JobPostDrawer = ({
             <Space>{displayLocationsCheckbox}</Space>
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="salary" label="Salary" rules={[{ required: true }]}>
+        <Form.Item
+          name="salaryRange"
+          label="Salary Range"
+          rules={[{ required: true }]}
+        >
           <CustomInput />
         </Form.Item>
         <Form.Item name="level" label="Level" rules={[{ required: true }]}>
@@ -138,6 +166,7 @@ const JobPostDrawer = ({
             }
           />
         </Form.Item>
+        <Form.Item name="companyLogo" noStyle />
         <Form.Item
           name="preferredSkills"
           label="Preferred Skills"
@@ -167,20 +196,9 @@ const JobPostDrawer = ({
         >
           <DatePicker style={{ width: "100%" }} size="large" />
         </Form.Item>
-        <Form.Item
-          name="timezone"
-          label="Timezone"
-          rules={[{ required: true }]}
-        >
-          <CustomSelect
-            options={TIMEZONE_LIST}
-            bordered
-            showSearch
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          />
-        </Form.Item>
+        <div className="header-container">
+          <h3>COMPANY INFORMATION</h3>
+        </div>
         <Form.Item
           name="companyName"
           label="Company Name"
@@ -189,29 +207,60 @@ const JobPostDrawer = ({
           <CustomInput />
         </Form.Item>
         <Form.Item
-          name="companyLogo"
-          label="Company Logo"
-          rules={[{ required: true }]}
-        >
-          <ImageUpload aspect={400 / 100} />
-        </Form.Item>
-        <Form.Item
           name="companyDescription"
           label="Company Description"
           rules={[{ required: true }]}
         >
           <CustomInput multiple />
         </Form.Item>
+        <div style={{ marginBottom: "1rem" }}>
+          {editImageUrl && (
+            <img
+              src={editImageUrl}
+              alt="company-logo"
+              style={{ width: "100%", marginBottom: "1rem" }}
+            />
+          )}
+          <CustomButton
+            text="Upload Company Logo"
+            type="third"
+            block
+            onClick={() => setVisibleModal(true)}
+          />
+        </div>
         {isEdit && (
-          <Form.Item name="status" label="Status" rules={[{ required: true }]}>
-            <CustomSelect options={JOB_BOARD.STATUS} bordered />
-          </Form.Item>
+          <>
+            <div className="header-container">
+              <h3>JOB POST STATUS</h3>
+            </div>
+            <Form.Item
+              name="status"
+              label="Status"
+              rules={[{ required: true }]}
+            >
+              <CustomSelect options={JOB_BOARD.STATUS} bordered />
+            </Form.Item>
+          </>
         )}
         <Space>
           <CustomButton
-            text={!isEdit ? "Post" : "Edit"}
+            text={!isEdit ? "Post" : "Save"}
             onClick={handlePostButton}
           />
+          {post?.status === "draft" && (
+            <CustomButton
+              text="Post Job"
+              onClick={handlePostDraftButton}
+              type="secondary"
+            />
+          )}
+          {isEdit && (
+            <CustomButton
+              text="Discard"
+              onClick={handleDiscard}
+              type="primary outlined"
+            />
+          )}
           {!isEdit && (
             <CustomButton
               text="Save as draft"
@@ -221,6 +270,21 @@ const JobPostDrawer = ({
           )}
         </Space>
       </Form>
+      <Modal
+        className="photo-upload-modal"
+        title={
+          <div className="photo-upload-modal-title">Select your photo.</div>
+        }
+        centered
+        visible={visibleModal}
+        width={500}
+        closable={true}
+        maskClosable={false}
+        footer={[]}
+        onCancel={() => setVisibleModal(false)}
+      >
+        <CompanyLogoUploadForm onSave={handleOnSave} />
+      </Modal>
     </CustomDrawer>
   );
 };
