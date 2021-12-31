@@ -26,10 +26,10 @@ export function* createMarketplaceProfileSaga({ payload }) {
         message: "Success",
         description: "Changes have been saved",
       });
-      const { marketplaceProfile } = response.data;
+      const { marketPlaceProfile } = response.data;
       yield put(
         marketplaceProfileActions.setMarketPlaceProfile({
-          ...marketplaceProfile,
+          ...marketPlaceProfile,
         })
       );
     }
@@ -94,6 +94,8 @@ export function* getMarketplaceProfileSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    yield put(marketplaceProfileActions.setMarketPlaceProfile({}));
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());

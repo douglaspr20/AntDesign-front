@@ -60,7 +60,7 @@ const ParticipantCardInfo = ({
         <p style={{ marginTop: -10 }}>{participant.company}</p>
 
         {participant.location && marketplaceProfile && (
-          <>
+          <div style={{ marginBottom: "50px" }}>
             <span className="participant-card-marketplaceprofile--title">
               Available locations:
             </span>
@@ -68,7 +68,7 @@ const ParticipantCardInfo = ({
             {participant.location.map((location, i) => (
               <SpecialtyItem key={i} title={location} />
             ))}
-          </>
+          </div>
         )}
       </div>
       {marketplaceProfile && (

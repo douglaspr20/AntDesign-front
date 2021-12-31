@@ -1,6 +1,7 @@
 .participant-card-container{
   .ant-card{
     max-width: 200px;
+    position: relative;
   }
   .link-container, .link-container:hover{
     color: #000 !important;
@@ -9,10 +10,14 @@
 
 
 .participant-card-marketplaceprofile{
+   position: absolute;
+  // background: red;
+  bottom: 0;
+  height: 50px;
   display: flex;
   justify-content: center;
   border-top: 1px solid rgba(0,0,0, 0.1);
-  width: 133%;
+  width: 100%;
   padding-top: 10px;
   margin-top: 10px;
 
@@ -34,5 +39,9 @@
     font-weight: 500;
   }
   
+}
+
+.specialty-item.active{
+  width: 120px;
 }
   
