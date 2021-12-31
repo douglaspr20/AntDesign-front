@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, Form, Switch } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
@@ -29,7 +29,7 @@ const MyTalentMarketplaceProfile = ({
   marketplaceProfile,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
-  const formControl = useRef(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (userProfile.id) {
@@ -39,9 +39,12 @@ const MyTalentMarketplaceProfile = ({
 
   useEffect(() => {
     if (marketplaceProfile.id) {
-      formControl.current.setFieldsValue(marketplaceProfile);
+      // formControl.current.setFieldsValue(marketplaceProfile);
+      form.setFieldsValue(marketplaceProfile);
+    } else {
+      form.resetFields();
     }
-  }, [marketplaceProfile]);
+  }, [marketplaceProfile, form]);
 
   const handleSubmit = (data) => {
     if (marketplaceProfile.id) {
@@ -54,12 +57,12 @@ const MyTalentMarketplaceProfile = ({
       createMarketplaceProfile(marketPlaceInfo);
     }
   };
-
   return (
     <div className="my-talent-marketplace-profile">
       <Form
         layout="vertical"
-        ref={formControl}
+        // ref={formControl}
+        form={form}
         onFinish={(data) => handleSubmit(data)}
         className="my-talent-marketplace-profile-form"
       >

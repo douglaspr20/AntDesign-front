@@ -29,6 +29,7 @@ const TalentMarketplace = ({
   useEffect(() => {
     let dataFiltered = marketplaceProfiles;
     function checkAvailability(arr, val) {
+      console.log(arr, val);
       return arr.some((arrVal) => val === arrVal);
     }
 
@@ -40,7 +41,7 @@ const TalentMarketplace = ({
           let canFiltered = false;
 
           for (const jobLevel of joblevels) {
-            if (marketplaceProfile.lookingFor === jobLevel) {
+            if (checkAvailability(marketplaceProfile.lookingFor, jobLevel)) {
               canFiltered = true;
               break;
             }
