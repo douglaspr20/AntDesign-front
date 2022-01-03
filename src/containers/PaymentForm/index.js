@@ -90,62 +90,6 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       },
     },
     {
-      title: "Recruiter",
-      key: "recruiter",
-      dataIndex: "recruiter",
-      align: "center",
-      className: "payment-table-column",
-      width: 150,
-      render: (value, record) => {
-        if (record.hasOwnProperty("buttonSection")) {
-          if (record.buttonSection === true) {
-            if (userProfile.memberShip === "channel_admin") {
-              return "Creator";
-            } else {
-              if (userProfile.memberShip === "free") {
-                return (
-                  <Button
-                    loading={loading}
-                    onClick={() => {
-                      requestCheckoutSessionTable({
-                        premium: true,
-                        recruiter: true,
-                        creator: false,
-                      });
-                    }}
-                    className="pay-buttton"
-                  >
-                    Pay $
-                    {parseFloat(
-                      STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price
-                    ) + parseFloat(STRIPE_PRICES.STRIPE_PRICES[0].price)}
-                  </Button>
-                );
-              } else {
-                return (
-                  <Button
-                    loading={loading}
-                    onClick={() => {
-                      requestCheckoutSessionTable({
-                        premium: false,
-                        recruiter: true,
-                        creator: false,
-                      });
-                    }}
-                    className="pay-buttton"
-                  >
-                    Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
-                  </Button>
-                );
-              }
-            }
-          }
-        } else {
-          return getIcon(value);
-        }
-      },
-    },
-    {
       title: "Creator",
       key: "creator",
       dataIndex: "creator",
@@ -202,6 +146,51 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     },
   ];
 
+  const addOnsColumns = [
+    {
+      title: "",
+      key: "text",
+      fixed: "left",
+      width: 120,
+      dataIndex: "text",
+      className: "payment-table-column-text",
+      render: (value, record) => (
+        <span className="antd-table-payment-text">{record.text}</span>
+      ),
+    },
+    {
+      title: "Add-on Recruiter",
+      key: "recruiter",
+      dataIndex: "recruiter",
+      align: "center",
+      className: "payment-table-column",
+      width: 150,
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            return (
+              <Button
+                loading={loading}
+                onClick={() => {
+                  requestCheckoutSessionTable({
+                    premium: false,
+                    recruiter: true,
+                    creator: false,
+                  });
+                }}
+                className="pay-buttton"
+              >
+                Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
+              </Button>
+            );
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+  ];
+
   const paymentsDatasource = [
     {
       text: "Participation in all Hacking HR online events",
@@ -232,18 +221,25 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       creator: true,
     },
     {
-      text: "Post jobs, access to profiles in Talent Marketplace and connect with candidates in the talent marketplace",
-      free: false,
-      premium: false,
-      recruiter: true,
-      creator: false,
-    },
-    {
       text: "Content sharing with the community: events, podcasts, videos, classes and other resources",
       free: false,
       premium: false,
       recruiter: false,
       creator: true,
+    },
+    {
+      text: "",
+      buttonSection: true,
+    },
+  ];
+
+  const addOnsDatasource = [
+    {
+      text: "Post jobs, access to profiles in Talent Marketplace and connect with candidates in the talent marketplace",
+      free: false,
+      premium: false,
+      recruiter: true,
+      creator: false,
     },
     {
       text: "",
@@ -332,6 +328,20 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         scroll={isMobile && { x: "100vw" }}
       ></Table>
       <br></br>
+      {userProfile.memberShip === "premium" && (
+        <>
+          <Table
+            className="antd-table-payment"
+            rowClassName="payment-table-row"
+            bordered={false}
+            columns={addOnsColumns}
+            dataSource={addOnsDatasource}
+            pagination={false}
+            scroll={isMobile && { x: "100vw" }}
+          ></Table>
+          <br></br>
+        </>
+      )}
       {checkoutSessionError && (
         <Alert
           message="Error"
