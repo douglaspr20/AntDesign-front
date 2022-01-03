@@ -74,41 +74,64 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
             <CustomButton text="Apply" onClick={handleBtnClick} />
           </div>
           <div className="section2">
-            <h3>Company Description</h3>
-            <div>{jobPost.companyDescription}</div>
-            <div>
-              <Space>
-                Link to apply:
-                <a
-                  href={jobPost.linkToApply}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {jobPost.linkToApply}
-                </a>
-              </Space>
-            </div>
+            <Space direction="vertical">
+              <h3>Company Description</h3>
+              <div>
+                <div>{jobPost.companyDescription}</div>
+                <div>
+                  <Space>
+                    Company Website:
+                    <a
+                      href={jobPost.linkToApply}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {jobPost.linkToApply}
+                    </a>
+                  </Space>
+                </div>
+              </div>
+            </Space>
           </div>
           <div className="section3">
             <Space direction="vertical" size="middle">
-              <h3>{jobPost.jobTitle}</h3>
-              <section
-                dangerouslySetInnerHTML={{
-                  __html: jobPost?.jobDescription?.html,
-                }}
-              />
-              <div>{`${jobPost.city}, ${country?.text}`}</div>
-              <div>{displayLocation}</div>
-              <div>{jobPost.salaryRange}</div>
-              <div>{jobPost.level}</div>
+              <h3>Job Information</h3>
               <div>
+                <strong>Job title:</strong> {jobPost.jobTitle}
+              </div>
+              <div>
+                <strong>Job description: </strong>
+                <section
+                  dangerouslySetInnerHTML={{
+                    __html: jobPost?.jobDescription?.html,
+                  }}
+                />
+              </div>
+              <div>
+                <strong>Job location: </strong>
+                {`${jobPost.city}, ${country?.text}`}
+              </div>
+              <div>
+                <strong>Job location type: </strong>
+                {displayLocation}
+              </div>
+              <div>
+                <strong>Salary range: </strong>
+                {jobPost.salaryRange}
+              </div>
+              <div>
+                <strong>Job level: </strong>
+                {jobPost.level}
+              </div>
+              <div>
+                <strong>Required skills: </strong>
                 <Space wrap>{displayPreferredSkills}</Space>
               </div>
             </Space>
           </div>
           <div className="recruiter">
             <a
-              href={jobPost?.User?.personalLinks.linkedin || ''}
+              href={jobPost?.User?.personalLinks.linkedin || ""}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -117,19 +140,19 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
                 bordered
                 type="inner"
                 extra={<UserOutlined />}
-                bodyStyle={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+                title="Recruiter"
               >
                 {jobPost?.User?.img ? (
-                  <Avatar size={180} src={jobPost?.User?.img} alt={`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`} />
+                  <Avatar
+                    size={180}
+                    src={jobPost?.User?.img}
+                    alt={`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}
+                  />
                 ) : (
                   <Avatar size={180} icon={<UserOutlined />} />
                 )}
 
-                <div style={{ textAlign: "center" }}>
+                <div>
                   <p className="participant-name">{`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}</p>
                   <p>{jobPost?.User?.titleProfessions}</p>
                 </div>

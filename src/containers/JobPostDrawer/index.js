@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { Form, Checkbox, Space, DatePicker, Modal, Select } from "antd";
+import { Form, Checkbox, Space, DatePicker, Modal } from "antd";
 import {
   CustomDrawer,
   CustomButton,
@@ -66,7 +66,7 @@ const JobPostDrawer = ({
     setEditImageUrl(post?.companyLogo);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [post]);
 
   const displayLocationsCheckbox = JOB_BOARD.LOCATIONS.map(
     (location, index) => {

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { CustomButton } from "components";
 import JobPostDrawer from "containers/JobPostDrawer";
-import { Form, Tag } from "antd";
+import { Form, Tag, Space, Tooltip } from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
+import { PlusOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
@@ -35,9 +36,9 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
       ...values,
       id: post.id,
     });
-  };
 
-  console.log(post, 'post')
+    setStatus(null);
+  };
 
   const handlePostButton = () => {
     form.submit();
@@ -54,7 +55,7 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
   const displayMoreBtn = !myPostedJobs && (
     <div className="job-post-btn">
       <CustomButton
-        text="More"
+        text="More Information"
         block
         onClick={() => history.push(`${INTERNAL_LINKS.JOB_BOARD}/${post.id}`)}
       />
@@ -92,30 +93,28 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
 
   const displayMyPostedJobBtns = myPostedJobs && (
     <div className="job-post-btn">
-      <CustomButton
-        text="Edit"
-        onClick={() => setIsDrawerVisible(true)}
-        block
-        size="sm"
-      />
-      {post.status === "draft" && (
-        <CustomButton
-          text="Post Job"
-          type="secondary"
-          onClick={handlePostJob}
-          block
-          size="sm"
-          style={{ marginTop: "5px" }}
-        />
-      )}
-      <CustomButton
-        text="Duplicate"
-        type="third"
-        onClick={duplicateJobPost}
-        block
-        size="sm"
-        style={{ marginTop: "5px" }}
-      />
+      <Space>
+        <Tooltip title="Edit Job Post">
+          <EditOutlined
+            onClick={() => setIsDrawerVisible(true)}
+            className="job-post-bnt-icon"
+          />
+        </Tooltip>
+        {post.status === "draft" && (
+          <Tooltip title="Publish Job Post">
+            <PlusOutlined
+              onClick={handlePostJob}
+              className="job-post-bnt-icon"
+            />
+          </Tooltip>
+        )}
+        <Tooltip title="Duplicate Job Post">
+          <CopyOutlined
+            onClick={duplicateJobPost}
+            className="job-post-bnt-icon"
+          />
+        </Tooltip>
+      </Space>
     </div>
   );
 
@@ -143,13 +142,23 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
     <div className="job-post-card">
       <div className="job-post">
         <div>
-          <div className="job-post-card-title">
-            <h3>{post.jobTitle}</h3>
-            {myPostedJobs && displayStatusTag()}
-          </div>
-          <div>{post.level}</div>
-          <div>{displayLocation}</div>
-          <div>{post.salaryRange}</div>
+          <Space direction="vertical">
+            <div className="job-post-card-title">
+              <h3>{post.jobTitle}</h3>
+              {myPostedJobs && displayStatusTag()}
+            </div>
+            <div>
+              <div>
+                <strong>Role level:</strong> {post.level}
+              </div>
+              <div>
+                <strong>Job location type:</strong> {displayLocation}
+              </div>
+              <div>
+                <strong>Salary range:</strong> {post.salaryRange}
+              </div>
+            </div>
+          </Space>
         </div>
         {displayMoreBtn}
         {displayMyPostedJobBtns}

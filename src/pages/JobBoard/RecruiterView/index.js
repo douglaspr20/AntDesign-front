@@ -64,18 +64,18 @@ const RecruiterView = ({
             }}
           />
         </div>
-        {myJobPosts.map((post, index) => {
-          return <JobPost post={post} key={index} myPostedJobs />;
+        {myJobPosts.map((post) => {
+          return <JobPost post={post} key={post.id} myPostedJobs />;
         })}
       </div>
     );
   };
 
   const TabData = [
-    {
-      title: "Main job board",
-      content: () => <div>{mainJobPosts(allJobPosts)}</div>,
-    },
+    // {
+    //   title: "Main job board",
+    //   content: () => <div>{mainJobPosts(allJobPosts)}</div>,
+    // },
     {
       title: "My posted jobs",
       content: displayMyPostedJobs,
