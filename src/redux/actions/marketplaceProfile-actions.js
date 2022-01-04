@@ -26,7 +26,7 @@ export const createMarketplaceProfile = createAction(
 
 export const getMarketplaceProfiles = createAction(
   GET_MARKETPLACE_PROFILES,
-  (id) => ({ id })
+  (id, meta) => ({ id, meta })
 );
 
 export const setMarketPlaceProfiles = createAction(

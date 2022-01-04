@@ -45,19 +45,30 @@ const ParticipantCardInfo = ({
         <p style={{ fontWeight: 500 }}>
           {participant.firstName} {participant.lastName}
         </p>
-        <p style={{ marginTop: -10 }}>
-          {participant.titleProfessions || participant.lookingFor}
-        </p>
+        {participant.lookingFor ? (
+          <div style={{ marginTop: -10 }}>
+            <span className="participant-card-marketplaceprofile--title">
+              Looking For:
+            </span>
+            {participant.lookingFor.map((profesion, i) => (
+              <SpecialtyItem key={i} title={profesion} />
+            ))}
+          </div>
+        ) : (
+          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
+        )}
         <p style={{ marginTop: -10 }}>{participant.company}</p>
 
         {participant.location && marketplaceProfile && (
-          <>
-            <span>Available locations:</span>
+          <div style={{ marginBottom: "50px" }}>
+            <span className="participant-card-marketplaceprofile--title">
+              Available locations:
+            </span>
 
             {participant.location.map((location, i) => (
               <SpecialtyItem key={i} title={location} />
             ))}
-          </>
+          </div>
         )}
       </div>
       {marketplaceProfile && (
@@ -69,7 +80,7 @@ const ParticipantCardInfo = ({
                 type="link"
                 icon={<ProfileOutlined />}
                 onClick={() => downloadFile()}
-                disabled={!userProfile.memberShip === "premium"}
+                disabled={userProfile.memberShip !== "premium"}
                 className="participant-card-marketplaceprofile-icon"
               />
             </Tooltip>
@@ -84,7 +95,7 @@ const ParticipantCardInfo = ({
                 window.open(participant.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={!userProfile.memberShip === "premium"}
+              disabled={userProfile.memberShip !== "premium"}
             />
           </Tooltip>
 
@@ -97,7 +108,7 @@ const ParticipantCardInfo = ({
                 window.open(`mailto:${participant.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={!userProfile.memberShip === "premium"}
+              disabled={userProfile.memberShip !== "premium"}
             />
           </Tooltip>
         </div>

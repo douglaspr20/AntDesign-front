@@ -17,22 +17,21 @@ export function* createMarketplaceProfileSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    let response = yield call(createMarketplaceProfile, {
+    const response = yield call(createMarketplaceProfile, {
       ...payload,
     });
-    if (response.status === 200) {
-      const response = yield call(getMarketplaceProfile, payload.UserId);
-      const { marketplaceProfile } = response.data;
-      yield put(
-        marketplaceProfileActions.setMarketPlaceProfile({
-          ...marketplaceProfile,
-        })
-      );
 
+    if (response.status === 200) {
       notification.success({
         message: "Success",
         description: "Changes have been saved",
       });
+      const { marketPlaceProfile } = response.data;
+      yield put(
+        marketplaceProfileActions.setMarketPlaceProfile({
+          ...marketPlaceProfile,
+        })
+      );
     }
   } catch (error) {
     console.log(error);
@@ -95,6 +94,8 @@ export function* getMarketplaceProfileSaga({ payload }) {
     }
   } catch (error) {
     console.log(error);
+
+    yield put(marketplaceProfileActions.setMarketPlaceProfile({}));
 
     if (error && error.response && error.response.status === 401) {
       yield put(logout());

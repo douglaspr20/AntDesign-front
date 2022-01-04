@@ -1,7 +1,9 @@
 import httpClient from "./httpClient";
 
-export const getMarketplaceProfiles = ({ id }) => {
-  return httpClient.get(`private/marketplace-profiles?userId=${id}`);
+export const getMarketplaceProfiles = ({ id, meta }) => {
+  return httpClient.get(
+    `private/marketplace-profiles?userId=${id} ${meta ? `&meta=${meta}` : ""}`
+  );
 };
 
 export const getMarketplaceProfile = ({ id }) => {
