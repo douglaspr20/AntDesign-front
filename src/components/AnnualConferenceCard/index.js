@@ -58,9 +58,6 @@ const AnnualConferenceCard = React.memo(
       moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
     );
 
-    console.log(convertedStartTime);
-    console.log(timeLeft);
-
     setInterval(() => {
       duration = moment.duration(duration - 60000, "milliseconds");
       setHoursStartSession(
@@ -208,13 +205,33 @@ const AnnualConferenceCard = React.memo(
                 disabled={true}
                 style={{ marginTop: "5px" }}
               />
-            ) : timeLeft <= -10 ? (
+            ) : timeLeft <= -10 &&
+              userProfile.sessionsJoined.includes(session.id) ? (
               <CustomButton
                 type="primary"
                 size="md"
                 text="This Session Is Now Closed"
                 disabled={true}
                 style={{ marginTop: "5px" }}
+              />
+            ) : timeLeft < 5 && timeLeft >= -10 ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="Join"
+                className={
+                  joinedOtherSession &&
+                  !userProfile.sessionsJoined.includes(session.id)
+                    ? "custom-button-disabled"
+                    : null
+                }
+                onClick={() => joinedSession()}
+                style={{
+                  marginTop: "5px",
+                  maxWidth: "150px",
+                  width: "100%",
+                  alignSelf: "flex-end",
+                }}
               />
             ) : null}
           </div>
