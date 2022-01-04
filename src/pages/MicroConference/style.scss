@@ -96,6 +96,7 @@
 
     &--back-link{
       display: flex;
+      margin-top: 20px;
       img {
         width: 32px;
         height: 32px;
@@ -114,6 +115,12 @@
   > * + * {
     margin-top: 0.75rem;
   }
+}
+
+.micro-conference__description-speakers-list {
+  display: flex;
+  width: auto;
+
 }
 
 .micro-conference__description-p {

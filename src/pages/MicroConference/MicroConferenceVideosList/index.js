@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getSessionUserProgress } from "redux/actions/session-class-user-action";
@@ -18,32 +18,44 @@ function MicroConferenceVideosList({
   sessionUserProgress,
   sessionId,
 }) {
+  const [repeatVideo, setRepeatVideo] = useState(false);
   useEffect(() => {
     getSessionUserProgress(sessionId);
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     if (
-      sessionUserProgress.length > 0 &&
+      sessionUserProgress.every((sessionUser) => sessionUser.viewed === true) &&
       list.length > 0 &&
-      activeVideoId !== null
+      sessionUserProgress.length > 0
     ) {
-      for (let i = 0; i < list.length; i++) {
-        for (const sessionUser of sessionUserProgress) {
-          if (
-            sessionUser.viewed === true &&
-            sessionUser.AnnualConferenceClassId === list[i].id &&
-            list[i + 1]
-          ) {
-            setActiveVideoId(list[i + 1].id);
+      setActiveVideoId(list[list.length - 1].id);
+    } else if (list.length > 0 && sessionUserProgress.length > 0) {
+      if (repeatVideo) {
+        setRepeatVideo(false);
+      } else {
+        for (let i = 0; i < list.length; i++) {
+          for (const sessionUser of sessionUserProgress) {
+            if (
+              sessionUser.viewed === true &&
+              sessionUser.AnnualConferenceClassId === list[i].id &&
+              list[i + 1]
+            ) {
+              setActiveVideoId(list[i + 1].id);
+            }
           }
         }
       }
-    } else if (list.length > 0 && activeVideoId === null) {
+    } else if (
+      list.length > 0 &&
+      activeVideoId === null &&
+      sessionUserProgress === 0
+    ) {
+      console.log("hola");
       setActiveVideoId(list[0].id);
     }
-  }, [activeVideoId, list, setActiveVideoId, sessionUserProgress]);
+  }, [activeVideoId, list, setActiveVideoId, sessionUserProgress, repeatVideo]);
 
   return (
     <div className="micro-conference__videos-list">
@@ -70,7 +82,10 @@ function MicroConferenceVideosList({
                   : ""
               }
             `}
-              onClick={() => setActiveVideoId(item.id)}
+              onClick={() => {
+                setActiveVideoId(item.id);
+                setRepeatVideo(true);
+              }}
             >
               <span className="micro-conference__videos-list-button-indicator"></span>
               <span className="micro-conference__videos-list-button-title">

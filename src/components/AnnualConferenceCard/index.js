@@ -39,6 +39,7 @@ const AnnualConferenceCard = React.memo(
 
     const currentTime = moment().unix();
     const diffTime = convertedStartTime.unix() - currentTime;
+
     const interval = 1000;
     let duration = moment.duration(diffTime * interval, "milliseconds");
 
@@ -49,8 +50,8 @@ const AnnualConferenceCard = React.memo(
     ] = useState(false);
     const [hoursStartSession, setHoursStartSession] = useState(
       `Starting in: ${
-        duration.hours().toFixed() > 0
-          ? `${duration.hours().toFixed()} hours and `
+        duration.asHours().toFixed() > 0
+          ? `${duration.asHours().toFixed()} hours and `
           : ""
       } ${duration.minutes()} minutes`
     );
@@ -62,8 +63,8 @@ const AnnualConferenceCard = React.memo(
       duration = moment.duration(duration - 60000, "milliseconds");
       setHoursStartSession(
         `Starting in: ${
-          duration.hours().toFixed() > 0
-            ? `${duration.hours().toFixed()} hours and `
+          duration.asHours().toFixed() > 0
+            ? `${duration.asHours().toFixed()} hours and `
             : ""
         } ${duration.minutes()} minutes`
       );

@@ -13,7 +13,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 
 import { INTERNAL_LINKS } from "enum";
-
+import { SpeakerCard } from "components";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
@@ -116,6 +116,23 @@ const MicroConference = ({
                           <p className="micro-conference__description-p">
                             {session.description}
                           </p>
+                        </div>
+                      </div>
+                    </TabPane>
+                    <TabPane tab="Session Speakers" key="2">
+                      <div>
+                        <div className="micro-conference__description-card">
+                          <h3>Session Speakers</h3>
+
+                          <div className="micro-conference__description-speakers-list">
+                            {session.speakers.length > 0 &&
+                              session.speakers.map((speaker) => (
+                                <SpeakerCard
+                                  key={speaker.id}
+                                  speaker={speaker}
+                                />
+                              ))}
+                          </div>
                         </div>
                       </div>
                     </TabPane>

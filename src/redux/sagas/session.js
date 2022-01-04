@@ -72,7 +72,34 @@ export function* getSessionSaga({ payload }) {
     const response = yield call(getSession, payload);
 
     if (response.status === 200) {
-      yield put(sessionActions.setSession(response.data.conference));
+      const [sessionData] = Object.values(
+        groupBy(response.data.conference || [], "id")
+      ).map((session) => {
+        return session.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "instructorid",
+              "name",
+              "image",
+              "descriptionspeaker",
+              "linkspeaker",
+            ]),
+            speakers: [
+              ...(res.speakers || []),
+              {
+                id: item.instructorid,
+                name: item.name,
+                img: item.image,
+                linkSpeaker: item.linkspeaker,
+                description: item.descriptionspeaker,
+              },
+            ],
+          }),
+          {}
+        );
+      });
+      yield put(sessionActions.setSession(sessionData));
     }
 
     yield put(homeActions.setLoading(false));

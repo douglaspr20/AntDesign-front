@@ -50,6 +50,7 @@ function MicroConferenceVideoWrapper({
         url={url}
         progressInterval={30000}
         onProgress={handleProgress}
+        playing={true}
         onReady={() => {
           setProgressVideoPlayer();
         }}
