@@ -328,20 +328,21 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         scroll={isMobile && { x: "100vw" }}
       ></Table>
       <br></br>
-      {userProfile.memberShip === "premium" && (
-        <>
-          <Table
-            className="antd-table-payment"
-            rowClassName="payment-table-row"
-            bordered={false}
-            columns={addOnsColumns}
-            dataSource={addOnsDatasource}
-            pagination={false}
-            scroll={isMobile && { x: "100vw" }}
-          ></Table>
-          <br></br>
-        </>
-      )}
+      {userProfile.memberShip === "premium" &&
+        userProfile.recruiterSubscription === false && (
+          <>
+            <Table
+              className="antd-table-payment"
+              rowClassName="payment-table-row"
+              bordered={false}
+              columns={addOnsColumns}
+              dataSource={addOnsDatasource}
+              pagination={false}
+              scroll={isMobile && { x: "100vw" }}
+            ></Table>
+            <br></br>
+          </>
+        )}
       {checkoutSessionError && (
         <Alert
           message="Error"
