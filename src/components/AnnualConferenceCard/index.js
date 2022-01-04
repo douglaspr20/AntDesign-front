@@ -55,7 +55,7 @@ const AnnualConferenceCard = React.memo(
       } ${duration.minutes()} minutes`
     );
     const [timeLeft, setTimeLeft] = useState(
-      moment.duration(moment(session.startTime).diff(moment.now())).asMinutes()
+      moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
     );
 
     console.log(convertedStartTime);
