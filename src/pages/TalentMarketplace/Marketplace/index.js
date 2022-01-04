@@ -16,7 +16,6 @@ const Marketplace = ({
   filters,
 }) => {
   const [page, setPage] = useState(1);
-  const [marketplaceProfileData, setMarketplaceProfileData] = useState([]);
 
   useEffect(() => {
     getMarketplaceProfiles({});

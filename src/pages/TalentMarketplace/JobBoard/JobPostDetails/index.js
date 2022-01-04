@@ -140,7 +140,7 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
                 bordered
                 type="inner"
                 extra={<UserOutlined />}
-                title="Recruiter"
+                title={<h3>Recruiter</h3>}
               >
                 {jobPost?.User?.img ? (
                   <Avatar
