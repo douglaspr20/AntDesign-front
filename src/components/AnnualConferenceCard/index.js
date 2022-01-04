@@ -206,7 +206,7 @@ const AnnualConferenceCard = React.memo(
                 style={{ marginTop: "5px" }}
               />
             ) : timeLeft <= -10 &&
-              userProfile.sessionsJoined.includes(session.id) ? (
+              !userProfile.sessionsJoined.includes(session.id) ? (
               <CustomButton
                 type="primary"
                 size="md"
@@ -214,7 +214,7 @@ const AnnualConferenceCard = React.memo(
                 disabled={true}
                 style={{ marginTop: "5px" }}
               />
-            ) : timeLeft < 5 && timeLeft >= -10 ? (
+            ) : (
               <CustomButton
                 type="primary"
                 size="md"
@@ -233,7 +233,7 @@ const AnnualConferenceCard = React.memo(
                   alignSelf: "flex-end",
                 }}
               />
-            ) : null}
+            )}
           </div>
         </div>
         {added && <div className="acc-session-added-tag">Added</div>}
