@@ -58,6 +58,9 @@ const AnnualConferenceCard = React.memo(
       moment.duration(moment(session.startTime).diff(moment.now())).asMinutes()
     );
 
+    console.log(convertedStartTime);
+    console.log(timeLeft);
+
     setInterval(() => {
       duration = moment.duration(duration - 60000, "milliseconds");
       setHoursStartSession(
