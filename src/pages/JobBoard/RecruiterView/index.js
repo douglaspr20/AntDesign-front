@@ -72,10 +72,10 @@ const RecruiterView = ({
   };
 
   const TabData = [
-    // {
-    //   title: "Main job board",
-    //   content: () => <div>{mainJobPosts(allJobPosts)}</div>,
-    // },
+    {
+      title: "Main job board",
+      content: () => <div>{mainJobPosts(allJobPosts)}</div>,
+    },
     {
       title: "My posted jobs",
       content: displayMyPostedJobs,
