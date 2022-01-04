@@ -52,7 +52,6 @@ function MicroConferenceVideosList({
       activeVideoId === null &&
       sessionUserProgress === 0
     ) {
-      console.log("hola");
       setActiveVideoId(list[0].id);
     }
   }, [activeVideoId, list, setActiveVideoId, sessionUserProgress, repeatVideo]);
