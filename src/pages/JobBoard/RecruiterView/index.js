@@ -73,6 +73,14 @@ const RecruiterView = ({
 
   const TabData = [
     {
+      title: "My Talent Marketplace Profile",
+      content: () => <div>profile</div>,
+    },
+    {
+      title: "Talent Marketplace",
+      content: () => <div>talent marketplace</div>,
+    },
+    {
       title: "Main job board",
       content: () => <div>{mainJobPosts(allJobPosts)}</div>,
     },

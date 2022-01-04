@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Checkbox, Form, Radio, Switch } from "antd";
+import React, { useEffect, useState } from "react";
+import { Checkbox, Form, Switch } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
@@ -16,12 +16,11 @@ import {
   CategoriesSelect,
   CustomCheckbox,
   UploadResumeModal,
-  CustomRadio,
 } from "components";
 
 import "./styles.scss";
 
-const TalentMarketplaceProfile = ({
+const MyTalentMarketplaceProfile = ({
   allCategories,
   getMarketplaceProfile,
   createMarketplaceProfile,
@@ -30,7 +29,7 @@ const TalentMarketplaceProfile = ({
   marketplaceProfile,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
-  const formControl = useRef(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (userProfile.id) {
@@ -40,9 +39,11 @@ const TalentMarketplaceProfile = ({
 
   useEffect(() => {
     if (marketplaceProfile.id) {
-      formControl.current.setFieldsValue(marketplaceProfile);
+      form.setFieldsValue(marketplaceProfile);
+    } else {
+      form.resetFields();
     }
-  }, [marketplaceProfile]);
+  }, [marketplaceProfile, form]);
 
   const handleSubmit = (data) => {
     if (marketplaceProfile.id) {
@@ -55,12 +56,12 @@ const TalentMarketplaceProfile = ({
       createMarketplaceProfile(marketPlaceInfo);
     }
   };
-
   return (
     <div className="talent-marketplace-profile">
       <Form
         layout="vertical"
-        ref={formControl}
+        // ref={formControl}
+        form={form}
         onFinish={(data) => handleSubmit(data)}
         className="talent-marketplace-profile-form"
       >
@@ -76,6 +77,12 @@ const TalentMarketplaceProfile = ({
           label="Do you want your profile to show in the talent marketplace?"
           valuePropName="checked"
           name="showMarketPlaceProfile"
+          rules={[
+            {
+              required: true,
+              message: "this is required",
+            },
+          ]}
         >
           <Switch />
         </Form.Item>
@@ -96,19 +103,31 @@ const TalentMarketplaceProfile = ({
         <Form.Item
           label="What role level are you looking for?"
           name="lookingFor"
+          rules={[
+            {
+              required: true,
+              message: "Please select one!",
+            },
+          ]}
         >
-          <Radio.Group>
+          <Checkbox.Group>
             {PROFILE_SETTINGS.JOB_LEVELS.map((job) => (
-              <CustomRadio key={job.value} value={job.value}>
+              <CustomCheckbox key={job.value} value={job.value}>
                 {job.label}
-              </CustomRadio>
+              </CustomCheckbox>
             ))}
-          </Radio.Group>
+          </Checkbox.Group>
         </Form.Item>
 
         <Form.Item
           label="What areas in HR are you interested in?"
           name="topics"
+          rules={[
+            {
+              required: true,
+              message: "Please select one!",
+            },
+          ]}
         >
           <CategoriesSelect
             options={allCategories}
@@ -116,7 +135,16 @@ const TalentMarketplaceProfile = ({
             style={{ maxWidth: "600px", height: "auto" }}
           />
         </Form.Item>
-        <Form.Item label="Location type?" name="location">
+        <Form.Item
+          label="Location type?"
+          name="location"
+          rules={[
+            {
+              required: true,
+              message: "Please select one!",
+            },
+          ]}
+        >
           <Checkbox.Group>
             {PROFILE_SETTINGS.LOCATIONS.map((location) => (
               <CustomCheckbox key={location.value} value={location.value}>
@@ -153,4 +181,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TalentMarketplaceProfile);
+)(MyTalentMarketplaceProfile);

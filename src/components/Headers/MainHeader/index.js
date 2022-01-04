@@ -153,10 +153,10 @@ class MainHeader extends React.Component {
       };
     }
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.JOB_BOARD}`)) {
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.TALENT_MARKETPLACE}`)) {
       pathInfo = {
         icon: IconBriefcaseOutline,
-        label: "Job Board",
+        label: "Talent Marketplace",
       };
     }
 

@@ -54,7 +54,7 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
         <div className="job-board-details-content">
           <div
             className="job-board-detail-page-header-content-back-btn"
-            onClick={() => history.push(INTERNAL_LINKS.JOB_BOARD)}
+            onClick={() => history.push(INTERNAL_LINKS.TALENT_MARKETPLACE)}
           >
             <div className="job-board-detail-page-header-content-back">
               <div className="job-board-detail-page-header-content-back-img">

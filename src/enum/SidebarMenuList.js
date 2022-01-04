@@ -27,9 +27,9 @@ export default {
       url: INTERNAL_LINKS.HOME,
     },
     {
-      label: "Job Board",
+      label: "Talent Marketplace",
       icon: IconBriefcase,
-      url: INTERNAL_LINKS.JOB_BOARD,
+      url: INTERNAL_LINKS.TALENT_MARKETPLACE,
     },
     {
       label: "Global Conference",

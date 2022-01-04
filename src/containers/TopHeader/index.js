@@ -224,12 +224,12 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
-          path={INTERNAL_LINKS.JOB_BOARD}
+          path={INTERNAL_LINKS.TALENT_MARKETPLACE}
           exact
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
-          path={`${INTERNAL_LINKS.JOB_BOARD}/:id`}
+          path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
           exact
           render={(props) => <MainHeader {...props} />}
         />

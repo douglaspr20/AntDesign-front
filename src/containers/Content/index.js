@@ -38,8 +38,6 @@ import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
 import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
 import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
 import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
-import GlobalConferenceMyTalentMarketplaceProfilePage from "pages/GlobalConference/MyTalentMarketplaceProfile";
-import GlobalConferenceTalentMarketplacePage from "pages/GlobalConference/TalentMarketplace";
 import SpeakersPage from "pages/Speakers";
 import ParticipantsPage from "pages/Participants";
 import LivePage from "pages/Live";
@@ -53,8 +51,8 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
-import JobBoardPage from "pages/JobBoard";
-import JobPostDetailsPage from "pages/JobBoard/JobPostDetails";
+import TalentMarketplacePage from "pages/TalentMarketplace";
+import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -295,27 +293,6 @@ class Content extends Component {
             )}
           />
           <PrivateRoute
-            exact
-            path={
-              INTERNAL_LINKS.GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE
-            }
-            render={(props) => (
-              <GlobalConferencePage {...props}>
-                <GlobalConferenceMyTalentMarketplaceProfilePage {...props} />
-              </GlobalConferencePage>
-            )}
-          />
-
-          <PrivateRoute
-            exact
-            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_TALENT_MARKETPLACE}
-            render={(props) => (
-              <GlobalConferencePage {...props}>
-                <GlobalConferenceTalentMarketplacePage {...props} />
-              </GlobalConferencePage>
-            )}
-          />
-          <PrivateRoute
             path={`${INTERNAL_LINKS.SPEAKERS}`}
             render={(props) => <SpeakersPage {...props} />}
           />
@@ -369,12 +346,12 @@ class Content extends Component {
           />
           <PrivateRoute
             exact
-            path={INTERNAL_LINKS.JOB_BOARD}
-            render={(props) => <JobBoardPage {...props} />}
+            path={INTERNAL_LINKS.TALENT_MARKETPLACE}
+            render={(props) => <TalentMarketplacePage {...props} />}
           />
           <PrivateRoute
             exact
-            path={`${INTERNAL_LINKS.JOB_BOARD}/:id`}
+            path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
             render={(props) => <JobPostDetailsPage {...props} />}
           />
           <Route

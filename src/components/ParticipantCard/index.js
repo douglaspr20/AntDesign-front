@@ -19,10 +19,10 @@ const ParticipantCardInfo = ({
 }) => {
   const downloadFile = () => {
     const link = document.createElement("a");
-    link.setAttribute("href", participant.resumeUrl);
+    link.setAttribute("href", participant.User.resumeUrl);
     link.setAttribute(
       "download",
-      `${participant.firstName} ${participant.lastName}`
+      `${participant.User.firstName} ${participant.User.lastName}`
     );
     link.setAttribute("target", "_blank");
 
@@ -33,17 +33,17 @@ const ParticipantCardInfo = ({
 
   return (
     <>
-      {participant.img ? (
-        <Avatar size={150} src={participant.img} />
+      {participant.User.img ? (
+        <Avatar size={150} src={participant.User.img} />
       ) : (
         <Avatar size={150} style={{ fontSize: "2rem" }}>
-          {participant.abbrName}
+          {participant.User.abbrName}
         </Avatar>
       )}
 
       <div style={{ textAlign: "center" }}>
         <p style={{ fontWeight: 500 }}>
-          {participant.firstName} {participant.lastName}
+          {participant.User.firstName} {participant.User.lastName}
         </p>
         {participant.lookingFor ? (
           <div style={{ marginTop: -10 }}>
@@ -55,9 +55,9 @@ const ParticipantCardInfo = ({
             ))}
           </div>
         ) : (
-          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
+          <p style={{ marginTop: -10 }}>{participant.User.titleProfessions}</p>
         )}
-        <p style={{ marginTop: -10 }}>{participant.company}</p>
+        <p style={{ marginTop: -10 }}>{participant.User.company}</p>
 
         {participant.location && marketplaceProfile && (
           <div style={{ marginBottom: "50px" }}>
@@ -73,7 +73,7 @@ const ParticipantCardInfo = ({
       </div>
       {marketplaceProfile && (
         <div className="participant-card-marketplaceprofile">
-          {participant.resumeUrl !== "" && participant.resumeUrl && (
+          {participant.User.resumeUrl !== "" && participant.User.resumeUrl && (
             <Tooltip title="Download Resume">
               <Button
                 shape="circle"
@@ -92,7 +92,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<LinkedinOutlined />}
               onClick={() =>
-                window.open(participant.personalLinks.linkedin, "_blank")
+                window.open(participant.User.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={userProfile.memberShip !== "premium"}
@@ -105,7 +105,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<MailOutlined />}
               onClick={() =>
-                window.open(`mailto:${participant.email}`, "_blank")
+                window.open(`mailto:${participant.User.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={userProfile.memberShip !== "premium"}

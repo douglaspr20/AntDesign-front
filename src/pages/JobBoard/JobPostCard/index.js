@@ -57,7 +57,7 @@ const JobPost = ({ post, upsertJobPost, myPostedJobs = false }) => {
       <CustomButton
         text="More Information"
         block
-        onClick={() => history.push(`${INTERNAL_LINKS.JOB_BOARD}/${post.id}`)}
+        onClick={() => history.push(`${INTERNAL_LINKS.TALENT_MARKETPLACE}/${post.id}`)}
       />
     </div>
   );

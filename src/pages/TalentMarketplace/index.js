@@ -5,12 +5,14 @@ import { SETTINGS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
+import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import { JobPostCard, RecruiterView } from "./JobBoard";
-import TalentMarketplaceProfile from './TalentMarketplaceProfile'
+import Marketplace from "./Marketplace";
+import TalentMarketplaceProfile from "./TalentMarketplaceProfile";
 import TalentMarketplaceFilterPanel from "./TalentMarketplaceFilterPanel";
 import "./styles.scss";
 
@@ -24,7 +26,7 @@ const TalentMarketplacePage = ({
   getMoreJobPosts,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [filter, setFilter] = useState({});
+  const [filters, setFilters] = useState({});
 
   const isPremium = userProfile.memberShip === "premium";
 
@@ -36,20 +38,20 @@ const TalentMarketplacePage = ({
 
   useEffect(() => {
     if (currentTab === "2") {
-      getAllJobPosts(filter);
+      getAllJobPosts(filters);
     }
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
 
   const handleFilterOnChange = (values) => {
-    setFilter(values);
+    setFilters(values);
+    // getMarketplaceProfiles(values);
     getAllJobPosts(values);
   };
-
   const showMore = () => {
     getMoreJobPosts({
-      ...filter,
+      ...filters,
       page: currentPage + 1,
     });
   };
@@ -90,11 +92,10 @@ const TalentMarketplacePage = ({
     },
     {
       title: "Talent Marketplace",
-      content: () => <div>talent marketplace</div>,
+      content: () => <Marketplace filters={filters} />,
     },
     {
       title: "Main job board",
-      // content: () => <div>{mainJobPosts(allJobPosts)}</div>,
       content: displayMainJobPosts,
     },
   ];
@@ -102,8 +103,7 @@ const TalentMarketplacePage = ({
   if (isPremium) {
     const myJobPosts = {
       title: "My posted jobs",
-      // content: displayMyPostedJobs,
-      content: () => <RecruiterView filter={filter} />,
+      content: () => <RecruiterView filter={filters} />,
     };
 
     TabData.push(myJobPosts);
@@ -126,6 +126,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   ...jobBoardActions,
+  getMarketplaceProfiles,
 };
 
 export default connect(
