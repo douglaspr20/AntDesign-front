@@ -154,6 +154,23 @@ const ProfilePopupMenu = (props) => {
 
   const ContentSection = () => (
     <div className="profile-popover-content">
+      {(user.memberShip === "premium" ||
+        user.channelsSubscription === true ||
+        user.recruiterSubscription === true) && (
+        <div className="profile-popover-content-menu">
+          <a
+            href="/#"
+            onClick={(e) => {
+              e.preventDefault();
+              createPortalSession();
+            }}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Billing Information
+          </a>
+        </div>
+      )}
       <div className="profile-popover-content-menu">
         {user.memberShip === "premium" ? (
           <React.Fragment>
@@ -168,19 +185,6 @@ const ProfilePopupMenu = (props) => {
                   {moment
                     .unix(subscription?.current_period_end)
                     .format("MMMM DD, yyyy")}
-                </div>
-                <div>
-                  <a
-                    href="/#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      createPortalSession();
-                    }}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Billing Information
-                  </a>
                 </div>
               </>
             ) : null}

@@ -16,7 +16,6 @@ import { ReactComponent as IconDoubleCheckmark } from "images/icon-double-checkm
 import { ReactComponent as IconCloseOutline } from "images/icon-close-outline.svg";
 
 import "./style.scss";
-import { relativeTimeRounding } from "moment";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
