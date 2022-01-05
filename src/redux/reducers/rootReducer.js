@@ -8,6 +8,8 @@ import libraryReducer from "./libraryReducer";
 import mentoringReducer from "./mentoringReducer";
 import podcastReducer from "./podcastReducer";
 import marketplaceReducer from "./marketplaceReducer";
+import councilReducer from "./councilReducer";
+import councilCommentsReducer from "./councilCommentsReducer";
 import marketplaceCategoriesReducer from "./marketplaceCategoriesReducer";
 import categoryReducer from "./categoryReducer";
 import conferenceReducer from "./conferenceReducer";
@@ -32,9 +34,12 @@ import skillCohortResourceResponseRating from "./skillCohortResourceResponseRati
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
 import sessionClassUserReducer from "./sessionClassUserReducer";
+import marketplaceProfileReducer from "./marketplaceProfileReducer";
 
 export default combineReducers({
   home: homeReducer,
+  council: councilReducer,
+  councilComment: councilCommentsReducer,
   env: envReducer,
   auth: authReducer,
   event: eventReducer,
@@ -67,4 +72,5 @@ export default combineReducers({
   myLearning: myLearningReducer,
   partner: partnerReducer,
   sessionClassUser: sessionClassUserReducer,
+  marketplaceProfile: marketplaceProfileReducer,
 });

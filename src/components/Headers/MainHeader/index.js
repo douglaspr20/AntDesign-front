@@ -22,6 +22,7 @@ import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
+
 import IconGlobal from "images/icon-global.svg";
 import IconHomeOutline from "images/icon-home.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -89,6 +90,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (pathname.includes(`${INTERNAL_LINKS.COUNCIL}`)) {
+      pathInfo = {
+        icon: IconLibrary,
+        label: `Council`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
       const { selectedCourse } = this.props;
       pathInfo = {
@@ -153,8 +161,8 @@ class MainHeader extends React.Component {
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPONSOR_DASHBOARD}`)) {
       pathInfo = {
-        icon: IconHomeOutline,
-        label: "Sponsor Dashboard",
+        // icon: ,
+        label: "Partners Dashboard",
       };
     }
 
@@ -169,7 +177,11 @@ class MainHeader extends React.Component {
           {pathInfo ? (
             <>
               <div className="page-icon">
-                <img src={pathInfo.icon} alt="page-icon" />
+                {pathInfo.icon ? (
+                  <img src={pathInfo.icon} alt="page-icon" />
+                ) : (
+                  <></>
+                )}
               </div>
               <span className="page-label">
                 {pathInfo.label === "Global Conference"

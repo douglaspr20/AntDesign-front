@@ -229,7 +229,7 @@ const ProfilePopupMenu = (props) => {
           className="profile-popover-content-menu"
           onClick={() => history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD)}
         >
-          Sponsor Dashboard
+          Partners Dashboard
         </div>
       )}
       <div
@@ -244,6 +244,14 @@ const ProfilePopupMenu = (props) => {
           onClick={() => openChangePasswordModal(true)}
         >
           Change Password
+        </div>
+      )}
+      {user.councilMember && (
+        <div
+          className="profile-popover-content-menu"
+          onClick={() => history.push(INTERNAL_LINKS.COUNCIL)}
+        >
+          Experts Council
         </div>
       )}
       {/* {user.percentOfCompletion === 100 && (

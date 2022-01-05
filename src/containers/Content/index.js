@@ -6,6 +6,7 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
+import CouncilPage from "pages/Council";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import PasswordRecoveryPage from "pages/PasswordRecovery";
@@ -32,6 +33,14 @@ import ChannelPage from "pages/Channel";
 import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
 import MicroConferencePage from "pages/MicroConference";
+import GlobalConferenceSpeakersPage from "pages/GlobalConference/Speakers";
+import GlobalConferenceParticipantsPage from "pages/GlobalConference/Participants";
+import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
+import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
+import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
+import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
+import GlobalConferenceMyTalentMarketplaceProfilePage from "pages/GlobalConference/MyTalentMarketplaceProfile";
+import GlobalConferenceTalentMarketplacePage from "pages/GlobalConference/TalentMarketplace";
 import SpeakersPage from "pages/Speakers";
 import ParticipantsPage from "pages/Participants";
 import LivePage from "pages/Live";
@@ -43,6 +52,7 @@ import SkillCohortPage from "pages/SkillCohort";
 import SkillCohortDetailPage from "pages/SkillCohortDetail";
 import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
+import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
 
 // Enum
@@ -128,6 +138,16 @@ class Content extends Component {
           />
           <PrivateRoute
             exact
+            path={INTERNAL_LINKS.COUNCIL}
+            render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COUNCIL}/resource`}
+            render={(props) => <CouncilConversationsCard {...props} />}
+          />
+          <PrivateRoute
+            exact
             path={INTERNAL_LINKS.CHANNELS}
             render={(props) => <ChannelsPage {...props} />}
           />
@@ -197,6 +217,7 @@ class Content extends Component {
             render={(props) => <NotificationPage {...props} />}
           />
           <PrivateRoute
+            exact
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
           />
@@ -204,6 +225,99 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
             render={(props) => <MicroConferencePage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_SPEAKERS}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceSpeakersPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTICIPANTS}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceParticipantsPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTNERS}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferencePartnersPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_BONFIRE}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceBonfiressPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PERSONAL_AGENDA}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferencePersonalAgendaPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_RECOMMENDED_AGENDA}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferencePersonalAgendaPage
+                  {...props}
+                  isRecommendedAgenda
+                />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceLeaderboardPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+          <PrivateRoute
+            exact
+            path={
+              INTERNAL_LINKS.GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE
+            }
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceMyTalentMarketplaceProfilePage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_TALENT_MARKETPLACE}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceTalentMarketplacePage {...props} />
+              </GlobalConferencePage>
+            )}
           />
           <PrivateRoute
             path={`${INTERNAL_LINKS.SPEAKERS}`}

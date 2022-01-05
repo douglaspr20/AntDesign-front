@@ -1,6 +1,7 @@
 export default {
   HOME: "/",
   LOGIN: "/login",
+  COUNCIL: "/council",
   SIGNUP: "/signup",
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",
@@ -31,6 +32,16 @@ export default {
   NOTIFICATIONS: "/notifications",
   GLOBAL_CONFERENCE: "/global-conference",
   MICRO_CONFERENCE: "/session",
+  GLOBAL_CONFERENCE_SPEAKERS: "/global-conference/speakers",
+  GLOBAL_CONFERENCE_PARTICIPANTS: "/global-conference/participants",
+  GLOBAL_CONFERENCE_PARTNERS: "/global-conference/partners",
+  GLOBAL_CONFERENCE_BONFIRE: "/global-conference/bonfires",
+  GLOBAL_CONFERENCE_PERSONAL_AGENDA: "/global-conference/personal-agenda",
+  GLOBAL_CONFERENCE_RECOMMENDED_AGENDA: "/global-conference/recommended-agenda",
+  GLOBAL_CONFERENCE_LEADERBOARD: "/global-conference/leaderboard",
+  GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE:
+    "/global-conference/my-talent-marketplace-profile",
+  GLOBAL_CONFERENCE_TALENT_MARKETPLACE: "/global-conference/talent-marketplace",
   SPEAKERS: "/speakers",
   LIVE: "/live",
   POST: "/post",
@@ -39,5 +50,5 @@ export default {
   MY_LEARNINGS: "/my-learnings",
   PROJECTX: "/projectx",
   INVITATION: "/invitation",
-  SPONSOR_DASHBOARD: "/sponsor-dashboard"
+  SPONSOR_DASHBOARD: "/sponsor-dashboard",
 };

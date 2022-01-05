@@ -148,9 +148,27 @@ import {
   getEventVideos,
 } from "./module/myLearning";
 
-import { getPartners, getPartner } from "./module/partner";
+import {
+  getCouncilMembersFromAPI,
+  getCouncilResourcesFromAPI,
+  createCouncilResourceFromAPI,
+  getCouncilResourceByIdFromAPI,
+} from "./module/council";
 
+import {
+  getAllCouncilCommentsFromAPI,
+  postCouncilCommentFromAPI,
+  removeCouncilCommentFromAPI,
+} from "./module/council-comments";
+
+import { getPartners, getPartner } from "./module/partner";
 import { getUserProgress, setProgress } from "./module/sessionClassUser";
+import {
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
+} from "./module/marketplaceProfile";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -158,6 +176,13 @@ export {
   signUp,
   getUserFromId,
   updateUser,
+  getAllCouncilCommentsFromAPI,
+  postCouncilCommentFromAPI,
+  removeCouncilCommentFromAPI,
+  getCouncilMembersFromAPI,
+  getCouncilResourceByIdFromAPI,
+  getCouncilResourcesFromAPI,
+  createCouncilResourceFromAPI,
   getAllUsers,
   changePassword,
   createInvitation,
@@ -273,4 +298,8 @@ export {
   getPartner,
   getUserProgress,
   setProgress,
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
 };

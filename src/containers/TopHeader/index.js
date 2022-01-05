@@ -36,6 +36,14 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.COUNCIL}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.COUNCIL}/resouce`}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.CLASSES}
           render={(props) => <MainHeader {...props} />}
         />
@@ -108,12 +116,66 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          exact
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={(props) => <MainHeader {...props} />}
         />
 
         <PrivateRoute
+          exact
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
+          render={(props) => <MainHeader {...props} />}
+          />
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_SPEAKERS}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTICIPANTS}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTNERS}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_BONFIRE}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_PERSONAL_AGENDA}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_RECOMMENDED_AGENDA}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          exact
+          path={INTERNAL_LINKS.GLOBAL_CONFERENCE_TALENT_MARKETPLACE}
           render={(props) => <MainHeader {...props} />}
         />
 
@@ -162,7 +224,7 @@ class TopHeader extends Component {
           path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
           render={(props) => <MainHeader {...props} />}
         />
-                <PrivateRoute
+        <PrivateRoute
           path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
           exact
           render={(props) => <MainHeader {...props} />}

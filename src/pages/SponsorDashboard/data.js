@@ -13,18 +13,30 @@ function getCount(allUsers, field, value) {
 export const options1 = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
     },
     title: {
       display: true,
       text: "Open to receiving information/being contacted via email about open job positions.",
+      font: { size: "20px" },
     },
   },
 };
 
 function getPercentage(originalNum, totalNum) {
-  return (originalNum / totalNum) * 100;
+  return Math.round((originalNum / totalNum) * 100);
 }
 
 export function getDoughnutData1(allUsers) {
@@ -55,12 +67,24 @@ export function getDoughnutData1(allUsers) {
 export const options2 = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
     },
     title: {
       display: true,
       text: "What best defines your current or most recent job level?",
+      font: { size: "20px" },
     },
   },
 };
@@ -125,6 +149,17 @@ export function getDoughnutData2(allUsers) {
 export const options3 = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
       display: false,
@@ -132,6 +167,21 @@ export const options3 = {
     title: {
       display: true,
       text: "In what area of HR do you currently work or most recently worked?",
+      font: { size: "20px" },
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
+    },
+    y: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
     },
   },
 };
@@ -258,12 +308,24 @@ export function getDoughnutData3(allUsers) {
 export const optionCountry = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
     },
     title: {
       display: true,
       text: "Countries",
+      font: { size: "20px" },
     },
   },
 };
@@ -336,12 +398,24 @@ export function getCountries(allUsers) {
 export const sizeOfOrganizationOption = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
     },
     title: {
       display: true,
       text: "What is the size of the organization your work for?",
+      font: { size: "20px" },
     },
   },
 };
@@ -398,6 +472,17 @@ export function sizeOfOrganizationChart(allUsers) {
 export const topicsOfInterestOption = {
   responsive: true,
   plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          return (
+            `${context.label}: ` +
+            Number(context.parsed.y ? context.parsed.y : context.parsed) +
+            "%"
+          );
+        },
+      },
+    },
     legend: {
       position: "top",
       display: false,
@@ -405,6 +490,21 @@ export const topicsOfInterestOption = {
     title: {
       display: true,
       text: "Topics of interest",
+      font: { size: "20px" },
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
+    },
+    y: {
+      grid: {
+        drawBorder: true,
+        drawOnChartArea: false,
+      },
     },
   },
 };

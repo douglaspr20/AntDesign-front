@@ -31,11 +31,16 @@ import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResp
 import { learningSaga } from "./myLearning";
 import { partnersSaga } from "./partners";
 import { sessionClassUserSaga } from "./sessionClassUser";
+import { marketplaceProfileSaga } from "./marketplaceProfile";
+import { councilSaga } from "./council";
+import { councilCommentSaga } from "./councilComments";
 
 export default function* sagas() {
   yield all([
     ...authSaga,
     ...userSaga,
+    ...councilSaga,
+    ...councilCommentSaga,
     ...eventSaga,
     ...librarySaga,
     ...mentoringSaga,
@@ -66,5 +71,6 @@ export default function* sagas() {
     ...learningSaga,
     ...partnersSaga,
     ...sessionClassUserSaga,
+    ...marketplaceProfileSaga,
   ]);
 }
