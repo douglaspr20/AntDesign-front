@@ -7,10 +7,12 @@ import { connect } from "react-redux";
 import { AnnualConferenceCard } from "components";
 import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { addSession, removeSession, joinedSession } from "redux/actions/home-actions";
-import { TIMEZONE_LIST } from "enum";
+import {
+  addSession,
+  removeSession,
+  joinedSession,
+} from "redux/actions/home-actions";
 import { getSessionsAddedbyUser } from "redux/actions/session-actions";
-import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { convertToCertainTime } from "utils/format";
 import "./style.scss";

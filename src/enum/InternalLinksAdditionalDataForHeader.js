@@ -18,6 +18,7 @@ export default [
     label: "Micro Conference",
     icon: IconGlobal,
     url: INTERNAL_LINKS.MICRO_CONFERENCE,
+  },
   {
     label: "Global Conference",
     icon: IconGlobal,

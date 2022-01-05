@@ -24,7 +24,6 @@ import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 
 import IconGlobal from "images/icon-global.svg";
-import IconHomeOutline from "images/icon-home.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
