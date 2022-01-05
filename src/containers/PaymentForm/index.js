@@ -173,21 +173,26 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       render: (value, record) => {
         if (record.hasOwnProperty("buttonSection")) {
           if (record.buttonSection === true) {
-            return (
-              <Button
-                loading={loading}
-                onClick={() => {
-                  requestCheckoutSessionTable({
-                    premium: false,
-                    recruiter: true,
-                    creator: false,
-                  });
-                }}
-                className="pay-buttton"
-              >
-                Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
-              </Button>
-            );
+            if (
+              userProfile.memberShip === "premium" &&
+              userProfile.recruiterSubscription === false
+            ) {
+              return (
+                <Button
+                  loading={loading}
+                  onClick={() => {
+                    requestCheckoutSessionTable({
+                      premium: false,
+                      recruiter: true,
+                      creator: false,
+                    });
+                  }}
+                  className="pay-buttton"
+                >
+                  Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
+                </Button>
+              );
+            }
           }
         } else {
           return getIcon(value);
@@ -333,21 +338,18 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         scroll={isMobile && { x: "100vw" }}
       ></Table>
       <br></br>
-      {userProfile.memberShip === "premium" &&
-        userProfile.recruiterSubscription === false && (
-          <>
-            <Table
-              className="antd-table-payment"
-              rowClassName="payment-table-row"
-              bordered={false}
-              columns={addOnsColumns}
-              dataSource={addOnsDatasource}
-              pagination={false}
-              scroll={isMobile && { x: "100vw" }}
-            ></Table>
-            <br></br>
-          </>
-        )}
+      <>
+        <Table
+          className="antd-table-payment"
+          rowClassName="payment-table-row"
+          bordered={false}
+          columns={addOnsColumns}
+          dataSource={addOnsDatasource}
+          pagination={false}
+          scroll={isMobile && { x: "100vw" }}
+        ></Table>
+        <br></br>
+      </>
       {checkoutSessionError && (
         <Alert
           message="Error"
