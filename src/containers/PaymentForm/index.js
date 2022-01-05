@@ -189,9 +189,11 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                   }}
                   className="pay-buttton"
                 >
-                  Pay ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
+                  Annual Subscription ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
                 </Button>
               );
+            } else {
+              return "You need to upgrade to PREMIUM before adding the RECRUITER feature";
             }
           }
         } else {
