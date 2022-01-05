@@ -19,7 +19,7 @@ import IconChevronDown from "images/icon-chevron-down.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconMedal from "images/icon-medal.svg";
 import IconNotification from "images/icon-notification-header.svg";
-import IconHeadsetOutline from "images/icon-headset-outline.svg";
+// import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconHomeOutline from "images/icon-home.svg"
@@ -106,7 +106,7 @@ class MainHeader extends React.Component {
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
       const { podcastSeries } = this.props;
       pathInfo = {
-        icon: IconHeadsetOutline,
+        icon: `${process.env.REACT_APP_AWS_ASSETS_BUCKET}/images/icon-headset-outline.svg`,
         label: (podcastSeries || {}).title || "Podcast Series",
       };
     }
@@ -121,7 +121,7 @@ class MainHeader extends React.Component {
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/`)) {
       if (pathname.includes(`${INTERNAL_LINKS.LIBRARY_ITEM}/podcast`)) {
         pathInfo = {
-          icon: IconHeadsetOutline,
+          icon: `${process.env.REACT_APP_AWS_ASSETS_BUCKET}/images/icon-headset-outline.svg`,
           label: `Podcast`,
         };
       } else {
