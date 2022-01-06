@@ -13,6 +13,12 @@ export default [
     icon: IconMedal,
     url: INTERNAL_LINKS.MICRO_CLASS,
   },
+
+  {
+    label: "Micro Conference",
+    icon: IconGlobal,
+    url: INTERNAL_LINKS.MICRO_CONFERENCE,
+  },
   {
     label: "Global Conference",
     icon: IconGlobal,
