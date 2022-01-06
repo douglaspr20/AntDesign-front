@@ -71,7 +71,11 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                 <Button
                   loading={loading}
                   onClick={() => {
-                    requestCheckoutSessionTable(true, false);
+                    requestCheckoutSessionTable({
+                      premium: true,
+                      recruiter: false,
+                      creator: false,
+                    });
                   }}
                   className="pay-buttton"
                 >
@@ -103,7 +107,11 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                   <Button
                     loading={loading}
                     onClick={() => {
-                      requestCheckoutSessionTable(true, true);
+                      requestCheckoutSessionTable({
+                        premium: true,
+                        recruiter: false,
+                        creator: true,
+                      });
                     }}
                     className="pay-buttton"
                   >
@@ -113,18 +121,78 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
                   </Button>
                 );
               } else {
-                return (
-                  <Button
-                    loading={loading}
-                    onClick={() => {
-                      requestCheckoutSessionTable(false, true);
-                    }}
-                    className="pay-buttton"
-                  >
-                    Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
-                  </Button>
-                );
+                if (userProfile.channelsSubscription === true) {
+                  return "Creator";
+                } else {
+                  return (
+                    <Button
+                      loading={loading}
+                      onClick={() => {
+                        requestCheckoutSessionTable({
+                          premium: false,
+                          recruiter: false,
+                          creator: true,
+                        });
+                      }}
+                      className="pay-buttton"
+                    >
+                      Pay ${STRIPE_PRICES.CHANNELS_STRIPE_PRICES[0].price}
+                    </Button>
+                  );
+                }
               }
+            }
+          }
+        } else {
+          return getIcon(value);
+        }
+      },
+    },
+  ];
+
+  const addOnsColumns = [
+    {
+      title: "",
+      key: "text",
+      fixed: "left",
+      width: 120,
+      dataIndex: "text",
+      className: "payment-table-column-text",
+      render: (value, record) => (
+        <span className="antd-table-payment-text">{record.text}</span>
+      ),
+    },
+    {
+      title: "Add-on Recruiter",
+      key: "recruiter",
+      dataIndex: "recruiter",
+      align: "center",
+      className: "payment-table-column",
+      width: 150,
+      render: (value, record) => {
+        if (record.hasOwnProperty("buttonSection")) {
+          if (record.buttonSection === true) {
+            if (
+              userProfile.memberShip === "premium" &&
+              userProfile.recruiterSubscription === false
+            ) {
+              return (
+                <Button
+                  loading={loading}
+                  onClick={() => {
+                    requestCheckoutSessionTable({
+                      premium: false,
+                      recruiter: true,
+                      creator: false,
+                    });
+                  }}
+                  className="pay-buttton"
+                >
+                  Annual Subscription ${STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].price}
+                </Button>
+              );
+            } else {
+              return "You need to upgrade to PREMIUM before adding the RECRUITER feature";
             }
           }
         } else {
@@ -139,31 +207,50 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
       text: "Participation in all Hacking HR online events",
       free: true,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "Access to: learning library, mentoring, conference library, classes, podcast and podcast series",
       free: true,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "Access to ProjectX: Hacking HR's cohort based learning",
       free: false,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "HR certification credits (for applicable learning items in the learning library, conference library, podcast series or classes)",
       free: false,
       premium: true,
+      recruiter: true,
       creator: true,
     },
     {
       text: "Content sharing with the community: events, podcasts, videos, classes and other resources",
       free: false,
       premium: false,
+      recruiter: false,
       creator: true,
+    },
+    {
+      text: "",
+      buttonSection: true,
+    },
+  ];
+
+  const addOnsDatasource = [
+    {
+      text: "Post jobs, access to profiles in Talent Marketplace and connect with candidates in the talent marketplace",
+      free: false,
+      premium: false,
+      recruiter: true,
+      creator: false,
     },
     {
       text: "",
@@ -180,16 +267,22 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSessionTable = async (
-    premium = false,
-    creator = false
-  ) => {
+  const requestCheckoutSessionTable = async ({
+    premium,
+    creator,
+    recruiter,
+  }) => {
     setLoading(true);
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
     let checkoutSessionPrices = [];
     if (premium === true) {
       checkoutSessionPrices.push(STRIPE_PRICES.STRIPE_PRICES[0].priceId);
+    }
+    if (recruiter === true) {
+      checkoutSessionPrices.push(
+        STRIPE_PRICES.RECRUITER_STRIPE_PRICES[0].priceId
+      );
     }
     if (creator === true) {
       checkoutSessionPrices.push(
@@ -246,6 +339,18 @@ const PaymentForm = ({ isMobile, userProfile, handleSubmit, hidePanel }) => {
         scroll={isMobile && { x: "100vw" }}
       ></Table>
       <br></br>
+      <>
+        <Table
+          className="antd-table-payment"
+          rowClassName="payment-table-row"
+          bordered={false}
+          columns={addOnsColumns}
+          dataSource={addOnsDatasource}
+          pagination={false}
+          scroll={isMobile && { x: "100vw" }}
+        ></Table>
+        <br></br>
+      </>
       {checkoutSessionError && (
         <Alert
           message="Error"
