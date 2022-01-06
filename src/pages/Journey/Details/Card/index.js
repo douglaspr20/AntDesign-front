@@ -6,6 +6,7 @@ import { ReactComponent as IconMenuOutline } from "images/icon-menu-outline.svg"
 import { ReactComponent as IconCheckmark } from "images/icon-checkmark.svg";
 import { ReactComponent as IconCalendar } from "images/icon-calendar.svg";
 import { ReactComponent as IconDocument } from "images/icon-document.svg";
+import { ReactComponent as IconHeadsetOutline } from "images/icon-headset-outline.svg";
 import { ReactComponent as IconVideo } from "images/icon-video.svg";
 
 const { Paragraph } = Typography;
@@ -24,15 +25,7 @@ const JourneyDetailsCard = ({
   const contentType = {
     article: { text: "Article", icon: <IconDocument /> },
     event: { text: "Event", icon: <IconCalendar /> },
-    podcast: {
-      text: "Podcast",
-      icon: (
-        <img
-          src={`${process.env.REACT_APP_AWS_ASSETS_BUCKET}/images/icon-headset-outline.svg`}
-          alt="icon-headset-outline"
-        ></img>
-      ),
-    },
+    podcast: { text: "Podcast", icon: <IconHeadsetOutline /> },
     video: { text: "Video", icon: <IconVideo /> },
   };
   return (

@@ -10,7 +10,7 @@ import IconStar from "images/icon-star.svg";
 // import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
 // import IconHeartOutline from "images/icon-heart-outline.svg";
-// import IconHeadsetOutline from "images/icon-headset-outline.svg";
+import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
@@ -72,7 +72,7 @@ export default {
     // },
     {
       label: "Podcast",
-      icon: `${process.env.REACT_APP_AWS_ASSETS_BUCKET}/images/icon-headset-outline.svg`,
+      icon: IconHeadsetOutline,
       url: INTERNAL_LINKS.PODCAST,
     },
     {
