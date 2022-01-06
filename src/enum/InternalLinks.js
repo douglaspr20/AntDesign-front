@@ -31,6 +31,7 @@ export default {
   NOT_FOUND: "/not-found",
   NOTIFICATIONS: "/notifications",
   GLOBAL_CONFERENCE: "/global-conference",
+  MICRO_CONFERENCE: "/session",
   GLOBAL_CONFERENCE_SPEAKERS: "/global-conference/speakers",
   GLOBAL_CONFERENCE_PARTICIPANTS: "/global-conference/participants",
   GLOBAL_CONFERENCE_PARTNERS: "/global-conference/partners",
@@ -41,7 +42,6 @@ export default {
   GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE:
     "/global-conference/my-talent-marketplace-profile",
   GLOBAL_CONFERENCE_TALENT_MARKETPLACE: "/global-conference/talent-marketplace",
-
   SPEAKERS: "/speakers",
   LIVE: "/live",
   POST: "/post",

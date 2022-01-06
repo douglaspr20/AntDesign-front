@@ -14,6 +14,7 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedASession,
   addBonfire,
   removeBonfire,
   uploadResume,
@@ -203,6 +204,27 @@ export function* removeSessionSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* joinedASessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(joinedASession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+    if (payload.callback) payload.callback();
   }
 }
 
@@ -429,6 +451,7 @@ function* watchLogin() {
   );
   yield takeLatest(homeConstants.ADD_SESSION, addSessionSaga);
   yield takeLatest(homeConstants.REMOVE_SESSION, removeSessionSaga);
+  yield takeLatest(homeConstants.JOINED_SESSION, joinedASessionSaga);
   yield takeLatest(homeConstants.ADD_BONFIRE, addBonfireSaga);
   yield takeLatest(homeConstants.REMOVE_BONFIRE, removeBonfireSaga);
   yield takeLatest(homeConstants.UPLOAD_RESUME, uploadResumeSaga);

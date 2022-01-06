@@ -12,6 +12,14 @@ export const reducers = {
       allSessions: payload.allSessions,
     });
   },
+  [sessionConstants.SET_SESSION]: (state, { payload }) => {
+    return state.merge({
+      session: payload.session,
+    });
+  },
+  [sessionConstants.SET_SESSION_CLASSES]: (state, { payload }) => {
+    return state.merge({ classes: cloneDeep(payload.classes) });
+  },
   [sessionConstants.SET_SESSIONS_ADDED_BY_USER]: (state, { payload }) => {
     return state.merge({
       sessionsUser: payload.sessionsUser,
@@ -43,6 +51,8 @@ export const initialState = () =>
   Map({
     sessionLoading: false,
     allSessions: [],
+    session: {},
+    classes: [],
     sessionsUser: [],
     participants: [],
     recommendedAgendaSessions: [],
