@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Tooltip } from "antd";
+import { notification, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
-import { TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 
 import { categorySelector } from "redux/selectors/categorySelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { addSession, removeSession } from "redux/actions/home-actions";
+import {
+  addSession,
+  removeSession,
+  joinedSession,
+} from "redux/actions/home-actions";
 import { convertToCertainTime } from "utils/format";
 
 import "./style.scss";
@@ -20,9 +25,11 @@ const ConferenceList = ({
   userProfile,
   addSession,
   removeSession,
+  joinedSession,
   messageError,
 }) => {
   const [sessionData, setSessionData] = useState([]);
+  const history = useHistory();
 
   const onAddSession = (session) => {
     addSession(session);
@@ -30,6 +37,29 @@ const ConferenceList = ({
 
   const onRemoveSession = (session) => {
     removeSession(session);
+  };
+
+  const onJoinedSession = (session) => {
+    if (!userProfile.sessionsJoined.includes(session.id)) {
+      return joinedSession(session, (error) => {
+        if (error) {
+          return notification.error({
+            message: error || "Somethign was wrong",
+          });
+        }
+
+        if (session.type === "Certificate Track and Panels") {
+          history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+        } else {
+          window.open(`${session.link}`);
+        }
+      });
+    }
+    if (session.type === "Certificate Track and Panels") {
+      history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+    } else {
+      window.open(`${session.link}`);
+    }
   };
 
   useEffect(() => {
@@ -169,8 +199,8 @@ const ConferenceList = ({
     <div className="conference-list">
       <div className="conference-list-container">
         {sessionData.length > 0 ? (
-          sessionData.map((session, index) =>
-            session.data.length > 0 ? (
+          sessionData.map((session, index) => {
+            return session.data.length > 0 ? (
               <div key={index}>
                 <h3 className="session-step">
                   {session.step}{" "}
@@ -203,13 +233,17 @@ const ConferenceList = ({
                     session={s}
                     attended={userProfile.attendedToConference}
                     added={(userProfile.sessions || []).includes(s.id)}
+                    joinedOtherSession={session.data.some((s) =>
+                      (userProfile.sessionsJoined || []).includes(s.id)
+                    )}
                     onAddSession={() => onAddSession(s)}
                     onRemoveSession={() => onRemoveSession(s)}
+                    onJoinedSession={() => onJoinedSession(s)}
                   />
                 ))}
               </div>
-            ) : null
-          )
+            ) : null;
+          })
         ) : (
           <h1 style={{ textAlign: "center" }}>{messageError}</h1>
         )}
@@ -235,6 +269,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addSession,
   removeSession,
+  joinedSession,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceList);
