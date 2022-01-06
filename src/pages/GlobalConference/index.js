@@ -185,10 +185,14 @@ const GlobalConference = ({
     );
   }, []);
 
-  const downloadPdf = async () => {
+  const downloadPdf = async (option) => {
     setLoading(true);
 
-    if (sessionsUser.length < 1) {
+    const sessionJoined = allSessions.filter((session) =>
+      userProfile?.sessionsJoined?.includes(session.id)
+    );
+
+    if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
       return notification.warning({
         message: "You have no sessions",
@@ -196,9 +200,19 @@ const GlobalConference = ({
         someone tries to download it without having added any session to 
         their agenda`,
       });
+    } else if (sessionJoined < 1 && option === "report-sessions-joined") {
+      setLoading(false);
+      return notification.warning({
+        message: "You haven't joined any session",
+        description: `Join your first session before downloading the joined sessions report`,
+      });
     }
 
-    const template = formatAnnualConference(userProfile, sessionsUser);
+    const template = formatAnnualConference(
+      userProfile,
+      option === "personal-agenda" ? sessionsUser : sessionJoined,
+      option
+    );
 
     const pdf = new jsPdf({
       orientation: "p",
@@ -210,7 +224,11 @@ const GlobalConference = ({
 
     await pdf.html(template);
 
-    pdf.save("Personalizated Agenda.pdf");
+    pdf.save(
+      option === "personal-agenda"
+        ? "Personalizated Agenda.pdf"
+        : "Report sessions joined"
+    );
 
     setLoading(false);
   };
@@ -325,12 +343,21 @@ const GlobalConference = ({
             />
 
             {localPathname === "personal-agenda" && (
-              <CustomButton
-                size="xs"
-                text="Download  Personalized Agenda"
-                style={{ marginLeft: "1rem" }}
-                onClick={downloadPdf}
-              />
+              <>
+                <CustomButton
+                  size="xs"
+                  text="Download  Personalized Agenda"
+                  style={{ marginLeft: "1rem" }}
+                  onClick={() => downloadPdf("personal-agenda")}
+                />
+
+                <CustomButton
+                  size="xs"
+                  text="Download  Report Sessions Joined"
+                  style={{ marginLeft: "1rem" }}
+                  onClick={() => downloadPdf("report-sessions-joined")}
+                />
+              </>
             )}
 
             {localPathname === "bonfires" && (

@@ -82,6 +82,7 @@
 
       @media (max-width: 1100px){
         left: 37%;
+        width: 63%;
         padding: 20px 10px;
       }
 
@@ -102,13 +103,9 @@
         display: flex !important;
         align-items: center;
         flex-wrap: wrap;
-
+        justify-content: center;
         & .custom-button{
           margin-top: .5rem;
-        }
-    
-        @media (max-width: 1440px){
-          justify-content: center;
         }
       }
       
@@ -127,7 +124,7 @@
   }
 
   &-description {
-    margin-top: 2rem;
+    margin-top: 1rem;
     @include app-font(16px, 24px);
     color: $color-text-secondary;
 
@@ -198,12 +195,12 @@
 
     @media (max-width: 1500px){
       top: 20rem;
-      left: 29%;
-      width: 68%;
+      left: 28%;
+      width: 70.5%;
       }
 
     @media (max-width: 1100px){
-      top: 27rem;
+      top: 25rem;
       left: 40%;
       width: 55%;
       }
@@ -215,7 +212,7 @@
       }
 
     @media (max-width: 500px){
-      top: 26rem;
+      top: 29rem;
       width: 110%;
     left: -10%;
       }

@@ -3,8 +3,8 @@ import { convertToCertainTime } from "utils/format";
 import LogoHackingHR from "images/img-hhr-logo.png";
 import { TIMEZONE_LIST } from "enum";
 
-const formatAnnualConference = (userProfile, sessionsUser) => {
-  const sessionsOrdered = sessionsUser
+const formatAnnualConference = (userProfile, sessions, option) => {
+  const sessionsOrdered = sessions
     .map((item) => {
       const sTime = convertToCertainTime(item.startTime, item.timezone);
       const eTime = convertToCertainTime(item.endTime, item.timezone);
@@ -77,9 +77,11 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
     
     <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
     align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 150px">
-      <p style="font-size: 1.3rem">Personalized Agenda – Created on ${moment().format(
-        "MM-DD-YYYY"
-      )} </p>
+      <p style="font-size: 1.3rem">${
+        option === "personal-agenda"
+          ? "Personalized Agenda – Created on"
+          : "Report Session Joined - generated on"
+      } ${moment().format("MM-DD-YYYY")} </p>
       <p style="font-size: 1.3rem">DOWNLOAD</p>
       <p style="font-size: 1.3rem">${userProfile.firstName} ${
     userProfile.lastName
@@ -92,19 +94,31 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
           <img src=${LogoHackingHR} style="width: 70px; height: 70px">
           <div>
             <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
-            <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+            <p style="margin-top: -20px">Global Online Conference | ${
+              option === "personal-agenda"
+                ? "Personalized Agenda"
+                : "Report sessions Joined"
+            }</p>
           </div>
         </div>
 
         <div>
           <p style="font-weight: 800 !important; font-size: 2.5rem !important; text-align: center">Event Overview</p>
           <p style="font-size: 1.5rem; padding: 0px 2.5rem">
-          This is your personalized agenda. It includes the sessions 
-          you are planning to join. 
+          This is your ${
+            option === "personal-agenda"
+              ? "personalized agenda"
+              : "report sessions joined"
+          }. It includes the sessions 
+          you ${
+            option === "personal-agenda" ? "are planning to join" : "joined"
+          }. 
           <br>
           <br>
-          You can update your personalized agenda at any time 
-          you want. Also, during conference week, you can join a 
+          ${
+            option === "personal-agenda"
+              ? `  You can update your personalized agenda at any time 
+          you want. Also, during conference weeki, you can join a 
           different session than the original one you added in your 
           personalized agenda. However, notice that during 
           conference week, once you click on “join” a session, you 
@@ -119,7 +133,9 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
           conference. We will ONLY send you the codes of the 
           sessions you actually JOINED; and 3) you can watch the 
           recordings later and still earn HR certification credits. 
-          Thank you and enjoy! 
+          Thank you and enjoy! `
+              : ""
+          }
           </p>
         </div>
     </div>
@@ -166,9 +182,15 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
         opacity: 1;
         padding: 2rem; margin-bottom: 30px;" class="conference">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
-                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
-                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
-                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+                  day.data[i].title
+                }</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+                  day.data[i].type
+                }</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${
+                  day.data[i].date
+                }</span>
                 <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
                 ${day.data[i].period} ${day.data[i].tz}
                 </span>
@@ -190,12 +212,20 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
   
                   <h4>Description</h4>
                   <p>
-                  <p style="white-space: pre-line;">${day.data[i].description}<p>
+                  <p style="white-space: pre-line;">${
+                    day.data[i].description
+                  }<p>
                   </p>
   
                   </div>
              </div>
           </div>
+          <h3>HR Recertification Credits</h3>
+          <p> ${
+            userProfile.memberShip === "premium"
+              ? "credits"
+              : "HR Recertification Credits: Only available to PREMIUM"
+          }</p>
         `;
       } else if (i % 2 !== 0 && day.data[i].description?.length < 300) {
         conferences += `
@@ -204,9 +234,15 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
         opacity: 1;
         padding: 2rem; margin-bottom: 50px">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
-                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
-                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
-                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+                  day.data[i].title
+                }</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+                  day.data[i].type
+                }</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${
+                  day.data[i].date
+                }</span>
                 <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
                 ${day.data[i].period} ${day.data[i].tz}
                 </span>
@@ -234,6 +270,12 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
                   </div>
              </div>
           </div>
+          <h3>HR Recertification Credits</h3>
+         <p> ${
+           userProfile.memberShip === "premium"
+             ? "credits"
+             : "HR Recertification Credits: Only available to PREMIUM"
+         }</p>
         `;
 
         content += `
@@ -243,7 +285,11 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
-                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+                <p style="margin-top: -20px">Global Online Conference | ${
+                  option === "personal-agenda"
+                    ? "Personalized Agenda"
+                    : "Reported sessions joined"
+                } </p>
               </div>
             </div>
 
@@ -263,7 +309,11 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
-                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+                <p style="margin-top: -20px">Global Online Conference | ${
+                  option === "personal-agenda"
+                    ? "Personalized Agenda"
+                    : "Reported sessions joined"
+                }</p>
               </div>
             </div>
 
@@ -283,9 +333,15 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
         opacity: 1;
         padding: 2rem; margin-bottom: 50px">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
-                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${day.data[i].title}</h2>
-                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${day.data[i].type}</span>
-                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${day.data[i].date}</span>
+                <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
+                  day.data[i].title
+                }</h2>
+                <span style="font-size: 14px; line-height: 19px; color: #697077;">Session type: ${
+                  day.data[i].type
+                }</span>
+                <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">${
+                  day.data[i].date
+                }</span>
                 <span style="font-size: 14px; line-height: 19px; color: #697077; margin: 0.5rem 0">
                 ${day.data[i].period} ${day.data[i].tz}
                 </span>
@@ -313,6 +369,12 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
                   </div>
              </div>
           </div>
+          <h3>HR Recertification Credits</h3>
+          <p> ${
+            userProfile.memberShip === "premium"
+              ? "credits"
+              : "HR Recertification Credits: Only available to PREMIUM"
+          }</p>
         `;
 
         content += `
@@ -322,7 +384,11 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
-                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+                <p style="margin-top: -20px">Global Online Conference | ${
+                  option === "personal-agenda"
+                    ? "Personalized Agenda"
+                    : "Reported sessions joined"
+                }</p>
               </div>
             </div>
 
@@ -382,6 +448,12 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
                   </div>
              </div>
           </div>
+          <h3>HR Recertification Credits</h3>
+          <p> ${
+            userProfile.memberShip === "premium"
+              ? "credits"
+              : "HR Recertification Credits: Only available to PREMIUM"
+          }</p>
         `;
         content += `  
         <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
@@ -390,7 +462,11 @@ const formatAnnualConference = (userProfile, sessionsUser) => {
               <img src=${LogoHackingHR} style="width: 70px; height: 70px">
               <div>
                 <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
-                <p style="margin-top: -20px">Global Online Conference | Personalized Agenda</p>
+                <p style="margin-top: -20px">Global Online Conference | ${
+                  option === "personal-agenda"
+                    ? "Personalized Agenda"
+                    : "Reported sessions joined"
+                }</p>
               </div>
             </div>
     
