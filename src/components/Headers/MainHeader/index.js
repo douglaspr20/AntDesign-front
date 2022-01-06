@@ -24,6 +24,7 @@ import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from 'images/icon-briefcase-outline.svg'
 
+import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -33,6 +34,7 @@ import { podcastSelector } from "redux/selectors/podcastSelector";
 import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
 
 import "./style.scss";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 
 const MenuList = [
   ...SIDEBAR_MENU_LIST.TOP_MENUS,
@@ -100,6 +102,17 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconMedal,
         label: `Class - ${(selectedCourse || {}).title || ""}`,
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CONFERENCE}/`)) {
+      const { session } = this.props;
+
+      pathInfo = {
+        icon: IconGlobal,
+        label: `Hacking HR 2022 Global Online Conference - ${
+          (session || {}).title || ""
+        }`,
       };
     }
 
@@ -268,6 +281,7 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   selectedCourse: courseSelector(state).course,
+  session: sessionSelector(state).session,
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
   skillCohort: skillCohortSelector(state).skillCohort,

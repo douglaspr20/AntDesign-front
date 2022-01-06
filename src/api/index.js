@@ -10,6 +10,7 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedASession,
   addBonfire,
   removeBonfire,
   uploadResume,
@@ -94,6 +95,8 @@ import {
 } from "./module/notification";
 import {
   getAllSessions,
+  getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
@@ -166,7 +169,7 @@ import {
 } from "./module/council-comments";
 
 import { getPartners, getPartner } from "./module/partner";
-
+import { getUserProgress, setProgress } from "./module/sessionClassUser";
 import {
   getMarketplaceProfiles,
   getMarketplaceProfile,
@@ -242,12 +245,15 @@ export {
   updateChannel,
   getNotifications,
   getAllSessions,
+  getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedASession,
   addBonfire,
   removeBonfire,
   updateBonfire,
@@ -302,6 +308,8 @@ export {
   upsertJobPost,
   getMyJobPosts,
   invitationToApply,
+  getUserProgress,
+  setProgress,
   getMarketplaceProfiles,
   getMarketplaceProfile,
   createMarketplaceProfile,
