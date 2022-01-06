@@ -31,10 +31,29 @@ const RecruiterView = ({
   }, [filter]);
 
   const handleOnFinish = (values) => {
+    let preferredSkills = values.preferredSkills?.map((skill) => {
+      return {
+        title: skill.preferredSkills[0],
+        skill: skill.preferredSkills[1],
+        level: skill.preferredSkills[2],
+      };
+    });
+
+    const transformedPreferredSkillsMain = {
+      title: values.preferredSkillsMain[0],
+      skill: values.preferredSkillsMain[1],
+      level: values.preferredSkillsMain[2],
+    };
+
+    preferredSkills = [...preferredSkills, transformedPreferredSkillsMain];
+
+    delete values.preferredSkillsMain;
+
     values = {
       ...values,
       location: JSON.stringify(values.location),
-      preferredSkills: JSON.stringify(values.preferredSkills),
+      preferredSkills: JSON.stringify(preferredSkills),
+      mainJobFunctions: JSON.stringify(values.mainJobFunctions),
       status,
     };
 
@@ -78,6 +97,7 @@ const RecruiterView = ({
       </div>
       <JobPostDrawer
         form={form}
+        // isDrawerVisible={true}
         isDrawerVisible={isDrawerVisible}
         setIsDrawerVisible={setIsDrawerVisible}
         handleOnFinish={handleOnFinish}

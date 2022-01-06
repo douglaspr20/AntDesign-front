@@ -95,14 +95,14 @@ const TalentMarketplacePage = ({
       content: () => <Marketplace filters={filters} />,
     },
     {
-      title: "Main job board",
+      title: "Job Board",
       content: displayMainJobPosts,
     },
   ];
 
   if (isPremium) {
     const myJobPosts = {
-      title: "My posted jobs",
+      title: "My Job Postings",
       content: () => <RecruiterView filter={filters} />,
     };
 

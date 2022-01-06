@@ -1,5 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
-import { Form, Checkbox, Space, DatePicker, Modal } from "antd";
+import { Form, Checkbox, Space, DatePicker, Modal, Cascader } from "antd";
 import {
   CustomDrawer,
   CustomButton,
@@ -13,6 +13,7 @@ import { COUNTRIES, PROFILE_SETTINGS, JOB_BOARD } from "enum";
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { envSelector } from "redux/selectors/envSelector";
 
@@ -24,6 +25,35 @@ const validateMessages = {
     url: "${label} is not a valid url!",
   },
 };
+
+const level = [
+  {
+    value: "basic",
+    label: "Basic",
+  },
+  {
+    value: "intermediate",
+    label: "Intermediate",
+  },
+  {
+    value: "advanced",
+    label: "Advanced",
+  },
+];
+
+let options = JOB_BOARD.PREFERRED_SKILLS.map((skills) => {
+  const children = skills.children.map((data) => {
+    return {
+      ...data,
+      children: level,
+    };
+  });
+
+  return {
+    ...skills,
+    children,
+  };
+});
 
 const JobPostDrawer = ({
   isDrawerVisible,
@@ -46,6 +76,21 @@ const JobPostDrawer = ({
         (country) => country.value === post.country
       );
 
+      const preferredSkills = post.preferredSkills.slice(1, 2).map((skill) => {
+        return {
+          preferredSkills: [skill.title, skill.skill, skill.level],
+        };
+
+      });
+      
+      let preferredSkillsMain = post.preferredSkills[0] || null;
+
+      preferredSkillsMain = preferredSkillsMain && [
+        preferredSkillsMain?.title,
+        preferredSkillsMain?.skill,
+        preferredSkillsMain?.level,
+      ];
+
       form.setFieldsValue({
         jobTitle: post.jobTitle,
         jobDescription: post.jobDescription,
@@ -54,7 +99,9 @@ const JobPostDrawer = ({
         location: post.location,
         salaryRange: post.salaryRange,
         level: post.level,
-        preferredSkills: post.preferredSkills,
+        mainJobFunctions: post.mainJobFunctions,
+        preferredSkills: preferredSkills,
+        preferredSkillsMain: preferredSkillsMain || null,
         linkToApply: post.linkToApply,
         closingDate: moment(post.closingDate),
         companyName: post.companyName,
@@ -168,8 +215,8 @@ const JobPostDrawer = ({
         </Form.Item>
         <Form.Item name="companyLogo" noStyle />
         <Form.Item
-          name="preferredSkills"
-          label="Preferred Skills"
+          name="mainJobFunctions"
+          label="Main Job Functions"
           rules={[{ required: true }]}
         >
           <CustomSelect
@@ -182,6 +229,44 @@ const JobPostDrawer = ({
             }
           />
         </Form.Item>
+        <Form.Item
+          label="Preferred Skills"
+          rules={[{ required: true }]}
+          name="preferredSkillsMain"
+        >
+          <Cascader options={options} size="large"/>
+        </Form.Item>
+        <Form.List name="preferredSkills">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <div className="preferred-skills-container" key={key}>
+                  <div className="preferred-skills-content">
+                    <Form.Item
+                      label="Preferred Skills"
+                      name={[name, "preferredSkills"]}
+                      rules={[{ required: true }]}
+                      {...restField}
+                    >
+                      <Cascader
+                        options={options}
+                        style={{ width: "100%" }}
+                        size="large"
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className="minus-btn">
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </div>
+                </div>
+              ))}
+              <Form.Item>
+                <PlusOutlined onClick={() => add()} />
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
         <Form.Item
           name="linkToApply"
           label="Link To Apply"

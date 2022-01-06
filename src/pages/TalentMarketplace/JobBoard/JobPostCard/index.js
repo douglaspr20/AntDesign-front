@@ -19,10 +19,29 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
   const history = useHistory();
 
   const handleOnFinish = (values) => {
+    let preferredSkills = values.preferredSkills?.map((skill) => {
+      return {
+        title: skill.preferredSkills[0],
+        skill: skill.preferredSkills[1],
+        level: skill.preferredSkills[2],
+      };
+    });
+
+    const transformedPreferredSkillsMain = {
+      title: values.preferredSkillsMain[0],
+      skill: values.preferredSkillsMain[1],
+      level: values.preferredSkillsMain[2],
+    };
+
+    preferredSkills = [transformedPreferredSkillsMain, ...preferredSkills];
+
+    delete values.preferredSkillsMain;
+
     values = {
       ...values,
       location: JSON.stringify(values.location),
-      preferredSkills: JSON.stringify(values.preferredSkills),
+      preferredSkills: JSON.stringify(preferredSkills),
+      mainJobFunctions: JSON.stringify(values.mainJobFunctions),
       status: status || values.status,
     };
 
@@ -58,7 +77,9 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
         text="More Information"
         block
         onClick={() =>
-          history.push(`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/${post.id}`)
+          history.push(
+            `${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/${post.id}`
+          )
         }
       />
     </div>
@@ -69,6 +90,7 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
       ...post,
       location: JSON.stringify(post.location),
       preferredSkills: JSON.stringify(post.preferredSkills),
+      mainJobFunctions: JSON.stringify(post.mainJobFunctions),
       status: "draft",
     };
 
@@ -82,8 +104,9 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
   const handlePostJob = () => {
     upsertJobPost({
       ...post,
-      location: JSON.stringify(post.location),
       preferredSkills: JSON.stringify(post.preferredSkills),
+      mainJobFunctions: JSON.stringify(post.mainJobFunctions),
+      location: JSON.stringify(post.location),
       status: "active",
     });
   };

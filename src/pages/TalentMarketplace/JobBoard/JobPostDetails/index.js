@@ -34,7 +34,7 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
     })
     .join("/");
 
-  const displayPreferredSkills = (jobPost?.preferredSkills || []).map(
+  const displayPreferredSkills = (jobPost?.mainJobFunctions || []).map(
     (skill, index) => {
       const data = PROFILE_SETTINGS.TOPICS.find(
         (topic) => topic.value === skill

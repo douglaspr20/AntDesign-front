@@ -34,10 +34,15 @@ export const upsertJobPost = async (data) => {
 };
 
 export const getMyJobPosts = async (data) => {
-
   const parsedFilter = Object.keys(data.filter)
     .map((item) => `${item}=${data.filter[item]}`)
     .join("&");
-  
-    return await httpClient.get(`private/job-board/my-job-posts?${parsedFilter}`)
-}
+
+  return await httpClient.get(`private/job-board/my-job-posts?${parsedFilter}`);
+};
+
+export const invitationToApply = async (data) => {
+  return await httpClient.post(`private/job-board/invitation-to-apply`, {
+    ...data,
+  });
+};

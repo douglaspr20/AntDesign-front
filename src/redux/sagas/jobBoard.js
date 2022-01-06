@@ -11,6 +11,7 @@ import {
   getJobPost,
   upsertJobPost,
   getMyJobPosts,
+  invitationToApply,
 } from "../../api";
 
 import { actions as homeActions } from "../actions/home-actions";
@@ -115,12 +116,37 @@ export function* getMyJobPostsSaga({ payload }) {
   }
 }
 
+export function* invitationToApplySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(invitationToApply, { ...payload });
+
+    if (response.status === 200) {
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    notification.error({
+      message: "Something went wrong.",
+    });
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchJobBoardSaga() {
   yield takeLatest(jobBoardConstants.GET_ALL_JOB_POSTS, getAllJobPostsSaga);
   yield takeLatest(jobBoardConstants.GET_JOB_POST, getJobPostSaga);
   yield takeLatest(jobBoardConstants.GET_MORE_JOB_POSTS, getMoreJobPostsSaga);
   yield takeLatest(jobBoardConstants.UPSERT_JOB_POST, upsertJobPostSaga);
   yield takeLatest(jobBoardConstants.GET_MY_JOB_POSTS, getMyJobPostsSaga);
+  yield takeLatest(
+    jobBoardConstants.INVITATION_TO_APPLY,
+    invitationToApplySaga
+  );
 }
 
 export const jobBoardSaga = [fork(watchJobBoardSaga)];

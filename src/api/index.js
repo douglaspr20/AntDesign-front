@@ -149,7 +149,8 @@ import {
   getAllJobPosts,
   getJobPost,
   upsertJobPost,
-  getMyJobPosts
+  getMyJobPosts,
+  invitationToApply,
 } from './module/jobBoard'
 import {
   getCouncilMembersFromAPI,
@@ -300,6 +301,7 @@ export {
   getJobPost,
   upsertJobPost,
   getMyJobPosts,
+  invitationToApply,
   getMarketplaceProfiles,
   getMarketplaceProfile,
   createMarketplaceProfile,
