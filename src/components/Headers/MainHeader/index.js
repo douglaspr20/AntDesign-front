@@ -22,8 +22,8 @@ import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
-import IconHomeOutline from "images/icon-home.svg";
 
+import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -33,6 +33,7 @@ import { podcastSelector } from "redux/selectors/podcastSelector";
 import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
 
 import "./style.scss";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 
 const MenuList = [
   ...SIDEBAR_MENU_LIST.TOP_MENUS,
@@ -103,6 +104,17 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CONFERENCE}/`)) {
+      const { session } = this.props;
+
+      pathInfo = {
+        icon: IconGlobal,
+        label: `Hacking HR 2022 Global Online Conference - ${
+          (session || {}).title || ""
+        }`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.PODCAST_SERIES}`)) {
       const { podcastSeries } = this.props;
       pathInfo = {
@@ -148,8 +160,8 @@ class MainHeader extends React.Component {
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPONSOR_DASHBOARD}`)) {
       pathInfo = {
-        icon: IconHomeOutline,
-        label: "Sponsor Dashboard",
+        // icon: ,
+        label: "Partners Dashboard",
       };
     }
 
@@ -164,7 +176,11 @@ class MainHeader extends React.Component {
           {pathInfo ? (
             <>
               <div className="page-icon">
-                <img src={pathInfo.icon} alt="page-icon" />
+                {pathInfo.icon ? (
+                  <img src={pathInfo.icon} alt="page-icon" />
+                ) : (
+                  <></>
+                )}
               </div>
               <span className="page-label">
                 {pathInfo.label === "Global Conference"
@@ -257,6 +273,7 @@ const mapStateToProps = (state) => ({
   isMobile: envSelector(state).isMobile,
   selectedChannel: channelSelector(state).selectedChannel,
   selectedCourse: courseSelector(state).course,
+  session: sessionSelector(state).session,
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
   skillCohort: skillCohortSelector(state).skillCohort,

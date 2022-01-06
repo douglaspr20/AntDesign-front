@@ -65,7 +65,7 @@ class FeedbackBox extends Component {
   render() {
     return (
       <>
-        {this.props.userId && (
+        {this.props.userId ? (
           <div
             className="feedback-box-container"
             style={{ height: this.state.heightFeedbackBox }}
@@ -111,7 +111,7 @@ class FeedbackBox extends Component {
               )}
             </div>
           </div>
-        )}
+        ) : null}
       </>
     );
   }

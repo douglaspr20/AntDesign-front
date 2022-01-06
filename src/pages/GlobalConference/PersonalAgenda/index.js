@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { notification, Tooltip } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Tooltip } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
-import { TIMEZONE_LIST } from "enum";
-
+import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { addSession, removeSession } from "redux/actions/home-actions";
+import {
+  addSession,
+  removeSession,
+  joinedSession,
+} from "redux/actions/home-actions";
+import { getSessionsAddedbyUser } from "redux/actions/session-actions";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 import { convertToCertainTime } from "utils/format";
 import "./style.scss";
 
@@ -16,21 +22,53 @@ const PersonalAgenda = ({
   filters,
   removeSession,
   userProfile,
+  joinedSession,
   addSession,
+  getSessionsAddedbyUser,
+  isRecommendedAgenda,
+  recommendedAgendaSessions,
 }) => {
   const [sessionData, setSessionData] = useState([]);
-
-  const onAddSession = (session) => {
-    addSession(session);
-  };
+  const history = useHistory();
 
   const onRemoveSession = (session) => {
     removeSession(session);
   };
 
+  const onJoinedSession = (session) => {
+    if (!userProfile.sessionsJoined.includes(session.id)) {
+      return joinedSession(session, (error) => {
+        if (error) {
+          return notification.error({
+            message: error || "Somethign was wrong",
+          });
+        }
+
+        if (session.type === "Certificate Track and Panels") {
+          history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+        } else {
+          window.open(`${session.link}`);
+        }
+      });
+    }
+    if (session.type === "Certificate Track and Panels") {
+      history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+    } else {
+      window.open(`${session.link}`);
+    }
+  };
+
   useEffect(() => {
-    if (sessionsUser) {
-      const sData = (sessionsUser || [])
+    if (userProfile.id) {
+      getSessionsAddedbyUser(userProfile.id);
+    }
+  }, [getSessionsAddedbyUser, userProfile]);
+
+  useEffect(() => {
+    if (sessionsUser || recommendedAgendaSessions) {
+      const sData = (
+        isRecommendedAgenda ? recommendedAgendaSessions : sessionsUser
+      )
         .map((item) => {
           const sTime = convertToCertainTime(item.startTime, item.timezone);
           const eTime = convertToCertainTime(item.endTime, item.timezone);
@@ -159,7 +197,7 @@ const PersonalAgenda = ({
     } else {
       setSessionData([]);
     }
-  }, [sessionsUser, filters]);
+  }, [sessionsUser, recommendedAgendaSessions, isRecommendedAgenda, filters]);
 
   return (
     <div className="personal-agenda">
@@ -198,14 +236,23 @@ const PersonalAgenda = ({
                   session={s}
                   attended={userProfile.attendedToConference}
                   added={(userProfile.sessions || []).includes(s.id)}
-                  onAddSession={() => onAddSession(s)}
+                  joinedOtherSession={session.data.some((s) =>
+                    (userProfile.sessionsJoined || []).includes(s.id)
+                  )}
                   onRemoveSession={() => onRemoveSession(s)}
+                  onJoinedSession={() => onJoinedSession(s)}
                 />
               ))}
             </div>
           ) : null
         )}
       </div>
+
+      {isRecommendedAgenda && sessionData.length === 0 && (
+        <div className="sessions-not-found">
+          <h1>No Sessions Found For Your Recommended Agenda</h1>
+        </div>
+      )}
     </div>
   );
 };
@@ -219,12 +266,16 @@ PersonalAgenda.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  sessionsUser: sessionSelector(state).sessionsUser,
   userProfile: homeSelector(state).userProfile,
+  recommendedAgendaSessions: sessionSelector(state).recommendedAgendaSessions,
 });
 
 const mapDispatchToProps = {
   addSession,
   removeSession,
+  joinedSession,
+  getSessionsAddedbyUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalAgenda);

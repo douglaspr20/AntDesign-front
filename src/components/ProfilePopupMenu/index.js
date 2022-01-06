@@ -250,7 +250,7 @@ const ProfilePopupMenu = (props) => {
           className="profile-popover-content-menu"
           onClick={() => history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD)}
         >
-          Sponsor Dashboard
+          Partners Dashboard
         </div>
       )}
       <div

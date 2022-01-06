@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { FilePdfOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
 
 import { CustomModal, CustomButton } from "components";
 import { uploadResume, deleteResume } from "redux/actions/home-actions";
@@ -52,7 +52,11 @@ const UploadResumeModal = ({
     if (fileRef && fileRef.current) {
       // check file type
       const file = fileRef.current.files[0];
-      const supportedTypes = ["application/pdf"];
+      const supportedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
 
       if (!supportedTypes.includes(file.type)) {
         setErrorMessage("Invalid format!");
@@ -74,7 +78,11 @@ const UploadResumeModal = ({
         });
       });
       if (response) {
-        console.log("success upload");
+        notification.success({
+          message: "Success",
+          description: "Resume was saved",
+        });
+        onClose();
       } else {
         setErrorMessage("Something went wrong. Please try again!");
       }
@@ -153,7 +161,7 @@ const UploadResumeModal = ({
               style={{ display: "none" }}
               type="file"
               onChange={onFileChange}
-              accept=".pdf"
+              accept=".pdf,.doc,.docx"
             />
           </React.Fragment>
         )}

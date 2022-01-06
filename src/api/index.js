@@ -10,6 +10,7 @@ import {
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedASession,
   addBonfire,
   removeBonfire,
   uploadResume,
@@ -18,7 +19,7 @@ import {
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
-  getAllUsers
+  getAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -94,6 +95,8 @@ import {
 } from "./module/notification";
 import {
   getAllSessions,
+  getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
@@ -118,7 +121,11 @@ import {
   withdrawParticipation,
 } from "./module/skillCohortParticipant";
 
-import { getResource, getAllResources, getEntireResources } from "./module/skillCohortResource";
+import {
+  getResource,
+  getAllResources,
+  getEntireResources,
+} from "./module/skillCohortResource";
 import {
   getAllResourceResponses,
   createResourceResponse,
@@ -155,6 +162,13 @@ import {
 } from "./module/council-comments";
 
 import { getPartners, getPartner } from "./module/partner";
+import { getUserProgress, setProgress } from "./module/sessionClassUser";
+import {
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
+} from "./module/marketplaceProfile";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -224,12 +238,15 @@ export {
   updateChannel,
   getNotifications,
   getAllSessions,
+  getSession,
+  getSessionClasses,
   getSessionsAddedbyUser,
   getParticipants,
   recommendedAgenda,
   attendToGlobalConference,
   addSession,
   removeSession,
+  joinedASession,
   addBonfire,
   removeBonfire,
   updateBonfire,
@@ -279,4 +296,10 @@ export {
   getEventVideos,
   getPartners,
   getPartner,
+  getUserProgress,
+  setProgress,
+  getMarketplaceProfiles,
+  getMarketplaceProfile,
+  createMarketplaceProfile,
+  updateMarketplaceProfile,
 };

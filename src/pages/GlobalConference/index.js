@@ -2,39 +2,25 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
-import { Menu, notification, Modal, Form, Timeline, Space } from "antd";
-import {
-  CheckOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { Menu, notification } from "antd";
+import { CheckOutlined } from "@ant-design/icons";
+import { INTERNAL_LINKS } from "enum";
 import {
   CustomButton,
   Tabs,
   GlobalConferenceFilterPanel,
-  CustomInput,
-  CustomCheckbox,
-  CustomSelect,
   CustomModal,
 } from "components";
-import {
-  getAllSessions,
-  getSessionsAddedbyUser,
-  recommendedAgenda,
-} from "redux/actions/session-actions";
+import { getAllSessions } from "redux/actions/session-actions";
+import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import {
   attendToGlobalConference,
   setLoading,
-  createInvitation,
-  confirmAccessibilityRequirements,
 } from "redux/actions/home-actions";
-import { createBonfire } from "redux/actions/bonfire-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { categorySelector } from "redux/selectors/categorySelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import {
   addToMyEventList,
@@ -45,20 +31,15 @@ import { convertToUTCTime, convertToLocalTime } from "utils/format";
 import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
 import SocketIO from "services/socket";
-import { EVENT_TYPES, SOCKET_EVENT_TYPE, TIMEZONE_LIST } from "enum";
+import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 import ConferenceList from "./ConferenceList";
 import FilterDrawer from "./FilterDrawer";
-import PersonalAgenda from "./PersonalAgenda";
-import Bonfire from "./Bonfire";
-
-import CategoriesSelect from "components/CategoriesSelect";
-import Speakers from "./Speakers";
-import Partners from "./Partners";
-import Participants from "./Participants";
-import ConferenceLeaderboard from "./ConferenceLeaderboard";
+import RecommendedAgendaModal from "./RecommendedAgendaModal";
+import AccessibilityRequirementsModal from "./AccessibilityRequirementsModal";
+import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
+import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
-import RecommendedAgendaForm from "./RecommendedAgenda";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -73,32 +54,27 @@ const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
-  allCategories,
   allEvents,
   getAllEvent,
-  createBonfire,
   userProfile,
   getAllSessions,
-  getSessionsAddedbyUser,
+  getMarketplaceProfiles,
   addToMyEventList,
   removeFromMyEventList,
   sessionsUser,
   setLoading,
   attendToGlobalConference,
-  createInvitation,
-  confirmAccessibilityRequirements,
-  recommendedAgenda,
-  recommendedAgendaSessions,
+  children,
+  history,
+  location,
 }) => {
-  const [bonfireForm] = Form.useForm();
-  const [colleaguesForm] = Form.useForm();
-
   const [currentTab, setCurrentTab] = useState("0");
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
-  const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [createBonfireModalVisible, setCreateBonfireModalVisible] =
+    useState(false);
   const [
     modalFormInviteColleaguesVisible,
     setModalFormInviteColleaguesVisible,
@@ -108,12 +84,11 @@ const GlobalConference = ({
 
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
-  const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-  const [currentView, setCurrentView] = useState("conference-schedule");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
     useState(false);
-  const [recommendedAgendaStep, setRecommendedAgendaStep] = useState(0);
-  const [recommendedAgendaForm, setRecommendedAgendaForm] = useState({});
+
+  const localPathname =
+    location.pathname.split("/")[2] || location.pathname.split("/")[1];
 
   const onFilterChange = (filter) => {
     setFilters(filter);
@@ -126,8 +101,11 @@ const GlobalConference = ({
   const onSearch = (value) => {
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
-    getAllSessions(startTime, endTime, value);
     setMeta(value);
+    if (localPathname.includes("talent-marketplace")) {
+      return getMarketplaceProfiles(userProfile.id, value);
+    }
+    getAllSessions(startTime, endTime, value);
   };
 
   // const goToPrevPage = () => {
@@ -150,11 +128,6 @@ const GlobalConference = ({
       removeFromMyEventList(globalEvent);
       attendToGlobalConference();
     }
-  };
-
-  const handleView = (view) => {
-    setCurrentView(view);
-    setFilters({});
   };
 
   const showModalMessage = (message) => {
@@ -203,12 +176,6 @@ const GlobalConference = ({
   }, [firstTabDate, allSessions, filters, meta]);
 
   useEffect(() => {
-    if (userProfile.id) {
-      getSessionsAddedbyUser(userProfile.id);
-    }
-  }, [getSessionsAddedbyUser, userProfile]);
-
-  useEffect(() => {
     getAllEvent();
   }, [getAllEvent]);
 
@@ -255,15 +222,7 @@ const GlobalConference = ({
         description: `you need to be a premium user to create a bonfire`,
       });
     }
-    setModalFormVisible(true);
-    bonfireForm.resetFields();
-  };
-
-  const onCancelModalForm = () => {
-    setModalFormVisible(false);
-    setModalFormInviteColleaguesVisible(false);
-    colleaguesForm.resetFields();
-    bonfireForm.resetFields();
+    setCreateBonfireModalVisible(true);
   };
 
   const onInviteColleague = () => {
@@ -274,100 +233,20 @@ const GlobalConference = ({
       });
     }
     setModalFormInviteColleaguesVisible(true);
-    colleaguesForm.resetFields();
   };
 
-  const handleChecked = (e) => {
-    setIsConsultantOrHRTech(e.target.checked);
-  };
+  useEffect(() => {
+    setFilters({});
+  }, [localPathname]);
 
-  const handleBonfire = (data) => {
-    const timezone = TIMEZONE_LIST.find(
-      (timezone) => timezone.value === data.timezone
-    );
-    const convertedStartTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
-      .format();
-
-    const convertedEndTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
-      .add("hour", 1)
-      .format();
-
-    const bonfireInfo = {
-      title: data.title,
-      description: data.description,
-      link: data.link,
-      startTime: convertedStartTime,
-      endTime: convertedEndTime,
-      isConsultantOrHRTech,
-      categories: data.categories,
-      bonfireCreator: userProfile.id,
-      timezone: data.timezone,
-    };
-
-    setModalFormVisible(false);
-
-    createBonfire(bonfireInfo, (error) => {
-      if (error) {
-        notification.error({
-          message: error || "Something went wrong. Please try again.",
-        });
-      }
-    });
-
-    bonfireForm.resetFields();
-  };
-
-  const handleSubmitEmailColleagues = (data) => {
-    createInvitation(data.usersInvited, userProfile.id);
-
-    setModalFormInviteColleaguesVisible(false);
-
-    colleaguesForm.resetFields();
-  };
-
-  const handleConfirmAccessibilityRequirements = (userId) => {
-    confirmAccessibilityRequirements(userId, (error) => {
-      if (error) {
-        notification.error({
-          message: error || "Something went wrong. Please try again.",
-        });
-      }
-    });
-    setModalRequirementsVisible(false);
-  };
-
-  const handleSubmitRecommendedAgenda = (data) => {
-    if (data.topics) {
-      if (recommendedAgendaStep !== 1) {
-        setRecommendedAgendaStep(recommendedAgendaStep + 1);
-        setRecommendedAgendaForm({
-          ...recommendedAgendaForm,
-          ...data,
-        });
-      }
-    } else if (recommendedAgendaForm.topics && data.time) {
-      const newRecomendedAgendaValues = {
-        ...recommendedAgendaForm,
-        ...data,
-      };
-      recommendedAgenda(newRecomendedAgendaValues);
-      setModalRecommendeAgendaVisible(false);
-      setRecommendedAgendaStep(0);
-      setCurrentView("recommended-agenda");
-    }
-  };
+  const childrenWithFilterProp = children
+    ? React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { filters, onSearch });
+        }
+        return child;
+      })
+    : null;
 
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
@@ -378,11 +257,13 @@ const GlobalConference = ({
         onChange={onFilterChange}
         onSearch={onSearch}
         filters={filters}
+        view={localPathname}
       />
       <FilterDrawer
         onChange={onFilterChange}
-        onSearch={setMeta}
+        onSearch={onSearch}
         filters={filters}
+        view={localPathname}
       />
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
@@ -433,7 +314,17 @@ const GlobalConference = ({
               />
             )}
 
-            {currentView === "personal-agenda" && (
+            <CustomButton
+              size="xs"
+              text="Talent Marketplace"
+              onClick={() =>
+                history.push("/global-conference/my-talent-marketplace-profile")
+              }
+              style={{ marginLeft: "1rem" }}
+              className="global-conference-buttom-options"
+            />
+
+            {localPathname === "personal-agenda" && (
               <CustomButton
                 size="xs"
                 text="Download  Personalized Agenda"
@@ -442,7 +333,7 @@ const GlobalConference = ({
               />
             )}
 
-            {currentView === "bonfire" && (
+            {localPathname === "bonfires" && (
               <CustomButton
                 size="xs"
                 text="Create Bonfire"
@@ -463,12 +354,11 @@ const GlobalConference = ({
             <Menu
               mode="horizontal"
               className="sub-menu"
-              selectedKeys={currentView}
+              selectedKeys={localPathname}
             >
               <Menu.Item
-                key="conference-schedule"
+                key="global-conference"
                 className="sub-menu-item-global-conference"
-                onClick={() => handleView("conference-schedule")}
               >
                 <Link to="/global-conference">Conference Schedule</Link>
               </Menu.Item>
@@ -477,10 +367,7 @@ const GlobalConference = ({
                 key="speakers"
                 className="sub-menu-item-global-conference"
               >
-                <Link
-                  to="/global-conference"
-                  onClick={() => handleView("speakers")}
-                >
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_SPEAKERS}>
                   Speakers
                 </Link>
               </Menu.Item>
@@ -488,10 +375,7 @@ const GlobalConference = ({
                 key="participants"
                 className="sub-menu-item-global-conference"
               >
-                <Link
-                  to="/global-conference"
-                  onClick={() => handleView("participants")}
-                >
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTICIPANTS}>
                   Participants
                 </Link>
               </Menu.Item>
@@ -500,10 +384,7 @@ const GlobalConference = ({
                 key="partners"
                 className="sub-menu-item-global-conference"
               >
-                <Link
-                  to="/global-conference"
-                  onClick={() => handleView("partners")}
-                >
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTNERS}>
                   Partners
                 </Link>
               </Menu.Item>
@@ -512,27 +393,26 @@ const GlobalConference = ({
                 key="bonfire"
                 className="sub-menu-item-global-conference"
               >
-                <Link
-                  to="/global-conference"
-                  onClick={() => handleView("bonfire")}
-                >
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_BONFIRE}>
                   Bonfire
                 </Link>
               </Menu.Item>
               <Menu.Item
                 key="personal-agenda"
                 className="sub-menu-item-global-conference"
-                onClick={() => handleView("personal-agenda")}
               >
-                <Link to="/global-conference">My Personal Agenda</Link>
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_PERSONAL_AGENDA}>
+                  My Personal Agenda
+                </Link>
               </Menu.Item>
 
               <Menu.Item
                 key="conference-leaderboard"
                 className="sub-menu-item-global-conference"
-                onClick={() => handleView("conference-leaderboard")}
               >
-                <Link to="/global-conference">Conference Leaderboard</Link>
+                <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}>
+                  Conference Leaderboard
+                </Link>
               </Menu.Item>
             </Menu>
             {/* <div style={{ display: "flex" }}>
@@ -550,8 +430,38 @@ const GlobalConference = ({
               />
             </div> */}
           </div>
+          {(localPathname === "talent-marketplace" ||
+            localPathname === "my-talent-marketplace-profile") && (
+            <Menu
+              mode="horizontal"
+              className="sub-menu"
+              selectedKeys={localPathname}
+            >
+              <>
+                <Menu.Item
+                  key="my-talent-marketplace-profile"
+                  className="sub-menu-item-global-conference"
+                >
+                  <Link to="/global-conference/my-talent-marketplace-profile">
+                    My Talent Marketplace Profile
+                  </Link>
+                </Menu.Item>
+
+                <Menu.Item
+                  key="talent-marketplace"
+                  className="sub-menu-item-global-conference"
+                >
+                  <Link to="/global-conference/talent-marketplace">
+                    Talent Marketplace
+                  </Link>
+                </Menu.Item>
+              </>
+            </Menu>
+          )}
         </div>
-        {currentView === "conference-schedule" && (
+        {childrenWithFilterProp ? (
+          childrenWithFilterProp
+        ) : (
           <div className="global-conference-tabs">
             <Tabs
               data={tabData}
@@ -560,275 +470,25 @@ const GlobalConference = ({
             />
           </div>
         )}
-        {currentView === "speakers" && <Speakers />}
-        {currentView === "participants" && <Participants />}
-        {currentView === "partners" && <Partners />}
-        {currentView === "bonfire" && <Bonfire />}
-        {currentView === "personal-agenda" && (
-          <PersonalAgenda sessionsUser={sessionsUser} filters={filters} />
-        )}
-
-        {currentView === "recommended-agenda" && (
-          <>
-            {recommendedAgendaSessions.length > 0 ? (
-              <PersonalAgenda
-                sessionsUser={recommendedAgendaSessions}
-                filters={filters}
-              />
-            ) : (
-              <div className="sessions-not-found">
-                <h1>No Sessions Found For Your Recommended Agenda</h1>
-                <CustomButton
-                  type="primary"
-                  text="Reload"
-                  size="md"
-                  onClick={() => setCurrentView("conference-schedule")}
-                />
-              </div>
-            )}
-          </>
-        )}
-        {currentView === "conference-leaderboard" && <ConferenceLeaderboard />}
       </div>
 
-      <Modal
-        visible={modalFormVisible}
-        onCancel={() => {
-          onCancelModalForm();
-        }}
-        onOk={() => {
-          bonfireForm.submit();
-        }}
-      >
-        <Form
-          form={bonfireForm}
-          layout="vertical"
-          onFinish={(data) => {
-            handleBonfire(data);
-          }}
-        >
-          <Form.Item
-            label="Title"
-            name="title"
-            rules={[{ required: true, message: "Title is required." }]}
-          >
-            <CustomInput />
-          </Form.Item>
+      <CreateBonfireModal
+        visible={createBonfireModalVisible}
+        onCancel={() => setCreateBonfireModalVisible(false)}
+      />
 
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={[{ required: true, message: "Description is required." }]}
-          >
-            <CustomInput multiple={true} />
-          </Form.Item>
-
-          <Form.Item
-            name="time"
-            label="Start time"
-            rules={[{ required: true, message: "Time is required." }]}
-          >
-            <CustomInput type="time" />
-          </Form.Item>
-
-          <Form.Item
-            name={"timezone"}
-            label="Timezone"
-            rules={[{ required: true, message: "Timezone is required." }]}
-          >
-            <CustomSelect
-              showSearch
-              options={TIMEZONE_LIST}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              className="border"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="categories"
-            label="Categories"
-            rules={[{ required: true, message: "Categories is required." }]}
-          >
-            <CategoriesSelect options={allCategories} />
-          </Form.Item>
-
-          <Form.Item
-            label="Link"
-            name="link"
-            rules={[{ required: true, message: "Link is required." }]}
-          >
-            <CustomInput />
-          </Form.Item>
-
-          <Form.Item name="isConsultantOrHRTech">
-            <CustomCheckbox
-              onChange={handleChecked}
-              checked={isConsultantOrHRTech}
-            >
-              Are you a consultant or HR tech/service vendor?
-            </CustomCheckbox>
-
-            {isConsultantOrHRTech && (
-              <p style={{ color: "#e61e47" }}>
-                Please note: you should not use the bonfire feature to sell
-                services or products. These are networking conversations. This
-                is a mandatory requirement. Bonfires are not the venues for
-                selling and you will be banned from using this feature if you
-                use it for a purpose other than networking
-              </p>
-            )}
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Modal
+      <InviteColleaguesFormModal
         visible={modalFormInviteColleaguesVisible}
-        footer={null}
-        width={800}
         onCancel={() => {
-          onCancelModalForm();
+          setModalFormInviteColleaguesVisible(false);
         }}
-        bodyStyle={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Form
-          layout="vertical"
-          onFinish={(data) => {
-            handleSubmitEmailColleagues(data);
-          }}
-          autoComplete="off"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-          form={colleaguesForm}
-        >
-          <Form.List
-            name="usersInvited"
-            initialValue={[{ name: "", email: "" }]}
-          >
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, fieldKey, ...restField }) => (
-                  <Space
-                    Space
-                    key={key}
-                    style={{ display: "flex", marginBottom: 8 }}
-                    align="baseline"
-                  >
-                    <Form.Item
-                      label="Name"
-                      name={[name, "name"]}
-                      fieldKey={[fieldKey, "name"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please Enter the Name of Invited",
-                        },
-                      ]}
-                    >
-                      <CustomInput />
-                    </Form.Item>
+      />
 
-                    <Form.Item
-                      label="Email"
-                      name={[name, "email"]}
-                      fieldKey={[fieldKey, "email"]}
-                      rules={[
-                        {
-                          required: true,
-                          type: "email",
-                          message: "is not valid Email",
-                        },
-                      ]}
-                    >
-                      <CustomInput />
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </Space>
-                ))}
-                <Form.Item>
-                  <CustomButton
-                    type="info"
-                    text="Invite another colleague"
-                    size="xs"
-                    onClick={() => add()}
-                    icon={<PlusOutlined />}
-                    className="button-invite-colleague"
-                  />
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-
-          <Form.Item>
-            <CustomButton size="xs" text="Invite" htmlType="submit" />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title="We would love to hear about your access requirements. The ways we can help are:"
-        centered
+      <AccessibilityRequirementsModal
         visible={modalRequirementsVisible}
-        width={800}
-        footer={[
-          <CustomButton
-            text="Click here to confirm (we will get in touch with you)"
-            onClick={() =>
-              handleConfirmAccessibilityRequirements(userProfile.id)
-            }
-            size="xs"
-          />,
-        ]}
         onCancel={() => setModalRequirementsVisible(false)}
-      >
-        <TransformWrapper initialScale={1}>
-          {({ zoomIn, zoomOut }) => (
-            <div style={{ display: "flex" }}>
-              <TransformComponent>
-                <Timeline style={{ padding: "20px" }}>
-                  <Timeline.Item>
-                    Help reviewing or selecting your sessions to build your own
-                    agenda (perhaps due to a vision, hearing or learning
-                    impairment)
-                  </Timeline.Item>
-                  <Timeline.Item>
-                    A transcript or only-audio file of the sessions (although
-                    autogenerated captions will be provided for all the panels
-                    during the conference, and for the presentations the week
-                    after the conference).
-                  </Timeline.Item>
-                  <p>
-                    Please confirm below and we will get in touch in touch with
-                    you via email. Thank you!
-                  </p>
-                </Timeline>
-              </TransformComponent>
-              <div>
-                <CustomButton
-                  className="zoom-button"
-                  text="+"
-                  onClick={(e) => zoomIn(e)}
-                />
-                <CustomButton
-                  className="zoom-button"
-                  text="-"
-                  onClick={(e) => zoomOut(e)}
-                />
-              </div>
-            </div>
-          )}
-        </TransformWrapper>
-      </Modal>
+      />
+
       <CustomModal
         visible={modalMessageVisible}
         title="Attention!"
@@ -838,37 +498,10 @@ const GlobalConference = ({
         <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }} />
       </CustomModal>
 
-      <Modal
-        centered
+      <RecommendedAgendaModal
         visible={modalRecommendeAgendaVisible}
-        onCancel={() => {
-          setModalRecommendeAgendaVisible(false);
-          setRecommendedAgendaStep(0);
-        }}
-        footer={null}
-      >
-        <Form
-          layout="vertical"
-          onFinish={(data) => handleSubmitRecommendedAgenda(data)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-            width: "100%",
-          }}
-        >
-          <RecommendedAgendaForm
-            allCategories={allCategories}
-            step={recommendedAgendaStep}
-          />
-          <CustomButton
-            htmlType="submit"
-            text={recommendedAgendaStep === 1 ? "Send" : "Next"}
-            type="primary"
-            size="md"
-          />
-        </Form>
-      </Modal>
+        onCancel={() => setModalRecommendeAgendaVisible(false)}
+      />
     </div>
   );
 };
@@ -884,22 +517,17 @@ GlobalConference.defaultProps = {
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
-  allCategories: categorySelector(state).categories,
   allEvents: eventSelector(state).allEvents,
 });
 
 const mapDispatchToProps = {
   getAllSessions,
-  getSessionsAddedbyUser,
   attendToGlobalConference,
-  createBonfire,
   getAllEvent,
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
-  createInvitation,
-  confirmAccessibilityRequirements,
-  recommendedAgenda,
+  getMarketplaceProfiles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);
