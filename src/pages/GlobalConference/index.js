@@ -13,7 +13,10 @@ import {
   GlobalConferenceFilterPanel,
   CustomModal,
 } from "components";
-import { getAllSessions } from "redux/actions/session-actions";
+import {
+  getAllSessions,
+  getSessionsUserJoined,
+} from "redux/actions/session-actions";
 import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import {
   attendToGlobalConference,
@@ -54,10 +57,12 @@ const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
+  sessionsUserJoined,
   allEvents,
   getAllEvent,
   userProfile,
   getAllSessions,
+  getSessionsUserJoined,
   getMarketplaceProfiles,
   addToMyEventList,
   removeFromMyEventList,
@@ -177,7 +182,8 @@ const GlobalConference = ({
 
   useEffect(() => {
     getAllEvent();
-  }, [getAllEvent]);
+    getSessionsUserJoined(userProfile.id, userProfile.sessionsJoined);
+  }, [getAllEvent, getSessionsUserJoined, userProfile]);
 
   useEffect(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.SEND_MESSAGE_GLOBAL_CONFERENCE, (message) =>
@@ -549,6 +555,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllSessions,
+  getSessionsUserJoined,
   attendToGlobalConference,
   getAllEvent,
   setLoading,
