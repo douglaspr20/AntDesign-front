@@ -123,8 +123,16 @@ const JobPostDrawer = ({
 
       const date = moment(post?.closingDate).format("YYYY-MM-DD HH:mm:ssZ");
 
+      let status =  post.status
+
       if (date < moment().format("YYYY-MM-DD HH:mm:ssZ")) {
         setListOfStatus(listOfStatus);
+
+        if (post.status === "expired") {
+          status = "expired";
+        } else {
+          status = "closed";
+        }
       }
 
       form.setFieldsValue({
@@ -142,7 +150,7 @@ const JobPostDrawer = ({
         closingDate: moment(post.closingDate),
         companyName: post.companyName,
         companyDescription: post.companyDescription,
-        status: post.status,
+        status,
       });
     }
 
