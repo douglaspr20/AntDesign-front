@@ -30,11 +30,8 @@ import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResource
 import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
 import { learningSaga } from "./myLearning";
 import { partnersSaga } from "./partners";
-<<<<<<< HEAD
 import { jobBoardSaga } from "./jobBoard"
-=======
 import { sessionClassUserSaga } from "./sessionClassUser";
->>>>>>> 79c9b6f9b29b03b468c153854f7d7501bda578d6
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
