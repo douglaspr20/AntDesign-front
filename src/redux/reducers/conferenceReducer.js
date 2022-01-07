@@ -16,6 +16,8 @@ export const reducers = {
         ...allConferenceLibraries[payload.index].rows,
         ...libraries.libraries,
       ]),
+      currentPage: libraries.currentPage,
+      count: libraries.count,
     };
 
     return state.merge({
