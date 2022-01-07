@@ -1,14 +1,16 @@
-import React from "react";
-import { Card, Avatar, Tooltip, Button } from "antd";
+import React, { useState } from "react";
+import { Card, Avatar, Tooltip, Button, Popconfirm } from "antd";
 import {
   LinkedinOutlined,
   MailOutlined,
   ProfileOutlined,
   UserOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton, SpecialtyItem, CustomModal } from "components";
+import { JOB_BOARD } from "enum";
 
 import "./style.scss";
 
@@ -16,13 +18,25 @@ const ParticipantCardInfo = ({
   participant,
   userProfile,
   marketplaceProfile,
+  jobPosts,
+  invitationToApply,
 }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const downloadFile = () => {
     const link = document.createElement("a");
-    link.setAttribute("href", participant.resumeUrl);
+    link.setAttribute("href", participant.User.resumeUrl);
     link.setAttribute(
       "download",
-      `${participant.firstName} ${participant.lastName}`
+      `${participant.User.firstName} ${participant.User.lastName}`
     );
     link.setAttribute("target", "_blank");
 
@@ -31,19 +45,66 @@ const ParticipantCardInfo = ({
     document.body.removeChild(link);
   };
 
+  const handleConfirm = (id) => {
+    invitationToApply(participant.UserId, id);
+    setIsModalVisible(false);
+  };
+
+  const displayJobPosts =
+    jobPosts &&
+    jobPosts.map((jobPost) => {
+      const displayLocation = jobPost.location
+        .map((location) => {
+          const data = JOB_BOARD.LOCATIONS.find(
+            (loc) => loc.value === location
+          );
+
+          return data.text;
+        })
+        .join("/");
+
+      return (
+        <Popconfirm
+          key={jobPost.id}
+          title="Confirm send invitation to apply"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => handleConfirm(jobPost.id)}
+        >
+          <div className="active-job-post">
+            <div>
+              <h3>{jobPost.jobTitle}</h3>
+              <div>
+                <div>
+                  <strong>Role level:</strong> {jobPost.level}
+                </div>
+                <div>
+                  <strong>Job location type: </strong>
+                  {displayLocation}
+                </div>
+                <div>
+                  <strong>Salary range:</strong> {jobPost.salaryRange}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Popconfirm>
+      );
+    });
+
   return (
     <>
-      {participant.img ? (
-        <Avatar size={150} src={participant.img} />
+      {participant.User.img ? (
+        <Avatar size={150} src={participant.User.img} />
       ) : (
         <Avatar size={150} style={{ fontSize: "2rem" }}>
-          {participant.abbrName}
+          {participant.User.abbrName}
         </Avatar>
       )}
 
       <div style={{ textAlign: "center" }}>
         <p style={{ fontWeight: 500 }}>
-          {participant.firstName} {participant.lastName}
+          {participant.User.firstName} {participant.User.lastName}
         </p>
         {participant.lookingFor ? (
           <div style={{ marginTop: -10 }}>
@@ -55,9 +116,9 @@ const ParticipantCardInfo = ({
             ))}
           </div>
         ) : (
-          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
+          <p style={{ marginTop: -10 }}>{participant.User.titleProfessions}</p>
         )}
-        <p style={{ marginTop: -10 }}>{participant.company}</p>
+        <p style={{ marginTop: -10 }}>{participant.User.company}</p>
 
         {participant.location && marketplaceProfile && (
           <div style={{ marginBottom: "50px" }}>
@@ -73,7 +134,7 @@ const ParticipantCardInfo = ({
       </div>
       {marketplaceProfile && (
         <div className="participant-card-marketplaceprofile">
-          {participant.resumeUrl !== "" && participant.resumeUrl && (
+          {participant.User.resumeUrl !== "" && participant.User.resumeUrl && (
             <Tooltip title="Download Resume">
               <Button
                 shape="circle"
@@ -92,7 +153,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<LinkedinOutlined />}
               onClick={() =>
-                window.open(participant.personalLinks.linkedin, "_blank")
+                window.open(participant.User.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={userProfile.memberShip !== "premium"}
@@ -105,14 +166,35 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<MailOutlined />}
               onClick={() =>
-                window.open(`mailto:${participant.email}`, "_blank")
+                window.open(`mailto:${participant.User.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={userProfile.memberShip !== "premium"}
             />
           </Tooltip>
+
+          {participant.User.resumeUrl !== "" && participant.User.resumeUrl && (
+            <Tooltip title="Invite To Apply">
+              <Button
+                shape="circle"
+                type="link"
+                icon={<UserAddOutlined />}
+                onClick={showModal}
+                disabled={userProfile.memberShip !== "premium"}
+                className="participant-card-marketplaceprofile-icon"
+              />
+            </Tooltip>
+          )}
         </div>
       )}
+      <CustomModal
+        title="Select Job Post"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={768}
+      >
+        <div className="active-job-posts">{displayJobPosts}</div>
+      </CustomModal>
     </>
   );
 };
@@ -123,6 +205,8 @@ const ParticipantCard = ({
   invitedAllBonfires,
   marketplaceProfile,
   userProfile,
+  jobPosts,
+  invitationToApply,
 }) => {
   return (
     <Card
@@ -153,6 +237,8 @@ const ParticipantCard = ({
             participant={participant}
             marketplaceProfile
             userProfile={userProfile}
+            jobPosts={jobPosts}
+            invitationToApply={invitationToApply}
           />
         </>
       ) : (

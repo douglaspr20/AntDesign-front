@@ -33,6 +33,7 @@ import skillCohortResourceResponseAssessmentReducer from "./skillCohortResourceR
 import skillCohortResourceResponseRating from "./skillCohortResourceResponseRatingReducer";
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
+import jobBoardReducer from './jobBoardReducer'
 import sessionClassUserReducer from "./sessionClassUserReducer";
 import marketplaceProfileReducer from "./marketplaceProfileReducer";
 
@@ -71,6 +72,7 @@ export default combineReducers({
   skillCohortResourceResponseRating: skillCohortResourceResponseRating,
   myLearning: myLearningReducer,
   partner: partnerReducer,
+  jobBoard: jobBoardReducer,
   sessionClassUser: sessionClassUserReducer,
   marketplaceProfile: marketplaceProfileReducer,
 });

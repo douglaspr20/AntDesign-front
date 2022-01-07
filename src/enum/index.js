@@ -19,3 +19,4 @@ export { default as CARD_TYPE } from "./CardType";
 export { default as CARD_MENUS } from "./CardMenus";
 export { default as CONFERENCE_SETTING } from "./ConferenceSetting";
 export { default as SOCKET_EVENT_TYPE } from "./SocketEventTypes";
+export { default as JOB_BOARD } from "./JobBoard";

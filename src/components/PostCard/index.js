@@ -22,10 +22,12 @@ import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.sv
 import { ReactComponent as IconWaterOutline } from "images/icon-water-outline.svg";
 import { ReactComponent as IconFlameOutline } from "images/icon-flame-outline.svg";
 import { ReactComponent as IconHeartOutline } from "images/icon-heart-outline.svg";
+import { ReactComponent as IconDelete } from "images/icon-delete.svg";
 import { ReactComponent as IconChatBubblesOutline } from "images/icon-chatbubbles-outline.svg";
 import { ReactComponent as IconDocument } from "images/icon-document.svg";
 
 import "./style.scss";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const PostCard = ({
   allCategories,
@@ -40,6 +42,7 @@ const PostCard = ({
   setPostFollow,
   deletePostFollow,
   details,
+  userProfile,
 }) => {
   const [like, setLike] = useState();
   const [follow, setFollow] = useState();
@@ -175,7 +178,9 @@ const PostCard = ({
             );
             return (
               <div
-                key={`hashtag-key-${index}-${category ? category.title : dataTopic}`}
+                key={`hashtag-key-${index}-${
+                  category ? category.title : dataTopic
+                }`}
                 className="custom-post-card--item"
               >
                 #{category ? category.title : dataTopic}
@@ -257,6 +262,11 @@ const PostCard = ({
                 <li onClick={onCommentClick}>
                   <IconDocument /> View full story
                 </li>
+                {userProfile.role === "admin" && (
+                  <li onClick={() => deletePost(data)}>
+                    <IconDelete /> Delete
+                  </li>
+                )}
               </ul>
             </section>
           </>
@@ -285,6 +295,7 @@ PostCard.defaultProps = {
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
   userId: authSelector(state).id,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

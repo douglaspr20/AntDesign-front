@@ -1,3 +1,5 @@
+@import "styles/main.scss";
+
 .participant-card-container{
   .ant-card{
     max-width: 200px;
@@ -11,7 +13,6 @@
 
 .participant-card-marketplaceprofile{
    position: absolute;
-  // background: red;
   bottom: 0;
   height: 50px;
   display: flex;
@@ -44,4 +45,22 @@
 .specialty-item.active{
   width: 120px;
 }
-  
+
+.active-job-posts {
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .active-job-post {
+    background-color: $color-border;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+}
