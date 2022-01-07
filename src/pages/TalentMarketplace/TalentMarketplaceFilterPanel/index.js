@@ -14,7 +14,11 @@ const levels = [
   "Junior",
 ];
 
-const JobBoardFilterPanel = ({ title = "Filters", onChange }) => {
+const JobBoardFilterPanel = ({
+  title = "Filters",
+  onChange,
+  isRecruiter = false,
+}) => {
   const [filters, setFilters] = useState({});
 
   const onLevelChange = (field, values) => {
@@ -36,17 +40,19 @@ const JobBoardFilterPanel = ({ title = "Filters", onChange }) => {
   };
 
   const handleOnChange = (field, values) => {
-    const newFilter = {
-      ...filters,
-      [field]: values,
-    };
-    setFilters(newFilter);
-    onChange(newFilter);
+    if (isRecruiter) {
+      const newFilter = {
+        ...filters,
+        [field]: values,
+      };
+      setFilters(newFilter);
+      onChange(newFilter);
+    }
   };
 
   const displayLevelCheckbox = levels.map((level, index) => {
     return (
-      <CustomCheckbox key={index} value={level}>
+      <CustomCheckbox key={index} value={level} disabled={!isRecruiter}>
         {level}
       </CustomCheckbox>
     );
@@ -54,7 +60,7 @@ const JobBoardFilterPanel = ({ title = "Filters", onChange }) => {
 
   const displayLocationCheckbox = JOB_BOARD.LOCATIONS.map((location, index) => {
     return (
-      <CustomCheckbox key={index} value={location.value}>
+      <CustomCheckbox key={index} value={location.value} disabled={!isRecruiter}>
         {location.text}
       </CustomCheckbox>
     );

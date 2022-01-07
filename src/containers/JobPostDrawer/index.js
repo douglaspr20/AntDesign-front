@@ -55,6 +55,21 @@ let options = JOB_BOARD.PREFERRED_SKILLS.map((skills) => {
   };
 });
 
+const STATUS = [
+  {
+    value: "active",
+    text: "Active",
+  },
+  {
+    value: "draft",
+    text: "Draft",
+  },
+  {
+    value: "closed",
+    text: "Closed",
+  },
+];
+
 const JobPostDrawer = ({
   isDrawerVisible,
   setIsDrawerVisible,
@@ -69,6 +84,7 @@ const JobPostDrawer = ({
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [editImageUrl, setEditImageUrl] = useState();
+  const [listOfStatus, setListOfStatus] = useState(STATUS);
 
   useEffect(() => {
     if (isEdit) {
@@ -80,9 +96,8 @@ const JobPostDrawer = ({
         return {
           preferredSkills: [skill.title, skill.skill, skill.level],
         };
-
       });
-      
+
       let preferredSkillsMain = post.preferredSkills[0] || null;
 
       preferredSkillsMain = preferredSkillsMain && [
@@ -90,6 +105,27 @@ const JobPostDrawer = ({
         preferredSkillsMain?.skill,
         preferredSkillsMain?.level,
       ];
+
+      const listOfStatus = [
+        {
+          value: "expired",
+          text: "Expired",
+        },
+        {
+          value: "closed",
+          text: "Closed",
+        },
+      ];
+
+      if (post?.status === "expired") {
+        setListOfStatus(listOfStatus);
+      }
+
+      const date = moment(post?.closingDate).format("YYYY-MM-DD HH:mm:ssZ");
+
+      if (date < moment().format("YYYY-MM-DD HH:mm:ssZ")) {
+        setListOfStatus(listOfStatus);
+      }
 
       form.setFieldsValue({
         jobTitle: post.jobTitle,
@@ -142,6 +178,21 @@ const JobPostDrawer = ({
 
   const handleDiscard = () => {
     setIsDrawerVisible(false);
+  };
+
+  const handleDisabledDate = (currentDate) => {
+    return currentDate && currentDate.valueOf() < Date.now();
+  };
+
+  const handleDateOnChange = (values) => {
+    const date = moment(values).format("YYYY-MM-DD HH:mm:ssZ");
+
+    if (date > moment().format("YYYY-MM-DD HH:mm:ssZ")) {
+      setListOfStatus(STATUS);
+      form.setFieldsValue({
+        status: "active",
+      });
+    }
   };
 
   return (
@@ -234,7 +285,7 @@ const JobPostDrawer = ({
           rules={[{ required: true }]}
           name="preferredSkillsMain"
         >
-          <Cascader options={options} size="large"/>
+          <Cascader options={options} size="large" />
         </Form.Item>
         <Form.List name="preferredSkills">
           {(fields, { add, remove }) => (
@@ -243,7 +294,6 @@ const JobPostDrawer = ({
                 <div className="preferred-skills-container" key={key}>
                   <div className="preferred-skills-content">
                     <Form.Item
-                      label="Preferred Skills"
                       name={[name, "preferredSkills"]}
                       rules={[{ required: true }]}
                       {...restField}
@@ -279,7 +329,12 @@ const JobPostDrawer = ({
           label="Closing Date"
           rules={[{ required: true }]}
         >
-          <DatePicker style={{ width: "100%" }} size="large" />
+          <DatePicker
+            style={{ width: "100%" }}
+            size="large"
+            disabledDate={handleDisabledDate}
+            onChange={handleDateOnChange}
+          />
         </Form.Item>
         <div className="header-container">
           <h3>COMPANY INFORMATION</h3>
@@ -323,7 +378,7 @@ const JobPostDrawer = ({
               label="Status"
               rules={[{ required: true }]}
             >
-              <CustomSelect options={JOB_BOARD.STATUS} bordered />
+              <CustomSelect options={listOfStatus} bordered />
             </Form.Item>
           </>
         )}

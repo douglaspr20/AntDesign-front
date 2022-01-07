@@ -169,7 +169,7 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
         <div className="job-post-card-wrapper">
           <div className="job-post-card-header">
             <h3>{post.jobTitle}</h3>
-            {myPostedJob && displayStatusTag()}
+            <div>{myPostedJob && displayStatusTag()}</div>
           </div>
           <div className="job-post-card-content">
             <div>

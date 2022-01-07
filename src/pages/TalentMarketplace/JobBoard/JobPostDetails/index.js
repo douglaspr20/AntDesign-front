@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Card, Space, Avatar } from "antd";
+import { Card, Space, Avatar, Tag } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton } from "components";
 import { COUNTRIES, PROFILE_SETTINGS, INTERNAL_LINKS, JOB_BOARD } from "enum";
 import IconBack from "images/icon-back.svg";
+import { startCase } from "lodash";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
@@ -34,13 +35,44 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
     })
     .join("/");
 
-  const displayPreferredSkills = (jobPost?.mainJobFunctions || []).map(
+  const displayMainJobFunctions = (jobPost?.mainJobFunctions || []).map(
     (skill, index) => {
       const data = PROFILE_SETTINGS.TOPICS.find(
         (topic) => topic.value === skill
       );
 
-      return <SpecialtyItem key={index} title={data.text} />;
+      return (
+        <Tag key={index} color="blue">
+          {data.text}
+        </Tag>
+      );
+    }
+  );
+
+  const displayPreferredSkills = (jobPost?.preferredSkills || []).map(
+    (jobPostSkill, index) => {
+      let title, skill;
+
+      JOB_BOARD.PREFERRED_SKILLS.find((skills) => {
+        if (skills.value === jobPostSkill.title) {
+          title = skills.label;
+
+          return skills.children.find((child) => {
+            if (child.value === jobPostSkill.skill) {
+              return (skill = child.label);
+            } else {
+              return "";
+            }
+          });
+        } else {
+          return "";
+        }
+      });
+      return (
+        <div>{`${index + 1}. ${title} / ${skill} - Level: ${startCase(
+          jobPostSkill.level
+        )}`}</div>
+      );
     }
   );
 
@@ -54,7 +86,9 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
         <div className="job-board-details-content">
           <div
             className="job-board-detail-page-header-content-back-btn"
-            onClick={() => history.push(INTERNAL_LINKS.TALENT_MARKETPLACE)}
+            onClick={() =>
+              history.push(`${INTERNAL_LINKS.TALENT_MARKETPLACE}?key=2`)
+            }
           >
             <div className="job-board-detail-page-header-content-back">
               <div className="job-board-detail-page-header-content-back-img">
@@ -124,8 +158,16 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
                 {jobPost.level}
               </div>
               <div>
-                <strong>Required skills: </strong>
-                <Space wrap>{displayPreferredSkills}</Space>
+                <div>
+                  <strong>Preferred Skills: </strong>
+                </div>
+                <div>
+                  <Space direction="vertical">{displayPreferredSkills}</Space>
+                </div>
+              </div>
+              <div>
+                <strong>Main Job Functions: </strong>
+                <Space wrap>{displayMainJobFunctions}</Space>
               </div>
             </Space>
           </div>

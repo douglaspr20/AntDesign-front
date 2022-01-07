@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { Tabs, CustomButton } from "components";
 import { SETTINGS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
+import { INTERNAL_LINKS } from "enum";
+import qs from "query-string";
+import { useLocation } from "react-router-dom";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
@@ -27,11 +30,15 @@ const TalentMarketplacePage = ({
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [filters, setFilters] = useState({});
+  const location = useLocation();
 
-  const isPremium = userProfile.memberShip === "premium";
+  const isRecruiter = userProfile.recruiterSubscription;
 
   useEffect(() => {
     getAllJobPosts();
+
+    const parsed = qs.parse(location.search);
+    setCurrentTab(parsed.key);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
@@ -100,7 +107,7 @@ const TalentMarketplacePage = ({
     },
   ];
 
-  if (isPremium) {
+  if (isRecruiter) {
     const myJobPosts = {
       title: "My Job Postings",
       content: () => <RecruiterView filter={filters} />,
@@ -109,11 +116,20 @@ const TalentMarketplacePage = ({
     TabData.push(myJobPosts);
   }
 
+  const addFilterToURL = (key) => {
+    window.history.replaceState(
+      null,
+      "Page",
+      `${INTERNAL_LINKS.TALENT_MARKETPLACE}?key=${key}`
+    );
+    setCurrentTab(key);
+  };
+
   return (
     <div className="talent-marketplace-page">
-      <TalentMarketplaceFilterPanel onChange={handleFilterOnChange} />
+      <TalentMarketplaceFilterPanel onChange={handleFilterOnChange} isRecruiter={isRecruiter}/>
       <div className="talent-marketplace-tabs-wrapper">
-        <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+        <Tabs data={TabData} current={currentTab} onChange={addFilterToURL} />
       </div>
     </div>
   );
