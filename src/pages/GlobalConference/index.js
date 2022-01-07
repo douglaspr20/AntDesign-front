@@ -69,7 +69,7 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-01-04", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
