@@ -121,11 +121,11 @@ const JobPostDrawer = ({
         setListOfStatus(listOfStatus);
       }
 
-      const date = moment(post?.closingDate).format("YYYY-MM-DD HH:mm:ssZ");
+      const date = moment(post?.closingDate).utc().format("YYYY-MM-DD HH:mm:ssZ");
 
       let status =  post.status
 
-      if (date < moment().format("YYYY-MM-DD HH:mm:ssZ")) {
+      if (date < moment().utc().format("YYYY-MM-DD HH:mm:ssZ")) {
         setListOfStatus(listOfStatus);
 
         if (post.status === "expired") {
@@ -147,7 +147,7 @@ const JobPostDrawer = ({
         preferredSkills: preferredSkills,
         preferredSkillsMain: preferredSkillsMain || null,
         linkToApply: post.linkToApply,
-        closingDate: moment(post.closingDate),
+        closingDate: moment(post.closingDate).utc(),
         companyName: post.companyName,
         companyDescription: post.companyDescription,
         status,
@@ -193,9 +193,9 @@ const JobPostDrawer = ({
   };
 
   const handleDateOnChange = (values) => {
-    const date = moment(values).format("YYYY-MM-DD HH:mm:ssZ");
+    const date = moment(values).utc().format("YYYY-MM-DD HH:mm:ssZ");
 
-    if (date > moment().format("YYYY-MM-DD HH:mm:ssZ")) {
+    if (date > moment().utc().format("YYYY-MM-DD HH:mm:ssZ")) {
       setListOfStatus(STATUS);
       form.setFieldsValue({
         status: "active",
