@@ -84,7 +84,7 @@ const JobPostDrawer = ({
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [editImageUrl, setEditImageUrl] = useState();
-  const [listOfStatus, setListOfStatus] = useState(STATUS);
+  // const [listOfStatus, setListOfStatus] = useState(STATUS);
 
   useEffect(() => {
     if (isEdit) {
@@ -106,36 +106,16 @@ const JobPostDrawer = ({
         preferredSkillsMain?.level,
       ];
 
-      const listOfStatus = [
-        {
-          value: "expired",
-          text: "Expired",
-        },
-        {
-          value: "closed",
-          text: "Closed",
-        },
-      ];
-
-      if (post?.status === "expired") {
-        setListOfStatus(listOfStatus);
-      }
-
-      const timezone = moment.tz.guess();
-      let status = post.status;
-      const date = moment
-        .tz(post?.closingDate, timezone)
-        .format("YYYY-MM-DD HH:mm:ssZ");
-
-      if (date < moment().format("YYYY-MM-DD HH:mm:ssZ")) {
-        setListOfStatus(listOfStatus);
-
-        if (post.status === "expired") {
-          status = "expired";
-        } else {
-          status = "closed";
-        }
-      }
+      // const listOfStatus = [
+      //   {
+      //     value: "expired",
+      //     text: "Expired",
+      //   },
+      //   {
+      //     value: "closed",
+      //     text: "Closed",
+      //   },
+      // ];
 
       form.setFieldsValue({
         jobTitle: post.jobTitle,
@@ -149,10 +129,10 @@ const JobPostDrawer = ({
         preferredSkills: preferredSkills,
         preferredSkillsMain: preferredSkillsMain || null,
         linkToApply: post.linkToApply,
-        closingDate: moment.tz(post.closingDate, timezone),
+        closingDate: moment(post.closingDate),
         companyName: post.companyName,
         companyDescription: post.companyDescription,
-        status,
+        status: post.status,
       });
     }
 
@@ -194,17 +174,17 @@ const JobPostDrawer = ({
     return currentDate && currentDate.valueOf() < Date.now();
   };
 
-  const handleDateOnChange = (values) => {
-    const timezone = moment.tz.guess()
-    const date = moment.tz(values, timezone).format("YYYY-MM-DD HH:mm:ssZ");
+  // const handleDateOnChange = (values) => {
+  //   const timezone = moment.tz.guess()
+  //   const date = moment.tz(values, timezone).format("YYYY-MM-DD HH:mm:ssZ");
 
-    if (date > moment().format("YYYY-MM-DD HH:mm:ssZ")) {
-      setListOfStatus(STATUS);
-      form.setFieldsValue({
-        status: "active",
-      });
-    }
-  };
+  //   if (date > moment().format("YYYY-MM-DD HH:mm:ssZ")) {
+  //     setListOfStatus(STATUS);
+  //     form.setFieldsValue({
+  //       status: "active",
+  //     });
+  //   }
+  // };
 
   return (
     <CustomDrawer
@@ -344,7 +324,7 @@ const JobPostDrawer = ({
             style={{ width: "100%" }}
             size="large"
             disabledDate={handleDisabledDate}
-            onChange={handleDateOnChange}
+            // onChange={handleDateOnChange}
           />
         </Form.Item>
         <div className="header-container">
@@ -389,7 +369,7 @@ const JobPostDrawer = ({
               label="Status"
               rules={[{ required: true }]}
             >
-              <CustomSelect options={listOfStatus} bordered />
+              <CustomSelect options={STATUS} bordered />
             </Form.Item>
           </>
         )}
