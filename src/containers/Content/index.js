@@ -54,6 +54,8 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
+import TalentMarketplacePage from "pages/TalentMarketplace";
+import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -370,6 +372,16 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
             render={(props) => <SponsorDashboardPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.TALENT_MARKETPLACE}
+            render={(props) => <TalentMarketplacePage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
+            render={(props) => <JobPostDetailsPage {...props} />}
           />
           <Route
             exact

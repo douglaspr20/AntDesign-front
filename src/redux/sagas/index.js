@@ -30,6 +30,7 @@ import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResource
 import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
 import { learningSaga } from "./myLearning";
 import { partnersSaga } from "./partners";
+import { jobBoardSaga } from "./jobBoard"
 import { sessionClassUserSaga } from "./sessionClassUser";
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
@@ -70,6 +71,7 @@ export default function* sagas() {
     ...SkillCohortResourceResponseRatingSaga,
     ...learningSaga,
     ...partnersSaga,
+    ...jobBoardSaga,
     ...sessionClassUserSaga,
     ...marketplaceProfileSaga,
   ]);
