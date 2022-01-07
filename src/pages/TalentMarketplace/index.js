@@ -127,7 +127,10 @@ const TalentMarketplacePage = ({
 
   return (
     <div className="talent-marketplace-page">
-      <TalentMarketplaceFilterPanel onChange={handleFilterOnChange} isRecruiter={isRecruiter}/>
+      <TalentMarketplaceFilterPanel
+        onChange={handleFilterOnChange}
+        isRecruiter={isRecruiter}
+      />
       <div className="talent-marketplace-tabs-wrapper">
         <Tabs data={TabData} current={currentTab} onChange={addFilterToURL} />
       </div>

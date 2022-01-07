@@ -39,6 +39,8 @@ import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
 import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
 import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
 import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
+import GlobalConferenceMyTalentMarketplaceProfilePage from "pages/GlobalConference/MyTalentMarketplaceProfile";
+import GlobalConferenceTalentMarketplacePage from "pages/GlobalConference/TalentMarketplace";
 import SpeakersPage from "pages/Speakers";
 import ParticipantsPage from "pages/Participants";
 import LivePage from "pages/Live";
@@ -295,6 +297,27 @@ class Content extends Component {
             render={(props) => (
               <GlobalConferencePage {...props}>
                 <GlobalConferenceLeaderboardPage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+          <PrivateRoute
+            exact
+            path={
+              INTERNAL_LINKS.GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE
+            }
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceMyTalentMarketplaceProfilePage {...props} />
+              </GlobalConferencePage>
+            )}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.GLOBAL_CONFERENCE_TALENT_MARKETPLACE}
+            render={(props) => (
+              <GlobalConferencePage {...props}>
+                <GlobalConferenceTalentMarketplacePage {...props} />
               </GlobalConferencePage>
             )}
           />

@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { flatten, compact, isEmpty } from "lodash";
 
 import { envSelector } from "redux/selectors/envSelector";
 
@@ -41,34 +42,21 @@ const level = [
   },
 ];
 
-let options = JOB_BOARD.PREFERRED_SKILLS.map((skills) => {
-  const children = skills.children.map((data) => {
+const transformJobBoardPreferredSkills = JOB_BOARD.PREFERRED_SKILLS.map(
+  (skills) => {
+    const children = skills.children.map((data) => {
+      return {
+        ...data,
+        children: level,
+      };
+    });
+
     return {
-      ...data,
-      children: level,
+      ...skills,
+      children,
     };
-  });
-
-  return {
-    ...skills,
-    children,
-  };
-});
-
-const STATUS = [
-  {
-    value: "active",
-    text: "Active",
-  },
-  {
-    value: "draft",
-    text: "Draft",
-  },
-  {
-    value: "closed",
-    text: "Closed",
-  },
-];
+  }
+);
 
 const JobPostDrawer = ({
   isDrawerVisible,
@@ -84,7 +72,10 @@ const JobPostDrawer = ({
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [editImageUrl, setEditImageUrl] = useState();
-  // const [listOfStatus, setListOfStatus] = useState(STATUS);
+  const [listOfTakenSkills, setListOfTakenSkills] = useState([]);
+  const [cascadeOptions, setCascadeOptions] = useState(
+    transformJobBoardPreferredSkills
+  );
 
   useEffect(() => {
     if (isEdit) {
@@ -106,16 +97,50 @@ const JobPostDrawer = ({
         preferredSkillsMain?.level,
       ];
 
-      // const listOfStatus = [
-      //   {
-      //     value: "expired",
-      //     text: "Expired",
-      //   },
-      //   {
-      //     value: "closed",
-      //     text: "Closed",
-      //   },
-      // ];
+      const transformedPreferredSkills = preferredSkills.map((skill) => {
+        return skill.preferredSkills;
+      });
+
+      const flattenedTransformedPreferredSkills = flatten(
+        transformedPreferredSkills
+      );
+
+      const listOfTakenSkills = [
+        preferredSkillsMain,
+        !isEmpty(flattenedTransformedPreferredSkills) &&
+          flattenedTransformedPreferredSkills,
+      ];
+
+      const compactedListOfTakenSkills = compact(listOfTakenSkills);
+
+      const listOfPreferredSkills = transformJobBoardPreferredSkills;
+
+      // console.log(compactedListOfTakenSkills, 'compactedListOfTakenSkills')
+
+      // eslint-disable-next-line array-callback-return
+      const data = compactedListOfTakenSkills.map((takenSkills, index) => {
+        const titleIndex = listOfPreferredSkills.findIndex(
+          (item) => item.value === takenSkills[0]
+        );
+
+        if (titleIndex !== -1) {
+          const skillIndex = transformJobBoardPreferredSkills[
+            titleIndex
+          ].children.findIndex((skill) => skill.value === takenSkills[1]);
+
+          if (skillIndex !== -1) {
+            let newTakenSkills = [...listOfTakenSkills];
+
+            return newTakenSkills[index] = {
+              titleIndex,
+              skillIndex,
+            };
+
+          }
+        }
+      });
+
+      setListOfTakenSkills(data);
 
       form.setFieldsValue({
         jobTitle: post.jobTitle,
@@ -140,6 +165,41 @@ const JobPostDrawer = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
+
+  useEffect(() => {
+    const newCascadeOptions = cascadeOptions.map((item, itemIndex) => {
+      const children = item.children.map((skill, skillIndex) => {
+        const takenSkill = listOfTakenSkills.find(
+          (takenSkill) =>
+            takenSkill.titleIndex === itemIndex &&
+            takenSkill.skillIndex === skillIndex
+        );
+
+        if (takenSkill) {
+          skill = {
+            ...skill,
+            disabled: true,
+          };
+        } else {
+          skill = {
+            ...skill,
+            disabled: false,
+          };
+        }
+
+        return skill;
+      });
+
+      return {
+        ...item,
+        children,
+      };
+    });
+
+    setCascadeOptions(newCascadeOptions);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listOfTakenSkills]);
 
   const displayLocationsCheckbox = JOB_BOARD.LOCATIONS.map(
     (location, index) => {
@@ -174,17 +234,30 @@ const JobPostDrawer = ({
     return currentDate && currentDate.valueOf() < Date.now();
   };
 
-  // const handleDateOnChange = (values) => {
-  //   const timezone = moment.tz.guess()
-  //   const date = moment.tz(values, timezone).format("YYYY-MM-DD HH:mm:ssZ");
+  const handleCascadeChange = (values, index) => {
+    const listOfPreferredSkills = transformJobBoardPreferredSkills;
 
-  //   if (date > moment().format("YYYY-MM-DD HH:mm:ssZ")) {
-  //     setListOfStatus(STATUS);
-  //     form.setFieldsValue({
-  //       status: "active",
-  //     });
-  //   }
-  // };
+    const titleIndex = listOfPreferredSkills.findIndex(
+      (item) => item.value === values[0]
+    );
+
+    if (titleIndex !== -1) {
+      const skillIndex = transformJobBoardPreferredSkills[
+        titleIndex
+      ].children.findIndex((skill) => skill.value === values[1]);
+
+      if (skillIndex !== -1) {
+        let newTakenSkills = [...listOfTakenSkills];
+
+        newTakenSkills[index] = {
+          titleIndex,
+          skillIndex,
+        };
+
+        setListOfTakenSkills(newTakenSkills);
+      }
+    }
+  };
 
   return (
     <CustomDrawer
@@ -276,32 +349,41 @@ const JobPostDrawer = ({
           rules={[{ required: true }]}
           name="preferredSkillsMain"
         >
-          <Cascader options={options} size="large" />
+          <Cascader
+            options={cascadeOptions}
+            size="large"
+            onChange={(values) => handleCascadeChange(values, 0)}
+          />
         </Form.Item>
         <Form.List name="preferredSkills">
           {(fields, { add, remove }) => (
             <>
-              {fields.map(({ key, name, ...restField }) => (
-                <div className="preferred-skills-container" key={key}>
-                  <div className="preferred-skills-content">
-                    <Form.Item
-                      name={[name, "preferredSkills"]}
-                      rules={[{ required: true }]}
-                      {...restField}
-                    >
-                      <Cascader
-                        options={options}
-                        style={{ width: "100%" }}
-                        size="large"
-                      />
-                    </Form.Item>
-                  </div>
+              {fields.map(({ key, name, ...restField }, index) => {
+                return (
+                  <div className="preferred-skills-container" key={key}>
+                    <div className="preferred-skills-content">
+                      <Form.Item
+                        name={[name, "preferredSkills"]}
+                        rules={[{ required: true }]}
+                        {...restField}
+                      >
+                        <Cascader
+                          options={cascadeOptions}
+                          style={{ width: "100%" }}
+                          size="large"
+                          onChange={(values) =>
+                            handleCascadeChange(values, index + 1)
+                          }
+                        />
+                      </Form.Item>
+                    </div>
 
-                  <div className="minus-btn">
-                    <MinusCircleOutlined onClick={() => remove(name)} />
+                    <div className="minus-btn">
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               <Form.Item>
                 <PlusOutlined onClick={() => add()} />
               </Form.Item>
@@ -369,7 +451,7 @@ const JobPostDrawer = ({
               label="Status"
               rules={[{ required: true }]}
             >
-              <CustomSelect options={STATUS} bordered />
+              <CustomSelect options={JOB_BOARD.STATUS} bordered />
             </Form.Item>
           </>
         )}

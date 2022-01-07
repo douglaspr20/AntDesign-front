@@ -157,14 +157,14 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
                 <strong>Job level: </strong>
                 {jobPost.level}
               </div>
-              <div>
+              <Space direction="vertical">
                 <div>
                   <strong>Preferred Skills: </strong>
                 </div>
                 <div>
                   <Space direction="vertical">{displayPreferredSkills}</Space>
                 </div>
-              </div>
+              </Space>
               <div>
                 <strong>Main Job Functions: </strong>
                 <Space wrap>{displayMainJobFunctions}</Space>
