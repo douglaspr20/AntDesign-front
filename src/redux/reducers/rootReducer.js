@@ -33,11 +33,8 @@ import skillCohortResourceResponseAssessmentReducer from "./skillCohortResourceR
 import skillCohortResourceResponseRating from "./skillCohortResourceResponseRatingReducer";
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
-<<<<<<< HEAD
 import jobBoardReducer from './jobBoardReducer'
-=======
 import sessionClassUserReducer from "./sessionClassUserReducer";
->>>>>>> 79c9b6f9b29b03b468c153854f7d7501bda578d6
 import marketplaceProfileReducer from "./marketplaceProfileReducer";
 
 export default combineReducers({
