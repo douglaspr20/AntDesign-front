@@ -229,10 +229,10 @@ const SkillCohortResources = ({
         <div className="display-participants">{displayParticipants}</div>
       ),
     },
-    {
-      title: "Playgrounds",
-      content: () => <div className="wrapper-2">Playground</div>,
-    },
+    // {
+    //   title: "Playgrounds",
+    //   content: () => <div className="wrapper-2">Playground</div>,
+    // },
   ];
 
   return (
