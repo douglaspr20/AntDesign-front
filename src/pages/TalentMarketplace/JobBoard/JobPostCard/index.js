@@ -8,7 +8,6 @@ import { INTERNAL_LINKS, JOB_BOARD } from "enum";
 import { PlusOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 
-
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
@@ -18,7 +17,7 @@ import "./styles.scss";
 const levels = {
   basic: 1,
   intermediate: 2,
-  advanced: 3,
+  advance: 3,
 };
 
 const JobPostCard = ({
@@ -180,7 +179,7 @@ const JobPostCard = ({
       });
     }
 
-    return Number.isInteger(percentage) ? percentage: percentage.toFixed(2);
+    return Number.isInteger(percentage) ? percentage : percentage.toFixed(2);
   };
 
   calculateSkillMatchPercentage();
@@ -251,7 +250,7 @@ const JobPostCard = ({
 
 const mapStateToProps = (state) => ({
   ...jobBoardSelector(state),
-  marketplaceProfile: marketplaceProfileSelector(state).marketplaceProfile
+  marketplaceProfile: marketplaceProfileSelector(state).marketplaceProfile,
 });
 
 const mapDispatchToProps = {

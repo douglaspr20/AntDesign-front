@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Checkbox, Form, Switch, Radio } from "antd";
+import { Checkbox, Form, Switch, Radio, notification } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
@@ -39,13 +39,26 @@ const MyTalentMarketplaceProfile = ({
 
   useEffect(() => {
     if (marketplaceProfile.id) {
-      form.setFieldsValue({...marketplaceProfile, ...marketplaceProfile.skills});
+      form.setFieldsValue({
+        ...marketplaceProfile,
+        ...marketplaceProfile.skills,
+      });
     } else {
       form.resetFields();
     }
   }, [marketplaceProfile, form]);
 
   const handleSubmit = (data) => {
+    const { showMarketPlaceProfile } = data;
+
+    if (showMarketPlaceProfile && !userProfile.resumeUrl) {
+      return notification.warning({
+        message: "Missing resume",
+        description:
+          "Resume is required if you want your marketplace profile to be shown.",
+      });
+    }
+
     let skills = {};
 
     JOB_BOARD.PREFERRED_SKILLS.map((item) => {
