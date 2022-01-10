@@ -189,7 +189,7 @@ export function* getSessionsUserJoinedSaga({ payload }) {
     let response = yield call(getSessionsUserJoined, { ...payload });
     if (response.status === 200) {
       const sessionData = Object.values(
-        groupBy(response.data.sessionsUser || [], "id")
+        groupBy(response.data.sessionUserJoined || [], "id")
       ).map((session) => {
         return session.reduce(
           (res, item) => ({
@@ -216,7 +216,7 @@ export function* getSessionsUserJoinedSaga({ payload }) {
         );
       });
 
-      yield put(sessionActions.setSessionsAddedByUser(sessionData));
+      yield put(sessionActions.setSessionsUserJoined(sessionData));
     }
   } catch (error) {
     console.log(error);

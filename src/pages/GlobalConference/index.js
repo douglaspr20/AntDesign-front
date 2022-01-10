@@ -182,7 +182,9 @@ const GlobalConference = ({
 
   useEffect(() => {
     getAllEvent();
-    getSessionsUserJoined(userProfile.id, userProfile.sessionsJoined);
+    if (userProfile?.sessionsJoined?.length > 0) {
+      getSessionsUserJoined(userProfile.sessionsJoined);
+    }
   }, [getAllEvent, getSessionsUserJoined, userProfile]);
 
   useEffect(() => {
@@ -194,10 +196,6 @@ const GlobalConference = ({
   const downloadPdf = async (option) => {
     setLoading(true);
 
-    const sessionJoined = allSessions.filter((session) =>
-      userProfile?.sessionsJoined?.includes(session.id)
-    );
-
     if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
       return notification.warning({
@@ -206,7 +204,7 @@ const GlobalConference = ({
         someone tries to download it without having added any session to 
         their agenda`,
       });
-    } else if (sessionJoined < 1 && option === "report-sessions-joined") {
+    } else if (sessionsUserJoined < 1 && option === "report-sessions-joined") {
       setLoading(false);
       return notification.warning({
         message: "You haven't joined any session",
@@ -216,7 +214,7 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda" ? sessionsUser : sessionJoined,
+      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
       option
     );
 
@@ -274,6 +272,8 @@ const GlobalConference = ({
 
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
+
+  console.log(sessionsUserJoined);
 
   return (
     <div className="global-conference">

@@ -66,7 +66,7 @@ const formatAnnualConference = (userProfile, sessions, option) => {
     "width: 800px; height: auto; display: flex; flex-direction: column;align-items: center";
 
   let content = `<div style="height: 1000px; width: 100%; display: flex; flex-direction: column; 
-    align-items: center; justify-content: center; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+    align-items: center; justify-content: center; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 160px">
     <img src=${LogoHackingHR} style="width: 250px; height: 250px">
     <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center">2022</p>
     <p style="font-weight: 800 !important; font-size: 3.5rem !important; text-align: center; padding: 0px 150px">HR Innovation
@@ -180,6 +180,7 @@ const formatAnnualConference = (userProfile, sessions, option) => {
         box-shadow: 4px 0px 14px #37215714; 
         border-radius: 0.5rem;
         opacity: 1;
+        margin-top: -40px;
         padding: 2rem; margin-bottom: 30px;" class="conference">
              <div style="display: flex; flex-direction: column; flex-wrap: wrap">
                 <h2 style="color: rgba(0, 0, 0, 0.85); font-weight: 500;">${
@@ -220,12 +221,21 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                   </div>
              </div>
           </div>
+          ${
+            option === "report-sessions-joined"
+              ? `
+          <div style="margin-top: -25px;">
           <h3>HR Recertification Credits</h3>
-          <p> ${
-            userProfile.memberShip === "premium"
-              ? "credits"
+          <p style="white-space: pre-line;"> ${
+            userProfile.memberShip === "premium" &&
+            option === "report-sessions-joined"
+              ? day.data[i].recertification_credits
               : "HR Recertification Credits: Only available to PREMIUM"
           }</p>
+          </div>
+          `
+              : ""
+          }
         `;
       } else if (i % 2 !== 0 && day.data[i].description?.length < 300) {
         conferences += `
@@ -270,12 +280,22 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                   </div>
              </div>
           </div>
+          ${
+            option === "report-sessions-joined"
+              ? `
+          <div style="margin-top: -35px;">
           <h3>HR Recertification Credits</h3>
-         <p> ${
-           userProfile.memberShip === "premium"
-             ? "credits"
-             : "HR Recertification Credits: Only available to PREMIUM"
-         }</p>
+          <p style="white-space: pre-line;"> ${
+            userProfile.memberShip === "premium" &&
+            option === "report-sessions-joined"
+              ? day.data[i].recertification_credits
+              : "HR Recertification Credits: Only available to PREMIUM"
+          }</p>
+          </div>
+          `
+              : ""
+          }
+       
         `;
 
         content += `
@@ -369,12 +389,22 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                   </div>
              </div>
           </div>
+          ${
+            option === "report-sessions-joined"
+              ? `
+          <div>
           <h3>HR Recertification Credits</h3>
-          <p> ${
-            userProfile.memberShip === "premium"
-              ? "credits"
+          <p style="white-space: pre-line;"> ${
+            userProfile.memberShip === "premium" &&
+            option === "report-sessions-joined"
+              ? day.data[i].recertification_credits
               : "HR Recertification Credits: Only available to PREMIUM"
           }</p>
+          </div>
+          `
+              : ""
+          }
+       
         `;
 
         content += `
@@ -448,12 +478,22 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                   </div>
              </div>
           </div>
+          ${
+            option === "report-sessions-joined"
+              ? `
+          <div>
           <h3>HR Recertification Credits</h3>
-          <p> ${
-            userProfile.memberShip === "premium"
-              ? "credits"
+          <p style="white-space: pre-line;"> ${
+            userProfile.memberShip === "premium" &&
+            option === "report-sessions-joined"
+              ? day.data[i].recertification_credits
               : "HR Recertification Credits: Only available to PREMIUM"
           }</p>
+          </div>
+          `
+              : ""
+          }
+       
         `;
         content += `  
         <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
