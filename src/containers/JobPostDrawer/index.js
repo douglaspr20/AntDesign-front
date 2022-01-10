@@ -83,13 +83,13 @@ const JobPostDrawer = ({
         (country) => country.value === post.country
       );
 
-      const preferredSkills = post.preferredSkills.slice(1, 2).map((skill) => {
+      let preferredSkillsMain = post.preferredSkills[0] || null;
+
+      const preferredSkills = post.preferredSkills.slice(1).map((skill) => {
         return {
           preferredSkills: [skill.title, skill.skill, skill.level],
         };
       });
-
-      let preferredSkillsMain = post.preferredSkills[0] || null;
 
       preferredSkillsMain = preferredSkillsMain && [
         preferredSkillsMain?.title,
@@ -114,8 +114,6 @@ const JobPostDrawer = ({
       const compactedListOfTakenSkills = compact(listOfTakenSkills);
 
       const listOfPreferredSkills = transformJobBoardPreferredSkills;
-
-      // console.log(compactedListOfTakenSkills, 'compactedListOfTakenSkills')
 
       // eslint-disable-next-line array-callback-return
       const data = compactedListOfTakenSkills.map((takenSkills, index) => {

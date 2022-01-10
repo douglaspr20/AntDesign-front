@@ -52,7 +52,9 @@ export function* getMarketplaceProfilesSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        marketplaceProfileActions.setMarketPlaceProfiles(response.data.marketPlaceProfiles)
+        marketplaceProfileActions.setMarketPlaceProfiles(
+          response.data.marketPlaceProfiles
+        )
       );
     }
   } catch (error) {
@@ -104,9 +106,11 @@ export function* updateMarketplaceProfileSaga({ payload }) {
     let response = yield call(updateMarketplaceProfile, { ...payload });
 
     if (response.status === 200) {
-      yield call(getMarketplaceProfile, {
-        id: response.data.affectedRows.UserId,
-      });
+      yield put(
+        marketplaceProfileActions.setMarketPlaceProfile(
+          response.data.affectedRows
+        )
+      );
 
       notification.success({
         message: "Success",

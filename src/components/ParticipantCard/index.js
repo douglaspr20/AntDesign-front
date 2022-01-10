@@ -141,7 +141,7 @@ const ParticipantCardInfo = ({
                 type="link"
                 icon={<ProfileOutlined />}
                 onClick={() => downloadFile()}
-                disabled={userProfile.memberShip !== "premium"}
+                disabled={!userProfile.recruiterSubscription}
                 className="participant-card-marketplaceprofile-icon"
               />
             </Tooltip>
@@ -156,7 +156,7 @@ const ParticipantCardInfo = ({
                 window.open(participant.User.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={userProfile.memberShip !== "premium"}
+              disabled={!userProfile.recruiterSubscription}
             />
           </Tooltip>
 
@@ -169,22 +169,20 @@ const ParticipantCardInfo = ({
                 window.open(`mailto:${participant.User.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
-              disabled={userProfile.memberShip !== "premium"}
+              disabled={!userProfile.recruiterSubscription}
             />
           </Tooltip>
 
-          {participant.User.resumeUrl !== "" && participant.User.resumeUrl && (
-            <Tooltip title="Invite To Apply">
-              <Button
-                shape="circle"
-                type="link"
-                icon={<UserAddOutlined />}
-                onClick={showModal}
-                disabled={userProfile.memberShip !== "premium"}
-                className="participant-card-marketplaceprofile-icon"
-              />
-            </Tooltip>
-          )}
+          <Tooltip title="Invite To Apply">
+            <Button
+              shape="circle"
+              type="link"
+              icon={<UserAddOutlined />}
+              onClick={showModal}
+              disabled={!userProfile.recruiterSubscription}
+              className="participant-card-marketplaceprofile-icon"
+            />
+          </Tooltip>
         </div>
       )}
       <CustomModal

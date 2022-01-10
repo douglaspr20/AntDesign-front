@@ -10,7 +10,7 @@ import {
   createMarketplaceProfile,
   updateMarketPlaceProfile,
 } from "redux/actions/marketplaceProfile-actions";
-import { PROFILE_SETTINGS } from "enum";
+import { PROFILE_SETTINGS, JOB_BOARD } from "enum";
 import {
   CustomButton,
   CategoriesSelect,
@@ -19,163 +19,6 @@ import {
 } from "components";
 
 import "./styles.scss";
-
-const skills = [
-  {
-    value: "businessAcumen",
-    text: "Business Acumen",
-    children: [
-      {
-        value: "agilityAndInnovation",
-        text: "Agility and Innovation",
-      },
-      {
-        value: "businessAcumen",
-        text: "Business Acumen",
-      },
-      {
-        value: "designThinking",
-        text: "Design Thinking",
-      },
-      {
-        value: "financialAcumen",
-        text: "Financial Acumen",
-      },
-      {
-        value: "legalAcumen",
-        text: "Legal Acumen",
-      },
-      {
-        value: "measuringHrEffectiveness",
-        text: "Measuring HR Effectiveness",
-      },
-      {
-        value: "organizationalAgility",
-        text: "Organizational Agility",
-      },
-      {
-        value: "projectAndResourceManagement",
-        text: "Project and Resource Management",
-      },
-      {
-        value: "problemSolvingAndAnalyticalSkills",
-        text: "Problem Solving and Analytical Skills",
-      },
-    ],
-  },
-  {
-    value: "hrHumanSkills",
-    text: "HR Human Skills",
-    children: [
-      {
-        value: "buildingNetworksAndRelationships",
-        text: "Building Networks and Relationships",
-      },
-      {
-        value: "coachingCounseling",
-        text: "Coaching Counseling",
-      },
-      {
-        value: "changeManagement",
-        text: "Change Management",
-      },
-      {
-        value: "communicationAndInfluence",
-        text: "Communication and Influence",
-      },
-      {
-        value: "corporateCulture",
-        text: "Corporate Culture",
-      },
-      {
-        value: "drivingChange",
-        text: "Driving Change",
-      },
-      {
-        value: "negotiation",
-        text: "Negotiation",
-      },
-      {
-        value: "peopleAnalytics",
-        text: "People Analytics",
-      },
-      {
-        value: "teamFacilitation",
-        text: "Team Facilitation",
-      },
-      {
-        value: "teamworkAndCollaboration",
-        text: "Teamwork and Collaboration",
-      },
-    ],
-  },
-  {
-    value: "hrTechnicalSkills",
-    text: "HR Technical Skills",
-    children: [
-      {
-        value: "brandCommuication",
-        text: "Brand Communication",
-      },
-      {
-        value: "compensationAndBenefitsAdministrationSalaryReviewAndPayroll",
-        text: "Compensation and Benefits Administration, Salary Review and Payroll",
-      },
-      {
-        value: "criticalAndStrategicThinking",
-        text: "Critical and Strategic Thinking",
-      },
-      {
-        value: "digitalAcumen",
-        text: "Digital Acumen",
-      },
-      {
-        value: "diversityEquityInclusionAndBelongingStrategies",
-        text: "Diversity, equity, inclusion and belonging strategies.",
-      },
-      {
-        value: "employeeExperienceAndEngagement",
-        text: "Employee Experience and Engagement",
-      },
-      {
-        value: "employeeAndLaborRelations",
-        text: "Employee & Labor Relations",
-      },
-      {
-        value: "hrTechnologyInformationSoftwareAndSystems",
-        text: "HR Technology, Information Software and Systems",
-      },
-      {
-        value: "hrStrategyDesignAndExecution",
-        text: "HR Strategy Design and Exection",
-      },
-      {
-        value: "peopleAnalyticsAndReporting",
-        text: "People Analytics and Reporting",
-      },
-      {
-        value: "performanceManagement",
-        text: "Performance Management",
-      },
-      {
-        value: "onboarding",
-        text: "Onboarding",
-      },
-      {
-        value: "organizationalDiagnosisAndDesign",
-        text: "Organizational Diagnosis & Design",
-      },
-      {
-        value: "recruitmentHiringAndOnboarding",
-        text: "Recruitment, hiring and onboarding",
-      },
-      {
-        value: "wellnessAndWellBeingStrategyDesignAndExecution",
-        text: "Wellness and Well-Being strategy design and execution",
-      },
-    ],
-  },
-];
 
 const MyTalentMarketplaceProfile = ({
   allCategories,
@@ -196,38 +39,47 @@ const MyTalentMarketplaceProfile = ({
 
   useEffect(() => {
     if (marketplaceProfile.id) {
-      form.setFieldsValue(marketplaceProfile);
+      form.setFieldsValue({...marketplaceProfile, ...marketplaceProfile.skills});
     } else {
       form.resetFields();
     }
   }, [marketplaceProfile, form]);
 
   const handleSubmit = (data) => {
+    let skills = {};
+
+    JOB_BOARD.PREFERRED_SKILLS.map((item) => {
+      return item.children.map((skill) => {
+        return (skills[skill.value] = data[skill.value]);
+      });
+    });
+
     if (marketplaceProfile.id) {
-      updateMarketPlaceProfile({ ...data, id: marketplaceProfile.id });
+      updateMarketPlaceProfile({ ...data, skills, id: marketplaceProfile.id });
     } else {
       const marketPlaceInfo = {
         ...data,
+        skills,
         UserId: userProfile.id,
       };
       createMarketplaceProfile(marketPlaceInfo);
     }
   };
 
-  const displaySkills = skills.map((skill, index) => {
+  const displaySkills = JOB_BOARD.PREFERRED_SKILLS.map((skill, index) => {
     return (
-      <>
-        <div key={index}>
-          <strong>{skill.text}</strong>
+      <div className="skills-wrapper" key={index}>
+        <div>
+          <strong>{skill.label}</strong>
         </div>
         {skill.children.map((item, itemIndex) => {
           return (
             <div className="preferred-skills-wrapper" key={itemIndex}>
               <div className="preferred-skills-main-content">
-                <div>{item.text}</div>
+                <div>{item.label}</div>
               </div>
               <Form.Item name={item.value}>
-                <Radio.Group size="large" defaultValue="basic">
+                <Radio.Group size="large">
                   <div className="preferred-skills-level-content">
                     <Radio value="basic">Basic</Radio>
                     <Radio value="intermediate">Intermediate</Radio>
@@ -238,7 +90,7 @@ const MyTalentMarketplaceProfile = ({
             </div>
           );
         })}
-      </>
+      </div>
     );
   });
 
@@ -341,7 +193,7 @@ const MyTalentMarketplaceProfile = ({
         <div>
           <div className="preferred-skills-wrapper">
             <div className="preferred-skills-main">
-              <h3>Skills</h3>
+              <h3>Skill Self-Assessment</h3>
             </div>
           </div>
           {displaySkills}
