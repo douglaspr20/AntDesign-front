@@ -273,8 +273,6 @@ const GlobalConference = ({
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
-  console.log(sessionsUserJoined);
-
   return (
     <div className="global-conference">
       <GlobalConferenceFilterPanel
