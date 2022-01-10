@@ -20,6 +20,8 @@ const DELETE_RESUME = "DELETE_RESUME";
 const CHANGE_PASSWORD = "CHANGE_PASSWORD";
 const CREATE_INVITATION = "CREATE_INVITATION";
 const ACCEPT_INVITATION = "ACCEPT_INVITATION";
+const ACCEPT_INVITATION_APPLY = "ACCEPT_INVITATION_APPLY";
+const CONFIRM_INVITATION_APPLY = "CONFIRM_INVITATION_APPLY";
 const CONFIRM_ACCESSIBILITY_REQUIREMENTS = "CONFIRM_ACCESSIBILITY_REQUIREMENTS";
 const GET_USERS = "GET_USERS";
 const SET_USERS = "SET_USERS";
@@ -44,6 +46,8 @@ export const constants = {
   CHANGE_PASSWORD,
   CREATE_INVITATION,
   ACCEPT_INVITATION,
+  ACCEPT_INVITATION_APPLY,
+  CONFIRM_INVITATION_APPLY,
   CONFIRM_ACCESSIBILITY_REQUIREMENTS,
   GET_USERS,
   SET_USERS,
@@ -110,6 +114,16 @@ export const acceptInvitation = createAction(
   (newUser, hostUserId) => ({ newUser, hostUserId })
 );
 
+export const acceptInvitationApply = createAction(
+  ACCEPT_INVITATION_APPLY,
+  (userId) => ({ userId })
+);
+
+export const confirmInvitationApply = createAction(
+  CONFIRM_INVITATION_APPLY,
+  (userId, accepted) => ({ userId, accepted })
+);
+
 export const confirmAccessibilityRequirements = createAction(
   CONFIRM_ACCESSIBILITY_REQUIREMENTS,
   (userId) => ({ userId })
@@ -137,6 +151,8 @@ export const actions = {
   changePassword,
   createInvitation,
   acceptInvitation,
+  acceptInvitationApply,
+  confirmInvitationApply,
   getAllUsers,
-  setAllUsers
+  setAllUsers,
 };

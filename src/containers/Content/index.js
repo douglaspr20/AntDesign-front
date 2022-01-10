@@ -54,6 +54,7 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
+import ConfirmMail from "pages/ConfirmMail"
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -75,7 +76,7 @@ class Content extends Component {
   }
 
   render() {
-    return (
+    return ( 
       <Layout.Content>
         <Switch>
           <PrivateRoute
@@ -107,6 +108,10 @@ class Content extends Component {
             render={(props) => (
               <LoginPage signup={true} isInvitation={true} {...props} />
             )}
+          />
+          <Route
+            path={INTERNAL_LINKS.CONFIRM_APPLY_EMAIL}
+            render={(props) => <ConfirmMail {...props} />}
           />
           <Route
             path={INTERNAL_LINKS.PASSWORD_RECOVERY}

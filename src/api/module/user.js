@@ -89,6 +89,19 @@ export const acceptInvitationJoin = ({ newUser, hostUserId }) => {
   });
 };
 
+export const acceptInvitationApplyBusinnesPartner = ({ userId }) => {
+  console.log(userId);
+  return httpClient.post("private/user/apply-business-partner", {
+    userId,
+  });
+};
+
+export const confirmInvitationApplyBusiness = ({ userId, accepted }) => {
+  return httpClient.post(`private/user/confirm-apply-business/${userId}`, {
+    accepted,
+  });
+};
+
 export const confirmAccessibilityRequirements = ({ userId }) => {
   return httpClient.get(
     `private/user/confirm-accessibility-requirements/${userId}`

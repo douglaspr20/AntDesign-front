@@ -18,6 +18,7 @@ import UploadResumeModal from "../UploadResumeModal";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
+import Modal from "antd/lib/modal/Modal";
 
 // const ProfileMenus = [
 //   {
@@ -56,6 +57,7 @@ const ProfilePopupMenu = (props) => {
     userProfile: user,
     changePassword,
     userProfile,
+    acceptApply,
     ...rest
   } = props;
 
@@ -64,6 +66,9 @@ const ProfilePopupMenu = (props) => {
   const [subscription, setSubscription] = useState(null);
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
 
   const history = useHistory();
 
@@ -134,6 +139,30 @@ const ProfilePopupMenu = (props) => {
     changePassword(userProfile.id, values.oldPassword, values.newPassword);
   };
 
+  const onApplyBusinessPartner = () => {
+    console.log(user.percentOfCompletion);
+    if (user.percentOfCompletion === 100) {
+      setVisibleConfirmApply(true);
+    } else {
+      setShowProfileCompletionFirewall(true);
+    }
+  };
+
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
+  const onApplyBusness = () => {
+    const userData = {
+      email: user.email,
+      name: user.username,
+      linkedin: user.personalLinks.linkedin,
+    };
+
+    console.log(userData);
+    acceptApply(userProfile.id);
+  };
+
   const TitleSection = () => (
     <div className="profile-popover-title" onClick={onViewProfile}>
       <div className="user-avatar">
@@ -154,6 +183,50 @@ const ProfilePopupMenu = (props) => {
 
   const ContentSection = () => (
     <div className="profile-popover-content">
+      <div className="profile-popover-content-menu">
+        <React.Fragment>
+          <div onClick={onApplyBusinessPartner}>
+            Apply to the HR Business Partner Community
+          </div>
+        </React.Fragment>
+        {user.percentOfCompletion === 100 ? (
+          <Modal
+            visible={visibleConfirmApply}
+            title="Are you sure you want to apply to the HR business partner community?"
+            width={500}
+            onCancel={() => setVisibleConfirmApply(false)}
+            onOk={() => {
+              onApplyBusness();
+              setVisibleConfirmApply(false);
+            }}
+            okText="Confirm"
+          >
+            <p>
+              Your application will be sent to Hacking HR. You will be notified
+              within the next 48 hours.
+            </p>
+          </Modal>
+        ) : (
+          <>
+            {showProfileCompletionFirewall && (
+              <div
+                className="skill-cohort-firewall"
+                onClick={() => setShowProfileCompletionFirewall(false)}
+              >
+                <div
+                  className="upgrade-notification-panel"
+                  onClick={completeProfile}
+                >
+                  <h3>
+                    You must fully complete your profile before aplly to the HR
+                    business partner community.
+                  </h3>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
       {(user.memberShip === "premium" ||
         user.channelsSubscription === true ||
         user.recruiterSubscription === true) && (
@@ -400,6 +473,7 @@ const mapStateToProps = (state) => homeSelector(state);
 
 const mapDispatchToProps = {
   logout: authActions.logout,
+  acceptApply: homeActions.acceptInvitationApply,
   ...homeActions,
 };
 

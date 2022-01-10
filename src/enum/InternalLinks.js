@@ -9,6 +9,7 @@ export default {
   MENTORING: "/mentoring",
   EVENTS: "/events",
   CERTIFICATIONS: "/certifications",
+  CONFIRM_APPLY_EMAIL: '/user/confirm-apply-business/:id',
   HUB: "/hub",
   FAVORITES: "/favorites",
   READ_LATER: "/read-later",
