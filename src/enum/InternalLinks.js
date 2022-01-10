@@ -39,9 +39,6 @@ export default {
   GLOBAL_CONFERENCE_PERSONAL_AGENDA: "/global-conference/personal-agenda",
   GLOBAL_CONFERENCE_RECOMMENDED_AGENDA: "/global-conference/recommended-agenda",
   GLOBAL_CONFERENCE_LEADERBOARD: "/global-conference/leaderboard",
-  GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE:
-    "/global-conference/my-talent-marketplace-profile",
-  GLOBAL_CONFERENCE_TALENT_MARKETPLACE: "/global-conference/talent-marketplace",
   SPEAKERS: "/speakers",
   LIVE: "/live",
   POST: "/post",
