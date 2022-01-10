@@ -53,7 +53,7 @@ const SkillCohortResources = ({
     getEntireResources(id, dateToday.format("YYYY-MM-DD HH:mm:ssZ"));
 
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (userProfile.id) {
@@ -61,7 +61,7 @@ const SkillCohortResources = ({
     }
 
     // eslint-disable-next-line
-  }, [userProfile]);
+  }, [userProfile, id]);
 
   useEffect(() => {
     if (!isEmpty(allSkillCohortResources)) {
@@ -69,7 +69,7 @@ const SkillCohortResources = ({
     }
 
     // eslint-disable-next-line
-  }, [allSkillCohortResources]);
+  }, [allSkillCohortResources, id]);
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {
@@ -212,11 +212,7 @@ const SkillCohortResources = ({
     {
       title: "Resources",
       content: () => {
-        return (
-        <div className="wrapper-2">
-          {displayResources}
-        </div>
-        )
+        return <div className="wrapper-2">{displayResources}</div>;
       },
     },
     {
