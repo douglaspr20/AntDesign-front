@@ -2,9 +2,9 @@ import { Row, Col, Card, Avatar, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { CustomButton, Tabs } from "components";
-import { SETTINGS } from "enum";
+import { SETTINGS, INTERNAL_LINKS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
 import { UserOutlined } from "@ant-design/icons";
@@ -39,10 +39,12 @@ const SkillCohortResources = ({
   allSkillCohortParticipants,
   getSkillCohortResource,
   getEntireResources,
+  skillCohortParticipant,
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
   const [currentTab, setCurrentTab] = useState("0");
+  const history = useHistory();
 
   useEffect(() => {
     getSkillCohort(id);
@@ -64,12 +66,37 @@ const SkillCohortResources = ({
   }, [userProfile, id]);
 
   useEffect(() => {
+    if (!isEmpty(userProfile) && !isEmpty(skillCohortParticipant)) {
+      if (
+        userProfile.memberShip !== "premium" &&
+        !skillCohortParticipant.hasAccess
+      ) {
+        history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+
+      }
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillCohortParticipant, userProfile]);
+
+  useEffect(() => {
     if (!isEmpty(allSkillCohortResources)) {
       getSkillCohortResource(allSkillCohortResources[0].id);
     }
 
     // eslint-disable-next-line
   }, [allSkillCohortResources, id]);
+
+  // if (
+  //   userProfile.memberShip !== "premium" ||
+  //   !skillCohortParticipant?.hasAccess
+  // ) {
+  //   history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+  // }
+
+  // if (!isEmpty(skillCohortParticipant)) {
+
+  // }
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {
