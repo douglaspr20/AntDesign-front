@@ -150,6 +150,13 @@ import {
 } from "./module/myLearning";
 
 import {
+  getAllJobPosts,
+  getJobPost,
+  upsertJobPost,
+  getMyJobPosts,
+  invitationToApply,
+} from './module/jobBoard'
+import {
   getCouncilMembersFromAPI,
   getCouncilResourcesFromAPI,
   createCouncilResourceFromAPI,
@@ -298,6 +305,11 @@ export {
   getEventVideos,
   getPartners,
   getPartner,
+  getAllJobPosts,
+  getJobPost,
+  upsertJobPost,
+  getMyJobPosts,
+  invitationToApply,
   getUserProgress,
   setProgress,
   getMarketplaceProfiles,

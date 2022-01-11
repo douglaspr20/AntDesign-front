@@ -1,0 +1,63 @@
+@import "styles/main.scss";
+
+.talent-marketplace-profile {
+  padding: 1rem;
+  width: 100%;
+
+  @media (max-width: 1500px){
+    padding-left: 2rem;
+    } 
+
+  @media (max-width: 1100px){
+    padding-top: 16rem;
+    } 
+
+  @media (max-width: 800px){
+    padding-top: 16rem;
+    } 
+
+    @media (max-width: 500px){
+      padding-top: 18rem;
+      } 
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-form{
+      padding-bottom: 1rem !important;
+  }
+
+}
+
+.custom-checkbox{
+  margin-left: 0 !important;
+}
+
+.check-icon{
+  color: $color-success !important;
+}
+
+.preferred-skills-wrapper {
+  // background-color: red;
+  display: flex;
+  align-items: baseline;
+
+  .preferred-skills-main {
+    // flex-grow: 1;
+  }
+
+  .preferred-skills-level {
+    
+  }
+
+  .preferred-skills-main-content {
+    margin-right: 2rem;
+    padding-left: 1rem;
+    width: 15%;
+  }
+
+  .preferred-skills-level-content {
+
+  }
+}
