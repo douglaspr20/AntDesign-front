@@ -36,7 +36,7 @@ const ParticipantCardInfo = ({
     link.setAttribute("href", participant.User.resumeUrl);
     link.setAttribute(
       "download",
-      `${participant.User.firstName} ${participant.User.lastName}`
+      `${participant.firstName} ${participant.lastName}`
     );
     link.setAttribute("target", "_blank");
 
@@ -94,17 +94,17 @@ const ParticipantCardInfo = ({
 
   return (
     <>
-      {participant.User.img ? (
-        <Avatar size={150} src={participant.User.img} />
+      {participant.img ? (
+        <Avatar size={150} src={participant.img} />
       ) : (
         <Avatar size={150} style={{ fontSize: "2rem" }}>
-          {participant.User.abbrName}
+          {participant.abbrName}
         </Avatar>
       )}
 
       <div style={{ textAlign: "center" }}>
         <p style={{ fontWeight: 500 }}>
-          {participant.User.firstName} {participant.User.lastName}
+          {participant.firstName} {participant.lastName}
         </p>
         {participant.lookingFor ? (
           <div style={{ marginTop: -10 }}>
@@ -116,9 +116,9 @@ const ParticipantCardInfo = ({
             ))}
           </div>
         ) : (
-          <p style={{ marginTop: -10 }}>{participant.User.titleProfessions}</p>
+          <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
         )}
-        <p style={{ marginTop: -10 }}>{participant.User.company}</p>
+        <p style={{ marginTop: -10 }}>{participant.company}</p>
 
         {participant.location && marketplaceProfile && (
           <div style={{ marginBottom: "50px" }}>
@@ -134,7 +134,7 @@ const ParticipantCardInfo = ({
       </div>
       {marketplaceProfile && (
         <div className="participant-card-marketplaceprofile">
-          {participant.User.resumeUrl !== "" && participant.User.resumeUrl && (
+          {participant.resumeUrl !== "" && participant.resumeUrl && (
             <Tooltip title="Download Resume">
               <Button
                 shape="circle"
@@ -153,7 +153,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<LinkedinOutlined />}
               onClick={() =>
-                window.open(participant.User.personalLinks.linkedin, "_blank")
+                window.open(participant.personalLinks.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={!userProfile.recruiterSubscription}
@@ -166,7 +166,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<MailOutlined />}
               onClick={() =>
-                window.open(`mailto:${participant.User.email}`, "_blank")
+                window.open(`mailto:${participant.email}`, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={!userProfile.recruiterSubscription}
