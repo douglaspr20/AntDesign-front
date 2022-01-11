@@ -54,14 +54,4 @@ export default [
     icon: IconGlobal,
     url: INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD,
   },
-  {
-    label: "Global Conference",
-    icon: IconGlobal,
-    url: INTERNAL_LINKS.GLOBAL_CONFERENCE_MY_TALENT_MARKETPLACE_PROFILE,
-  },
-  {
-    label: "Global Conference",
-    icon: IconGlobal,
-    url: INTERNAL_LINKS.GLOBAL_CONFERENCE_TALENT_MARKETPLACE,
-  },
 ];

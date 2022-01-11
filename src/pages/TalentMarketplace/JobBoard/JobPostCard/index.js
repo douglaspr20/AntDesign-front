@@ -17,7 +17,7 @@ import "./styles.scss";
 const levels = {
   basic: 1,
   intermediate: 2,
-  advance: 3,
+  advanced: 3,
 };
 
 const JobPostCard = ({
@@ -158,6 +158,7 @@ const JobPostCard = ({
 
   const calculateSkillMatchPercentage = () => {
     let percentage = 0;
+    
 
     if (!isEmpty(marketplaceProfile) && !isEmpty(marketplaceProfile.skills)) {
       const numberOfPercentagePerSkill = 100 / post.preferredSkills.length;

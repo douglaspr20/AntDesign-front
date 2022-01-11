@@ -96,7 +96,7 @@ const MyTalentMarketplaceProfile = ({
                   <div className="preferred-skills-level-content">
                     <Radio value="basic">Basic</Radio>
                     <Radio value="intermediate">Intermediate</Radio>
-                    <Radio value="advance">Advance</Radio>
+                    <Radio value="advanced">Advance</Radio>
                   </div>
                 </Radio.Group>
               </Form.Item>
