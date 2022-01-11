@@ -17,7 +17,6 @@ import {
   getAllSessions,
   getSessionsUserJoined,
 } from "redux/actions/session-actions";
-import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import {
   attendToGlobalConference,
   setLoading,
@@ -63,7 +62,6 @@ const GlobalConference = ({
   userProfile,
   getAllSessions,
   getSessionsUserJoined,
-  getMarketplaceProfiles,
   addToMyEventList,
   removeFromMyEventList,
   sessionsUser,
@@ -107,9 +105,6 @@ const GlobalConference = ({
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
     setMeta(value);
-    if (localPathname.includes("talent-marketplace")) {
-      return getMarketplaceProfiles(userProfile.id, value);
-    }
     getAllSessions(startTime, endTime, value);
   };
 
@@ -324,7 +319,7 @@ const GlobalConference = ({
                   size="xs"
                   text="Recommended Agenda"
                   onClick={() => setModalRecommendeAgendaVisible(true)}
-                  style={{ marginLeft: "1rem" }}
+                  style={{ marginLeft: ".5rem" }}
                   className="global-conference-buttom-options"
                 />
               </>
@@ -335,15 +330,13 @@ const GlobalConference = ({
                 onClick={onAttend}
               />
             )}
-
             <CustomButton
+              text="Accessibility Requirements"
               size="xs"
-              text="Talent Marketplace"
-              onClick={() =>
-                history.push("/global-conference/my-talent-marketplace-profile")
-              }
-              style={{ marginLeft: "1rem" }}
-              className="global-conference-buttom-options"
+              type="info"
+              className="button-requirements"
+              style={{ marginLeft: ".5rem" }}
+              onClick={() => setModalRequirementsVisible(true)}
             />
 
             {localPathname === "personal-agenda" && (
@@ -374,13 +367,7 @@ const GlobalConference = ({
             )}
           </div>
           <p className="global-conference-description">{Description}</p>
-          <CustomButton
-            text="Accessibility Requirements"
-            size="xs"
-            type="info"
-            className="button-requirements"
-            onClick={() => setModalRequirementsVisible(true)}
-          />
+
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
@@ -461,34 +448,6 @@ const GlobalConference = ({
               />
             </div> */}
           </div>
-          {(localPathname === "talent-marketplace" ||
-            localPathname === "my-talent-marketplace-profile") && (
-            <Menu
-              mode="horizontal"
-              className="sub-menu"
-              selectedKeys={localPathname}
-            >
-              <>
-                <Menu.Item
-                  key="my-talent-marketplace-profile"
-                  className="sub-menu-item-global-conference"
-                >
-                  <Link to="/global-conference/my-talent-marketplace-profile">
-                    My Talent Marketplace Profile
-                  </Link>
-                </Menu.Item>
-
-                <Menu.Item
-                  key="talent-marketplace"
-                  className="sub-menu-item-global-conference"
-                >
-                  <Link to="/global-conference/talent-marketplace">
-                    Talent Marketplace
-                  </Link>
-                </Menu.Item>
-              </>
-            </Menu>
-          )}
         </div>
         {childrenWithFilterProp ? (
           childrenWithFilterProp
@@ -559,7 +518,6 @@ const mapDispatchToProps = {
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
-  getMarketplaceProfiles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);
