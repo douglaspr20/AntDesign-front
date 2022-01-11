@@ -42,12 +42,10 @@ const ActivityStatus = ({
     return (
       <Panel header={cohort.title} key={`${index}`}>
         <Collapse bordered={false}>
-          {cohort.SkillCohortResources.map((resource, resourceIndex) => {
+          {cohort.SkillCohortResources.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)).map((resource, resourceIndex) => {
             const header = (
               <div>
-                {/* {moment(resource.createdAt).format("LL")}:{" "}
-                <a href="http://www.google.com">{resource.title}</a> */}
-                {`${moment(resource.createdAt).format("LL")}: `}
+                {`${moment(resource.releaseDate).format("LL")}: `}
                 <span
                   onClick={() => handleClickLink(cohort, resource)}
                   style={{ color: "#0000EE" }}
