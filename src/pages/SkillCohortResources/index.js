@@ -113,7 +113,6 @@ const SkillCohortResources = ({
       );
     } else {
       if (!isEmpty(skillCohortResource)) {
-        // getSkillCohortResource(+parsed.id);
         window.history.replaceState(
           null,
           "Page",
