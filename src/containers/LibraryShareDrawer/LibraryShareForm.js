@@ -15,6 +15,7 @@ import { SEARCH_FILTERS } from "enum";
 
 import { addLibrary } from "redux/actions/library-actions";
 import { createCouncilResource } from "redux/actions/council-actions";
+import { createBusinessPartnerResource } from "redux/actions/business-partner-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
@@ -28,13 +29,18 @@ const LibraryShareForm = ({
   onCancel,
   addLibrary,
   createCouncilResource,
+  createBusinessPartnerResource,
 }) => {
   const isCouncil = document.location.href.includes("council");
+  const isBusinessPartner = document.location.href.includes("business-partner");
 
   const onFinish = (values) => {
     if (isCouncil) {
       onCancel();
       return createCouncilResource(values);
+    } else if (isBusinessPartner) {
+      onCancel();
+      return createBusinessPartnerResource(values);
     }
     onCancel();
     addLibrary(values);
@@ -138,6 +144,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addLibrary,
   createCouncilResource,
+  createBusinessPartnerResource,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryShareForm);

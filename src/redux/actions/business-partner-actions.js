@@ -21,13 +21,17 @@ export const constants = {
   GET_BUSINESS_PARTNER_RESOURCES,
 };
 
-export const getBusinessPartnerMembers = createAction(GET_BUSINESS_PARTNER_MEMBERS);
+export const getBusinessPartnerMembers = createAction(
+  GET_BUSINESS_PARTNER_MEMBERS
+);
 export const setBusinessPartnerMembers = createAction(
   SET_BUSINESS_PARTNER_MEMBERS,
   (businessPartnerMembers) => ({ businessPartnerMembers })
 );
 
-export const getBusinessPartnerResources = createAction(GET_BUSINESS_PARTNER_RESOURCES);
+export const getBusinessPartnerResources = createAction(
+  GET_BUSINESS_PARTNER_RESOURCES
+);
 
 export const getBusinessPartnerResourceById = createAction(
   GET_BUSINESS_PARTNER_RESOURCE,
@@ -38,7 +42,7 @@ export const getBusinessPartnerResourceById = createAction(
 );
 export const setBusinessPartnerResource = createAction(
   SET_BUSINESS_PARTNER_RESOURCE,
-  (businessPartnerResource) => ({businessPartnerResource})
+  (businessPartnerResource) => ({ businessPartnerResource })
 );
 
 export const updateBusinessPartnerResourcesInformation = createAction(
