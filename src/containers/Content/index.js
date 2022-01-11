@@ -333,13 +333,11 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
             render={(props) => <LibraryItemPage {...props} />}
           />
-          {this.props.userProfile.memberShip === "premium" && (
-            <Route
-              exact
-              path={`${INTERNAL_LINKS.PROJECTX}/:id/resources`}
-              render={(props) => <SkillCohortResourcePage {...props} />}
-            />
-          )}
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.PROJECTX}/:id/resources`}
+            render={(props) => <SkillCohortResourcePage {...props} />}
+          />
           <PrivateRoute
             exact
             path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
