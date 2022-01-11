@@ -155,13 +155,6 @@ const ProfilePopupMenu = (props) => {
   };
 
   const onApplyBusness = () => {
-    const userData = {
-      email: user.email,
-      name: user.username,
-      linkedin: user.personalLinks.linkedin,
-    };
-
-    console.log(userData);
     acceptApply(userProfile.id);
   };
 
@@ -185,52 +178,6 @@ const ProfilePopupMenu = (props) => {
 
   const ContentSection = () => (
     <div className="profile-popover-content">
-      <div className="profile-popover-content-menu">
-        <React.Fragment>
-          <div onClick={onApplyBusinessPartner}>
-            {user.isBusinessPartner
-              ? "HR Business Partners Community"
-              : "Apply to the HR Business Partner Community"}
-          </div>
-        </React.Fragment>
-        {user.percentOfCompletion === 100 ? (
-          <Modal
-            visible={visibleConfirmApply}
-            title="Are you sure you want to apply to the HR business partner community?"
-            width={500}
-            onCancel={() => setVisibleConfirmApply(false)}
-            onOk={() => {
-              onApplyBusness();
-              setVisibleConfirmApply(false);
-            }}
-            okText="Confirm"
-          >
-            <p>
-              Your application will be sent to Hacking HR. You will be notified
-              within the next 48 hours.
-            </p>
-          </Modal>
-        ) : (
-          <>
-            {showProfileCompletionFirewall && (
-              <div
-                className="skill-cohort-firewall"
-                onClick={() => setShowProfileCompletionFirewall(false)}
-              >
-                <div
-                  className="upgrade-notification-panel"
-                  onClick={completeProfile}
-                >
-                  <h3>
-                    You must fully complete your profile before aplly to the HR
-                    business partner community.
-                  </h3>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
       {(user.memberShip === "premium" ||
         user.channelsSubscription === true ||
         user.recruiterSubscription === true) && (
@@ -352,6 +299,52 @@ const ProfilePopupMenu = (props) => {
           Experts Council
         </div>
       )}
+      <div className="profile-popover-content-menu">
+        <React.Fragment>
+          <div onClick={onApplyBusinessPartner}>
+            {user.isBusinessPartner
+              ? "HR Business Partners Community"
+              : "Apply to the HR Business Partner Community"}
+          </div>
+        </React.Fragment>
+        {user.percentOfCompletion === 100 ? (
+          <Modal
+            visible={visibleConfirmApply}
+            title="Are you sure you want to apply to the HR business partner community?"
+            width={500}
+            onCancel={() => setVisibleConfirmApply(false)}
+            onOk={() => {
+              onApplyBusness();
+              setVisibleConfirmApply(false);
+            }}
+            okText="Confirm"
+          >
+            <p>
+              Your application will be sent to Hacking HR. You will be notified
+              within the next 48 hours.
+            </p>
+          </Modal>
+        ) : (
+          <>
+            {showProfileCompletionFirewall && (
+              <div
+                className="skill-cohort-firewall"
+                onClick={() => setShowProfileCompletionFirewall(false)}
+              >
+                <div
+                  className="upgrade-notification-panel"
+                  onClick={completeProfile}
+                >
+                  <h3>
+                    You must fully complete your profile before aplly to the HR
+                    business partner community.
+                  </h3>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
       {/* {user.percentOfCompletion === 100 && (
         <div
           className="profile-popover-content-menu"

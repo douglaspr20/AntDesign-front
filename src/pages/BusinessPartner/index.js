@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import { actions as homeActions } from "redux/actions/home-actions";
 import { LibraryFilterPanel, Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { INTERNAL_LINKS } from "enum";
@@ -13,12 +14,19 @@ import BusinessPartnerMembers from "./BusinessPartnerMembers";
 import BusinessPartnerList from "./BusinessPartnerList";
 import "./style.scss";
 
-const BusinessPartnerPage = ({ userProfile }) => {
+const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
+  const accepted = query.get("accepted");
+  const id = query.get("id");
   const [filter, setFilter] = useState({});
+
+  useEffect(() => {
+    if(accepted != null && id)
+    confirmApply(id, accepted === "true" ? true : false);
+  }, [id, confirmApply, accepted, getUser]);
 
   const onFilterChange = (values) => {
     setFilter(values);
@@ -94,7 +102,9 @@ const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  confirmApply: homeActions.confirmInvitationApply,
+};
 
 export default connect(
   mapStateToProps,
