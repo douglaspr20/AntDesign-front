@@ -186,7 +186,9 @@ const ProfilePopupMenu = (props) => {
       <div className="profile-popover-content-menu">
         <React.Fragment>
           <div onClick={onApplyBusinessPartner}>
-            Apply to the HR Business Partner Community
+            {user.isBusinessPartner
+              ? "HR Business Partners Community"
+              : "Apply to the HR Business Partner Community"}
           </div>
         </React.Fragment>
         {user.percentOfCompletion === 100 ? (

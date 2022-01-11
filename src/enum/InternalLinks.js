@@ -2,6 +2,7 @@ export default {
   HOME: "/",
   LOGIN: "/login",
   COUNCIL: "/council",
+  BUSINESS_PARTNER: '/business-partner',
   SIGNUP: "/signup",
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",

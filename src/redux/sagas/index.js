@@ -34,6 +34,8 @@ import { sessionClassUserSaga } from "./sessionClassUser";
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
+import { businessPartnerSaga } from "./businessPartner";
+import { businessPartnerCommentSaga } from "./businessPartnerComments";
 
 export default function* sagas() {
   yield all([
@@ -41,6 +43,8 @@ export default function* sagas() {
     ...userSaga,
     ...councilSaga,
     ...councilCommentSaga,
+    ...businessPartnerSaga,
+    ...businessPartnerCommentSaga,
     ...eventSaga,
     ...librarySaga,
     ...mentoringSaga,

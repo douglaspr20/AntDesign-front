@@ -19,7 +19,7 @@ const ConfirmMail = ({ confirmApply }) => {
   }, [id, confirmApply, accepted]);
   return (
     <>
-      <h2>furula??</h2>
+      <h2>{accepted === "true" ? "Aceptado pajuo" : "rechazado por toche"}</h2>
     </>
   );
 };

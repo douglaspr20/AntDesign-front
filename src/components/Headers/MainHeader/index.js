@@ -96,6 +96,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (pathname.includes(`${INTERNAL_LINKS.BUSINESS_PARTNER}`)) {
+      pathInfo = {
+        // icon: ,
+        label: `Businnes Partner`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
       const { selectedCourse } = this.props;
       pathInfo = {

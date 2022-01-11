@@ -44,6 +44,14 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          path={INTERNAL_LINKS.BUSINESS_PARTNER}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.BUSINESS_PARTNER}/resource`}
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
           path={INTERNAL_LINKS.CLASSES}
           render={(props) => <MainHeader {...props} />}
         />
@@ -125,7 +133,8 @@ class TopHeader extends Component {
           exact
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
           render={(props) => <MainHeader {...props} />}
-          />
+        />
+        <PrivateRoute
           exact
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE_SPEAKERS}
           render={(props) => <MainHeader {...props} />}

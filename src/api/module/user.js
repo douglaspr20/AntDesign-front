@@ -90,7 +90,6 @@ export const acceptInvitationJoin = ({ newUser, hostUserId }) => {
 };
 
 export const acceptInvitationApplyBusinnesPartner = ({ userId }) => {
-  console.log(userId);
   return httpClient.post("private/user/apply-business-partner", {
     userId,
   });

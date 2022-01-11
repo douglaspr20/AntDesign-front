@@ -161,6 +161,19 @@ import {
   removeCouncilCommentFromAPI,
 } from "./module/council-comments";
 
+import {
+  getBusinessPartnerMembersFromAPI,
+  getBusinessPartnerResourcesFromAPI,
+  createBusinessPartnerResourceFromAPI,
+  getBusinessPartnerResourceByIdFromAPI,
+} from "./module/businessPartner";
+
+import {
+  getAllBusinessPartnerCommentsFromAPI,
+  postBusinessPartnerCommentFromAPI,
+  removeBusinessPartnerCommentFromAPI,
+} from "./module/businessPartner-comments";
+
 import { getPartners, getPartner } from "./module/partner";
 import { getUserProgress, setProgress } from "./module/sessionClassUser";
 import {
@@ -183,6 +196,13 @@ export {
   getCouncilResourceByIdFromAPI,
   getCouncilResourcesFromAPI,
   createCouncilResourceFromAPI,
+  getBusinessPartnerMembersFromAPI,
+  getBusinessPartnerResourceByIdFromAPI,
+  getBusinessPartnerResourcesFromAPI,
+  createBusinessPartnerResourceFromAPI,
+  getAllBusinessPartnerCommentsFromAPI,
+  postBusinessPartnerCommentFromAPI,
+  removeBusinessPartnerCommentFromAPI,
   getAllUsers,
   changePassword,
   createInvitation,

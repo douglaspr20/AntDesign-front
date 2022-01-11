@@ -54,7 +54,9 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
-import ConfirmMail from "pages/ConfirmMail"
+import ConfirmMail from "pages/ConfirmMail";
+import BusinessPartnerPage from "pages/BusinessPartner";
+import BusinessPartnerConversationCard from "pages/BusinessPartner/BusinessPartnerConversationCard";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -76,7 +78,7 @@ class Content extends Component {
   }
 
   render() {
-    return ( 
+    return (
       <Layout.Content>
         <Switch>
           <PrivateRoute
@@ -145,6 +147,16 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.COUNCIL}
             render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.BUSINESS_PARTNER}
+            render={(props) => <BusinessPartnerPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.BUSINESS_PARTNER}/resource`}
+            render={(props) => <BusinessPartnerConversationCard {...props} />}
           />
           <PrivateRoute
             exact
