@@ -29,7 +29,6 @@ const TalentMarketplace = ({
   useEffect(() => {
     let dataFiltered = marketplaceProfiles;
     function checkAvailability(arr, val) {
-      console.log(arr, val);
       return arr.some((arrVal) => val === arrVal);
     }
 

@@ -15,7 +15,8 @@ import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
 import IconTvOutline from "images/icon-tv-outline.svg";
 import IconGlobal from "images/icon-global.svg";
-import IconFlask from "images/icon-flask-outline.svg";
+import IconFlask from "images/icon-flask-outline.svg"
+// import IconBriefcase from "images/icon-briefcase-outline.svg"
 // import IconGlobal from "images/icon-global.svg";
 
 export default {
@@ -25,6 +26,13 @@ export default {
       icon: IconHome,
       url: INTERNAL_LINKS.HOME,
     },
+    /*
+    {
+      label: "Talent Marketplace",
+      icon: IconBriefcase,
+      url: INTERNAL_LINKS.TALENT_MARKETPLACE,
+    },
+    */
     {
       label: "Global Conference",
       icon: IconGlobal,

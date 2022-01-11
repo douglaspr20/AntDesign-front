@@ -129,6 +129,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
           render={() => <Sidebar />}
         />
+        <PrivateRoute
+          path={INTERNAL_LINKS.TALENT_MARKETPLACE}
+          render={() => <Sidebar />}
+        />
       </Switch>
     );
   }

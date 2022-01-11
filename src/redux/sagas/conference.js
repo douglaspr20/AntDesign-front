@@ -26,7 +26,7 @@ export function* getMoreConferenceLibrariesSaga({ payload }) {
       const moreConferenceLibraries = {
         libraries: response.data.conferences[0].rows,
         currentPage: payload.filter.page,
-        countOfResults: response.data.conferences[0].count,
+        count: response.data.conferences[0].count,
       };
 
       yield put(

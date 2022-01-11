@@ -1,9 +1,20 @@
 import httpClient from "./httpClient";
 
-export const getMarketplaceProfiles = ({ id, meta }) => {
-  return httpClient.get(
-    `private/marketplace-profiles?userId=${id} ${meta ? `&meta=${meta}` : ""}`
-  );
+export const getMarketplaceProfiles = (data) => {
+  let newFilter = {};
+
+  if (data.filter) {
+    newFilter = {
+      ...newFilter,
+      ...data.filter,
+    };
+  }
+
+  const parsedFilter = Object.keys(newFilter)
+    .map((item) => `${item}=${newFilter[item]}`)
+    .join("&");
+
+  return httpClient.get(`private/marketplace-profiles?${parsedFilter}`)
 };
 
 export const getMarketplaceProfile = ({ id }) => {

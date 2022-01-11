@@ -57,6 +57,8 @@ import SponsorDashboardPage from "pages/SponsorDashboard";
 import ConfirmMail from "pages/ConfirmMail";
 import BusinessPartnerPage from "pages/BusinessPartner";
 import BusinessPartnerConversationCard from "pages/BusinessPartner/BusinessPartnerConversationCard";
+import TalentMarketplacePage from "pages/TalentMarketplace";
+import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -371,13 +373,11 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.LIBRARY_ITEM}/:type/:id`}
             render={(props) => <LibraryItemPage {...props} />}
           />
-          {this.props.userProfile.memberShip === "premium" && (
-            <Route
-              exact
-              path={`${INTERNAL_LINKS.PROJECTX}/:id/resources`}
-              render={(props) => <SkillCohortResourcePage {...props} />}
-            />
-          )}
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.PROJECTX}/:id/resources`}
+            render={(props) => <SkillCohortResourcePage {...props} />}
+          />
           <PrivateRoute
             exact
             path={`${INTERNAL_LINKS.MY_LEARNINGS}`}
@@ -387,6 +387,16 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.SPONSOR_DASHBOARD}
             render={(props) => <SponsorDashboardPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.TALENT_MARKETPLACE}
+            render={(props) => <TalentMarketplacePage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
+            render={(props) => <JobPostDetailsPage {...props} />}
           />
           <Route
             exact

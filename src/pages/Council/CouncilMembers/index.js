@@ -5,27 +5,20 @@ import { councilSelector } from "redux/selectors/councilSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
 import { getCouncilMembers } from "redux/actions/council-actions";
-import { ParticipantCard } from "components";
+import CouncilParticipantsCards from "../CouncilParticipantsCards";
 import "./style.scss";
 
-const CouncilMembers = ({
-  userProfile,
-  councilMembers,
-  getCouncilMembers,
-}) => {
-
+const CouncilMembers = ({ userProfile, councilMembers, getCouncilMembers }) => {
   useEffect(() => {
     if (userProfile.topicsOfInterest.length > 0) {
       getCouncilMembers();
     }
-
   }, [userProfile, getCouncilMembers]);
-
   return (
     <div className="channel-page__list-wrap">
       <div className="participants-list">
         {councilMembers?.map((councilMember, i) => (
-          <ParticipantCard
+          <CouncilParticipantsCards
             key={i}
             participant={councilMember}
             invitedAllBonfires={true}
