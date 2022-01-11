@@ -343,17 +343,21 @@ const GlobalConference = ({
               <>
                 <CustomButton
                   size="xs"
-                  text="Download  Personalized Agenda"
+                  text="Download Personalized Agenda"
                   style={{ marginLeft: "1rem" }}
                   onClick={() => downloadPdf("personal-agenda")}
                 />
 
-                <CustomButton
-                  size="xs"
-                  text="Download  Report Sessions Joined"
-                  style={{ marginLeft: "1rem" }}
-                  onClick={() => downloadPdf("report-sessions-joined")}
-                />
+                {moment().date() >= 7 &&
+                  moment().month() >= 2 &&
+                  moment().year >= 2022 && (
+                    <CustomButton
+                      size="xs"
+                      text="Download Report Sessions Joined"
+                      style={{ marginLeft: "1rem" }}
+                      onClick={() => downloadPdf("report-sessions-joined")}
+                    />
+                  )}
               </>
             )}
 
