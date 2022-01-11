@@ -40,7 +40,6 @@ const BusinessPartnerConversationsCard = ({
     getBusinessPartnerResourceById(id);
     getAllBusinessPartnerComments({ businessPartnerId: id });
   }, [getBusinessPartnerResourceById, getAllBusinessPartnerComments, id]);
-  console.log(businessPartnerResource)
   return (
     <div className="post-card-container-businessPartner">
       <div

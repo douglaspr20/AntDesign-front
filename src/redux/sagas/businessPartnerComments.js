@@ -71,7 +71,6 @@ export function* removeBusinessPartnerCommentSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    console.log(payload);
     const response = yield call(
       removeBusinessPartnerCommentFromAPI,
       payload.comment

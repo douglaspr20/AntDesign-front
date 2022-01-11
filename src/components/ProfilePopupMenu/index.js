@@ -140,11 +140,13 @@ const ProfilePopupMenu = (props) => {
   };
 
   const onApplyBusinessPartner = () => {
-    console.log(user.percentOfCompletion);
-    if (user.percentOfCompletion === 100) {
+    if (user.percentOfCompletion === 100 && !user.isBusinessPartner) {
       setVisibleConfirmApply(true);
     } else {
       setShowProfileCompletionFirewall(true);
+    }
+    if (user.isBusinessPartner) {
+      history.push(INTERNAL_LINKS.BUSINESS_PARTNER);
     }
   };
 
