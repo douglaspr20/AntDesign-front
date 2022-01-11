@@ -9,7 +9,6 @@ import { PlusOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
-import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
 
 import "./styles.scss";
@@ -250,7 +249,6 @@ const JobPostCard = ({
 };
 
 const mapStateToProps = (state) => ({
-  ...jobBoardSelector(state),
   marketplaceProfile: marketplaceProfileSelector(state).marketplaceProfile,
 });
 

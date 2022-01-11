@@ -101,17 +101,15 @@ const JobPostDrawer = ({
         return skill.preferredSkills;
       });
 
-      const flattenedTransformedPreferredSkills = flatten(
-        transformedPreferredSkills
-      );
-
-      const listOfTakenSkills = [
+      let listOfTknSkills = [
         preferredSkillsMain,
-        !isEmpty(flattenedTransformedPreferredSkills) &&
-          flattenedTransformedPreferredSkills,
       ];
 
-      const compactedListOfTakenSkills = compact(listOfTakenSkills);
+      if (!isEmpty(transformedPreferredSkills)) {
+        listOfTknSkills.push(...transformedPreferredSkills)
+      }
+
+      const compactedListOfTakenSkills = compact(listOfTknSkills);
 
       const listOfPreferredSkills = transformJobBoardPreferredSkills;
 
@@ -129,11 +127,10 @@ const JobPostDrawer = ({
           if (skillIndex !== -1) {
             let newTakenSkills = [...listOfTakenSkills];
 
-            return newTakenSkills[index] = {
+            return (newTakenSkills[index] = {
               titleIndex,
               skillIndex,
-            };
-
+            });
           }
         }
       });
@@ -168,24 +165,31 @@ const JobPostDrawer = ({
     const newCascadeOptions = cascadeOptions.map((item, itemIndex) => {
       const children = item.children.map((skill, skillIndex) => {
         const takenSkill = listOfTakenSkills.find(
-          (takenSkill) =>
-            takenSkill.titleIndex === itemIndex &&
-            takenSkill.skillIndex === skillIndex
+          (tknSkill) =>
+            tknSkill?.titleIndex === itemIndex &&
+            tknSkill?.skillIndex === skillIndex
         );
 
-        if (takenSkill) {
-          skill = {
-            ...skill,
-            disabled: true,
-          };
-        } else {
-          skill = {
-            ...skill,
-            disabled: false,
-          };
-        }
+        // if (takenSkill) {
+        //   skill = {
+        //     ...skill,
+        //     disabled: true,
+        //   };
+        // } else {
+        //   skill = {
+        //     ...skill,
+        //     disabled: false,
+        //   };
+        // }
 
-        return skill;
+        // console.log(takenSkill, 'takenSkill')
+
+        const disabled = !!takenSkill
+
+        return {
+          ...skill,
+          disabled,
+        };
       });
 
       return {
@@ -193,6 +197,7 @@ const JobPostDrawer = ({
         children,
       };
     });
+    // console.log(newCascadeOptions[0], 'newCascadeOptions[0]')
 
     setCascadeOptions(newCascadeOptions);
 
