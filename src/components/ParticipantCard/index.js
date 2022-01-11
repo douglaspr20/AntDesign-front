@@ -33,7 +33,7 @@ const ParticipantCardInfo = ({
 
   const downloadFile = () => {
     const link = document.createElement("a");
-    link.setAttribute("href", participant.User.resumeUrl);
+    link.setAttribute("href", participant.resumeUrl);
     link.setAttribute(
       "download",
       `${participant.firstName} ${participant.lastName}`
@@ -153,7 +153,7 @@ const ParticipantCardInfo = ({
               type="link"
               icon={<LinkedinOutlined />}
               onClick={() =>
-                window.open(participant.personalLinks.linkedin, "_blank")
+                window.open(participant.personalLinks?.linkedin, "_blank")
               }
               className="participant-card-marketplaceprofile-icon"
               disabled={!userProfile.recruiterSubscription}
