@@ -23,7 +23,6 @@ const PersonalAgenda = ({
   removeSession,
   userProfile,
   joinedSession,
-  addSession,
   getSessionsAddedbyUser,
   isRecommendedAgenda,
   recommendedAgendaSessions,
@@ -267,6 +266,7 @@ PersonalAgenda.defaultProps = {
 
 const mapStateToProps = (state) => ({
   sessionsUser: sessionSelector(state).sessionsUser,
+  sessionsUserJoined: sessionSelector(state).sessionsUserJoined,
   userProfile: homeSelector(state).userProfile,
   recommendedAgendaSessions: sessionSelector(state).recommendedAgendaSessions,
 });
