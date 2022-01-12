@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as homeActions } from "redux/actions/home-actions";
@@ -17,6 +17,7 @@ import "./style.scss";
 const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
+  const history = useHistory();
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const accepted = query.get("accepted");
@@ -24,9 +25,10 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const [filter, setFilter] = useState({});
 
   useEffect(() => {
-    if(accepted != null && id)
-    confirmApply(id, accepted === "true" ? true : false);
-  }, [id, confirmApply, accepted, getUser]);
+    if (accepted != null && id)
+      confirmApply(id, accepted === "true" ? true : false);
+    history.push("business-partner");
+  }, [id, confirmApply, accepted, getUser, history]);
 
   const onFilterChange = (values) => {
     setFilter(values);
@@ -61,7 +63,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
 
   return (
     <>
-      {userProfile.isBusinessPartner || userProfile.role === "admin" ? (
+      {userProfile.isBusinessPartner && userProfile.role === "admin" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel onChange={onFilterChange} />
           <div className="businessPartner-page__container">
