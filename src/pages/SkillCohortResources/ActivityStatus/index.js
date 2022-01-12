@@ -63,7 +63,7 @@ const ActivityStatus = ({
               );
 
             const displayPersonalReflection =
-              countPersonalReflection.length >= 2 ? "COMPLETED" : "PENDING";
+              countPersonalReflection.length >= 1 ? "COMPLETED" : "PENDING";
 
             const countAssessments =
               cohort.SkillCohortResponseAssessments.filter(
