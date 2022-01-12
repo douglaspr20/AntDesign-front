@@ -17,6 +17,7 @@ import {
   getAllSessions,
   getSessionsUserJoined,
 } from "redux/actions/session-actions";
+
 import {
   attendToGlobalConference,
   setLoading,
@@ -338,7 +339,6 @@ const GlobalConference = ({
               style={{ marginLeft: ".5rem" }}
               onClick={() => setModalRequirementsVisible(true)}
             />
-
             {localPathname === "personal-agenda" && (
               <>
                 <CustomButton

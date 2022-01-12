@@ -39,7 +39,6 @@ import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
 import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
 import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
 import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
-
 import SpeakersPage from "pages/Speakers";
 import ParticipantsPage from "pages/Participants";
 import LivePage from "pages/Live";
@@ -299,7 +298,6 @@ class Content extends Component {
               </GlobalConferencePage>
             )}
           />
-
           <PrivateRoute
             path={`${INTERNAL_LINKS.SPEAKERS}`}
             render={(props) => <SpeakersPage {...props} />}
