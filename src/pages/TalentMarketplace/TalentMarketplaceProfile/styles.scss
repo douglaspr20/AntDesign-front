@@ -3,6 +3,8 @@
 .talent-marketplace-profile {
   padding: 1rem;
   width: 100%;
+  max-height: calc(100vh - 4.5rem - 66px);
+  overflow-y: auto;
 
   @media (max-width: 1500px){
     padding-left: 2rem;
@@ -20,9 +22,9 @@
       padding-top: 18rem;
       } 
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
 
   &-form{
       padding-bottom: 1rem !important;
@@ -39,25 +41,18 @@
 }
 
 .preferred-skills-wrapper {
-  // background-color: red;
   display: flex;
   align-items: baseline;
 
-  .preferred-skills-main {
-    // flex-grow: 1;
-  }
-
-  .preferred-skills-level {
-    
-  }
-
   .preferred-skills-main-content {
     margin-right: 2rem;
+    margin-bottom: 1rem;
     padding-left: 1rem;
     width: 15%;
   }
-
-  .preferred-skills-level-content {
-
-  }
 }
+
+// .skills-wrapper {
+  // background-color: white;
+  // margin-bottom: 1rem;
+// }

@@ -45,7 +45,7 @@ const RecruiterView = ({
       level: values.preferredSkillsMain[2],
     };
 
-    preferredSkills = [...preferredSkills, transformedPreferredSkillsMain];
+    preferredSkills = [...(preferredSkills || []), transformedPreferredSkillsMain];
 
     delete values.preferredSkillsMain;
 

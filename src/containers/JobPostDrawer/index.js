@@ -83,13 +83,13 @@ const JobPostDrawer = ({
         (country) => country.value === post.country
       );
 
-      const preferredSkills = post.preferredSkills.slice(1, 2).map((skill) => {
+      let preferredSkillsMain = post.preferredSkills[0] || null;
+
+      const preferredSkills = post.preferredSkills.slice(1).map((skill) => {
         return {
           preferredSkills: [skill.title, skill.skill, skill.level],
         };
       });
-
-      let preferredSkillsMain = post.preferredSkills[0] || null;
 
       preferredSkillsMain = preferredSkillsMain && [
         preferredSkillsMain?.title,
@@ -101,21 +101,17 @@ const JobPostDrawer = ({
         return skill.preferredSkills;
       });
 
-      const flattenedTransformedPreferredSkills = flatten(
-        transformedPreferredSkills
-      );
-
-      const listOfTakenSkills = [
+      let listOfTknSkills = [
         preferredSkillsMain,
-        !isEmpty(flattenedTransformedPreferredSkills) &&
-          flattenedTransformedPreferredSkills,
       ];
 
-      const compactedListOfTakenSkills = compact(listOfTakenSkills);
+      if (!isEmpty(transformedPreferredSkills)) {
+        listOfTknSkills.push(...transformedPreferredSkills)
+      }
+
+      const compactedListOfTakenSkills = compact(listOfTknSkills);
 
       const listOfPreferredSkills = transformJobBoardPreferredSkills;
-
-      // console.log(compactedListOfTakenSkills, 'compactedListOfTakenSkills')
 
       // eslint-disable-next-line array-callback-return
       const data = compactedListOfTakenSkills.map((takenSkills, index) => {
@@ -131,11 +127,10 @@ const JobPostDrawer = ({
           if (skillIndex !== -1) {
             let newTakenSkills = [...listOfTakenSkills];
 
-            return newTakenSkills[index] = {
+            return (newTakenSkills[index] = {
               titleIndex,
               skillIndex,
-            };
-
+            });
           }
         }
       });
@@ -170,24 +165,31 @@ const JobPostDrawer = ({
     const newCascadeOptions = cascadeOptions.map((item, itemIndex) => {
       const children = item.children.map((skill, skillIndex) => {
         const takenSkill = listOfTakenSkills.find(
-          (takenSkill) =>
-            takenSkill.titleIndex === itemIndex &&
-            takenSkill.skillIndex === skillIndex
+          (tknSkill) =>
+            tknSkill?.titleIndex === itemIndex &&
+            tknSkill?.skillIndex === skillIndex
         );
 
-        if (takenSkill) {
-          skill = {
-            ...skill,
-            disabled: true,
-          };
-        } else {
-          skill = {
-            ...skill,
-            disabled: false,
-          };
-        }
+        // if (takenSkill) {
+        //   skill = {
+        //     ...skill,
+        //     disabled: true,
+        //   };
+        // } else {
+        //   skill = {
+        //     ...skill,
+        //     disabled: false,
+        //   };
+        // }
 
-        return skill;
+        // console.log(takenSkill, 'takenSkill')
+
+        const disabled = !!takenSkill
+
+        return {
+          ...skill,
+          disabled,
+        };
       });
 
       return {
@@ -195,6 +197,7 @@ const JobPostDrawer = ({
         children,
       };
     });
+    // console.log(newCascadeOptions[0], 'newCascadeOptions[0]')
 
     setCascadeOptions(newCascadeOptions);
 

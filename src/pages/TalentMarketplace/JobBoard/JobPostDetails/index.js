@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Card, Space, Avatar, Tag } from "antd";
+import { Card, Space, Avatar, Tag, Tooltip, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { CustomButton } from "components";
 import { COUNTRIES, PROFILE_SETTINGS, INTERNAL_LINKS, JOB_BOARD } from "enum";
 import IconBack from "images/icon-back.svg";
 import { startCase } from "lodash";
+import { MailOutlined, LinkedinOutlined } from "@ant-design/icons";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
@@ -79,6 +80,29 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
   const handleBtnClick = () => {
     window.open(jobPost?.linkToApply, "_blank");
   };
+
+  const cardActions = [
+    <Tooltip title="Linkedin">
+      <Button
+        shape="circle"
+        type="link"
+        icon={<LinkedinOutlined />}
+        onClick={() =>
+          window.open(jobPost?.User?.personalLinks.linkedin, "_blank")
+        }
+        // className="participant-card-marketplaceprofile-icon"
+      />
+    </Tooltip>,
+    <Tooltip title="Contact Email">
+      <Button
+        shape="circle"
+        type="link"
+        icon={<MailOutlined />}
+        onClick={() => window.open(`mailto:${jobPost?.User?.email}`, "_blank")}
+        // className="participant-card-marketplaceprofile-icon"
+      />
+    </Tooltip>,
+  ];
 
   return (
     <div className="job-board-details-page">
@@ -172,34 +196,29 @@ const JobPostDetailsPage = ({ getJobPost, jobPost }) => {
             </Space>
           </div>
           <div className="recruiter">
-            <a
-              href={jobPost?.User?.personalLinks.linkedin || ""}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Card
+              hoverable
+              bordered
+              type="inner"
+              extra={<UserOutlined />}
+              title={<h3>Recruiter</h3>}
+              actions={cardActions}
             >
-              <Card
-                hoverable
-                bordered
-                type="inner"
-                extra={<UserOutlined />}
-                title={<h3>Recruiter</h3>}
-              >
-                {jobPost?.User?.img ? (
-                  <Avatar
-                    size={180}
-                    src={jobPost?.User?.img}
-                    alt={`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}
-                  />
-                ) : (
-                  <Avatar size={180} icon={<UserOutlined />} />
-                )}
+              {jobPost?.User?.img ? (
+                <Avatar
+                  size={180}
+                  src={jobPost?.User?.img}
+                  alt={`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}
+                />
+              ) : (
+                <Avatar size={180} icon={<UserOutlined />} />
+              )}
 
-                <div>
-                  <p className="participant-name">{`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}</p>
-                  <p>{jobPost?.User?.titleProfessions}</p>
-                </div>
-              </Card>
-            </a>
+              <div>
+                <p className="participant-name">{`${jobPost?.User?.firstName} ${jobPost?.User?.lastName}`}</p>
+                <p>{jobPost?.User?.titleProfessions}</p>
+              </div>
+            </Card>
           </div>
           <div className="section4">
             <CustomButton text="Apply" onClick={handleBtnClick} />

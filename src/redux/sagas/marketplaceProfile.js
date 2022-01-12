@@ -51,8 +51,21 @@ export function* getMarketplaceProfilesSaga({ payload }) {
     let response = yield call(getMarketplaceProfiles, { ...payload });
 
     if (response.status === 200) {
+      const marketPlaceProfilesData = response.data.marketPlaceProfiles.map(
+        (marketPlaceProfile) => {
+          const { User } = marketPlaceProfile;
+
+          delete marketPlaceProfile.User;
+
+          const newMarketplaceProfile = Object.assign(marketPlaceProfile, User);
+
+          return newMarketplaceProfile;
+        }
+      );
       yield put(
-        marketplaceProfileActions.setMarketPlaceProfiles(response.data.marketPlaceProfiles)
+        marketplaceProfileActions.setMarketPlaceProfiles(
+          marketPlaceProfilesData
+        )
       );
     }
   } catch (error) {
@@ -104,9 +117,11 @@ export function* updateMarketplaceProfileSaga({ payload }) {
     let response = yield call(updateMarketplaceProfile, { ...payload });
 
     if (response.status === 200) {
-      yield call(getMarketplaceProfile, {
-        id: response.data.affectedRows.UserId,
-      });
+      yield put(
+        marketplaceProfileActions.setMarketPlaceProfile(
+          response.data.affectedRows
+        )
+      );
 
       notification.success({
         message: "Success",
