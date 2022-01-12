@@ -73,7 +73,7 @@ const ActivityStatus = ({
               );
 
             const displayComments =
-              countAssessments.length >= 2 ? "COMPLETED" : "PENDING";
+              countAssessments.length >= 1 ? "COMPLETED" : "PENDING";
 
             return (
               <Panel header={header} key={resourceIndex}>
