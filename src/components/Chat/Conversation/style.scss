@@ -1,0 +1,13 @@
+@import "styles/main.scss";
+
+.conversation {
+    border-bottom: 1px solid $color-border;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    transition: all ease 300ms;
+    &:hover{
+        background: $color-background-dark;
+    }
+}
