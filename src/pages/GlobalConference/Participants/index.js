@@ -5,7 +5,7 @@ import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { getBonfires, inviteUser } from "redux/actions/bonfire-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
-import { CustomButton, ParticipantCard } from "components";
+import { CustomButton, ParticipantCard, Chat } from "components";
 import { Modal, List, Skeleton, notification, Pagination } from "antd";
 import "./style.scss";
 
@@ -92,6 +92,7 @@ const Participants = ({
           onChange={handlePaginated}
           style={{ marginTop: "1.5rem" }}
         />
+        <Chat />
       </div>
 
       <Modal

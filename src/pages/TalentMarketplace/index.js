@@ -65,10 +65,10 @@ const TalentMarketplacePage = ({
 
   const displayMainJobPosts = () => {
     return (
-      <>
+      <div className="job-board-wrapper">
         <div className="job-posts-container">
           {allJobPosts?.map((post, index) => {
-            return <JobPostCard post={post} key={index} />;
+            return <JobPostCard post={post} key={index}/>;
           })}
         </div>
         {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
@@ -88,7 +88,7 @@ const TalentMarketplacePage = ({
             )}
           </div>
         )}
-      </>
+      </div>
     );
   };
 

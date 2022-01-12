@@ -45,13 +45,13 @@ const LibraryShareForm = ({
   return (
     <div className="library-share-form">
       <h1 className="library-share-form-title">
-        Suggest new content to HHR community
+        Share Resource With Your Experts Council Peers
       </h1>
-      <h3 className="library-share-form-desc">
+      {/* <h3 className="library-share-form-desc">
         Contribute with new content to the community. The content will be
         reviewed and analyzed by the lead member of HHR community. Thanks for
         sharing, we will let you know if your content is selected.
-      </h3>
+        </h3> */}
       <Form
         className="library-form"
         layout="vertical"

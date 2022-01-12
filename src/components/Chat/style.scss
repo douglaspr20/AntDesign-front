@@ -1,0 +1,117 @@
+@import "styles/main.scss";
+
+.affix{
+    position: absolute;
+    left: 72%;
+    bottom: 0;
+}
+
+.chat{
+    background: #fff;
+    width: 500px;
+    height: 400px;
+    border-radius: 10px 10px 0px 0px;
+    border: 1px solid $color-background-dark;
+    box-shadow: 0px 0px 3px $color-background-dark;
+    display: flex;
+    position: relative;
+
+    &-messages-container{
+        width: 65%;
+        position: relative;
+    }
+
+    &-messages{
+        text-align: center;
+        padding: 10px;
+    }
+
+    p{
+        font-size: .8rem;
+        letter-spacing: 0;
+    }
+
+    &-message{
+        background: $color-background-dark;
+        color: $color-text-secondary;
+        padding: 5px;
+        max-width: 250px;
+        border-radius: 5px 5px 0px 0px;
+        position: relative;
+    }
+
+    &-message-contact{
+        background: $color-background-dark;
+        color: $color-text-secondary;
+        margin-left: 5px;
+
+        &::after{
+            position: absolute;
+            content: "";
+            left: -1px;
+            border-top: 15px solid $color-background-dark;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+    }
+
+    &-message-user{
+        background: $color-primary;
+        color: $color-white;
+        margin-left: auto;
+        margin-right: 10px;
+
+        &::after{
+            position: absolute;
+            content: "";
+            bottom: -23px;
+            right: 0px;
+            border-top: 13px solid $color-primary;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom-right-radius: 10px;
+        }
+
+        & p{
+            text-align: left;
+        }
+    }
+
+    .conversations{
+        height: 100%;
+        border-left: 1px solid $color-border;
+        max-height: 100%;
+        overflow-y: auto;
+        width: 35%;
+        position: relative;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+          }
+          
+          /* Track */
+          &::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            display: none
+          }
+           
+          /* Handle */
+          &::-webkit-scrollbar-thumb {
+            background: #888; 
+            display: none;
+            border-radius: 5px;
+            position: absolute;
+
+          }
+
+        &:hover{
+            &::-webkit-scrollbar-thumb{
+                display: block;
+                transition: all ease 500ms;
+            }
+        }
+
+    }
+}

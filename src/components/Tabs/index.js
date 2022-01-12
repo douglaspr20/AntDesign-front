@@ -35,6 +35,7 @@ const CustomTabs = ({ current, className, data, onChange, ...rest }) => {
           className="custom-tabs-tabpane"
           tab={tab.title}
           key={index.toString()}
+          // style={{ minHeight: "100vh", background: "red" }}
         >
           {tab.content()}
         </TabPane>

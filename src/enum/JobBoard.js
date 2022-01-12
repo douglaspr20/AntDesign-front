@@ -145,8 +145,48 @@ export default {
           label: "Digital Acumen",
         },
         {
-          value: "diversity-equity-inclusion-and-belonging",
-          label: "Diversity, equity, inclusion and belonging",
+          value: "diversity-equity-inclusion-and-belonging-strategies",
+          label: "Diversity, equity, inclusion and belonging strategies.",
+        },
+        {
+          value: "employee-experience-and-engagement",
+          label: "Employee Experience and Engagement",
+        },
+        {
+          value: "employee-and-labor-relations",
+          label: "Employee & Labor Relations",
+        },
+        {
+          value: "hr-technology-information-software-and-systems",
+          label: "HR Technology, Information Software and Systems",
+        },
+        {
+          value: "hr-strategy-design-and-execution",
+          label: "HR Strategy Design and Exection",
+        },
+        {
+          value: "people-analytics-and-reporting",
+          label: "People Analytics and Reporting",
+        },
+        {
+          value: "performance-management",
+          label: "Performance Management",
+        },
+        {
+          value: "onboarding",
+          label: "Onboarding",
+        },
+        {
+          value: "organizational-diagnosis-and-design",
+          label: "Organizational Diagnosis & Design",
+        },
+        {
+          value: "recruitment-hiring-and-onboarding",
+          label: "Recruitment, hiring and onboarding",
+        },
+        {
+          value: "wellness-and-well-being-strategy-design-and-execution",
+          label: "Wellness and Well-Being strategy design and execution",
         },
       ]
     },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Pagination } from "antd";
-import { SpeakerCard, Chat } from "components";
+import { SpeakerCard } from "components";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { getAllSessions } from "redux/actions/session-actions";
 import { setLoading } from "redux/actions/home-actions";
@@ -64,7 +64,6 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
             .map((speaker) => (
               <SpeakerCard key={speaker.id} speaker={speaker} />
             ))}
-        <Chat />
       </div>
 
       <Pagination
