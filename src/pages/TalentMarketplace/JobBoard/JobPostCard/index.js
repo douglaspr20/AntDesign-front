@@ -6,13 +6,25 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
 import { PlusOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons";
+import { isEmpty } from "lodash";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
-import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
+import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
 
 import "./styles.scss";
 
-const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
+const levels = {
+  basic: 1,
+  intermediate: 2,
+  advanced: 3,
+};
+
+const JobPostCard = ({
+  post,
+  upsertJobPost,
+  marketplaceProfile,
+  myPostedJob = false,
+}) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [status, setStatus] = useState();
   const [form] = Form.useForm();
@@ -143,6 +155,35 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
     </div>
   );
 
+  const calculateSkillMatchPercentage = () => {
+    let percentage = 0;
+    
+
+    if (!isEmpty(marketplaceProfile) && !isEmpty(marketplaceProfile.skills)) {
+      const numberOfPercentagePerSkill = 100 / post.preferredSkills.length;
+
+      // eslint-disable-next-line array-callback-return
+      post.preferredSkills.map((preferredSkill) => {
+        const profileSkillLevel =
+          marketplaceProfile.skills[preferredSkill.skill];
+
+        if (profileSkillLevel) {
+          const diff = levels[profileSkillLevel] - levels[preferredSkill.level];
+
+          if (diff >= 0) {
+            percentage += numberOfPercentagePerSkill;
+          } else if (diff === -1) {
+            percentage += numberOfPercentagePerSkill / 2;
+          }
+        }
+      });
+    }
+
+    return Number.isInteger(percentage) ? percentage : percentage.toFixed(2);
+  };
+
+  calculateSkillMatchPercentage();
+
   const displayStatusTag = () => {
     let color;
 
@@ -183,8 +224,15 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
             </div>
           </div>
         </div>
-        {displayMoreBtn}
-        {displayMyPostedJobBtns}
+        <div>
+          {!myPostedJob && (
+            <div className="job-post-skill-match-wrapper">
+              <h3>Skill Match: {calculateSkillMatchPercentage()}%</h3>
+            </div>
+          )}
+          {displayMoreBtn}
+          {displayMyPostedJobBtns}
+        </div>
       </div>
       <JobPostDrawer
         isEdit
@@ -201,7 +249,7 @@ const JobPostCard = ({ post, upsertJobPost, myPostedJob = false }) => {
 };
 
 const mapStateToProps = (state) => ({
-  ...jobBoardSelector(state),
+  marketplaceProfile: marketplaceProfileSelector(state).marketplaceProfile,
 });
 
 const mapDispatchToProps = {
