@@ -37,6 +37,7 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
 import "./App.scss";
+import SocketEventTypes from "enum/SocketEventTypes";
 
 class App extends Component {
   constructor(props) {
@@ -121,6 +122,15 @@ class App extends Component {
 
     if (isEmpty(prevUser) && !isEmpty(curUser)) {
       this.props.getLive();
+    }
+
+    if (
+      !window.location.pathname.includes("/global-conference") &&
+      this.props.userProfile.id
+    ) {
+      SocketIO.emit(SocketEventTypes.USER_OFFLINE, {
+        id: this.props.userProfile.id,
+      });
     }
   }
 

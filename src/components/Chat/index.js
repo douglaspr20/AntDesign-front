@@ -1,5 +1,5 @@
 import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
-import { Affix, Avatar, Button } from "antd";
+import { Affix, Avatar, Badge, Button } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
 import Conversation from "./Conversation";
@@ -12,19 +12,28 @@ const Chat = () => {
   return (
     <Affix offsetBottom={!open ? 150 : 40} className="affix">
       {!open ? (
-        <Button
-          type="primary"
-          shape="circle"
-          size="large"
-          icon={<MessageOutlined style={{ fontSize: "2rem" }} />}
-          onClick={() => setOpen(!open)}
+        <Badge
+          count={5}
           style={{
             position: "absolute",
-            right: -400,
-            width: 80,
-            height: 80,
+            right: -380,
+            top: 5,
           }}
-        />
+        >
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon={<MessageOutlined style={{ fontSize: "2rem" }} />}
+            onClick={() => setOpen(!open)}
+            style={{
+              width: 80,
+              height: 80,
+              position: "absolute",
+              right: -400,
+            }}
+          />
+        </Badge>
       ) : (
         <div className="chat">
           <div className="chat-messages-container">

@@ -211,7 +211,9 @@ const ParticipantCard = ({
       hoverable
       bordered
       type="inner"
-      extra={<UserOutlined />}
+      extra={
+        <UserOutlined className={participant.isOnline ? "userOnline" : ""} />
+      }
       bodyStyle={{
         display: "flex",
         flexDirection: "column",
@@ -228,6 +230,19 @@ const ParticipantCard = ({
           onClick={() => onOpenModalBonfires(participant.id)}
         />
       ) : null}
+
+      {participant.isOnline && (
+        <CustomButton
+          size="sm"
+          text="Start a Chat"
+          style={{
+            position: "absolute",
+            zIndex: "10",
+            top: 35,
+          }}
+          // onClick={() => onOpenModalBonfires(participant.id)}
+        />
+      )}
 
       {marketplaceProfile ? (
         <>
