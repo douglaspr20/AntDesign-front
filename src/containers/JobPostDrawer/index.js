@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { flatten, compact, isEmpty } from "lodash";
+import { compact, isEmpty } from "lodash";
 
 import { envSelector } from "redux/selectors/envSelector";
 
@@ -101,12 +101,10 @@ const JobPostDrawer = ({
         return skill.preferredSkills;
       });
 
-      let listOfTknSkills = [
-        preferredSkillsMain,
-      ];
+      let listOfTknSkills = [preferredSkillsMain];
 
       if (!isEmpty(transformedPreferredSkills)) {
-        listOfTknSkills.push(...transformedPreferredSkills)
+        listOfTknSkills.push(...transformedPreferredSkills);
       }
 
       const compactedListOfTakenSkills = compact(listOfTknSkills);
@@ -184,7 +182,7 @@ const JobPostDrawer = ({
 
         // console.log(takenSkill, 'takenSkill')
 
-        const disabled = !!takenSkill
+        const disabled = !!takenSkill;
 
         return {
           ...skill,
