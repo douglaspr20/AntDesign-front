@@ -94,7 +94,7 @@ const ActivityStatus = ({
 
   return (
     <div className="activity-status-wrapper">
-      <Collapse>{displayPanels}</Collapse>,
+      <Collapse>{displayPanels}</Collapse>
     </div>
   );
 };
