@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { flatten, compact, isEmpty } from "lodash";
+import { compact, isEmpty } from "lodash";
 
 import { envSelector } from "redux/selectors/envSelector";
 
