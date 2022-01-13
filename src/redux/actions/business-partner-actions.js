@@ -8,6 +8,14 @@ const GET_BUSINESS_PARTNER_RESOURCE = "GET_BUSINESS_PARTNER_RESOURCE";
 const SET_BUSINESS_PARTNER_RESOURCES = "SET_BUSINESS_PARTNER_RESOURCES";
 const UPDATE_BUSINESS_PARTNER_RESOURCES_INFORMATION =
   "UPDATE_BUSINESS_PARTNER_RESOURCES_INFORMATION";
+const UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE =
+  "UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE";
+const GET_BUSINESS_PARTNER_DOCUMENTS = "GET_BUSINESS_PARTNER_DOCUMENTS";
+const CREATE_BUSINESS_PARTNER_DOCUMENT = "CREATE_BUSINESS_PARTNER_DOCUMENT";
+const UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE =
+  "UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE";
+const SET_BUSINESS_PARTNER_DOCUMENT = "SET_BUSINESS_PARTNER_DOCUMENT";
+const SET_BUSINESS_PARTNER_DOCUMENTS = "SET_BUSINESS_PARTNER_DOCUMENTS";
 const GET_BUSINESS_PARTNER_RESOURCES = "GET_BUSINESS_PARTNER_RESOURCES";
 
 export const constants = {
@@ -15,10 +23,16 @@ export const constants = {
   SET_BUSINESS_PARTNER_MEMBERS,
   CREATE_BUSINESS_PARTNER_RESOURCE,
   SET_BUSINESS_PARTNER_RESOURCES,
-  UPDATE_BUSINESS_PARTNER_RESOURCES_INFORMATION,
   SET_BUSINESS_PARTNER_RESOURCE,
   GET_BUSINESS_PARTNER_RESOURCE,
   GET_BUSINESS_PARTNER_RESOURCES,
+  CREATE_BUSINESS_PARTNER_DOCUMENT,
+  GET_BUSINESS_PARTNER_DOCUMENTS,
+  UPDATE_BUSINESS_PARTNER_RESOURCES_INFORMATION,
+  UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE,
+  UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE,
+  SET_BUSINESS_PARTNER_DOCUMENTS,
+  SET_BUSINESS_PARTNER_DOCUMENT
 };
 
 export const getBusinessPartnerMembers = createAction(
@@ -40,9 +54,17 @@ export const getBusinessPartnerResourceById = createAction(
     callback,
   })
 );
+
 export const setBusinessPartnerResource = createAction(
   SET_BUSINESS_PARTNER_RESOURCE,
   (businessPartnerResource) => ({ businessPartnerResource })
+);
+
+export const setBusinessPartnerResources = createAction(
+  SET_BUSINESS_PARTNER_RESOURCES,
+  (businessPartnerResources) => ({
+    businessPartnerResources,
+  })
 );
 
 export const updateBusinessPartnerResourcesInformation = createAction(
@@ -51,11 +73,44 @@ export const updateBusinessPartnerResourcesInformation = createAction(
     businessPartnerResources,
   })
 );
-export const setBusinessPartnerResources = createAction(
-  SET_BUSINESS_PARTNER_RESOURCES,
-  (businessPartnerResources) => ({
-    businessPartnerResources,
+
+export const createBusinessPartnerDocument = createAction(
+  CREATE_BUSINESS_PARTNER_DOCUMENT,
+  (businessPartnerDocument, callback) => ({
+    businessPartnerDocument,
+    callback,
   })
+);
+
+export const uploadDocumentFile = createAction(
+  UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE,
+  (documentFile, callback) => ({
+    documentFile,
+    callback,
+  })
+  );
+
+  export const updateBusinessPartnerDocuments = createAction(
+    UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE,
+    (businessPartnerDocuments) => ({
+      businessPartnerDocuments,
+    })
+  );
+
+export const setBusinessPartnerDocument = createAction(
+  SET_BUSINESS_PARTNER_DOCUMENT,
+  (businessPartnerDocument) => ({ businessPartnerDocument })
+);
+
+export const setBusinessPartnerDocuments = createAction(
+  SET_BUSINESS_PARTNER_DOCUMENTS,
+  (businessPartnerDocuments) => ({
+    businessPartnerDocuments,
+  })
+);
+
+export const getBusinessPartnerDocuments = createAction(
+  GET_BUSINESS_PARTNER_DOCUMENTS
 );
 export const createBusinessPartnerResource = createAction(
   CREATE_BUSINESS_PARTNER_RESOURCE,
@@ -74,4 +129,9 @@ export const actions = {
   updateBusinessPartnerResourcesInformation,
   setBusinessPartnerResources,
   createBusinessPartnerResource,
+  getBusinessPartnerDocuments,
+  setBusinessPartnerDocument,
+  uploadDocumentFile,
+  updateBusinessPartnerDocuments,
+  createBusinessPartnerDocument,
 };

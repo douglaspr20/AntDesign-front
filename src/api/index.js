@@ -154,7 +154,7 @@ import {
   upsertJobPost,
   getMyJobPosts,
   invitationToApply,
-} from './module/jobBoard'
+} from "./module/jobBoard";
 import {
   getCouncilMembersFromAPI,
   getCouncilResourcesFromAPI,
@@ -173,6 +173,7 @@ import {
   getBusinessPartnerResourcesFromAPI,
   createBusinessPartnerResourceFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  uploadBusinessPartnerDocumentFileFromAPI,
 } from "./module/businessPartner";
 
 import {
@@ -208,6 +209,7 @@ export {
   getBusinessPartnerResourcesFromAPI,
   createBusinessPartnerResourceFromAPI,
   getAllBusinessPartnerCommentsFromAPI,
+  uploadBusinessPartnerDocumentFileFromAPI,
   postBusinessPartnerCommentFromAPI,
   removeBusinessPartnerCommentFromAPI,
   getAllUsers,

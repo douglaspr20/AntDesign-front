@@ -6,6 +6,8 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as homeActions } from "redux/actions/home-actions";
 import { LibraryFilterPanel, Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
+import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
+
 import { INTERNAL_LINKS } from "enum";
 
 import IconBack from "images/icon-back.svg";
@@ -35,32 +37,38 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   };
   const TabData = [
     {
+      title: "Members",
+      content: () => <BusinessPartnerMembers />,
+    },
+    {
+      title: "Relevant Content",
+      content: () => <BusinessPartnerMembers />,
+    },
+    {
       title: "Resources",
       content: () => (
         <BusinessPartnerList
-          type="article"
-          refresh={currentTab === "0"}
-          setCurrentValue={setCurrentTab}
-          filter={filter}
+        type="article"
+        refresh={currentTab === "0"}
+        setCurrentValue={setCurrentTab}
+        filter={filter}
         />
-      ),
-    },
-    // {
-    //   title: "Conversations",
-    //   content: () => (
-    //     <NoItemsMessageCard
-    //       message={`There are no
-    //     conversations
-    //   for you at the moment`}
-    //     />
-    //   ),
-    // },
+        ),
+      },
+      {
+        title: "Documents",
+        content: () => <BusinessPartnerDocuments />,
+      },
     {
-      title: "Business Partners Members",
-      content: () => <BusinessPartnerMembers />,
+      title: "Projects",
+      content: () => <>Cooming Soon</>,
+    },
+    {
+      title: "Roundtable",
+      content: () => <>Cooming Soon</>,
     },
   ];
-
+  console.log(currentTab)
   return (
     <>
       {userProfile.isBusinessPartner && userProfile.role === "admin" ? (

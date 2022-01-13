@@ -7,9 +7,12 @@ import { notification, Spin } from "antd";
 import { CustomModal, CustomButton } from "components";
 import { uploadResume, deleteResume } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+
+import { uploadDocumentFile } from "redux/actions/business-partner-actions";
 import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
+import { useLocation } from "react-router-dom";
 
 const UploadResumeModal = ({
   visible,
@@ -17,10 +20,14 @@ const UploadResumeModal = ({
   onClose,
   uploadResume,
   deleteResume,
+  uploadDocumentFile,
 }) => {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const location = useLocation();
+  const isBusiness = location.pathname.includes("business-partner");
 
   const onUploadResume = () => {
     if (fileRef && fileRef.current) {
@@ -51,31 +58,40 @@ const UploadResumeModal = ({
   const onFileChange = async () => {
     if (fileRef && fileRef.current) {
       // check file type
+
       const file = fileRef.current.files[0];
-      const supportedTypes = [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ];
+      if (!isBusiness) {
+        const supportedTypes = [
+          "application/pdf",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ];
 
-      if (!supportedTypes.includes(file.type)) {
-        setErrorMessage("Invalid format!");
-        return;
+        if (!supportedTypes.includes(file.type)) {
+          setErrorMessage("Invalid format!");
+          return;
+        }
       }
-
       setErrorMessage("");
       let formData = new FormData();
-      formData.append("resume", file);
-
+      formData.append(isBusiness ? "document" : "resume", file);
       setLoading(true);
       const response = await new Promise((resolve) => {
-        uploadResume(formData, (error) => {
-          if (error) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        });
+        isBusiness
+          ? uploadDocumentFile(formData, (error) => {
+              if (error) {
+                resolve(false);
+              } else {
+                resolve(true);
+              }
+            })
+          : uploadResume(formData, (error) => {
+              if (error) {
+                resolve(false);
+              } else {
+                resolve(true);
+              }
+            });
       });
       if (response) {
         notification.success({
@@ -96,7 +112,7 @@ const UploadResumeModal = ({
 
   return (
     <CustomModal
-      title="Upload your resume"
+      title={isBusiness ? "Upload your file" : "Upload your resume"}
       centered
       visible={visible}
       width={500}
@@ -112,7 +128,9 @@ const UploadResumeModal = ({
         {!loading && (
           <React.Fragment>
             <div className="upload-resume-form">
-              <span className="upload-resume-form-label">Resume:</span>
+              <span className="upload-resume-form-label">
+                {isBusiness ? "File" : "Resume"}:
+              </span>
               {!!userProfile.resumeFileName ? (
                 <>
                   <FilePdfOutlined className="upload-resume-form-pdficon" />
@@ -139,14 +157,16 @@ const UploadResumeModal = ({
                 disabled={!!userProfile.resumeFileName}
                 onClick={onUploadResume}
               />
-              <CustomButton
-                text="Delete"
-                type="primary outlined"
-                size="xs"
-                disabled={!userProfile.resumeFileName}
-                style={{ marginLeft: "1rem" }}
-                onClick={onDeleteResume}
-              />
+              {isBusiness || (
+                <CustomButton
+                  text="Delete"
+                  type="primary outlined"
+                  size="xs"
+                  disabled={!userProfile.resumeFileName}
+                  style={{ marginLeft: "1rem" }}
+                  onClick={onDeleteResume}
+                />
+              )}
               <CustomButton
                 text="Close"
                 type="primary outlined"
@@ -187,6 +207,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   uploadResume,
   deleteResume,
+  uploadDocumentFile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadResumeModal);

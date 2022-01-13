@@ -215,7 +215,7 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          {this.props.live.live === true && (
+          {this.props.live?.live === true && (
             <div
               className="live-button"
               onClick={() => {

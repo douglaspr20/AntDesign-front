@@ -58,6 +58,7 @@ export const removeBonfire = ({ bonfire }) => {
 };
 
 export const uploadResume = ({ resume }) => {
+  console.log(resume)
   return httpClient.put("private/user/upload-resume", resume);
 };
 

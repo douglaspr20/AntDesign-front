@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, Radio } from "antd";
@@ -10,6 +10,7 @@ import {
   // CustomSelect,
   CustomButton,
   ImageUpload,
+  UploadResumeModal,
 } from "components";
 import { SEARCH_FILTERS } from "enum";
 
@@ -31,6 +32,7 @@ const LibraryShareForm = ({
   createCouncilResource,
   createBusinessPartnerResource,
 }) => {
+  const [showResumeModal, setShowResumeModal] = useState(false);
   const isCouncil = document.location.href.includes("council");
   const isBusinessPartner = document.location.href.includes("business-partner");
 
@@ -51,7 +53,9 @@ const LibraryShareForm = ({
   return (
     <div className="library-share-form">
       <h1 className="library-share-form-title">
-        Suggest new content to HHR community
+        {isBusinessPartner
+          ? "Share resources with your fellow HR Business Partners"
+          : "Suggest new content to HHR community"}
       </h1>
       <h3 className="library-share-form-desc">
         Contribute with new content to the community. The content will be
@@ -68,13 +72,20 @@ const LibraryShareForm = ({
         <Form.Item name="title" label="Title">
           <CustomInput />
         </Form.Item>
-        <Form.Item name="link" label="URL">
-          <CustomInput addonBefore="https://" />
-        </Form.Item>
+        {isBusinessPartner || (
+          <Form.Item name="link" label="URL">
+            <CustomInput addonBefore="https://" />
+          </Form.Item>
+        )}
         <Form.Item name="description" label="Description">
           <CustomInput multiple={true} />
         </Form.Item>
-        <Form.Item name="topics" label="What are the content topics?">
+        <Form.Item
+          name={isBusinessPartner ? "categories" : "topics"}
+          label={
+            isBusinessPartner ? "Categories" : "What are the content topics?"
+          }
+        >
           <Checkbox.Group className="d-flex flex-column library-form-topics">
             {allCategories.map((topic, index) => (
               <CustomCheckbox key={index} value={topic.value}>
@@ -83,16 +94,18 @@ const LibraryShareForm = ({
             ))}
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="contentType" label="What is the content type?">
-          <Radio.Group className="library-form-types">
-            {SearchFilters["Content type"].map((type, index) => (
-              <CustomRadio key={index} value={type.value}>
-                {type.text}
-              </CustomRadio>
-            ))}
-          </Radio.Group>
-        </Form.Item>
-        {isCouncil ? (
+        {isBusinessPartner || (
+          <Form.Item name="contentType" label="What is the content type?">
+            <Radio.Group className="library-form-types">
+              {SearchFilters["Content type"].map((type, index) => (
+                <CustomRadio key={index} value={type.value}>
+                  {type.text}
+                </CustomRadio>
+              ))}
+            </Radio.Group>
+          </Form.Item>
+        )}
+        {isCouncil || isBusinessPartner ? (
           ""
         ) : (
           <Form.Item name="image" label="Upload image">
@@ -109,6 +122,19 @@ const LibraryShareForm = ({
             }
           />
         </Form.Item> */}
+        {isBusinessPartner && (
+          <Form.Item>
+            <CustomButton
+              size="xs"
+              text="Upload file"
+              onClick={() => setShowResumeModal(true)}
+            />
+            <UploadResumeModal
+              visible={showResumeModal}
+              onClose={() => setShowResumeModal(false)}
+            />
+          </Form.Item>
+        )}
         <div className="library-share-form-footer">
           <CustomButton
             text="Cancel"

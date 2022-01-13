@@ -7,17 +7,26 @@ import { cloneDeep } from "lodash";
 
 // businessPartner Page's Reducer
 export const reducers = {
-  [businessPartnerConstants.SET_BUSINESS_PARTNER_MEMBERS]: (state, { payload }) => {
+  [businessPartnerConstants.SET_BUSINESS_PARTNER_MEMBERS]: (
+    state,
+    { payload }
+  ) => {
     return state.merge({
       businessPartnerMembers: payload.businessPartnerMembers,
     });
   },
-  [businessPartnerConstants.SET_BUSINESS_PARTNER_RESOURCES]: (state, { payload }) => {
+  [businessPartnerConstants.SET_BUSINESS_PARTNER_RESOURCES]: (
+    state,
+    { payload }
+  ) => {
     return state.merge({
       businessPartnerResources: payload.businessPartnerResources,
     });
   },
-  [businessPartnerConstants.SET_BUSINESS_PARTNER_RESOURCE]: (state, { payload }) => {
+  [businessPartnerConstants.SET_BUSINESS_PARTNER_RESOURCE]: (
+    state,
+    { payload }
+  ) => {
     return state.merge({
       businessPartnerResource: payload.businessPartnerResource,
     });
@@ -30,6 +39,30 @@ export const reducers = {
       businessPartnerResources: cloneDeep(payload.businessPartnerResources),
     });
   },
+  [businessPartnerConstants.SET_BUSINESS_PARTNER_DOCUMENTS]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      businessPartnerDocuments: payload.businessPartnerDocuments,
+    });
+  },
+  [businessPartnerConstants.SET_BUSINESS_PARTNER_DOCUMENT]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      businessPartnerDocument: payload.businessPartnerDocument,
+    });
+  },
+  [businessPartnerConstants.UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      businessPartnerDocuments: cloneDeep(payload.businessPartnerDocuments),
+    });
+  },
 };
 
 export const initialState = () =>
@@ -37,6 +70,8 @@ export const initialState = () =>
     businessPartner: [],
     businessPartnerResources: [],
     businessPartnerlResource: null,
+    businessPartnerDocuments: [],
+    businessPArtnerDocument: null,
   });
 
 export default handleActions(reducers, initialState());
