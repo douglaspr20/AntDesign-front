@@ -7,7 +7,8 @@ const resultSelector = createSelector(businessPartnerDataSelector, (payload) => 
     businessPartnerMembers: payload.get("businessPartnerMembers"),
     businessPartnerResources: payload.get("businessPartnerResources"),
     businessPartnerResource: payload.get("businessPartnerResource"),
-    businessPartnerDocuments: payload.get("businessPartnerDocuments")
+    businessPartnerDocuments: payload.get("businessPartnerDocuments"),
+    businessPartnerDocument: payload.get("businessPartnerDocument"),
     // setting: payload.get("setting"),
   };
 });

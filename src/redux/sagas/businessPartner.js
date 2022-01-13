@@ -104,6 +104,7 @@ export function* getBusinessPartnerDocumentsSagas() {
 }
 
 export function* uploadBusinessPartnerDocumentSagas({ payload }) {
+  console.log(payload)
   try {
     const response = yield call(uploadBusinessPartnerDocumentFileFromAPI, {
       ...payload,

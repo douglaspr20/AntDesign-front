@@ -154,7 +154,7 @@ const UploadResumeModal = ({
                 text="Upload"
                 type="primary"
                 size="xs"
-                disabled={!!userProfile.resumeFileName}
+                // disabled={!!userProfile.resumeFileName}
                 onClick={onUploadResume}
               />
               {isBusiness || (

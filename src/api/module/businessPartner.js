@@ -16,11 +16,12 @@ export const getBusinessPartnerDocumentsFromoAPI = () => {
 };
 
 export const uploadBusinessPartnerDocumentFileFromAPI = ({ document }) => {
+  console.log(document)
   return httpClient.put("private/business-partner/upload-document", document);
 };
 
 export const createBusinessPartnerDocumentFromAPI = ({ document }) => {
-  return httpClient.put("private/business-partner/create-document", document);
+  return httpClient.post("private/business-partner/create-document", document);
 };
 
 export const createBusinessPartnerResourceFromAPI = (data) => {
