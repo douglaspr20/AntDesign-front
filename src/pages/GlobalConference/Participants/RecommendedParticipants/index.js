@@ -4,6 +4,7 @@ import { notification, Pagination, Skeleton } from "antd";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { inviteUser } from "redux/actions/bonfire-actions";
+import { createConversartion } from "redux/actions/conversation-actions";
 import { CustomButton, ParticipantCard } from "components";
 import Modal from "antd/lib/modal/Modal";
 import { List } from "immutable";
@@ -14,6 +15,7 @@ const RecommendedParticipants = ({
   bonfires,
   userProfile,
   inviteUser,
+  createConversartion,
 }) => {
   const [page, setPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
@@ -21,6 +23,10 @@ const RecommendedParticipants = ({
 
   const handlePaginated = (value) => {
     setPage(value);
+  };
+
+  const handleCreateConversation = async (members) => {
+    await createConversartion(members);
   };
   const onOpenModalBonfires = (participantId) => {
     setOpenModal(true);
@@ -63,6 +69,7 @@ const RecommendedParticipants = ({
                       bonfire.uninvitedJoinedUsers.includes(participant.id) ||
                       bonfire?.usersInvitedByOrganizer?.includes(participant.id)
                   )}
+                handleCreateConversation={handleCreateConversation}
               />
             ))}
       </div>
@@ -148,6 +155,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   inviteUser,
+  createConversartion,
 };
 
 export default connect(

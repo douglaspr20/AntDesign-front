@@ -155,7 +155,7 @@ import {
   upsertJobPost,
   getMyJobPosts,
   invitationToApply,
-} from './module/jobBoard'
+} from "./module/jobBoard";
 import {
   getCouncilMembersFromAPI,
   getCouncilResourcesFromAPI,
@@ -177,6 +177,8 @@ import {
   createMarketplaceProfile,
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
+
+import { createConversation, getConversations } from "./module/conversation";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -316,4 +318,6 @@ export {
   getMarketplaceProfile,
   createMarketplaceProfile,
   updateMarketplaceProfile,
+  createConversation,
+  getConversations,
 };

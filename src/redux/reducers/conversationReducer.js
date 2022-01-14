@@ -2,7 +2,7 @@ import { handleActions } from "redux-actions";
 import { Map } from "immutable";
 
 // Action Type Imports
-import { constants as conversationConstants } from "../actions/conversation-action";
+import { constants as conversationConstants } from "../actions/conversation-actions";
 
 // Session's Reducer
 export const reducers = {

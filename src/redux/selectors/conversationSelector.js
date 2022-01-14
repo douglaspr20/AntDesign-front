@@ -9,6 +9,6 @@ const resultSelector = createSelector(conversationDataSelector, (payload) => {
   };
 });
 
-export const conversationeSelector = (state) => ({
+export const conversationsSelector = (state) => ({
   ...resultSelector(state),
 });

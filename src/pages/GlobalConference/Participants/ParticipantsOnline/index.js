@@ -1,12 +1,18 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { ParticipantCard } from "components";
 import { Pagination } from "antd";
+import { createConversartion } from "redux/actions/conversation-actions";
 
-const ParticipantsOnline = ({ participants }) => {
+const ParticipantsOnline = ({ participants, createConversartion }) => {
   const [page, setPage] = useState(1);
 
   const handlePaginated = (value) => {
     setPage(value);
+  };
+
+  const handleCreateConversation = (members) => {
+    createConversartion(members);
   };
 
   return (
@@ -16,7 +22,11 @@ const ParticipantsOnline = ({ participants }) => {
         participants
           .slice((page - 1) * 20, page * 20)
           .map((participant, i) => (
-            <ParticipantCard key={i} participant={participant} />
+            <ParticipantCard
+              key={i}
+              participant={participant}
+              handleCreateConversation={handleCreateConversation}
+            />
           ))}
 
       <Pagination
@@ -31,4 +41,10 @@ const ParticipantsOnline = ({ participants }) => {
   );
 };
 
-export default ParticipantsOnline;
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {
+  createConversartion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ParticipantsOnline);

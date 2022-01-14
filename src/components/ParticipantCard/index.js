@@ -205,6 +205,7 @@ const ParticipantCard = ({
   userProfile,
   jobPosts,
   invitationToApply,
+  handleCreateConversation,
 }) => {
   return (
     <Card
@@ -240,7 +241,9 @@ const ParticipantCard = ({
             zIndex: "10",
             top: 35,
           }}
-          // onClick={() => onOpenModalBonfires(participant.id)}
+          onClick={() =>
+            handleCreateConversation([participant.id, userProfile.id])
+          }
         />
       )}
 

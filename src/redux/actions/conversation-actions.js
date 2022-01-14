@@ -19,8 +19,8 @@ export const constants = {
 // ------------------------------------
 export const createConversartion = createAction(
   CREATE_CONVERSATION,
-  (conversartion) => ({
-    conversartion,
+  (members) => ({
+    members,
   })
 );
 
