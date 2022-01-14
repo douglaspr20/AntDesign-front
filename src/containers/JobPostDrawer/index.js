@@ -150,6 +150,7 @@ const JobPostDrawer = ({
         closingDate: moment(post.closingDate),
         companyName: post.companyName,
         companyDescription: post.companyDescription,
+        companyLogo: post.companyLogo,
         status: post.status,
       });
     }
@@ -168,20 +169,6 @@ const JobPostDrawer = ({
             tknSkill?.skillIndex === skillIndex
         );
 
-        // if (takenSkill) {
-        //   skill = {
-        //     ...skill,
-        //     disabled: true,
-        //   };
-        // } else {
-        //   skill = {
-        //     ...skill,
-        //     disabled: false,
-        //   };
-        // }
-
-        // console.log(takenSkill, 'takenSkill')
-
         const disabled = !!takenSkill;
 
         return {
@@ -195,7 +182,6 @@ const JobPostDrawer = ({
         children,
       };
     });
-    // console.log(newCascadeOptions[0], 'newCascadeOptions[0]')
 
     setCascadeOptions(newCascadeOptions);
 
