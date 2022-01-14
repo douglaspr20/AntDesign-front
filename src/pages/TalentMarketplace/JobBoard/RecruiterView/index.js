@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Form } from "antd";
+import { Form, notification } from "antd";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 
@@ -31,6 +31,13 @@ const RecruiterView = ({
   }, [filter]);
 
   const handleOnFinish = (values) => {
+    if (!values.companyLogo) {
+      return notification.warning({
+        message: "Missing company logo",
+        description: "Please provide a company logo",
+      });
+    }
+
     let preferredSkills = values.preferredSkills?.map((skill) => {
       return {
         title: skill.preferredSkills[0],
@@ -45,7 +52,10 @@ const RecruiterView = ({
       level: values.preferredSkillsMain[2],
     };
 
-    preferredSkills = [...(preferredSkills || []), transformedPreferredSkillsMain];
+    preferredSkills = [
+      ...(preferredSkills || []),
+      transformedPreferredSkillsMain,
+    ];
 
     delete values.preferredSkillsMain;
 

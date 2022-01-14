@@ -63,7 +63,7 @@ const ActivityStatus = ({
               );
 
             const displayPersonalReflection =
-              countPersonalReflection.length >= 2 ? "COMPLETED" : "PENDING";
+              countPersonalReflection.length >= 1 ? "COMPLETED" : "PENDING";
 
             const countAssessments =
               cohort.SkillCohortResponseAssessments.filter(
@@ -73,7 +73,7 @@ const ActivityStatus = ({
               );
 
             const displayComments =
-              countAssessments.length >= 2 ? "COMPLETED" : "PENDING";
+              countAssessments.length >= 1 ? "COMPLETED" : "PENDING";
 
             return (
               <Panel header={header} key={resourceIndex}>
@@ -94,7 +94,7 @@ const ActivityStatus = ({
 
   return (
     <div className="activity-status-wrapper">
-      <Collapse>{displayPanels}</Collapse>,
+      <Collapse>{displayPanels}</Collapse>
     </div>
   );
 };
