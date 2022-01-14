@@ -27,7 +27,7 @@ const CouncilParticipantCard = ({
           </Avatar>
         )}
 
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", maxWidth: 150 }}>
           <p style={{ fontWeight: 500 }}>
             {participant.firstName} {participant.lastName}
           </p>

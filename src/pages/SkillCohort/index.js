@@ -12,6 +12,7 @@ import { actions as skillCohortParticipantActions } from "redux/actions/skillCoh
 
 import SkillCohortFilterDrawer from "./SkillCohortFilterDrawer";
 import SkillCohortCard from "./SkillCohortCard";
+import ActivityStatus from "./ActivityStatus";
 
 import "./style.scss";
 
@@ -77,12 +78,7 @@ const SkillCohort = ({
   });
 
   const displayMySkillCohorts = sortedAllOfMySkillCohorts.map((skillCohort) => {
-    return (
-      <SkillCohortCard
-        key={skillCohort.id}
-        skillCohort={skillCohort}
-      />
-    );
+    return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} />;
   });
 
   const TabData = [
@@ -96,6 +92,12 @@ const SkillCohort = ({
       title: "My Cohorts",
       content: () => {
         return <div className="skill-cohort-list">{displayMySkillCohorts}</div>;
+      },
+    },
+    {
+      title: "Activity Status",
+      content: () => {
+        return <ActivityStatus />;
       },
     },
   ];
