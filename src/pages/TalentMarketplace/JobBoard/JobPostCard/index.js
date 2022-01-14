@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CustomButton } from "components";
 import JobPostDrawer from "containers/JobPostDrawer";
-import { Form, Tag, Space, Tooltip } from "antd";
+import { Form, Tag, Space, Tooltip, notification } from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
@@ -31,6 +31,13 @@ const JobPostCard = ({
   const history = useHistory();
 
   const handleOnFinish = (values) => {
+    if (!values.companyLogo) {
+      return notification.warning({
+        message: "Missing company logo",
+        description: "Please provide a company logo",
+      });
+    }
+
     let preferredSkills = values.preferredSkills?.map((skill) => {
       return {
         title: skill.preferredSkills[0],
