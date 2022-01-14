@@ -24,6 +24,14 @@ export const getSessionsAddedbyUser = ({ id }) => {
   return httpClient.get(`private/sessions-user?userId=${id}`);
 };
 
+export const getSessionsUserJoined = ({ sessionsId }) => {
+  return httpClient.get(`private/sessions-user-joined`, {
+    params: {
+      sessionsId: sessionsId,
+    },
+  });
+};
+
 export const getParticipants = (filters) => {
   let newFilter = {
     num: SETTINGS.MAX_SEARCH_ROW_PARTICIPANTS_NUM,

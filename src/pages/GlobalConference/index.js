@@ -13,8 +13,11 @@ import {
   GlobalConferenceFilterPanel,
   CustomModal,
 } from "components";
-import { getAllSessions } from "redux/actions/session-actions";
-import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
+import {
+  getAllSessions,
+  getSessionsUserJoined,
+} from "redux/actions/session-actions";
+
 import {
   attendToGlobalConference,
   setLoading,
@@ -54,11 +57,12 @@ const TAB_NUM = 5;
 
 const GlobalConference = ({
   allSessions,
+  sessionsUserJoined,
   allEvents,
   getAllEvent,
   userProfile,
   getAllSessions,
-  getMarketplaceProfiles,
+  getSessionsUserJoined,
   addToMyEventList,
   removeFromMyEventList,
   sessionsUser,
@@ -102,9 +106,6 @@ const GlobalConference = ({
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
     setMeta(value);
-    if (localPathname.includes("talent-marketplace")) {
-      return getMarketplaceProfiles(userProfile.id, value);
-    }
     getAllSessions(startTime, endTime, value);
   };
 
@@ -177,7 +178,10 @@ const GlobalConference = ({
 
   useEffect(() => {
     getAllEvent();
-  }, [getAllEvent]);
+    if (userProfile?.sessionsJoined?.length > 0) {
+      getSessionsUserJoined(userProfile.sessionsJoined);
+    }
+  }, [getAllEvent, getSessionsUserJoined, userProfile]);
 
   useEffect(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.SEND_MESSAGE_GLOBAL_CONFERENCE, (message) =>
@@ -185,10 +189,10 @@ const GlobalConference = ({
     );
   }, []);
 
-  const downloadPdf = async () => {
+  const downloadPdf = async (option) => {
     setLoading(true);
 
-    if (sessionsUser.length < 1) {
+    if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
       return notification.warning({
         message: "You have no sessions",
@@ -196,9 +200,19 @@ const GlobalConference = ({
         someone tries to download it without having added any session to 
         their agenda`,
       });
+    } else if (sessionsUserJoined < 1 && option === "report-sessions-joined") {
+      setLoading(false);
+      return notification.warning({
+        message: "You haven't joined any session",
+        description: `Join your first session before downloading the joined sessions report`,
+      });
     }
 
-    const template = formatAnnualConference(userProfile, sessionsUser);
+    const template = formatAnnualConference(
+      userProfile,
+      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
+      option
+    );
 
     const pdf = new jsPdf({
       orientation: "p",
@@ -210,7 +224,11 @@ const GlobalConference = ({
 
     await pdf.html(template);
 
-    pdf.save("Personalizated Agenda.pdf");
+    pdf.save(
+      option === "personal-agenda"
+        ? "Personalizated Agenda.pdf"
+        : "Report sessions joined"
+    );
 
     setLoading(false);
   };
@@ -302,7 +320,7 @@ const GlobalConference = ({
                   size="xs"
                   text="Recommended Agenda"
                   onClick={() => setModalRecommendeAgendaVisible(true)}
-                  style={{ marginLeft: "1rem" }}
+                  style={{ marginLeft: ".5rem" }}
                   className="global-conference-buttom-options"
                 />
               </>
@@ -313,24 +331,34 @@ const GlobalConference = ({
                 onClick={onAttend}
               />
             )}
-
             <CustomButton
+              text="Accessibility Requirements"
               size="xs"
-              text="Talent Marketplace"
-              onClick={() =>
-                history.push("/global-conference/my-talent-marketplace-profile")
-              }
-              style={{ marginLeft: "1rem" }}
-              className="global-conference-buttom-options"
+              type="info"
+              className="button-requirements"
+              style={{ marginLeft: ".5rem" }}
+              onClick={() => setModalRequirementsVisible(true)}
             />
-
             {localPathname === "personal-agenda" && (
-              <CustomButton
-                size="xs"
-                text="Download  Personalized Agenda"
-                style={{ marginLeft: "1rem" }}
-                onClick={downloadPdf}
-              />
+              <>
+                <CustomButton
+                  size="xs"
+                  text="Download Personalized Agenda"
+                  style={{ marginLeft: "1rem" }}
+                  onClick={() => downloadPdf("personal-agenda")}
+                />
+
+                {moment().date() >= 7 &&
+                  moment().month() >= 2 &&
+                  moment().year >= 2022 && (
+                    <CustomButton
+                      size="xs"
+                      text="Download Report Sessions Joined"
+                      style={{ marginLeft: "1rem" }}
+                      onClick={() => downloadPdf("report-sessions-joined")}
+                    />
+                  )}
+              </>
             )}
 
             {localPathname === "bonfires" && (
@@ -343,13 +371,7 @@ const GlobalConference = ({
             )}
           </div>
           <p className="global-conference-description">{Description}</p>
-          <CustomButton
-            text="Accessibility Requirements"
-            size="xs"
-            type="info"
-            className="button-requirements"
-            onClick={() => setModalRequirementsVisible(true)}
-          />
+
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
@@ -430,34 +452,6 @@ const GlobalConference = ({
               />
             </div> */}
           </div>
-          {(localPathname === "talent-marketplace" ||
-            localPathname === "my-talent-marketplace-profile") && (
-            <Menu
-              mode="horizontal"
-              className="sub-menu"
-              selectedKeys={localPathname}
-            >
-              <>
-                <Menu.Item
-                  key="my-talent-marketplace-profile"
-                  className="sub-menu-item-global-conference"
-                >
-                  <Link to="/global-conference/my-talent-marketplace-profile">
-                    My Talent Marketplace Profile
-                  </Link>
-                </Menu.Item>
-
-                <Menu.Item
-                  key="talent-marketplace"
-                  className="sub-menu-item-global-conference"
-                >
-                  <Link to="/global-conference/talent-marketplace">
-                    Talent Marketplace
-                  </Link>
-                </Menu.Item>
-              </>
-            </Menu>
-          )}
         </div>
         {childrenWithFilterProp ? (
           childrenWithFilterProp
@@ -522,12 +516,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAllSessions,
+  getSessionsUserJoined,
   attendToGlobalConference,
   getAllEvent,
   setLoading,
   addToMyEventList,
   removeFromMyEventList,
-  getMarketplaceProfiles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GlobalConference);

@@ -2,13 +2,14 @@ import { Row, Col, Card, Avatar, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { CustomButton, Tabs } from "components";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
 import { UserOutlined } from "@ant-design/icons";
 import OpengraphReactComponent from "opengraph-react";
+import qs from "query-string";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
@@ -22,6 +23,7 @@ import SkillCohortPanel from "./SkillCohortPanel";
 import ResourceCard from "./ResourceCard";
 import SkillCohortResourceForm from "./SkillCohortResourceForm";
 import SkillCohortResourceReply from "./SkillCohortResourceReply";
+
 import "./style.scss";
 
 const SkillCohortResources = ({
@@ -45,6 +47,9 @@ const SkillCohortResources = ({
   const { id } = useParams();
   const [currentTab, setCurrentTab] = useState("0");
   const history = useHistory();
+  const location = useLocation();
+
+  const parsed = qs.parse(location.search);
 
   useEffect(() => {
     getSkillCohort(id);
@@ -72,31 +77,51 @@ const SkillCohortResources = ({
         !skillCohortParticipant.hasAccess
       ) {
         history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
-
       }
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skillCohortParticipant, userProfile]);
 
   useEffect(() => {
     if (!isEmpty(allSkillCohortResources)) {
-      getSkillCohortResource(allSkillCohortResources[0].id);
+      if (!parsed.id) {
+        getSkillCohortResource(allSkillCohortResources[0].id);
+      }
     }
 
     // eslint-disable-next-line
   }, [allSkillCohortResources, id]);
 
-  // if (
-  //   userProfile.memberShip !== "premium" ||
-  //   !skillCohortParticipant?.hasAccess
-  // ) {
-  //   history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
-  // }
+  useEffect(() => {
+    setCurrentTab(parsed.key);
 
-  // if (!isEmpty(skillCohortParticipant)) {
+    if (parsed.key === "1") {
+      getSkillCohortResource(+parsed.id);
+    }
 
-  // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (currentTab !== "1") {
+      window.history.replaceState(
+        null,
+        "Page",
+        `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=${currentTab}`
+      );
+    } else {
+      if (!isEmpty(skillCohortResource)) {
+        window.history.replaceState(
+          null,
+          "Page",
+          `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1&id=${skillCohortResource.id}`
+        );
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTab, skillCohortResource]);
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {
@@ -252,10 +277,6 @@ const SkillCohortResources = ({
         <div className="display-participants">{displayParticipants}</div>
       ),
     },
-    // {
-    //   title: "Playgrounds",
-    //   content: () => <div className="wrapper-2">Playground</div>,
-    // },
   ];
 
   return (

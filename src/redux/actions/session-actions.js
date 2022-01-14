@@ -8,6 +8,8 @@ const GET_SESSION_CLASSES = "GET_SESSION_CLASSES";
 const SET_SESSION_CLASSES = "SET_SESSION_CLASSES";
 const GET_SESSIONS_ADDED_BY_USER = "GET_SESSIONS_ADDED_BY_USER ";
 const SET_SESSIONS_ADDED_BY_USER = "SET_SESSIONS_ADDED_BY_USER";
+const GET_SESSIONS_USER_JOINED = "GET_SESSIONS_USER_JOINED";
+const SET_SESSIONS_USER_JOINED = "SET_SESSIONS_USER_JOINED";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
 const SET_PARTICIPANTS = "SET_PARTICIPANTS";
 const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
@@ -24,6 +26,8 @@ export const constants = {
   SET_SESSION_CLASSES,
   GET_SESSIONS_ADDED_BY_USER,
   SET_SESSIONS_ADDED_BY_USER,
+  GET_SESSIONS_USER_JOINED,
+  SET_SESSIONS_USER_JOINED,
   GET_PARTICIPANTS,
   SET_PARTICIPANTS,
   RECOMMENDED_AGENDA,
@@ -69,6 +73,17 @@ export const setSessionsAddedByUser = createAction(
   })
 );
 
+export const getSessionsUserJoined = createAction(
+  GET_SESSIONS_USER_JOINED,
+  (sessionsId) => ({ sessionsId })
+);
+export const setSessionsUserJoined = createAction(
+  SET_SESSIONS_USER_JOINED,
+  (sessionsUserJoined) => ({
+    sessionsUserJoined,
+  })
+);
+
 export const getParticipants = createAction(
   GET_PARTICIPANTS,
   (filters) => filters
@@ -109,6 +124,8 @@ export const actions = {
   setSessionClasses,
   getSessionsAddedbyUser,
   setSessionsAddedByUser,
+  getSessionsUserJoined,
+  setSessionsUserJoined,
   getParticipants,
   setParticipants,
   recommendedAgenda,

@@ -98,6 +98,7 @@ import {
   getSession,
   getSessionClasses,
   getSessionsAddedbyUser,
+  getSessionsUserJoined,
   getParticipants,
   recommendedAgenda,
 } from "./module/session";
@@ -272,6 +273,7 @@ export {
   getSession,
   getSessionClasses,
   getSessionsAddedbyUser,
+  getSessionsUserJoined,
   getParticipants,
   recommendedAgenda,
   attendToGlobalConference,
