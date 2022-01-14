@@ -20,7 +20,7 @@ const UploadResumeModal = ({
   onClose,
   uploadResume,
   deleteResume,
-  uploadDocumentFile,
+  setFile,
 }) => {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -75,34 +75,33 @@ const UploadResumeModal = ({
       setErrorMessage("");
       let formData = new FormData();
       formData.append(isBusiness ? "document" : "resume", file);
-      setLoading(true);
-      const response = await new Promise((resolve) => {
-        isBusiness
-          ? uploadDocumentFile(formData, (error) => {
-              if (error) {
-                resolve(false);
-              } else {
-                resolve(true);
-              }
-            })
-          : uploadResume(formData, (error) => {
-              if (error) {
-                resolve(false);
-              } else {
-                resolve(true);
-              }
-            });
-      });
-      if (response) {
-        notification.success({
-          message: "Success",
-          description: "Resume was saved",
-        });
+      if (isBusiness) {
+        setLoading(true);
+        setFile(formData);
+        setLoading(false);
         onClose();
       } else {
-        setErrorMessage("Something went wrong. Please try again!");
+        setLoading(true);
+        const response = await new Promise((resolve) => {
+          uploadResume(formData, (error) => {
+            if (error) {
+              resolve(false);
+            } else {
+              resolve(true);
+            }
+          });
+        });
+        if (response) {
+          notification.success({
+            message: "Success",
+            description: "Resume was saved",
+          });
+          onClose();
+        } else {
+          setErrorMessage("Something went wrong. Please try again!");
+        }
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
@@ -135,7 +134,7 @@ const UploadResumeModal = ({
                 <>
                   <FilePdfOutlined className="upload-resume-form-pdficon" />
                   <span className="upload-resume-filename">
-                    {userProfile.resumeFileName}
+                    {isBusiness ? "" : userProfile.resumeFileName}
                   </span>
                   <i
                     className="fas fa-external-link-alt external-link"
