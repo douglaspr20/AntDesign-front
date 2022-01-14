@@ -23,7 +23,6 @@ import SkillCohortPanel from "./SkillCohortPanel";
 import ResourceCard from "./ResourceCard";
 import SkillCohortResourceForm from "./SkillCohortResourceForm";
 import SkillCohortResourceReply from "./SkillCohortResourceReply";
-import ActivityStatus from "./ActivityStatus";
 
 import "./style.scss";
 
@@ -277,10 +276,6 @@ const SkillCohortResources = ({
       content: () => (
         <div className="display-participants">{displayParticipants}</div>
       ),
-    },
-    {
-      title: "Activity Status",
-      content: () => <ActivityStatus />,
     },
   ];
 
