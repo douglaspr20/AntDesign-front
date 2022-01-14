@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Popover, Form } from "antd";
+import { Popover, Form, Input } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
@@ -67,13 +67,14 @@ const ProfilePopupMenu = (props) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
+  const [showPremiumFirewall, setShowPremiumFirewall] = useState(false);
   const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
     useState(false);
 
   const history = useHistory();
 
   const [form] = Form.useForm();
-
+  let applyState;
   useEffect(() => {
     async function loadSubscription() {
       if (!subscription) {
@@ -145,7 +146,10 @@ const ProfilePopupMenu = (props) => {
     } else {
       setShowProfileCompletionFirewall(true);
     }
-    if (user.isBusinessPartner) {
+    if (user.memberShip !== "premium") {
+      setShowPremiumFirewall(true);
+    }
+    if (user.isBusinessPartner && user.memberShip === "premium") {
       history.push(INTERNAL_LINKS.BUSINESS_PARTNER);
     }
   };
@@ -154,8 +158,12 @@ const ProfilePopupMenu = (props) => {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
   };
 
+  const handleChange = (value) => {
+    applyState = value;
+  };
+
   const onApplyBusness = () => {
-    acceptApply(userProfile.id);
+    acceptApply({ userId: userProfile.id, applyState });
   };
 
   const TitleSection = () => (
@@ -323,6 +331,18 @@ const ProfilePopupMenu = (props) => {
               Your application will be sent to Hacking HR. You will be notified
               within the next 48 hours.
             </p>
+            <p>
+              Please let us know here if you don't have the "official" title of
+              HR Business Partner but still perform the high-level, strategic
+              functions of an HR Business Partners. We will consider your
+              application as well:
+            </p>
+            <Input.TextArea
+              {...rest}
+              rows={4}
+              // className={clsx("custom-input", className, "mutiple", size)}
+              onChange={(e) => handleChange(e.target.value)}
+            />
           </Modal>
         ) : (
           <>
@@ -344,6 +364,21 @@ const ProfilePopupMenu = (props) => {
             )}
           </>
         )}
+        <>
+          {showPremiumFirewall && (
+            <div
+              className="skill-cohort-firewall"
+              onClick={() => setShowPremiumFirewall(false)}
+            >
+              <div className="upgrade-notification-panel">
+                <h3>
+                  You must be a premium member to see the business member community
+                  page.
+                </h3>
+              </div>
+            </div>
+          )}
+        </>
       </div>
       {/* {user.percentOfCompletion === 100 && (
         <div

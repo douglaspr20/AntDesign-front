@@ -131,6 +131,7 @@ export const actions = {
   createBusinessPartnerResource,
   getBusinessPartnerDocuments,
   setBusinessPartnerDocument,
+  setBusinessPartnerDocuments,
   uploadDocumentFile,
   updateBusinessPartnerDocuments,
   createBusinessPartnerDocument,

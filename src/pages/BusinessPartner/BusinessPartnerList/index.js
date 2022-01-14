@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { CustomButton } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 
 import { CARD_TYPE } from "enum";
-import { SETTINGS } from "enum";
 
 import { businessPartnerSelector } from "redux/selectors/businessPartnerSelector";
 
-import IconLoadingMore from "images/icon-loading-more.gif";
 import {
   getBusinessPartnerResources,
   setBusinessPartnerResources,
@@ -22,15 +19,10 @@ import BusinessPartnerCard from "../BusinessPartnerCard";
 import { isEmpty } from "lodash";
 
 const BusinessPartnerList = ({
-  total,
-  page,
   filter,
-  channel,
   isOwner,
-  loading,
   type,
   refresh,
-  getMoreChannelLibraryList,
   getBusinessPartnerResources,
   businessPartnerResources,
   setCurrentValue,
@@ -39,17 +31,9 @@ const BusinessPartnerList = ({
   const [topics, setTopics] = useState(filter.topics || []);
   const [resources, setResources] = useState(businessPartnerResources);
 
-  const onShowMore = () => {
-    getMoreChannelLibraryList(
-      {
-        ...filter,
-        channel: channel.id,
-        contentType: type,
-        page: page + 1,
-      },
-      "newest-first"
-    );
-  };
+  useEffect(() => {
+    getBusinessPartnerResources();
+  }, [getBusinessPartnerResources]);
 
   useEffect(() => {
     setTopics(JSON.parse(filter.topics || "[]"));
@@ -61,11 +45,11 @@ const BusinessPartnerList = ({
     if (topics && !isEmpty(topics)) {
       topics.some((el) => {
         return businessPartnerResources.filter((item) =>
-           item.topics.map((topic) => {
+          item.topics.map((topic) => {
             if (topic === el) {
-              return filterResources.push(item)
+              return filterResources.push(item);
             }
-            return filterResources
+            return filterResources;
           })
         );
       });
@@ -78,7 +62,6 @@ const BusinessPartnerList = ({
       getBusinessPartnerResources();
       setResources(businessPartnerResources);
     }
-    setResources(businessPartnerResources);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, createBusinessPartnerResource]);
 
@@ -99,26 +82,10 @@ const BusinessPartnerList = ({
                 type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                 key={index}
                 data={item}
-                // onMenuClick={(menu) => handleLibrary(menu, item)}
                 setCurrentValue={setCurrentValue}
               />
             ))}
           </div>
-          {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
-            <div className="channel-page-loading d-flex justify-center items-center">
-              {loading ? (
-                <div className="channel-page-loading-more">
-                  <img src={IconLoadingMore} alt="loading-more-img" />
-                </div>
-              ) : (
-                <CustomButton
-                  text="Show More"
-                  type="primary outlined"
-                  onClick={onShowMore}
-                />
-              )}
-            </div>
-          )}
         </>
       )}
     </div>
@@ -142,7 +109,8 @@ BusinessPartnerList.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  businessPartnerResources: businessPartnerSelector(state).businessPartnerResources,
+  businessPartnerResources:
+    businessPartnerSelector(state).businessPartnerResources,
 });
 
 const mapDispatchToProps = {
@@ -152,4 +120,7 @@ const mapDispatchToProps = {
   updateBusinessPartnerResourcesInformation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BusinessPartnerList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BusinessPartnerList);

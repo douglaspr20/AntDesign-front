@@ -17,6 +17,7 @@ import { SEARCH_FILTERS } from "enum";
 import { addLibrary } from "redux/actions/library-actions";
 import { createCouncilResource } from "redux/actions/council-actions";
 import { createBusinessPartnerResource } from "redux/actions/business-partner-actions";
+import { createBusinessPartnerDocument } from "redux/actions/business-partner-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
@@ -31,8 +32,10 @@ const LibraryShareForm = ({
   addLibrary,
   createCouncilResource,
   createBusinessPartnerResource,
+  createBusinessPartnerDocument,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
+  const [file, setFile] = useState();
   const isCouncil = document.location.href.includes("council");
   const isBusinessPartner = document.location.href.includes("business-partner");
 
@@ -42,7 +45,7 @@ const LibraryShareForm = ({
       return createCouncilResource(values);
     } else if (isBusinessPartner) {
       onCancel();
-      return createBusinessPartnerResource(values);
+      return createBusinessPartnerDocument({values, file});
     }
     onCancel();
     addLibrary(values);
@@ -132,6 +135,7 @@ const LibraryShareForm = ({
             <UploadResumeModal
               visible={showResumeModal}
               onClose={() => setShowResumeModal(false)}
+              setFile={setFile}
             />
           </Form.Item>
         )}
@@ -171,6 +175,7 @@ const mapDispatchToProps = {
   addLibrary,
   createCouncilResource,
   createBusinessPartnerResource,
+  createBusinessPartnerDocument,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryShareForm);

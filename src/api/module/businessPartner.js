@@ -11,17 +11,22 @@ export const getBusinessPartnerResourcesFromAPI = (filter, order) => {
 export const getBusinessPartnerResourceByIdFromAPI = (payload) => {
   return httpClient.get(`private/business-partner/resource/${payload.id}`);
 };
-export const getBusinessPartnerDocumentsFromoAPI = () => {
+export const getBusinessPartnerDocumentsFromAPI = () => {
   return httpClient.get("private/business-partner/documents");
 };
 
-export const uploadBusinessPartnerDocumentFileFromAPI = ({ document }) => {
-  console.log(document)
-  return httpClient.put("private/business-partner/upload-document", document);
+export const uploadBusinessPartnerDocumentFileFromAPI = ({ documentFile }) => {
+  return httpClient.put(
+    "private/business-partner/upload-document",
+    documentFile
+  );
 };
 
-export const createBusinessPartnerDocumentFromAPI = ({ document }) => {
-  return httpClient.post("private/business-partner/create-document", document);
+export const createBusinessPartnerDocumentFromAPI = (document) => {
+  const file = document.file;
+  return httpClient.post(`private/business-partner/create-document`, file, {
+    params: document.values,
+  });
 };
 
 export const createBusinessPartnerResourceFromAPI = (data) => {

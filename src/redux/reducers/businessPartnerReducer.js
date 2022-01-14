@@ -71,7 +71,7 @@ export const initialState = () =>
     businessPartnerResources: [],
     businessPartnerlResource: null,
     businessPartnerDocuments: [],
-    businessPArtnerDocument: null,
+    businessPartnerDocument: null,
   });
 
 export default handleActions(reducers, initialState());

@@ -90,9 +90,9 @@ export const acceptInvitationJoin = ({ newUser, hostUserId }) => {
   });
 };
 
-export const acceptInvitationApplyBusinnesPartner = ({ userId }) => {
+export const acceptInvitationApplyBusinnesPartner = (payload) => {
   return httpClient.post("private/user/apply-business-partner", {
-    userId,
+    ...payload
   });
 };
 

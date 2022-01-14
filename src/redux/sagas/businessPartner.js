@@ -12,8 +12,9 @@ import {
   getBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerResourcesFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
+  getBusinessPartnerDocumentsFromAPI
 } from "../../api";
-import { getBusinessPartnerDocumentsFromoAPI } from "api/module/businessPartner";
+import { createBusinessPartnerDocumentFromAPI} from "api/module/businessPartner";
 
 export function* getBusinessPartnerMemberSagas() {
   try {
@@ -89,11 +90,11 @@ export function* updateBusinessPartnerResourcesSagas({ payload }) {
 
 export function* getBusinessPartnerDocumentsSagas() {
   try {
-    const response = yield call(getBusinessPartnerDocumentsFromoAPI);
+    const response = yield call(getBusinessPartnerDocumentsFromAPI);
     if (response.status === 200) {
-      const { businessDocuments } = response.data;
+      const { businessPartnerDocuments } = response.data;
       yield put(
-        businessPartnerActions.setBusinessPartnerDocument(businessDocuments)
+        businessPartnerActions.setBusinessPartnerDocuments(businessPartnerDocuments)
       );
     }
   } catch (error) {
@@ -104,7 +105,6 @@ export function* getBusinessPartnerDocumentsSagas() {
 }
 
 export function* uploadBusinessPartnerDocumentSagas({ payload }) {
-  console.log(payload)
   try {
     const response = yield call(uploadBusinessPartnerDocumentFileFromAPI, {
       ...payload,
@@ -130,14 +130,15 @@ export function* uploadBusinessPartnerDocumentSagas({ payload }) {
 
 export function* createBusinessPartnerDocumentSagas({ payload }) {
   try {
-    const response = yield call(createBusinessPartnerResourceFromAPI, {
-      ...payload.businessPartner,
+    const response = yield call(createBusinessPartnerDocumentFromAPI, {
+      ...payload.businessPartnerDocument,
+      ...payload.file
     });
     if (response.status === 200) {
       if (payload.callback) {
         payload.callback();
       }
-      const response = yield call(getBusinessPartnerDocumentsFromoAPI);
+      const response = yield call(getBusinessPartnerDocumentsFromAPI);
       const { businessPartnerDocuments } = response.data;
       yield put(
         businessPartnerActions.updateBusinessPartnerDocuments(
@@ -192,8 +193,16 @@ function* watchBusinessPartner() {
     updateBusinessPartnerResourcesSagas
   );
   yield takeLatest(
+    businessPartnerConstants.GET_BUSINESS_PARTNER_DOCUMENTS,
+    getBusinessPartnerDocumentsSagas
+  );
+  yield takeLatest(
     businessPartnerConstants.UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE,
     uploadBusinessPartnerDocumentSagas
+  );
+  yield takeLatest(
+    businessPartnerConstants.CREATE_BUSINESS_PARTNER_DOCUMENT,
+    createBusinessPartnerDocumentSagas
   );
   yield takeLatest(
     businessPartnerConstants.GET_BUSINESS_PARTNER_RESOURCES,

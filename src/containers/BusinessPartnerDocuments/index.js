@@ -1,24 +1,33 @@
-import { notification } from "antd";
-import { CustomButton, UploadResumeModal } from "components";
-import React, { useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import {
+  BusinessDocumentsCard,
+  // CustomButton,
+  // UploadResumeModal,
+} from "components";
 import { businessPartnerSelector } from "redux/selectors/businessPartnerSelector";
 import {
   getBusinessPartnerResources,
   setBusinessPartnerResources,
-  updateBusinessPartnerResourcesInformation,
   uploadDocumentFile,
+  getBusinessPartnerDocuments,
 } from "redux/actions/business-partner-actions";
 
 const BusinessPartnerDocuments = ({
-  getBusinessPartnerResources,
-  uploadDocumentFile,
+  getBusinessPartnerDocuments,
+  businessPartnerDocuments,
+  currentTab,
 }) => {
-  const [showResumeModal, setShowResumeModal] = useState(false);
 
+  useEffect(() => {
+    getBusinessPartnerDocuments();
+  }, [getBusinessPartnerDocuments]);
   return (
     <div>
-      <CustomButton
+      {businessPartnerDocuments?.map((item) => (
+        <BusinessDocumentsCard documentFile={item} key={item.id} />
+      ))}
+      {/* <CustomButton
         size="xs"
         text="Upload file"
         onClick={() => setShowResumeModal(true)}
@@ -26,20 +35,20 @@ const BusinessPartnerDocuments = ({
       <UploadResumeModal
         visible={showResumeModal}
         onClose={() => setShowResumeModal(false)}
-      />
+      /> */}
     </div>
   );
 };
 
 const mapStateToProps = (state, props) => ({
-  businessPartnerResources:
-    businessPartnerSelector(state).businessPartnerResources,
+  businessPartnerDocuments:
+    businessPartnerSelector(state).businessPartnerDocuments,
 });
 
 const mapDispatchToProps = {
   getBusinessPartnerResources,
   setBusinessPartnerResources,
-  updateBusinessPartnerResourcesInformation,
+  getBusinessPartnerDocuments,
   uploadDocumentFile,
 };
 

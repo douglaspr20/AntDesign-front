@@ -1,0 +1,16 @@
+@import "styles/main.scss";
+
+.business-card-container {
+margin-top: 10px;
+padding: 5px;
+}
+
+.business-download {
+    display: flex;
+    align-items: center;
+}
+
+.card-date {
+    display: flex;
+    justify-content: right;
+}

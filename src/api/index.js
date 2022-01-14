@@ -173,6 +173,7 @@ import {
   getBusinessPartnerResourcesFromAPI,
   createBusinessPartnerResourceFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  getBusinessPartnerDocumentsFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
 } from "./module/businessPartner";
 
@@ -206,6 +207,7 @@ export {
   createCouncilResourceFromAPI,
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  getBusinessPartnerDocumentsFromAPI,
   getBusinessPartnerResourcesFromAPI,
   createBusinessPartnerResourceFromAPI,
   getAllBusinessPartnerCommentsFromAPI,

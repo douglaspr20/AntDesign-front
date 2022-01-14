@@ -13,7 +13,6 @@ import { INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 
 import BusinessPartnerMembers from "./BusinessPartnerMembers";
-import BusinessPartnerList from "./BusinessPartnerList";
 import "./style.scss";
 
 const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
@@ -24,7 +23,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const accepted = query.get("accepted");
   const id = query.get("id");
-  const [filter, setFilter] = useState({});
+  const [, setFilter] = useState({});
 
   useEffect(() => {
     if (accepted != null && id)
@@ -42,23 +41,24 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
     },
     {
       title: "Relevant Content",
-      content: () => <BusinessPartnerMembers />,
+      content: () => <></>,
     },
+    // {
+    //   title: "Resources",
+    //   content: () => (
+    //     <BusinessPartnerList
+    //       type="article"
+    //       refresh={currentTab === "0"}
+    //       setCurrentValue={setCurrentTab}
+    //       filter={filter}
+    //       currentTab={currentTab}
+    //     />
+    //   ),
+    // },
     {
       title: "Resources",
-      content: () => (
-        <BusinessPartnerList
-        type="article"
-        refresh={currentTab === "0"}
-        setCurrentValue={setCurrentTab}
-        filter={filter}
-        />
-        ),
-      },
-      {
-        title: "Documents",
-        content: () => <BusinessPartnerDocuments />,
-      },
+      content: () => <BusinessPartnerDocuments currentTab={currentTab} />,
+    },
     {
       title: "Projects",
       content: () => <>Cooming Soon</>,
@@ -68,10 +68,11 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
       content: () => <>Cooming Soon</>,
     },
   ];
-  console.log(currentTab)
   return (
     <>
-      {userProfile.isBusinessPartner && userProfile.role === "admin" ? (
+      {userProfile.isBusinessPartner &&
+      userProfile.role === "admin" &&
+      userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel onChange={onFilterChange} />
           <div className="businessPartner-page__container">
@@ -100,7 +101,11 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
       ) : (
         <div className="businessPartner-page__list-wrap">
           <NoItemsMessageCard
-            message={`You must be a business partner to see this view.`}
+            message={
+              userProfile.isBusinessPartner
+                ? "You must be a premium member to see this view"
+                : `You must be a business partner and premium member to see this view.`
+            }
           />
         </div>
       )}

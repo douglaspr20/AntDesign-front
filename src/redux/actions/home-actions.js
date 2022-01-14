@@ -66,7 +66,7 @@ export const setSettingCollapsed = createAction(
   (collapsed) => ({ collapsed })
 );
 
-export const getUser = createAction(GET_USER);
+export const getUser = createAction(GET_USER, (id) => ({ id }));
 export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
 export const inviteFriend = createAction(INVITE_FRIEND, (email, callback) => ({
@@ -116,7 +116,7 @@ export const acceptInvitation = createAction(
 
 export const acceptInvitationApply = createAction(
   ACCEPT_INVITATION_APPLY,
-  (userId) => ({ userId })
+  (payload) => ({ ...payload })
 );
 
 export const confirmInvitationApply = createAction(
