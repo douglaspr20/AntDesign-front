@@ -43,7 +43,7 @@ function EpisodeCard({
   const {
     id,
     title,
-    created_at,
+    createdAt,
     order: episode_number,
     imageUrl: episode_cover,
     topics: categories,
@@ -65,7 +65,6 @@ function EpisodeCard({
       );
     }
   };
-
   const handleSaveForLater = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -135,7 +134,7 @@ function EpisodeCard({
                 Episode #{episode_number}
               </span>
               <span className="podcast-episode__card-body-data-episode-date">
-                {moment(created_at).format(DATE_FORMAT)}
+                {moment(createdAt).format(DATE_FORMAT)}
               </span>
             </div>
             <div className="podcast-episode__card-body-title">{title}</div>
