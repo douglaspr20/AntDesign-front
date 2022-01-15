@@ -1,9 +1,7 @@
 .job-board-details-page {
   height: 100%;
   overflow-y: auto;
-  // padding-bottom: 72px;
   padding: 1rem;
-  // padding-top: 64px;
 }
 
 .job-board-details-wrapper {
@@ -13,12 +11,10 @@
   margin-right: auto;
 
   @media (min-width: 1024px) {
-    // grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 80%;
   }
 
   @media (min-width: 1536px) {
-    // grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 60%;
   }
 }
@@ -41,10 +37,9 @@
 
     .company-logo {
       margin-top: 1rem;
-      object-fit: cover;
-      height: 150px;
+      object-fit: contain;
+      max-height: 100px;
       width: 100%;
-      max-width: 250px;
     }
 }
 

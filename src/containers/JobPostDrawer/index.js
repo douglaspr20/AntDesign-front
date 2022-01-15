@@ -169,6 +169,20 @@ const JobPostDrawer = ({
             tknSkill?.skillIndex === skillIndex
         );
 
+        // if (takenSkill) {
+        //   skill = {
+        //     ...skill,
+        //     disabled: true,
+        //   };
+        // } else {
+        //   skill = {
+        //     ...skill,
+        //     disabled: false,
+        //   };
+        // }
+
+        // console.log(takenSkill, 'takenSkill')
+
         const disabled = !!takenSkill;
 
         return {
