@@ -32,18 +32,16 @@ const ActivityStatus = ({
   }, [userProfile]);
 
   const handleClickLink = (cohort, resource, hasAccess) => {
-    if (hasAccess) {
+    if (!hasAccess) {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
+    } else {
       history.push(
         `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
       );
-    } else {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
     }
 
     window.location.reload();
   };
-
-  console.log(allOfMySkillCohorts, "bruh");
 
   const displayPanels = allOfMySkillCohorts.map((cohort, index) => {
     return (
