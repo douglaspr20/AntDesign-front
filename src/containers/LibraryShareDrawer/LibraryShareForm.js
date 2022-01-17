@@ -22,6 +22,7 @@ import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
+import { useLocation } from "react-router-dom";
 
 const SearchFilters = SEARCH_FILTERS.library;
 // const Languages = LANGUAGES.ParsedLanguageData;
@@ -36,23 +37,32 @@ const LibraryShareForm = ({
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [file, setFile] = useState();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const isCouncil = document.location.href.includes("council");
-  const isBusinessPartner = document.location.href.includes("business-partner");
+  const tab = query.get("tab");
+  const isBusinessPartner =
+    document.location.href.includes("business-partner") && tab === "2";
+  const businessPartner = document.location.href.includes("business-partner");
 
   const onFinish = (values) => {
     if (isCouncil) {
       onCancel();
       return createCouncilResource(values);
-    } else if (isBusinessPartner) {
+    } else if (businessPartner && tab === "2") {
       onCancel();
-      return createBusinessPartnerDocument({values, file});
+      return createBusinessPartnerDocument({ values, file });
+    } else if (businessPartner && tab === "1") {
+      onCancel();
+      return createBusinessPartnerResource(values);
     }
     onCancel();
     addLibrary(values);
   };
-
+  console.log(
+    document.location.href.includes("business-partner") && tab === "2"
+  );
   const onFinishFailed = () => {};
-
   return (
     <div className="library-share-form">
       <h1 className="library-share-form-title">

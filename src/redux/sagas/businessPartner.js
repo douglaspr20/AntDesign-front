@@ -12,9 +12,10 @@ import {
   getBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerResourcesFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
-  getBusinessPartnerDocumentsFromAPI
+  getBusinessPartnerDocumentsFromAPI,
+  deleteBusinessPartnerDocumentFromAPI,
 } from "../../api";
-import { createBusinessPartnerDocumentFromAPI} from "api/module/businessPartner";
+import { createBusinessPartnerDocumentFromAPI } from "api/module/businessPartner";
 
 export function* getBusinessPartnerMemberSagas() {
   try {
@@ -94,7 +95,9 @@ export function* getBusinessPartnerDocumentsSagas() {
     if (response.status === 200) {
       const { businessPartnerDocuments } = response.data;
       yield put(
-        businessPartnerActions.setBusinessPartnerDocuments(businessPartnerDocuments)
+        businessPartnerActions.setBusinessPartnerDocuments(
+          businessPartnerDocuments
+        )
       );
     }
   } catch (error) {
@@ -109,15 +112,42 @@ export function* uploadBusinessPartnerDocumentSagas({ payload }) {
     const response = yield call(uploadBusinessPartnerDocumentFileFromAPI, {
       ...payload,
     });
-
     if (response.status === 200) {
-      yield put(
-        businessPartnerActions.updateBusinessPartnerDocuments(
-          response.data.documentFile
-        )
-      );
+      yield getBusinessPartnerDocumentsSagas();
       if (payload.callback) {
         payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  }
+}
+
+export function* removeBusinessPartnerDocumentSaga({ payload }) {
+  try {
+    const response = yield call(
+      deleteBusinessPartnerDocumentFromAPI,
+      payload.document
+    );
+    if (response.status === 200) {
+      yield getBusinessPartnerDocumentsSagas();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* updateBusinessPartnerDocumentsSagas({ payload }) {
+  try {
+    let response = yield call(getBusinessPartnerDocumentsFromAPI, {
+      ...payload,
+    });
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
       }
     }
   } catch (error) {
@@ -132,7 +162,7 @@ export function* createBusinessPartnerDocumentSagas({ payload }) {
   try {
     const response = yield call(createBusinessPartnerDocumentFromAPI, {
       ...payload.businessPartnerDocument,
-      ...payload.file
+      ...payload.file,
     });
     if (response.status === 200) {
       if (payload.callback) {
@@ -197,7 +227,11 @@ function* watchBusinessPartner() {
     getBusinessPartnerDocumentsSagas
   );
   yield takeLatest(
-    businessPartnerConstants.UPLOAD_BUSINESS_PARTNER_DOCUMENT_FILE,
+    businessPartnerConstants.UPDATE_BUSINESS_PARTNER_DOCUMENTS,
+    updateBusinessPartnerDocumentsSagas
+  );
+  yield takeLatest(
+    businessPartnerConstants.UPDATE_BUSINESS_PARTNER_DOCUMENT_FILE,
     uploadBusinessPartnerDocumentSagas
   );
   yield takeLatest(
@@ -215,6 +249,10 @@ function* watchBusinessPartner() {
   yield takeLatest(
     businessPartnerConstants.GET_BUSINESS_PARTNER_RESOURCE,
     getBusinessPartnerResounceByIdSagas
+  );
+  yield takeLatest(
+    businessPartnerConstants.DELETE_BUSINESS_PARTNER_DOCUMENT,
+    removeBusinessPartnerDocumentSaga
   );
 }
 

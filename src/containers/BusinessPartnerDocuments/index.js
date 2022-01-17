@@ -11,31 +11,26 @@ import {
   setBusinessPartnerResources,
   uploadDocumentFile,
   getBusinessPartnerDocuments,
+  createBusinessPartnerDocument,
 } from "redux/actions/business-partner-actions";
 
 const BusinessPartnerDocuments = ({
   getBusinessPartnerDocuments,
   businessPartnerDocuments,
-  currentTab,
+  createBusinessPartnerDocument,
 }) => {
+  const businessDocumentsSort = businessPartnerDocuments.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt) 
+  );
 
   useEffect(() => {
     getBusinessPartnerDocuments();
-  }, [getBusinessPartnerDocuments]);
+  }, [getBusinessPartnerDocuments, createBusinessPartnerDocument]);
   return (
-    <div>
-      {businessPartnerDocuments?.map((item) => (
+    <div className="channel-page__list-wrap">
+      {businessDocumentsSort?.map((item) => (
         <BusinessDocumentsCard documentFile={item} key={item.id} />
       ))}
-      {/* <CustomButton
-        size="xs"
-        text="Upload file"
-        onClick={() => setShowResumeModal(true)}
-      />
-      <UploadResumeModal
-        visible={showResumeModal}
-        onClose={() => setShowResumeModal(false)}
-      /> */}
     </div>
   );
 };
@@ -49,6 +44,7 @@ const mapDispatchToProps = {
   getBusinessPartnerResources,
   setBusinessPartnerResources,
   getBusinessPartnerDocuments,
+  createBusinessPartnerDocument,
   uploadDocumentFile,
 };
 

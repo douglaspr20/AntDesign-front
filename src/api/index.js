@@ -176,6 +176,7 @@ import {
   getBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
+  deleteBusinessPartnerDocumentFromAPI,
 } from "./module/businessPartner";
 
 import {
@@ -208,6 +209,7 @@ export {
   createCouncilResourceFromAPI,
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  deleteBusinessPartnerDocumentFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   getBusinessPartnerResourcesFromAPI,
   createBusinessPartnerResourceFromAPI,

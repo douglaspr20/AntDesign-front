@@ -15,10 +15,18 @@ export const getBusinessPartnerDocumentsFromAPI = () => {
   return httpClient.get("private/business-partner/documents");
 };
 
+export const deleteBusinessPartnerDocumentFromAPI = (payload) => {
+  return httpClient.delete(
+    `private/business-partner/delete-document/${payload.documentId}`,
+    { params: payload }
+  );
+};
+
 export const uploadBusinessPartnerDocumentFileFromAPI = ({ documentFile }) => {
   return httpClient.put(
     "private/business-partner/upload-document",
-    documentFile
+    documentFile.formData,
+    { params: documentFile }
   );
 };
 

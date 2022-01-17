@@ -48,7 +48,7 @@ const BusinessPartnerConversationsCard = ({
       >
         <div
           className="skill-cohort-detail-page-header-content-back-btn"
-          onClick={() => history.push(INTERNAL_LINKS.BUSINESS_PARTNER)}
+          onClick={() => history.push(`${INTERNAL_LINKS.BUSINESS_PARTNER}?tab=1`)}
         >
           <div className="skill-cohort-detail-page-header-content-back backToList">
             <div className="skill-cohort-detail-page-header-content-back-img">

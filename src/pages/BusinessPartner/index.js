@@ -7,6 +7,7 @@ import { actions as homeActions } from "redux/actions/home-actions";
 import { LibraryFilterPanel, Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
+import BusinessPartnerList from "./BusinessPartnerList";
 
 import { INTERNAL_LINKS } from "enum";
 
@@ -25,6 +26,11 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const id = query.get("id");
   const [, setFilter] = useState({});
 
+  const handleTabChange = (tab) => {
+    history.replace({pathname: window.location.pathname, search: `tab=${tab}`})
+    setCurrentTab(tab);
+  }
+
   useEffect(() => {
     if (accepted != null && id)
       confirmApply(id, accepted === "true" ? true : false);
@@ -41,31 +47,35 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
     },
     {
       title: "Relevant Content",
-      content: () => <></>,
+      content: () => (
+        <BusinessPartnerList
+          type="article"
+          refresh={currentTab === "0"}
+          setCurrentValue={setCurrentTab}
+          // filter={filter}
+          currentTab={currentTab}
+        />
+      ),
     },
-    // {
-    //   title: "Resources",
-    //   content: () => (
-    //     <BusinessPartnerList
-    //       type="article"
-    //       refresh={currentTab === "0"}
-    //       setCurrentValue={setCurrentTab}
-    //       filter={filter}
-    //       currentTab={currentTab}
-    //     />
-    //   ),
-    // },
     {
-      title: "Resources",
+      title: "Download/Upload Resources",
       content: () => <BusinessPartnerDocuments currentTab={currentTab} />,
     },
     {
       title: "Projects",
-      content: () => <>Cooming Soon</>,
+      content: () => (
+        <div className="cooming-soon-container">
+          <h3>Coming Soon</h3>
+        </div>
+      ),
     },
     {
       title: "Roundtable",
-      content: () => <>Cooming Soon</>,
+      content: () => (
+        <div className="cooming-soon-container">
+          <h3>Coming Soon</h3>
+        </div>
+      ),
     },
   ];
   return (
@@ -74,7 +84,11 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
       userProfile.role === "admin" &&
       userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
-          <LibraryFilterPanel onChange={onFilterChange} />
+          <LibraryFilterPanel
+            onChange={onFilterChange}
+            currentTab={currentTab}
+            isBusiness={true}
+          />
           <div className="businessPartner-page__container">
             <div className="businessPartner-page__results">
               <div className="businessPartner-page__row">
@@ -91,7 +105,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
                   <Tabs
                     data={TabData}
                     current={currentTab}
-                    onChange={setCurrentTab}
+                    onChange={handleTabChange}
                   />
                 </div>
               </div>

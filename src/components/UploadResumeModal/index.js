@@ -60,7 +60,6 @@ const UploadResumeModal = ({
       // check file type
 
       const file = fileRef.current.files[0];
-      if (!isBusiness) {
         const supportedTypes = [
           "application/pdf",
           "application/msword",
@@ -71,7 +70,6 @@ const UploadResumeModal = ({
           setErrorMessage("Invalid format!");
           return;
         }
-      }
       setErrorMessage("");
       let formData = new FormData();
       formData.append(isBusiness ? "document" : "resume", file);

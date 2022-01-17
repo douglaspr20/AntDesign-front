@@ -48,8 +48,8 @@ export function* addBusinessPartnerCommentSaga({ payload }) {
     const response = yield call(
       postBusinessPartnerCommentFromAPI,
       payload.comment
-    );
-    if (response.status === 200) {
+      );
+      if (response.status === 200) {
       yield put(
         businessPartnerCommentActions.getAllBusinessPartnerComments({
           businessPartnerId: payload.comment.BusinessPartnerId,
@@ -78,7 +78,7 @@ export function* removeBusinessPartnerCommentSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         businessPartnerCommentActions.getAllBusinessPartnerComments({
-          businessPartnerId: payload.comment.BusinessPartnerIdId,
+          businessPartnerId: payload.comment.BusinessPartnerId,
         })
       );
     }

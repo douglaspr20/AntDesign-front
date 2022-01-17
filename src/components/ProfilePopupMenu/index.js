@@ -312,7 +312,7 @@ const ProfilePopupMenu = (props) => {
           <div onClick={onApplyBusinessPartner}>
             {user.isBusinessPartner
               ? "HR Business Partners Community"
-              : "Apply to the HR Business Partner Community"}
+              : "Application to the HR Business Partner Community"}
           </div>
         </React.Fragment>
         {user.percentOfCompletion === 100 ? (
@@ -328,9 +328,14 @@ const ProfilePopupMenu = (props) => {
             okText="Confirm"
           >
             <p>
-              Your application will be sent to Hacking HR. You will be notified
-              within the next 48 hours.
+              Your application will be sent to Hacking HR when you click on
+              confirm. Before confirming, please make sure your profile reflects
+              your current title, company and other relevant information. We use
+              the information in your profile to determine your participation in
+              the Hacking HR's HR Business Partner Community. You will be
+              notified within the next 48 hours.
             </p>
+            <h5 className="business-partner-title">If you don't have the "HR Business Partner:</h5>
             <p>
               Please let us know here if you don't have the "official" title of
               HR Business Partner but still perform the high-level, strategic
@@ -372,8 +377,8 @@ const ProfilePopupMenu = (props) => {
             >
               <div className="upgrade-notification-panel">
                 <h3>
-                  You must be a premium member to see the business member community
-                  page.
+                  You must be a premium member to see the business member
+                  community page.
                 </h3>
               </div>
             </div>

@@ -26,6 +26,7 @@ const BusinessPartnerList = ({
   getBusinessPartnerResources,
   businessPartnerResources,
   setCurrentValue,
+  currentTab,
   createBusinessPartnerResource,
 }) => {
   const [topics, setTopics] = useState(filter.topics || []);
