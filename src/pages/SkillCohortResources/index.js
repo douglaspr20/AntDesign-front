@@ -269,12 +269,12 @@ const SkillCohortResources = ({
   );
 
   const TabData = [
-    {
-      title: "Resources",
-      content: () => {
-        return <div className="wrapper-2">{displayResources}</div>;
-      },
-    },
+    // {
+    //   title: "Resources",
+    //   content: () => {
+    //     return <div className="wrapper-2">{displayResources}</div>;
+    //   },
+    // },
     {
       title: "Conversations",
       content: () => displayConversation,
