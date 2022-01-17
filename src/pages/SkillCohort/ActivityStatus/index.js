@@ -5,6 +5,7 @@ import { Collapse } from "antd";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
+import clsx from "clsx";
 
 import { actions as skillCohortActions } from "redux/actions/skillCohort-actions";
 
@@ -42,19 +43,9 @@ const ActivityStatus = ({
     return (
       <Panel header={cohort.title} key={`${index}`}>
         <Collapse bordered={false}>
-          {cohort.SkillCohortResources.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)).map((resource, resourceIndex) => {
-            const header = (
-              <div>
-                {`${moment(resource.releaseDate).format("LL")}: `}
-                <span
-                  onClick={() => handleClickLink(cohort, resource)}
-                  style={{ color: "#0000EE" }}
-                >
-                  {resource.title}
-                </span>
-              </div>
-            );
-
+          {cohort.SkillCohortResources.sort(
+            (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+          ).map((resource, resourceIndex) => {
             const countPersonalReflection =
               cohort.SkillCohortResourceResponses.filter(
                 (response) =>
@@ -74,6 +65,32 @@ const ActivityStatus = ({
 
             const displayComments =
               countAssessments.length >= 1 ? "COMPLETED" : "PENDING";
+
+            const header = (
+              <div className="header">
+                <span className="header-content">{`${moment(
+                  resource.releaseDate
+                ).format("LL")}:`}</span>
+                <span
+                  onClick={() => handleClickLink(cohort, resource)}
+                  style={{ color: "#0000EE" }}
+                  className="header-content"
+                >
+                  {resource.title}
+                </span>
+                <div
+                  className={clsx(
+                    {
+                      "green-dot":
+                        countPersonalReflection.length >= 1 && countAssessments.length >= 1,
+                      "red-dot":
+                        countPersonalReflection.length === 0 || countAssessments.length === 0,
+                    },
+                    "header-content"
+                  )}
+                ></div>
+              </div>
+            );
 
             return (
               <Panel header={header} key={resourceIndex}>

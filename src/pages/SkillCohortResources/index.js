@@ -84,6 +84,14 @@ const SkillCohortResources = ({
   }, [skillCohortParticipant, userProfile]);
 
   useEffect(() => {
+    if (!isEmpty(skillCohortParticipant) && !skillCohortParticipant.hasAccess) {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+    }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillCohortParticipant])
+
+  useEffect(() => {
     if (!isEmpty(allSkillCohortResources)) {
       if (!parsed.id) {
         getSkillCohortResource(allSkillCohortResources[0].id);

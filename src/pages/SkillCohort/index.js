@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
+import qs from "query-string";
 import { Tabs } from "components";
+import { useLocation } from "react-router-dom";
+import { INTERNAL_LINKS } from "enum";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
@@ -33,6 +36,10 @@ const SkillCohort = ({
   }, []);
   const [currentTab, setCurrentTab] = useState("0");
 
+  const location = useLocation();
+
+  const parsed = qs.parse(location.search);
+
   useEffect(() => {
     if (userProfile.id) {
       getAllParticipated(userProfile.id);
@@ -40,6 +47,40 @@ const SkillCohort = ({
     }
     // eslint-disable-next-line
   }, [userProfile]);
+
+  useEffect(() => {
+    setCurrentTab(parsed.key);
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (currentTab === "0") {
+      window.history.replaceState(
+        null,
+        "Page",
+        `${INTERNAL_LINKS.PROJECTX}?key=0`
+      );
+    } else if (currentTab === "1") {
+      window.history.replaceState(
+        null,
+        "Page",
+        `${INTERNAL_LINKS.PROJECTX}?key=1`
+      );
+    } else if (currentTab === "2") {
+      window.history.replaceState(
+        null,
+        "Page",
+        `${INTERNAL_LINKS.PROJECTX}?key=2`
+      );
+    } else {
+      window.history.replaceState(
+        null,
+        "Page",
+        `${INTERNAL_LINKS.PROJECTX}?key=3`
+      );
+    }
+  }, [currentTab]);
 
   const handleFilterChange = (filter) => {
     getAllSkillCohorts(filter.category);
@@ -82,6 +123,12 @@ const SkillCohort = ({
   });
 
   const TabData = [
+    {
+      title: "General Information",
+      content: () => {
+        return <div className="skill-cohort-list">General Information</div>;
+      },
+    },
     {
       title: "All Cohorts",
       content: () => {
