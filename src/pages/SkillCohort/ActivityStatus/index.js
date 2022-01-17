@@ -35,7 +35,6 @@ const ActivityStatus = ({
     if (!hasAccess) {
       history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
     } else {
-      console.log(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`, 'route')
       history.push(
         `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
       );
