@@ -10,7 +10,6 @@ import { isEmpty } from "lodash";
 import { UserOutlined } from "@ant-design/icons";
 import OpengraphReactComponent from "opengraph-react";
 import qs from "query-string";
-import IconLoading from "images/icon-loading.gif";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
@@ -131,14 +130,6 @@ const SkillCohortResources = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab, skillCohortResource]);
-
-  if (isEmpty(userProfile) || isEmpty(skillCohortParticipant)) {
-    return (
-      <div className="spin-image">
-        <Spin indicator={<img src={IconLoading} alt="spin-gif" />}></Spin>;
-      </div>
-    );
-  }
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {

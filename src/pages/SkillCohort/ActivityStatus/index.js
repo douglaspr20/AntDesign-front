@@ -31,13 +31,19 @@ const ActivityStatus = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
-  const handleClickLink = (cohort, resource) => {
-    history.push(
-      `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
-    );
+  const handleClickLink = (cohort, resource, hasAccess) => {
+    if (hasAccess) {
+      history.push(
+        `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
+      );
+    } else {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
+    }
 
     window.location.reload();
   };
+
+  console.log(allOfMySkillCohorts, "bruh");
 
   const displayPanels = allOfMySkillCohorts.map((cohort, index) => {
     return (
@@ -72,7 +78,9 @@ const ActivityStatus = ({
                   resource.releaseDate
                 ).format("LL")}:`}</span>
                 <span
-                  onClick={() => handleClickLink(cohort, resource)}
+                  onClick={() =>
+                    handleClickLink(cohort, resource, cohort.hasAccess)
+                  }
                   style={{ color: "#0000EE" }}
                   className="header-content"
                 >
