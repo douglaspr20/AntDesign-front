@@ -12,6 +12,7 @@ import OpengraphReactComponent from "opengraph-react";
 import qs from "query-string";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
+import { skillCohortSelector } from 'redux/selectors/skillCohortSelector'
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -42,6 +43,7 @@ const SkillCohortResources = ({
   getSkillCohortResource,
   getEntireResources,
   skillCohortParticipant,
+  skillCohort
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
@@ -84,8 +86,10 @@ const SkillCohortResources = ({
   }, [skillCohortParticipant, userProfile]);
 
   useEffect(() => {
-    if (!isEmpty(skillCohortParticipant) && !skillCohortParticipant.hasAccess) {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+    if (!isEmpty(skillCohortParticipant) && !isEmpty(skillCohort)) {
+      if (!skillCohortParticipant.hasAccess && skillCohortParticipant.SkillCohortId === skillCohort.id) {
+        history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -307,6 +311,7 @@ const SkillCohortResources = ({
 const mapStateToProps = (state) => ({
   ...skillCohortResourceSelector(state),
   ...skillCohortParticipantSelector(state),
+  ...skillCohortSelector,
   userProfile: homeSelector(state).userProfile,
 });
 
