@@ -82,13 +82,21 @@ const ActivityStatus = ({
                   className={clsx(
                     {
                       "green-dot":
-                        countPersonalReflection.length >= 1 && countAssessments.length >= 1,
+                        countPersonalReflection.length >= 1 &&
+                        countAssessments.length >= 1,
                       "red-dot":
-                        countPersonalReflection.length === 0 || countAssessments.length === 0,
+                        countPersonalReflection.length === 0 ||
+                        countAssessments.length === 0,
                     },
                     "header-content"
                   )}
                 ></div>
+                <div>
+                  {countPersonalReflection.length >= 1 &&
+                  countAssessments.length >= 1
+                    ? "ACTIVITIES COMPLETED"
+                    : "PENDING ACTIVITIES"}
+                </div>
               </div>
             );
 
