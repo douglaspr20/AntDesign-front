@@ -123,12 +123,12 @@ const SkillCohort = ({
   });
 
   const TabData = [
-    {
-      title: "General Information",
-      content: () => {
-        return <div className="skill-cohort-list">General Information</div>;
-      },
-    },
+    // {
+    //   title: "General Information",
+    //   content: () => {
+    //     return <div className="skill-cohort-list">General Information</div>;
+    //   },
+    // },
     {
       title: "All Cohorts",
       content: () => {
