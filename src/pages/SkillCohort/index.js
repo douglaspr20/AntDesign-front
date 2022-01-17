@@ -73,13 +73,14 @@ const SkillCohort = ({
         "Page",
         `${INTERNAL_LINKS.PROJECTX}?key=2`
       );
-    } else {
-      window.history.replaceState(
-        null,
-        "Page",
-        `${INTERNAL_LINKS.PROJECTX}?key=3`
-      );
-    }
+    } 
+    // else {
+    //   window.history.replaceState(
+    //     null,
+    //     "Page",
+    //     `${INTERNAL_LINKS.PROJECTX}?key=3`
+    //   );
+    // }
   }, [currentTab]);
 
   const handleFilterChange = (filter) => {
