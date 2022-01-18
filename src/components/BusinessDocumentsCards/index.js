@@ -18,9 +18,10 @@ const BusinessDocumentsCard = ({
   uploadDocumentFile,
   deleteBusinessPartnerDocument,
   getBusinessPartnerDocuments,
+  userProfile,
 }) => {
   const fileRef = useRef(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const onUploadResume = () => {
     if (fileRef && fileRef.current) {
@@ -97,7 +98,6 @@ const BusinessDocumentsCard = ({
     }
     // setLoading(false);
   };
-
   const downloadFile = () => {
     if (documentFile.documentFileUrl) {
       const link = document.createElement("a");
@@ -116,10 +116,10 @@ const BusinessDocumentsCard = ({
   return (
     <div className="business-card-container">
       {loading && (
-          <div className="loading-container">
-            <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
-          </div>
-        )}
+        <div className="loading-container">
+          <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
+        </div>
+      )}
       <Card
         hoverable
         bordered
@@ -160,21 +160,26 @@ const BusinessDocumentsCard = ({
               </p>
             </div>
           )}
-          <CustomButton
-            text="Update"
-            type="primary"
-            size="xs"
-            // disabled={!!userProfile.resumeFileName}
-            onClick={onUploadResume}
-          />
-          <CustomButton
-            text="Delete"
-            type="primary outlined"
-            size="xs"
-            // disabled={!userProfile.resumeFileName}
-            style={{ marginLeft: "1rem" }}
-            onClick={onDeleteFile}
-          />
+          {userProfile?.id === documentFile?.User?.id && (
+            <>
+              {" "}
+              <CustomButton
+                text="Update"
+                type="primary"
+                size="xs"
+                // disabled={!!userProfile.resumeFileName}
+                onClick={onUploadResume}
+              />
+              <CustomButton
+                text="Delete"
+                type="primary outlined"
+                size="xs"
+                // disabled={!userProfile.resumeFileName}
+                style={{ marginLeft: "1rem" }}
+                onClick={onDeleteFile}
+              />
+            </>
+          )}
           <input
             id="file-upload"
             ref={fileRef}

@@ -100,7 +100,7 @@ class MainHeader extends React.Component {
     if (pathname.includes(`${INTERNAL_LINKS.BUSINESS_PARTNER}`)) {
       pathInfo = {
         // icon: ,
-        label: `Businnes Partner`,
+        label: `HR Business Partners Community`,
       };
     }
 

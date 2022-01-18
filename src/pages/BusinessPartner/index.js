@@ -84,7 +84,6 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   return (
     <>
       {userProfile.isBusinessPartner &&
-      userProfile.role === "admin" &&
       userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel
