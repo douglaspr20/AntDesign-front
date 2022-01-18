@@ -25,6 +25,10 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
 } from "../../api";
+import {
+  acceptInvitationApplyBusinnesPartner,
+  confirmInvitationApplyBusiness,
+} from "api/module/user";
 
 const defaultUserInfo = {
   firstName: "",
@@ -398,6 +402,36 @@ export function* acceptInvitationSaga({ payload }) {
   }
 }
 
+export function* acceptInvitationApplySaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(acceptInvitationApplyBusinnesPartner, {
+      ...payload,
+    });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* confirmAccessibilityRequirementsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
@@ -422,6 +456,32 @@ export function* confirmAccessibilityRequirementsSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* confirmInvitationApply({ payload }) {
+  try {
+    const response = yield call(confirmInvitationApplyBusiness, {
+      ...payload,
+    });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
   }
 }
 
@@ -460,10 +520,18 @@ function* watchLogin() {
   yield takeLatest(homeConstants.CREATE_INVITATION, createInvitationSaga);
   yield takeLatest(homeConstants.ACCEPT_INVITATION, acceptInvitationSaga);
   yield takeLatest(
+    homeConstants.ACCEPT_INVITATION_APPLY,
+    acceptInvitationApplySaga
+  );
+  yield takeLatest(
+    homeConstants.CONFIRM_INVITATION_APPLY,
+    confirmInvitationApply
+  );
+  yield takeLatest(
     homeConstants.CONFIRM_ACCESSIBILITY_REQUIREMENTS,
     confirmAccessibilityRequirementsSaga
   );
-  yield takeLatest(homeConstants.GET_USERS, getAllUsersSaga)
+  yield takeLatest(homeConstants.GET_USERS, getAllUsersSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

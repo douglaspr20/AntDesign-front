@@ -5,7 +5,7 @@ import { councilSelector } from "redux/selectors/councilSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
 import { getCouncilMembers } from "redux/actions/council-actions";
-import CouncilParticipantsCards from "../CouncilParticipantsCards";
+import CouncilParticipantsCards from "../../../components/CouncilParticipantsCards";
 import "./style.scss";
 
 const CouncilMembers = ({ userProfile, councilMembers, getCouncilMembers }) => {

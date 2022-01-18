@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { CustomButton, CustomInput } from "components";
 
 import { addCouncilComment } from "redux/actions/council-comments-actions";
+import { addBusinessPartnerComment } from "redux/actions/business-partner-comments-actions";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -18,24 +19,46 @@ import "./style.scss";
 const CouncilCommentForm = ({
   councilId,
   councilCommentId,
+  businessPartnerId,
+  businessPartnerCommentId,
+  addBusinessPartnerComment,
   addCouncilComment,
   userProfile,
 }) => {
   const [form] = Form.useForm();
+  const location = useLocation();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
+  const isCouncil = location.pathname.includes("council");
 
   const addComment = (data) => {
-    if (councilCommentId) {
-      form.resetFields();
-      return addCouncilComment({
-        ...data,
-        CouncilCommentId: councilCommentId,
-        CouncilId: query.get("id"),
-      });
+    if (isCouncil) {
+      if (councilCommentId) {
+        form.resetFields();
+        return addCouncilComment({
+          ...data,
+          CouncilCommentId: councilCommentId,
+          CouncilId: query.get("id"),
+        });
+      } else {
+        form.resetFields();
+        return addCouncilComment({ ...data, CouncilId: query.get("id") });
+      }
     } else {
-      form.resetFields();
-      return addCouncilComment({ ...data, CouncilId: query.get("id") });
+      if (businessPartnerCommentId) {
+        form.resetFields();
+        return addBusinessPartnerComment({
+          ...data,
+          BusinessPartnerCommentId: businessPartnerCommentId,
+          BusinessPartnerId: query.get("id"),
+        });
+      } else {
+        form.resetFields();
+        return addBusinessPartnerComment({
+          ...data,
+          BusinessPartnerId: query.get("id"),
+        });
+      }
     }
   };
 
@@ -59,7 +82,7 @@ const CouncilCommentForm = ({
             layout="vertical"
             onFinish={(data) => {
               if (userProfile.completed === true) {
-                addComment(data, councilId);
+                addComment(data, isCouncil ? councilId : businessPartnerId);
               } else {
                 onOpenFirewallModal();
               }
@@ -88,6 +111,7 @@ const CouncilCommentForm = ({
 
 CouncilCommentForm.propTypes = {
   councilId: PropTypes.number,
+  businessPartnerId: PropTypes.number,
   councilCommentId: PropTypes.number,
   afterSave: PropTypes.func,
 };
@@ -95,6 +119,8 @@ CouncilCommentForm.propTypes = {
 CouncilCommentForm.defaultProps = {
   councilId: 0,
   councilCommentId: 0,
+  businessPartnerId: 0,
+  businessPartnerCommentId: 0,
   afterSave: () => {},
 };
 
@@ -104,6 +130,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addCouncilComment,
+  addBusinessPartnerComment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CouncilCommentForm);

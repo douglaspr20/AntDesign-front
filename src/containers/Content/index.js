@@ -52,6 +52,9 @@ import SkillCohortResourcePage from "pages/SkillCohortResources";
 import MyLearningPage from "pages/Learnings";
 import CouncilConversationsCard from "pages/Council/CouncilConversationsCard";
 import SponsorDashboardPage from "pages/SponsorDashboard";
+import ConfirmMail from "pages/ConfirmMail";
+import BusinessPartnerPage from "pages/BusinessPartner";
+import BusinessPartnerConversationCard from "pages/BusinessPartner/BusinessPartnerConversationCard";
 import TalentMarketplacePage from "pages/TalentMarketplace";
 import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
 
@@ -109,6 +112,10 @@ class Content extends Component {
             )}
           />
           <Route
+            path={INTERNAL_LINKS.CONFIRM_APPLY_EMAIL}
+            render={(props) => <ConfirmMail {...props} />}
+          />
+          <Route
             path={INTERNAL_LINKS.PASSWORD_RECOVERY}
             render={(props) => <PasswordRecoveryPage {...props} />}
           />
@@ -140,6 +147,16 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.COUNCIL}
             render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.BUSINESS_PARTNER}
+            render={(props) => <BusinessPartnerPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.BUSINESS_PARTNER}/resource`}
+            render={(props) => <BusinessPartnerConversationCard {...props} />}
           />
           <PrivateRoute
             exact
