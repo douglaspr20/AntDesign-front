@@ -363,8 +363,8 @@ const ProfilePopupMenu = (props) => {
                   onClick={completeProfile}
                 >
                   <h3>
-                    You must fully complete your profile before aplly to the HR
-                    business partner community.
+                    You must fully complete your profile before applying for the
+                    HR Business Partners Community.
                   </h3>
                 </div>
               </div>

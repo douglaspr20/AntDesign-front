@@ -77,8 +77,6 @@ const BusinessDocumentsCard = ({
     }
   };
   const onDeleteFile = async () => {
-    // setLoading(true);
-    // setErrorMessage("");
     const response = await new Promise((resolve) => {
       deleteBusinessPartnerDocument(
         { documentId: documentFile.id, fileUrl: documentFile.documentFileUrl },
