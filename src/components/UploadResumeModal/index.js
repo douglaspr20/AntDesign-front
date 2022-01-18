@@ -60,16 +60,16 @@ const UploadResumeModal = ({
       // check file type
 
       const file = fileRef.current.files[0];
-        const supportedTypes = [
-          "application/pdf",
-          "application/msword",
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        ];
+      const supportedTypes = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
 
-        if (!supportedTypes.includes(file.type)) {
-          setErrorMessage("Invalid format!");
-          return;
-        }
+      if (!supportedTypes.includes(file.type)) {
+        setErrorMessage("Invalid format!");
+        return;
+      }
       setErrorMessage("");
       let formData = new FormData();
       formData.append(isBusiness ? "document" : "resume", file);
@@ -130,14 +130,20 @@ const UploadResumeModal = ({
               </span>
               {!!userProfile.resumeFileName ? (
                 <>
-                  <FilePdfOutlined className="upload-resume-form-pdficon" />
-                  <span className="upload-resume-filename">
-                    {isBusiness ? "" : userProfile.resumeFileName}
-                  </span>
-                  <i
-                    className="fas fa-external-link-alt external-link"
-                    onClick={() => onOpenResume(userProfile.resumeUrl)}
-                  />
+                  {isBusiness ? (
+                    ""
+                  ) : (
+                    <>
+                      <FilePdfOutlined className="upload-resume-form-pdficon" />
+                      <span className="upload-resume-filename">
+                        userProfile.resumeFileName
+                      </span>
+                      <i
+                        className="fas fa-external-link-alt external-link"
+                        onClick={() => onOpenResume(userProfile.resumeUrl)}
+                      />
+                    </>
+                  )}
                 </>
               ) : (
                 <span className="upload-resume-none">-</span>

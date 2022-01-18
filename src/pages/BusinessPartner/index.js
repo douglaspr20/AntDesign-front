@@ -27,9 +27,12 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const [, setFilter] = useState({});
 
   const handleTabChange = (tab) => {
-    history.replace({pathname: window.location.pathname, search: `tab=${tab}`})
+    history.replace({
+      pathname: window.location.pathname,
+      search: `tab=${tab}`,
+    });
     setCurrentTab(tab);
-  }
+  };
 
   useEffect(() => {
     if (accepted != null && id)
@@ -80,49 +83,51 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   ];
   return (
     <>
-      {userProfile.isBusinessPartner &&
-      userProfile.role === "admin" &&
-      userProfile.memberShip === "premium" ? (
-        <div className="businessPartner-page">
-          <LibraryFilterPanel
-            onChange={onFilterChange}
-            currentTab={currentTab}
-            isBusiness={true}
-          />
-          <div className="businessPartner-page__container">
-            <div className="businessPartner-page__results">
-              <div className="businessPartner-page__row">
-                <div className="businessPartner-page__info-column"></div>
-                <div className="businessPartner-page__content">
-                  <Link to={INTERNAL_LINKS.HOME}>
-                    <div className="businessPartner-page__content-top">
-                      <div className="businessPartner-page__content-top-back">
-                        <img src={IconBack} alt="icon-back" />
+      {
+        userProfile.isBusinessPartner && userProfile.role === "admin" && (
+          // userProfile.memberShip === "premium" ? (
+          <div className="businessPartner-page">
+            <LibraryFilterPanel
+              onChange={onFilterChange}
+              currentTab={currentTab}
+              isBusiness={true}
+            />
+            <div className="businessPartner-page__container">
+              <div className="businessPartner-page__results">
+                <div className="businessPartner-page__row">
+                  <div className="businessPartner-page__info-column"></div>
+                  <div className="businessPartner-page__content">
+                    <Link to={INTERNAL_LINKS.HOME}>
+                      <div className="businessPartner-page__content-top">
+                        <div className="businessPartner-page__content-top-back">
+                          <img src={IconBack} alt="icon-back" />
+                        </div>
+                        <h4>Back</h4>
                       </div>
-                      <h4>Back</h4>
-                    </div>
-                  </Link>
-                  <Tabs
-                    data={TabData}
-                    current={currentTab}
-                    onChange={handleTabChange}
-                  />
+                    </Link>
+                    <Tabs
+                      data={TabData}
+                      current={currentTab}
+                      onChange={handleTabChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="businessPartner-page__list-wrap">
-          <NoItemsMessageCard
-            message={
-              userProfile.isBusinessPartner
-                ? "You must be a premium member to see this view"
-                : `You must be a business partner and premium member to see this view.`
-            }
-          />
-        </div>
-      )}
+        )
+        // ) : (
+        //   <div className="businessPartner-page__list-wrap">
+        //     <NoItemsMessageCard
+        //       message={
+        //         userProfile.isBusinessPartner
+        //           ? "You must be a premium member to see this view"
+        //           : `You must be a business partner and premium member to see this view.`
+        //       }
+        //     />
+        //   </div>
+        // )}
+      }
     </>
   );
 };

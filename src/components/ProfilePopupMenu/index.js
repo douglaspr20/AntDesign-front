@@ -146,7 +146,7 @@ const ProfilePopupMenu = (props) => {
     } else {
       setShowProfileCompletionFirewall(true);
     }
-    if (user.memberShip !== "premium") {
+    if (user.isBusinessPartner && user.memberShip !== "premium") {
       setShowPremiumFirewall(true);
     }
     if (user.isBusinessPartner && user.memberShip === "premium") {
@@ -318,7 +318,7 @@ const ProfilePopupMenu = (props) => {
         {user.percentOfCompletion === 100 ? (
           <Modal
             visible={visibleConfirmApply}
-            title="Are you sure you want to apply to the HR business partner community?"
+            title="Application to the HR Business Partner Community"
             width={500}
             onCancel={() => setVisibleConfirmApply(false)}
             onOk={() => {
@@ -335,7 +335,9 @@ const ProfilePopupMenu = (props) => {
               the Hacking HR's HR Business Partner Community. You will be
               notified within the next 48 hours.
             </p>
-            <h5 className="business-partner-title">If you don't have the "HR Business Partner:</h5>
+            <h5 className="business-partner-title">
+              If you don't have the "HR Business Partner Title":
+            </h5>
             <p>
               Please let us know here if you don't have the "official" title of
               HR Business Partner but still perform the high-level, strategic

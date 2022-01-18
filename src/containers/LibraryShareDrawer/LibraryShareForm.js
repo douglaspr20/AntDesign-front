@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, Radio } from "antd";
+import { Form, Checkbox, Radio, Spin } from "antd";
 
 import {
   CustomInput,
@@ -20,6 +20,7 @@ import { createBusinessPartnerResource } from "redux/actions/business-partner-ac
 import { createBusinessPartnerDocument } from "redux/actions/business-partner-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
+import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
 import { useLocation } from "react-router-dom";
@@ -36,6 +37,7 @@ const LibraryShareForm = ({
   createBusinessPartnerDocument,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -45,13 +47,22 @@ const LibraryShareForm = ({
     document.location.href.includes("business-partner") && tab === "2";
   const businessPartner = document.location.href.includes("business-partner");
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (isCouncil) {
       onCancel();
       return createCouncilResource(values);
     } else if (businessPartner && tab === "2") {
       onCancel();
-      return createBusinessPartnerDocument({ values, file });
+      setLoading(true);
+      return await new Promise((resolve) => {
+        createBusinessPartnerDocument({ values, file }, (error) => {
+          if (error) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      });
     } else if (businessPartner && tab === "1") {
       onCancel();
       return createBusinessPartnerResource(values);
@@ -59,12 +70,14 @@ const LibraryShareForm = ({
     onCancel();
     addLibrary(values);
   };
-  console.log(
-    document.location.href.includes("business-partner") && tab === "2"
-  );
   const onFinishFailed = () => {};
   return (
     <div className="library-share-form">
+      {loading && (
+          <div className="loading-container">
+            <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
+          </div>
+        )}
       <h1 className="library-share-form-title">
         {isBusinessPartner
           ? "Share resources with your fellow HR Business Partners"
