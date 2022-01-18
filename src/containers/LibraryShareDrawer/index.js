@@ -28,7 +28,6 @@ class LibraryShareDrawer extends React.Component {
 
   render() {
     const { visible } = this.state;
-
     return (
       <CustomDrawer
         title="Share content"

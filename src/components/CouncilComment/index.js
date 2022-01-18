@@ -6,19 +6,30 @@ import { Comment, Avatar, Popconfirm } from "antd";
 import { getPublicationTime } from "utils/format";
 
 import { deleteCouncilComment } from "redux/actions/council-comments-actions";
+import { deleteBusinessPartnerComment } from "redux/actions/business-partner-comments-actions";
 import { authSelector } from "redux/selectors/authSelector";
 
 import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.svg";
 
 import "./style.scss";
+import { useHistory } from "react-router-dom";
 
 const CouncilComment = ({
   userId,
   data,
-  deleteCouncilComment
+  deleteCouncilComment,
+  deleteBusinessPartnerComment,
 }) => {
+  const history = useHistory();
+  const isBusiness = history.location.pathname.includes("business-partner");
 
   const onRemoveComment = () => {
+    if (isBusiness) {
+      return deleteBusinessPartnerComment({
+        id: data.id,
+        BusinessPartnerId: data.BusinessPartnerId,
+      });
+    }
     deleteCouncilComment({ id: data.id, CouncilId: data.CouncilId });
   };
 
@@ -41,17 +52,16 @@ const CouncilComment = ({
         // ),
         userId === data.UserId && (
           <>
-          <Popconfirm
-            title="Are you sure you want to permanently remove this item?"
-            onConfirm={onRemoveComment}
-          >
-            <IconTrashOutline /> Remove
-          </Popconfirm>
+            <Popconfirm
+              title="Are you sure you want to permanently remove this item?"
+              onConfirm={onRemoveComment}
+            >
+              <IconTrashOutline /> Remove
+            </Popconfirm>
           </>
         ),
       ]}
-    >
-    </Comment>
+    ></Comment>
   );
 };
 
@@ -73,6 +83,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   deleteCouncilComment,
+  deleteBusinessPartnerComment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CouncilComment);

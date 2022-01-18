@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Popover, Form } from "antd";
+import { Popover, Form, Input } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
@@ -18,6 +18,7 @@ import UploadResumeModal from "../UploadResumeModal";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
+import Modal from "antd/lib/modal/Modal";
 
 // const ProfileMenus = [
 //   {
@@ -56,6 +57,7 @@ const ProfilePopupMenu = (props) => {
     userProfile: user,
     changePassword,
     userProfile,
+    acceptApply,
     ...rest
   } = props;
 
@@ -64,11 +66,15 @@ const ProfilePopupMenu = (props) => {
   const [subscription, setSubscription] = useState(null);
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
+  const [showPremiumFirewall, setShowPremiumFirewall] = useState(false);
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
 
   const history = useHistory();
 
   const [form] = Form.useForm();
-
+  let applyState;
   useEffect(() => {
     async function loadSubscription() {
       if (!subscription) {
@@ -132,6 +138,32 @@ const ProfilePopupMenu = (props) => {
 
   const handleOnFinish = (values) => {
     changePassword(userProfile.id, values.oldPassword, values.newPassword);
+  };
+
+  const onApplyBusinessPartner = () => {
+    if (user.percentOfCompletion === 100 && !user.isBusinessPartner) {
+      setVisibleConfirmApply(true);
+    } else {
+      setShowProfileCompletionFirewall(true);
+    }
+    if (user.isBusinessPartner && user.memberShip !== "premium") {
+      setShowPremiumFirewall(true);
+    }
+    if (user.isBusinessPartner && user.memberShip === "premium") {
+      history.push(INTERNAL_LINKS.BUSINESS_PARTNER);
+    }
+  };
+
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
+  const handleChange = (value) => {
+    applyState = value;
+  };
+
+  const onApplyBusness = () => {
+    acceptApply({ userId: userProfile.id, applyState });
   };
 
   const TitleSection = () => (
@@ -275,6 +307,86 @@ const ProfilePopupMenu = (props) => {
           Experts Council
         </div>
       )}
+      <div className="profile-popover-content-menu">
+        <React.Fragment>
+          <div onClick={onApplyBusinessPartner}>
+            {user.isBusinessPartner
+              ? "HR Business Partners Community"
+              : "Application to the HR Business Partner Community"}
+          </div>
+        </React.Fragment>
+        {user.percentOfCompletion === 100 ? (
+          <Modal
+            visible={visibleConfirmApply}
+            title="Application to the HR Business Partner Community"
+            width={500}
+            onCancel={() => setVisibleConfirmApply(false)}
+            onOk={() => {
+              onApplyBusness();
+              setVisibleConfirmApply(false);
+            }}
+            okText="Confirm"
+          >
+            <p>
+              Your application will be sent to Hacking HR when you click on
+              confirm. Before confirming, please make sure your profile reflects
+              your current title, company and other relevant information. We use
+              the information in your profile to determine your participation in
+              the Hacking HR's HR Business Partner Community. You will be
+              notified within the next 48 hours.
+            </p>
+            <h5 className="business-partner-title">
+              If you don't have the "HR Business Partner Title":
+            </h5>
+            <p>
+              Please let us know here if you don't have the "official" title of
+              HR Business Partner but still perform the high-level, strategic
+              functions of an HR Business Partners. We will consider your
+              application as well:
+            </p>
+            <Input.TextArea
+              {...rest}
+              rows={4}
+              // className={clsx("custom-input", className, "mutiple", size)}
+              onChange={(e) => handleChange(e.target.value)}
+            />
+          </Modal>
+        ) : (
+          <>
+            {showProfileCompletionFirewall && (
+              <div
+                className="skill-cohort-firewall"
+                onClick={() => setShowProfileCompletionFirewall(false)}
+              >
+                <div
+                  className="upgrade-notification-panel"
+                  onClick={completeProfile}
+                >
+                  <h3>
+                    You must fully complete your profile before applying for the
+                    HR Business Partners Community.
+                  </h3>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+        <>
+          {showPremiumFirewall && (
+            <div
+              className="skill-cohort-firewall"
+              onClick={() => setShowPremiumFirewall(false)}
+            >
+              <div className="upgrade-notification-panel">
+                <h3>
+                  You must be a premium member to see the business member
+                  community page.
+                </h3>
+              </div>
+            </div>
+          )}
+        </>
+      </div>
       {/* {user.percentOfCompletion === 100 && (
         <div
           className="profile-popover-content-menu"
@@ -400,6 +512,7 @@ const mapStateToProps = (state) => homeSelector(state);
 
 const mapDispatchToProps = {
   logout: authActions.logout,
+  acceptApply: homeActions.acceptInvitationApply,
   ...homeActions,
 };
 
