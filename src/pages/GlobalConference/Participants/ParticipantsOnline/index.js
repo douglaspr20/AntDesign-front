@@ -18,16 +18,18 @@ const ParticipantsOnline = ({ participants, createConversartion }) => {
   return (
     <div className="participants">
       <h2>{participants.length} Participants Online</h2>
-      {participants.length > 0 &&
-        participants
-          .slice((page - 1) * 20, page * 20)
-          .map((participant, i) => (
-            <ParticipantCard
-              key={i}
-              participant={participant}
-              handleCreateConversation={handleCreateConversation}
-            />
-          ))}
+      <div className="speakers-list-container">
+        {participants.length > 0 &&
+          participants
+            .slice((page - 1) * 20, page * 20)
+            .map((participant, i) => (
+              <ParticipantCard
+                key={i}
+                participant={participant}
+                handleCreateConversation={handleCreateConversation}
+              />
+            ))}
+      </div>
 
       <Pagination
         defaultCurrent={page}

@@ -1,14 +1,17 @@
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
 import { Affix, Avatar, Badge, Button } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
 import Conversation from "./Conversation";
 import FormMessage from "./FormMessage";
 
 import "./style.scss";
 
-const Chat = () => {
+const Chat = ({ conversations, userProfile }) => {
   const [open, setOpen] = useState(false);
+
   return (
     <Affix offsetBottom={!open ? 150 : 40} className="affix">
       {!open ? (
@@ -86,56 +89,13 @@ const Chat = () => {
               }}
               onClick={() => setOpen(!open)}
             />
-            <Conversation
-              user={{
-                firstName: "Douglas",
-                lastName: "Perez",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
+            {conversations.map((conversation) => {
+              const [otherMember] = conversation.members.filter(
+                (member) => member.id !== userProfile.id
+              );
 
-            <Conversation
-              user={{
-                firstName: "Eduardo",
-                lastName: "Rivas",
-                img: "https://joeschmoe.io/api/v1/random",
-              }}
-            />
+              return <Conversation key={otherMember.id} user={otherMember} />;
+            })}
           </div>
         </div>
       )}
@@ -143,4 +103,8 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default connect(mapStateToProps)(Chat);

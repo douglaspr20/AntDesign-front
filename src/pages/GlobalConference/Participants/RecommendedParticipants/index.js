@@ -26,7 +26,7 @@ const RecommendedParticipants = ({
   };
 
   const handleCreateConversation = async (members) => {
-    await createConversartion(members);
+    createConversartion(members);
   };
   const onOpenModalBonfires = (participantId) => {
     setOpenModal(true);

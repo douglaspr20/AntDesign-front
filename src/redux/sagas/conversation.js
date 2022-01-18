@@ -1,4 +1,6 @@
 import { put, fork, takeLatest, call } from "redux-saga/effects";
+import groupBy from "lodash/groupBy";
+import omit from "lodash/omit";
 import {
   constants as conversationConstants,
   actions as conversationActions,
@@ -23,9 +25,39 @@ export function* getConversationsSaga({ payload }) {
     const response = yield call(getConversations, { ...payload });
 
     if (response.status === 200) {
-      yield put(
-        conversationActions.setConversations(response.data.conversations)
-      );
+      const conversationsData = Object.values(
+        groupBy(response.data.conversations || [], "id")
+      ).map((conversation) => {
+        return conversation.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "userid",
+              "abbrName",
+              "email",
+              "firstName",
+              "lastname",
+              "img",
+              "timezone",
+            ]),
+            members: [
+              ...(res.members || []),
+              {
+                id: item.userid,
+                abbrName: item.abbrName,
+                email: item.email,
+                firstName: item.firstName,
+                lastName: item.lastName,
+                img: item.image,
+                timezone: item.timezone,
+              },
+            ],
+          }),
+          {}
+        );
+      });
+
+      yield put(conversationActions.setConversations(conversationsData));
     }
   } catch (error) {
     console.log(error);

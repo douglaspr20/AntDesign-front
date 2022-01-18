@@ -57,8 +57,17 @@ class App extends Component {
     };
   }
 
+  onUnload = (e) => {
+    e.preventDefault();
+    SocketIO.emit(SocketEventTypes.USER_OFFLINE, {
+      id: this.props.userProfile.id,
+    });
+    return null;
+  };
+
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener("beforeunload", this.onUnload);
 
     Emitter.on(EVENT_TYPES.OPEN_PAYMENT_MODAL, () => {
       if (this.props.isMobile) {
@@ -135,6 +144,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.onUnload);
     SocketIO.off();
   }
 

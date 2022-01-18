@@ -41,9 +41,9 @@ const Participants = ({
         num: 50,
       });
       getParticipants(userProfile.id);
+      getConversations(userProfile.id);
       getBonfires();
     }
-    getConversations(userProfile.id);
   }, [
     getParticipants,
     getRecommendedParticipants,
@@ -121,7 +121,7 @@ const Participants = ({
   return (
     <div className="participants-wrapper">
       <Tabs data={TabData} current={currentTab} onChange={handleTab} />
-      <Chat />
+      <Chat conversations={conversations} />
     </div>
   );
 };
