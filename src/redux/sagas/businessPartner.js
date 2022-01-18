@@ -17,6 +17,10 @@ import {
 } from "../../api";
 import { createBusinessPartnerDocumentFromAPI } from "api/module/businessPartner";
 
+import {
+  actions as homeActions,
+} from "../actions/home-actions";
+
 export function* getBusinessPartnerMemberSagas() {
   try {
     const response = yield call(getBusinessPartnerMembersFromAPI);
@@ -159,6 +163,7 @@ export function* updateBusinessPartnerDocumentsSagas({ payload }) {
 }
 
 export function* createBusinessPartnerDocumentSagas({ payload }) {
+  yield put(homeActions.setLoading(true));
   try {
     const response = yield call(createBusinessPartnerDocumentFromAPI, {
       ...payload.businessPartnerDocument,
@@ -182,7 +187,7 @@ export function* createBusinessPartnerDocumentSagas({ payload }) {
       payload.callback(error);
     }
   } finally {
-    yield getBusinessPartnerResourcesSagas();
+    yield put(homeActions.setLoading(false));
   }
 }
 
@@ -191,6 +196,7 @@ export function* createBusinessPartnerResourceSagas({ payload }) {
     const response = yield call(createBusinessPartnerResourceFromAPI, {
       ...payload.businessPartner,
     });
+
     if (response.status === 200) {
       if (payload.callback) {
         payload.callback();

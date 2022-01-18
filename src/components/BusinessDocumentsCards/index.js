@@ -59,6 +59,7 @@ const BusinessDocumentsCard = ({
           }
         );
       });
+      setLoading(false);
       if (response) {
         notification.success({
           message: "Success",
@@ -72,7 +73,6 @@ const BusinessDocumentsCard = ({
         });
         // setErrorMessage("Something went wrong. Please try again!");
       }
-      setLoading(false);
     }
   };
   const onDeleteFile = async () => {

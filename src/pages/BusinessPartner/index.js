@@ -5,7 +5,6 @@ import { Link, useLocation, useHistory } from "react-router-dom";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as homeActions } from "redux/actions/home-actions";
 import { LibraryFilterPanel, Tabs } from "components";
-import NoItemsMessageCard from "components/NoItemsMessageCard";
 import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
 import BusinessPartnerList from "./BusinessPartnerList";
 

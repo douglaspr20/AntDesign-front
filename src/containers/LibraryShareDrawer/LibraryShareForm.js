@@ -54,15 +54,7 @@ const LibraryShareForm = ({
     } else if (businessPartner && tab === "2") {
       onCancel();
       setLoading(true);
-      return await new Promise((resolve) => {
-        createBusinessPartnerDocument({ values, file }, (error) => {
-          if (error) {
-            resolve(false);
-          } else {
-            resolve(true);
-          }
-        });
-      });
+      createBusinessPartnerDocument({ values, file });
     } else if (businessPartner && tab === "1") {
       onCancel();
       return createBusinessPartnerResource(values);
@@ -74,10 +66,10 @@ const LibraryShareForm = ({
   return (
     <div className="library-share-form">
       {loading && (
-          <div className="loading-container">
-            <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
-          </div>
-        )}
+        <div className="loading-container">
+          <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
+        </div>
+      )}
       <h1 className="library-share-form-title">
         {isBusinessPartner
           ? "Share resources with your fellow HR Business Partners"
