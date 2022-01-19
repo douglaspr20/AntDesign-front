@@ -36,7 +36,7 @@ const ActivityStatus = ({
       history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
     } else {
       history.push(
-        `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
+        `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=2&id=${resource.id}`
       );
     }
   };

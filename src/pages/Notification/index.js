@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Table, Tooltip } from "antd";
 import isEmpty from "lodash/isEmpty";
 
@@ -15,6 +15,8 @@ import {
   markNotificationToRead,
   markNotificationToUnRead,
 } from "redux/actions/notification-actions";
+import { getAllParticipated } from "redux/actions/skillCohortParticipant-actions";
+import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
@@ -33,8 +35,11 @@ const NotificationPage = ({
   getNotifications,
   markNotificationToRead,
   markNotificationToUnRead,
+  allParticipated,
+  getAllParticipated,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
+  const history = useHistory()
 
   const onMarkAsRead = () => {
     markNotificationToRead(
@@ -93,11 +98,32 @@ const NotificationPage = ({
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (!isEmpty(userProfile)) {
+      getAllParticipated(userProfile.id);
+    }
+  }, [userProfile]);
+
   const onShowMore = () => {
     getNotifications(currentPage + 1, MAX_NOTIFICATIONS);
   };
 
   const renderLoading = () => <div className="loading-container" />;
+
+  const handleClickLink = (noti) => {
+    markNotificationToRead([noti.id], userProfile.id);
+
+    const cohort = allParticipated.find(
+      (participant) => participant.SkillCohortId === noti.meta.SkillCohortId
+    );
+
+    if (cohort) {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources?key=2&id=${noti.meta.id}`)
+    } else {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}`)
+    }
+
+  };
 
   const renderNotification = (noti) => {
     return (
@@ -125,14 +151,13 @@ const NotificationPage = ({
           </a>
         )}
         {noti.type === "resource" && (
-          <a
+          <div
             className="notification-list-item-link"
-            href={`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`}
             rel="noopener noreferrer"
-            onClick={() => markNotificationToRead([noti.id], userProfile.id)}
+            onClick={() => handleClickLink(noti)}
           >
             Go to Resource
-          </a>
+          </div>
         )}
         {noti.type === "podcast" && (
           <Link
@@ -246,12 +271,15 @@ NotificationPage.defaultProps = {
 const mapStateToProps = (state) => ({
   ...notificationSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allParticipated:
+    skillCohortParticipantSelector(state).allParticipated,
 });
 
 const mapDispatchToProps = {
   getNotifications,
   markNotificationToRead,
   markNotificationToUnRead,
+  getAllParticipated,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationPage);

@@ -26,7 +26,7 @@ const SkillCohort = ({
   getAllSkillCohorts,
   userProfile,
   getAllParticipated,
-  allSkillCohortParticipants,
+  allParticipated,
   allOfMySkillCohorts,
   getAllOfMyCohort,
 }) => {
@@ -88,7 +88,7 @@ const SkillCohort = ({
   };
 
   const displaySkillCohorts = allSkillCohorts.map((skillCohort) => {
-    const hasAccess = allSkillCohortParticipants.some((participant) => {
+    const hasAccess = allParticipated.some((participant) => {
       return participant.SkillCohortId === skillCohort.id;
     });
 
