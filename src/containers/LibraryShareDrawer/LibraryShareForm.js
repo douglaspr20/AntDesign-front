@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, Radio, Spin } from "antd";
+import { Form, Checkbox, Radio } from "antd";
 
 import {
   CustomInput,
@@ -20,7 +20,6 @@ import { createBusinessPartnerResource } from "redux/actions/business-partner-ac
 import { createBusinessPartnerDocument } from "redux/actions/business-partner-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
-import IconLoading from "images/icon-loading.gif";
 
 import "./style.scss";
 import { useLocation } from "react-router-dom";
@@ -37,7 +36,6 @@ const LibraryShareForm = ({
   createBusinessPartnerDocument,
 }) => {
   const [showResumeModal, setShowResumeModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -53,7 +51,6 @@ const LibraryShareForm = ({
       return createCouncilResource(values);
     } else if (businessPartner && tab === "2") {
       onCancel();
-      setLoading(true);
       createBusinessPartnerDocument({ values, file });
     } else if (businessPartner && tab === "1") {
       onCancel();
@@ -65,11 +62,6 @@ const LibraryShareForm = ({
   const onFinishFailed = () => {};
   return (
     <div className="library-share-form">
-      {loading && (
-        <div className="loading-container">
-          <Spin indicator={<img src={IconLoading} alt="loading-img" />} />
-        </div>
-      )}
       <h1 className="library-share-form-title">
         {isBusinessPartner
           ? "Share resources with your fellow HR Business Partners"

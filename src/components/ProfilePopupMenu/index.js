@@ -141,17 +141,35 @@ const ProfilePopupMenu = (props) => {
   };
 
   const onApplyBusinessPartner = () => {
-    if (user.percentOfCompletion === 100 && !user.isBusinessPartner) {
+    if (
+      user.percentOfCompletion === 100 &&
+      user.isBusinessPartner === "reject"
+    ) {
       setVisibleConfirmApply(true);
     } else {
       setShowProfileCompletionFirewall(true);
     }
-    if (user.isBusinessPartner && user.memberShip !== "premium") {
+    if (
+      user.isBusinessPartner === "accepted" &&
+      user.memberShip !== "premium"
+    ) {
       setShowPremiumFirewall(true);
     }
-    if (user.isBusinessPartner && user.memberShip === "premium") {
+    if (
+      user.isBusinessPartner === "accepted" &&
+      user.memberShip === "premium"
+    ) {
       history.push(INTERNAL_LINKS.BUSINESS_PARTNER);
     }
+  };
+
+  const message = () => {
+    if (user.isBusinessPartner === "accepted")
+      return "HR Business Partners Community";
+    if (user.isBusinessPartner === "pending")
+      return "Application to the HR Business Partner Community (Status: Pending)";
+    if (user.isBusinessPartner === "reject")
+      return "Application to the HR Business Partner Community";
   };
 
   const completeProfile = () => {
@@ -309,11 +327,7 @@ const ProfilePopupMenu = (props) => {
       )}
       <div className="profile-popover-content-menu">
         <React.Fragment>
-          <div onClick={onApplyBusinessPartner}>
-            {user.isBusinessPartner
-              ? "HR Business Partners Community"
-              : "Application to the HR Business Partner Community"}
-          </div>
+          <div onClick={onApplyBusinessPartner}>{message()}</div>
         </React.Fragment>
         {user.percentOfCompletion === 100 ? (
           <Modal

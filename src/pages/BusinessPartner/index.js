@@ -83,7 +83,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   ];
   return (
     <>
-      {userProfile.isBusinessPartner &&
+      {userProfile.isBusinessPartner === 'accepted' &&
       userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel
@@ -118,7 +118,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
         <div className="businessPartner-page__list-wrap">
           <NoItemsMessageCard
             message={
-              userProfile.isBusinessPartner
+              userProfile.isBusinessPartner === 'accepted'
                 ? "You must be a premium member to see this view"
                 : `You must be a business partner and premium member to see this view.`
             }
