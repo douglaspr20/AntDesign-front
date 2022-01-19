@@ -50,37 +50,16 @@ const SkillCohort = ({
 
   useEffect(() => {
     setCurrentTab(parsed.key);
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (currentTab === "0") {
-      window.history.replaceState(
-        null,
-        "Page",
-        `${INTERNAL_LINKS.PROJECTX}?key=0`
-      );
-    } else if (currentTab === "1") {
-      window.history.replaceState(
-        null,
-        "Page",
-        `${INTERNAL_LINKS.PROJECTX}?key=1`
-      );
-    } else if (currentTab === "2") {
-      window.history.replaceState(
-        null,
-        "Page",
-        `${INTERNAL_LINKS.PROJECTX}?key=2`
-      );
-    } 
-    // else {
-    //   window.history.replaceState(
-    //     null,
-    //     "Page",
-    //     `${INTERNAL_LINKS.PROJECTX}?key=3`
-    //   );
-    // }
+    window.history.replaceState(
+      null,
+      "Page",
+      `${INTERNAL_LINKS.PROJECTX}?key=${currentTab}`
+    );
   }, [currentTab]);
 
   const handleFilterChange = (filter) => {
@@ -124,12 +103,12 @@ const SkillCohort = ({
   });
 
   const TabData = [
-    // {
-    //   title: "General Information",
-    //   content: () => {
-    //     return <div className="skill-cohort-list">General Information</div>;
-    //   },
-    // },
+    {
+      title: "General Information",
+      content: () => {
+        return <div className="skill-cohort-list">General Information</div>;
+      },
+    },
     {
       title: "All Cohorts",
       content: () => {
