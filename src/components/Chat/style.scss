@@ -23,7 +23,36 @@
 
     &-messages{
         text-align: center;
-        padding: 10px;
+        padding: 20px 10px 10px 10px;
+        max-height: 342px;
+        height: 342px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+          }
+          
+          /* Track */
+          &::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            display: none
+          }
+           
+          /* Handle */
+          &::-webkit-scrollbar-thumb {
+            background: #888; 
+            display: none;
+            border-radius: 5px;
+            position: absolute;
+
+          }
+
+        &:hover{
+            &::-webkit-scrollbar-thumb{
+                display: block;
+                transition: all ease 500ms;
+            }
+        }
     }
 
     p{
@@ -45,15 +74,7 @@
         color: $color-text-secondary;
         margin-left: 5px;
 
-        &::after{
-            position: absolute;
-            content: "";
-            left: -1px;
-            border-top: 15px solid $color-background-dark;
-            border-bottom: 10px solid transparent;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-        }
+     
     }
 
     &-message-user{
@@ -61,18 +82,6 @@
         color: $color-white;
         margin-left: auto;
         margin-right: 10px;
-
-        &::after{
-            position: absolute;
-            content: "";
-            bottom: -23px;
-            right: 0px;
-            border-top: 13px solid $color-primary;
-            border-bottom: 10px solid transparent;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom-right-radius: 10px;
-        }
 
         & p{
             text-align: left;

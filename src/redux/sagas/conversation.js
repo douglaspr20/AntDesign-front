@@ -28,7 +28,7 @@ export function* getConversationsSaga({ payload }) {
       const conversationsData = Object.values(
         groupBy(response.data.conversations || [], "id")
       ).map((conversation) => {
-        return conversation.reduce(
+        const newConversation = conversation.reduce(
           (res, item) => ({
             ...res,
             ...omit(item, [
@@ -39,6 +39,11 @@ export function* getConversationsSaga({ payload }) {
               "lastname",
               "img",
               "timezone",
+              "messageid",
+              "ConversationId",
+              "sender",
+              "text",
+              "messagedate",
             ]),
             members: [
               ...(res.members || []),
@@ -52,9 +57,34 @@ export function* getConversationsSaga({ payload }) {
                 timezone: item.timezone,
               },
             ],
+            messages: [
+              ...(res.messages || []),
+              item.messageid && {
+                id: item.messageid,
+                conversationId: item.ConversationId,
+                sender: item.sender,
+                text: item.text,
+                messageDate: item.messagedate,
+              },
+            ],
           }),
           {}
         );
+
+        const membersReduce = (newConversation.members || []).filter(
+          (member, index, self) =>
+            index === self.findIndex((m) => m.id === member.id)
+        );
+        const messagesReduce = (newConversation.messages || []).filter(
+          (message, index, self) =>
+            index === self.findIndex((m) => m?.id === message?.id && m !== null)
+        );
+
+        return {
+          ...newConversation,
+          members: membersReduce,
+          messages: messagesReduce,
+        };
       });
 
       yield put(conversationActions.setConversations(conversationsData));

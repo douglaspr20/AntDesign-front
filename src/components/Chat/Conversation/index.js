@@ -3,10 +3,12 @@ import React from "react";
 
 import "./style.scss";
 
-const Conversation = ({ user }) => {
-  console.log(user);
+const Conversation = ({ user, conversation, handleConversation }) => {
   return (
-    <div className="conversation">
+    <div
+      className="conversation"
+      onClick={() => handleConversation(conversation)}
+    >
       {user.img ? (
         <Avatar size={50} src={user.img} />
       ) : (

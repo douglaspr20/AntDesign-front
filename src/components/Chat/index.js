@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
-import { Affix, Avatar, Badge, Button } from "antd";
+import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
 import moment from "moment";
 import Conversation from "./Conversation";
 import FormMessage from "./FormMessage";
@@ -11,6 +11,17 @@ import "./style.scss";
 
 const Chat = ({ conversations, userProfile }) => {
   const [open, setOpen] = useState(false);
+  const [currentConversation, setCurrentConversation] = useState({});
+
+  useEffect(() => {
+    if (conversations.length > 0) {
+      setCurrentConversation(conversations[0]);
+    }
+  }, [conversations]);
+
+  const handleConversation = (conversation) => {
+    setCurrentConversation(conversation);
+  };
 
   return (
     <Affix offsetBottom={!open ? 150 : 40} className="affix">
@@ -41,39 +52,67 @@ const Chat = ({ conversations, userProfile }) => {
         <div className="chat">
           <div className="chat-messages-container">
             <div className="chat-messages">
-              <p className="date-messages">
-                {moment().format("MMM DD YYYY hh:mm")}
-              </p>
-              <div style={{ textAlign: "left" }}>
-                <div className="chat-message chat-message-contact">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Quisque eu vehicula justo. Donec tristique tortor non nisl
-                    congue, non ornare dolor porta.
-                  </p>
-                </div>
-                <Avatar
-                  src="https://joeschmoe.io/api/v1/random"
-                  alt="Eduardo Rivas"
-                  size={25}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-
-              <div style={{ textAlign: "right" }}>
-                <div className="chat-message chat-message-user">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Quisque eu vehicula justo.
-                  </p>
-                </div>
-                <Avatar
-                  src="https://joeschmoe.io/api/v1/random"
-                  alt="Eduardo Rivas"
-                  size={25}
-                  style={{ marginTop: "13px", marginRight: "8px" }}
-                />
-              </div>
+              {currentConversation.messages?.length > 0 ? (
+                currentConversation?.messages?.map((message, i) => {
+                  const user = currentConversation.members.find(
+                    (member) => member?.id === message?.sender
+                  );
+                  return (
+                    <div
+                      style={{
+                        textAlign: `${
+                          user.id !== userProfile.id ? "left" : "right"
+                        }`,
+                        marginBottom: "5px",
+                      }}
+                      key={message.id}
+                    >
+                      <Tooltip
+                        placement={
+                          user.id !== userProfile.id
+                            ? "bottomRight"
+                            : "bottomLeft"
+                        }
+                        title={
+                          <p className="date-messages">
+                            {moment(message.messageDate).format(
+                              "MMM DD YYYY hh:mm"
+                            )}
+                          </p>
+                        }
+                      >
+                        <div
+                          className={`chat-message ${
+                            user.id !== userProfile.id
+                              ? "chat-message-contact"
+                              : "chat-message-user"
+                          }`}
+                        >
+                          <p>{message.text}</p>
+                        </div>
+                      </Tooltip>
+                      {currentConversation?.messages[i + 1]?.sender !==
+                      message?.sender ? (
+                        <>
+                          {user.img ? (
+                            <Avatar
+                              src={user.img}
+                              alt={`${user.firstName} ${user.lastName}`}
+                              size={25}
+                            />
+                          ) : (
+                            <Avatar size={25} style={{ marginTop: "10px" }}>
+                              {user.abbrName}
+                            </Avatar>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                  );
+                })
+              ) : (
+                <h3>Send the first message of conversation</h3>
+              )}
             </div>
             <FormMessage />
           </div>
@@ -94,7 +133,14 @@ const Chat = ({ conversations, userProfile }) => {
                 (member) => member.id !== userProfile.id
               );
 
-              return <Conversation key={otherMember.id} user={otherMember} />;
+              return (
+                <Conversation
+                  key={conversation.id}
+                  user={otherMember}
+                  conversation={conversation}
+                  handleConversation={handleConversation}
+                />
+              );
             })}
           </div>
         </div>
