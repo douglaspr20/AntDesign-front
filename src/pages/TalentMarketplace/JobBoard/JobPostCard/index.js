@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { CustomButton } from "components";
+import { CustomButton, CustomModal } from "components";
 import JobPostDrawer from "containers/JobPostDrawer";
-import { Form, Tag, Space, Tooltip, notification } from "antd";
+import { Form, Tag, Space, Tooltip, notification, Empty } from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
-import { PlusOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  EditOutlined,
+  CopyOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { isEmpty } from "lodash";
 
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
+
+import { homeSelector } from "redux/selectors/homeSelector";
 import { marketplaceProfileSelector } from "redux/selectors/marketplaceProfile";
 
 import "./styles.scss";
@@ -23,12 +30,15 @@ const JobPostCard = ({
   post,
   upsertJobPost,
   marketplaceProfile,
+  marketplaceProfiles,
   myPostedJob = false,
+  userProfile,
 }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [status, setStatus] = useState();
   const [form] = Form.useForm();
   const history = useHistory();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleOnFinish = (values) => {
     if (!values.companyLogo) {
@@ -158,21 +168,27 @@ const JobPostCard = ({
             className="job-post-bnt-icon"
           />
         </Tooltip>
+        {myPostedJob && (
+          <Tooltip title="Qualified People">
+            <UserOutlined
+              onClick={() => setIsModalVisible(true)}
+              className="job-post-bnt-icon"
+            />
+          </Tooltip>
+        )}
       </Space>
     </div>
   );
 
-  const calculateSkillMatchPercentage = () => {
+  const calculateSkillMatchPercentage = (profile) => {
     let percentage = 0;
-    
 
-    if (!isEmpty(marketplaceProfile) && !isEmpty(marketplaceProfile.skills)) {
+    if (!isEmpty(profile) && !isEmpty(profile.skills)) {
       const numberOfPercentagePerSkill = 100 / post.preferredSkills.length;
 
       // eslint-disable-next-line array-callback-return
       post.preferredSkills.map((preferredSkill) => {
-        const profileSkillLevel =
-          marketplaceProfile.skills[preferredSkill.skill];
+        const profileSkillLevel = profile.skills[preferredSkill.skill];
 
         if (profileSkillLevel) {
           const diff = levels[profileSkillLevel] - levels[preferredSkill.level];
@@ -189,7 +205,8 @@ const JobPostCard = ({
     return Number.isInteger(percentage) ? percentage : percentage.toFixed(2);
   };
 
-  calculateSkillMatchPercentage();
+  const skillMatchPercentage =
+    calculateSkillMatchPercentage(marketplaceProfile);
 
   const displayStatusTag = () => {
     let color;
@@ -210,6 +227,30 @@ const JobPostCard = ({
 
     return <Tag color={color}>{data.text}</Tag>;
   };
+
+  const qualifiedPeople =
+    myPostedJob &&
+    marketplaceProfiles.filter((profile) => {
+      const percentage = calculateSkillMatchPercentage(profile);
+      const isLocationMatched = profile.location.some((p) =>
+        post.location.includes(p)
+      );
+
+      return (
+        profile.UserId !== userProfile.id &&
+        percentage >= 75 &&
+        isLocationMatched
+      );
+    });
+
+  const displayQualifiedPeople = qualifiedPeople.map((p, index) => {
+    return (
+      <Space key={index}>
+        <div>{`${index + 1}: ${p.firstName} ${p.lastName}`}</div>
+        <div>Skill Match: {calculateSkillMatchPercentage(p)}%</div>
+      </Space>
+    );
+  });
 
   return (
     <div className="job-post-card">
@@ -234,7 +275,7 @@ const JobPostCard = ({
         <div>
           {!myPostedJob && (
             <div className="job-post-skill-match-wrapper">
-              <h3>Skill Match: {calculateSkillMatchPercentage()}%</h3>
+              <h3>Skill Match: {skillMatchPercentage}%</h3>
             </div>
           )}
           {displayMoreBtn}
@@ -251,12 +292,22 @@ const JobPostCard = ({
         handlePostButton={handlePostButton}
         handlePostDraftButton={handlePostDraftButton}
       />
+      <CustomModal
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        title="Qualified People"
+        width={546}
+      >
+        {qualifiedPeople.length === 0 && <Empty />}
+        <div>{displayQualifiedPeople}</div>
+      </CustomModal>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  marketplaceProfile: marketplaceProfileSelector(state).marketplaceProfile,
+  ...marketplaceProfileSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
