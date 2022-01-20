@@ -299,7 +299,7 @@ const JobPostCard = ({
         width={546}
       >
         {qualifiedPeople.length === 0 && <Empty />}
-        <div>{displayQualifiedPeople}</div>
+        <Space direction="vertical">{displayQualifiedPeople}</Space>
       </CustomModal>
     </div>
   );
