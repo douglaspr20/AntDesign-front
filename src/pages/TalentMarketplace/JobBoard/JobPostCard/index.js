@@ -243,7 +243,7 @@ const JobPostCard = ({
       );
     });
 
-  const displayQualifiedPeople = qualifiedPeople.map((p, index) => {
+  const displayQualifiedPeople = (qualifiedPeople || []).map((p, index) => {
     return (
       <Space key={index}>
         <div>{`${index + 1}: ${p.firstName} ${p.lastName}`}</div>
