@@ -105,10 +105,10 @@ const SkillCohort = ({
 
   const displayGeneralInformation = () => {
     return (
-      <div style={{ marginTop: "1rem" }}>
+      <div style={{ marginTop: "1rem", fontSize: '16px', width: '75%' }}>
         <Space direction="vertical" size="large">
           <Space direction="vertical">
-            <div>Hi {`${userProfile.firstName} ${userProfile.lastName}`},</div>
+            <div>Hi {userProfile.firstName},</div>
             <div>Welcome to Hacking HR’s ProjectX!</div>
             <div>
               Thank you for checking out this page to find out more about one of
