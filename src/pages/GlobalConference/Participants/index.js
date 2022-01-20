@@ -32,6 +32,7 @@ const Participants = ({
   conversations,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
+  const [openChat, setOpenChat] = useState(false);
 
   useEffect(() => {
     if (userProfile.topicsOfInterest.length > 0 && userProfile.id) {
@@ -90,6 +91,13 @@ const Participants = ({
     setParticipants,
   ]);
 
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, () => {
+      getConversations(userProfile.id);
+      setOpenChat(true);
+    });
+  }, [getConversations, userProfile]);
+
   const handleTab = (key) => {
     setCurrentTab(key);
   };
@@ -121,7 +129,13 @@ const Participants = ({
   return (
     <div className="participants-wrapper">
       <Tabs data={TabData} current={currentTab} onChange={handleTab} />
-      <Chat conversations={conversations} />
+      {conversations.length > 0 && (
+        <Chat
+          conversations={conversations}
+          openChat={openChat}
+          setOpenChat={setOpenChat}
+        />
+      )}
     </div>
   );
 };

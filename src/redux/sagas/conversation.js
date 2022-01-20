@@ -61,7 +61,7 @@ export function* getConversationsSaga({ payload }) {
               ...(res.messages || []),
               item.messageid && {
                 id: item.messageid,
-                conversationId: item.ConversationId,
+                ConversationId: item.ConversationId,
                 sender: item.sender,
                 text: item.text,
                 messageDate: item.messagedate,

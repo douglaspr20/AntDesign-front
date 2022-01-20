@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { setConversations } from "redux/actions/conversation-actions";
 import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
 import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
 import moment from "moment";
+import SocketIO from "services/socket";
+import { SOCKET_EVENT_TYPE } from "enum";
 import Conversation from "./Conversation";
 import FormMessage from "./FormMessage";
 
 import "./style.scss";
 
-const Chat = ({ conversations, userProfile }) => {
-  const [open, setOpen] = useState(false);
+const Chat = ({
+  conversations,
+  userProfile,
+  openChat,
+  setOpenChat,
+  setConversations,
+}) => {
   const [currentConversation, setCurrentConversation] = useState({});
 
   useEffect(() => {
@@ -23,9 +31,42 @@ const Chat = ({ conversations, userProfile }) => {
     setCurrentConversation(conversation);
   };
 
+  const handleSendMessage = (message) => {
+    SocketIO.emit(SOCKET_EVENT_TYPE.SEND_MESSAGE, {
+      ConversationId: currentConversation.id,
+      sender: userProfile.id,
+      text: message,
+    });
+  };
+
+  useMemo(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
+      const updateConversation = conversations.find(
+        (conversation) => conversation.id === message.ConversationId
+      );
+
+      if (
+        updateConversation.messages.some(
+          (oldMessage) => oldMessage.id === message.id
+        )
+      ) {
+        return;
+      }
+      updateConversation.messages.push(message);
+
+      const newConversations = conversations.map((conversation) =>
+        conversation.id === updateConversation.id
+          ? updateConversation
+          : conversation
+      );
+
+      setConversations(newConversations);
+    });
+  }, [conversations, setConversations]);
+
   return (
-    <Affix offsetBottom={!open ? 150 : 40} className="affix">
-      {!open ? (
+    <Affix offsetBottom={!openChat ? 150 : 40} className="affix">
+      {!openChat ? (
         <Badge
           count={5}
           style={{
@@ -39,7 +80,7 @@ const Chat = ({ conversations, userProfile }) => {
             shape="circle"
             size="large"
             icon={<MessageOutlined style={{ fontSize: "2rem" }} />}
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpenChat(!openChat)}
             style={{
               width: 80,
               height: 80,
@@ -114,7 +155,7 @@ const Chat = ({ conversations, userProfile }) => {
                 <h3>Send the first message of conversation</h3>
               )}
             </div>
-            <FormMessage />
+            <FormMessage handleSendMessage={handleSendMessage} />
           </div>
 
           <div className="conversations">
@@ -126,7 +167,7 @@ const Chat = ({ conversations, userProfile }) => {
                 left: 150,
                 cursor: "pointer",
               }}
-              onClick={() => setOpen(!open)}
+              onClick={() => setOpenChat(!openChat)}
             />
             {conversations.map((conversation) => {
               const [otherMember] = conversation.members.filter(
@@ -153,4 +194,8 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(Chat);
+const mapDispatchToProps = {
+  setConversations,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
