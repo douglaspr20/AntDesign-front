@@ -49,13 +49,17 @@ const Notification = ({
         window.open(noti.meta.publicLink, "_blank");
         break;
       case "podcast":
-        history.push(`${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${noti.meta.dataValues.id}`);
+        history.push(
+          `${INTERNAL_LINKS.LIBRARY_ITEM}/podcast/${noti.meta.dataValues.id}`
+        );
         break;
       case "content":
         history.push(INTERNAL_LINKS.LEARNING_LIBRARY);
         break;
       case "resource":
-        history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`);
+        history.push(
+          `${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`
+        );
         break;
       default:
         break;
@@ -111,7 +115,6 @@ const Notification = ({
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
   }, []);
-
   return (
     <Popover
       placement="bottom"

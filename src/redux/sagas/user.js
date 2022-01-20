@@ -476,6 +476,12 @@ export function* confirmInvitationApply({ payload }) {
         title: "Success",
         description: response.data.msg,
       });
+      yield put(
+        homeActions.updateUserInformation({
+          ...defaultUserInfo,
+          ...response.data.userUpdated[0],
+        })
+      );
     }
   } catch (error) {
     console.log(error);

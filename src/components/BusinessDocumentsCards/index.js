@@ -17,8 +17,8 @@ const BusinessDocumentsCard = ({
   documentFile,
   uploadDocumentFile,
   deleteBusinessPartnerDocument,
-  getBusinessPartnerDocuments,
   userProfile,
+  isLoadinng
 }) => {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -197,6 +197,7 @@ const BusinessDocumentsCard = ({
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  isLoadinng: homeSelector(state).loading
 });
 
 const mapDispatchToProps = {
