@@ -136,7 +136,7 @@ const SkillCohortResources = ({
     }
 
     if (currentTab === "0") {
-      history.push(`${INTERNAL_LINKS.PROJECTX}?key=1`);
+      history.push(`${INTERNAL_LINKS.PROJECTX}?key=2`);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
