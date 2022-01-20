@@ -243,6 +243,8 @@ const JobPostCard = ({
       );
     });
 
+  console.log(qualifiedPeople)
+
   const displayQualifiedPeople = (qualifiedPeople || []).map((p, index) => {
     return (
       <Space key={index}>
