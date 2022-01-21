@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Badge, Popover, Spin } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 
 import { INTERNAL_LINKS } from "enum";
 import { notificationSelector } from "redux/selectors/notificationSelector";
@@ -13,6 +14,8 @@ import {
   markNotificationToRead,
 } from "redux/actions/notification-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { getAllParticipated } from "redux/actions/skillCohortParticipant-actions";
+import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
 
 import IconNotification from "images/icon-notification.svg";
 import IconLoading from "images/icon-loading.gif";
@@ -29,9 +32,17 @@ const Notification = ({
   userProfile,
   getNotifications,
   markNotificationToRead,
+  allParticipated,
+  getAllParticipated,
 }) => {
   const [visible, setVisible] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    if (!isEmpty(userProfile)) {
+      getAllParticipated(userProfile.id);
+    }
+  }, [userProfile]);
 
   const renderLoading = () => (
     <div className="loading-container">
@@ -41,6 +52,19 @@ const Notification = ({
 
   const onClickNotification = (noti) => {
     markNotificationToRead([noti.id], userProfile.id);
+
+    const cohort = allParticipated.find(
+      (participant) => participant.SkillCohortId === noti.meta.SkillCohortId
+    );
+
+    let cohortLink;
+    
+    if (cohort) {
+      cohortLink = `${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources?key=2&id=${noti.meta.id}`;
+    } else {
+      cohortLink = `${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}`;
+    }
+
     switch (noti.type) {
       case "marketplace":
         history.push(INTERNAL_LINKS.MARKETPLACE);
@@ -57,9 +81,7 @@ const Notification = ({
         history.push(INTERNAL_LINKS.LEARNING_LIBRARY);
         break;
       case "resource":
-        history.push(
-          `${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources`
-        );
+        history.push(cohortLink);
         break;
       default:
         break;
@@ -143,11 +165,13 @@ Notification.defaultProps = {
 const mapStateToProps = (state) => ({
   ...notificationSelector(state),
   userProfile: homeSelector(state).userProfile,
+  allParticipated: skillCohortParticipantSelector(state).allParticipated,
 });
 
 const mapDispatchToProps = {
   getNotifications,
   markNotificationToRead,
+  getAllParticipated,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notification);
