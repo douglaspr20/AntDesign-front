@@ -471,7 +471,6 @@ export function* confirmInvitationApply({ payload }) {
       ...payload,
     });
 
-    console.log(response)
     if (response.status === 200) {
       notification.success({
         title: "Success",
