@@ -41,7 +41,7 @@ const SkillCohortCard = (props) => {
 
   const handleClickMore = () => {
     if (hasAccess && hasCohortStarted) {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources`);
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1`);
     } else {
       history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
     }

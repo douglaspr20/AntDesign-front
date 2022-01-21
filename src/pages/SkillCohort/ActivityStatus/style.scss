@@ -1,3 +1,5 @@
+@import 'styles/main.scss';
+
 .activity-status-wrapper {
   width: 100%;
   margin-left: auto;
@@ -28,4 +30,29 @@
   .resource-panel {
     padding-left: 64px;
   }
+
+  .header {
+    display: flex;
+    align-items: center;
+
+    .header-content {
+      margin-right: 5px;
+    }
+
+    .green-dot {
+      width: 10px;
+      height: 10px;
+      background-color: $color-success;
+      border-radius: 9999px;
+    }
+
+    .red-dot {
+      width: 10px;
+      height: 10px;
+      background-color: $color-error;
+      border-radius: 9999px;
+    }
+
+  }
+
 }
