@@ -90,7 +90,8 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   ];
   return (
     <>
-      {userProfile.isBusinessPartner && userProfile.memberShip === "premium" ? (
+      {userProfile.isBusinessPartner === "accepted" &&
+      userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel
             onChange={onFilterChange}
@@ -124,11 +125,11 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
                         <h4>Back</h4>
                       </div>
                     </Link>
-                      <Tabs
-                        data={TabData}
-                        current={currentTab}
-                        onChange={handleTabChange}
-                      />
+                    <Tabs
+                      data={TabData}
+                      current={currentTab}
+                      onChange={handleTabChange}
+                    />
                   </div>
                 </div>
               </div>
