@@ -16,11 +16,15 @@ const reducers = {
   ) => {
     return state.merge({ ...payload });
   },
+  [skillCohortParticipanActions.SET_PARTICIPATED]: (state, { payload }) => {
+    return state.merge({ ...payload });
+  },
 };
 
 export const initialState = () => {
   return Map({
     allSkillCohortParticipants: [],
+    allParticipated: [],
     skillCohortParticipant: {},
   });
 };
