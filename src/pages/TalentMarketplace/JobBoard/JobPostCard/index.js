@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { CustomButton, CustomModal } from "components";
 import JobPostDrawer from "containers/JobPostDrawer";
-import { Form, Tag, Space, Tooltip, notification, Empty } from "antd";
+import {
+  Form,
+  Tag,
+  Space,
+  Tooltip,
+  notification,
+  Empty,
+  Button,
+  Popconfirm,
+} from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS, JOB_BOARD } from "enum";
@@ -10,6 +19,10 @@ import {
   EditOutlined,
   CopyOutlined,
   UserOutlined,
+  LinkedinOutlined,
+  ProfileOutlined,
+  MailOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 
@@ -33,6 +46,7 @@ const JobPostCard = ({
   marketplaceProfiles,
   myPostedJob = false,
   userProfile,
+  invitationToApply,
 }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [status, setStatus] = useState();
@@ -92,13 +106,15 @@ const JobPostCard = ({
     form.submit();
   };
 
-  const displayLocation = post.location
-    .map((location) => {
-      const data = JOB_BOARD.LOCATIONS.find((loc) => loc.value === location);
+  const displayLocation = (location) => {
+    return location
+      .map((location) => {
+        const data = JOB_BOARD.LOCATIONS.find((loc) => loc.value === location);
 
-      return data.text;
-    })
-    .join("/");
+        return data.text;
+      })
+      .join("/");
+  };
 
   const displayMoreBtn = !myPostedJob && (
     <div className="job-post-btn">
@@ -169,7 +185,7 @@ const JobPostCard = ({
           />
         </Tooltip>
         {myPostedJob && (
-          <Tooltip title="Qualified People">
+          <Tooltip title="Qualified Candidates">
             <UserOutlined
               onClick={() => setIsModalVisible(true)}
               className="job-post-bnt-icon"
@@ -228,29 +244,126 @@ const JobPostCard = ({
     return <Tag color={color}>{data.text}</Tag>;
   };
 
+  const marketpaceProfileFilter = (profile) => {
+    const isLocationMatched = profile.location.some((p) =>
+      post.location.includes(p)
+    );
+
+    return (
+      profile.UserId !== userProfile.id &&
+      profile.percentage >= 75 &&
+      isLocationMatched
+    );
+  };
+
+  const transformMarketplaceProfiles = (profile) => {
+    const percentage = calculateSkillMatchPercentage(profile);
+
+    return {
+      ...profile,
+      percentage,
+    };
+  };
+
   const qualifiedPeople =
     myPostedJob &&
-    marketplaceProfiles.filter((profile) => {
-      const percentage = calculateSkillMatchPercentage(profile);
-      const isLocationMatched = profile.location.some((p) =>
-        post.location.includes(p)
-      );
+    marketplaceProfiles
+      .map(transformMarketplaceProfiles)
+      .filter(marketpaceProfileFilter)
+      .sort((a, b) => {
+        if (a.percentage < b.percentage) {
+          return 1;
+        }
 
-      return (
-        profile.UserId !== userProfile.id &&
-        percentage >= 75 &&
-        isLocationMatched
-      );
-    });
+        if (a.percentage > b.percentage) {
+          return -1;
+        }
 
-  console.log(qualifiedPeople)
+        return 0;
+      });
+
+  const downloadFile = (user) => {
+    const link = document.createElement("a");
+    link.setAttribute("href", user.resumeUrl);
+    link.setAttribute("download", `${user.firstName} ${user.lastName}`);
+    link.setAttribute("target", "_blank");
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleConfirm = (p, id) => {
+    invitationToApply(p.UserId, id);
+  };
 
   const displayQualifiedPeople = (qualifiedPeople || []).map((p, index) => {
     return (
-      <Space key={index}>
-        <div>{`${index + 1}: ${p.firstName} ${p.lastName}`}</div>
-        <div>Skill Match: {calculateSkillMatchPercentage(p)}%</div>
-      </Space>
+      <>
+        <div className="qualified-people-modal-item" key={p.id}>
+          <div className="qualified-people-modal-content">
+            <strong style={{ marginRight: "5px" }}>{`${index + 1}: ${
+              p.firstName
+            } ${p.lastName}`}</strong>
+            <div>Skill Match: {calculateSkillMatchPercentage(p)}%</div>
+          </div>
+          <div className="qualified-people-modal-btn">
+            {p.resumeUrl !== "" && p.resumeUrl && (
+              <Tooltip title="Download Resume">
+                <Button
+                  shape="circle"
+                  type="link"
+                  icon={<ProfileOutlined />}
+                  onClick={() => downloadFile(p)}
+                  disabled={!userProfile.recruiterSubscription}
+                  className="participant-card-marketplaceprofile-icon"
+                />
+              </Tooltip>
+            )}
+            <Tooltip title="Linkedin">
+              <Button
+                shape="circle"
+                type="link"
+                icon={<LinkedinOutlined />}
+                onClick={() => window.open(p.personalLinks?.linkedin, "_blank")}
+                className="participant-card-marketplaceprofile-icon"
+                disabled={!userProfile.recruiterSubscription}
+              />
+            </Tooltip>
+
+            <Tooltip title="Contact Email">
+              <Button
+                shape="circle"
+                type="link"
+                icon={<MailOutlined />}
+                onClick={() => window.open(`mailto:${p.email}`, "_blank")}
+                className="participant-card-marketplaceprofile-icon"
+                disabled={!userProfile.recruiterSubscription}
+              />
+            </Tooltip>
+
+            <Tooltip title="Invite To Apply">
+              <Popconfirm
+                title="Confirm send invitation to apply"
+                onConfirm={() => handleConfirm(p, post.id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button
+                  shape="circle"
+                  type="link"
+                  icon={<UserAddOutlined />}
+                  disabled={!userProfile.recruiterSubscription}
+                  className="participant-card-marketplaceprofile-icon"
+                />
+              </Popconfirm>
+            </Tooltip>
+          </div>
+        </div>
+        <div style={{ marginBottom: "1rem" }}>
+          Location type: {displayLocation(p.location)}
+        </div>
+      </>
     );
   });
 
@@ -267,7 +380,8 @@ const JobPostCard = ({
               <strong>Role level:</strong> {post.level}
             </div>
             <div>
-              <strong>Job location type:</strong> {displayLocation}
+              <strong>Job location type:</strong>{" "}
+              {displayLocation(post.location)}
             </div>
             <div>
               <strong>Salary range:</strong> {post.salaryRange}
@@ -297,11 +411,11 @@ const JobPostCard = ({
       <CustomModal
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
-        title="Qualified People"
-        width={546}
+        title="Qualified Candidates"
+        width={520}
       >
         {qualifiedPeople.length === 0 && <Empty />}
-        <Space direction="vertical">{displayQualifiedPeople}</Space>
+        <div className="qualified-people-modal">{displayQualifiedPeople}</div>
       </CustomModal>
     </div>
   );
