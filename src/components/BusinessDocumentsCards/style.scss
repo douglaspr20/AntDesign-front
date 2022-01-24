@@ -8,6 +8,12 @@ padding: 5px;
 .business-download {
     display: flex;
     align-items: center;
+    @media (max-width: 680px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
 }
 
 .card-date {

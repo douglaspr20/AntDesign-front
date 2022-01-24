@@ -137,7 +137,6 @@ const Notification = ({
   useEffect(() => {
     getNotifications(1, MAX_NOTIFICATIONS);
   }, []);
-
   return (
     <Popover
       placement="bottom"

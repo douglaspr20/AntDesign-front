@@ -17,9 +17,7 @@ import {
 } from "../../api";
 import { createBusinessPartnerDocumentFromAPI } from "api/module/businessPartner";
 
-import {
-  actions as homeActions,
-} from "../actions/home-actions";
+import { actions as homeActions } from "../actions/home-actions";
 
 export function* getBusinessPartnerMemberSagas() {
   try {

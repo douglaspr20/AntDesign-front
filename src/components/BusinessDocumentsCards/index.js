@@ -17,8 +17,8 @@ const BusinessDocumentsCard = ({
   documentFile,
   uploadDocumentFile,
   deleteBusinessPartnerDocument,
-  getBusinessPartnerDocuments,
   userProfile,
+  isLoadinng
 }) => {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -159,7 +159,7 @@ const BusinessDocumentsCard = ({
             </div>
           )}
           {userProfile?.id === documentFile?.User?.id && (
-            <>
+            <div>
               {" "}
               <CustomButton
                 text="Update"
@@ -176,7 +176,7 @@ const BusinessDocumentsCard = ({
                 style={{ marginLeft: "1rem" }}
                 onClick={onDeleteFile}
               />
-            </>
+            </div>
           )}
           <input
             id="file-upload"
@@ -197,6 +197,7 @@ const BusinessDocumentsCard = ({
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  isLoadinng: homeSelector(state).loading
 });
 
 const mapDispatchToProps = {

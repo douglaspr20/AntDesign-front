@@ -1,0 +1,22 @@
+.event-video {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  
+
+  &-btns {
+    display: flex;
+    align-items: baseline;
+
+    .icon-btn {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  }
+
+  &-content {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+}
