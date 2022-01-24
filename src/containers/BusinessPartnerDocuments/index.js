@@ -20,7 +20,7 @@ const BusinessPartnerDocuments = ({
   createBusinessPartnerDocument,
 }) => {
   const businessDocumentsSort = businessPartnerDocuments.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt) 
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
   useEffect(() => {
