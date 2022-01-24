@@ -159,7 +159,7 @@ const BusinessDocumentsCard = ({
             </div>
           )}
           {userProfile?.id === documentFile?.User?.id && (
-            <>
+            <div>
               {" "}
               <CustomButton
                 text="Update"
@@ -176,7 +176,7 @@ const BusinessDocumentsCard = ({
                 style={{ marginLeft: "1rem" }}
                 onClick={onDeleteFile}
               />
-            </>
+            </div>
           )}
           <input
             id="file-upload"

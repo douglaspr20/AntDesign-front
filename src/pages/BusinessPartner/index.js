@@ -9,12 +9,15 @@ import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
 import BusinessPartnerList from "./BusinessPartnerList";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 
-import { INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 
 import IconBack from "images/icon-back.svg";
 
 import BusinessPartnerMembers from "./BusinessPartnerMembers";
 import "./style.scss";
+import FilterDrawer from "pages/Library/FilterDrawer";
+import { Col, Row } from "antd";
+import Emitter from "services/emitter";
 
 const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const { search } = useLocation();
@@ -32,6 +35,10 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
       search: `tab=${tab}`,
     });
     setCurrentTab(tab);
+  };
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
   useEffect(() => {
@@ -83,7 +90,7 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   ];
   return (
     <>
-      {userProfile.isBusinessPartner === 'accepted' &&
+      {userProfile.isBusinessPartner === "accepted" &&
       userProfile.memberShip === "premium" ? (
         <div className="businessPartner-page">
           <LibraryFilterPanel
@@ -91,24 +98,39 @@ const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
             currentTab={currentTab}
             isBusiness={true}
           />
-          <div className="businessPartner-page__container">
-            <div className="businessPartner-page__results">
-              <div className="businessPartner-page__row">
-                <div className="businessPartner-page__info-column"></div>
-                <div className="businessPartner-page__content">
-                  <Link to={INTERNAL_LINKS.HOME}>
-                    <div className="businessPartner-page__content-top">
-                      <div className="businessPartner-page__content-top-back">
-                        <img src={IconBack} alt="icon-back" />
+          <FilterDrawer onChange={onFilterChange} />
+          <div className="search-results-container">
+            <Row>
+              <Col span={24}>
+                <div className="search-results-container-mobile-header">
+                  <h3 className="filters-btn" onClick={showFilterPanel}>
+                    Filters
+                  </h3>
+                  {/* <h3>{`${numberWithCommas(countOfResults)} result${
+                countOfResults > 1 ? "s" : ""
+              }`}</h3> */}
+                </div>
+              </Col>
+            </Row>
+            <div className="businessPartner-page__container">
+              <div className="businessPartner-page__results">
+                <div className="businessPartner-page__row">
+                  <div className="businessPartner-page__info-column"></div>
+                  <div className="businessPartner-page__content">
+                    <Link to={INTERNAL_LINKS.HOME}>
+                      <div className="businessPartner-page__content-top">
+                        <div className="businessPartner-page__content-top-back">
+                          <img src={IconBack} alt="icon-back" />
+                        </div>
+                        <h4>Back</h4>
                       </div>
-                      <h4>Back</h4>
-                    </div>
-                  </Link>
-                  <Tabs
-                    data={TabData}
-                    current={currentTab}
-                    onChange={handleTabChange}
-                  />
+                    </Link>
+                    <Tabs
+                      data={TabData}
+                      current={currentTab}
+                      onChange={handleTabChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
