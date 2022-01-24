@@ -71,10 +71,7 @@ const reducers = {
       allItemsWithHRCredits: payload.items,
     });
   },
-  [myLearningConstants.UPDATE_HR_CREDITS]: (
-    state,
-    { payload }
-  ) => {
+  [myLearningConstants.UPDATE_HR_CREDITS]: (state, { payload }) => {
     const allItemsWithHRCredits = state.get("allItemsWithHRCredits");
     const indx =
       allItemsWithHRCredits &&
@@ -121,16 +118,16 @@ const reducers = {
       allEventVideos: payload.videos,
     });
   },
-  [myLearningConstants.SET_MORE_EVENT_VIDEOS]: (state, { payload }) => {
-    const allEventVideos = state.get("allEventVideos");
+  // [myLearningConstants.SET_MORE_EVENT_VIDEOS]: (state, { payload }) => {
+  //   const allEventVideos = state.get("allEventVideos");
 
-    allEventVideos.rows = [...allEventVideos.rows, ...payload.items.rows];
+  //   allEventVideos.rows = [...allEventVideos.rows, ...payload.items.rows];
 
-    return state.merge({
-      allEventVideos,
-      allEventVideosCurrentPage: payload.page,
-    });
-  },
+  //   return state.merge({
+  //     allEventVideos,
+  //     allEventVideosCurrentPage: payload.page,
+  //   });
+  // },
   [myLearningConstants.SET_MORE_COMPLETED]: (state, { payload }) => {
     const allCompleted = state.get("allCompleted");
 
@@ -151,20 +148,24 @@ const reducers = {
       allSavedCurrentPage: payload.page,
     });
   },
-  [myLearningConstants.UPDATE_EVENT_VIDEOS]: (
-    state,
-    { payload }
-  ) => {
+  [myLearningConstants.UPDATE_EVENT_VIDEOS]: (state, { payload }) => {
     const allEventVideos = state.get("allEventVideos");
-    const newAllEventVideos = { ...allEventVideos };
+    const newAllEventVideos = [...allEventVideos];
 
-    const index =
-      allEventVideos &&
-      allEventVideos.rows &&
-      allEventVideos.rows.findIndex((item) => item.id === payload.id);
+    const eventIndex = newAllEventVideos.findIndex(
+      (event) => event.id === payload.data.EventId
+    );
 
-    if (index >= 0) {
-      newAllEventVideos.rows[index] = payload.data;
+    console.log(payload, "payload");
+
+    if (eventIndex >= 0) {
+      const libraryIndex = newAllEventVideos[eventIndex].Libraries.findIndex(
+        (library) => library.id === payload.data.id
+      );
+
+      if (libraryIndex >= 0) {
+        newAllEventVideos[eventIndex].Libraries[libraryIndex] = payload.data;
+      }
     }
 
     return state.merge({
@@ -178,12 +179,13 @@ export const initialState = () => {
     allSaved: {},
     allCompleted: {},
     allItemsWithHRCredits: {},
-    allEventVideos: {},
+    // allEventVideos: {},
+    allEventVideos: [],
     allSavedCurrentPage: 1,
     allCompletedCurrentPage: 1,
     allItemsWithHRCreditsCurrentPage: 1,
-    allEventVideosCurrentPage: 1,
-    currentPage: 1,
+    // allEventVideosCurrentPage: 1,
+    // currentPage: 1,
     countOfResults: 0,
     loading: false,
   });
