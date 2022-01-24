@@ -16,7 +16,6 @@ const BusinessPartnerMembers = ({
   useEffect(() => {
     getBusinessPartnerMembers();
   }, [userProfile, getBusinessPartnerMembers]);
-
   return (
     <div className="channel-page__list-wrap">
       <div className="participants-list">

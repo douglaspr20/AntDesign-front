@@ -83,7 +83,7 @@ const LearningLibraryPage = ({
   }, []);
 
   return (
-    <div className="learning-library-page">
+    <div className="learning-library-page"> 
       <LibraryFilterPanel onChange={onFilterChange} onSearch={onSearch} />
       <FilterDrawer onChange={onFilterChange} onSearch={setMeta} />
       <div className="search-results-container">

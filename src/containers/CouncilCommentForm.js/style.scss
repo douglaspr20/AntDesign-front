@@ -23,9 +23,15 @@
             width: 100%;
           }
         }
+        @media(max-width: 330px) {
+          display: none;
+        }
       }
       .comment-form {
         width: calc(100% - 90px);
+        @media(max-width: 330px) {
+          width: 100%;
+        }
       }
     }
   }

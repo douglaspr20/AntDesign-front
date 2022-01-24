@@ -5,12 +5,16 @@ import clsx from "clsx";
 import ReactPlayer from "react-player";
 import Emitter from "services/emitter";
 import { notification } from "antd";
-import { isEmpty } from 'lodash'
+import { isEmpty } from "lodash";
 
 import CustomButton from "../Button";
 import LibraryClaimModal from "./LibraryClaimModal";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { setLibraryViewed, claimLibrary, saveForLaterLibrary } from "redux/actions/library-actions";
+import {
+  setLibraryViewed,
+  claimLibrary,
+  saveForLaterLibrary,
+} from "redux/actions/library-actions";
 import { SEARCH_FILTERS, CARD_TYPE, CARD_MENUS, EVENT_TYPES } from "enum";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import CardMenu from "../CardMenu";
@@ -35,7 +39,7 @@ const LibraryCard = ({
   claimLibrary,
   setLibraryViewed,
   saveForLaterLibrary,
-  isInHRCredits = false
+  isInHRCredits = false,
 }) => {
   const { viewed, saveForLater: saveForLaterData } = data;
   const [lineClamp, setLineClamp] = useState(3);
@@ -89,14 +93,15 @@ const LibraryCard = ({
   };
 
   const handleSaveForLater = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
 
-    const isSavedForLater = !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)
-    const status = isSavedForLater ? "not saved": "saved"
+    const isSavedForLater =
+      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
+    const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterLibrary(data.id, userProfile.id, status, isInHRCredits)
-  }
+    saveForLaterLibrary(data.id, userProfile.id, status, isInHRCredits);
+  };
 
   const planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -206,9 +211,19 @@ const LibraryCard = ({
                   viewed[userProfile.id] !== "mark" && (
                     <CustomButton
                       className="save-for-later"
-                      type={(!isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)) ? "remove": "third"}
+                      type={
+                        !isEmpty(saveForLaterData) &&
+                        saveForLaterData.includes(userProfile.id)
+                          ? "remove"
+                          : "third"
+                      }
                       size="xs"
-                      text={(!isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id)) ? "Unsave": "Save for later"}
+                      text={
+                        !isEmpty(saveForLaterData) &&
+                        saveForLaterData.includes(userProfile.id)
+                          ? "Unsave"
+                          : "Save for later"
+                      }
                       onClick={handleSaveForLater}
                     />
                   )}
@@ -279,7 +294,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   claimLibrary,
   setLibraryViewed,
-  saveForLaterLibrary
+  saveForLaterLibrary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryCard);
