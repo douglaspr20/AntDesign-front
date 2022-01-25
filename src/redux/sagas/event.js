@@ -35,9 +35,9 @@ const getEventStatus = (data, userId) => {
   const last = data.startAndEndTimes.at(-1);
 
   if (res === "going") {
-    res = moment().isBefore(moment(last.endTime)) ? res : "past";
+    res = moment().isBefore(last.endTime) ? res : "past";
   } else if (!res) {
-    res = moment().isBefore(moment(last.endTime)) ? "attend" : "";
+    res = moment().isBefore(last.endTime) ? "attend" : "";
   }
   return res;
 };
