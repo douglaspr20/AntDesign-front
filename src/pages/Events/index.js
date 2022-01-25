@@ -201,8 +201,8 @@ const EventsPage = ({
 
         const last = item.startAndEndTimes.at(-1);
 
-        if (moment().isBefore((last || {}).endTime)) {
-          flag = true;
+        if (last.endTime && moment().isBefore(last.endTime)) {
+          flag = true
         }
 
         return flag;
