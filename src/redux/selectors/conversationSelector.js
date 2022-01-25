@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 
-const conversationDataSelector = (state) => state.conversation;
+export const conversationDataSelector = (state) => state.conversation;
 
 const resultSelector = createSelector(conversationDataSelector, (payload) => {
   return {

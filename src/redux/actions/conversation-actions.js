@@ -5,6 +5,7 @@ const GET_CONVERSATIONS = "GET_CONVERSATIONS";
 const SET_CONVERSATIONS = "SET_CONVERSATIONS";
 const GET_CONVERSATION = "GET_CONVERSATION";
 const SET_CONVERSATION = "SET_CONVERSATION";
+const READ_MESSAGES = "READ_MESSAGES";
 
 export const constants = {
   CREATE_CONVERSATION,
@@ -12,6 +13,7 @@ export const constants = {
   SET_CONVERSATIONS,
   GET_CONVERSATION,
   SET_CONVERSATION,
+  READ_MESSAGES,
 };
 
 // ------------------------------------
@@ -49,10 +51,19 @@ export const setConversation = createAction(
   })
 );
 
+export const readMessages = createAction(
+  READ_MESSAGES,
+  (id, ConversationId) => ({
+    id,
+    ConversationId,
+  })
+);
+
 export const actions = {
   createConversartion,
   getConversations,
   setConversations,
   getConversation,
   setConversation,
+  readMessages,
 };

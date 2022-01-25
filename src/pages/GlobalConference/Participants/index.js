@@ -3,15 +3,13 @@ import { connect } from "react-redux";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { getBonfires } from "redux/actions/bonfire-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { conversationsSelector } from "redux/selectors/conversationSelector";
 import {
   getParticipants,
   getRecommendedParticipants,
   setRecomnendedParticipants,
   setParticipants,
 } from "redux/actions/session-actions";
-import { getConversations } from "redux/actions/conversation-actions";
-import { Chat, Tabs } from "components";
+import { Tabs } from "components";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import RecommendedParticipants from "./RecommendedParticipants";
@@ -28,11 +26,8 @@ const Participants = ({
   getParticipants,
   getRecommendedParticipants,
   getBonfires,
-  getConversations,
-  conversations,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [openChat, setOpenChat] = useState(false);
 
   useEffect(() => {
     if (userProfile.topicsOfInterest.length > 0 && userProfile.id) {
@@ -42,16 +37,9 @@ const Participants = ({
         num: 50,
       });
       getParticipants(userProfile.id);
-      getConversations(userProfile.id);
       getBonfires();
     }
-  }, [
-    getParticipants,
-    getRecommendedParticipants,
-    getBonfires,
-    userProfile,
-    getConversations,
-  ]);
+  }, [getParticipants, getRecommendedParticipants, getBonfires, userProfile]);
 
   useEffect(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (participant) => {
@@ -91,13 +79,6 @@ const Participants = ({
     setParticipants,
   ]);
 
-  useEffect(() => {
-    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, () => {
-      getConversations(userProfile.id);
-      setOpenChat(true);
-    });
-  }, [getConversations, userProfile]);
-
   const handleTab = (key) => {
     setCurrentTab(key);
   };
@@ -129,13 +110,6 @@ const Participants = ({
   return (
     <div className="participants-wrapper">
       <Tabs data={TabData} current={currentTab} onChange={handleTab} />
-      {conversations.length > 0 && (
-        <Chat
-          conversations={conversations}
-          openChat={openChat}
-          setOpenChat={setOpenChat}
-        />
-      )}
     </div>
   );
 };
@@ -143,7 +117,6 @@ const Participants = ({
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
-  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
@@ -152,7 +125,6 @@ const mapDispatchToProps = {
   getBonfires,
   setRecomnendedParticipants,
   setParticipants,
-  getConversations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Participants);

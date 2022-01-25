@@ -178,7 +178,11 @@ import {
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
 
-import { createConversation, getConversations } from "./module/conversation";
+import {
+  createConversation,
+  getConversations,
+  readMessages,
+} from "./module/conversation";
 
 import { getEditorSignature } from "./module/env";
 export {
@@ -320,4 +324,5 @@ export {
   updateMarketplaceProfile,
   createConversation,
   getConversations,
+  readMessages,
 };

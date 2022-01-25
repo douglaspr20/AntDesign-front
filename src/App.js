@@ -26,6 +26,7 @@ import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
 import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
+import { getConversations } from "redux/actions/conversation-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { getLive } from "redux/actions/live-actions";
@@ -33,11 +34,13 @@ import { getLive } from "redux/actions/live-actions";
 import { pushNotification } from "redux/actions/notification-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { conversationsSelector } from "redux/selectors/conversationSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
 import "./App.scss";
 import SocketEventTypes from "enum/SocketEventTypes";
+import { Chat } from "components";
 
 class App extends Component {
   constructor(props) {
@@ -54,6 +57,7 @@ class App extends Component {
       openInviteFriendPanel: false,
       openPostFormModal: false,
       openPostFormPanel: false,
+      openChat: false,
     };
   }
 
@@ -64,7 +68,6 @@ class App extends Component {
         id: this.props.userProfile.id,
       });
       e.preventDefault();
-      console.log("hola");
       return "";
     });
 
@@ -133,6 +136,14 @@ class App extends Component {
     }
 
     if (
+      !isEmpty(curUser) &&
+      curUser.id &&
+      this.props.conversations.length <= 0
+    ) {
+      this.props.getConversations(curUser.id);
+    }
+
+    if (
       !window.location.pathname.includes("/global-conference") &&
       this.props.userProfile.id
     ) {
@@ -140,10 +151,15 @@ class App extends Component {
         id: this.props.userProfile.id,
       });
     }
+
+    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, () => {
+      this.props.getConversations(this.props.userProfile.id);
+      this.setState({ openChat: true });
+    });
   }
 
   componentWillUnmount() {
-    window.removeEventListener("beforeunload");
+    // window.removeEventListener("beforeunload");
     SocketIO.off();
   }
 
@@ -199,6 +215,7 @@ class App extends Component {
       openInviteFriendPanel,
       openPostFormModal,
       openPostFormPanel,
+      openChat,
     } = this.state;
 
     return (
@@ -208,6 +225,16 @@ class App extends Component {
           <Layout>
             <TopHeader />
             <Content />
+            {(window.location.pathname.includes("/global-conference") ||
+              window.location.pathname.includes("/session")) &&
+              this.props.conversations.length > 0 && (
+                <Chat
+                  conversations={this.props.conversations}
+                  openChat={openChat}
+                  setOpenChat={() => this.setState({ openChat: !openChat })}
+                />
+              )}
+
             <FeedbackBox />
           </Layout>
         </Layout>
@@ -262,6 +289,7 @@ const mapStateToProps = (state) => ({
   loading: homeSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
   authLoading: authSelector(state).loading,
+  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
@@ -269,6 +297,7 @@ const mapDispatchToProps = {
   upgradePlan,
   inviteFriend,
   getCategories,
+  getConversations,
   getChannelCategories,
   getLive,
   pushNotification,

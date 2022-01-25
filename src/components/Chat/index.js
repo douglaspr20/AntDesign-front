@@ -1,7 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { setConversations } from "redux/actions/conversation-actions";
+import {
+  setConversations,
+  readMessages,
+} from "redux/actions/conversation-actions";
 import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
 import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
 import moment from "moment";
@@ -18,16 +21,66 @@ const Chat = ({
   openChat,
   setOpenChat,
   setConversations,
+  readMessages,
 }) => {
   const [currentConversation, setCurrentConversation] = useState({});
-
-  useEffect(() => {
-    if (conversations.length > 0) {
-      setCurrentConversation(conversations[0]);
+  const setRef = useCallback((node) => {
+    if (node) {
+      node.scrollIntoView({ smooth: true });
     }
-  }, [conversations]);
+  }, []);
+
+  let messasgesNotViewed = 0;
+
+  if (conversations.length > 0) {
+    for (const conversation of conversations) {
+      messasgesNotViewed += conversation.messages.filter(
+        (message) => !message.viewedUser.includes(userProfile.id)
+      ).length;
+    }
+  }
+
+  useMemo(() => {
+    const lastConversationId = localStorage.getItem("lastConversationOpen");
+
+    const lastConversation = conversations.find(
+      (conversation) => conversation.id === +lastConversationId
+    );
+
+    if (lastConversation) {
+      setCurrentConversation(lastConversation);
+      if (
+        lastConversation.messages.find(
+          (message) => !message.viewedUser.includes(userProfile.id)
+        ) &&
+        openChat
+      ) {
+        readMessages(userProfile.id, lastConversation.id);
+      }
+    } else {
+      setCurrentConversation(conversations[0]);
+      if (
+        conversations[0].messages.find(
+          (message) => !message.viewedUser.includes(userProfile.id)
+        ) &&
+        openChat
+      ) {
+        readMessages(userProfile.id, conversations[0].id);
+      }
+    }
+  }, [conversations, userProfile, readMessages, openChat]);
 
   const handleConversation = (conversation) => {
+    if (
+      conversation.messages.find(
+        (message) => !message.viewedUser.includes(userProfile.id)
+      )
+    ) {
+      readMessages(userProfile.id, conversation.id);
+    }
+
+    localStorage.setItem("lastConversationOpen", `${conversation.id}`);
+
     setCurrentConversation(conversation);
   };
 
@@ -36,39 +89,46 @@ const Chat = ({
       ConversationId: currentConversation.id,
       sender: userProfile.id,
       text: message,
+      viewedUser: [userProfile.id],
     });
   };
 
   useMemo(() => {
-    SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
-      const updateConversation = conversations.find(
-        (conversation) => conversation.id === message.ConversationId
-      );
+    if (conversations.length > 0) {
+      SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
+        const updateConversation = conversations.find(
+          (conversation) => conversation.id === message.ConversationId
+        );
 
-      if (
-        updateConversation.messages.some(
-          (oldMessage) => oldMessage.id === message.id
-        )
-      ) {
-        return;
-      }
-      updateConversation.messages.push(message);
+        if (
+          updateConversation.messages.some(
+            (oldMessage) => oldMessage.id === message.id
+          )
+        ) {
+          return;
+        }
+        updateConversation.messages.push(message);
 
-      const newConversations = conversations.map((conversation) =>
-        conversation.id === updateConversation.id
-          ? updateConversation
-          : conversation
-      );
+        const newConversations = conversations.map((conversation) =>
+          conversation.id === updateConversation.id
+            ? updateConversation
+            : conversation
+        );
 
-      setConversations(newConversations);
-    });
+        setConversations(newConversations);
+      });
+    }
   }, [conversations, setConversations]);
+
+  const BadgeProps = {
+    count: messasgesNotViewed > 0 ? messasgesNotViewed : null,
+  };
 
   return (
     <Affix offsetBottom={!openChat ? 150 : 40} className="affix">
       {!openChat ? (
         <Badge
-          count={5}
+          {...BadgeProps}
           style={{
             position: "absolute",
             right: -380,
@@ -80,7 +140,7 @@ const Chat = ({
             shape="circle"
             size="large"
             icon={<MessageOutlined style={{ fontSize: "2rem" }} />}
-            onClick={() => setOpenChat(!openChat)}
+            onClick={() => setOpenChat()}
             style={{
               width: 80,
               height: 80,
@@ -98,8 +158,11 @@ const Chat = ({
                   const user = currentConversation.members.find(
                     (member) => member?.id === message?.sender
                   );
+                  const lastMessage =
+                    currentConversation.messages.length - 1 === i;
                   return (
                     <div
+                      ref={lastMessage ? setRef : null}
                       style={{
                         textAlign: `${
                           user.id !== userProfile.id ? "left" : "right"
@@ -167,10 +230,10 @@ const Chat = ({
                 left: 150,
                 cursor: "pointer",
               }}
-              onClick={() => setOpenChat(!openChat)}
+              onClick={() => setOpenChat()}
             />
             {conversations.map((conversation) => {
-              const [otherMember] = conversation.members.filter(
+              const otherMember = conversation.members.find(
                 (member) => member.id !== userProfile.id
               );
 
@@ -196,6 +259,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   setConversations,
+  readMessages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

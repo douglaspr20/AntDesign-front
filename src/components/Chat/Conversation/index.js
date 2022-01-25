@@ -1,27 +1,47 @@
-import { Avatar } from "antd";
 import React from "react";
+import { connect } from "react-redux";
+import { homeSelector } from "redux/selectors/homeSelector";
+
+import { Avatar, Badge } from "antd";
 
 import "./style.scss";
 
-const Conversation = ({ user, conversation, handleConversation }) => {
-  return (
-    <div
-      className="conversation"
-      onClick={() => handleConversation(conversation)}
-    >
-      {user.img ? (
-        <Avatar size={50} src={user.img} />
-      ) : (
-        <Avatar size={40} style={{ fontSize: "1.5rem" }}>
-          {user.abbrName}
-        </Avatar>
-      )}
+const Conversation = ({
+  user,
+  conversation,
+  handleConversation,
+  userProfile,
+}) => {
+  const messagesNotViewed = conversation.messages.filter(
+    (message) => !message.viewedUser.includes(userProfile.id)
+  ).length;
 
-      <p>
-        {user.firstName} {user.lastName}
-      </p>
+  return (
+    <div className="conversation-container">
+      <Badge count={messagesNotViewed}>
+        <div
+          onClick={() => handleConversation(conversation)}
+          className="conversation"
+        >
+          {user.img ? (
+            <Avatar size={50} src={user.img} />
+          ) : (
+            <Avatar size={40} style={{ fontSize: "1.5rem" }}>
+              {user.abbrName}
+            </Avatar>
+          )}
+
+          <p>
+            {user.firstName} {user.lastName}
+          </p>
+        </div>
+      </Badge>
     </div>
   );
 };
 
-export default Conversation;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+export default connect(mapStateToProps)(Conversation);

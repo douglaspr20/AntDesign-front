@@ -17,7 +17,6 @@ import {
   getAllSessions,
   getSessionsUserJoined,
 } from "redux/actions/session-actions";
-
 import {
   attendToGlobalConference,
   setLoading,
@@ -69,7 +68,6 @@ const GlobalConference = ({
   setLoading,
   attendToGlobalConference,
   children,
-  history,
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
