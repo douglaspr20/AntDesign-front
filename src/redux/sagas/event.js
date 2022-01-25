@@ -34,14 +34,10 @@ const getEventStatus = (data, userId) => {
 
   const last = data.startAndEndTimes.at(-1);
 
-  console.log(data, "itdataem");
-  console.log(last.endTime, "last.endTime");
-  console.log(moment().format("YYYY-MM-DD HH:mm:ssZ"), "moment()");
-
   if (res === "going") {
-    res = moment().isBefore(last.endTime) ? res : "past";
+    res = moment().isBefore((last || {}).endTime) ? res : "past";
   } else if (!res) {
-    res = moment().isBefore(last.endTime) ? "attend" : "";
+    res = moment().isBefore((last || {}).endTime) ? "attend" : "";
   }
   return res;
 };

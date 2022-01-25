@@ -201,10 +201,6 @@ const EventsPage = ({
 
         const last = item.startAndEndTimes.at(-1);
 
-        console.log(item, 'item');
-        console.log(last.endTime, 'last.endTime');
-        console.log(moment().format("YYYY-MM-DD HH:mm:ssZ"), 'moment()');
-
         if (moment().isBefore(last.endTime)) {
           flag = true;
         }
