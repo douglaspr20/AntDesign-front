@@ -32,10 +32,12 @@ import {
 const getEventStatus = (data, userId) => {
   let res = data.status[userId];
 
+  const last = data.startAndEndTimes.at(-1);
+
   if (res === "going") {
-    res = moment().isBefore(moment(data.startDate)) ? res : "past";
+    res = moment().isBefore(moment(last.endTime)) ? res : "past";
   } else if (!res) {
-    res = moment().isBefore(moment(data.startDate)) ? "attend" : "";
+    res = moment().isBefore(moment(last.endTime)) ? "attend" : "";
   }
   return res;
 };
@@ -162,8 +164,8 @@ export function* addToMyEventList({ payload }) {
         })
       );
 
-      if(payload.callback){
-        payload.callback()
+      if (payload.callback) {
+        payload.callback();
       }
     }
   } catch (error) {
@@ -314,7 +316,6 @@ export function* getChannelEventsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    
     const response = yield call(getChannelEvents, { ...payload });
 
     if (response.status === 200) {
