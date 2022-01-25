@@ -36,7 +36,7 @@ const getEventStatus = (data, userId) => {
 
   console.log(data, "itdataem");
   console.log(last.endTime, "last.endTime");
-  console.log(moment(), "moment()");
+  console.log(moment().format("YYYY-MM-DD HH:mm:ssZ"), "moment()");
 
   if (res === "going") {
     res = moment().isBefore(last.endTime) ? res : "past";
