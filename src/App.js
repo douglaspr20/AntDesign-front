@@ -58,6 +58,7 @@ class App extends Component {
       openPostFormModal: false,
       openPostFormPanel: false,
       openChat: false,
+      openEmojiPicker: false,
     };
   }
 
@@ -216,6 +217,7 @@ class App extends Component {
       openPostFormModal,
       openPostFormPanel,
       openChat,
+      openEmojiPicker,
     } = this.state;
 
     return (
@@ -232,6 +234,10 @@ class App extends Component {
                   conversations={this.props.conversations}
                   openChat={openChat}
                   setOpenChat={() => this.setState({ openChat: !openChat })}
+                  openEmojiPicker={openEmojiPicker}
+                  setOpenEmojiPicker={(value) =>
+                    this.setState({ openEmojiPicker: value })
+                  }
                 />
               )}
 

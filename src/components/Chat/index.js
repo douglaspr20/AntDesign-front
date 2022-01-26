@@ -20,6 +20,8 @@ const Chat = ({
   userProfile,
   openChat,
   setOpenChat,
+  openEmojiPicker,
+  setOpenEmojiPicker,
   setConversations,
   readMessages,
 }) => {
@@ -218,7 +220,11 @@ const Chat = ({
                 <h3>Send the first message of conversation</h3>
               )}
             </div>
-            <FormMessage handleSendMessage={handleSendMessage} />
+            <FormMessage
+              handleSendMessage={handleSendMessage}
+              openEmojiPicker={openEmojiPicker}
+              setOpenEmojiPicker={setOpenEmojiPicker}
+            />
           </div>
 
           <div className="conversations">
