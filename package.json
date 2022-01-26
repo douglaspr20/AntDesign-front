@@ -2,10 +2,6 @@
   "name": "antd-boilerplate",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "14.x",
-    "npm": "6.x"
-  },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@stripe/stripe-js": "^1.11.0",
