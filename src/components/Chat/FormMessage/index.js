@@ -45,7 +45,6 @@ const FormMessage = ({
             placeholder="Message"
             onKeyPress={(e) => (e.key === "Enter" ? message.submit() : null)}
             onClick={() => setOpenEmojiPicker(false)}
-            onBlur={() => focusMessage.current.focus()}
             autoFocus
           />
         </Form.Item>

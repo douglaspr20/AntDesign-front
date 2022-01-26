@@ -1,17 +1,16 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
   setConversations,
   readMessages,
 } from "redux/actions/conversation-actions";
-import { CloseOutlined, MessageOutlined } from "@ant-design/icons";
-import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
-import moment from "moment";
+import { MessageOutlined } from "@ant-design/icons";
+import { Affix, Badge, Button } from "antd";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import Conversation from "./Conversation";
-import FormMessage from "./FormMessage";
+import InternalChat from "./Chat";
 
 import "./style.scss";
 
@@ -20,57 +19,10 @@ const Chat = ({
   userProfile,
   openChat,
   setOpenChat,
-  openEmojiPicker,
-  setOpenEmojiPicker,
   setConversations,
   readMessages,
 }) => {
-  const [currentConversation, setCurrentConversation] = useState({});
-  const setRef = useCallback((node) => {
-    if (node) {
-      node.scrollIntoView({ smooth: true });
-    }
-  }, []);
-
-  let messasgesNotViewed = 0;
-
-  if (conversations.length > 0) {
-    for (const conversation of conversations) {
-      messasgesNotViewed += conversation.messages.filter(
-        (message) => !message.viewedUser.includes(userProfile.id)
-      ).length;
-    }
-  }
-
-  useMemo(() => {
-    const lastConversationId = localStorage.getItem("lastConversationOpen");
-
-    const lastConversation = conversations.find(
-      (conversation) => conversation.id === +lastConversationId
-    );
-
-    if (lastConversation) {
-      setCurrentConversation(lastConversation);
-      if (
-        lastConversation.messages.find(
-          (message) => !message.viewedUser.includes(userProfile.id)
-        ) &&
-        openChat
-      ) {
-        readMessages(userProfile.id, lastConversation.id);
-      }
-    } else {
-      setCurrentConversation(conversations[0]);
-      if (
-        conversations[0].messages.find(
-          (message) => !message.viewedUser.includes(userProfile.id)
-        ) &&
-        openChat
-      ) {
-        readMessages(userProfile.id, conversations[0].id);
-      }
-    }
-  }, [conversations, userProfile, readMessages, openChat]);
+  const [currentConversations, setCurrentConversations] = useState([]);
 
   const handleConversation = (conversation) => {
     if (
@@ -83,16 +35,29 @@ const Chat = ({
 
     localStorage.setItem("lastConversationOpen", `${conversation.id}`);
 
-    setCurrentConversation(conversation);
+    if (currentConversations.length === 3) {
+      if (
+        currentConversations.find(
+          (currentConversation) => currentConversation.id === conversation.id
+        )
+      ) {
+        return;
+      }
+
+      const newCurrentConversations = [...currentConversations, conversation];
+      newCurrentConversations.splice(0, 1);
+      return setCurrentConversations(newCurrentConversations);
+    }
+
+    setCurrentConversations([...currentConversations, conversation]);
   };
 
-  const handleSendMessage = (message) => {
-    SocketIO.emit(SOCKET_EVENT_TYPE.SEND_MESSAGE, {
-      ConversationId: currentConversation.id,
-      sender: userProfile.id,
-      text: message,
-      viewedUser: [userProfile.id],
-    });
+  const closeConversation = (conversation) => {
+    const newConversations = currentConversations.filter(
+      (currentConversation) => currentConversation.id !== conversation.id
+    );
+
+    setCurrentConversations(newConversations);
   };
 
   useMemo(() => {
@@ -122,15 +87,11 @@ const Chat = ({
     }
   }, [conversations, setConversations]);
 
-  const BadgeProps = {
-    count: messasgesNotViewed > 0 ? messasgesNotViewed : null,
-  };
-
   return (
-    <Affix offsetBottom={!openChat ? 150 : 40} className="affix">
+    <Affix offsetBottom={!openChat ? 150 : 25} className="affix">
       {!openChat ? (
         <Badge
-          {...BadgeProps}
+          // {...BadgeProps}
           style={{
             position: "absolute",
             right: -380,
@@ -152,92 +113,17 @@ const Chat = ({
           />
         </Badge>
       ) : (
-        <div className="chat">
-          <div className="chat-messages-container">
-            <div className="chat-messages">
-              {currentConversation.messages?.length > 0 ? (
-                currentConversation?.messages?.map((message, i) => {
-                  const user = currentConversation.members.find(
-                    (member) => member?.id === message?.sender
-                  );
-                  const lastMessage =
-                    currentConversation.messages.length - 1 === i;
-                  return (
-                    <div
-                      ref={lastMessage ? setRef : null}
-                      style={{
-                        textAlign: `${
-                          user.id !== userProfile.id ? "left" : "right"
-                        }`,
-                        marginBottom: "5px",
-                      }}
-                      key={message.id}
-                    >
-                      <Tooltip
-                        placement={
-                          user.id !== userProfile.id
-                            ? "bottomRight"
-                            : "bottomLeft"
-                        }
-                        title={
-                          <p className="date-messages">
-                            {moment(message.messageDate).format(
-                              "MMM DD YYYY hh:mm"
-                            )}
-                          </p>
-                        }
-                      >
-                        <div
-                          className={`chat-message ${
-                            user.id !== userProfile.id
-                              ? "chat-message-contact"
-                              : "chat-message-user"
-                          }`}
-                        >
-                          <p>{message.text}</p>
-                        </div>
-                      </Tooltip>
-                      {currentConversation?.messages[i + 1]?.sender !==
-                      message?.sender ? (
-                        <>
-                          {user.img ? (
-                            <Avatar
-                              src={user.img}
-                              alt={`${user.firstName} ${user.lastName}`}
-                              size={25}
-                            />
-                          ) : (
-                            <Avatar size={25} style={{ marginTop: "10px" }}>
-                              {user.abbrName}
-                            </Avatar>
-                          )}
-                        </>
-                      ) : null}
-                    </div>
-                  );
-                })
-              ) : (
-                <h3>Send the first message of conversation</h3>
-              )}
-            </div>
-            <FormMessage
-              handleSendMessage={handleSendMessage}
-              openEmojiPicker={openEmojiPicker}
-              setOpenEmojiPicker={setOpenEmojiPicker}
+        <>
+          {currentConversations.map((currentConversation, i) => (
+            <InternalChat
+              key={currentConversation.id}
+              style={{ right: i === 0 ? "190px" : i === 1 ? "530px" : "870px" }}
+              currentConversation={currentConversation}
+              closeConversation={closeConversation}
             />
-          </div>
+          ))}
 
           <div className="conversations">
-            <CloseOutlined
-              style={{
-                position: "sticky",
-                zIndex: "10",
-                top: 5,
-                left: 150,
-                cursor: "pointer",
-              }}
-              onClick={() => setOpenChat()}
-            />
             {conversations.map((conversation) => {
               const otherMember = conversation.members.find(
                 (member) => member.id !== userProfile.id
@@ -253,7 +139,7 @@ const Chat = ({
               );
             })}
           </div>
-        </div>
+        </>
       )}
     </Affix>
   );
