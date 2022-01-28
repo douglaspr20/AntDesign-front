@@ -16,6 +16,8 @@ const Conversation = ({
     (message) => !message.viewedUser.includes(userProfile.id)
   ).length;
 
+  console.log(user);
+
   return (
     <div className="conversation-container">
       <Badge count={messagesNotViewed}>
