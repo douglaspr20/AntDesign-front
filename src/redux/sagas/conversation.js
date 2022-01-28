@@ -24,8 +24,6 @@ export function* getConversationsSaga({ payload }) {
   try {
     const response = yield call(getConversations, { ...payload });
 
-    console.log(response);
-
     if (response.status === 200) {
       const conversationsData = Object.values(
         groupBy(response.data.conversations || [], "id")

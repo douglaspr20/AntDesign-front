@@ -55,7 +55,7 @@ const Chat = ({
           }}
         >
           {otherUser.img ? (
-            <Avatar size={50} src={otherUser.img} />
+            <Avatar size={40} src={otherUser.img} />
           ) : (
             <Avatar size={40} style={{ fontSize: "1.5rem" }}>
               {otherUser.abbrName}
