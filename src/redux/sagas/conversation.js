@@ -25,8 +25,16 @@ export function* getConversationsSaga({ payload }) {
     const response = yield call(getConversations, { ...payload });
 
     if (response.status === 200) {
+      const conversationSort = response.data.conversations.sort((a, b) => {
+        if (a.messagedate > b.messagedate) {
+          return 1;
+        } else if (b.messagedate > a.messagedate) {
+          return -1;
+        }
+        return 0;
+      });
       const conversationsData = Object.values(
-        groupBy(response.data.conversations || [], "id")
+        groupBy(conversationSort || [], "id")
       ).map((conversation) => {
         const newConversation = conversation.reduce(
           (res, item) => ({

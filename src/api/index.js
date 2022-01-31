@@ -182,6 +182,7 @@ import {
   createConversation,
   getConversations,
   readMessages,
+  getMoreMessages,
 } from "./module/conversation";
 
 import { getEditorSignature } from "./module/env";
@@ -325,4 +326,5 @@ export {
   createConversation,
   getConversations,
   readMessages,
+  getMoreMessages,
 };

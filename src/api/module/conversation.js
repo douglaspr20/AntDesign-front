@@ -13,3 +13,11 @@ export const readMessages = ({ id, ConversationId }) => {
     userId: id,
   });
 };
+
+export const getMoreMessages = ({ offset, ConversationId }) => {
+  return httpClient.get(`private/more-messages/${ConversationId}`, {
+    params: {
+      offset,
+    },
+  });
+};
