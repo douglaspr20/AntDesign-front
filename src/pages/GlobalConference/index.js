@@ -43,6 +43,7 @@ import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
 import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
+import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -496,6 +497,8 @@ const GlobalConference = ({
         visible={modalRecommendeAgendaVisible}
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
+
+      <AcceptTermsAndConditions />
     </div>
   );
 };
