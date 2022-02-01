@@ -1,4 +1,4 @@
-import { Collapse, Space } from "antd";
+import { Collapse } from "antd";
 import React, { useState, useEffect } from "react";
 import { Tabs } from "components";
 import { connect } from "react-redux";
