@@ -263,18 +263,31 @@ const SkillCohortResources = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {skillCohortResource.resourceLink}
+              {skillCohortResource.title}
             </a>
           </div>
         ) : (
-          <OpengraphReactComponent
-            key={skillCohortResource.id}
-            site={skillCohortResource.resourceLink}
-            appId={process.env.REACT_APP_OPENGRAPH_KEY}
-            loader={<Spin></Spin>}
-            size="large"
-            acceptLang="auto"
-          />
+          <div>
+            <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+              <a
+                href={skillCohortResource.resourceLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span style={{ fontSize: "1.5rem" }}>
+                  {skillCohortResource.title}
+                </span>
+              </a>
+            </div>
+            <OpengraphReactComponent
+              key={skillCohortResource.id}
+              site={skillCohortResource.resourceLink}
+              appId={process.env.REACT_APP_OPENGRAPH_KEY}
+              loader={<Spin></Spin>}
+              size="large"
+              acceptLang="auto"
+            />
+          </div>
         )}
       </div>
       <div className="comment-container-1">
