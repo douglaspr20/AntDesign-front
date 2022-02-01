@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Avatar, Tooltip } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { getMoreMessages } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import FormMessage from "../FormMessage";
@@ -12,9 +13,11 @@ const Chat = ({
   userProfile,
   currentConversation,
   closeConversation,
+  getMoreMessages,
   ...rest
 }) => {
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
+  const refChatMessages = useRef(null);
 
   const setRef = useCallback((node) => {
     if (node) {
@@ -29,6 +32,18 @@ const Chat = ({
       text: message,
       viewedUser: [userProfile.id],
     });
+  };
+
+  const handleScroll = () => {
+    if (refChatMessages.current) {
+      const { scrollTop } = refChatMessages.current;
+      if (scrollTop === 0 && currentConversation.messages?.length >= 15) {
+        getMoreMessages(
+          currentConversation.messages?.length,
+          currentConversation.id
+        );
+      }
+    }
   };
 
   const otherUser = currentConversation.members.find(
@@ -72,7 +87,11 @@ const Chat = ({
           onClick={() => closeConversation(currentConversation)}
         />
       </div>
-      <div className="chat-messages">
+      <div
+        className="chat-messages"
+        ref={refChatMessages}
+        onScroll={handleScroll}
+      >
         {currentConversation.messages?.length > 0 ? (
           currentConversation?.messages?.map((message, i) => {
             const user = currentConversation.members.find(
@@ -144,4 +163,8 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(Chat);
+const mapDispatchToProps = {
+  getMoreMessages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

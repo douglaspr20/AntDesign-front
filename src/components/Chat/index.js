@@ -1,12 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
   setConversations,
   readMessages,
 } from "redux/actions/conversation-actions";
-import { MessageOutlined } from "@ant-design/icons";
-import { Affix, Badge, Button } from "antd";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import Conversation from "./Conversation";
@@ -32,8 +30,6 @@ const Chat = ({
     ) {
       readMessages(userProfile.id, conversation.id);
     }
-
-    localStorage.setItem("lastConversationOpen", `${conversation.id}`);
 
     if (currentConversations.length === 3) {
       if (
@@ -87,61 +83,70 @@ const Chat = ({
     }
   }, [conversations, setConversations]);
 
+  useEffect(() => {
+    if (currentConversations.length > 0) {
+      const newCurrentConversations = currentConversations.map(
+        (conversation) => {
+          const newConversation = conversations.find(
+            (gConversation) => gConversation.id === conversation.id
+          );
+
+          if (
+            newConversation?.messages?.length !== conversation?.messages?.length
+          ) {
+            return newConversation;
+          }
+
+          return conversation;
+        }
+      );
+
+      let canUpdate = false;
+
+      for (let i = 0; i < currentConversations.length; i++) {
+        if (
+          newCurrentConversations[i].messages.length !==
+          currentConversations[i].messages.length
+        ) {
+          canUpdate = true;
+          break;
+        }
+      }
+
+      if (canUpdate) {
+        setCurrentConversations(newCurrentConversations);
+      }
+    }
+  }, [conversations, currentConversations]);
+
   return (
-    <Affix offsetBottom={!openChat ? 150 : 25} className="affix">
-      {!openChat ? (
-        <Badge
-          // {...BadgeProps}
-          style={{
-            position: "absolute",
-            right: -380,
-            top: 5,
-          }}
-        >
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon={<MessageOutlined style={{ fontSize: "2rem" }} />}
-            onClick={() => setOpenChat()}
-            style={{
-              width: 80,
-              height: 80,
-              position: "absolute",
-              right: -400,
-            }}
-          />
-        </Badge>
-      ) : (
-        <>
-          {currentConversations.map((currentConversation, i) => (
-            <InternalChat
-              key={currentConversation.id}
-              style={{ right: i === 0 ? "190px" : i === 1 ? "530px" : "870px" }}
-              currentConversation={currentConversation}
-              closeConversation={closeConversation}
+    <>
+      {currentConversations.map((currentConversation, i) => (
+        <InternalChat
+          key={currentConversation.id}
+          style={{ right: i === 0 ? "190px" : i === 1 ? "530px" : "870px" }}
+          currentConversation={currentConversation}
+          closeConversation={closeConversation}
+        />
+      ))}
+
+      <div className="conversations">
+        {conversations.map((conversation) => {
+          const otherMember = conversation.members.find(
+            (member) => member.id !== userProfile.id
+          );
+
+          return (
+            <Conversation
+              key={conversation.id}
+              user={otherMember}
+              conversation={conversation}
+              handleConversation={handleConversation}
             />
-          ))}
-
-          <div className="conversations">
-            {conversations.map((conversation) => {
-              const otherMember = conversation.members.find(
-                (member) => member.id !== userProfile.id
-              );
-
-              return (
-                <Conversation
-                  key={conversation.id}
-                  user={otherMember}
-                  conversation={conversation}
-                  handleConversation={handleConversation}
-                />
-              );
-            })}
-          </div>
-        </>
-      )}
-    </Affix>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

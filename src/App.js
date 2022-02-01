@@ -224,21 +224,23 @@ class App extends Component {
           <Sider />
           <Layout>
             <TopHeader />
-            <Content />
-            {(window.location.pathname.includes("/global-conference") ||
-              window.location.pathname.includes("/session")) &&
-              this.props.conversations.length > 0 && (
-                <Chat
-                  conversations={this.props.conversations}
-                  openChat={openChat}
-                  setOpenChat={() => this.setState({ openChat: !openChat })}
-                />
-              )}
-
+            <div style={{ display: "flex" }}>
+              <Content />
+              {(window.location.pathname.includes("/global-conference") ||
+                window.location.pathname.includes("/session")) &&
+                this.props.conversations.length > 0 && (
+                  <Chat
+                    conversations={this.props.conversations}
+                    openChat={openChat}
+                    setOpenChat={() => this.setState({ openChat: !openChat })}
+                  />
+                )}
+            </div>
             <FeedbackBox />
           </Layout>
         </Layout>
         <ProfileDrawer />
+
         <LibraryShareDrawer />
         <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (

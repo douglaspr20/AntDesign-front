@@ -6,7 +6,12 @@ import {
   actions as conversationActions,
 } from "../actions/conversation-actions";
 import { logout } from "../actions/auth-actions";
-import { createConversation, getConversations, readMessages } from "../../api";
+import {
+  createConversation,
+  getConversations,
+  readMessages,
+  getMoreMessages,
+} from "../../api";
 
 export function* createConversationSaga({ payload }) {
   try {
@@ -160,6 +165,44 @@ export function* readMessagesSaga({ payload }) {
   }
 }
 
+export function* getMoreMessagesSaga({ payload }) {
+  try {
+    const response = yield call(getMoreMessages, { ...payload });
+
+    if (response.status === 200) {
+      const selectAllState = (state) => state;
+
+      const allState = yield select(selectAllState);
+
+      const conversations = allState.conversation.get("conversations");
+
+      const conversationsData = conversations.map((conversation) => {
+        if (conversation.id === response.data.messages[0].ConversationId) {
+          const newConversationMessages = [
+            ...response.data.messages,
+            ...conversation.messages,
+          ];
+          return {
+            ...conversation,
+            messages: newConversationMessages,
+          };
+        }
+        return {
+          ...conversation,
+        };
+      });
+
+      yield put(conversationActions.setConversations(conversationsData));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchSession() {
   yield takeLatest(
     conversationConstants.CREATE_CONVERSATION,
@@ -171,6 +214,10 @@ function* watchSession() {
   );
   yield takeLatest(conversationConstants.GET_CONVERSATION, getConversationSaga);
   yield takeLatest(conversationConstants.READ_MESSAGES, readMessagesSaga);
+  yield takeLatest(
+    conversationConstants.GET_MORE_MESSAGES,
+    getMoreMessagesSaga
+  );
 }
 
 export const conversationSaga = [fork(watchSession)];
