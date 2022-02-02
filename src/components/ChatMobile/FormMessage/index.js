@@ -32,6 +32,7 @@ const FormMessage = ({
       message: `${prevValue} ${emojiObject.emoji}`,
     });
   };
+
   return (
     <div className="form-message-container">
       <Form form={message} onFinish={handleSubmit} className="form-message">
@@ -42,18 +43,22 @@ const FormMessage = ({
             className="form-message-textarea"
             size="small"
             placeholder="Message"
+            style={{ width: "130%" }}
             onKeyPress={(e) => (e.key === "Enter" ? message.submit() : null)}
             onClick={() => setOpenEmojiPicker(false)}
             autoFocus
           />
         </Form.Item>
+
         {openEmojiPicker && (
           <EmojiPicker
             onEmojiClick={onEmojiClick}
             pickerStyle={{
-              width: "100%",
+              width: "40%",
               position: "absolute",
-              top: 0,
+              zIndex: "500",
+              bottom: 60,
+              right: 130,
             }}
             native
             disableSearchBar

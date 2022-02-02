@@ -41,6 +41,7 @@ import "./styles/main.scss";
 import "./App.scss";
 import SocketEventTypes from "enum/SocketEventTypes";
 import { Chat } from "components";
+import ChatMobile from "components/ChatMobile";
 
 class App extends Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class App extends Component {
       openInviteFriendPanel: false,
       openPostFormModal: false,
       openPostFormPanel: false,
-      openChat: true,
+      openChat: false,
     };
   }
 
@@ -224,17 +225,23 @@ class App extends Component {
           <Sider />
           <Layout>
             <TopHeader />
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", position: "relative" }}>
               <Content />
               {(window.location.pathname.includes("/global-conference") ||
                 window.location.pathname.includes("/session")) &&
-                this.props.conversations.length > 0 && (
-                  <Chat
-                    conversations={this.props.conversations}
-                    openChat={openChat}
-                    setOpenChat={() => this.setState({ openChat: !openChat })}
-                  />
-                )}
+              window.screen.width > 1000 &&
+              this.props.conversations.length > 0 ? (
+                <Chat conversations={this.props.conversations} />
+              ) : (window.location.pathname.includes("/global-conference") ||
+                  window.location.pathname.includes("/session")) &&
+                window.screen.width < 1000 &&
+                this.props.conversations.length > 0 ? (
+                <ChatMobile
+                  conversations={this.props.conversations}
+                  openChat={openChat}
+                  setOpenChat={() => this.setState({ openChat: !openChat })}
+                />
+              ) : null}
             </div>
             <FeedbackBox />
           </Layout>

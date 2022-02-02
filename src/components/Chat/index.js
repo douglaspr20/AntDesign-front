@@ -15,8 +15,6 @@ import "./style.scss";
 const Chat = ({
   conversations,
   userProfile,
-  openChat,
-  setOpenChat,
   setConversations,
   readMessages,
 }) => {

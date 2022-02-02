@@ -83,16 +83,16 @@
 
       @media (max-width: 800px){
         left: 12%;
-        width: 62%;
+        width: 90%;
         padding: 20px 20px;
       }
 
-      // @media (max-width: 500px){
-      //   left: 1%;
-      //   padding: 20px 0px;
-      //   top: 60px;
-      //   width: 100%;
-      // }
+      @media (max-width: 500px){
+        left: 1%;
+        padding: 20px 0px;
+        top: 60px;
+        width: 98%;
+      }
 
       .button-containers{
         display: flex !important;
@@ -211,9 +211,8 @@
       }
   
     @media (max-width: 400px){
-      top: 26.5rem;
-      width: 107%;
-    left: -12%;
+      top: 28rem;
+      left: -12%;
       }
  
     }
