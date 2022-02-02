@@ -31,7 +31,10 @@ const Chat = ({
       readMessages(userProfile.id, conversation.id);
     }
 
-    if (currentConversations.length === 3) {
+    if (
+      (currentConversations.length === 3 && window.screen.width > 1600) ||
+      (currentConversations.length === 2 && window.screen.width <= 1600)
+    ) {
       if (
         currentConversations.find(
           (currentConversation) => currentConversation.id === conversation.id
@@ -124,7 +127,7 @@ const Chat = ({
       {currentConversations.map((currentConversation, i) => (
         <InternalChat
           key={currentConversation.id}
-          style={{ right: i === 0 ? "190px" : i === 1 ? "530px" : "870px" }}
+          style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
           currentConversation={currentConversation}
           closeConversation={closeConversation}
         />

@@ -87,6 +87,7 @@ const Chat = ({
           onClick={() => closeConversation(currentConversation)}
         />
       </div>
+
       <div
         className="chat-messages"
         ref={refChatMessages}
@@ -106,6 +107,7 @@ const Chat = ({
                   marginBottom: "5px",
                 }}
                 key={message.id}
+                visible
               >
                 <Tooltip
                   placement={

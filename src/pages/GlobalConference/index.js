@@ -461,11 +461,11 @@ const GlobalConference = ({
           childrenWithFilterProp
         ) : (
           <div className="global-conference-tabs">
-            {/* <Tabs
+            <Tabs
               data={tabData}
               current={currentTab}
               onChange={setCurrentTab}
-            /> */}
+            />
           </div>
         )}
       </div>
