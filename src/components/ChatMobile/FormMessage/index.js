@@ -34,16 +34,18 @@ const FormMessage = ({
   };
 
   return (
-    <div className="form-message-container">
-      <Form form={message} onFinish={handleSubmit} className="form-message">
-        <Form.Item name="message">
+    <div className="form-message-mobile-container">
+      <Form
+        form={message}
+        onFinish={handleSubmit}
+        className="form-message-mobile"
+      >
+        <Form.Item name="message" className="form-message-mobile-textarea">
           <Input.TextArea
             ref={focusMessage}
             rows={2}
-            className="form-message-textarea"
             size="small"
             placeholder="Message"
-            style={{ width: "130%" }}
             onKeyPress={(e) => (e.key === "Enter" ? message.submit() : null)}
             onClick={() => setOpenEmojiPicker(false)}
             autoFocus
@@ -65,7 +67,7 @@ const FormMessage = ({
           />
         )}
         <SmileOutlined
-          style={{ fontSize: "1.2rem", cursor: "pointer" }}
+          style={{ fontSize: "1.2rem", cursor: "pointer", margin: "0px 10px" }}
           onClick={handleOpenEmojiPicker}
         />
 

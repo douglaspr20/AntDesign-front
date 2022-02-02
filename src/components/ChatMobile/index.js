@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import {
@@ -15,6 +15,7 @@ import FormMessage from "./FormMessage";
 
 import "./style.scss";
 import { CustomDrawer } from "components";
+import { useRef } from "react";
 
 const ChatMobile = ({
   conversations,
@@ -26,6 +27,8 @@ const ChatMobile = ({
 }) => {
   const [currentConversation, setCurrentConversation] = useState({});
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
+  const messagesRef = useRef(null);
+
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
@@ -126,6 +129,12 @@ const ChatMobile = ({
     count: messasgesNotViewed > 0 ? messasgesNotViewed : null,
   };
 
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.offsetHeight + 200;
+    }
+  });
+
   return (
     <>
       {!openChat ? (
@@ -164,7 +173,7 @@ const ChatMobile = ({
         >
           <div className="chat-mobile">
             <div className="chat-mobile-messages-container">
-              <div className="chat-mobile-messages">
+              <div className="chat-mobile-messages" ref={messagesRef}>
                 {currentConversation.messages?.length > 0 ? (
                   currentConversation?.messages?.map((message, i) => {
                     const user = currentConversation.members.find(
@@ -172,6 +181,7 @@ const ChatMobile = ({
                     );
                     const lastMessage =
                       currentConversation.messages.length - 1 === i;
+
                     return (
                       <div
                         ref={lastMessage ? setRef : null}

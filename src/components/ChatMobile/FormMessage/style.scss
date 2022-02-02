@@ -1,20 +1,22 @@
 @import "styles/main.scss";
 
-.form-message-container{
+.form-message-mobile-container{
     background: $color-background-dark;
     border-top: 1px solid $color-border;
     width: 100%;
     max-width: 100%;
 
-    .form-message{
+    .form-message-mobile{
         display: flex;
         justify-content: space-around;
         align-items: center;
         padding: 5px;
 
-        &-textarea{
-          resize:none; 
-          width: 250px; 
+        .form-message-mobile-textarea{
+          resize:none;
+          min-width: 200px; 
+          width: 90%;
+          max-width: 400px; 
           border-radius: 5px;
         }
         
