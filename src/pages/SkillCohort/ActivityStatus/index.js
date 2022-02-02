@@ -5,6 +5,7 @@ import { Collapse } from "antd";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
+import clsx from "clsx";
 
 import { actions as skillCohortActions } from "redux/actions/skillCohort-actions";
 
@@ -30,31 +31,23 @@ const ActivityStatus = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
-  const handleClickLink = (cohort, resource) => {
-    history.push(
-      `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=1&id=${resource.id}`
-    );
-
-    window.location.reload();
+  const handleClickLink = (cohort, resource, hasAccess) => {
+    if (!hasAccess) {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${cohort.id}`);
+    } else {
+      history.push(
+        `${INTERNAL_LINKS.PROJECTX}/${cohort.id}/resources?key=2&id=${resource.id}`
+      );
+    }
   };
 
   const displayPanels = allOfMySkillCohorts.map((cohort, index) => {
     return (
       <Panel header={cohort.title} key={`${index}`}>
         <Collapse bordered={false}>
-          {cohort.SkillCohortResources.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)).map((resource, resourceIndex) => {
-            const header = (
-              <div>
-                {`${moment(resource.releaseDate).format("LL")}: `}
-                <span
-                  onClick={() => handleClickLink(cohort, resource)}
-                  style={{ color: "#0000EE" }}
-                >
-                  {resource.title}
-                </span>
-              </div>
-            );
-
+          {cohort.SkillCohortResources.sort(
+            (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+          ).map((resource, resourceIndex) => {
             const countPersonalReflection =
               cohort.SkillCohortResourceResponses.filter(
                 (response) =>
@@ -63,7 +56,7 @@ const ActivityStatus = ({
               );
 
             const displayPersonalReflection =
-              countPersonalReflection.length >= 2 ? "COMPLETED" : "PENDING";
+              countPersonalReflection.length >= 1 ? "COMPLETED" : "PENDING";
 
             const countAssessments =
               cohort.SkillCohortResponseAssessments.filter(
@@ -73,7 +66,43 @@ const ActivityStatus = ({
               );
 
             const displayComments =
-              countAssessments.length >= 2 ? "COMPLETED" : "PENDING";
+              countAssessments.length >= 1 ? "COMPLETED" : "PENDING";
+
+            const header = (
+              <div className="header">
+                <span className="header-content">{`${moment(
+                  resource.releaseDate
+                ).format("LL")}:`}</span>
+                <span
+                  onClick={() =>
+                    handleClickLink(cohort, resource, cohort.hasAccess)
+                  }
+                  style={{ color: "#0000EE" }}
+                  className="header-content"
+                >
+                  {resource.title}
+                </span>
+                <div
+                  className={clsx(
+                    {
+                      "green-dot":
+                        countPersonalReflection.length >= 1 &&
+                        countAssessments.length >= 1,
+                      "red-dot":
+                        countPersonalReflection.length === 0 ||
+                        countAssessments.length === 0,
+                    },
+                    "header-content"
+                  )}
+                ></div>
+                <div>
+                  {countPersonalReflection.length >= 1 &&
+                  countAssessments.length >= 1
+                    ? "ACTIVITIES COMPLETED"
+                    : "PENDING ACTIVITIES"}
+                </div>
+              </div>
+            );
 
             return (
               <Panel header={header} key={resourceIndex}>
@@ -94,7 +123,7 @@ const ActivityStatus = ({
 
   return (
     <div className="activity-status-wrapper">
-      <Collapse>{displayPanels}</Collapse>,
+      <Collapse>{displayPanels}</Collapse>
     </div>
   );
 };

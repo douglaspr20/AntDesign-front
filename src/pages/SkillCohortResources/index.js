@@ -12,6 +12,7 @@ import OpengraphReactComponent from "opengraph-react";
 import qs from "query-string";
 
 import { skillCohortResourceSelector } from "redux/selectors/skillCohortResourceSelector";
+import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -23,7 +24,6 @@ import SkillCohortPanel from "./SkillCohortPanel";
 import ResourceCard from "./ResourceCard";
 import SkillCohortResourceForm from "./SkillCohortResourceForm";
 import SkillCohortResourceReply from "./SkillCohortResourceReply";
-import ActivityStatus from "./ActivityStatus";
 
 import "./style.scss";
 
@@ -43,10 +43,11 @@ const SkillCohortResources = ({
   getSkillCohortResource,
   getEntireResources,
   skillCohortParticipant,
+  skillCohort,
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
-  const [currentTab, setCurrentTab] = useState("0");
+  const [currentTab, setCurrentTab] = useState("1");
   const history = useHistory();
   const location = useLocation();
 
@@ -85,6 +86,19 @@ const SkillCohortResources = ({
   }, [skillCohortParticipant, userProfile]);
 
   useEffect(() => {
+    if (!isEmpty(skillCohortParticipant) && !isEmpty(skillCohort)) {
+      if (
+        !skillCohortParticipant.hasAccess &&
+        skillCohortParticipant.SkillCohortId === skillCohort.id
+      ) {
+        history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillCohortParticipant]);
+
+  useEffect(() => {
     if (!isEmpty(allSkillCohortResources)) {
       if (!parsed.id) {
         getSkillCohortResource(allSkillCohortResources[0].id);
@@ -97,15 +111,15 @@ const SkillCohortResources = ({
   useEffect(() => {
     setCurrentTab(parsed.key);
 
-    if (parsed.key === "1") {
+    if (parsed.key === "2") {
       getSkillCohortResource(+parsed.id);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [parsed.id]);
 
   useEffect(() => {
-    if (currentTab !== "1") {
+    if (currentTab !== "2") {
       window.history.replaceState(
         null,
         "Page",
@@ -116,9 +130,13 @@ const SkillCohortResources = ({
         window.history.replaceState(
           null,
           "Page",
-          `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1&id=${skillCohortResource.id}`
+          `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=2&id=${skillCohortResource.id}`
         );
       }
+    }
+
+    if (currentTab === "0") {
+      history.push(`${INTERNAL_LINKS.PROJECTX}?key=2`);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,7 +150,7 @@ const SkillCohortResources = ({
   };
 
   const switchToConversationtab = () => {
-    setCurrentTab("1");
+    setCurrentTab("2");
   };
 
   const displayTodaysResource = !isEmpty(allSkillCohortResources[0]) && (
@@ -237,14 +255,40 @@ const SkillCohortResources = ({
   const displayConversation = (
     <div className="display-conversation-container">
       <div className="display-conversation">
-        <OpengraphReactComponent
-          key={skillCohortResource.id}
-          site={skillCohortResource.resourceLink}
-          appId={process.env.REACT_APP_OPENGRAPH_KEY}
-          loader={<Spin></Spin>}
-          size="large"
-          acceptLang="auto"
-        />
+        {skillCohortResource.resourceLink &&
+        skillCohortResource.resourceLink.includes("pdf") ? (
+          <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+            <a
+              href={skillCohortResource.resourceLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {skillCohortResource.title}
+            </a>
+          </div>
+        ) : (
+          <div>
+            <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+              <a
+                href={skillCohortResource.resourceLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span style={{ fontSize: "1.5rem" }}>
+                  {skillCohortResource.title}
+                </span>
+              </a>
+            </div>
+            <OpengraphReactComponent
+              key={skillCohortResource.id}
+              site={skillCohortResource.resourceLink}
+              appId={process.env.REACT_APP_OPENGRAPH_KEY}
+              loader={<Spin></Spin>}
+              size="large"
+              acceptLang="auto"
+            />
+          </div>
+        )}
       </div>
       <div className="comment-container-1">
         <SkillCohortResourceForm
@@ -263,6 +307,10 @@ const SkillCohortResources = ({
 
   const TabData = [
     {
+      title: "Back to Cohorts",
+      content: () => <div></div>,
+    },
+    {
       title: "Resources",
       content: () => {
         return <div className="wrapper-2">{displayResources}</div>;
@@ -278,16 +326,12 @@ const SkillCohortResources = ({
         <div className="display-participants">{displayParticipants}</div>
       ),
     },
-    {
-      title: "Activity Status",
-      content: () => <ActivityStatus />,
-    },
   ];
 
   return (
     <div className="skill-cohort-resources-page">
       <div className="skill-cohort-resources-page-container">
-        {currentTab === "1" && <SkillCohortPanel />}
+        {currentTab === "2" && <SkillCohortPanel />}
         <div className="wrapper">
           <Tabs
             data={TabData}
@@ -304,6 +348,7 @@ const SkillCohortResources = ({
 const mapStateToProps = (state) => ({
   ...skillCohortResourceSelector(state),
   ...skillCohortParticipantSelector(state),
+  ...skillCohortSelector,
   userProfile: homeSelector(state).userProfile,
 });
 

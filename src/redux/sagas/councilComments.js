@@ -68,7 +68,6 @@ export function* removeCouncilCommentSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    console.log(payload)
     const response = yield call(removeCouncilCommentFromAPI, payload.comment);
     if (response.status === 200) {
       yield put(

@@ -97,6 +97,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (pathname.includes(`${INTERNAL_LINKS.BUSINESS_PARTNER}`)) {
+      pathInfo = {
+        // icon: ,
+        label: `HR Business Partners Community`,
+      };
+    }
+
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.MICRO_CLASS}/`)) {
       const { selectedCourse } = this.props;
       pathInfo = {
@@ -208,7 +215,7 @@ class MainHeader extends React.Component {
           )}
         </div>
         <div className="main-header-right">
-          {this.props.live.live === true && (
+          {this.props.live?.live === true && (
             <div
               className="live-button"
               onClick={() => {

@@ -37,10 +37,15 @@ import jobBoardReducer from "./jobBoardReducer";
 import sessionClassUserReducer from "./sessionClassUserReducer";
 import marketplaceProfileReducer from "./marketplaceProfileReducer";
 import conversationReducer from "./conversationReducer";
+import businessPartnerReducer from "./businessPartnerReducer";
+import businessPartnerCommentsReducer from "./businessPartnerCommentsReducer";
+
 export default combineReducers({
   home: homeReducer,
   council: councilReducer,
   councilComment: councilCommentsReducer,
+  businessPartner: businessPartnerReducer,
+  businessPartnerComment: businessPartnerCommentsReducer,
   env: envReducer,
   auth: authReducer,
   event: eventReducer,

@@ -41,7 +41,7 @@ import "./style.scss";
 
 const EventsPage = ({
   allEvents,
-  myEvents, 
+  myEvents,
   updatedEvent,
   userProfile,
   getAllEvent,
@@ -63,12 +63,12 @@ const EventsPage = ({
   const [event, setEvent] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [eventForCredit, setEventForCredit] = useState({});
-  
+
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const addMyEvents = (event) => {
     const timezone = moment.tz.guess();
-    
+
     if (event.going) {
       addToMyEventList(event, timezone);
       if (event.isAnnualConference === 1) {
@@ -118,11 +118,14 @@ const EventsPage = ({
     });
   };
 
+  // console.log(filteredEvents, "filteredEvents");
+
   const TabData = [
     {
       title: "Upcoming events",
       content: () => (
         <EventList
+          // data={allEvents}
           data={filteredEvents}
           onAttend={addMyEvents}
           onClick={onEventClick}
@@ -194,15 +197,17 @@ const EventsPage = ({
     setFilteredEvents((prev) => {
       prev = allEvents.filter((item) => {
         let flag = true;
-
         flag = dateFilter(flag, params, item);
 
-        if (new Date(item.startDate) < new Date()) {
-          flag = false;
+        const last = item.startAndEndTimes.at(-1);
+
+        if (!isEmpty(last) && moment().isBefore(last.endTime)) {
+          flag = true
         }
+
         return flag;
       });
-      return [...prev]
+      return [...prev];
     });
   };
 
@@ -213,7 +218,7 @@ const EventsPage = ({
 
         flag = dateFilter(flag, params, item);
 
-        if (new Date(item.endDate) > new Date() || !item.status === 'attend') {
+        if (new Date(item.endDate) > new Date() || !item.status === "attend") {
           flag = false;
         }
 

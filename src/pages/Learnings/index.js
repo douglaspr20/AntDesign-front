@@ -1,3 +1,4 @@
+import { Collapse } from "antd";
 import React, { useState, useEffect } from "react";
 import { Tabs } from "components";
 import { connect } from "react-redux";
@@ -20,7 +21,10 @@ import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import { actions as conferenceActions } from "redux/actions/conference-actions";
 
 import LearningFilterDrawer from "./LearningFilterDrawer";
+import EventVideo from "./EventVideo";
 import "./style.scss";
+
+const { Panel } = Collapse;
 
 const MyLearingPage = ({
   getAllSaved,
@@ -40,7 +44,7 @@ const MyLearingPage = ({
   allCompletedCurrentPage,
   getMoreCompleted,
   allSavedCurrentPage,
-  getMoreSaved
+  getMoreSaved,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [listOfYears, setListOfYears] = useState([2020]);
@@ -90,7 +94,7 @@ const MyLearingPage = ({
     }
 
     // eslint-disable-next-line
-  }, [currentTab])
+  }, [currentTab]);
 
   const planUpdate = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -100,13 +104,6 @@ const MyLearingPage = ({
     getMoreItemsWithHRCredits({
       ...filters,
       page: allItemsWithHRCreditsCurrentPage + 1,
-    });
-  };
-
-  const showMoreEventVideos = () => {
-    getMoreEventVideos({
-      ...filters,
-      page: allEventVideosCurrentPage + 1,
     });
   };
 
@@ -120,9 +117,9 @@ const MyLearingPage = ({
   const showMoreSaved = () => {
     getMoreSaved({
       ...filters,
-      page: allSavedCurrentPage + 1
-    })
-  }
+      page: allSavedCurrentPage + 1,
+    });
+  };
 
   const displaySavedItems = () => (
     <>
@@ -209,7 +206,8 @@ const MyLearingPage = ({
         }) || []}
       </div>
       <>
-        {allCompletedCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM < allCompleted.count && (
+        {allCompletedCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM <
+          allCompleted.count && (
           <div className="search-results-container-footer d-flex justify-center items-center">
             {loading && (
               <div className="my-learnings-page-loading-more">
@@ -285,33 +283,19 @@ const MyLearingPage = ({
 
   const displayEventVideos = () => {
     return (
-      <>
-        <div className="items-with-hr-credits">
-          {allEventVideos?.rows?.map((item, index) => {
+      <div className="event-videos">
+        <Collapse>
+          {(allEventVideos || []).map((event) => {
             return (
-              <LibraryCard key={index} data={item} onClickAccess={planUpdate} />
+              <Panel header={event.title} key={event.id}>
+                {event.Libraries.map((library) => {
+                  return <EventVideo library={library} key={library.id} />;
+                })}
+              </Panel>
             );
           })}
-        </div>
-        {allEventVideosCurrentPage * SETTINGS.MAX_SEARCH_ROW_NUM <
-          allEventVideos.count && (
-          <div className="search-results-container-footer d-flex justify-center items-center">
-            {loading && (
-              <div className="my-learnings-page-loading-more">
-                <img src={IconLoadingMore} alt="loading-more-img" />
-              </div>
-            )}
-            {!loading && (
-              <CustomButton
-                text="Show More"
-                type="primary outlined"
-                size="lg"
-                onClick={showMoreEventVideos}
-              />
-            )}
-          </div>
-        )}
-      </>
+        </Collapse>
+      </div>
     );
   };
 
