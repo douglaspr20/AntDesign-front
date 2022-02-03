@@ -31,10 +31,11 @@
             border-color: $color-primary !important;
         }
     }
+
+    .ant-form-item{
+    margin-bottom: 0 !important;
+}
     
 }
 
 
-.ant-form-item{
-    margin-bottom: 0 !important;
-}

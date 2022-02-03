@@ -56,7 +56,7 @@ const FormMessage = ({
           <EmojiPicker
             onEmojiClick={onEmojiClick}
             pickerStyle={{
-              width: "40%",
+              width: "270px",
               position: "absolute",
               zIndex: "500",
               bottom: 60,

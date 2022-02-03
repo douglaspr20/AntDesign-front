@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { getMoreMessages } from "redux/actions/conversation-actions";
 import {
   setConversations,
   readMessages,
@@ -24,6 +25,7 @@ const ChatMobile = ({
   setOpenChat,
   setConversations,
   readMessages,
+  getMoreMessages,
 }) => {
   const [currentConversation, setCurrentConversation] = useState({});
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -135,6 +137,18 @@ const ChatMobile = ({
     }
   });
 
+  const handleScroll = () => {
+    if (messagesRef.current) {
+      const { scrollTop } = messagesRef.current;
+      if (scrollTop === 0 && currentConversation.messages?.length >= 15) {
+        getMoreMessages(
+          currentConversation.messages?.length,
+          currentConversation.id
+        );
+      }
+    }
+  };
+
   return (
     <>
       {!openChat ? (
@@ -173,7 +187,11 @@ const ChatMobile = ({
         >
           <div className="chat-mobile">
             <div className="chat-mobile-messages-container">
-              <div className="chat-mobile-messages" ref={messagesRef}>
+              <div
+                className="chat-mobile-messages"
+                ref={messagesRef}
+                onScroll={handleScroll}
+              >
                 {currentConversation.messages?.length > 0 ? (
                   currentConversation?.messages?.map((message, i) => {
                     const user = currentConversation.members.find(
@@ -237,7 +255,17 @@ const ChatMobile = ({
                     );
                   })
                 ) : (
-                  <h3>Send the first message of conversation</h3>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "calc(100vh - 300px)",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h2>Send the first message of conversation</h2>
+                  </div>
                 )}
               </div>
               <FormMessage
@@ -277,6 +305,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setConversations,
   readMessages,
+  getMoreMessages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatMobile);
