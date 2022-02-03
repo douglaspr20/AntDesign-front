@@ -1,6 +1,7 @@
 import { createAction } from "redux-actions";
 
 const GET_ALL_EVENTS = "GET_ALL_EVENTS";
+const GET_LIVE_EVENTS = "GET_LIVE_EVENTS";
 const GET_EVENT = "GET_EVENT";
 const SET_ALL_EVENTS = "SET_ALL_EVENTS";
 const SET_EVENT = "SET_EVENT";
@@ -10,21 +11,27 @@ const ADD_TO_MY_EVENT_LIST = "ADD_TO_MY_EVENT_LIST";
 const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
 const GET_MY_EVENTS = "GET_MY_EVENTS";
 const SET_MY_EVENTS = "SET_MY_EVENTS";
+const SET_MY_LIVE_EVENTS = "SET_MY_LIVE_EVENTS";
+const SET_MY_LIVE_EVENT = "SET_MY_LIVE_EVENT";
 const UPDATE_EVENT_STATUS = "UPDATE_EVENT_STATUS";
 const CREATE_CHANNEL_EVENT = "CREATE_CHANNEL_EVENT";
 const GET_CHANNEL_EVENTS = "GET_CHANNEL_EVENTS";
 const SET_CHANNEL_EVENTS = "SET_CHANNEL_EVENTS";
 const DELETE_EVENT = "DELETE_EVENT";
+const UPDATE_EVENT = "UPDATE_EVENT";
 const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 const EVENT_CLAIM_CREDIT = "EVENT_CLAIM_CREDIT";
 const EVENT_CLAIM_ATTENDANCE = "EVENT_CLAIM_ATTENDANCE";
 
 export const constants = {
   GET_ALL_EVENTS,
+  GET_LIVE_EVENTS,
   GET_EVENT,
   SET_ALL_EVENTS,
   SET_EVENT,
   SET_ERROR,
+  SET_MY_LIVE_EVENTS,
+  SET_MY_LIVE_EVENT,
   SET_LOADING,
   ADD_TO_MY_EVENT_LIST,
   REMOVE_FROM_MY_EVENT_LIST,
@@ -36,6 +43,7 @@ export const constants = {
   SET_CHANNEL_EVENTS,
   DELETE_EVENT,
   UPDATE_CHANNEL_EVENT,
+  UPDATE_EVENT,
   EVENT_CLAIM_CREDIT,
   EVENT_CLAIM_ATTENDANCE,
 };
@@ -44,6 +52,7 @@ export const constants = {
 // Actions
 // ------------------------------------
 export const getAllEvent = createAction(GET_ALL_EVENTS);
+export const getLiveEvents = createAction(GET_LIVE_EVENTS);
 export const getEvent = createAction(GET_EVENT, (id, callback) => ({
   id,
   callback,
@@ -59,7 +68,7 @@ export const addToMyEventList = createAction(
   (event, userTimezone, callback) => ({
     event,
     userTimezone,
-    callback
+    callback,
   })
 );
 export const removeFromMyEventList = createAction(
@@ -69,6 +78,12 @@ export const removeFromMyEventList = createAction(
 export const getMyEvents = createAction(GET_MY_EVENTS);
 export const setMyEvents = createAction(SET_MY_EVENTS, (myEvents) => ({
   myEvents,
+}));
+export const setMyLiveEvents = createAction(SET_MY_LIVE_EVENTS, (myEvents) => ({
+  myEvents,
+}));
+export const setMyLiveEvent = createAction(SET_MY_LIVE_EVENT, (myEvent) => ({
+  myEvent,
 }));
 export const updateEventStatus = createAction(
   UPDATE_EVENT_STATUS,
@@ -96,6 +111,10 @@ export const updateChannelEvent = createAction(
   UPDATE_CHANNEL_EVENT,
   (event, callback) => ({ event, callback })
 );
+export const updateEvent = createAction(UPDATE_EVENT, (title, callback) => ({
+  title,
+  callback,
+}));
 export const claimEventCredit = createAction(
   EVENT_CLAIM_CREDIT,
   (id, pdf, callback) => ({ id, pdf, callback })
@@ -107,9 +126,12 @@ export const claimEventAttendance = createAction(
 
 export const actions = {
   getAllEvent,
+  getLiveEvents,
   getEvent,
   setAllEvents,
   setEvent,
+  setMyLiveEvents,
+  // setMyLiveEvent,
   setError,
   setLoading,
   addToMyEventList,
@@ -117,6 +139,7 @@ export const actions = {
   getMyEvents,
   setMyEvents,
   updateEventStatus,
+  updateEvent,
   createChannelEvent,
   getChannelEvents,
   setChannelEvents,

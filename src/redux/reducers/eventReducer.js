@@ -11,6 +11,9 @@ export const reducers = {
   [eventConstants.SET_ALL_EVENTS]: (state, { payload }) => {
     return state.merge({ allEvents: cloneDeep(payload.events) });
   },
+  [eventConstants.SET_MY_LIVE_EVENTS]: (state, { payload }) => {
+    return state.merge({ allLiveEvents: cloneDeep(payload.myEvents) });
+  },
   [eventConstants.SET_EVENT]: (state, { payload }) => {
     const allEvents = state.get("allEvents");
     let index = allEvents.findIndex((item) => item.id === payload.event.id);
@@ -60,6 +63,7 @@ export const initialState = () =>
     loading: false,
     error: null,
     allEvents: [],
+    allLiveEvents: [],
     myEvents: [],
     updatedEvent: {},
     channelEvents: [],

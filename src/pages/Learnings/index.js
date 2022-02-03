@@ -1,4 +1,4 @@
-import { Collapse, Space } from "antd";
+import { Collapse } from "antd";
 import React, { useState, useEffect } from "react";
 import { Tabs } from "components";
 import { connect } from "react-redux";
@@ -21,6 +21,7 @@ import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import { actions as conferenceActions } from "redux/actions/conference-actions";
 
 import LearningFilterDrawer from "./LearningFilterDrawer";
+import EventCertificate from "../EventCertificate";
 import EventVideo from "./EventVideo";
 import "./style.scss";
 
@@ -299,6 +300,10 @@ const MyLearingPage = ({
     );
   };
 
+  const liveCertificate = () => {
+    return <EventCertificate />;
+  };
+
   const TabData = [
     {
       title: "Event Videos",
@@ -315,6 +320,10 @@ const MyLearingPage = ({
     {
       title: "Completed Items",
       content: displayCompletedItems,
+    },
+    {
+      title: "Digital Certificates",
+      content: liveCertificate,
     },
   ];
 

@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Divider } from "antd";
 import ReactPlayer from "react-player/youtube";
 
+import Interweave from "interweave";
 import { connect } from "react-redux";
+import { updateEvent } from "redux/actions/event-actions";
 import { liveSelector } from "redux/selectors/liveSelector";
 
-import Interweave from "interweave";
-import "./style.scss";
-import { INTERNAL_LINKS } from "enum";
+import { CustomButton } from "components";
+import Modal from "components/Modal";
 
-const LivePage = ({ history, live }) => {
+import { INTERNAL_LINKS } from "enum";
+import "./style.scss";
+
+const LivePage = ({ history, live, updateEvent }) => {
+  const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
+  const handleConfirmAssistence = () => {
+    setVisibleEventConfirm(true);
+  };
+
+  const onConfirmAssistence = () => {
+    updateEvent(live.event);
+  };
   return (
     <>
       {live.live === true ? (
@@ -33,13 +45,45 @@ const LivePage = ({ history, live }) => {
                 ></iframe>
               </div>
             </div>
-            <div className="live-item">
-              <Divider />
-              <h2>{live.title}</h2>
+            <div live-item>
+              <div className="live-item">
+                <Divider />
+                <h2>{live.title}</h2>
+              </div>
+              <div className="live-item">
+                <Interweave content={live.description} />
+              </div>
             </div>
-            <div className="live-item">
-              <Interweave content={live.description} />
-            </div>
+            {live.eventAssistence && (
+              <div>
+                <CustomButton
+                  text="Confirm assistence"
+                  onClick={handleConfirmAssistence}
+                />
+                <Modal
+                  visible={visibleEventConfirm}
+                  title="Confirm your assistence to this event"
+                  width={500}
+                  onCancel={() => setVisibleEventConfirm(false)}
+                  onOk={() => setVisibleEventConfirm(false)}
+                  okText="Confirm"
+                >
+                  <p>Confirm your assistence</p>
+                  <div className="buttons-confirm-container">
+                  <CustomButton
+                    text="Confirm"
+                    size="md"
+                    onClick={onConfirmAssistence}
+                  />
+                  <CustomButton
+                    text="Cancel"
+                    size="md"
+                    onClick={() => setVisibleEventConfirm(false)}
+                  />
+                  </div>
+                </Modal>
+              </div>
+            )}
           </div>
         </div>
       ) : (
@@ -53,6 +97,8 @@ const mapStateToProps = (state) => ({
   live: liveSelector(state).live,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateEvent,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LivePage);

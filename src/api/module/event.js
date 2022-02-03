@@ -8,6 +8,14 @@ export const getEvent = ({ id }) => {
   return httpClient.get(`public/event/${id}`);
 };
 
+export const getLiveEventFromAPI = () => {
+  return httpClient.get(`private/events-live/`);
+};
+
+export const updateEventFromAPI = ({ title }) => {
+  return httpClient.put(`private/event/${title}`);
+};
+
 export const updateEventStatusFromAPI = ({ event, status }) => {
   return httpClient.put(`private/event/set-status/${event.id}`, { status });
 };

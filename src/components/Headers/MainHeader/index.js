@@ -97,6 +97,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (pathname.includes(`${INTERNAL_LINKS.EVENT_CERTIFICATE}`)) {
+      pathInfo = {
+        // icon: ,
+        label: `Certificate of participation`,
+      };
+    }
+
     if (pathname.includes(`${INTERNAL_LINKS.BUSINESS_PARTNER}`)) {
       pathInfo = {
         // icon: ,

@@ -57,8 +57,18 @@
       }
     }
 
+    .live-item-container {
+      display: flex;
+      padding-top: 1rem;
+    }
+
     p {
       text-align: justify;
     }
   }
+}
+.buttons-confirm-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
