@@ -106,7 +106,13 @@ const AcceptTermsAndConditions = ({
           ))}
         </Timeline>
       </div>
-      <div style={{ width: "100%", textAlign: "center", marginTop: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+        }}
+      >
         <CustomButton
           size="xs"
           text="CONFIRM"
@@ -114,6 +120,7 @@ const AcceptTermsAndConditions = ({
             acceptTermsAndConditions(userProfile.id);
             setVisibleModalTermsCondition(false);
           }}
+          style={{ marginTop: "1rem" }}
         />
       </div>
     </CustomModal>
