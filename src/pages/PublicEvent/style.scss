@@ -57,6 +57,9 @@
 
       .event-description {
         margin-top: 20px;
+        p {
+          width: 100% !important;
+        }
       }
 
       .custom-button.lg {
@@ -166,6 +169,14 @@
 
       .specialty-item {
         margin: 0 20px 1rem 0;
+      }
+    }
+
+    .event-description {
+      margin-top: 20px;
+      p {
+        width: 100% !important;
+        text-align: justify !important;
       }
     }
 

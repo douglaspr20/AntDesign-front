@@ -12,12 +12,20 @@ import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 
-const FilterPanel = ({ title, userProfile, allCategories, onChange, onSearch }) => {
+const FilterPanel = ({
+  title,
+  userProfile,
+  allCategories,
+  onChange,
+  onSearch,
+  currentTab,
+  isBusiness = false,
+}) => {
   const [filters, setFilters] = useState({});
 
   const onShareContent = () => {
     Emitter.emit(EVENT_TYPES.OPEN_SHARE_CONTENT);
-  }; 
+  };
 
   const onFilterChange = (field, values) => {
     const newFilter = {
@@ -30,13 +38,25 @@ const FilterPanel = ({ title, userProfile, allCategories, onChange, onSearch }) 
 
   return (
     <div className="library-filter-panel">
-      <CustomButton
-        className="library-filter-panel-share"
-        text="Share content"
-        size="md"
-        type="primary"
-        onClick={onShareContent}
-      />
+      {((isBusiness && currentTab === "2") ||
+        (isBusiness && currentTab === "1")) && (
+        <CustomButton
+          className="library-filter-panel-share"
+          text="Share content"
+          size="md"
+          type="primary"
+          onClick={onShareContent}
+        />
+      )}
+      {isBusiness || (
+        <CustomButton
+          className="library-filter-panel-share"
+          text="Share content"
+          size="md"
+          type="primary"
+          onClick={onShareContent}
+        />
+      )}
       <h2 className="font-regular">{title}</h2>
       <div className="library-filter-panel-content">
         <div className="search-filter">
