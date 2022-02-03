@@ -172,6 +172,14 @@
       }
     }
 
+    .event-description {
+      margin-top: 20px;
+      p {
+        width: 100% !important;
+        text-align: justify !important;
+      }
+    }
+
     .event-subtitle {
       @include app-font(20px, 48px, bold);
       color: $color-text-primary !important;
