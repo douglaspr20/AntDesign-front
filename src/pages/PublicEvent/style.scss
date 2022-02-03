@@ -57,6 +57,9 @@
 
       .event-description {
         margin-top: 20px;
+        p {
+          width: 100% !important;
+        }
       }
 
       .custom-button.lg {
