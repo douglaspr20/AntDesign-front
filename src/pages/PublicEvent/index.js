@@ -272,7 +272,7 @@ const PublicEventPage = ({
                   updatedEvent.timezone
                 );
                 const endTime = convertToCertainTime(
-                  time.endTime,
+                  time?.endTime,
                   updatedEvent.timezone
                 );
 
