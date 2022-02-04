@@ -52,16 +52,7 @@ const Chat = ({
 
   return (
     <div className="chat" {...rest}>
-      <div
-        style={{
-          width: "100%",
-          padding: "0px 5%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid #e1e2ee",
-        }}
-      >
+      <div className="chat-user-info">
         <div
           style={{
             display: "flex",
@@ -70,16 +61,38 @@ const Chat = ({
           }}
         >
           {otherUser.img ? (
-            <Avatar size={40} src={otherUser.img} />
+            <div
+              className={`${
+                otherUser.isOnline === true ? "avatar-container" : ""
+              }`}
+            >
+              <Avatar size={40} src={otherUser.img} />
+            </div>
           ) : (
-            <Avatar size={40} style={{ fontSize: "1.5rem" }}>
-              {otherUser.abbrName}
-            </Avatar>
+            <div
+              className={`${
+                otherUser.isOnline === true ? "avatar-container" : ""
+              }`}
+            >
+              <Avatar
+                size={40}
+                style={{ fontSize: "1.5rem" }}
+                className="avatar"
+              >
+                {otherUser.abbrName}
+              </Avatar>
+            </div>
           )}
 
-          <p style={{ marginLeft: "5px" }}>
-            {otherUser.firstName} {otherUser.lastName}
-          </p>
+          <div className="chat-user-names">
+            <p style={{ marginBottom: 0 }}>
+              {otherUser.firstName} {otherUser.lastName}
+            </p>
+
+            {otherUser.isOnline && (
+              <p style={{ marginBottom: 0, fontSize: ".7rem" }}>Active now</p>
+            )}
+          </div>
         </div>
 
         <CloseOutlined
@@ -107,7 +120,7 @@ const Chat = ({
                   marginBottom: "5px",
                 }}
                 key={message.id}
-                visible
+                visible="true"
               >
                 <Tooltip
                   placement={

@@ -133,7 +133,7 @@ const ChatMobile = ({
 
   useEffect(() => {
     if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.offsetHeight + 200;
+      messagesRef.current.scrollTop = messagesRef.current.offsetHeight + 400;
     }
   });
 
@@ -148,6 +148,10 @@ const ChatMobile = ({
       }
     }
   };
+
+  const otherUser = currentConversation?.members?.find(
+    (member) => member.id !== userProfile.id
+  );
 
   return (
     <>
@@ -187,6 +191,51 @@ const ChatMobile = ({
         >
           <div className="chat-mobile">
             <div className="chat-mobile-messages-container">
+              <div className="chat-mobile-user-info">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    height: "50px",
+                  }}
+                >
+                  {otherUser.img ? (
+                    <div
+                      className={`${
+                        otherUser.isOnline === true ? "avatar-container" : ""
+                      }`}
+                    >
+                      <Avatar size={40} src={otherUser.img} />
+                    </div>
+                  ) : (
+                    <div
+                      className={`${
+                        otherUser.isOnline === true ? "avatar-container" : ""
+                      }`}
+                    >
+                      <Avatar
+                        size={40}
+                        style={{ fontSize: "1.5rem" }}
+                        className="avatar"
+                      >
+                        {otherUser.abbrName}
+                      </Avatar>
+                    </div>
+                  )}
+
+                  <div className="chat-mobile-user-names">
+                    <p style={{ marginBottom: 0 }}>
+                      {otherUser.firstName} {otherUser.lastName}
+                    </p>
+
+                    {otherUser.isOnline && (
+                      <p style={{ marginBottom: 0, fontSize: ".7rem" }}>
+                        Active now
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
               <div
                 className="chat-mobile-messages"
                 ref={messagesRef}

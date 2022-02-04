@@ -58,6 +58,7 @@ export function* getConversationsSaga({ payload }) {
               "text",
               "messagedate",
               "viewedUser",
+              "isOnline",
             ]),
             members: [
               ...(res.members || []),
@@ -69,6 +70,7 @@ export function* getConversationsSaga({ payload }) {
                 lastName: item.lastName,
                 img: item.img,
                 timezone: item.timezone,
+                isOnline: item.isOnline,
               },
             ],
             messages: [

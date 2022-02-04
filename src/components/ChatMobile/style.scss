@@ -13,6 +13,38 @@
     display: flex;
     height: calc(100vh - 78px);
 
+    &-user-info{
+        width: 100%;
+        padding: 0px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid  $color-border
+    }
+
+    &-user-names{
+        margin-left: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 20px;
+    }
+
+    .avatar-container{
+        position: relative;
+        &::after{
+            content: "";
+            width: 12px;
+            height: 12px;
+            bottom: 0;
+            right: 0;
+            border-radius: 50%;
+            position: absolute;
+            background: $color-success;
+            border: 1px solid $color-border;
+        }
+    }
+
     &-messages-container{
         width: 75%;
         max-height:  calc(100vh - 300px);
@@ -24,7 +56,7 @@
     }
 
     &-messages{
-        height:  calc(100vh - 135px);
+        height:  calc(100vh - 185px);
         padding-top: 15px;
         overflow-y: auto;
     }

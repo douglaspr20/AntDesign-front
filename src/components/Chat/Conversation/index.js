@@ -24,11 +24,19 @@ const Conversation = ({
           className="conversation"
         >
           {user.img ? (
-            <Avatar size={50} src={user.img} />
+            <div
+              className={`${user.isOnline === true ? "avatar-container" : ""}`}
+            >
+              <Avatar size={50} src={user.img} />
+            </div>
           ) : (
-            <Avatar size={40} style={{ fontSize: "1.5rem" }}>
-              {user.abbrName}
-            </Avatar>
+            <div
+              className={`${user.isOnline === true ? "avatar-container" : ""}`}
+            >
+              <Avatar size={40} style={{ fontSize: "1.5rem" }}>
+                {user.abbrName}
+              </Avatar>
+            </div>
           )}
 
           <p>
