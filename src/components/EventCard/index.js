@@ -239,7 +239,7 @@ class EventCard extends React.Component {
                       timezone
                     );
                     const endTime = convertToCertainTime(
-                      time.endTime,
+                      time?.endTime,
                       timezone
                     );
 
