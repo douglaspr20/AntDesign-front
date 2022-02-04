@@ -306,7 +306,7 @@ const EventDrawer = ({
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes?.map((time, index) => {
                     const startTime = convertToCertainTime(
-                      time.startTime,
+                      time?.startTime,
                       event.timezone
                     );
                     const endTime = convertToCertainTime(

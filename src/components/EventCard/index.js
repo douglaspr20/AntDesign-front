@@ -235,7 +235,7 @@ class EventCard extends React.Component {
                 <Space direction="vertical">
                   {startAndEndTimes?.map((time, index) => {
                     const startTime = convertToCertainTime(
-                      time.startTime,
+                      time?.startTime,
                       timezone
                     );
                     const endTime = convertToCertainTime(
