@@ -124,6 +124,14 @@ const MyTalentMarketplaceProfile = ({
         </Form.Item>
 
         <Form.Item
+          label="Do you want to receive email notifications?"
+          valuePropName="checked"
+          name="isOpenReceivingEmail"
+        >
+          <Switch />
+        </Form.Item>
+
+        <Form.Item
           label="Do you want your profile to show in the talent marketplace?"
           valuePropName="checked"
           name="showMarketPlaceProfile"

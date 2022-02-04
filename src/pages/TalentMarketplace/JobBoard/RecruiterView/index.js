@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Form, notification } from "antd";
 
+import { getMarketplaceProfiles } from "redux/actions/marketplaceProfile-actions";
 import { actions as jobBoardActions } from "redux/actions/jobBoard-actions";
 
 import { jobBoardSelector } from "redux/selectors/jobBoardSelector";
@@ -17,6 +18,7 @@ const RecruiterView = ({
   upsertJobPost,
   getMyJobPosts,
   filter,
+  getMarketplaceProfiles,
 }) => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [status, setStatus] = useState({});
@@ -26,7 +28,7 @@ const RecruiterView = ({
     getMyJobPosts({
       ...filter,
     });
-
+    getMarketplaceProfiles({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
@@ -124,6 +126,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   ...jobBoardActions,
+  getMarketplaceProfiles,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecruiterView);
