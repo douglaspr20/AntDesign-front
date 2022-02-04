@@ -304,7 +304,7 @@ const EventDrawer = ({
             {event.status !== "past" && event.status !== "confirmed" && (
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
-                  event.startAndEndTimes.map((time, index) => {
+                  event.startAndEndTimes?.map((time, index) => {
                     const startTime = convertToCertainTime(
                       time.startTime,
                       event.timezone

@@ -266,7 +266,7 @@ const PublicEventPage = ({
         <div className="public-event-page-content-calendar">
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
-              {updatedEvent?.startAndEndTimes.map((time, index) => {
+              {updatedEvent?.startAndEndTimes?.map((time, index) => {
                 const startTime = convertToCertainTime(
                   time.startTime,
                   updatedEvent.timezone

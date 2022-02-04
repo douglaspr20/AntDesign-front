@@ -233,7 +233,7 @@ class EventCard extends React.Component {
               <h5>{`${location ? location.join(",") : ""} event`}</h5>
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
-                  {startAndEndTimes.map((time, index) => {
+                  {startAndEndTimes?.map((time, index) => {
                     const startTime = convertToCertainTime(
                       time.startTime,
                       timezone
