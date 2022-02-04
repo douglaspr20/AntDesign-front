@@ -310,8 +310,8 @@ const EventDrawer = ({
                       event.timezone
                     );
                     const endTime = convertToCertainTime(
-                      time.endTime,
-                      event.timezone
+                      time?.endTime,
+                      event?.timezone
                     );
 
                     return (
@@ -330,7 +330,7 @@ const EventDrawer = ({
                             e.stopPropagation();
                           }}
                         >
-                          {event.startAndEndTimes.length > 1
+                          {event?.startAndEndTimes?.length > 1
                             ? `Download Day ${index + 1}`
                             : "Download Calendar"}
                           <DownOutlined />
