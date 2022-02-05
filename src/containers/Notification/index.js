@@ -39,7 +39,7 @@ const Notification = ({
   const history = useHistory();
 
   useEffect(() => {
-    if (!isEmpty(userProfile)) {
+    if (!isEmpty(userProfile) && userProfile.id) {
       getAllParticipated(userProfile.id);
     }
   }, [userProfile]);
