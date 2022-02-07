@@ -83,6 +83,9 @@ const Notification = ({
       case "resource":
         history.push(cohortLink);
         break;
+      case "post":
+        history.push(`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`)
+        break;
       default:
         break;
     }
