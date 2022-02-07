@@ -37,7 +37,7 @@ const AcceptTermsAndConditions = ({
         The networking tools are for real networking conversations. If you
         use any of the tools for pitching, marketing or selling any product
         or service, your account will be banned from using the tools again
-        for the duration of the conference`,
+        for the duration of the conference.`,
     },
     {
       title: "Conference sessions:",
@@ -85,8 +85,7 @@ const AcceptTermsAndConditions = ({
       <p>
         The Hacking HR 2022 Global Online Conference brings the most robust
         agenda and largest lineup of speakers ever put together for an HR event.
-        The content of this conference during and post-event are completely
-        FREE.
+        The content of this conference during and post-event is completely FREE.
       </p>
 
       <p>
