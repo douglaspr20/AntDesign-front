@@ -42,8 +42,7 @@ export function* getParticipatedSaga({ payload }) {
 
   try {
     const response = yield call(getParticipated, { ...payload });
-
-    if (response.status === 200) {
+    if (response?.status === 200) {
       yield put(
         skillCohortParticipantActions.setParticipated(
           response.data.allSkillCohortParticipants
