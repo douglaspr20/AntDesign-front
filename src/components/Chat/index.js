@@ -30,17 +30,17 @@ const Chat = ({
     }
 
     if (
+      currentConversations.find(
+        (currentConversation) => currentConversation.id === conversation.id
+      )
+    ) {
+      return;
+    }
+
+    if (
       (currentConversations.length === 3 && window.screen.width > 1600) ||
       (currentConversations.length === 2 && window.screen.width <= 1600)
     ) {
-      if (
-        currentConversations.find(
-          (currentConversation) => currentConversation.id === conversation.id
-        )
-      ) {
-        return;
-      }
-
       const newCurrentConversations = [...currentConversations, conversation];
       newCurrentConversations.splice(0, 1);
       return setCurrentConversations(newCurrentConversations);
