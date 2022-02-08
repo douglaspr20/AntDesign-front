@@ -2,8 +2,8 @@ import httpClient from "./httpClient";
 
 export const getParticipated = async (data) => {
   const { UserId } = data;
-
-  return await httpClient.get(`private/skill-cohort/participant/${UserId}`);
+  if (UserId)
+    return await httpClient.get(`private/skill-cohort/participant/${UserId}`);
 };
 
 export const getAllSkillCohortParticipants = async (data) => {
