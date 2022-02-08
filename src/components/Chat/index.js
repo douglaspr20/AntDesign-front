@@ -120,6 +120,175 @@ const Chat = ({
     }
   }, [conversations, currentConversations]);
 
+  useMemo(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, (newConversation) => {
+      const currentConversation = conversations.find(
+        (conversation) => conversation.id === newConversation
+      );
+
+      if (
+        currentConversation.messages.find(
+          (message) => !message.viewedUser.includes(userProfile.id)
+        )
+      ) {
+        readMessages(userProfile.id, currentConversation.id);
+      }
+
+      if (currentConversations.find((c) => c.id === currentConversation.id)) {
+        return;
+      }
+
+      if (
+        (currentConversations.length === 3 && window.screen.width > 1600) ||
+        (currentConversations.length === 2 && window.screen.width <= 1600)
+      ) {
+        const newCurrentConversations = [
+          ...currentConversations,
+          currentConversation,
+        ];
+        newCurrentConversations.splice(0, 1);
+        return setCurrentConversations(newCurrentConversations);
+      }
+
+      setCurrentConversations([...currentConversations, currentConversation]);
+    });
+  }, [conversations, currentConversations, readMessages, userProfile.id]);
+
+  useMemo(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
+      if (user.id === userProfile.id && currentConversations.length === 0)
+        return;
+      const newCurrentConversations = currentConversations.map(
+        (currentConversation) => {
+          const newMembers = currentConversation.members.map((member) => {
+            if (member.id === user.id) {
+              return {
+                id: user.id,
+                abbrName: user.abbrName,
+                email: user.email,
+                firstName: user.firstName,
+                img: user.img,
+                isOnline: user.isOnline,
+                lastName: user.lastName,
+                timezone: user.timezone,
+              };
+            }
+
+            return {
+              ...member,
+            };
+          });
+
+          return {
+            ...currentConversation,
+            members: newMembers,
+          };
+        }
+      );
+
+      setCurrentConversations(newCurrentConversations);
+    });
+  }, [currentConversations, userProfile]);
+
+  useMemo(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
+      if (user.id === userProfile.id && currentConversations.length === 0)
+        return;
+
+      const newCurrentConversations = currentConversations.map(
+        (currentConversation) => {
+          const newMembers = currentConversation.members.map((member) => {
+            if (member.id === user.id) {
+              return {
+                id: user.id,
+                abbrName: user.abbrName,
+                email: user.email,
+                firstName: user.firstName,
+                img: user.img,
+                isOnline: user.isOnline,
+                lastName: user.lastName,
+                timezone: user.timezone,
+              };
+            }
+
+            return {
+              ...member,
+            };
+          });
+
+          return {
+            ...currentConversation,
+            members: newMembers,
+          };
+        }
+      );
+
+      setCurrentConversations(newCurrentConversations);
+    });
+  }, [currentConversations, userProfile]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
+      if (user.id === userProfile.id || conversations.length === 0) return;
+      const newConversations = conversations.map((conversation) => {
+        const newMembers = conversation.members.map((member) => {
+          if (member.id === user.id) {
+            return {
+              id: user.id,
+              abbrName: user.abbrName,
+              email: user.email,
+              firstName: user.firstName,
+              img: user.img,
+              isOnline: user.isOnline,
+              lastName: user.lastName,
+              timezone: user.timezone,
+            };
+          }
+
+          return {
+            ...member,
+          };
+        });
+        return {
+          ...conversation,
+          members: newMembers,
+        };
+      });
+      setConversations(newConversations);
+    });
+  }, [conversations, setConversations, userProfile]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
+      if (user.id === userProfile.id || conversations.length === 0) return;
+      const newConversations = conversations.map((conversation) => {
+        const newMembers = conversation.members.map((member) => {
+          if (member.id === user.id) {
+            return {
+              id: user.id,
+              abbrName: user.abbrName,
+              email: user.email,
+              firstName: user.firstName,
+              img: user.img,
+              isOnline: user.isOnline,
+              lastName: user.lastName,
+              timezone: user.timezone,
+            };
+          }
+
+          return {
+            ...member,
+          };
+        });
+        return {
+          ...conversation,
+          members: newMembers,
+        };
+      });
+      setConversations(newConversations);
+    });
+  }, [conversations, setConversations, userProfile]);
+
   return (
     <>
       {currentConversations.map((currentConversation, i) => (
