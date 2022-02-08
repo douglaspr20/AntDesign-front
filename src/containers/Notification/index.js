@@ -84,7 +84,7 @@ const Notification = ({
         history.push(cohortLink);
         break;
       case "post":
-        history.push(`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`)
+        history.push(`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`);
         break;
       default:
         break;
