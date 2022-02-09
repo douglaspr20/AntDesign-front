@@ -91,7 +91,7 @@ export const acceptInvitationJoin = ({ newUser, hostUserId }) => {
 
 export const acceptInvitationApplyBusinnesPartner = (payload) => {
   return httpClient.post("private/user/apply-business-partner", {
-    ...payload
+    ...payload,
   });
 };
 
@@ -109,4 +109,10 @@ export const confirmAccessibilityRequirements = ({ userId }) => {
 
 export const getAllUsers = () => {
   return httpClient.get(`private/users`);
+};
+
+export const acceptTermsAndConditions = ({ id }) => {
+  return httpClient.put(
+    `private/user/accept-terms-condition-g-conference/${id}`
+  );
 };

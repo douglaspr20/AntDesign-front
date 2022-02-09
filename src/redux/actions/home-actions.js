@@ -25,6 +25,8 @@ const CONFIRM_INVITATION_APPLY = "CONFIRM_INVITATION_APPLY";
 const CONFIRM_ACCESSIBILITY_REQUIREMENTS = "CONFIRM_ACCESSIBILITY_REQUIREMENTS";
 const GET_USERS = "GET_USERS";
 const SET_USERS = "SET_USERS";
+const ACCEPT_TERMS_CONDITIONS_GCONFERENCE =
+  "ACCEPT_TERMS_CONDITIONS_GCONFERENCE";
 
 export const constants = {
   SET_LOADING,
@@ -51,6 +53,7 @@ export const constants = {
   CONFIRM_ACCESSIBILITY_REQUIREMENTS,
   GET_USERS,
   SET_USERS,
+  ACCEPT_TERMS_CONDITIONS_GCONFERENCE,
 };
 
 // ------------------------------------
@@ -132,6 +135,10 @@ export const confirmAccessibilityRequirements = createAction(
 export const getAllUsers = createAction(GET_USERS);
 export const setAllUsers = createAction(SET_USERS, (users) => ({ users }));
 
+export const acceptTermsAndConditions = createAction(
+  ACCEPT_TERMS_CONDITIONS_GCONFERENCE,
+  (id) => ({ id })
+);
 export const actions = {
   setLoading,
   updateUserInformation,
@@ -155,4 +162,5 @@ export const actions = {
   confirmInvitationApply,
   getAllUsers,
   setAllUsers,
+  acceptTermsAndConditions,
 };
