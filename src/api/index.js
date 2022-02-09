@@ -20,6 +20,7 @@ import {
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
   getAllUsers,
+  acceptTermsAndConditions,
 } from "./module/user";
 import {
   getAllEvents,
@@ -346,4 +347,5 @@ export {
   getMarketplaceProfile,
   createMarketplaceProfile,
   updateMarketplaceProfile,
+  acceptTermsAndConditions,
 };

@@ -165,11 +165,11 @@ const AnnualConferenceCard = React.memo(
             {added ? (
               <CustomButton
                 type="primary outlined"
-                size="md"
-                text="Remove"
+                size="sm"
+                text="Remove from My Personalized Agenda"
                 onClick={onRemoveSession}
                 className="remove-buttom"
-                style={{ maxWidth: "150px", alignSelf: "flex-end" }}
+                style={{ alignSelf: "flex-end" }}
               />
             ) : attended ? (
               <CustomButton

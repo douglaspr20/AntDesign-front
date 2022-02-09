@@ -53,10 +53,10 @@ const EventDrawer = ({
   const onAttend = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    const timezone = moment.tz.guess();
 
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
-        const timezone = moment.tz.guess();
         addToMyEventList(event, timezone, () => {
           getChannelEvents({ ...filter, channel: channel.id });
         });
@@ -64,7 +64,7 @@ const EventDrawer = ({
         setShowFirewall(true);
       }
     } else {
-      addToMyEventList(event, null, () => {
+      addToMyEventList(event, timezone, () => {
         getChannelEvents({ ...filter, channel: channel.id });
       });
     }
@@ -201,7 +201,7 @@ const EventDrawer = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedEvent, event]);
-  
+
   return (
     <CustomDrawer
       title={""}
