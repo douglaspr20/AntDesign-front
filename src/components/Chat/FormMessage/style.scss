@@ -5,16 +5,45 @@
     border-top: 1px solid $color-border;
     width: 100%;
     max-width: 100%;
+    position: absolute;
+    bottom: 0;
+
+    .files-upload-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 5px;
+
+        .file-not-image{
+            display: flex;
+            width: 80px;
+            justify-content: center;
+            overflow: hidden;
+            align-items: center;
+            background: $color-white;
+            box-shadow: 0px 0px 1px #000;
+            border-radius: 5px;
+
+            .file-image{
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 90%;
+                overflow: hidden;
+                margin-top: 20px;
+            }
+        }
+    }
 
     .form-message{
         display: flex;
         justify-content: space-around;
+        flex-wrap: wrap;
         align-items: center;
         padding: 5px;
 
         &-textarea{
           resize:none; 
-          width: 250px; 
+          width: 230px; 
           border-radius: 5px;
         }
         
@@ -32,8 +61,16 @@
 
     .ant-form-item{
     margin-bottom: 0 !important;
-}
-    
-}
+    }
 
 
+.delete-image{
+    position: absolute;
+    color: $color-white !important;
+    padding: 1px;
+    right: -5px;
+    top: -5px;
+    background: $color-text-secondary;
+    border-radius: 50%;
+}
+}

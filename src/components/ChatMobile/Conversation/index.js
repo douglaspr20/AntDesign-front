@@ -31,7 +31,7 @@ const Conversation = ({
             </Avatar>
           )}
 
-          <p>
+          <p style={{ marginTop: "15px", marginLeft: "5px" }}>
             {user.firstName} {user.lastName}
           </p>
         </div>
