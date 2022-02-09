@@ -185,7 +185,7 @@ class EventCard extends React.Component {
         ticket,
         location,
         status,
-        image,
+        image2,
         period,
         showClaim,
         startAndEndTimes,
@@ -223,9 +223,9 @@ class EventCard extends React.Component {
             <IconPlus />
           </div>
         ) : (
-          <>
+          <div>
             <div className="event-card-img">
-              {image && <img src={image} alt="card-img" />}
+              {image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
@@ -331,7 +331,7 @@ class EventCard extends React.Component {
                 </div>
               </CardMenu>
             )}
-          </>
+          </div>
         )}
       </div>
     );
