@@ -39,7 +39,7 @@ const NotificationPage = ({
   getAllParticipated,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const history = useHistory()
+  const history = useHistory();
 
   const onMarkAsRead = () => {
     markNotificationToRead(
@@ -118,11 +118,12 @@ const NotificationPage = ({
     );
 
     if (cohort) {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources?key=2&id=${noti.meta.id}`)
+      history.push(
+        `${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}/resources?key=2&id=${noti.meta.id}`
+      );
     } else {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}`)
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${noti.meta.SkillCohortId}`);
     }
-
   };
 
   const renderNotification = (noti) => {
@@ -184,6 +185,15 @@ const NotificationPage = ({
             onClick={() => markNotificationToRead([noti.id], userProfile.id)}
           >
             Go to Learning library
+          </Link>
+        )}
+        {noti.type === "post" && (
+          <Link
+            className="notification-list-item-link"
+            to={`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`}
+            onClick={() => markNotificationToRead([noti.id], userProfile.id)}
+          >
+            Go to the Post
           </Link>
         )}
       </div>
@@ -271,8 +281,7 @@ NotificationPage.defaultProps = {
 const mapStateToProps = (state) => ({
   ...notificationSelector(state),
   userProfile: homeSelector(state).userProfile,
-  allParticipated:
-    skillCohortParticipantSelector(state).allParticipated,
+  allParticipated: skillCohortParticipantSelector(state).allParticipated,
 });
 
 const mapDispatchToProps = {
