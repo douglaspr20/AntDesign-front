@@ -69,8 +69,10 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
                 {userProfile && userProfile.memberShip === "free" && (
                   <div className="recommend-card">
                     <h2 className="recommend-card-label">
-                      Upgrade to a PREMIUM Membership and get unlimited access
-                      to the LAB features
+                      Upgrade to a PREMIUM Membership and get access to this
+                      LIVE event and also unlimited access to the premium
+                      features in the Hacking HR LAB. Click on UPGRADE on the
+                      top right
                     </h2>
                     <CustomButton
                       text="Upgrade"
