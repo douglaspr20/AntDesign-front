@@ -104,7 +104,7 @@ const PostPage = ({
                 history.push(INTERNAL_LINKS.HOME);
               }}
             />
-            <PostCommentForm postId={post.id} afterSave={afterSaveComment} />
+            <PostCommentForm postId={post.id} afterSave={afterSaveComment} postOwnerUserId={post.UserId}/>
             <div className="post-page-container--comments-container">
               {allComments.length > 0 ? (
                 <>
@@ -114,6 +114,7 @@ const PostPage = ({
                       data={item}
                       postId={post.id}
                       afterSave={afterSaveComment}
+                      postOwnerUserId={post.UserId}
                     />
                   ))}
                 </>

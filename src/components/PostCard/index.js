@@ -59,7 +59,7 @@ const PostCard = ({
   }, []);
 
   const markAsLiked = () => {
-    setPostLike({ PostId: data.id });
+    setPostLike({ PostId: data.id, postOwnerUserId: data.UserId });
     setLike(!like);
     setNewLike(1);
   };

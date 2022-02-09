@@ -22,6 +22,7 @@ const PostComment = ({
   afterSave,
   enableReply,
   deleteComment,
+  postOwnerUserId
 }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
 
@@ -77,6 +78,8 @@ const PostComment = ({
         <PostCommentForm
           postId={postId}
           postCommentId={data.id}
+          postCommentUserId={data.UserId}
+          postOwnerUserId={postOwnerUserId}
           afterSave={() => {
             setShowReplyForm(!showReplyForm);
             afterSave();
