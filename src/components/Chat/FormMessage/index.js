@@ -36,8 +36,9 @@ const FormMessage = ({
   }, [focusMessage]);
 
   const handleSubmit = (values) => {
-    handleSendMessage(values.message);
+    handleSendMessage(values);
     message.resetFields();
+    setFileList([]);
   };
 
   const handleOpenEmojiPicker = () => {
