@@ -51,10 +51,16 @@
     }
 
     .live-item {
-      padding-top: 1rem;
+      padding-top: 5px;
       @media (max-width: 1023.98px) {
         padding: 1rem;
       }
+    }
+
+    .live-confirm-assistence-button-container {
+      display: flex;
+      justify-content: center;
+      padding-top: 5px;
     }
 
     .live-item-container {

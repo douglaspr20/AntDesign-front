@@ -6,18 +6,28 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 
+
 import { CARD_TYPE, INTERNAL_LINKS } from "enum";
 
-import { CustomButton } from "components";
+import { CustomButton} from "components";
 
 import "./style.scss";
 
-const CertificateCard = ({ data, type }) => {
+const CertificateCard = ({ data }) => {
   const [, setLineClamp] = useState(3);
 
   const history = useHistory();
 
-  const { title, image, id, period } = data || {};
+  const {
+    id,
+    title,
+    type,
+    ticket,
+    location,
+    status,
+    image2,
+    period,
+  } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -45,23 +55,18 @@ const CertificateCard = ({ data, type }) => {
     }
   };
   return (
-    <div className={clsx("certificate-card", { add: type === CARD_TYPE.ADD })}>
-      <div className="certificate-card-content">
-        <h3 className="certificate-card-title">{title}</h3>
-        <div>
-          <div>
-            <img src={image} alt={title} className="certificate-image" />
-            {/* <div dangerouslySetInnerHTML={{ __html: data.description.html }} /> */}
-            <h4>{period}</h4>
-          </div>
-          <div id={randomId} className="d-flex items-center">
-            {/* <p className="certificate-card-desc">{description}</p> */}
-          </div>
+    <div className={clsx("event-card", { add: type === CARD_TYPE.ADD })}>
+      <div style={{ width: "100%" }}>
+        <div className="event-card-img">
+          {image2 && <img src={image2} alt="card-img" />}
         </div>
-        <div id={randomId} className="d-flex items-center d-rigth">
-          <span className="certificate-card-desc">
-            {/* {getPublicationTime(createdAt)} */}
-          </span>
+        <div className="event-card-content d-flex flex-column justify-between items-start">
+          <h3>{title}</h3>
+          <h5>{period}</h5>
+          <h5>{`${location ? location.join(",") : ""} event`}</h5>
+          {status !== "past" && status !== "confirmed" && (
+            <h6 className="event-card-cost">{ticket}</h6>
+          )}
         </div>
         <div className="certificate-card-content-footer">
           <CustomButton

@@ -111,8 +111,8 @@ export const updateChannelEvent = createAction(
   UPDATE_CHANNEL_EVENT,
   (event, callback) => ({ event, callback })
 );
-export const updateEvent = createAction(UPDATE_EVENT, (title, callback) => ({
-  title,
+export const updateEvent = createAction(UPDATE_EVENT, (id, callback) => ({
+  id,
   callback,
 }));
 export const claimEventCredit = createAction(

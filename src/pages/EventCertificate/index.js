@@ -49,17 +49,17 @@ const CertificateList = ({
         />
       ) : (
         <>
-          <div className="channels__list">
+          <div>
             {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
             {liveEvents &&
               liveEvents?.map((liveEvent) => {
                 return (
-                  <CertificateCard
-                    type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                    key={liveEvent.id}
-                    data={liveEvent}
-                    // setCurrentValue={setCurrentValue}
-                  />
+                    <CertificateCard
+                      type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                      key={liveEvent.id}
+                      data={liveEvent}
+                      // setCurrentValue={setCurrentValue}
+                    />
                 );
               })}
           </div>

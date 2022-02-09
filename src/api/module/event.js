@@ -12,8 +12,8 @@ export const getLiveEventFromAPI = () => {
   return httpClient.get(`private/events-live/`);
 };
 
-export const updateEventFromAPI = ({ title }) => {
-  return httpClient.put(`private/event/${title}`);
+export const updateEventFromAPI = ({ id }) => {
+  return httpClient.put(`private/event/${id}`);
 };
 
 export const updateEventStatusFromAPI = ({ event, status }) => {

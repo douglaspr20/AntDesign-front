@@ -17,8 +17,6 @@ import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 import IconBack from "images/icon-back.svg";
-
-import "./style.scss";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -28,6 +26,9 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { DownloadOutlined } from "@ant-design/icons";
+import { HelmetMetaData } from "components";
+
+import "./style.scss";
 
 const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
   const history = useHistory();
@@ -78,10 +79,15 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
 
     return duration.asHours();
   };
-
+  console.log(myEvents);
   const period = getPerodOfEvent(myEvents.startDate, myEvents.endDate);
   return (
     <div className="certificate-page">
+      <HelmetMetaData
+        title={myEvents.title}
+        image={ImgSignature}
+        description={"myEvents.description ola comosta"}
+      ></HelmetMetaData>
       <div
         className="certificate-page-header-content-back-btn"
         onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
@@ -116,7 +122,7 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
           <div className="certificate-bottom">
             <div className="certificate-bottom-sign">
               <h5 className="certificate-text1 date">{`${moment(
-                myEvents.startDate
+                new Date()
               ).format("MMMM DD, YYYY")}`}</h5>
               <div className="certificate-divider" />
               <h5 className="certificate-text1">Date</h5>
@@ -152,13 +158,17 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
       <div className="share-certificate">
         <h3>Share your badge</h3>
         <div className="certificate-page-actions">
-          <FacebookShareButton url={shareUrl} title="comentario vergas">
+          <FacebookShareButton url={shareUrl} quote="comentario default">
             <FacebookIcon size={40} round />
           </FacebookShareButton>
-          <LinkedinShareButton url={shareUrl} title="comentario vergas">
+          <LinkedinShareButton
+            url={shareUrl}
+            title="comentario vergas titulo diosl"
+            summary="description sirve?"
+          >
             <LinkedinIcon size={40} round />
           </LinkedinShareButton>
-          <TwitterShareButton url={shareUrl}>
+          <TwitterShareButton url={shareUrl} title="title default">
             <TwitterIcon size={40} round />
           </TwitterShareButton>
           <button onClick={downloadPdf} className="custom-download-button">

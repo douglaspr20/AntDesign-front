@@ -21,6 +21,7 @@ const LivePage = ({ history, live, updateEvent }) => {
 
   const onConfirmAssistence = () => {
     updateEvent(live.event);
+    setVisibleEventConfirm(false);
   };
   return (
     <>
@@ -46,6 +47,41 @@ const LivePage = ({ history, live, updateEvent }) => {
               </div>
             </div>
             <div live-item>
+              {live.eventAssistence && (
+                <div className="live-confirm-assistence-button-container">
+                  <CustomButton
+                    text="Click here to confirm you are participating in this event"
+                    onClick={handleConfirmAssistence}
+                  />
+                  <Modal
+                    visible={visibleEventConfirm}
+                    title="Attendance Confirmation"
+                    width={500}
+                    onCancel={() => setVisibleEventConfirm(false)}
+                    onOk={() => setVisibleEventConfirm(false)}
+                    okText="Confirm"
+                  >
+                    <p>
+                      Confirming your participation to this event will generate
+                      a Digital Badge of participation. The badge will be
+                      available at the end of the event under your profile, in
+                      My Learning, in the Digital Certificates tab:
+                    </p>
+                    <div className="buttons-confirm-container">
+                      <CustomButton
+                        text="Confirm"
+                        size="md"
+                        onClick={onConfirmAssistence}
+                      />
+                      <CustomButton
+                        text="Cancel"
+                        size="md"
+                        onClick={() => setVisibleEventConfirm(false)}
+                      />
+                    </div>
+                  </Modal>
+                </div>
+              )}
               <div className="live-item">
                 <Divider />
                 <h2>{live.title}</h2>
@@ -54,36 +90,6 @@ const LivePage = ({ history, live, updateEvent }) => {
                 <Interweave content={live.description} />
               </div>
             </div>
-            {live.eventAssistence && (
-              <div>
-                <CustomButton
-                  text="Confirm assistence"
-                  onClick={handleConfirmAssistence}
-                />
-                <Modal
-                  visible={visibleEventConfirm}
-                  title="Confirm your assistence to this event"
-                  width={500}
-                  onCancel={() => setVisibleEventConfirm(false)}
-                  onOk={() => setVisibleEventConfirm(false)}
-                  okText="Confirm"
-                >
-                  <p>Confirm your assistence</p>
-                  <div className="buttons-confirm-container">
-                  <CustomButton
-                    text="Confirm"
-                    size="md"
-                    onClick={onConfirmAssistence}
-                  />
-                  <CustomButton
-                    text="Cancel"
-                    size="md"
-                    onClick={() => setVisibleEventConfirm(false)}
-                  />
-                  </div>
-                </Modal>
-              </div>
-            )}
           </div>
         </div>
       ) : (
