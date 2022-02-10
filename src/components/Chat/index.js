@@ -227,7 +227,7 @@ const Chat = ({
     });
   }, [currentConversations, userProfile]);
 
-  useEffect(() => {
+  useMemo(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
       if (user.id === userProfile.id || conversations.length === 0) return;
       const newConversations = conversations.map((conversation) => {
@@ -258,7 +258,7 @@ const Chat = ({
     });
   }, [conversations, setConversations, userProfile]);
 
-  useEffect(() => {
+  useMemo(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
       if (user.id === userProfile.id || conversations.length === 0) return;
       const newConversations = conversations.map((conversation) => {
@@ -297,6 +297,7 @@ const Chat = ({
           style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
           currentConversation={currentConversation}
           closeConversation={closeConversation}
+          onClick={() => handleConversation(currentConversation)}
         />
       ))}
 

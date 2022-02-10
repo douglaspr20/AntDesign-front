@@ -29,7 +29,7 @@ const Chat = ({
     SocketIO.emit(SOCKET_EVENT_TYPE.SEND_MESSAGE, {
       ConversationId: currentConversation.id,
       sender: userProfile.id,
-      text: message,
+      text: message.message,
       viewedUser: [userProfile.id],
     });
   };

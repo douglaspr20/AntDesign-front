@@ -18,7 +18,7 @@ const Conversation = ({
 
   return (
     <div className="conversation-container">
-      <Badge count={messagesNotViewed}>
+      <Badge count={messagesNotViewed} offset={[0, 10]}>
         <div
           onClick={() => handleConversation(conversation)}
           className="conversation"
