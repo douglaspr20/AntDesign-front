@@ -87,8 +87,8 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
         title={myEvents.title}
         metatitle={myEvents.title}
         image={ImgSignature}
-        description={"myEvents.description ola comosta"}
-        metadescription={"myEvents.description ola comosta"}
+        description={"description"}
+        metadescription={"description"}
       ></HelmetMetaData>
       <div className="certificate-page">
         <div

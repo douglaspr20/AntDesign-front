@@ -5,24 +5,26 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const SEO = (...seo) => {
+  const newSeo = seo[0] 
+  console.log('...seo', newSeo)
   let location = useLocation();
   let currentUrl = "https://www.hackinghrlab.io/" + location.pathname;
-  let quote = seo.quote !== undefined ? seo.quote : "";
-  let title = seo.title !== undefined ? seo.title : "Hacking Lab";
-  let metaTitle = seo.title !== undefined ? seo.title : "Hacking Lab";
+  let quote = newSeo.quote !== undefined ? newSeo.quote : "";
+  let title = newSeo.title !== undefined ? newSeo.title : "Hacking Lab";
+  let metaTitle = newSeo.title !== undefined ? newSeo.title : "Hacking Lab";
   let metaDescription =
-    seo.description !== undefined
-      ? seo.description
+    newSeo.description !== undefined
+      ? newSeo.description
       : "We are a community of business and HR leaders, HR practitioners, technologists, entrepreneurs, consultants.";
   let image =
-    seo.image !== undefined
-      ? seo.image
+    newSeo.image !== undefined
+      ? newSeo.image
       : "https://storage.googleapis.com/cmperstribe_storage_usha/Banner/IMG_3640.JPG";
   let description =
-    seo.description !== undefined
-      ? seo.description
+    newSeo.description !== undefined
+      ? newSeo.description
       : "We are a community of business and HR leaders, HR practitioners, technologists, entrepreneurs, consultants.";
-  let hashtag = seo.hashtag !== undefined ? seo.hashtag : "#hackinglab"; // Merge default and page-specific SEO values
+  let hashtag = newSeo.hashtag !== undefined ? newSeo.hashtag : "#hackinglab"; // Merge default and page-specific SEO values
   const defaultSeo = {
     currentUrl,
     quote,
@@ -34,7 +36,6 @@ const SEO = (...seo) => {
     metaDescription,
   };
   const fullSeo = { ...defaultSeo };
-  console.log(fullSeo);
   const getMetaTags = () => {
     const tags = [];
 
@@ -66,7 +67,7 @@ const SEO = (...seo) => {
         }
       );
     }
-    if (fullSeo.shareImage) {
+    if (fullSeo.image) {
       tags.push(
         {
           name: "image",
