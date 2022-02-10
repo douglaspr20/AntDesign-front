@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 
 const SEO = (...seo) => {
   const newSeo = seo[0] 
-  console.log('...seo', newSeo)
   let location = useLocation();
   let currentUrl = "https://www.hackinghrlab.io/" + location.pathname;
   let quote = newSeo.quote !== undefined ? newSeo.quote : "";
