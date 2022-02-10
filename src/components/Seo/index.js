@@ -48,7 +48,8 @@ const SEO = (...seo) => {
           name: "twitter:title",
           content: fullSeo.metaTitle,
         },
-        { property: "og:url", content: currentUrl }
+        { property: "og:url", content: currentUrl },
+        { property: "twitter:url", content: currentUrl }
       );
     }
     if (fullSeo.metaDescription) {
