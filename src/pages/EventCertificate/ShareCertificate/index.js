@@ -35,7 +35,7 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const id = query.get("id");
-  const shareUrl = `https://www.hackinghrlab.io/${
+  const shareUrl = `${window.location.origin}${
     INTERNAL_LINKS.EVENT_CERTIFICATE
   }?id=${query.get("id")}`;
 

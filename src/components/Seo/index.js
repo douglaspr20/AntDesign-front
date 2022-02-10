@@ -5,9 +5,9 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const SEO = (...seo) => {
-  const newSeo = seo[0] 
+  const newSeo = seo[0];
   let location = useLocation();
-  let currentUrl = "https://www.hackinghrlab.io/" + location.pathname;
+  let currentUrl = window.location.origin + location.pathname;
   let quote = newSeo.quote !== undefined ? newSeo.quote : "";
   let title = newSeo.title !== undefined ? newSeo.title : "Hacking Lab";
   let metaTitle = newSeo.title !== undefined ? newSeo.title : "Hacking Lab";
@@ -47,7 +47,8 @@ const SEO = (...seo) => {
         {
           name: "twitter:title",
           content: fullSeo.metaTitle,
-        }
+        },
+        { property: "og:url", content: currentUrl }
       );
     }
     if (fullSeo.metaDescription) {
