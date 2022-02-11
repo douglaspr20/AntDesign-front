@@ -17,6 +17,7 @@ import { SpeakerCard } from "components";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 
@@ -116,6 +117,38 @@ const MicroConference = ({
                           <p className="micro-conference__description-p">
                             {session.description}
                           </p>
+                          <div style={{ marginTop: "10px" }}>
+                            <h3>Session Classes Information</h3>
+                            {classes.map((sessionClass) => (
+                              <div style={{ marginTop: "10px" }}>
+                                <h5>{sessionClass.title}</h5>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <a
+                                    href={sessionClass.audioFileUrl}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Download Session Audio <DownloadOutlined />
+                                  </a>
+
+                                  <a
+                                    href={sessionClass.documentFileUrl}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Download Session Text <DownloadOutlined />
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </TabPane>
