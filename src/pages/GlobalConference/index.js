@@ -54,7 +54,7 @@ same day at the same time. You can also download the calendar
 invites to save the date. Finally, you can find the speakers and 
 connect with other participants. Enjoy!
 `;
-const TAB_NUM = 5;
+const TAB_NUM = 6;
 
 const GlobalConference = ({
   allSessions,
