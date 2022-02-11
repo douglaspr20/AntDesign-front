@@ -66,6 +66,9 @@ const BusinessPartnerList = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, createBusinessPartnerResource]);
 
+  const businessResourcesSort = resources?.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   return (
     <div className="channel-page__list-wrap">
       {!isOwner && resources?.length === 0 ? (
@@ -78,7 +81,7 @@ const BusinessPartnerList = ({
         <>
           <div className="channels__list">
             {isOwner && <BusinessPartnerCard type={CARD_TYPE.ADD} />}
-            {resources?.map((item, index) => (
+            {businessResourcesSort?.map((item, index) => (
               <BusinessPartnerCard
                 type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                 key={index}

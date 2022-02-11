@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import { Button } from "antd";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import { deleteBusinessPartnerResource } from "redux/actions/business-partner-actions";
 
-import { CARD_TYPE, INTERNAL_LINKS } from "enum";
+import Emitter from "services/emitter";
+import { CARD_TYPE, INTERNAL_LINKS, EVENT_TYPES } from "enum";
 import { getPublicationTime } from "utils/format";
 
 import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const BusinessPartnerCard = ({ data, type }) => {
+const BusinessPartnerCard = ({ data, type, deleteBusinessPartnerResource }) => {
   const [, setLineClamp] = useState(3);
 
   const history = useHistory();
@@ -49,8 +52,22 @@ const BusinessPartnerCard = ({ data, type }) => {
   const onJoin = () => {
     history.push(`${INTERNAL_LINKS.BUSINESS_PARTNER}/resource?id=${data.id}`);
   };
+  const handleEdit = () => {
+      history.replace({
+      pathname: window.location.pathname,
+      search: `tab=1&edit=true&id=${data.id}`,
+    });
+    Emitter.emit(EVENT_TYPES.OPEN_SHARE_CONTENT);
+  };
+
+  const handleDelete = () => {
+    deleteBusinessPartnerResource(data.id);
+  };
+
   return (
-    <div className={clsx("business-partner-card", { add: type === CARD_TYPE.ADD })}>
+    <div
+      className={clsx("business-partner-card", { add: type === CARD_TYPE.ADD })}
+    >
       <div className="business-partner-card-content">
         <h3 className="business-partner-card-title">{title}</h3>
         <div>
@@ -59,15 +76,15 @@ const BusinessPartnerCard = ({ data, type }) => {
           </div>
         </div>
         <div className="business-partner-card-topics">
-        {topics?.map((item, index) => (
-          <SpecialtyItem title={item} key={index} />
-        ))}
+          {topics?.map((item, index) => (
+            <SpecialtyItem title={item} key={index} />
+          ))}
         </div>
-          <div id={randomId} className="d-flex items-center d-rigth">
-            <span className="business-partner-card-desc">
-              {getPublicationTime(createdAt)}
-            </span>
-          </div>
+        <div id={randomId} className="d-flex items-center d-rigth">
+          <span className="business-partner-card-desc">
+            {getPublicationTime(createdAt)}
+          </span>
+        </div>
         <div className="business-partner-card-content-footer">
           <CustomButton
             className="filter-drawer-content-share"
@@ -76,6 +93,14 @@ const BusinessPartnerCard = ({ data, type }) => {
             type="primary"
             onClick={onJoin}
           />
+        </div>
+        <div>
+          <Button size="md" type="secondary" onClick={handleEdit}>
+            Edit
+          </Button>
+          <Button size="md" onClick={handleDelete}>
+            Delete
+          </Button>
         </div>
       </div>
     </div>
@@ -104,6 +129,11 @@ const mapStateToProps = (state, props) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  deleteBusinessPartnerResource,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BusinessPartnerCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BusinessPartnerCard);
