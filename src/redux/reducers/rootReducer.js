@@ -33,15 +33,16 @@ import skillCohortResourceResponseAssessmentReducer from "./skillCohortResourceR
 import skillCohortResourceResponseRating from "./skillCohortResourceResponseRatingReducer";
 import myLearningReducer from "./myLearningReducer";
 import partnerReducer from "./partnersReducer";
-import jobBoardReducer from './jobBoardReducer'
+import jobBoardReducer from "./jobBoardReducer";
 import sessionClassUserReducer from "./sessionClassUserReducer";
 import marketplaceProfileReducer from "./marketplaceProfileReducer";
 import businessPartnerReducer from "./businessPartnerReducer";
 import businessPartnerCommentsReducer from "./businessPartnerCommentsReducer";
+import advertisementReducer from "./advertisementsReducer";
 
 export default combineReducers({
   home: homeReducer,
-  council: councilReducer, 
+  council: councilReducer,
   councilComment: councilCommentsReducer,
   businessPartner: businessPartnerReducer,
   businessPartnerComment: businessPartnerCommentsReducer,
@@ -79,4 +80,5 @@ export default combineReducers({
   jobBoard: jobBoardReducer,
   sessionClassUser: sessionClassUserReducer,
   marketplaceProfile: marketplaceProfileReducer,
+  advertisement: advertisementReducer,
 });

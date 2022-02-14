@@ -1,10 +1,16 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Form, DatePicker, Drawer } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import { PostsFilterPanel, CustomButton } from "components";
+import {
+  PostsFilterPanel,
+  CustomButton,
+  ImageUpload,
+} from "components";
+import moment from "moment-timezone";
 
 import Posts from "containers/Posts";
 import FilterDrawer from "../Home/FilterDrawer";
@@ -16,6 +22,7 @@ import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { postSelector } from "redux/selectors/postSelector";
+import { createAdvertisement } from "redux/actions/advertisment-actions";
 
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
@@ -32,9 +39,13 @@ const HomePage = ({
   getUser,
   currentPage,
   getAllPost,
+  createAdvertisement,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [totalDays, setTotalDays] = useState(0);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -74,6 +85,35 @@ const HomePage = ({
       text,
       page: currentPage + 1,
     });
+  };
+
+  const handleDisabledDate = (currentDate) => {
+    return currentDate && currentDate.valueOf() < Date.now();
+  };
+
+  const handleOnFinish = (values) => {
+    const transformedValues = {
+      ...values,
+      startDate: moment
+        .tz(values.startdate, "America/Los_Angeles")
+        .startOf("day"),
+      endDate: moment.tz(values.endDate, "America/Los_Angeles").startOf("day"),
+    };
+
+    createAdvertisement(transformedValues);
+    setVisible(false);
+    form.resetFields();
+  };
+
+  const handleDatePickerOnChange = (date) => {
+    const startDate = form.getFieldsValue(["startDate"]) || null;
+
+    if (startDate) {
+      const endDate = moment.tz(date, "America/Los_Angeles").startOf("day");
+      const diff = endDate.diff(startDate, "days");
+
+      setTotalDays(diff + 1);
+    }
   };
 
   return (
@@ -138,9 +178,7 @@ const HomePage = ({
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
-              <ProfileStatusBar
-                user={userProfile}
-              />
+              <ProfileStatusBar user={userProfile} />
             </div>
           )}
           <div className="home-page-container--mobile-options">
@@ -153,7 +191,22 @@ const HomePage = ({
               Filters
             </Button>
           </div>
-          <Posts onShowMore={onShowMore} history={history} />
+          <div className="home-page-container--posts-central-panel-content">
+            <div className="home-page-container--posts-central-panel-content-posts">
+              <Posts onShowMore={onShowMore} history={history} />
+            </div>
+            <div className="home-page-container--posts-central-panel-content-advertisement">
+              <div className="advertisement" onClick={() => setVisible(true)}>
+                <h1>Advertise Here</h1>
+              </div>
+              {/* <div className="advertisement">
+                <h1>Advertise Here</h1>
+              </div>
+              <div className="advertisement">
+                <h1>Advertise Here</h1>
+              </div> */}
+            </div>
+          </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
@@ -173,6 +226,65 @@ const HomePage = ({
           </div>
         </div>
       </div>
+      <Drawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+        title="Rent this space"
+        width={420}
+      >
+        <div>
+          <Form
+            form={form}
+            onFinish={handleOnFinish}
+            layout="vertical"
+            validateMessages={{ required: "'${label}' is required!" }}
+          >
+            <Form.Item>
+              <h3>Available credits: 999</h3>
+            </Form.Item>
+            <Form.Item
+              label="Start Date"
+              name="startDate"
+              rules={[{ required: true }]}
+            >
+              <DatePicker
+                disabledDate={handleDisabledDate}
+                style={{ width: "100%" }}
+                size="large"
+              />
+            </Form.Item>
+            <Form.Item
+              label="End Date"
+              name="endDate"
+              rules={[{ required: true }]}
+            >
+              <DatePicker
+                disabledDate={handleDisabledDate}
+                style={{ width: "100%" }}
+                size="large"
+                onChange={handleDatePickerOnChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <h3>Total days: {totalDays}</h3>
+            </Form.Item>
+            {/* <Form.Item>
+              <h3>Total credit cost: 0</h3>
+            </Form.Item> */}
+            <Form.Item label="Image" name="image" rules={[{ required: true }]}>
+              <ImageUpload />
+            </Form.Item>
+            <Form.Item>
+              <CustomButton
+                text="Rent"
+                type="primary"
+                htmlType="submit"
+                block
+              />
+            </Form.Item>
+          </Form>
+        </div>
+      </Drawer>
     </div>
   );
 };
@@ -187,6 +299,7 @@ const mapDispatchToProps = {
   getRecommendations,
   getUser,
   getAllPost,
+  createAdvertisement,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -21,6 +21,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  countAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -195,7 +196,14 @@ import {
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
 
+import {
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement
+} from "./module/advertisement";
+
 import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -344,4 +352,8 @@ export {
   createMarketplaceProfile,
   updateMarketplaceProfile,
   acceptTermsAndConditions,
+  countAllUsers,
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement
 };

@@ -5,6 +5,7 @@ import NoItemsMessageCard from "components/NoItemsMessageCard";
 
 import { Doughnut, VerticalBar } from "./components";
 import SponsorsFilters from "./components/SponsorsFilters";
+import AdvertisderDashboard from "./Advertiser";
 
 import {
   // options1,
@@ -25,7 +26,13 @@ import { actions as homeActions } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import "./styles.scss";
 
-const SponsorDashboard = ({ getAllUsers, allUsers, userProfile }) => {
+const SponsorDashboard = ({
+  getAllUsers,
+  allUsers,
+  userProfile,
+  countAllUsers,
+  userCount,
+}) => {
   const generalDemographics = allUsers.filter(
     (item) => item.percentOfCompletion === 100
   );
@@ -34,17 +41,22 @@ const SponsorDashboard = ({ getAllUsers, allUsers, userProfile }) => {
     (item) => item.attendedToConference === 1
   );
 
-  const [currentTab, setCurrentTab] = useState("0");
+  const [currentTab, setCurrentTab] = useState("2");
   const [users, setUsers] = useState(conferenceDemographics);
   const [usersGeneral, setUsersGeneral] = useState(generalDemographics);
 
   useEffect(() => {
     getAllUsers();
+    countAllUsers();
+
     // eslint-disable-next-line
   }, []);
 
   const content = (totalUsers) => (
     <>
+      <div style={{ marginTop: "1rem" }}>
+        <h3>Total number of users: {userCount}</h3>
+      </div>
       <SponsorsFilters
         allUsers={allUsers}
         setUsers={setUsers}
@@ -93,6 +105,10 @@ const SponsorDashboard = ({ getAllUsers, allUsers, userProfile }) => {
       title: "2022 Conference Demographics",
       content: () => content(users || conferenceDemographics),
     },
+    {
+      title: "Advertiser Dashboard",
+      content: () => <AdvertisderDashboard />,
+    },
   ];
 
   return (
@@ -115,6 +131,7 @@ const SponsorDashboard = ({ getAllUsers, allUsers, userProfile }) => {
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   allUsers: homeSelector(state).allUsers,
+  userCount: homeSelector(state).userCount,
 });
 
 const mapDispatchToProps = {

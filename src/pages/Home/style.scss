@@ -81,6 +81,29 @@
       @media (max-width: 1023.98px) {
         padding: 0px 1em 1em 1em;
       }
+      
+
+      &-content {
+        display: flex;
+        width: 100%;
+
+        &-advertisement {
+          margin-top: 1.5rem;
+          margin-left: auto;
+          margin-right: auto;
+
+          .advertisement {
+            width: 336px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightgray;
+            height: 280px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 
@@ -122,3 +145,7 @@
     }
   }
 }
+
+// .advertisement-wrappers {
+//   background-color: red;
+// }
