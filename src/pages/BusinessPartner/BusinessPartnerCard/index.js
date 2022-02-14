@@ -16,12 +16,17 @@ import { CustomButton, SpecialtyItem } from "components";
 
 import "./style.scss";
 
-const BusinessPartnerCard = ({ data, type, deleteBusinessPartnerResource }) => {
+const BusinessPartnerCard = ({
+  data,
+  type,
+  deleteBusinessPartnerResource,
+  userProfile,
+}) => {
   const [, setLineClamp] = useState(3);
 
   const history = useHistory();
 
-  const { title, description, createdAt, topics } = data || {};
+  const { title, description, createdAt, topics, UserId } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -53,7 +58,7 @@ const BusinessPartnerCard = ({ data, type, deleteBusinessPartnerResource }) => {
     history.push(`${INTERNAL_LINKS.BUSINESS_PARTNER}/resource?id=${data.id}`);
   };
   const handleEdit = () => {
-      history.replace({
+    history.replace({
       pathname: window.location.pathname,
       search: `tab=1&edit=true&id=${data.id}`,
     });
@@ -94,14 +99,16 @@ const BusinessPartnerCard = ({ data, type, deleteBusinessPartnerResource }) => {
             onClick={onJoin}
           />
         </div>
-        <div>
-          <Button size="md" type="secondary" onClick={handleEdit}>
-            Edit
-          </Button>
-          <Button size="md" onClick={handleDelete}>
-            Delete
-          </Button>
-        </div>
+        {UserId === userProfile.id && (
+          <div>
+            <Button size="md" type="secondary" onClick={handleEdit}>
+              Edit
+            </Button>
+            <Button size="md" onClick={handleDelete}>
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
