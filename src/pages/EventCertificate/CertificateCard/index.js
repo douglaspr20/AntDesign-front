@@ -71,7 +71,7 @@ const CertificateCard = ({ data }) => {
         <div className="certificate-card-content-footer">
           <CustomButton
             className="filter-drawer-content-share"
-            text="Share certificate"
+            text="Claim digital certificate"
             size="md"
             type="primary"
             onClick={() =>

@@ -80,7 +80,14 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
     return duration.asHours();
   };
 
-  const period = getPerodOfEvent(myEvents.startDate, myEvents.endDate);
+  // const period = getPerodOfEvent(myEvents.startDate, myEvents.endDate);
+  const period = myEvents.startAndEndTimes?.map((el) =>
+    getPerodOfEvent(el.startTime, el.endTime)
+  );
+  const sumOfHours = period?.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+    0
+  );
   return (
     <>
       <HelmetMetaData
@@ -119,8 +126,8 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
               </h5>
               <h4 className="certificate-text2">{myEvents.title}</h4>
               <h5 className="certificate-text1 duration">{`Duration: ${converter.toWords(
-                period
-              )} Hour${period > 1 ? "s" : ""}`}</h5>
+                sumOfHours ? sumOfHours : 0
+              )} Hour${(sumOfHours ? sumOfHours : 0) > 1 ? "s" : ""}`}</h5>
             </div>
             <div className="certificate-bottom">
               <div className="certificate-bottom-sign">

@@ -14,6 +14,8 @@ import { getLiveEvents } from "redux/actions/event-actions";
 import CertificateCard from "./CertificateCard";
 import { eventSelector } from "redux/selectors/eventSelector";
 
+import "./style.scss";
+
 const CertificateList = ({
   isOwner,
   type,
@@ -49,19 +51,23 @@ const CertificateList = ({
         />
       ) : (
         <>
-          <div>
-            {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
-            {liveEvents &&
-              liveEvents?.map((liveEvent) => {
-                return (
-                    <CertificateCard
-                      type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                      key={liveEvent.id}
-                      data={liveEvent}
-                      // setCurrentValue={setCurrentValue}
-                    />
-                );
-              })}
+          <div className="certificate-list-container">
+            <div className="certificate-card-list">
+              {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
+              {liveEvents &&
+                liveEvents?.map((liveEvent) => {
+                  if (new Date(liveEvent?.endDate) <= new Date()) {
+                    return (
+                      <CertificateCard
+                        type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                        key={liveEvent.id}
+                        data={liveEvent}
+                        // setCurrentValue={setCurrentValue}
+                      />
+                    );
+                  } else return <div key={liveEvent.id}></div>;
+                })}
+            </div>
           </div>
         </>
       )}
