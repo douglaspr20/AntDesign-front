@@ -19,6 +19,8 @@ const Chat = ({
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const refChatMessages = useRef(null);
 
+  const setRefFirstMessage = useRef(null);
+
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
@@ -42,6 +44,7 @@ const Chat = ({
           currentConversation.messages?.length,
           currentConversation.id
         );
+        setRefFirstMessage.current.scrollIntoView();
       }
     }
   };
@@ -111,10 +114,19 @@ const Chat = ({
             const user = currentConversation.members.find(
               (member) => member?.id === message?.sender
             );
+            const firstMessage =
+              currentConversation.messages.indexOf(message) === 0;
+
             const lastMessage = currentConversation.messages.length - 1 === i;
             return (
               <div
-                ref={lastMessage ? setRef : null}
+                ref={
+                  firstMessage
+                    ? setRefFirstMessage
+                    : lastMessage
+                    ? setRef
+                    : null
+                }
                 style={{
                   textAlign: `${user.id !== userProfile.id ? "left" : "right"}`,
                   marginBottom: "5px",

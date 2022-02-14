@@ -32,6 +32,12 @@
                 margin-top: 20px;
             }
         }
+
+        .file-name{
+            max-width: 80px;
+            max-height: 50px;
+            text-overflow: ellipsis;
+        }
     }
 
     .form-message{

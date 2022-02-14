@@ -7,7 +7,6 @@ import {
   PaperClipOutlined,
   SendOutlined,
   SmileOutlined,
-  SoundTwoTone,
 } from "@ant-design/icons";
 import { Button, Form, Input, Spin, Upload } from "antd";
 
@@ -115,12 +114,23 @@ const FormMessage = ({
                     alt={file.name}
                     style={{ width: "60px" }}
                   />
+                ) : file.type.includes("video") ? (
+                  <video
+                    src={file.thumbUrl}
+                    type={file.type}
+                    controls
+                    style={{ width: "100px", height: "50px" }}
+                  />
+                ) : file.type.includes("audio") ? (
+                  <audio
+                    src={file.thumbUrl}
+                    controls
+                    style={{ width: "60px" }}
+                  />
                 ) : (
                   <div className="file-not-image">
                     {file.type.includes("application") ? (
                       <FileTextTwoTone style={{ fontSize: 20 }} />
-                    ) : file.type.includes("audio") ? (
-                      <SoundTwoTone />
                     ) : null}
 
                     <p className="file-name">{file.name}</p>
@@ -159,7 +169,7 @@ const FormMessage = ({
             showUploadList={false}
             maxCount={8}
             className="upload-list-inline"
-            // accept="audio/*,image/*,application/*"
+            accept="audio/*,image/*,application/*,video/*"
           >
             <PaperClipOutlined
               style={{ fontSize: "1.2rem", cursor: "pointer" }}
