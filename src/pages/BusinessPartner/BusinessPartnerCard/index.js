@@ -99,15 +99,17 @@ const BusinessPartnerCard = ({
             onClick={onJoin}
           />
         </div>
-        {UserId === userProfile.id && (
-          <div>
-            <Button size="md" type="secondary" onClick={handleEdit}>
-              Edit
-            </Button>
-            <Button size="md" onClick={handleDelete}>
-              Delete
-            </Button>
-          </div>
+        {UserId === userProfile.id ? (
+            <div>
+              <Button size="md" type="secondary" onClick={handleEdit}>
+                Edit
+              </Button>
+              <Button size="md" onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+        ) : (
+          <div style={{ minHeight: "32px" }} />
         )}
       </div>
     </div>
