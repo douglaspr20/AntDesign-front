@@ -18,6 +18,7 @@ import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 import IconBack from "images/icon-back.svg";
+import imageCertificate from "images/certificate.png";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -93,7 +94,7 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
       <HelmetMetaData
         title={myEvents.title}
         metatitle={myEvents.title}
-        image={ImgCertificateStamp}
+        image={imageCertificate}
         description={"description"}
         metadescription={"description"}
       ></HelmetMetaData>
