@@ -41,7 +41,7 @@ const SponsorDashboard = ({
     (item) => item.attendedToConference === 1
   );
 
-  const [currentTab, setCurrentTab] = useState("2");
+  const [currentTab, setCurrentTab] = useState("0");
   const [users, setUsers] = useState(conferenceDemographics);
   const [usersGeneral, setUsersGeneral] = useState(generalDemographics);
 
