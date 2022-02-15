@@ -8,6 +8,12 @@ export const getEvent = ({ id }) => {
   return httpClient.get(`public/event/${id}`);
 };
 
+export const getMetadata = (metadata) => {
+  return httpClient.post(`private/events/metadata/`, {
+    metadata,
+  });
+};
+
 export const getLiveEventFromAPI = () => {
   return httpClient.get(`private/events-live/`);
 };

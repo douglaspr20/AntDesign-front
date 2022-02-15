@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 const SEO = (...seo) => {
   const newSeo = seo[0];
   let location = useLocation();
+  let data = newSeo.data;
   let currentUrl = window.location.origin + location.pathname;
   let quote = newSeo.quote !== undefined ? newSeo.quote : "";
   let title = newSeo.title !== undefined ? newSeo.title : "Hacking Lab";
@@ -96,7 +97,6 @@ const SEO = (...seo) => {
   };
 
   const metaTags = getMetaTags();
-
   return (
     <Helmet
       title={fullSeo.metaTitle}
@@ -123,7 +123,9 @@ const SEO = (...seo) => {
         },
       ]}
       meta={metaTags}
-    />
+    >
+      {data?.metadata && <head dangerouslySetInnerHTML={data?.metadata}></head>}
+    </Helmet>
   );
 };
 

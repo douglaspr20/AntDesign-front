@@ -34,6 +34,7 @@ import {
   updateChannelEvent,
   claimEventCredit,
   claimEventAttendance,
+  getMetadata,
 } from "./module/event";
 import {
   addLibrary,
@@ -222,6 +223,7 @@ export {
   removeBusinessPartnerCommentFromAPI,
   getAllUsers,
   changePassword,
+  getMetadata,
   createInvitation,
   acceptInvitationJoin,
   confirmAccessibilityRequirements,

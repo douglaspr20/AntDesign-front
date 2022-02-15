@@ -29,6 +29,7 @@ import {
   updateChannelEvent,
   claimEventCredit,
   claimEventAttendance,
+  getMetadata,
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -301,6 +302,23 @@ export function* getAllMyEvents() {
   }
 }
 
+export function* getMetadataSagas({ payload }) {
+  try {
+    const response = yield call(getMetadata, { ...payload });
+    if (response.status === 200) {
+      yield put(eventActions.setMetadata({ metadata: response.data }));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* updateEventStatus({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
@@ -527,6 +545,7 @@ export function* claimEventAttendanceSaga({ payload }) {
 
 function* watchLogin() {
   yield takeLatest(eventConstants.GET_ALL_EVENTS, getAllEventsSaga);
+  yield takeLatest(eventConstants.GET_METADATA, getMetadataSagas);
   yield takeLatest(eventConstants.GET_LIVE_EVENTS, getLiveEventSaga);
   yield takeLatest(eventConstants.GET_EVENT, getEventSaga);
   yield takeLatest(eventConstants.ADD_TO_MY_EVENT_LIST, addToMyEventList);

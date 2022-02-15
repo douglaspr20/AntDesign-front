@@ -8,7 +8,7 @@ import moment from "moment";
 import converter from "number-to-words";
 
 import { setLoading } from "redux/actions/home-actions";
-import { getEvent } from "redux/actions/event-actions";
+import { getEvent, getMetadata } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { HelmetMetaData } from "components";
@@ -31,7 +31,14 @@ import { DownloadOutlined } from "@ant-design/icons";
 
 import "./style.scss";
 
-const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
+const EventCertificatePage = ({
+  user,
+  myEvents,
+  getEvent,
+  setLoading,
+  getMetadata,
+  metadata,
+}) => {
   const [img, setImg] = useState("");
 
   const history = useHistory();
@@ -103,7 +110,10 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
     if (domElement) {
       generateImage();
     }
-  }, [domElement]);
+    if (img) {
+      getMetadata(img);
+    }
+  }, [domElement, img, getMetadata]);
 
   return (
     <>
@@ -113,6 +123,7 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
         image={img && img}
         description={"description"}
         metadescription={"description"}
+        data={metadata}
       ></HelmetMetaData>
       <div className="certificate-page">
         <div
@@ -219,11 +230,13 @@ EventCertificatePage.defaultProps = {
 const mapStateToProps = (state) => ({
   user: homeSelector(state).userProfile,
   myEvents: eventSelector(state).myEvents,
+  metadata: eventSelector(state).metadata,
 });
 
 const mapDispatchToProps = {
   setLoading,
   getEvent,
+  getMetadata,
 };
 
 export default connect(

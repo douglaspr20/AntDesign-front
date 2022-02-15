@@ -1,6 +1,8 @@
 import { createAction } from "redux-actions";
 
 const GET_ALL_EVENTS = "GET_ALL_EVENTS";
+const GET_METADATA = "GET_METADATA";
+const SET_METADATA = "SET_METADATA";
 const GET_LIVE_EVENTS = "GET_LIVE_EVENTS";
 const GET_EVENT = "GET_EVENT";
 const SET_ALL_EVENTS = "SET_ALL_EVENTS";
@@ -28,6 +30,8 @@ export const constants = {
   GET_LIVE_EVENTS,
   GET_EVENT,
   SET_ALL_EVENTS,
+  GET_METADATA,
+  SET_METADATA,
   SET_EVENT,
   SET_ERROR,
   SET_MY_LIVE_EVENTS,
@@ -52,6 +56,9 @@ export const constants = {
 // Actions
 // ------------------------------------
 export const getAllEvent = createAction(GET_ALL_EVENTS);
+export const getMetadata = createAction(GET_METADATA, (metadata) => ({
+  metadata,
+}));
 export const getLiveEvents = createAction(GET_LIVE_EVENTS);
 export const getEvent = createAction(GET_EVENT, (id, callback) => ({
   id,
@@ -61,6 +68,9 @@ export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
   events,
 }));
 export const setEvent = createAction(SET_EVENT, (event) => ({ event }));
+export const setMetadata = createAction(SET_METADATA, (metadata) => ({
+  metadata,
+}));
 export const setError = createAction(SET_ERROR, (error) => ({ error }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addToMyEventList = createAction(
@@ -129,6 +139,8 @@ export const actions = {
   getLiveEvents,
   getEvent,
   setAllEvents,
+  getMetadata,
+  setMetadata,
   setEvent,
   setMyLiveEvents,
   // setMyLiveEvent,
