@@ -8,16 +8,25 @@ export const reducers = {
     state,
     { payload }
   ) => {
+    let advertisementsByPage = state.get("advertisementsByPage");
+    const page = payload.advertisement.page;
+
+    advertisementsByPage = {
+      ...advertisementsByPage,
+      [page]: payload.advertisement,
+    };
+
     return state.merge({
-      ...payload,
+      advertisementsByPage,
     });
   },
-  [advertisementConstants.SET_ADVERTISEMENT_BY_ADVERTISER]: (
+  [advertisementConstants.SET_ADVERTISEMENTS_BY_ADVERTISER]: (
     state,
     { payload }
   ) => {
+    console.log(payload, "payload");
     return state.merge({
-      ...payload,
+      advertisementsByAdvertiser: payload.advertisements,
     });
   },
 };

@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 
-const advertisementDataSelector = (state) => state.advertisementSelector;
+const advertisementDataSelector = (state) => state.advertisement;
 
 const resultSelector = createSelector(advertisementDataSelector, (payload) => ({
   advertisementsByPage: payload.get("advertisementsByPage"),

@@ -3,13 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, DatePicker, Drawer } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
+import { isEmpty } from "lodash";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import {
-  PostsFilterPanel,
-  CustomButton,
-  ImageUpload,
-} from "components";
+import { PostsFilterPanel, CustomButton, ImageUpload } from "components";
 import moment from "moment-timezone";
 
 import Posts from "containers/Posts";
@@ -22,7 +19,11 @@ import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { postSelector } from "redux/selectors/postSelector";
-import { createAdvertisement } from "redux/actions/advertisment-actions";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
+import {
+  createAdvertisement,
+  getAdvertisementsTodayByPage,
+} from "redux/actions/advertisment-actions";
 
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
@@ -40,12 +41,15 @@ const HomePage = ({
   currentPage,
   getAllPost,
   createAdvertisement,
+  getAdvertisementsTodayByPage,
+  advertisementsByPage,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const [totalDays, setTotalDays] = useState(0);
+  const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -59,8 +63,19 @@ const HomePage = ({
 
     getRecommendations();
     getAllPost({});
+    getAdvertisementsTodayByPage("home");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log("test", advertisementsByPage);
+
+    if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
+      setHasAdvertisementData(true);
+    } else {
+      setHasAdvertisementData(false);
+    }
+  }, [advertisementsByPage]);
 
   const onFilterChange = (filter) => {
     getAllPost({ ...filter, text });
@@ -92,12 +107,32 @@ const HomePage = ({
   };
 
   const handleOnFinish = (values) => {
+    const startDate = moment
+      .tz(values.startDate, "America/Los_Angeles")
+      .startOf("day");
+
+    const endDate = moment
+      .tz(values.endDate, "America/Los_Angeles")
+      .startOf("day");
+
+    const diff = endDate.diff(startDate, "days");
+    const adDurationByDays = diff + 1;
+
+    const datesBetweenStartDateAndEndDate = [];
+
+    for (let i = 1; i < diff; i++) {
+      const date = startDate.add(i, "days");
+
+      datesBetweenStartDateAndEndDate.push(date);
+    }
+
     const transformedValues = {
       ...values,
-      startDate: moment
-        .tz(values.startdate, "America/Los_Angeles")
-        .startOf("day"),
-      endDate: moment.tz(values.endDate, "America/Los_Angeles").startOf("day"),
+      startDate,
+      endDate,
+      adDurationByDays,
+      datesBetweenStartDateAndEndDate,
+      page: "home",
     };
 
     createAdvertisement(transformedValues);
@@ -105,16 +140,53 @@ const HomePage = ({
     form.resetFields();
   };
 
-  const handleDatePickerOnChange = (date) => {
-    const startDate = form.getFieldsValue(["startDate"]) || null;
+  const handleDatePickerOnChangeEndDate = (date) => {
+    const { startDate } = form.getFieldsValue(["startDate"]) || null;
 
-    if (startDate) {
+    if (!isEmpty(startDate)) {
       const endDate = moment.tz(date, "America/Los_Angeles").startOf("day");
-      const diff = endDate.diff(startDate, "days");
+      const transformedStartDate = moment
+        .tz(startDate, "America/Los_Angeles")
+        .startOf("day");
+      const diff = endDate.diff(transformedStartDate, "days");
 
       setTotalDays(diff + 1);
     }
   };
+
+  const handleDatePickerOnChangeStartDate = (date) => {
+    const { endDate } = form.getFieldsValue(["endDate"]) || null;
+
+    if (!isEmpty(endDate)) {
+      const startDate = moment.tz(date, "America/Los_Angeles").startOf("day");
+      const transformedEndDate = moment
+        .tz(endDate, "America/Los_Angeles")
+        .startOf("day");
+      const diff = transformedEndDate.diff(startDate, "days");
+
+      setTotalDays(diff + 1);
+    }
+  };
+
+  const displayAd = hasAdvertisementData && advertisementsByPage.home && (
+    <div className="home-page-container--posts-central-panel-content-advertisement">
+      <div className="advertisement">
+        <img
+          src={advertisementsByPage.home.advertisementLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
+
+  const dipslayRentAd = hasAdvertisementData === false && (
+    <div className="home-page-container--posts-central-panel-content-advertisement">
+      <div className="advertisement">
+        <h1>Advertise Here</h1>
+      </div>
+    </div>
+  );
 
   return (
     <div className="home-page-container">
@@ -195,17 +267,8 @@ const HomePage = ({
             <div className="home-page-container--posts-central-panel-content-posts">
               <Posts onShowMore={onShowMore} history={history} />
             </div>
-            <div className="home-page-container--posts-central-panel-content-advertisement">
-              <div className="advertisement" onClick={() => setVisible(true)}>
-                <h1>Advertise Here</h1>
-              </div>
-              {/* <div className="advertisement">
-                <h1>Advertise Here</h1>
-              </div>
-              <div className="advertisement">
-                <h1>Advertise Here</h1>
-              </div> */}
-            </div>
+            {displayAd}
+            {dipslayRentAd}
           </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
@@ -251,6 +314,8 @@ const HomePage = ({
                 disabledDate={handleDisabledDate}
                 style={{ width: "100%" }}
                 size="large"
+                onChange={handleDatePickerOnChangeStartDate}
+                showToday={false}
               />
             </Form.Item>
             <Form.Item
@@ -262,7 +327,8 @@ const HomePage = ({
                 disabledDate={handleDisabledDate}
                 style={{ width: "100%" }}
                 size="large"
-                onChange={handleDatePickerOnChange}
+                onChange={handleDatePickerOnChangeEndDate}
+                showToday={false}
               />
             </Form.Item>
             <Form.Item>
@@ -293,6 +359,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   recommendations: librarySelector(state).recommendations,
   currentPage: postSelector(state).currentPage,
+  advertisementsByPage: advertisementSelector(state).advertisementsByPage,
 });
 
 const mapDispatchToProps = {
@@ -300,6 +367,7 @@ const mapDispatchToProps = {
   getUser,
   getAllPost,
   createAdvertisement,
+  getAdvertisementsTodayByPage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

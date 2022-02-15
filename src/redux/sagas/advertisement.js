@@ -18,6 +18,15 @@ function* getAllAdvertisementsByPageSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
+    const response = yield call(getAdvertisementsByPage, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        advertisementActions.setAdvertisementsTodayByPage(
+          response.data.advertisement
+        )
+      );
+    }
   } catch (error) {
   } finally {
     yield put(homeActions.setLoading(false));
@@ -28,6 +37,13 @@ function* getAllAdvertisementsByAdvertiserSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
+    const response = yield call(getAdvertisementByAdvertiser, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        advertisementActions.setAdvertisementsByAdvertiser(response.data.advertisements)
+      );
+    }
   } catch (error) {
   } finally {
     yield put(homeActions.setLoading(false));

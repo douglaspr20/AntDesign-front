@@ -3,14 +3,14 @@ import { createAction } from "redux-actions";
 const GET_ADVERTISEMENTS_TODAY_BY_PAGE = "GET_ADVERTISEMENTS_TODAY_BY_PAGE";
 const SET_ADVERTISEMENTS_TODAY_BY_PAGE = "SET_ADVERTISEMENTS_TODAY_BY_PAGE";
 const GET_ADVERTISEMENTS_BY_ADVERTISER = "GET_ADVERTISEMENTS_BY_ADVERTISER";
-const SET_ADVERTISEMENT_BY_ADVERTISER = "SET_ADVERTISEMENTS_BY_ADVERTISER";
+const SET_ADVERTISEMENTS_BY_ADVERTISER = "SET_ADVERTISEMENTS_BY_ADVERTISER";
 const CREATE_ADVERTISEMENT = "CREATE_ADVERTISEMENT";
 
 export const constants = {
   GET_ADVERTISEMENTS_TODAY_BY_PAGE,
   SET_ADVERTISEMENTS_TODAY_BY_PAGE,
   GET_ADVERTISEMENTS_BY_ADVERTISER,
-  SET_ADVERTISEMENT_BY_ADVERTISER,
+  SET_ADVERTISEMENTS_BY_ADVERTISER,
   CREATE_ADVERTISEMENT,
 };
 
@@ -20,15 +20,15 @@ export const getAdvertisementsTodayByPage = createAction(
 );
 export const setAdvertisementsTodayByPage = createAction(
   SET_ADVERTISEMENTS_TODAY_BY_PAGE,
-  (advertisements) => ({ advertisements })
+  (advertisement) => ({ advertisement })
 );
 
 export const getAdvertisementsByAdvertiser = createAction(
   GET_ADVERTISEMENTS_BY_ADVERTISER,
-  (userId) => ({ userId })
+  (UserId) => ({ UserId })
 );
 export const setAdvertisementsByAdvertiser = createAction(
-  SET_ADVERTISEMENT_BY_ADVERTISER,
+  SET_ADVERTISEMENTS_BY_ADVERTISER,
   (advertisements) => ({ advertisements })
 );
 export const createAdvertisement = createAction(
