@@ -18,7 +18,7 @@ import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 import IconBack from "images/icon-back.svg";
-import imageCertificate from "images/certificate.png";
+import imageCertificate from "images/certificate_2.jpeg";
 import {
   FacebookIcon,
   FacebookShareButton,

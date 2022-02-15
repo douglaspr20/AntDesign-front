@@ -18,7 +18,7 @@ const SEO = (...seo) => {
   let image =
     newSeo.image !== undefined
       ? newSeo.image
-      : "https://storage.googleapis.com/cmperstribe_storage_usha/Banner/IMG_3640.JPG";
+      : "images/certificate_2.jpeg";
   let description =
     newSeo.description !== undefined
       ? newSeo.description
