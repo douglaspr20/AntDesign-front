@@ -6,6 +6,38 @@
     width: 100%;
     max-width: 100%;
 
+    .files-upload-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 5px;
+
+        .file-not-image{
+            display: flex;
+            width: 80px;
+            justify-content: center;
+            overflow: hidden;
+            align-items: center;
+            background: $color-white;
+            box-shadow: 0px 0px 1px #000;
+            border-radius: 5px;
+
+            .file-image{
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 90%;
+                overflow: hidden;
+                margin-top: 20px;
+            }
+        }
+
+        .file-name{
+            max-width: 80px;
+            max-height: 50px;
+            text-overflow: ellipsis;
+        }
+    }
+
     .form-message-mobile{
         display: flex;
         justify-content: space-around;

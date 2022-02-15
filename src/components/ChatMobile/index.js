@@ -131,7 +131,7 @@ const ChatMobile = ({
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
       if (user.id === userProfile.id && currentConversation === {}) return;
 
-      const newMembers = currentConversation.members.map((member) => {
+      const newMembers = currentConversation?.members?.map((member) => {
         if (member.id === user.id) {
           return {
             id: user.id,

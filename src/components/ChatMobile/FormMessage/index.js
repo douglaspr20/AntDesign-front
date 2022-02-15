@@ -1,9 +1,25 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
-import { SendOutlined, SmileOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import {
+  CloseOutlined,
+  FileTextTwoTone,
+  LoadingOutlined,
+  PaperClipOutlined,
+  SendOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
+import { Button, Form, Input, Spin, Upload } from "antd";
 
 import "./style.scss";
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
 
 const FormMessage = ({
   handleSendMessage,
@@ -11,6 +27,7 @@ const FormMessage = ({
   setOpenEmojiPicker,
 }) => {
   const focusMessage = useRef();
+  const [fileList, setFileList] = useState([]);
   const [message] = Form.useForm();
 
   useEffect(() => {
@@ -33,8 +50,100 @@ const FormMessage = ({
     });
   };
 
+  const imageUpload = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 3000);
+  };
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+  };
+
+  const handleChange = async ({ fileList }) => {
+    const newFileList = await Promise.all(
+      fileList.map(async (file) => {
+        const thumbUrl = await getBase64(file.originFileObj);
+
+        return {
+          ...file,
+          thumbUrl,
+        };
+      })
+    );
+
+    setFileList(newFileList);
+  };
+
+  const handleDeleteFile = (id) => {
+    const newfiles = fileList.filter((file) => file.uid !== id);
+
+    setFileList(newfiles);
+  };
+
   return (
     <div className="form-message-mobile-container">
+      {fileList.length > 0 && (
+        <div className="files-upload-container">
+          {fileList.map((file) => {
+            if (file.percent < 100) {
+              return (
+                <Spin
+                  key={file.uid}
+                  style={{ marginLeft: "20px" }}
+                  indicator={<LoadingOutlined style={{ fontSize: 30 }} spin />}
+                />
+              );
+            }
+
+            return (
+              <div
+                key={file.uid}
+                style={{
+                  position: "relative",
+                  marginLeft: "10px",
+                  marginBottom: "5px",
+                }}
+              >
+                {file.type.includes("image") ? (
+                  <img
+                    src={file.thumbUrl}
+                    alt={file.name}
+                    style={{ width: "60px" }}
+                  />
+                ) : file.type.includes("video") ? (
+                  <video
+                    src={file.thumbUrl}
+                    type={file.type}
+                    controls
+                    style={{ width: "100px", height: "50px" }}
+                  />
+                ) : file.type.includes("audio") ? (
+                  <audio
+                    src={file.thumbUrl}
+                    controls
+                    style={{ width: "60px" }}
+                  />
+                ) : (
+                  <div className="file-not-image">
+                    {file.type.includes("application") ? (
+                      <FileTextTwoTone style={{ fontSize: 20 }} />
+                    ) : null}
+
+                    <p className="file-name">{file.name}</p>
+                  </div>
+                )}
+                <CloseOutlined
+                  className="delete-image"
+                  onClick={() => handleDeleteFile(file.uid)}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
       <Form
         form={message}
         onFinish={handleSubmit}
@@ -50,6 +159,24 @@ const FormMessage = ({
             onClick={() => setOpenEmojiPicker(false)}
             autoFocus
           />
+        </Form.Item>
+
+        <Form.Item name="images">
+          <Upload
+            customRequest={imageUpload}
+            listType="picture"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            showUploadList={false}
+            maxCount={8}
+            className="upload-list-inline"
+            accept="audio/*,image/*,application/*,video/*"
+          >
+            <PaperClipOutlined
+              style={{ fontSize: "1.2rem", cursor: "pointer" }}
+            />
+          </Upload>
         </Form.Item>
 
         {openEmojiPicker && (
