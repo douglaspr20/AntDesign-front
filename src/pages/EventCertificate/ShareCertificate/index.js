@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 import IconBack from "images/icon-back.svg";
-import imageCertificate from "images/certificate_2.jpeg";
+// import imageCertificate from "images/certificate_2.jpeg";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -32,6 +32,8 @@ import { DownloadOutlined } from "@ant-design/icons";
 import "./style.scss";
 
 const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
+  const [img, setImg] = useState("");
+
   const history = useHistory();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -48,7 +50,6 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
     setLoading(true);
     const domElement = document.getElementById("certificate-panel");
     const canvas = await html2canvas(domElement, { scale: 4 });
-
     const width = domElement.clientWidth;
     const height = domElement.clientHeight;
 
@@ -89,12 +90,27 @@ const EventCertificatePage = ({ user, myEvents, getEvent, setLoading }) => {
     (previousValue, currentValue) => previousValue + currentValue,
     0
   );
+
+  const domElement = document.getElementById("certificate-panel");
+
+  useEffect(() => {
+    const generateImage = async () => {
+      const canvas = await html2canvas(domElement, { scale: 4 });
+      const imgData = canvas.toDataURL("image/png");
+
+      setImg(imgData);
+    };
+    if (domElement) {
+      generateImage();
+    }
+  }, [domElement]);
+
   return (
     <>
       <HelmetMetaData
         title={myEvents.title}
         metatitle={myEvents.title}
-        image={imageCertificate}
+        image={img && img}
         description={"description"}
         metadescription={"description"}
       ></HelmetMetaData>
