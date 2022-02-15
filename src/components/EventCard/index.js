@@ -127,7 +127,6 @@ class EventCard extends React.Component {
     ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(endDate).format(
       "YYYYMMDDTHHmm"
     )}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
-    
     window.open(yahooCalendarUrl, "_blank");
   };
 
