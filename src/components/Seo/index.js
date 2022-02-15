@@ -18,7 +18,7 @@ const SEO = (...seo) => {
   let image =
     newSeo.image !== undefined
       ? newSeo.image
-      : "images/certificate_2.jpeg";
+      : "images/img-certificate-logo.svg";
   let description =
     newSeo.description !== undefined
       ? newSeo.description
