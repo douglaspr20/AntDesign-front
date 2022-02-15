@@ -182,7 +182,7 @@ const HomePage = ({
 
   const dipslayRentAd = hasAdvertisementData === false && (
     <div className="home-page-container--posts-central-panel-content-advertisement">
-      <div className="advertisement">
+      <div className="advertisement" onClick={() => setVisible(true)}>
         <h1>Advertise Here</h1>
       </div>
     </div>
