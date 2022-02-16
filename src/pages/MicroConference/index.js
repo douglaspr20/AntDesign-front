@@ -122,33 +122,44 @@ const MicroConference = ({
                           <div style={{ marginTop: "10px" }}>
                             <h3>Session Classes Information</h3>
                             {classes.map((sessionClass) => (
-                              <div style={{ marginTop: "10px" }}>
-                                <h5>{sessionClass.title}</h5>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  <a
-                                    href={sessionClass.audioFileUrl}
-                                    download
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Download Session Audio <DownloadOutlined />
-                                  </a>
+                              <>
+                                {(sessionClass.audioFileUrl ||
+                                  sessionClass.documentFileUrl) && (
+                                  <div style={{ marginTop: "10px" }}>
+                                    <h5>{sessionClass.title}</h5>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      {sessionClass.audioFileUrl && (
+                                        <a
+                                          href={sessionClass.audioFileUrl}
+                                          download
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          Download Session Audio{" "}
+                                          <DownloadOutlined />
+                                        </a>
+                                      )}
 
-                                  <a
-                                    href={sessionClass.documentFileUrl}
-                                    download
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Download Session Text <DownloadOutlined />
-                                  </a>
-                                </div>
-                              </div>
+                                      {sessionClass.documentFileUrl && (
+                                        <a
+                                          href={sessionClass.documentFileUrl}
+                                          download
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          Download Session Text{" "}
+                                          <DownloadOutlined />
+                                        </a>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </>
                             ))}
                           </div>
                         </div>
