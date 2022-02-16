@@ -39,6 +39,14 @@ export const reducers = {
       businessPartnerResources: cloneDeep(payload.businessPartnerResources),
     });
   },
+  [businessPartnerConstants.UPDATE_BUSINESS_PARTNER_RESOURCE]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      businessPartnerResource: cloneDeep(payload.businessPartnerResource),
+    });
+  },
   [businessPartnerConstants.UPDATE_BUSINESS_PARTNER_DOCUMENTS]: (
     state,
     { payload }
