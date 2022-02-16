@@ -320,6 +320,7 @@ const LibraryCard = ({
             </div>
           </div>
         )}
+        
         <LibraryClaimModal
           visible={modalVisible}
           title="HR Credit Offered"
