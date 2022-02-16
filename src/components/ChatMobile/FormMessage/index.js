@@ -92,7 +92,7 @@ const FormMessage = ({
               return (
                 <Spin
                   key={file.uid}
-                  style={{ marginLeft: "20px" }}
+                  style={{ marginLeft: "21px" }}
                   indicator={<LoadingOutlined style={{ fontSize: 30 }} spin />}
                 />
               );
