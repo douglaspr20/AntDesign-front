@@ -48,6 +48,9 @@ const EventCertificatePage = ({
   const shareUrl = `${window.location.origin}${
     INTERNAL_LINKS.EVENT_CERTIFICATE
   }?id=${query.get("id")}`;
+  // const shareUrl = `https://community-ed-community--689lwm.herokuapp.com${
+  //   INTERNAL_LINKS.EVENT_CERTIFICATE
+  // }?id=${query.get("id")}`;
 
   useEffect(() => {
     getEvent(id);
@@ -114,7 +117,7 @@ const EventCertificatePage = ({
       getMetadata(img);
     }
   }, [domElement, img, getMetadata]);
-
+  console.log(metadata);
   return (
     <>
       <HelmetMetaData
