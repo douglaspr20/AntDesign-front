@@ -17,7 +17,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import "antd/dist/antd.css";
 
-ReactDOM.hydrate(
+ReactDOM.render(
   <Provider store={store}>
     <ConnectedIntlProvider>
       <Router>
