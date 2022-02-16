@@ -10,10 +10,12 @@ import {
   createBusinessPartnerResourceFromAPI,
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  deleteBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerResourcesFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   deleteBusinessPartnerDocumentFromAPI,
+  updateBusinessPartnerResourceFromAPI,
 } from "../../api";
 import { createBusinessPartnerDocumentFromAPI } from "api/module/businessPartner";
 
@@ -58,11 +60,9 @@ export function* getBusinessPartnerResounceByIdSagas({ payload }) {
       ...payload,
     });
     if (response.status === 200) {
-      const { businessPartnerResource } = response.data;
+      const { businessResource } = response.data;
       yield put(
-        businessPartnerActions.setBusinessPartnerResource(
-          businessPartnerResource
-        )
+        businessPartnerActions.setBusinessPartnerResource(businessResource)
       );
     }
   } catch (error) {
@@ -88,6 +88,39 @@ export function* updateBusinessPartnerResourcesSagas({ payload }) {
     if (payload.callback) {
       payload.callback(error);
     }
+  }
+}
+export function* updateBusinessPartnerResourceSagas({ payload }) {
+  try {
+    let response = yield call(updateBusinessPartnerResourceFromAPI, {
+      ...payload,
+    });
+    // const { affectedRows } = response.data;
+    if (response.status === 200) {
+      yield getBusinessPartnerResourcesSagas();
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    if (payload.callback) {
+      payload.callback(error);
+    }
+  }
+}
+
+export function* removeBusinessPartnerResourceSaga({ payload }) {
+  try {
+    const response = yield call(
+      deleteBusinessPartnerResourceByIdFromAPI,
+      payload.id
+    );
+    if (response.status === 200) {
+      yield getBusinessPartnerResourcesSagas();
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -225,6 +258,14 @@ function* watchBusinessPartner() {
   yield takeLatest(
     businessPartnerConstants.UPDATE_BUSINESS_PARTNER_RESOURCES_INFORMATION,
     updateBusinessPartnerResourcesSagas
+  );
+  yield takeLatest(
+    businessPartnerConstants.UPDATE_BUSINESS_PARTNER_RESOURCE,
+    updateBusinessPartnerResourceSagas
+  );
+  yield takeLatest(
+    businessPartnerConstants.DELETE_BUSINESS_PARTNER_RESOURCE,
+    removeBusinessPartnerResourceSaga
   );
   yield takeLatest(
     businessPartnerConstants.GET_BUSINESS_PARTNER_DOCUMENTS,
