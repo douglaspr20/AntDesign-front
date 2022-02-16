@@ -4,9 +4,15 @@ import { Button, Form, DatePicker, Drawer } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { isEmpty } from "lodash";
+import { useParams } from "react-router-dom";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import { PostsFilterPanel, CustomButton, ImageUpload } from "components";
+import {
+  PostsFilterPanel,
+  CustomButton,
+  ImageUpload,
+  CustomInput,
+} from "components";
 import moment from "moment-timezone";
 
 import Posts from "containers/Posts";
@@ -23,6 +29,7 @@ import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import {
   createAdvertisement,
   getAdvertisementsTodayByPage,
+  getAdvertisementById,
 } from "redux/actions/advertisment-actions";
 
 import Emitter from "services/emitter";
@@ -43,6 +50,9 @@ const HomePage = ({
   createAdvertisement,
   getAdvertisementsTodayByPage,
   advertisementsByPage,
+  getAdvertisementById,
+  advertisementById,
+  isAdPreview = false,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
@@ -50,6 +60,7 @@ const HomePage = ({
   const [form] = Form.useForm();
   const [totalDays, setTotalDays] = useState(0);
   const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
+  const { id } = useParams();
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -63,13 +74,20 @@ const HomePage = ({
 
     getRecommendations();
     getAllPost({});
-    getAdvertisementsTodayByPage("home");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log("test", advertisementsByPage);
+    if (isAdPreview) {
+      getAdvertisementById(id);
+    } else {
+      getAdvertisementsTodayByPage("home");
+    }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  useEffect(() => {
     if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
       setHasAdvertisementData(true);
     } else {
@@ -172,7 +190,7 @@ const HomePage = ({
     <div className="home-page-container--posts-central-panel-content-advertisement">
       <div className="advertisement">
         <img
-          src={advertisementsByPage.home.advertisementLink}
+          src={advertisementsByPage.home.adContentLink}
           alt="advertisement"
           className="advertisement-img"
         />
@@ -180,7 +198,19 @@ const HomePage = ({
     </div>
   );
 
-  const dipslayRentAd = hasAdvertisementData === false && (
+  const displayPreviewAd = isAdPreview && (
+    <div className="home-page-container--posts-central-panel-content-advertisement">
+      <div className="advertisement">
+        <img
+          src={advertisementById.adContentLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
+
+  const dipslayRentAd = !isAdPreview && hasAdvertisementData === false && (
     <div className="home-page-container--posts-central-panel-content-advertisement">
       <div className="advertisement" onClick={() => setVisible(true)}>
         <h1>Advertise Here</h1>
@@ -269,6 +299,7 @@ const HomePage = ({
             </div>
             {displayAd}
             {dipslayRentAd}
+            {displayPreviewAd}
           </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
@@ -331,6 +362,13 @@ const HomePage = ({
                 showToday={false}
               />
             </Form.Item>
+            <Form.Item
+              label="Advertisement Link"
+              name="advertisementLink"
+              rules={[{ required: true, type: "url" }]}
+            >
+              <CustomInput bordered/>
+            </Form.Item>
             <Form.Item>
               <h3>Total days: {totalDays}</h3>
             </Form.Item>
@@ -359,7 +397,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   recommendations: librarySelector(state).recommendations,
   currentPage: postSelector(state).currentPage,
-  advertisementsByPage: advertisementSelector(state).advertisementsByPage,
+  ...advertisementSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -368,6 +406,7 @@ const mapDispatchToProps = {
   getAllPost,
   createAdvertisement,
   getAdvertisementsTodayByPage,
+  getAdvertisementById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -24,9 +24,13 @@ export const reducers = {
     state,
     { payload }
   ) => {
-    console.log(payload, "payload");
     return state.merge({
       advertisementsByAdvertiser: payload.advertisements,
+    });
+  },
+  [advertisementConstants.SET_ADVERTISEMENT_BY_ID]: (state, { payload }) => {
+    return state.merge({
+      advertisementById: payload.advertisement,
     });
   },
 };
@@ -35,6 +39,7 @@ export const initialState = () => {
   return Map({
     advertisementsByPage: {},
     advertisementsByAdvertiser: [],
+    advertisementById: {},
   });
 };
 

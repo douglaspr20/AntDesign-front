@@ -10,6 +10,7 @@ import {
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
   createAdvertisement,
+  getAdvertisementById
 } from "../../api";
 
 import { actions as homeActions } from "redux/actions/home-actions";
@@ -72,6 +73,23 @@ function* createAdvertisementSaga({ payload }) {
   }
 }
 
+function* getAdvertisementByIdSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAdvertisementById, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        advertisementActions.setAdvertisement(response.data.advertisement)
+      );
+    }
+  } catch (error) {
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchAdvertisementSaga() {
   yield takeLatest(
     advertisementConstants.GET_ADVERTISEMENTS_TODAY_BY_PAGE,
@@ -84,6 +102,10 @@ function* watchAdvertisementSaga() {
   yield takeLatest(
     advertisementConstants.CREATE_ADVERTISEMENT,
     createAdvertisementSaga
+  );
+  yield takeLatest(
+    advertisementConstants.GET_ADVERTISEMENT_BY_ID,
+    getAdvertisementByIdSaga
   );
 }
 

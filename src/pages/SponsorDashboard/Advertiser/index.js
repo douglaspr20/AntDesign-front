@@ -28,6 +28,32 @@ const columns = [
     key: "page",
   },
   {
+    title: "Ad Link",
+    dataIndex: "advertisementLink",
+    key: "advertisementLink",
+    ellipsis: true,
+    render: (text) => {
+      return (
+        <a href={text} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      );
+    },
+  },
+  {
+    title: "Ad Content Link",
+    dataIndex: "adContentLink",
+    key: "adContentLink",
+    ellipsis: true,
+    render: (text) => {
+      return (
+        <a href={text} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      );
+    },
+  },
+  {
     title: "Start Date",
     dataIndex: "startDate",
     key: "startDate",
@@ -47,16 +73,27 @@ const columns = [
     title: "Ad Cost Per Day",
     dataIndex: "adCostPerDay",
     key: "adCostPerDay",
+    align: 'right'
   },
   {
     title: "Ad Duration By Day",
     dataIndex: "adDurationByDays",
     key: "adDurationByDays",
+    align: 'right'
   },
   {
-    title: "Preview",
-    dataIndex: "preview",
-    key: "preview",
+    title: "Ad Preview Link",
+    dataIndex: "adPreviewLink",
+    key: "adPreviewLink",
+    ellipsis: true,
+    render: (_, record) => {
+      const url = `${process.env.REACT_APP_DOMAIN_URL}/ad/${record.page}/preview/${record.id}`;
+      return (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {url}
+        </a>
+      );
+    },
   },
 ];
 

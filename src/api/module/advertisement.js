@@ -11,17 +11,23 @@ export const getAdvertisementsByPage = async (filter) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return await httpClient.get(`private/advertisements-by-page?${parsedFilter}`);
+  return await httpClient.get(`private/ads-by-page?${parsedFilter}`);
 };
 
 export const getAdvertisementByAdvertiser = async (data) => {
   const { UserId } = data;
 
-  return await httpClient.get(`private/advertisements/${UserId}`);
+  return await httpClient.get(`private/ads/${UserId}`);
 };
 
 export const createAdvertisement = async (data) => {
   const { advertisement } = data;
 
-  return await httpClient.post(`private/advertisement`, { ...advertisement });
+  return await httpClient.post(`private/ad`, { ...advertisement });
+};
+
+export const getAdvertisementById = async (data) => {
+  const { advertisementId } = data;
+
+  return await httpClient.get(`private/ad/${advertisementId}`);
 };

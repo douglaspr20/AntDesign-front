@@ -86,6 +86,11 @@ export default {
       icon: IconStoreFrontOutline,
       url: INTERNAL_LINKS.MARKETPLACE,
     },
+    {
+      label: "Home",
+      icon: IconHome,
+      url: INTERNAL_LINKS.AD_HOME_PREVIEW,
+    },
   ],
   BOTTOM_MENUS: [
     {

@@ -199,7 +199,8 @@ import {
 import {
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
-  createAdvertisement
+  createAdvertisement,
+  getAdvertisementById,
 } from "./module/advertisement";
 
 import { getEditorSignature } from "./module/env";
@@ -355,5 +356,6 @@ export {
   countAllUsers,
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
-  createAdvertisement
+  createAdvertisement,
+  getAdvertisementById,
 };
