@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
+import { CustomButton } from "components";
+import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
-import { getAdvertisementsByAdvertiser } from "redux/actions/advertisment-actions";
+import {
+  getAdvertisementsByAdvertiser,
+  createAdvertisement,
+  getAdvertisementsTodayByPage,
+} from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -73,13 +79,13 @@ const columns = [
     title: "Ad Cost Per Day",
     dataIndex: "adCostPerDay",
     key: "adCostPerDay",
-    align: 'right'
+    align: "right",
   },
   {
     title: "Ad Duration By Day",
     dataIndex: "adDurationByDays",
     key: "adDurationByDays",
-    align: 'right'
+    align: "right",
   },
   {
     title: "Ad Preview Link",
@@ -101,22 +107,70 @@ const Advertiser = ({
   getAdvertisementsByAdvertiser,
   advertisementsByAdvertiser,
   userProfile,
+  createAdvertisement,
+  getAdvertisementsTodayByPage,
 }) => {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     if (!isEmpty(userProfile) && userProfile.id) {
       getAdvertisementsByAdvertiser(userProfile.id);
     }
+
+    // getAdvertisementsTodayByPage({});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
   return (
     <div className="advertiser-dashboard-wrapper">
-      <div>Available Credits: 100 Credits</div>
+      <div className="advertiser-action">
+        <h3>Available Credits: 100 Credits</h3>
+        <CustomButton text="Buy more credits" type="primary" />
+      </div>
+      <div className="advertiser-content">
+        <h3>How it works</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+      <div className="advertiser-content">
+        <h3>How much</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+      <div className="advertiser-action">
+        <h3>Campaigns</h3>
+        <CustomButton
+          text="New campaign"
+          type="primary"
+          onClick={() => setVisible(true)}
+        />
+      </div>
       <Table
         dataSource={advertisementsByAdvertiser}
         columns={columns}
         rowKey="id"
+        pagination={{ pageSize: 5 }}
+      />
+      <AdvertisementDrawer
+        visible={visible}
+        setVisible={setVisible}
+        createAdvertisement={createAdvertisement}
+        onDashboard={true}
       />
     </div>
   );
@@ -130,6 +184,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAdvertisementsByAdvertiser,
+  createAdvertisement,
+  getAdvertisementsTodayByPage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertiser);

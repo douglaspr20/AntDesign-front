@@ -98,16 +98,16 @@ const SponsorDashboard = ({
 
   const TabData = [
     {
+      title: "Advertiser Dashboard",
+      content: () => <AdvertisderDashboard />,
+    },
+    {
       title: "General Demographics",
       content: () => content(usersGeneral || generalDemographics),
     },
     {
       title: "2022 Conference Demographics",
       content: () => content(users || conferenceDemographics),
-    },
-    {
-      title: "Advertiser Dashboard",
-      content: () => <AdvertisderDashboard />,
     },
   ];
 

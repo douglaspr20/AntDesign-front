@@ -9,7 +9,7 @@ export const reducers = {
     { payload }
   ) => {
     let advertisementsByPage = state.get("advertisementsByPage");
-    const page = payload.advertisement.page;
+    const page = payload.page;
 
     advertisementsByPage = {
       ...advertisementsByPage,

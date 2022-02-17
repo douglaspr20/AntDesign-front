@@ -1,19 +1,14 @@
 /* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from "react";
-import { Button, Form, DatePicker, Drawer } from "antd";
+import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { isEmpty } from "lodash";
 import { useParams } from "react-router-dom";
+import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import {
-  PostsFilterPanel,
-  CustomButton,
-  ImageUpload,
-  CustomInput,
-} from "components";
-import moment from "moment-timezone";
+import { PostsFilterPanel, CustomButton } from "components";
 
 import Posts from "containers/Posts";
 import FilterDrawer from "../Home/FilterDrawer";
@@ -57,8 +52,6 @@ const HomePage = ({
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
   const [visible, setVisible] = useState(false);
-  const [form] = Form.useForm();
-  const [totalDays, setTotalDays] = useState(0);
   const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
   const { id } = useParams();
 
@@ -120,86 +113,30 @@ const HomePage = ({
     });
   };
 
-  const handleDisabledDate = (currentDate) => {
-    return currentDate && currentDate.valueOf() < Date.now();
-  };
-
-  const handleOnFinish = (values) => {
-    const startDate = moment
-      .tz(values.startDate, "America/Los_Angeles")
-      .startOf("day");
-
-    const endDate = moment
-      .tz(values.endDate, "America/Los_Angeles")
-      .startOf("day");
-
-    const diff = endDate.diff(startDate, "days");
-    const adDurationByDays = diff + 1;
-
-    const datesBetweenStartDateAndEndDate = [];
-
-    for (let i = 1; i < diff; i++) {
-      const date = startDate.add(i, "days");
-
-      datesBetweenStartDateAndEndDate.push(date);
-    }
-
-    const transformedValues = {
-      ...values,
-      startDate,
-      endDate,
-      adDurationByDays,
-      datesBetweenStartDateAndEndDate,
-      page: "home",
-    };
-
-    createAdvertisement(transformedValues);
-    setVisible(false);
-    form.resetFields();
-  };
-
-  const handleDatePickerOnChangeEndDate = (date) => {
-    const { startDate } = form.getFieldsValue(["startDate"]) || null;
-
-    if (!isEmpty(startDate)) {
-      const endDate = moment.tz(date, "America/Los_Angeles").startOf("day");
-      const transformedStartDate = moment
-        .tz(startDate, "America/Los_Angeles")
-        .startOf("day");
-      const diff = endDate.diff(transformedStartDate, "days");
-
-      setTotalDays(diff + 1);
-    }
-  };
-
-  const handleDatePickerOnChangeStartDate = (date) => {
-    const { endDate } = form.getFieldsValue(["endDate"]) || null;
-
-    if (!isEmpty(endDate)) {
-      const startDate = moment.tz(date, "America/Los_Angeles").startOf("day");
-      const transformedEndDate = moment
-        .tz(endDate, "America/Los_Angeles")
-        .startOf("day");
-      const diff = transformedEndDate.diff(startDate, "days");
-
-      setTotalDays(diff + 1);
-    }
-  };
-
-  const displayAd = hasAdvertisementData && advertisementsByPage.home && (
-    <div className="home-page-container--posts-central-panel-content-advertisement">
-      <div className="advertisement">
-        <img
-          src={advertisementsByPage.home.adContentLink}
-          alt="advertisement"
-          className="advertisement-img"
-        />
+  const displayAds = hasAdvertisementData &&
+    !isEmpty(advertisementsByPage.home) && (
+      <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">
+        {advertisementsByPage.home.map((advertisement) => {
+          return (
+            <div
+              className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
+              key={advertisement.id}
+            >
+              <div className="advertisement">
+                <img
+                  src={advertisement.adContentLink}
+                  alt="advertisement"
+                  className="advertisement-img"
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
-    </div>
-  );
+    );
 
   const displayPreviewAd = isAdPreview && (
-    <div className="home-page-container--posts-central-panel-content-advertisement">
+    <div className="home-page-container--posts-central-panel-content-preview">
       <div className="advertisement">
         <img
           src={advertisementById.adContentLink}
@@ -211,7 +148,7 @@ const HomePage = ({
   );
 
   const dipslayRentAd = !isAdPreview && hasAdvertisementData === false && (
-    <div className="home-page-container--posts-central-panel-content-advertisement">
+    <div className="home-page-container--posts-central-panel-content-preview">
       <div className="advertisement" onClick={() => setVisible(true)}>
         <h1>Advertise Here</h1>
       </div>
@@ -297,7 +234,7 @@ const HomePage = ({
             <div className="home-page-container--posts-central-panel-content-posts">
               <Posts onShowMore={onShowMore} history={history} />
             </div>
-            {displayAd}
+            {displayAds}
             {dipslayRentAd}
             {displayPreviewAd}
           </div>
@@ -320,75 +257,12 @@ const HomePage = ({
           </div>
         </div>
       </div>
-      <Drawer
+      <AdvertisementDrawer
+        page="home"
+        createAdvertisement={createAdvertisement}
         visible={visible}
-        onClose={() => setVisible(false)}
-        title="Rent this space"
-        width={420}
-      >
-        <div>
-          <Form
-            form={form}
-            onFinish={handleOnFinish}
-            layout="vertical"
-            validateMessages={{ required: "'${label}' is required!" }}
-          >
-            <Form.Item>
-              <h3>Available credits: 999</h3>
-            </Form.Item>
-            <Form.Item
-              label="Start Date"
-              name="startDate"
-              rules={[{ required: true }]}
-            >
-              <DatePicker
-                // disabledDate={handleDisabledDate}
-                style={{ width: "100%" }}
-                size="large"
-                onChange={handleDatePickerOnChangeStartDate}
-                showToday={false}
-              />
-            </Form.Item>
-            <Form.Item
-              label="End Date"
-              name="endDate"
-              rules={[{ required: true }]}
-            >
-              <DatePicker
-                // disabledDate={handleDisabledDate}
-                style={{ width: "100%" }}
-                size="large"
-                onChange={handleDatePickerOnChangeEndDate}
-                showToday={false}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Advertisement Link"
-              name="advertisementLink"
-              rules={[{ required: true, type: "url" }]}
-            >
-              <CustomInput bordered/>
-            </Form.Item>
-            <Form.Item>
-              <h3>Total days: {totalDays}</h3>
-            </Form.Item>
-            {/* <Form.Item>
-              <h3>Total credit cost: 0</h3>
-            </Form.Item> */}
-            <Form.Item label="Image" name="image" rules={[{ required: true }]}>
-              <ImageUpload />
-            </Form.Item>
-            <Form.Item>
-              <CustomButton
-                text="Rent"
-                type="primary"
-                htmlType="submit"
-                block
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Drawer>
+        setVisible={setVisible}
+      />
     </div>
   );
 };

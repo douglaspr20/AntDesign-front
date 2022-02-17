@@ -10,7 +10,7 @@ import {
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
   createAdvertisement,
-  getAdvertisementById
+  getAdvertisementById,
 } from "../../api";
 
 import { actions as homeActions } from "redux/actions/home-actions";
@@ -24,7 +24,8 @@ function* getAllAdvertisementsByPageSaga({ payload }) {
     if (response.status === 200) {
       yield put(
         advertisementActions.setAdvertisementsTodayByPage(
-          response.data.advertisement
+          response.data.advertisement,
+          payload.page
         )
       );
     }
@@ -42,7 +43,9 @@ function* getAllAdvertisementsByAdvertiserSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        advertisementActions.setAdvertisementsByAdvertiser(response.data.advertisements)
+        advertisementActions.setAdvertisementsByAdvertiser(
+          response.data.advertisements
+        )
       );
     }
   } catch (error) {

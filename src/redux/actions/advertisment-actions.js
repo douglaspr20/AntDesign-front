@@ -24,7 +24,7 @@ export const getAdvertisementsTodayByPage = createAction(
 );
 export const setAdvertisementsTodayByPage = createAction(
   SET_ADVERTISEMENTS_TODAY_BY_PAGE,
-  (advertisement) => ({ advertisement })
+  (advertisement, page) => ({ advertisement, page })
 );
 
 export const getAdvertisementsByAdvertiser = createAction(
