@@ -89,8 +89,10 @@ class EventCard extends React.Component {
   };
 
   onClickDownloadCalendar = (day) => {
+    const userTimezone = moment.tz.guess();
+
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };

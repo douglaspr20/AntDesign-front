@@ -1,4 +1,4 @@
-import { Row, Col, Card, Avatar, Spin } from "antd";
+import { Row, Col, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
@@ -7,7 +7,7 @@ import { CustomButton, Tabs } from "components";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
-import { UserOutlined } from "@ant-design/icons";
+// import { UserOutlined } from "@ant-design/icons";
 import OpengraphReactComponent from "opengraph-react";
 import qs from "query-string";
 
