@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import ReactPlayer from "react-player";
 import Emitter from "services/emitter";
-import { notification } from "antd";
+import { notification, Tooltip } from "antd";
 import { isEmpty } from "lodash";
 
 import CustomButton from "../Button";
@@ -40,11 +40,13 @@ const LibraryCard = ({
   setLibraryViewed,
   saveForLaterLibrary,
   isInHRCredits = false,
+  isFree = false,
 }) => {
   const { viewed, saveForLater: saveForLaterData } = data;
   const [lineClamp, setLineClamp] = useState(3);
   const [modalVisible, setModalVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
+  const [isClickable, setIsClickable] = useState(false);
 
   const { title, image, description, contentType } = data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
@@ -66,6 +68,21 @@ const LibraryCard = ({
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    const isUserPremium = userProfile.memberShip === "premium";
+    const isLibraryItemPremium = data.isPremium;
+
+    if (isUserPremium && isLibraryItemPremium) {
+      setIsClickable(true);
+    } else if (!isLibraryItemPremium) {
+      setIsClickable(true);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfile]);
+
+  console.log(isClickable, "owo");
+
   const getRowNum = () => {
     const descElement = document.querySelector(`#${randomId}`);
     if (descElement) {
@@ -75,32 +92,38 @@ const LibraryCard = ({
   };
 
   const onCardClick = () => {
-    if (type === CARD_TYPE.ADD) {
-      onAdd();
-    } else if (data.link && !modalVisible) {
-      window.open(data.link);
+    if (isClickable) {
+      if (type === CARD_TYPE.ADD) {
+        onAdd();
+      } else if (data.link && !modalVisible) {
+        window.open(data.link);
+      }
     }
   };
 
   const onClaimCredits = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (userProfile && userProfile.memberShip === "premium") {
-      setModalVisible(true);
-    } else {
-      setShowFirewall(true);
+    if (isClickable) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (userProfile && userProfile.memberShip === "premium") {
+        setModalVisible(true);
+      } else {
+        setShowFirewall(true);
+      }
     }
   };
 
   const handleSaveForLater = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (isClickable) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    const isSavedForLater =
-      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
-    const status = isSavedForLater ? "not saved" : "saved";
+      const isSavedForLater =
+        !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
+      const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterLibrary(data.id, userProfile.id, status, isInHRCredits);
+      saveForLaterLibrary(data.id, userProfile.id, status, isInHRCredits);
+    }
   };
 
   const planUpgrade = () => {
@@ -123,149 +146,191 @@ const LibraryCard = ({
     });
   };
 
-  return (
-    <div
-      className={clsx("library-card", { add: type === CARD_TYPE.ADD })}
-      onClick={onCardClick}
-    >
-      {type === CARD_TYPE.ADD ? (
-        <div className="library-card-plus">
-          <IconPlus />
-        </div>
-      ) : (
-        <>
-          <div className="library-card-header">
-            {contentType === "video" && (
-              <ReactPlayer
-                className="library-card-player"
-                controls={false}
-                url={data.link}
-              />
-            )}
-            {contentType !== "video" && image && (
-              <img src={image} alt="header-img" />
-            )}
-          </div>
-          <div className="library-card-content">
-            <h3 className="library-card-title">{title}</h3>
-            <div id={randomId} className="d-flex items-center">
-              <p
-                className="library-card-desc"
-                style={{
-                  WebkitLineClamp: lineClamp,
-                  maxHeight: 22 * lineClamp,
-                }}
-              >
-                {description}
-              </p>
-            </div>
-            <div className="library-card-content-footer">
-              <div className="d-flex items-center">
-                <div className="library-card-icon">
-                  <img
-                    src={(ContentTypes[contentType || "article"] || {}).icon}
-                    alt="doc-icon"
-                  />
-                </div>
-                <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
-              </div>
+  const tooltipTitle = isClickable ? "" : "ONLY FOR PREMIUM USERS";
 
-              <div className="d-flex flex-column">
-                {contentType === "video" && (
-                  <CustomButton
-                    className="mark-viewed"
-                    type={
-                      viewed && viewed[userProfile.id] === "mark"
-                        ? "remove"
-                        : "secondary"
-                    }
-                    size="xs"
-                    text={
-                      viewed && viewed[userProfile.id] === "mark"
-                        ? "Viewed"
-                        : "Mark As Completed"
-                    }
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setLibraryViewed(
-                        data.id,
-                        viewed && viewed[userProfile.id] === "mark"
-                          ? "unmark"
-                          : "mark"
-                      );
-                    }}
-                  />
-                )}
-                {data.showClaim === 1 && (
-                  <CustomButton
-                    className="claim-credits"
-                    type="primary"
-                    size="xs"
-                    text="Claim HR Credits"
-                    onClick={onClaimCredits}
-                  />
-                )}
-                {contentType === "video" &&
-                  viewed &&
-                  viewed[userProfile.id] !== "mark" && (
+  return (
+    <Tooltip title={tooltipTitle}>
+      <div
+        className={clsx("library-card", {
+          add: type === CARD_TYPE.ADD,
+          isNotClickable: !isClickable,
+        })}
+        onClick={onCardClick}
+        // style={{ background: "red" }}
+      >
+        <div
+          className={clsx({
+            overlay: !isClickable,
+          })}
+        ></div>
+        {type === CARD_TYPE.ADD ? (
+          <div className="library-card-plus">
+            <IconPlus />
+          </div>
+        ) : (
+          <>
+            <div className="library-card-header">
+              {contentType === "video" && (
+                <ReactPlayer
+                  className="library-card-player"
+                  controls={false}
+                  url={data.link}
+                />
+              )}
+              {contentType !== "video" && image && (
+                <img src={image} alt="header-img" />
+              )}
+            </div>
+            <div className="library-card-content">
+              <h3 className="library-card-title">{title}</h3>
+              <div id={randomId} className="d-flex items-center">
+                <p
+                  className="library-card-desc"
+                  style={{
+                    WebkitLineClamp: lineClamp,
+                    maxHeight: 22 * lineClamp,
+                  }}
+                >
+                  {description}
+                </p>
+              </div>
+              <div className="library-card-content-footer">
+                <div className="d-flex items-center">
+                  <div className="library-card-icon">
+                    <img
+                      src={(ContentTypes[contentType || "article"] || {}).icon}
+                      alt="doc-icon"
+                    />
+                  </div>
+                  <h6>{(ContentTypes[contentType || "article"] || {}).text}</h6>
+                </div>
+
+                <div className="d-flex flex-column">
+                  {contentType === "video" && (
                     <CustomButton
-                      className="save-for-later"
+                      className={clsx("mark-viewed", {
+                        isNotClickable: !isClickable,
+                      })}
                       type={
-                        !isEmpty(saveForLaterData) &&
-                        saveForLaterData.includes(userProfile.id)
+                        viewed && viewed[userProfile.id] === "mark"
                           ? "remove"
-                          : "third"
+                          : "secondary"
                       }
                       size="xs"
                       text={
-                        !isEmpty(saveForLaterData) &&
-                        saveForLaterData.includes(userProfile.id)
-                          ? "Unsave"
-                          : "Save for later"
+                        viewed && viewed[userProfile.id] === "mark"
+                          ? "Viewed"
+                          : "Mark As Completed"
                       }
-                      onClick={handleSaveForLater}
+                      onClick={(e) => {
+                        if (isClickable) {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setLibraryViewed(
+                            data.id,
+                            viewed && viewed[userProfile.id] === "mark"
+                              ? "unmark"
+                              : "mark"
+                          );
+                        }
+                      }}
                     />
                   )}
-              </div>
-            </div>
-            {type === CARD_TYPE.EDIT && (
-              <CardMenu menus={CARD_MENUS} onClick={onMenuClick}>
-                <div className="library-card-menu">
-                  <img src={IconMenu} alt="icon-menu" />
+                  {data.showClaim === 1 && (
+                    <CustomButton
+                      className={clsx("claim-credits", {
+                        isNotClickable: !isClickable,
+                      })}
+                      type="primary"
+                      size="xs"
+                      text="Claim HR Credits"
+                      onClick={onClaimCredits}
+                    />
+                  )}
+                  {contentType === "video" &&
+                    viewed &&
+                    viewed[userProfile.id] !== "mark" && (
+                      <CustomButton
+                        className={clsx("save-for-later", {
+                          isNotClickable: !isClickable,
+                        })}
+                        type={
+                          !isEmpty(saveForLaterData) &&
+                          saveForLaterData.includes(userProfile.id)
+                            ? "remove"
+                            : "third"
+                        }
+                        size="xs"
+                        text={
+                          !isEmpty(saveForLaterData) &&
+                          saveForLaterData.includes(userProfile.id)
+                            ? "Unsave"
+                            : "Save for later"
+                        }
+                        onClick={handleSaveForLater}
+                      />
+                    )}
                 </div>
-              </CardMenu>
-            )}
-          </div>
-          {frequency ? (
-            <div className="library-card-keyword">
-              {`${keyword}: Found ${frequency} time${frequency > 1 ? "s" : ""}`}
+              </div>
+              {type === CARD_TYPE.EDIT && (
+                <CardMenu
+                  menus={CARD_MENUS}
+                  onClick={() => {
+                    if (isClickable) {
+                      onMenuClick();
+                    }
+                  }}
+                >
+                  <div className="library-card-menu">
+                    <img src={IconMenu} alt="icon-menu" />
+                  </div>
+                </CardMenu>
+              )}
             </div>
-          ) : null}
-        </>
-      )}
-      {showFirewall && (
-        <div
-          className="library-card-firewall"
-          onClick={() => setShowFirewall(false)}
-        >
-          <div className="upgrade-notification-panel" onClick={planUpgrade}>
-            <h3>
-              Upgrade to a PREMIUM Membership and get unlimited access to the
-              LAB features
-            </h3>
+            {frequency ? (
+              <div className="library-card-keyword">
+                {`${keyword}: Found ${frequency} time${
+                  frequency > 1 ? "s" : ""
+                }`}
+              </div>
+            ) : null}
+          </>
+        )}
+        {showFirewall && (
+          <div
+            className="library-card-firewall"
+            onClick={() => {
+              if (isClickable) {
+                setShowFirewall(false);
+              }
+            }}
+          >
+            <div
+              className="upgrade-notification-panel"
+              onClick={() => {
+                if (isClickable) {
+                  planUpgrade();
+                }
+              }}
+            >
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
           </div>
-        </div>
-      )}
-      <LibraryClaimModal
-        visible={modalVisible}
-        title="HR Credit Offered"
-        destroyOnClose={true}
-        data={data}
-        onClaim={onHRClaimOffered}
-        onCancel={() => setModalVisible(false)}
-      />
-    </div>
+        )}
+        
+        <LibraryClaimModal
+          visible={modalVisible}
+          title="HR Credit Offered"
+          destroyOnClose={true}
+          data={data}
+          onClaim={onHRClaimOffered}
+          onCancel={() => setModalVisible(false)}
+        />
+      </div>
+    </Tooltip>
   );
 };
 

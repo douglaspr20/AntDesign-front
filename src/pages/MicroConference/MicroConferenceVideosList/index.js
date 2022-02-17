@@ -28,22 +28,23 @@ function MicroConferenceVideosList({
     if (
       sessionUserProgress.every((sessionUser) => sessionUser.viewed === true) &&
       list.length > 0 &&
-      sessionUserProgress.length > 0
+      sessionUserProgress.length > 0 &&
+      !repeatVideo
     ) {
       setActiveVideoId(list[list.length - 1].id);
-    } else if (list.length > 0 && sessionUserProgress.length > 0) {
-      if (repeatVideo) {
-        setRepeatVideo(false);
-      } else {
-        for (let i = 0; i < list.length; i++) {
-          for (const sessionUser of sessionUserProgress) {
-            if (
-              sessionUser.viewed === true &&
-              sessionUser.AnnualConferenceClassId === list[i].id &&
-              list[i + 1]
-            ) {
-              setActiveVideoId(list[i + 1].id);
-            }
+    } else if (
+      list.length > 0 &&
+      sessionUserProgress.length > 0 &&
+      !repeatVideo
+    ) {
+      for (let i = 0; i < list.length; i++) {
+        for (const sessionUser of sessionUserProgress) {
+          if (
+            sessionUser.viewed === true &&
+            sessionUser.AnnualConferenceClassId === list[i].id &&
+            list[i + 1]
+          ) {
+            setActiveVideoId(list[i + 1].id);
           }
         }
       }
