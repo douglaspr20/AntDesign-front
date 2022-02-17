@@ -21,18 +21,20 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
   };
 
   const getEventData = (value) => {
-    let listData = events.filter((event) => {
-      const eventDate = moment(event.date, "YYYY.MM.DD. h:mm:a");
-      if (
-        eventDate.date() === value.date() &&
-        eventDate.year() === value.year() &&
-        eventDate.month() === value.month()
-      ) {
-        return true;
-      }
-      return false;
+    let listData = events.map((event) => {
+      return event.startAndEndTimes.filter((time) => {
+        const eventDate = moment(time.startTime, "YYYY.MM.DD. h:mm:a");
+        if (
+          eventDate.date() === value.date() &&
+          eventDate.year() === value.year() &&
+          eventDate.month() === value.month()
+        ) {
+          return true;
+        }
+        return false;
+      });
     });
-    return listData;
+    return listData.flat();
   };
 
   const headerRender = ({ value, type, onChange, onTypeChange }) => {
@@ -71,6 +73,8 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
 
   const dateCellRender = (date) => {
     const listData = getEventData(date);
+
+    // console.log(listData, "listData");
 
     return listData && listData.length > 0 ? SVG_ICONS.ICON_CIRCLE : null;
   };
