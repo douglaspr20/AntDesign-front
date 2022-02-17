@@ -171,33 +171,6 @@ const MicroConference = ({
                         </div>
                       </div>
                     </TabPane>
-                    <TabPane
-                      tab="Participants Global Conference Online"
-                      key="3"
-                    >
-                      <div>
-                        <div className="micro-conference__description-card">
-                          <h3>Participants Online</h3>
-
-                          <div className="micro-conference__description-speakers-list">
-                            {participants.length > 0 &&
-                              participants
-                                .filter(
-                                  (participant) => participant.isOnline === true
-                                )
-                                .map((participant, i) => (
-                                  <ParticipantCard
-                                    key={i}
-                                    participant={participant}
-                                    handleCreateConversation={
-                                      handleCreateConversation
-                                    }
-                                  />
-                                ))}
-                          </div>
-                        </div>
-                      </div>
-                    </TabPane>
 
                     <TabPane
                       tab="Participants in the Same Class Online"
@@ -205,7 +178,7 @@ const MicroConference = ({
                     >
                       <div>
                         <div className="micro-conference__description-card">
-                          <h3>Participants in the Same Class Online</h3>
+                          <h3>Online Participants in this Class</h3>
 
                           <div className="micro-conference__description-speakers-list">
                             {participants.length > 0 &&

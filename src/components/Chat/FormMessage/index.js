@@ -2,13 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import {
   CloseOutlined,
-  FileTextTwoTone,
   LoadingOutlined,
   PaperClipOutlined,
   SendOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Spin, Upload } from "antd";
+import { Button, Form, Input, notification, Spin, Upload } from "antd";
 
 import "./style.scss";
 
@@ -51,7 +50,7 @@ const FormMessage = ({
     });
   };
 
-  const imageUpload = async ({ file, onSuccess }) => {
+  const filesUpload = async ({ file, onSuccess }) => {
     setTimeout(() => {
       onSuccess("ok");
     }, 3000);
@@ -64,6 +63,14 @@ const FormMessage = ({
   };
 
   const handleChange = async ({ fileList }) => {
+    for (let file of fileList) {
+      if (file.size > 1050000) {
+        return notification.error({
+          message: "Error",
+          description: `You can't upload files larger than 10mb`,
+        });
+      }
+    }
     const newFileList = await Promise.all(
       fileList.map(async (file) => {
         const thumbUrl = await getBase64(file.originFileObj);
@@ -129,10 +136,6 @@ const FormMessage = ({
                   />
                 ) : (
                   <div className="file-not-image">
-                    {file.type.includes("application") ? (
-                      <FileTextTwoTone style={{ fontSize: 20 }} />
-                    ) : null}
-
                     <p className="file-name">{file.name}</p>
                   </div>
                 )}
@@ -159,9 +162,9 @@ const FormMessage = ({
           />
         </Form.Item>
 
-        <Form.Item name="images">
+        <Form.Item name="files">
           <Upload
-            customRequest={imageUpload}
+            customRequest={filesUpload}
             listType="picture"
             fileList={fileList}
             onPreview={handlePreview}
@@ -169,7 +172,7 @@ const FormMessage = ({
             showUploadList={false}
             maxCount={8}
             className="upload-list-inline"
-            accept="audio/*,image/*,application/*,video/*"
+            accept="image/*,application/pdf"
           >
             <PaperClipOutlined
               style={{ fontSize: "1.2rem", cursor: "pointer" }}

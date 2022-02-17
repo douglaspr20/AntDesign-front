@@ -129,7 +129,7 @@ const ChatMobile = ({
 
   useMemo(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
-      if (user.id === userProfile.id && currentConversation === {}) return;
+      if (user.id === userProfile.id && !currentConversation.members) return;
 
       const newMembers = currentConversation?.members?.map((member) => {
         if (member.id === user.id) {
@@ -159,7 +159,7 @@ const ChatMobile = ({
 
   useMemo(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
-      if (user.id === userProfile.id && currentConversation === {}) return;
+      if (user.id === userProfile.id && !currentConversation.members) return;
 
       const newMembers = currentConversation.members.map((member) => {
         if (member.id === user.id) {
