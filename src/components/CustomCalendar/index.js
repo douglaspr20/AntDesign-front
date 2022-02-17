@@ -74,7 +74,6 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
   const dateCellRender = (date) => {
     const listData = getEventData(date);
 
-    // console.log(listData, "listData");
 
     return listData && listData.length > 0 ? SVG_ICONS.ICON_CIRCLE : null;
   };
