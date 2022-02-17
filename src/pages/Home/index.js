@@ -342,7 +342,7 @@ const HomePage = ({
               rules={[{ required: true }]}
             >
               <DatePicker
-                disabledDate={handleDisabledDate}
+                // disabledDate={handleDisabledDate}
                 style={{ width: "100%" }}
                 size="large"
                 onChange={handleDatePickerOnChangeStartDate}
@@ -355,7 +355,7 @@ const HomePage = ({
               rules={[{ required: true }]}
             >
               <DatePicker
-                disabledDate={handleDisabledDate}
+                // disabledDate={handleDisabledDate}
                 style={{ width: "100%" }}
                 size="large"
                 onChange={handleDatePickerOnChangeEndDate}
