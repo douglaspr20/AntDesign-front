@@ -264,14 +264,13 @@ class EventCard extends React.Component {
                               }}
                             >
                               {startAndEndTimes.length > 1
-                                ? `Download Day ${index + 1}`
+                                ? `Download Calendar Day ${index + 1}: ${moment(
+                                    startTime
+                                  ).format("MMM DD")} `
                                 : "Download Calendar"}
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format(
-                            "HH:mm"
-                          )} - ${moment(endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
