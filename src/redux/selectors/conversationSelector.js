@@ -6,6 +6,7 @@ const resultSelector = createSelector(conversationDataSelector, (payload) => {
   return {
     conversations: payload.get("conversations"),
     conversation: payload.get("conversation"),
+    currentConversations: payload.get("currentConversations"),
   };
 });
 

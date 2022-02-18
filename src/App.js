@@ -150,6 +150,23 @@ class App extends Component {
       this.props.getConversations(this.props.userProfile.id);
       this.setState({ openChat: true });
     });
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
+      if (
+        user.id === this.props.userProfile.id ||
+        this.props.conversations.length === 0
+      )
+        return;
+      this.props.getConversations(this.props.userProfile.id);
+    });
+
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
+      if (
+        user.id === this.props.userProfile.id ||
+        this.props.conversations.length === 0
+      )
+        return;
+      this.props.getConversations(this.props.userProfile.id);
+    });
   }
 
   componentWillUnmount() {
