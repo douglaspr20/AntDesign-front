@@ -11,6 +11,7 @@ import {
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
+  getAllActiveAdvertisements,
 } from "../../api";
 
 import { actions as homeActions } from "redux/actions/home-actions";
@@ -54,6 +55,25 @@ function* getAllAdvertisementsByAdvertiserSaga({ payload }) {
   }
 }
 
+function* getAllActiveAdvertisementsSaga() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllActiveAdvertisements);
+
+    if (response.status === 200) {
+      yield put(
+        advertisementActions.setAllActiveAdvertisements(
+          response.data.advertisements
+        )
+      );
+    }
+  } catch (error) {
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* createAdvertisementSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
@@ -84,7 +104,9 @@ function* getAdvertisementByIdSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        advertisementActions.setAdvertisement(response.data.advertisement)
+        advertisementActions.setAllActiveAdvertisements(
+          response.data.advertisement
+        )
       );
     }
   } catch (error) {
@@ -109,6 +131,10 @@ function* watchAdvertisementSaga() {
   yield takeLatest(
     advertisementConstants.GET_ADVERTISEMENT_BY_ID,
     getAdvertisementByIdSaga
+  );
+  yield takeLatest(
+    advertisementConstants.GET_ALL_ACTIVE_ADVERTISEMENTS,
+    getAllActiveAdvertisementsSaga
   );
 }
 

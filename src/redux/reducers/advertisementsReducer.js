@@ -33,6 +33,14 @@ export const reducers = {
       advertisementById: payload.advertisement,
     });
   },
+  [advertisementConstants.SET_ALL_ACTIVE_ADVERTISEMENTS]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      allActiveAdvertisements: payload.advertisements,
+    });
+  },
 };
 
 export const initialState = () => {
@@ -40,6 +48,7 @@ export const initialState = () => {
     advertisementsByPage: {},
     advertisementsByAdvertiser: [],
     advertisementById: {},
+    allActiveAdvertisements: [],
   });
 };
 

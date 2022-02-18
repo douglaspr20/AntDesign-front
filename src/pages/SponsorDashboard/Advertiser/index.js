@@ -10,6 +10,7 @@ import {
   getAdvertisementsByAdvertiser,
   createAdvertisement,
   getAdvertisementsTodayByPage,
+  getAllActiveAdvertisements
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 
@@ -108,7 +109,8 @@ const Advertiser = ({
   advertisementsByAdvertiser,
   userProfile,
   createAdvertisement,
-  getAdvertisementsTodayByPage,
+  getAllActiveAdvertisements,
+  allActiveAdvertisements
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -117,7 +119,7 @@ const Advertiser = ({
       getAdvertisementsByAdvertiser(userProfile.id);
     }
 
-    // getAdvertisementsTodayByPage({});
+    getAllActiveAdvertisements()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
@@ -141,7 +143,7 @@ const Advertiser = ({
         </p>
       </div>
       <div className="advertiser-content">
-        <h3>How much</h3>
+        <h3>How much it cost</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -171,14 +173,14 @@ const Advertiser = ({
         setVisible={setVisible}
         createAdvertisement={createAdvertisement}
         onDashboard={true}
+        allActiveAdvertisements={allActiveAdvertisements}
       />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  advertisementsByAdvertiser:
-    advertisementSelector(state).advertisementsByAdvertiser,
+  ...advertisementSelector(state),
   userProfile: homeSelector(state).userProfile,
 });
 
@@ -186,6 +188,7 @@ const mapDispatchToProps = {
   getAdvertisementsByAdvertiser,
   createAdvertisement,
   getAdvertisementsTodayByPage,
+  getAllActiveAdvertisements
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertiser);

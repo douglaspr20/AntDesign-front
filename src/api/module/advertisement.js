@@ -31,3 +31,8 @@ export const getAdvertisementById = async (data) => {
 
   return await httpClient.get(`private/ad/${advertisementId}`);
 };
+
+export const getAllActiveAdvertisements = async () => {
+
+  return await httpClient.get(`private/ads/active`)
+}

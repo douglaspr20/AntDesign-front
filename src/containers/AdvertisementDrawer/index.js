@@ -17,28 +17,27 @@ const AdvertisementDrawer = ({
   page = null,
   onDashboard = false,
   createAdvertisement,
-  advertisementsByPage,
+  allActiveAdvertisements,
 }) => {
   const [totalDays, setTotalDays] = useState(0);
   const [disabledDates, setDisabledDates] = useState([]);
   const [page_, setPage_] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    if (!isEmpty(advertisementsByPage)) {
-      const disabledDates = advertisementsByPage[page || page_].map(
-        (advertisement) => {
-          return advertisement.datesBetweenStartDateAndEndDate;
-        }
+    if (onDashboard && !isEmpty(allActiveAdvertisements)) {
+      const filteredDisabledDates = allActiveAdvertisements.filter(
+        (advertisement) => advertisement.page === page_
+      );
+
+      const disabledDates = filteredDisabledDates.map(
+        (advertisement) => advertisement.datesBetweenStartDateAndEndDate
       );
 
       setDisabledDates(disabledDates.flat());
+      form.resetFields(["startDate", "endDate"]);
     }
-  }, []);
-
-  console.log(disabledDates, 'bruh')
-  console.log(advertisementsByPage, 'advertisementsByPage')
-
-  const [form] = Form.useForm();
+  }, [allActiveAdvertisements, page_]);
 
   const handleDatePickerOnChangeEndDate = (date) => {
     const { startDate } = form.getFieldsValue(["startDate"]) || null;
@@ -69,7 +68,22 @@ const AdvertisementDrawer = ({
   };
 
   const handleDisabledDate = (currentDate) => {
-    return currentDate && currentDate.valueOf() < Date.now();
+    const current = moment
+      .tz(currentDate, "America/Los_Angeles")
+      .startOf("day")
+      .format("YYYY-MM-DD");
+
+    const isMatch = disabledDates.some((date) => {
+      const transformedDate = moment(date).format("YYYY-MM-DD");
+
+      return transformedDate === current;
+    });
+
+    return (
+      (currentDate &&
+        currentDate.valueOf() < moment().tz("America/Los_Angeles")) ||
+      isMatch
+    );
   };
 
   const handleOnFinish = (values) => {
@@ -105,8 +119,12 @@ const AdvertisementDrawer = ({
     };
 
     createAdvertisement(transformedValues);
-    // setVisible(false);
-    // form.resetFields();
+    setVisible(false);
+    form.resetFields();
+  };
+
+  const handleOnSelect = (value) => {
+    setPage_(value);
   };
 
   return (
@@ -126,13 +144,25 @@ const AdvertisementDrawer = ({
           <Form.Item>
             <h3>Available credits: 999</h3>
           </Form.Item>
+          {onDashboard && (
+            <Form.Item label="Page" name="page" rules={[{ required: true }]}>
+              <CustomSelect
+                options={[
+                  { text: "Home", value: "home" },
+                  { text: "Events", value: "events" },
+                ]}
+                bordered
+                onSelect={handleOnSelect}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             label="Start Date"
             name="startDate"
             rules={[{ required: true }]}
           >
             <DatePicker
-              // disabledDate={handleDisabledDate}
+              disabledDate={handleDisabledDate}
               style={{ width: "100%" }}
               size="large"
               onChange={handleDatePickerOnChangeStartDate}
@@ -145,21 +175,13 @@ const AdvertisementDrawer = ({
             rules={[{ required: true }]}
           >
             <DatePicker
-              // disabledDate={handleDisabledDate}
+              disabledDate={handleDisabledDate}
               style={{ width: "100%" }}
               size="large"
               onChange={handleDatePickerOnChangeEndDate}
               showToday={false}
             />
           </Form.Item>
-          {onDashboard && (
-            <Form.Item label="Page" name="page" rules={[{ required: true }]}>
-              <CustomSelect
-                options={[{ text: "Home", value: "home" }]}
-                bordered
-              />
-            </Form.Item>
-          )}
           <Form.Item
             label="Advertisement Link"
             name="advertisementLink"

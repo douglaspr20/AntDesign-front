@@ -201,6 +201,7 @@ import {
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
+  getAllActiveAdvertisements
 } from "./module/advertisement";
 
 import { getEditorSignature } from "./module/env";
@@ -358,4 +359,5 @@ export {
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
+  getAllActiveAdvertisements
 };
