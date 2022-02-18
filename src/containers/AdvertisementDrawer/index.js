@@ -80,8 +80,8 @@ const AdvertisementDrawer = ({
     });
 
     return (
-      (currentDate &&
-        currentDate.valueOf() < moment().tz("America/Los_Angeles")) ||
+      // (currentDate &&
+      //   currentDate.valueOf() < moment().tz("America/Los_Angeles")) ||
       isMatch
     );
   };
