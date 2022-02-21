@@ -204,6 +204,8 @@ import {
   getAllActiveAdvertisements
 } from "./module/advertisement";
 
+import { getMatchmake } from './module/matchmaking'
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -359,5 +361,6 @@ export {
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
-  getAllActiveAdvertisements
+  getAllActiveAdvertisements,
+  getMatchmake
 };

@@ -63,8 +63,6 @@ const AdvertisementDrawer = ({
           .format("YYYY-MM-DD");
       });
 
-      console.log(allActiveAdvertisements);
-
       setDisabledDates(disabledDates);
       form.resetFields(["startDate", "endDate"]);
     }

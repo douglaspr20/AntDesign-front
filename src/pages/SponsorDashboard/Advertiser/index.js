@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { CustomButton } from "components";
 import AdvertisementDrawer from "containers/AdvertisementDrawer";
+import MatchmakingDrawer from "containers/MatchmakingDrawer";
 
 import {
   getAdvertisementsByAdvertiser,
@@ -112,9 +113,9 @@ const Advertiser = ({
   userProfile,
   createAdvertisement,
   getAllActiveAdvertisements,
-  allActiveAdvertisements,
 }) => {
   const [visible, setVisible] = useState(false);
+  const [matchmakingVisible, setMatchmakingVisible] = useState(false);
 
   useEffect(() => {
     if (!isEmpty(userProfile) && userProfile.id) {
@@ -130,7 +131,7 @@ const Advertiser = ({
     <div className="advertiser-dashboard-wrapper">
       <div className="advertiser-action">
         <h3>Available Credits: 100 Credits</h3>
-        <CustomButton text="Buy more credits" type="primary" />
+        <CustomButton text="Buy credits" type="primary" />
       </div>
       <div className="advertiser-content">
         <h3>How it works</h3>
@@ -159,7 +160,11 @@ const Advertiser = ({
       <div className="advertiser-content">
         <div className="advertiser-action" style={{ marginBottom: 0 }}>
           <h3>Matchmaking</h3>
-          <CustomButton text="Matchmaking" type="primary" />
+          <CustomButton
+            text="Matchmaking"
+            type="primary"
+            onClick={() => setMatchmakingVisible(true)}
+          />
         </div>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -190,6 +195,10 @@ const Advertiser = ({
         setVisible={setVisible}
         createAdvertisement={createAdvertisement}
         onDashboard={true}
+      />
+      <MatchmakingDrawer
+        visible={matchmakingVisible}
+        setVisible={setMatchmakingVisible}
       />
     </div>
   );
