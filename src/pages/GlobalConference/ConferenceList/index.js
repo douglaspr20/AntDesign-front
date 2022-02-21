@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { notification, Tooltip } from "antd";
@@ -29,7 +28,6 @@ const ConferenceList = ({
   messageError,
 }) => {
   const [sessionData, setSessionData] = useState([]);
-  const history = useHistory();
 
   const onAddSession = (session) => {
     addSession(session);
@@ -46,17 +44,23 @@ const ConferenceList = ({
           return notification.error({
             message: error || "Somethign was wrong",
           });
-        }
-
-        if (session.type === "Certificate Track and Panels") {
-          history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
         } else {
-          window.open(`${session.link}`);
+          if (session.type === "Certificate Track and Panels") {
+            window.open(
+              `${process.env.PUBLIC_URL}${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`,
+              "_blank"
+            );
+          } else {
+            window.open(`${session.link}`);
+          }
         }
       });
     }
     if (session.type === "Certificate Track and Panels") {
-      history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`);
+      window.open(
+        `${process.env.PUBLIC_URL}${INTERNAL_LINKS.MICRO_CONFERENCE}/${session.id}`,
+        "_blank"
+      );
     } else {
       window.open(`${session.link}`);
     }
