@@ -10,12 +10,22 @@ import {
 } from "components";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
+import { connect } from "react-redux";
+
+import {
+  getAllActiveAdvertisements,
+  createAdvertisement,
+} from "redux/actions/advertisment-actions";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
+
+const { RangePicker } = DatePicker;
 
 const AdvertisementDrawer = ({
   visible,
   setVisible,
   page = null,
   onDashboard = false,
+  getAllActiveAdvertisements,
   createAdvertisement,
   allActiveAdvertisements,
 }) => {
@@ -25,47 +35,40 @@ const AdvertisementDrawer = ({
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (onDashboard && !isEmpty(allActiveAdvertisements)) {
+    getAllActiveAdvertisements();
+  }, []);
+
+  useEffect(() => {
+    if (!isEmpty(allActiveAdvertisements)) {
       const filteredDisabledDates = allActiveAdvertisements.filter(
-        (advertisement) => advertisement.page === page_
+        (advertisement) => advertisement.page === page_ || page
       );
 
-      const disabledDates = filteredDisabledDates.map(
-        (advertisement) => advertisement.datesBetweenStartDateAndEndDate
-      );
+      let homeCount = 0;
+      let disabledDates = filteredDisabledDates.map((advertisement) => {
+        if (advertisement.page === "home" && homeCount < 2) {
+          homeCount += 1;
 
-      setDisabledDates(disabledDates.flat());
+          return [];
+        }
+
+        return advertisement.datesBetweenStartDateAndEndDate;
+      });
+
+      disabledDates = disabledDates.flat();
+      disabledDates = disabledDates.map((date) => {
+        return moment
+          .tz(date, "America/Los_Angeles")
+          .startOf("day")
+          .format("YYYY-MM-DD");
+      });
+
+      console.log(allActiveAdvertisements);
+
+      setDisabledDates(disabledDates);
       form.resetFields(["startDate", "endDate"]);
     }
   }, [allActiveAdvertisements, page_]);
-
-  const handleDatePickerOnChangeEndDate = (date) => {
-    const { startDate } = form.getFieldsValue(["startDate"]) || null;
-
-    if (!isEmpty(startDate)) {
-      const endDate = moment.tz(date, "America/Los_Angeles").startOf("day");
-      const transformedStartDate = moment
-        .tz(startDate, "America/Los_Angeles")
-        .startOf("day");
-      const diff = endDate.diff(transformedStartDate, "days");
-
-      setTotalDays(diff + 1);
-    }
-  };
-
-  const handleDatePickerOnChangeStartDate = (date) => {
-    const { endDate } = form.getFieldsValue(["endDate"]) || null;
-
-    if (!isEmpty(endDate)) {
-      const startDate = moment.tz(date, "America/Los_Angeles").startOf("day");
-      const transformedEndDate = moment
-        .tz(endDate, "America/Los_Angeles")
-        .startOf("day");
-      const diff = transformedEndDate.diff(startDate, "days");
-
-      setTotalDays(diff + 1);
-    }
-  };
 
   const handleDisabledDate = (currentDate) => {
     const current = moment
@@ -81,18 +84,19 @@ const AdvertisementDrawer = ({
 
     return (
       // (currentDate &&
-      //   currentDate.valueOf() < moment().tz("America/Los_Angeles")) ||
+      //   currentDate.valueOf() <
+      //     moment().tz("America/Los_Angeles")) ||
       isMatch
     );
   };
 
   const handleOnFinish = (values) => {
     const startDate = moment
-      .tz(values.startDate, "America/Los_Angeles")
+      .tz(values.date[0], "America/Los_Angeles")
       .startOf("day");
 
     const endDate = moment
-      .tz(values.endDate, "America/Los_Angeles")
+      .tz(values.date[1], "America/Los_Angeles")
       .startOf("day");
 
     const diff = endDate.diff(startDate, "days");
@@ -102,7 +106,7 @@ const AdvertisementDrawer = ({
 
     for (let i = 0; i <= diff; i++) {
       const date = moment
-        .tz(values.startDate, "America/Los_Angeles")
+        .tz(values.date[0], "America/Los_Angeles")
         .add(i, "days")
         .startOf("day");
 
@@ -125,6 +129,40 @@ const AdvertisementDrawer = ({
 
   const handleOnSelect = (value) => {
     setPage_(value);
+  };
+
+  // dates = [moment, moment]
+  const validateDateRange = (_, value) => {
+    const startDate = moment.tz(value[0], "America/Los_Angeles").startOf("day");
+    const endDate = moment.tz(value[1], "America/Los_Angeles").startOf("day");
+
+    const datesInBetween = [];
+    const diff = endDate.diff(startDate, "days");
+    setTotalDays(diff + 1);
+
+    for (let i = 0; i <= diff; i++) {
+      const date = moment
+        .tz(value[0], "America/Los_Angeles")
+        .startOf("day")
+        .add(i, "day")
+        .format("YYYY-MM-DD");
+
+      datesInBetween.push(date);
+    }
+
+    const isOverlap = disabledDates.some((date) =>
+      datesInBetween.includes(date)
+    );
+
+    if (isOverlap) {
+      return Promise.reject(
+        new Error(
+          "Start Date and End Date are overlapping with disabled dates."
+        )
+      );
+    } else {
+      return Promise.resolve();
+    }
   };
 
   return (
@@ -157,29 +195,15 @@ const AdvertisementDrawer = ({
             </Form.Item>
           )}
           <Form.Item
-            label="Start Date"
-            name="startDate"
-            rules={[{ required: true }]}
+            name="date"
+            label="Date"
+            rules={[{ required: true }, { validator: validateDateRange }]}
           >
-            <DatePicker
-              disabledDate={handleDisabledDate}
+            <RangePicker
+              showTime={false}
               style={{ width: "100%" }}
               size="large"
-              onChange={handleDatePickerOnChangeStartDate}
-              showToday={false}
-            />
-          </Form.Item>
-          <Form.Item
-            label="End Date"
-            name="endDate"
-            rules={[{ required: true }]}
-          >
-            <DatePicker
               disabledDate={handleDisabledDate}
-              style={{ width: "100%" }}
-              size="large"
-              onChange={handleDatePickerOnChangeEndDate}
-              showToday={false}
             />
           </Form.Item>
           <Form.Item
@@ -192,9 +216,6 @@ const AdvertisementDrawer = ({
           <Form.Item>
             <h3>Total days: {totalDays}</h3>
           </Form.Item>
-          {/* <Form.Item>
-        <h3>Total credit cost: 0</h3>
-      </Form.Item> */}
           <Form.Item label="Image" name="image" rules={[{ required: true }]}>
             <ImageUpload />
           </Form.Item>
@@ -207,4 +228,16 @@ const AdvertisementDrawer = ({
   );
 };
 
-export default AdvertisementDrawer;
+const mapStateToProps = (state) => ({
+  ...advertisementSelector(state),
+});
+
+const mapDispatchToProps = {
+  getAllActiveAdvertisements,
+  createAdvertisement,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdvertisementDrawer);

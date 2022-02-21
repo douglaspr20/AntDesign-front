@@ -41,6 +41,23 @@ export const reducers = {
       allActiveAdvertisements: payload.advertisements,
     });
   },
+  [advertisementConstants.SET_CREATED_ADVERTISEMENT]: (state, { payload }) => {
+    const advertisementsByAdvertiser = state.get(
+      "advertisementsByAdvertiser"
+    );
+    const allActiveAdvertisements = state.get("allActiveAdvertisements");
+
+    return state.merge({
+      advertisementsByAdvertiser: [
+        ...advertisementsByAdvertiser,
+        payload.advertisement,
+      ],
+      allActiveAdvertisements: [
+        ...allActiveAdvertisements,
+        payload.advertisement,
+      ],
+    });
+  },
 };
 
 export const initialState = () => {

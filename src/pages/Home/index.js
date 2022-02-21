@@ -122,7 +122,12 @@ const HomePage = ({
               className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
               key={advertisement.id}
             >
-              <div className="advertisement">
+              <div
+                className="advertisement"
+                onClick={() =>
+                  window.open(advertisement.advertisementLink, "_blank")
+                }
+              >
                 <img
                   src={advertisement.adContentLink}
                   alt="advertisement"
@@ -259,7 +264,6 @@ const HomePage = ({
       </div>
       <AdvertisementDrawer
         page="home"
-        createAdvertisement={createAdvertisement}
         visible={visible}
         setVisible={setVisible}
       />

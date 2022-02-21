@@ -83,6 +83,12 @@ function* createAdvertisementSaga({ payload }) {
     });
 
     if (response.status === 200) {
+      yield put(
+        advertisementActions.setCreatedAdvertisement(
+          response.data.advertisement
+        )
+      );
+
       notification.success({
         message: "Successfully rented advertisement.",
       });

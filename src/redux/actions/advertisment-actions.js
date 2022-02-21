@@ -9,6 +9,7 @@ const GET_ADVERTISEMENT_BY_ID = "GET_ADVERTISEMENT_BY_ID";
 const SET_ADVERTISEMENT_BY_ID = "SET_ADVERTISEMENT_BY_ID";
 const GET_ALL_ACTIVE_ADVERTISEMENTS = "GET_ALL_ACTIVE_ADVERTISEMENTS";
 const SET_ALL_ACTIVE_ADVERTISEMENTS = "SET_ALL_ACTIVE_ADVERTISEMENTS";
+const SET_CREATED_ADVERTISEMENT = "SET_CREATED_ADVERTISEMENT";
 
 export const constants = {
   GET_ADVERTISEMENTS_TODAY_BY_PAGE,
@@ -20,6 +21,7 @@ export const constants = {
   SET_ADVERTISEMENT_BY_ID,
   GET_ALL_ACTIVE_ADVERTISEMENTS,
   SET_ALL_ACTIVE_ADVERTISEMENTS,
+  SET_CREATED_ADVERTISEMENT,
 };
 
 export const getAdvertisementsTodayByPage = createAction(
@@ -58,6 +60,10 @@ export const setAllActiveAdvertisements = createAction(
   SET_ALL_ACTIVE_ADVERTISEMENTS,
   (advertisements) => ({ advertisements })
 );
+export const setCreatedAdvertisement = createAction(
+  SET_CREATED_ADVERTISEMENT,
+  (advertisement) => ({ advertisement })
+);
 
 export const actions = {
   getAdvertisementsTodayByPage,
@@ -68,5 +74,6 @@ export const actions = {
   getAdvertisementById,
   setAdvertisement,
   getAllActiveAdvertisements,
-  setAllActiveAdvertisements
+  setAllActiveAdvertisements,
+  setCreatedAdvertisement
 };

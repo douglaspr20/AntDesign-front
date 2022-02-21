@@ -8,9 +8,8 @@ import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
 import {
   getAdvertisementsByAdvertiser,
-  createAdvertisement,
   getAdvertisementsTodayByPage,
-  getAllActiveAdvertisements
+  getAllActiveAdvertisements,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 
@@ -23,6 +22,9 @@ const columns = [
     title: "ID",
     dataIndex: "id",
     key: "id",
+    render: (_, __, index) => {
+      return <div>{index + 1}</div>;
+    },
   },
   // {
   //   title: "Ad Banner Size",
@@ -110,7 +112,7 @@ const Advertiser = ({
   userProfile,
   createAdvertisement,
   getAllActiveAdvertisements,
-  allActiveAdvertisements
+  allActiveAdvertisements,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -119,7 +121,7 @@ const Advertiser = ({
       getAdvertisementsByAdvertiser(userProfile.id);
     }
 
-    getAllActiveAdvertisements()
+    getAllActiveAdvertisements();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
@@ -154,6 +156,21 @@ const Advertiser = ({
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </div>
+      <div className="advertiser-content">
+        <div className="advertiser-action" style={{ marginBottom: 0 }}>
+          <h3>Matchmaking</h3>
+          <CustomButton text="Matchmaking" type="primary" />
+        </div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
       <div className="advertiser-action">
         <h3>Campaigns</h3>
         <CustomButton
@@ -173,7 +190,6 @@ const Advertiser = ({
         setVisible={setVisible}
         createAdvertisement={createAdvertisement}
         onDashboard={true}
-        allActiveAdvertisements={allActiveAdvertisements}
       />
     </div>
   );
@@ -186,9 +202,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getAdvertisementsByAdvertiser,
-  createAdvertisement,
   getAdvertisementsTodayByPage,
-  getAllActiveAdvertisements
+  getAllActiveAdvertisements,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Advertiser);
