@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Checkbox, Radio } from "antd";
@@ -13,16 +13,22 @@ import {
   UploadResumeModal,
 } from "components";
 import { SEARCH_FILTERS } from "enum";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import { addLibrary } from "redux/actions/library-actions";
 import { createCouncilResource } from "redux/actions/council-actions";
-import { createBusinessPartnerResource } from "redux/actions/business-partner-actions";
-import { createBusinessPartnerDocument } from "redux/actions/business-partner-actions";
+import {
+  createBusinessPartnerResource,
+  createBusinessPartnerDocument,
+  updateBusinessPartnerResource,
+  getBusinessPartnerResourceById,
+} from "redux/actions/business-partner-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import "./style.scss";
 import { useLocation } from "react-router-dom";
+import { businessPartnerSelector } from "redux/selectors/businessPartnerSelector";
 
 const SearchFilters = SEARCH_FILTERS.library;
 // const Languages = LANGUAGES.ParsedLanguageData;
@@ -33,17 +39,38 @@ const LibraryShareForm = ({
   addLibrary,
   createCouncilResource,
   createBusinessPartnerResource,
+  updateBusinessPartnerResource,
   createBusinessPartnerDocument,
+  getBusinessPartnerResourceById,
+  businessPartnerResource,
 }) => {
+  const history = useHistory();
   const [showResumeModal, setShowResumeModal] = useState(false);
   const [file, setFile] = useState();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const isCouncil = document.location.href.includes("council");
   const tab = query.get("tab");
+  const edit = query.get("edit");
+  const id = query.get("id");
   const isBusinessPartner =
     document.location.href.includes("business-partner") && tab === "2";
   const businessPartner = document.location.href.includes("business-partner");
+  const formControl = useRef(null);
+  useEffect(() => {
+    if (id) {
+      history.replace({
+        pathname: window.location.pathname,
+        search: `tab=1&edit=true&id=${id}`,
+      });
+    }
+    getBusinessPartnerResourceById(id);
+  }, [id, getBusinessPartnerResourceById, history]);
+
+  useEffect(() => {
+    businessPartnerResource &&
+      formControl.current.setFieldsValue({ ...businessPartnerResource });
+  }, [businessPartnerResource]);
 
   const onFinish = async (values) => {
     if (isCouncil) {
@@ -53,6 +80,14 @@ const LibraryShareForm = ({
       onCancel();
       createBusinessPartnerDocument({ values, file });
     } else if (businessPartner && tab === "1") {
+      if (edit === "true") {
+        history.replace({
+          pathname: window.location.pathname,
+          search: `tab=1`,
+        });
+        onCancel();
+        return updateBusinessPartnerResource({id, ...values});
+      }
       onCancel();
       return createBusinessPartnerResource(values);
     }
@@ -66,7 +101,7 @@ const LibraryShareForm = ({
         {isBusinessPartner
           ? "Share resources with your fellow HR Business Partners"
           : "Suggest new content to HHR community"}
-        Share Resource With Your Experts Council Peers
+        {/* Share Resource With Your Experts Council Peers */}
       </h1>
       {/* <h3 className="library-share-form-desc">
         Contribute with new content to the community. The content will be
@@ -77,6 +112,7 @@ const LibraryShareForm = ({
         className="library-form"
         layout="vertical"
         name="basic"
+        ref={formControl}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -177,6 +213,8 @@ LibraryShareForm.defaultProps = {
 const mapStateToProps = (state) => ({
   allLibraries: librarySelector(state).allLibraries,
   allCategories: categorySelector(state).categories,
+  businessPartnerResource:
+    businessPartnerSelector(state).businessPartnerResource,
 });
 
 const mapDispatchToProps = {
@@ -184,6 +222,8 @@ const mapDispatchToProps = {
   createCouncilResource,
   createBusinessPartnerResource,
   createBusinessPartnerDocument,
+  updateBusinessPartnerResource,
+  getBusinessPartnerResourceById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryShareForm);

@@ -17,6 +17,7 @@ import { SpeakerCard } from "components";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+import { DownloadOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
 
@@ -73,6 +74,8 @@ const MicroConference = ({
     return null;
   }, [activeVideoId, classes]);
 
+  console.log(classes);
+
   return (
     <div className="micro-conference__page">
       <div className="micro-conference__container">
@@ -116,6 +119,49 @@ const MicroConference = ({
                           <p className="micro-conference__description-p">
                             {session.description}
                           </p>
+                          <div style={{ marginTop: "10px" }}>
+                            <h3>Session Classes Information</h3>
+                            {classes.map((sessionClass) => (
+                              <>
+                                {(sessionClass.audioFileUrl ||
+                                  sessionClass.documentFileUrl) && (
+                                  <div style={{ marginTop: "10px" }}>
+                                    <h5>{sessionClass.title}</h5>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      {sessionClass.audioFileUrl && (
+                                        <a
+                                          href={sessionClass.audioFileUrl}
+                                          download
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          Download Session Audio{" "}
+                                          <DownloadOutlined />
+                                        </a>
+                                      )}
+
+                                      {sessionClass.documentFileUrl && (
+                                        <a
+                                          href={sessionClass.documentFileUrl}
+                                          download
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          Download Session Text{" "}
+                                          <DownloadOutlined />
+                                        </a>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </TabPane>

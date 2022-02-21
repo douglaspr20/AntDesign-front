@@ -66,6 +66,8 @@
     .live-item-container {
       display: flex;
       padding-top: 1rem;
+      margin: 0 auto;
+      justify-content: center;
     }
 
     p {
@@ -77,4 +79,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+
+}
+.home-page-container--upgrade{
+  margin: 0 auto ;
 }

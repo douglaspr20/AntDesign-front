@@ -9,6 +9,10 @@
   padding: 2rem;
   position: relative;
   width: 100%;
+
+  @media screen and (max-width: 400px) {
+  max-width: 360px;
+  }
 }
 
 .acc-session {
@@ -23,9 +27,9 @@
       max-width: 50%;
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 400px) {
       & .ant-btn {
-        width: 100%;
+       max-width: 310px;
       }
 
       h3{

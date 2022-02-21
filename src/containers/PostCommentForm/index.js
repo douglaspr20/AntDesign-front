@@ -20,13 +20,29 @@ const PostCommentForm = ({
   addPostComment,
   afterSave,
   userProfile,
+  postOwnerUserId, // id of the owner of the post
+  postCommentUserId, // id of the owner of the comment in a post
 }) => {
   const [form] = Form.useForm();
   const addComment = (data) => {
     if (postCommentId) {
-      addPostComment({ ...data, PostCommentId: postCommentId, PostId: postId });
+      // response to a post in a comment
+      addPostComment({
+        ...data,
+        PostCommentId: postCommentId,
+        PostId: postId,
+        postCommentUserId,
+        postOwnerUserId,
+        isAComment: false,
+      });
     } else {
-      addPostComment({ ...data, PostId: postId });
+      // comment to a post
+      addPostComment({
+        ...data,
+        PostId: postId,
+        postOwnerUserId,
+        isAComment: true,
+      });
     }
     afterSave();
     form.resetFields();

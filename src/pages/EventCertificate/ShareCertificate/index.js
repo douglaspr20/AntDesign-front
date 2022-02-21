@@ -105,7 +105,7 @@ const EventCertificatePage = ({
   const domElement = document.getElementById("certificate-panel");
 
   useEffect(() => {
-    console.log(domElement);
+
     const generateImage = async () => {
       const canvas = await html2canvas(domElement, { scale: 4 });
       const imgData = canvas.toDataURL("image/png");

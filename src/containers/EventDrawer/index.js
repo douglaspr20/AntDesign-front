@@ -330,8 +330,10 @@ const EventDrawer = ({
                             e.stopPropagation();
                           }}
                         >
-                          {event?.startAndEndTimes?.length > 1
-                            ? `Download Day ${index + 1}`
+                          {event.startAndEndTimes.length > 1
+                            ? `Download Calendar Day ${index + 1}: ${moment(
+                              startTime
+                            ).format("MMM DD")} `
                             : "Download Calendar"}
                           <DownOutlined />
                         </a>
