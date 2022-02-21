@@ -124,12 +124,12 @@ const EventCertificatePage = ({
       {userCertificated ? (
         <>
           <HelmetMetaData
-            title={myEvents.title}
-            metatitle={myEvents.title}
-            image={img && img}
-            description={"description"}
-            metadescription={"description"}
-            data={metadata}
+            title="Digital Certificate"
+            metatitle="Digital Certificate"
+            image={ImgCertificateStamp}
+            description="Digital certificate"
+            metadescription="Digital certificate"
+            // data={metadata}
           ></HelmetMetaData>
           <div className="certificate-page">
             <div
