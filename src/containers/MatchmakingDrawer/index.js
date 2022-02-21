@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer, Form, Checkbox } from "antd";
+import { Drawer, Form, Checkbox, Popconfirm, notification } from "antd";
 import {
   CustomSelect,
   CustomButton,
@@ -40,6 +40,12 @@ const MatchmakingDrawer = ({
     setVisible(false);
   };
 
+  const handleConfirm = () => {
+    notification.info({
+      message: "Email sent!",
+    });
+  };
+
   const displayMatchmakingUsers = matchmakingUsers.map((user) => {
     const country = COUNTRIES.find((c) => c.value === user.location);
 
@@ -50,7 +56,14 @@ const MatchmakingDrawer = ({
           <h3>Company Size: {user.sizeOfOrganization}</h3>
           <h3>Country: {country.text}</h3>
         </div>
-        <CustomButton text="Match" />
+        <Popconfirm
+          title="Do you want to connect?"
+          onConfirm={handleConfirm}
+          okText="Yes"
+          cancelText="No"
+        >
+          <CustomButton text="Match" />
+        </Popconfirm>
       </div>
     );
   });
