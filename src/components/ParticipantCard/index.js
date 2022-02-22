@@ -235,7 +235,7 @@ const ParticipantCard = ({
       {participant.isOnline && (
         <CustomButton
           size="sm"
-          text="Start a Chat"
+          text="Chat"
           style={{
             position: "absolute",
             zIndex: "10",

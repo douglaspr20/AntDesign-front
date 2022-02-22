@@ -156,7 +156,12 @@ const FormMessage = ({
             className="form-message-textarea"
             size="small"
             placeholder="Message"
-            onKeyPress={(e) => (e.key === "Enter" ? message.submit() : null)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                message.submit();
+                e.preventDefault();
+              }
+            }}
             onClick={() => setOpenEmojiPicker(false)}
             autoFocus
           />
