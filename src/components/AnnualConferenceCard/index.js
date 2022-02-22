@@ -115,6 +115,15 @@ const AnnualConferenceCard = React.memo(
       window.open(yahooCalendarUrl, "_blank");
     };
 
+    if (
+      (moment().date() < 21 ||
+        moment().month() < 1 ||
+        moment().year() < 2022) &&
+      timeLeft < 17280
+    ) {
+      setTimeLeft(18000);
+    }
+
     const downloadDropdownOptions = () => (
       <Menu style={{ position: "relative", bottom: "70px" }}>
         <Menu.Item key="1">
@@ -211,7 +220,7 @@ const AnnualConferenceCard = React.memo(
                   alignSelf: "flex-end",
                 }}
               />
-            ) : timeLeft >= -10 && timeLeft < 7200 ? (
+            ) : timeLeft >= -10 && timeLeft < 17280 ? (
               <CustomButton
                 type="primary"
                 size="md"
