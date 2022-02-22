@@ -110,7 +110,7 @@ function* getAdvertisementByIdSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        advertisementActions.setAllActiveAdvertisements(
+        advertisementActions.setAdvertisement(
           response.data.advertisement
         )
       );

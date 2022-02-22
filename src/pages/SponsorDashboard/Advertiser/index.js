@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Space } from "antd";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
@@ -129,10 +129,10 @@ const Advertiser = ({
 
   return (
     <div className="advertiser-dashboard-wrapper">
-      <div className="advertiser-action">
+      <Space direction="vertical">
         <h3>Available Credits: 100 Credits</h3>
         <CustomButton text="Buy credits" type="primary" />
-      </div>
+      </Space>
       <div className="advertiser-content">
         <h3>How it works</h3>
         <p>
@@ -157,15 +157,13 @@ const Advertiser = ({
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </div>
-      <div className="advertiser-content">
-        <div className="advertiser-action" style={{ marginBottom: 0 }}>
-          <h3>Matchmaking</h3>
-          <CustomButton
-            text="Matchmaking"
-            type="primary"
-            onClick={() => setMatchmakingVisible(true)}
-          />
-        </div>
+      <Space direction="vertical">
+        <h3>Matchmaking</h3>
+        <CustomButton
+          text="Matchmaking"
+          type="primary"
+          onClick={() => setMatchmakingVisible(true)}
+        />
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -175,15 +173,15 @@ const Advertiser = ({
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-      </div>
-      <div className="advertiser-action">
+      </Space>
+      <Space direction="vertical" style={{ marginBottom: "1rem" }}>
         <h3>Campaigns</h3>
         <CustomButton
           text="New campaign"
           type="primary"
           onClick={() => setVisible(true)}
         />
-      </div>
+      </Space>
       <Table
         dataSource={advertisementsByAdvertiser}
         columns={columns}

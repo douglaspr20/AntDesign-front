@@ -39,7 +39,7 @@ const AdvertisementDrawer = ({
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(allActiveAdvertisements)) {
+    if (!isEmpty(allActiveAdvertisements) && Array.isArray(allActiveAdvertisements)) {
       const filteredDisabledDates = allActiveAdvertisements.filter(
         (advertisement) => advertisement.page === page_ || page
       );
@@ -213,6 +213,9 @@ const AdvertisementDrawer = ({
           </Form.Item>
           <Form.Item>
             <h3>Total days: {totalDays}</h3>
+          </Form.Item>
+          <Form.Item>
+            <h3>Total credits: 5 Credits</h3>
           </Form.Item>
           <Form.Item label="Image" name="image" rules={[{ required: true }]}>
             <ImageUpload />
