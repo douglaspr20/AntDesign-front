@@ -154,111 +154,109 @@ const Chat = ({
     });
   }, [conversations, currentConversations, readMessages, userProfile.id]);
 
-  // useMemo(() => {
-  //   SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
-  //     if (user.id === userProfile.id && currentConversations.length === 0) {
-  //       return;
-  //     }
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
+      if (user.id === userProfile.id || currentConversations.length === 0) {
+        return;
+      }
+      const updateConversation = currentConversations.find(
+        (currentConversation) =>
+          currentConversation.members.find((member) => member.id === user.id)
+      );
 
-  //     const updateConversation = currentConversations.find(
-  //       (currentConversation) =>
-  //         currentConversation.members.find((member) => member.id === user.id)
-  //     );
+      const userToUpdate = updateConversation.members.find(
+        (member) => member.id === user.id
+      );
 
-  //     if (
-  //       !updateConversation ||
-  //       (updateConversation &&
-  //         updateConversation.members.every(
-  //           (member) => member.isOnline === true
-  //         ))
-  //     ) {
-  //       return;
-  //     }
-  //     console.log("hola online");
+      if (
+        !updateConversation ||
+        !userToUpdate ||
+        userToUpdate.isOnline === true
+      ) {
+        return;
+      }
 
-  //     const newCurrentConversations = currentConversations.map(
-  //       (currentConversation) => {
-  //         const newMembers = currentConversation.members.map((member) => {
-  //           if (member.id === user.id) {
-  //             return {
-  //               id: user.id,
-  //               abbrName: user.abbrName,
-  //               email: user.email,
-  //               firstName: user.firstName,
-  //               img: user.img,
-  //               isOnline: user.isOnline,
-  //               lastName: user.lastName,
-  //               timezone: user.timezone,
-  //             };
-  //           }
+      const newCurrentConversations = currentConversations.map(
+        (currentConversation) => {
+          const newMembers = currentConversation.members.map((member) => {
+            if (member.id === user.id) {
+              return {
+                id: user.id,
+                abbrName: user.abbrName,
+                email: user.email,
+                firstName: user.firstName,
+                img: user.img,
+                isOnline: user.isOnline,
+                lastName: user.lastName,
+                timezone: user.timezone,
+              };
+            }
 
-  //           return {
-  //             ...member,
-  //           };
-  //         });
+            return {
+              ...member,
+            };
+          });
 
-  //         return {
-  //           ...currentConversation,
-  //           members: newMembers,
-  //         };
-  //       }
-  //     );
+          return {
+            ...currentConversation,
+            members: newMembers,
+          };
+        }
+      );
 
-  //     setCurrentConversations(newCurrentConversations);
-  //   });
-  // }, [currentConversations, userProfile]);
+      setCurrentConversations(newCurrentConversations);
+    });
+  }, [currentConversations, userProfile]);
 
-  // useMemo(() => {
-  //   SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
-  //     if (user.id === userProfile.id && currentConversations.length === 0)
-  //       return;
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
+      if (user.id === userProfile.id || currentConversations.length === 0) {
+        return;
+      }
+      const updateConversation = currentConversations.find(
+        (currentConversation) =>
+          currentConversation.members.find((member) => member.id === user.id)
+      );
 
-  //     const updateConversation = currentConversations.find(
-  //       (currentConversation) =>
-  //         currentConversation.members.find((member) => member.id === user.id)
-  //     );
+      const userToUpdate = updateConversation.members.find(
+        (member) => member.id === user.id
+      );
 
-  //     if (
-  //       !updateConversation ||
-  //       (updateConversation &&
-  //         updateConversation?.members.find(
-  //           (member) => member.id === user.id && member.isOnline === false
-  //         ))
-  //     ) {
-  //       return;
-  //     }
-
-  //     const newCurrentConversations = currentConversations.map(
-  //       (currentConversation) => {
-  //         const newMembers = currentConversation.members.map((member) => {
-  //           if (member.id === user.id) {
-  //             return {
-  //               id: user.id,
-  //               abbrName: user.abbrName,
-  //               email: user.email,
-  //               firstName: user.firstName,
-  //               img: user.img,
-  //               isOnline: user.isOnline,
-  //               lastName: user.lastName,
-  //               timezone: user.timezone,
-  //             };
-  //           }
-
-  //           return {
-  //             ...member,
-  //           };
-  //         });
-
-  //         return {
-  //           ...currentConversation,
-  //           members: newMembers,
-  //         };
-  //       }
-  //     );
-
-  //     setCurrentConversations(newCurrentConversations);
-  //   });
-  // }, [currentConversations, userProfile]);
+      if (
+        !updateConversation ||
+        !userToUpdate ||
+        userToUpdate.isOnline === false
+      ) {
+        return;
+      }
+      const newCurrentConversations = currentConversations.map(
+        (currentConversation) => {
+          const newMembers = currentConversation.members.map((member) => {
+            if (member.id === user.id) {
+              return {
+                id: user.id,
+                abbrName: user.abbrName,
+                email: user.email,
+                firstName: user.firstName,
+                img: user.img,
+                isOnline: user.isOnline,
+                lastName: user.lastName,
+                timezone: user.timezone,
+              };
+            }
+            return {
+              ...member,
+            };
+          });
+          return {
+            ...currentConversation,
+            members: newMembers,
+          };
+        }
+      );
+      setCurrentConversations(newCurrentConversations);
+    });
+  }, [currentConversations, userProfile]);
 
   return (
     <>
