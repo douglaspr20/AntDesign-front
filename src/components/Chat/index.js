@@ -250,41 +250,41 @@ const Chat = ({
   //   });
   // }, [currentConversations, userProfile]);
 
-  useMemo(() => {
-    if (currentConversations.length > 0) {
-      const newCurrentConversations = currentConversations.map(
-        (conversation) => {
-          const newConversation = conversations.find(
-            (gConversation) => gConversation.id === conversation.id
-          );
-          if (newConversation) {
-            return newConversation;
-          }
+  // useMemo(() => {
+  //   if (currentConversations.length > 0) {
+  //     const newCurrentConversations = currentConversations.map(
+  //       (conversation) => {
+  //         const newConversation = conversations.find(
+  //           (gConversation) => gConversation.id === conversation.id
+  //         );
+  //         if (newConversation) {
+  //           return newConversation;
+  //         }
 
-          return conversation;
-        }
-      );
+  //         return conversation;
+  //       }
+  //     );
 
-      let canUpdate = false;
+  //     let canUpdate = false;
 
-      for (let i = 0; i < currentConversations.length; i++) {
-        const oldUser = currentConversations[i].members.find(
-          (member) => member.id !== userProfile.id
-        );
-        const newUser = newCurrentConversations[i].members.find(
-          (member) => member.id !== userProfile.id
-        );
-        if (oldUser.isOnline !== newUser.isOnline) {
-          canUpdate = true;
-          break;
-        }
-      }
+  //     for (let i = 0; i < currentConversations.length; i++) {
+  //       const oldUser = currentConversations[i].members.find(
+  //         (member) => member.id !== userProfile.id
+  //       );
+  //       const newUser = newCurrentConversations[i].members.find(
+  //         (member) => member.id !== userProfile.id
+  //       );
+  //       if (oldUser.isOnline !== newUser.isOnline) {
+  //         canUpdate = true;
+  //         break;
+  //       }
+  //     }
 
-      if (canUpdate) {
-        setCurrentConversations(newCurrentConversations);
-      }
-    }
-  }, [currentConversations, conversations, userProfile]);
+  //     if (canUpdate) {
+  //       setCurrentConversations(newCurrentConversations);
+  //     }
+  //   }
+  // }, [currentConversations, conversations, userProfile]);
 
   return (
     <>
