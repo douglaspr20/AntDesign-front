@@ -201,7 +201,8 @@ import {
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
-  getAllActiveAdvertisements
+  getAllActiveAdvertisements,
+  editAdvertisement
 } from "./module/advertisement";
 
 import { getMatchmake } from './module/matchmaking'
@@ -362,5 +363,6 @@ export {
   createAdvertisement,
   getAdvertisementById,
   getAllActiveAdvertisements,
-  getMatchmake
+  getMatchmake,
+  editAdvertisement
 };

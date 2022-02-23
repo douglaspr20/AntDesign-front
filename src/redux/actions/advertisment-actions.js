@@ -10,6 +10,8 @@ const SET_ADVERTISEMENT_BY_ID = "SET_ADVERTISEMENT_BY_ID";
 const GET_ALL_ACTIVE_ADVERTISEMENTS = "GET_ALL_ACTIVE_ADVERTISEMENTS";
 const SET_ALL_ACTIVE_ADVERTISEMENTS = "SET_ALL_ACTIVE_ADVERTISEMENTS";
 const SET_CREATED_ADVERTISEMENT = "SET_CREATED_ADVERTISEMENT";
+const EDIT_ADVERTISEMENT_BY_ADVERTISER = "EDIT_ADVERTISEMENT_BY_ADVERTISER";
+const SET_EDIT_ADVERTISEMENT_BY_ADVERTISER = "SET_EDIT_ADVERTISEMENT_BY_ADVERTISER";
 
 export const constants = {
   GET_ADVERTISEMENTS_TODAY_BY_PAGE,
@@ -22,6 +24,8 @@ export const constants = {
   GET_ALL_ACTIVE_ADVERTISEMENTS,
   SET_ALL_ACTIVE_ADVERTISEMENTS,
   SET_CREATED_ADVERTISEMENT,
+  EDIT_ADVERTISEMENT_BY_ADVERTISER,
+  SET_EDIT_ADVERTISEMENT_BY_ADVERTISER,
 };
 
 export const getAdvertisementsTodayByPage = createAction(
@@ -64,6 +68,14 @@ export const setCreatedAdvertisement = createAction(
   SET_CREATED_ADVERTISEMENT,
   (advertisement) => ({ advertisement })
 );
+export const editAdvertisement = createAction(
+  EDIT_ADVERTISEMENT_BY_ADVERTISER,
+  (AdvertisementId, payload) => ({ AdvertisementId, payload })
+);
+export const setEditAdvertisement = createAction(
+  SET_EDIT_ADVERTISEMENT_BY_ADVERTISER,
+  (advertisement) => ({ advertisement })
+);
 
 export const actions = {
   getAdvertisementsTodayByPage,
@@ -75,5 +87,7 @@ export const actions = {
   setAdvertisement,
   getAllActiveAdvertisements,
   setAllActiveAdvertisements,
-  setCreatedAdvertisement
+  setCreatedAdvertisement,
+  editAdvertisement,
+  setEditAdvertisement
 };

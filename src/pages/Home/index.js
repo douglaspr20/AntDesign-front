@@ -22,7 +22,6 @@ import { librarySelector } from "redux/selectors/librarySelector";
 import { postSelector } from "redux/selectors/postSelector";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import {
-  createAdvertisement,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
 } from "redux/actions/advertisment-actions";
@@ -42,7 +41,6 @@ const HomePage = ({
   getUser,
   currentPage,
   getAllPost,
-  createAdvertisement,
   getAdvertisementsTodayByPage,
   advertisementsByPage,
   getAdvertisementById,
@@ -282,7 +280,6 @@ const mapDispatchToProps = {
   getRecommendations,
   getUser,
   getAllPost,
-  createAdvertisement,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
 };

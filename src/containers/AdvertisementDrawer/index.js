@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import {
   getAllActiveAdvertisements,
   createAdvertisement,
+  editAdvertisement,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 
@@ -28,21 +29,45 @@ const AdvertisementDrawer = ({
   getAllActiveAdvertisements,
   createAdvertisement,
   allActiveAdvertisements,
+  isEdit = false,
+  advertisement = {},
+  clearEditAndAdvertisement,
+  editAdvertisement,
 }) => {
   const [totalDays, setTotalDays] = useState(0);
   const [disabledDates, setDisabledDates] = useState([]);
   const [page_, setPage_] = useState(null);
   const [form] = Form.useForm();
+  const [isPagePopulated, setIsPagePopulated] = useState(false);
 
   useEffect(() => {
     getAllActiveAdvertisements();
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(allActiveAdvertisements) && Array.isArray(allActiveAdvertisements)) {
-      const filteredDisabledDates = allActiveAdvertisements.filter(
+    if (isEdit) {
+      form.setFieldsValue({
+        ...advertisement,
+        date: [moment(advertisement.startDate), moment(advertisement.endDate)],
+        image: advertisement.adContentLink,
+      });
+    }
+  }, [isEdit]);
+
+  useEffect(() => {
+    if (
+      !isEmpty(allActiveAdvertisements) &&
+      Array.isArray(allActiveAdvertisements)
+    ) {
+      let filteredDisabledDates = allActiveAdvertisements.filter(
         (advertisement) => advertisement.page === page_ || page
       );
+
+      if (isEdit && !isEmpty(advertisement)) {
+        filteredDisabledDates = filteredDisabledDates.filter(
+          (date) => date.id !== advertisement.id
+        );
+      }
 
       let homeCount = 0;
       let disabledDates = filteredDisabledDates.map((advertisement) => {
@@ -111,22 +136,36 @@ const AdvertisementDrawer = ({
       datesBetweenStartDateAndEndDate.push(date);
     }
 
-    const transformedValues = {
-      ...values,
-      startDate,
-      endDate,
-      adDurationByDays,
-      datesBetweenStartDateAndEndDate,
-      page: page || values.page,
-    };
+    if (isEdit) {
+      const transformedValues = {
+        image: values.image,
+        advertisementLink: values.advertisementLink,
+      };
+      editAdvertisement(advertisement.id, transformedValues);
+    } else {
+      const transformedValues = {
+        ...values,
+        startDate,
+        endDate,
+        adDurationByDays,
+        datesBetweenStartDateAndEndDate,
+        page: page || values.page,
+      };
 
-    createAdvertisement(transformedValues);
+      createAdvertisement(transformedValues);
+    }
+
+    clearEditAndAdvertisement();
     setVisible(false);
     form.resetFields();
   };
 
   const handleOnSelect = (value) => {
     setPage_(value);
+
+    if (!isEdit) {
+      setIsPagePopulated(true);
+    }
   };
 
   // dates = [moment, moment]
@@ -163,10 +202,18 @@ const AdvertisementDrawer = ({
     }
   };
 
+  const handleOnClose = () => {
+    if (isEdit) {
+      clearEditAndAdvertisement();
+      form.resetFields();
+    }
+    setVisible(false);
+  };
+
   return (
     <Drawer
       visible={visible}
-      onClose={() => setVisible(false)}
+      onClose={handleOnClose}
       title="Rent this space"
       width={420}
     >
@@ -189,6 +236,7 @@ const AdvertisementDrawer = ({
                 ]}
                 bordered
                 onSelect={handleOnSelect}
+                disabled={isEdit}
               />
             </Form.Item>
           )}
@@ -202,6 +250,7 @@ const AdvertisementDrawer = ({
               style={{ width: "100%" }}
               size="large"
               disabledDate={handleDisabledDate}
+              disabled={isEdit || !isPagePopulated}
             />
           </Form.Item>
           <Form.Item
@@ -209,7 +258,7 @@ const AdvertisementDrawer = ({
             name="advertisementLink"
             rules={[{ required: true, type: "url" }]}
           >
-            <CustomInput bordered />
+            <CustomInput bordered/>
           </Form.Item>
           <Form.Item>
             <h3>Total days: {totalDays}</h3>
@@ -236,6 +285,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getAllActiveAdvertisements,
   createAdvertisement,
+  editAdvertisement,
 };
 
 export default connect(

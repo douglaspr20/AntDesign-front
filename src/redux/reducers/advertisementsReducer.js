@@ -42,9 +42,7 @@ export const reducers = {
     });
   },
   [advertisementConstants.SET_CREATED_ADVERTISEMENT]: (state, { payload }) => {
-    const advertisementsByAdvertiser = state.get(
-      "advertisementsByAdvertiser"
-    );
+    const advertisementsByAdvertiser = state.get("advertisementsByAdvertiser");
     const allActiveAdvertisements = state.get("allActiveAdvertisements");
 
     return state.merge({
@@ -56,6 +54,22 @@ export const reducers = {
         ...allActiveAdvertisements,
         payload.advertisement,
       ],
+    });
+  },
+  [advertisementConstants.SET_EDIT_ADVERTISEMENT_BY_ADVERTISER]: (state, { payload }) => {
+    const advertisementsByAdvertiser = state.get("advertisementsByAdvertiser");
+    const newAdvertisementsByAdvertiser = [...advertisementsByAdvertiser];
+
+    const index = advertisementsByAdvertiser.findIndex(
+      (ad) => ad.id === payload.advertisement.id
+    );
+
+    if (index >= 0) {
+      newAdvertisementsByAdvertiser[index] = payload.advertisement;
+    }
+
+    return state.merge({
+      advertisementsByAdvertiser: newAdvertisementsByAdvertiser,
     });
   },
 };
