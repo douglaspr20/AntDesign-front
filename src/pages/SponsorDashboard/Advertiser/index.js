@@ -137,25 +137,32 @@ const Advertiser = ({
       fixed: "right",
       width: 150,
       align: "center",
-      render: (action, data) => (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Tooltip title="Edit">
-            <CustomButton
-              style={{ marginRight: "0.5rem", padding: "0 8px" }}
-              type="primary outlined"
-              size="xs"
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(data.id)}
-            />
-          </Tooltip>
-        </div>
-      ),
+      render: (action, data) => {
+        const dateToday = moment();
+        const startDate = moment(data.startDate);
+        const disabled = dateToday.isAfter(startDate);
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Edit">
+              <CustomButton
+                style={{ marginRight: "0.5rem", padding: "0 8px" }}
+                type="primary outlined"
+                size="xs"
+                icon={<EditOutlined />}
+                onClick={() => handleEdit(data.id)}
+                disabled={disabled}
+              />
+            </Tooltip>
+          </div>
+        );
+      },
     },
   ];
 
