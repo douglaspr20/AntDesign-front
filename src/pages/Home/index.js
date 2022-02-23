@@ -138,11 +138,26 @@ const HomePage = ({
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
-              <ProfileStatusBar
-                user={userProfile}
-              />
+              <ProfileStatusBar user={userProfile} />
             </div>
           )}
+          <div className="home-page-container--upgrade">
+            {userProfile && userProfile.memberShip === "free" && (
+              <div className="recommend-card">
+                <h2 className="recommend-card-label">
+                  Upgrade to a PREMIUM Membership and get unlimited access to
+                  the LAB features
+                </h2>
+                <CustomButton
+                  text="Upgrade to PREMIUM"
+                  type="primary"
+                  size="xl"
+                  className="recommend-card-upgrade"
+                  onClick={onUpgrade}
+                />
+              </div>
+            )}
+          </div>
           <div className="home-page-container--mobile-options">
             <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
             <Button
@@ -154,23 +169,6 @@ const HomePage = ({
             </Button>
           </div>
           <Posts onShowMore={onShowMore} history={history} />
-          <div className="home-page-container--upgrade">
-            {userProfile && userProfile.memberShip === "free" && (
-              <div className="recommend-card">
-                <h2 className="recommend-card-label">
-                  Upgrade to a PREMIUM Membership and get unlimited access to
-                  the LAB features
-                </h2>
-                <CustomButton
-                  text="Upgrade"
-                  type="primary"
-                  size="xl"
-                  className="recommend-card-upgrade"
-                  onClick={onUpgrade}
-                />
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
