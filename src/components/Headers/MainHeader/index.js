@@ -242,7 +242,7 @@ class MainHeader extends React.Component {
           /> */}
           {user.memberShip === "free" && (
             <CustomButton
-              text="Upgrade to premium"
+              text="Upgrade to PREMIUM"
               type="primary"
               size="lg"
               className="btn-upgrade"
