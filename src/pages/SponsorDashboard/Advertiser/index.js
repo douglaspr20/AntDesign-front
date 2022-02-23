@@ -181,8 +181,8 @@ const Advertiser = ({
       {/* <Space direction="vertical">
         <h3>Available Credits: 100 Credits</h3>
         <CustomButton text="Buy credits" type="primary" />
-      </Space> */}
-      {/* <div className="advertiser-content">
+      </Space>
+      <div className="advertiser-content">
         <h3>How it works</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
