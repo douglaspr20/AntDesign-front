@@ -349,9 +349,9 @@ const GlobalConference = ({
                   onClick={() => downloadPdf("personal-agenda")}
                 />
 
-                {moment().date() >= 7 &&
-                  moment().month() >= 2 &&
-                  moment().year >= 2022 && (
+                {moment().date() >= 21 &&
+                  moment().month() >= 1 &&
+                  moment().year() >= 2022 && (
                     <CustomButton
                       size="xs"
                       text="Download Report Sessions Joined"
