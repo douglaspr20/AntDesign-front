@@ -237,9 +237,9 @@ const HomePage = ({
             <div className="home-page-container--posts-central-panel-content-posts">
               <Posts onShowMore={onShowMore} history={history} />
             </div>
-            {displayAds}
+            {/* {displayAds}
             {dipslayRentAd}
-            {displayPreviewAd}
+            {displayPreviewAd} */}
           </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (

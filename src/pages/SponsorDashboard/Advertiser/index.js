@@ -178,11 +178,11 @@ const Advertiser = ({
 
   return (
     <div className="advertiser-dashboard-wrapper">
-      <Space direction="vertical">
+      {/* <Space direction="vertical">
         <h3>Available Credits: 100 Credits</h3>
         <CustomButton text="Buy credits" type="primary" />
-      </Space>
-      <div className="advertiser-content">
+      </Space> */}
+      {/* <div className="advertiser-content">
         <h3>How it works</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -205,7 +205,7 @@ const Advertiser = ({
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-      </div>
+      </div> */}
       <Space direction="vertical">
         <h3>Matchmaking</h3>
         <CustomButton
@@ -223,7 +223,7 @@ const Advertiser = ({
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </Space>
-      <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+      {/* <Space direction="vertical" style={{ marginBottom: "1rem" }}>
         <h3>Campaigns</h3>
         <CustomButton
           text="New campaign"
@@ -245,7 +245,7 @@ const Advertiser = ({
         advertisement={advertisement}
         isEdit={isEdit}
         clearEditAndAdvertisement={clearEditAndAdvertisement}
-      />
+      /> */}
       <MatchmakingDrawer
         visible={matchmakingVisible}
         setVisible={setMatchmakingVisible}
