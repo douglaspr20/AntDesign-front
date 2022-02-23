@@ -4,22 +4,21 @@ import {
   CloseOutlined,
   FileTextTwoTone,
   LoadingOutlined,
-  PaperClipOutlined,
   SendOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Spin, Upload } from "antd";
+import { Button, Form, Input, Spin } from "antd";
 
 import "./style.scss";
 
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-}
+// function getBase64(file) {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = () => resolve(reader.result);
+//     reader.onerror = (error) => reject(error);
+//   });
+// }
 
 const FormMessage = ({
   handleSendMessage,
@@ -50,32 +49,32 @@ const FormMessage = ({
     });
   };
 
-  const imageUpload = async ({ file, onSuccess }) => {
-    setTimeout(() => {
-      onSuccess("ok");
-    }, 3000);
-  };
+  // const imageUpload = async ({ file, onSuccess }) => {
+  //   setTimeout(() => {
+  //     onSuccess("ok");
+  //   }, 3000);
+  // };
 
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-  };
+  // const handlePreview = async (file) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  // };
 
-  const handleChange = async ({ fileList }) => {
-    const newFileList = await Promise.all(
-      fileList.map(async (file) => {
-        const thumbUrl = await getBase64(file.originFileObj);
+  // const handleChange = async ({ fileList }) => {
+  //   const newFileList = await Promise.all(
+  //     fileList.map(async (file) => {
+  //       const thumbUrl = await getBase64(file.originFileObj);
 
-        return {
-          ...file,
-          thumbUrl,
-        };
-      })
-    );
+  //       return {
+  //         ...file,
+  //         thumbUrl,
+  //       };
+  //     })
+  //   );
 
-    setFileList(newFileList);
-  };
+  //   setFileList(newFileList);
+  // };
 
   const handleDeleteFile = (id) => {
     const newfiles = fileList.filter((file) => file.uid !== id);
@@ -161,7 +160,7 @@ const FormMessage = ({
           />
         </Form.Item>
 
-        <Form.Item name="images">
+        {/* <Form.Item name="images">
           <Upload
             customRequest={imageUpload}
             listType="picture"
@@ -177,7 +176,7 @@ const FormMessage = ({
               style={{ fontSize: "1.2rem", cursor: "pointer" }}
             />
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
 
         {openEmojiPicker && (
           <EmojiPicker

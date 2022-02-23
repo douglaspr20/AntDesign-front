@@ -3,22 +3,21 @@ import EmojiPicker from "emoji-picker-react";
 import {
   CloseOutlined,
   LoadingOutlined,
-  PaperClipOutlined,
   SendOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, notification, Spin, Upload } from "antd";
+import { Button, Form, Input, Spin } from "antd";
 
 import "./style.scss";
 
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-}
+// function getBase64(file) {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = () => resolve(reader.result);
+//     reader.onerror = (error) => reject(error);
+//   });
+// }
 
 const FormMessage = ({
   handleSendMessage,
@@ -50,40 +49,40 @@ const FormMessage = ({
     });
   };
 
-  const filesUpload = async ({ file, onSuccess }) => {
-    setTimeout(() => {
-      onSuccess("ok");
-    }, 3000);
-  };
+  // const filesUpload = async ({ file, onSuccess }) => {
+  //   setTimeout(() => {
+  //     onSuccess("ok");
+  //   }, 3000);
+  // };
 
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-  };
+  // const handlePreview = async (file) => {
+  //   if (!file.url && !file.preview) {
+  //     file.preview = await getBase64(file.originFileObj);
+  //   }
+  // };
 
-  const handleChange = async ({ fileList }) => {
-    for (let file of fileList) {
-      if (file.size > 1050000) {
-        return notification.error({
-          message: "Error",
-          description: `You can't upload files larger than 10mb`,
-        });
-      }
-    }
-    const newFileList = await Promise.all(
-      fileList.map(async (file) => {
-        const thumbUrl = await getBase64(file.originFileObj);
+  // const handleChange = async ({ fileList }) => {
+  //   for (let file of fileList) {
+  //     if (file.size > 1050000) {
+  //       return notification.error({
+  //         message: "Error",
+  //         description: `You can't upload files larger than 10mb`,
+  //       });
+  //     }
+  //   }
+  //   const newFileList = await Promise.all(
+  //     fileList.map(async (file) => {
+  //       const thumbUrl = await getBase64(file.originFileObj);
 
-        return {
-          ...file,
-          thumbUrl,
-        };
-      })
-    );
+  //       return {
+  //         ...file,
+  //         thumbUrl,
+  //       };
+  //     })
+  //   );
 
-    setFileList(newFileList);
-  };
+  //   setFileList(newFileList);
+  // };
 
   const handleDeleteFile = (id) => {
     const newfiles = fileList.filter((file) => file.uid !== id);
@@ -166,7 +165,7 @@ const FormMessage = ({
             autoFocus
           />
         </Form.Item>
-
+        {/* 
         <Form.Item name="files">
           <Upload
             customRequest={filesUpload}
@@ -183,7 +182,7 @@ const FormMessage = ({
               style={{ fontSize: "1.2rem", cursor: "pointer" }}
             />
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
         {openEmojiPicker && (
           <EmojiPicker
             onEmojiClick={onEmojiClick}
