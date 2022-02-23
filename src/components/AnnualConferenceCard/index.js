@@ -116,7 +116,7 @@ const AnnualConferenceCard = React.memo(
     };
 
     if (
-      (moment().date() < 21 ||
+      (moment().date() < 25 ||
         moment().month() < 1 ||
         moment().year() < 2022) &&
       timeLeft < 17280
