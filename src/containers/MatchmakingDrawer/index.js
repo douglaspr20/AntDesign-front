@@ -5,6 +5,7 @@ import {
   CustomButton,
   CustomCheckbox,
   CustomModal,
+  CustomInput,
 } from "components";
 import { connect } from "react-redux";
 import { COUNTRIES, PROFILE_SETTINGS } from "enum";
@@ -24,6 +25,7 @@ const MatchmakingDrawer = ({
 }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isPromptVisible, setIsPromptVisible] = useState(false);
 
   const handleOnFinish = (values) => {
     getMatchmake(
@@ -44,6 +46,7 @@ const MatchmakingDrawer = ({
     notification.info({
       message: "Email sent!",
     });
+    setIsPromptVisible(false);
   };
 
   const displayMatchmakingUsers = matchmakingUsers.map((user) => {
@@ -56,14 +59,15 @@ const MatchmakingDrawer = ({
           <h3>Company Size: {user.sizeOfOrganization}</h3>
           <h3>Country: {country.text}</h3>
         </div>
-        <Popconfirm
+        {/* <Popconfirm
           title="Do you want to connect?"
           onConfirm={handleConfirm}
           okText="Yes"
           cancelText="No"
         >
           <CustomButton text="Match" />
-        </Popconfirm>
+        </Popconfirm> */}
+        <CustomButton text="Match" onClick={() => setIsPromptVisible(true)} />
       </div>
     );
   });
@@ -130,6 +134,22 @@ const MatchmakingDrawer = ({
         width={720}
       >
         <div>{displayMatchmakingUsers}</div>
+      </CustomModal>
+      <CustomModal
+        visible={isPromptVisible}
+        onClose={() => setIsPromptVisible(false)}
+        title="Enter here a one paragraph description of how you would like us to introduce you and your company"
+        width={720}
+      >
+        <CustomInput multiple />
+          <Popconfirm
+            title="Do you want to connect?"
+            onConfirm={handleConfirm}
+            okText="Yes"
+            cancelText="No"
+          >
+            <CustomButton text="Match" />
+          </Popconfirm>
       </CustomModal>
     </Drawer>
   );
