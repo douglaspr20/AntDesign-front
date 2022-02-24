@@ -10,6 +10,10 @@
   position: relative;
   width: 100%;
 
+  @media screen and (max-width: 1025px) {
+    margin-top: 15px;
+  }
+
   @media screen and (max-width: 400px) {
   max-width: 360px;
   }
