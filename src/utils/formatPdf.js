@@ -80,6 +80,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
       <p style="font-size: 1.3rem">${
         option === "personal-agenda"
           ? "Personalized Agenda – Created on"
+          : option === "conference-schedule"
+          ? "Conference Schedule"
           : "Report Session Joined - generated on"
       } ${moment().format("MM-DD-YYYY")} </p>
       <p style="font-size: 1.3rem">DOWNLOAD</p>
@@ -87,7 +89,9 @@ const formatAnnualConference = (userProfile, sessions, option) => {
     userProfile.lastName
   }</p>
     </div>
-
+    ${
+      option !== "conference-schedule"
+        ? `
     <div style="height: 950px; width: 90%; display: flex; flex-direction: column; 
     align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
         <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 15px 10px 0px">
@@ -97,47 +101,53 @@ const formatAnnualConference = (userProfile, sessions, option) => {
             <p style="margin-top: -20px">Global Online Conference | ${
               option === "personal-agenda"
                 ? "Personalized Agenda"
+                : option === "conference-schedule"
+                ? "Conference Schedule"
                 : "Report sessions Joined"
             }</p>
           </div>
         </div>
-
+        
         <div>
-          <p style="font-weight: 800 !important; font-size: 2.5rem !important; text-align: center">Event Overview</p>
-          <p style="font-size: 1.5rem; padding: 0px 2.5rem">
-          This is your ${
-            option === "personal-agenda"
-              ? "personalized agenda"
-              : "report sessions joined"
-          }. It includes the sessions 
-          you ${
-            option === "personal-agenda" ? "are planning to join" : "joined"
-          }. 
-          <br>
-          <br>
-          ${
-            option === "personal-agenda"
-              ? `  You can update your personalized agenda at any time 
-          you want. Also, during conference weeki, you can join a 
-          different session than the original one you added in your 
-          personalized agenda. However, notice that during 
-          conference week, once you click on “join” a session, you 
-          won’t be able to join any other session happening at the 
-          same time. 
-          <br>
-          <br>
-          Regarding the HR certification credits: 1) you MUST be a 
-          PREMIUM member in the Hacking HR LAB (click on 
-          UPGRADE to become premium). There are no exceptions; 
-          2) the codes will be sent to you two weeks after the 
-          conference. We will ONLY send you the codes of the 
-          sessions you actually JOINED; and 3) you can watch the 
-          recordings later and still earn HR certification credits. 
-          Thank you and enjoy! `
-              : ""
-          }
-          </p>
-        </div>
+        <p style="font-weight: 800 !important; font-size: 2.5rem !important; text-align: center">Event Overview</p>
+        <p style="font-size: 1.5rem; padding: 0px 2.5rem">
+        This is your ${
+          option === "personal-agenda"
+            ? "personalized agenda"
+            : "report sessions joined"
+        }. It includes the sessions 
+        you ${
+          option === "personal-agenda" ? "are planning to join" : "joined"
+        }. 
+        <br>
+        <br>
+        ${
+          option === "personal-agenda"
+            ? `  You can update your personalized agenda at any time 
+        you want. Also, during conference weeki, you can join a 
+        different session than the original one you added in your 
+        personalized agenda. However, notice that during 
+        conference week, once you click on “join” a session, you 
+        won’t be able to join any other session happening at the 
+        same time. 
+        <br>
+        <br>
+        Regarding the HR certification credits: 1) you MUST be a 
+        PREMIUM member in the Hacking HR LAB (click on 
+        UPGRADE to become premium). There are no exceptions; 
+        2) the codes will be sent to you two weeks after the 
+        conference. We will ONLY send you the codes of the 
+        sessions you actually JOINED; and 3) you can watch the 
+        recordings later and still earn HR certification credits. 
+        Thank you and enjoy! `
+            : ""
+        }
+        </p>
+      </div>
+        `
+        : ""
+    }
+
     </div>
 
     </div>
@@ -308,6 +318,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 } </p>
               </div>
@@ -332,6 +344,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
@@ -417,6 +431,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
@@ -505,6 +521,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
