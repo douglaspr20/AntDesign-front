@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Drawer, Form, Checkbox, Popconfirm, notification } from "antd";
+import React, { useEffect, useState } from "react";
+import { Drawer, Form, Checkbox, Popconfirm } from "antd";
 import {
   CustomSelect,
   CustomButton,
@@ -22,10 +22,18 @@ const MatchmakingDrawer = ({
   allCategories,
   getMatchmake,
   matchmakingUsers,
+  sendMatchEmail,
 }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPromptVisible, setIsPromptVisible] = useState(false);
+  const [matchedUser, setMatchedUser] = useState(null);
+
+  useEffect(() => {
+    if (matchedUser) {
+      setIsPromptVisible(true);
+    }
+  }, [matchedUser]);
 
   const handleOnFinish = (values) => {
     getMatchmake(
@@ -43,10 +51,12 @@ const MatchmakingDrawer = ({
   };
 
   const handleConfirm = () => {
-    notification.info({
-      message: "Email sent!",
-    });
     setIsPromptVisible(false);
+    setMatchedUser(null);
+  };
+
+  const handlePromptVisible = (id) => {
+    setMatchedUser(id);
   };
 
   const displayMatchmakingUsers = matchmakingUsers.map((user) => {
@@ -59,15 +69,10 @@ const MatchmakingDrawer = ({
           <h3>Company Size: {user.sizeOfOrganization}</h3>
           <h3>Country: {country.text}</h3>
         </div>
-        {/* <Popconfirm
-          title="Do you want to connect?"
-          onConfirm={handleConfirm}
-          okText="Yes"
-          cancelText="No"
-        >
-          <CustomButton text="Match" />
-        </Popconfirm> */}
-        <CustomButton text="Match" onClick={() => setIsPromptVisible(true)} />
+        <CustomButton
+          text="Match"
+          onClick={() => handlePromptVisible(user.id)}
+        />
       </div>
     );
   });
@@ -142,14 +147,14 @@ const MatchmakingDrawer = ({
         width={720}
       >
         <CustomInput multiple />
-          <Popconfirm
-            title="Do you want to connect?"
-            onConfirm={handleConfirm}
-            okText="Yes"
-            cancelText="No"
-          >
-            <CustomButton text="Match" />
-          </Popconfirm>
+        <Popconfirm
+          title="Do you want to connect?"
+          onConfirm={handleConfirm}
+          okText="Yes"
+          cancelText="No"
+        >
+          <CustomButton text="Match" />
+        </Popconfirm>
       </CustomModal>
     </Drawer>
   );
