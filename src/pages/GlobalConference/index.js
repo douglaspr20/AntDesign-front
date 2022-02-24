@@ -43,6 +43,7 @@ import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
+import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -292,8 +293,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
-        downloadPdf={downloadPdf}
       />
+
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -303,6 +304,78 @@ const GlobalConference = ({
                 showFilterPanel();
               }}
             />
+
+            {window.screen.width <= 930 && (
+              <div
+                className="button-containers"
+                style={{ marginBottom: "10px" }}
+              >
+                {userProfile.attendedToConference ? (
+                  <>
+                    <div className="attending-label">
+                      <CheckOutlined />
+                      <span>I'm attending</span>
+                    </div>
+                    <CustomButton
+                      className="not-going-button"
+                      text="Not attending"
+                      size="xs"
+                      type="remove"
+                      remove={true}
+                      onClick={onAttend}
+                    />
+                    <CustomButton
+                      size="xs"
+                      text="Invite Your Colleagues"
+                      style={{ padding: "0px 28px" }}
+                      onClick={onInviteColleague}
+                    />
+                  </>
+                ) : (
+                  <CustomButton
+                    size="xs"
+                    text="Attend the conference"
+                    onClick={onAttend}
+                  />
+                )}
+                <CustomButton
+                  text="Accessibility Requirements"
+                  size="xs"
+                  type="info"
+                  className="button-requirements"
+                  onClick={() => setModalRequirementsVisible(true)}
+                />
+
+                <CustomButton
+                  text="Welcoming Message"
+                  size="xs"
+                  style={{ padding: "0px 35px", marginTop: "12px" }}
+                  onClick={() => setModalVisibleWelcomingMessage(true)}
+                />
+
+                {localPathname === "personal-agenda" && (
+                  <>
+                    <CustomButton
+                      size="xs"
+                      text="Download Personalized Agenda"
+                      style={{ marginTop: "12px", padding: "0px 0px" }}
+                      onClick={() => downloadPdf("personal-agenda")}
+                    />
+
+                    {moment().date() >= 7 &&
+                      moment().month() >= 2 &&
+                      moment().year >= 2022 && (
+                        <CustomButton
+                          size="xs"
+                          text="Download Report Sessions Joined"
+                          style={{ marginTop: "12px", padding: "0px 0px" }}
+                          onClick={() => downloadPdf("report-sessions-joined")}
+                        />
+                      )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
           <div className="global-conference-pagination">
             <Menu
