@@ -1,10 +1,6 @@
 .personal-agenda {
-    margin-top: 14rem;
+    margin-top: 2rem;
     width: 100%;
-  
-    @media (max-width: 1100px) {
-      margin-top: 21rem;
-    }
   
     &::-webkit-scrollbar {
       display: none;

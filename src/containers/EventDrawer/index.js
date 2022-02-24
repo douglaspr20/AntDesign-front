@@ -263,7 +263,7 @@ const EventDrawer = ({
                   </React.Fragment>
                 ) : (
                   <CustomButton
-                    text="Upgrade to premium"
+                    text="Upgrade to PREMIUM"
                     size="md"
                     type="primary"
                     onClick={planUpgrade}
