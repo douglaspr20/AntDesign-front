@@ -184,8 +184,6 @@ const PublicEventPage = ({
     );
   };
 
-  console.log(updatedEvent, 'updatedEvent')
-
   return (
     <div className="public-event-page">
       {showFirewall && (
