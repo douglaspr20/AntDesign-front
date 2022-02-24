@@ -5,7 +5,6 @@ import { Redirect, Link } from "react-router-dom";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
 import { Menu, notification } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
 import { INTERNAL_LINKS } from "enum";
 import {
   CustomButton,
@@ -90,6 +89,8 @@ const GlobalConference = ({
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
+    useState(false);
+  const [modalVisibleWelcomingMessage, setModalVisibleWelcomingMessage] =
     useState(false);
 
   const localPathname =
@@ -234,15 +235,15 @@ const GlobalConference = ({
     setLoading(false);
   };
 
-  const onAddBonfire = () => {
-    if (userProfile.memberShip && userProfile.memberShip !== "premium") {
-      return notification.warning({
-        message: "Warning",
-        description: `you need to be a premium user to create a bonfire`,
-      });
-    }
-    setCreateBonfireModalVisible(true);
-  };
+  // const onAddBonfire = () => {
+  //   if (userProfile.memberShip && userProfile.memberShip !== "premium") {
+  //     return notification.warning({
+  //       message: "Warning",
+  //       description: `you need to be a premium user to create a bonfire`,
+  //     });
+  //   }
+  //   setCreateBonfireModalVisible(true);
+  // };
 
   const onInviteColleague = () => {
     if (userProfile.memberShip && userProfile.memberShip !== "premium") {
@@ -277,12 +278,21 @@ const GlobalConference = ({
         onSearch={onSearch}
         filters={filters}
         view={localPathname}
+        onAttend={onAttend}
+        onInviteColleague={onInviteColleague}
+        setModalRequirementsVisible={setModalRequirementsVisible}
+        setModalVisibleWelcomingMessage={setModalVisibleWelcomingMessage}
+        downloadPdf={downloadPdf}
       />
       <FilterDrawer
         onChange={onFilterChange}
         onSearch={onSearch}
         filters={filters}
         view={localPathname}
+        onAttend={onAttend}
+        onInviteColleague={onInviteColleague}
+        setModalRequirementsVisible={setModalRequirementsVisible}
+        downloadPdf={downloadPdf}
       />
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
@@ -294,84 +304,6 @@ const GlobalConference = ({
               }}
             />
           </div>
-          <div className="button-containers">
-            {userProfile.attendedToConference ? (
-              <>
-                <div className="attending-label">
-                  <CheckOutlined />
-                  <span>I'm attending</span>
-                </div>
-                <CustomButton
-                  className="not-going-button"
-                  text="Not attending"
-                  size="xs"
-                  type="remove"
-                  remove={true}
-                  onClick={onAttend}
-                />
-                <CustomButton
-                  size="xs"
-                  text="Invite Your Colleagues"
-                  onClick={() => onInviteColleague()}
-                  style={{ marginLeft: "1rem" }}
-                  className="global-conference-buttom-options"
-                />
-
-                <CustomButton
-                  size="xs"
-                  text="Recommended Agenda"
-                  onClick={() => setModalRecommendeAgendaVisible(true)}
-                  style={{ marginLeft: ".5rem" }}
-                  className="global-conference-buttom-options"
-                />
-              </>
-            ) : (
-              <CustomButton
-                size="xs"
-                text="Attend the conference"
-                onClick={onAttend}
-              />
-            )}
-            <CustomButton
-              text="Accessibility Requirements"
-              size="xs"
-              type="info"
-              className="button-requirements"
-              style={{ marginLeft: ".5rem" }}
-              onClick={() => setModalRequirementsVisible(true)}
-            />
-            {localPathname === "personal-agenda" && (
-              <>
-                <CustomButton
-                  size="xs"
-                  text="Download Personalized Agenda"
-                  style={{ marginLeft: "1rem" }}
-                  onClick={() => downloadPdf("personal-agenda")}
-                />
-
-                {moment().date() >= 7 &&
-                  moment().month() >= 2 &&
-                  moment().year >= 2022 && (
-                    <CustomButton
-                      size="xs"
-                      text="Download Report Sessions Joined"
-                      style={{ marginLeft: "1rem" }}
-                      onClick={() => downloadPdf("report-sessions-joined")}
-                    />
-                  )}
-              </>
-            )}
-
-            {localPathname === "bonfires" && (
-              <CustomButton
-                size="xs"
-                text="Create Bonfire"
-                style={{ marginLeft: "1rem" }}
-                onClick={() => onAddBonfire()}
-              />
-            )}
-          </div>
-          <p className="global-conference-description">{Description}</p>
 
           <div className="global-conference-pagination">
             <Menu
@@ -403,23 +335,23 @@ const GlobalConference = ({
                 </Link>
               </Menu.Item>
 
-              <Menu.Item
+              {/* <Menu.Item
                 key="partners"
                 className="sub-menu-item-global-conference"
               >
                 <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_PARTNERS}>
                   Partners
                 </Link>
-              </Menu.Item>
+              </Menu.Item> */}
 
-              <Menu.Item
+              {/* <Menu.Item
                 key="bonfire"
                 className="sub-menu-item-global-conference"
               >
                 <Link to={INTERNAL_LINKS.GLOBAL_CONFERENCE_BONFIRE}>
                   Bonfire
                 </Link>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item
                 key="personal-agenda"
                 className="sub-menu-item-global-conference"
@@ -497,6 +429,15 @@ const GlobalConference = ({
         visible={modalRecommendeAgendaVisible}
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
+
+      <CustomModal
+        visible={modalVisibleWelcomingMessage}
+        title="Welcome to Hacking HR 2022"
+        width={500}
+        onCancel={() => setModalVisibleWelcomingMessage(false)}
+      >
+        <p className="global-conference-description">{Description}</p>
+      </CustomModal>
 
       <AcceptTermsAndConditions />
     </div>
