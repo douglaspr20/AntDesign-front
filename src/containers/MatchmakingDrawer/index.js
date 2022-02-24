@@ -52,6 +52,7 @@ const MatchmakingDrawer = ({
 
   const handleConfirm = () => {
     setIsPromptVisible(false);
+    sendMatchEmail(matchedUser);
     setMatchedUser(null);
   };
 
