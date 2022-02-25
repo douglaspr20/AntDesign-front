@@ -119,9 +119,9 @@ const AnnualConferenceCard = React.memo(
       (moment().date() < 25 ||
         moment().month() < 1 ||
         moment().year() < 2022) &&
-      timeLeft < 17280
+      timeLeft < 69120
     ) {
-      setTimeLeft(18000);
+      setTimeLeft(80000);
     }
 
     const downloadDropdownOptions = () => (
@@ -220,7 +220,7 @@ const AnnualConferenceCard = React.memo(
                   alignSelf: "flex-end",
                 }}
               />
-            ) : timeLeft >= -10 && timeLeft < 17280 ? (
+            ) : timeLeft >= -10 && timeLeft < 69120 ? (
               <CustomButton
                 type="primary"
                 size="md"
