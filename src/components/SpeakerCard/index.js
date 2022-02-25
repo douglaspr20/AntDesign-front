@@ -15,7 +15,6 @@ const SpeakerCard = ({ speaker }) => {
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
-        maxWidth: "300px",
       }}
       onClick={() => window.open(`${speaker.linkSpeaker}`, "_blank")}
     >

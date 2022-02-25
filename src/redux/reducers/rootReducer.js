@@ -36,11 +36,10 @@ import partnerReducer from "./partnersReducer";
 import jobBoardReducer from "./jobBoardReducer";
 import sessionClassUserReducer from "./sessionClassUserReducer";
 import marketplaceProfileReducer from "./marketplaceProfileReducer";
-import conversationReducer from "./conversationReducer";
 import businessPartnerReducer from "./businessPartnerReducer";
 import businessPartnerCommentsReducer from "./businessPartnerCommentsReducer";
 import advertisementReducer from "./advertisementsReducer";
-import matchmakingReducer from "./matchmakingReducer";
+import matchmakingReducer from './matchmakingReducer'
 
 export default combineReducers({
   home: homeReducer,
@@ -82,7 +81,6 @@ export default combineReducers({
   jobBoard: jobBoardReducer,
   sessionClassUser: sessionClassUserReducer,
   marketplaceProfile: marketplaceProfileReducer,
-  conversation: conversationReducer,
   advertisement: advertisementReducer,
-  matchmaking: matchmakingReducer,
+  matchmaking: matchmakingReducer
 });

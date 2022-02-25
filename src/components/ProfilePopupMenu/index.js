@@ -8,14 +8,8 @@ import { Link, useHistory } from "react-router-dom";
 import { isValidPassword } from "utils/format";
 
 import { CustomButton, CustomModal, CustomInput } from "components";
-import {
-  EVENT_TYPES,
-  USER_ROLES,
-  INTERNAL_LINKS,
-  SOCKET_EVENT_TYPE,
-} from "enum";
+import { EVENT_TYPES, USER_ROLES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
-import SocketIO from "services/socket";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
@@ -125,9 +119,6 @@ const ProfilePopupMenu = (props) => {
 
   const onLogout = () => {
     logout();
-    SocketIO.emit(SOCKET_EVENT_TYPE.USER_OFFLINE, {
-      id: userProfile.id,
-    });
   };
 
   const onUpgrade = () => {

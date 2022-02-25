@@ -35,11 +35,6 @@ export const reducers = {
       participants: cloneDeep(payload.participants),
     });
   },
-  [sessionConstants.SET_RECOMMENDED_PARTICIPANTS]: (state, { payload }) => {
-    return state.merge({
-      recommendedParticipants: cloneDeep(payload.recommendedParticipants),
-    });
-  },
   [sessionConstants.SET_RECOMMENDED_AGENDA]: (state, { payload }) => {
     return state.merge({
       recommendedAgendaSessions: cloneDeep(payload.recommendedAgendaSessions),
@@ -66,7 +61,6 @@ export const initialState = () =>
     sessionsUser: [],
     sessionsUserJoined: [],
     participants: [],
-    recommendedParticipants: [],
     recommendedAgendaSessions: [],
     messageError: "",
   });

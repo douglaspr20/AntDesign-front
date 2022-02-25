@@ -1,130 +1,175 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { sessionSelector } from "redux/selectors/sessionSelector";
-import { getBonfires } from "redux/actions/bonfire-actions";
+import { bonfireSelector } from "redux/selectors/bonfireSelector";
+import { getBonfires, inviteUser } from "redux/actions/bonfire-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import {
-  getParticipants,
-  getRecommendedParticipants,
-  setRecomnendedParticipants,
-  setParticipants,
-} from "redux/actions/session-actions";
-import { Tabs } from "components";
-import SocketIO from "services/socket";
-import { SOCKET_EVENT_TYPE } from "enum";
-import RecommendedParticipants from "./RecommendedParticipants";
-import ParticipantsOnline from "./ParticipantsOnline";
-
+import { getParticipants } from "redux/actions/session-actions";
+import { CustomButton, ParticipantCard } from "components";
+import { Modal, List, Skeleton, notification, Pagination } from "antd";
 import "./style.scss";
 
 const Participants = ({
   participants,
-  recommendedParticipants,
-  setRecomnendedParticipants,
-  setParticipants,
+  bonfires,
   userProfile,
   getParticipants,
-  getRecommendedParticipants,
   getBonfires,
+  inviteUser,
 }) => {
-  const [currentTab, setCurrentTab] = useState("0");
+  const [openModal, setOpenModal] = useState(false);
+  const [participantToInvite, setParticipantToInvite] = useState(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (userProfile.topicsOfInterest.length > 0 && userProfile.id) {
-      getRecommendedParticipants({
+    if (userProfile.topicsOfInterest.length > 0) {
+      getParticipants({
         topics: userProfile.topicsOfInterest,
         userId: userProfile.id,
-        num: 50,
       });
-      getParticipants(userProfile.id);
+
       getBonfires();
     }
-  }, [getParticipants, getRecommendedParticipants, getBonfires, userProfile]);
+  }, [getParticipants, getBonfires, userProfile]);
 
-  useEffect(() => {
-    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (participant) => {
-      setRecomnendedParticipants(
-        recommendedParticipants.map((p) =>
-          p.id === participant.id ? participant : p
-        )
-      );
-
-      setParticipants(
-        participants.map((p) => (p.id === participant.id ? participant : p))
-      );
-    });
-  }, [
-    recommendedParticipants,
-    setRecomnendedParticipants,
-    participants,
-    setParticipants,
-  ]);
-
-  useEffect(() => {
-    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (participant) => {
-      setRecomnendedParticipants(
-        recommendedParticipants.map((p) =>
-          p.id === participant.id ? participant : p
-        )
-      );
-
-      setParticipants(
-        participants.map((p) => (p.id === participant.id ? participant : p))
-      );
-    });
-  }, [
-    recommendedParticipants,
-    setRecomnendedParticipants,
-    participants,
-    setParticipants,
-  ]);
-
-  const handleTab = (key) => {
-    setCurrentTab(key);
+  const onOpenModalBonfires = (participantId) => {
+    setOpenModal(true);
+    setParticipantToInvite(participantId);
   };
 
-  const TabData = [
-    {
-      title: "Recommended Participants To Connect",
-      content: () => (
-        <RecommendedParticipants
-          participants={recommendedParticipants}
-          getBonfires={getBonfires}
-          key="0"
-        />
-      ),
-    },
-    {
-      title: "Participants Online",
-      content: () => (
-        <ParticipantsOnline
-          participants={participants.filter(
-            (participant) => participant.isOnline === true
-          )}
-          key="1"
-        />
-      ),
-    },
-  ];
+  const onInviteUser = (bonfireId, participantId) => {
+    inviteUser(bonfireId, participantId, (error) => {
+      if (error) {
+        notification.error({
+          message: error || "Something went wrong. Please try again.",
+        });
+      } else {
+        getBonfires();
+        notification.success({
+          message: "Participant has been invited",
+        });
+      }
+    });
+  };
+
+  const handlePaginated = (value) => {
+    setPage(value);
+  };
 
   return (
-    <div className="participants-wrapper">
-      <Tabs data={TabData} current={currentTab} onChange={handleTab} />
-    </div>
+    <>
+      <div className="speakers-list">
+        <h2>{participants.length} Recommended Participants To Connect With</h2>
+        <div className="speakers-list-container">
+          {participants.length > 0 &&
+            participants
+              .slice((page - 1) * 20, page * 20)
+              .map((participant, i) => (
+                <ParticipantCard
+                  key={i}
+                  participant={participant}
+                  onOpenModalBonfires={onOpenModalBonfires}
+                  invitedAllBonfires={bonfires
+                    .filter(
+                      (bonfire) => bonfire.bonfireCreator === userProfile.id
+                    )
+                    .every(
+                      (bonfire) =>
+                        bonfire.invitedUsers.includes(participant.id) ||
+                        bonfire.uninvitedJoinedUsers.includes(participant.id) ||
+                        bonfire?.usersInvitedByOrganizer?.includes(
+                          participant.id
+                        )
+                    )}
+                />
+              ))}
+        </div>
+        <Pagination
+          defaultCurrent={page}
+          defaultPageSize={20}
+          total={participants.length}
+          showSizeChanger={false}
+          onChange={handlePaginated}
+          style={{ marginTop: "1.5rem" }}
+        />
+      </div>
+
+      <Modal
+        title="Bonfires creators for you"
+        centered
+        visible={openModal}
+        onOk={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
+        width={800}
+      >
+        <List
+          itemLayout="horizontal"
+          dataSource={bonfires.filter(
+            (bonfire) => bonfire.bonfireCreator === userProfile.id
+          )}
+          renderItem={(bonfire) => {
+            if (
+              bonfire.invitedUsers.includes(participantToInvite) ||
+              bonfire.uninvitedJoinedUsers.includes(participantToInvite) ||
+              bonfire?.usersInvitedByOrganizer?.includes(participantToInvite)
+            ) {
+              return (
+                <List.Item
+                  actions={[
+                    <CustomButton
+                      size="sm"
+                      text="User Already Invited or Joined"
+                      disabled={true}
+                    />,
+                  ]}
+                >
+                  <Skeleton title={false} loading={false}>
+                    <List.Item.Meta
+                      title={bonfire.title}
+                      description={bonfire.description}
+                    />
+                  </Skeleton>
+                </List.Item>
+              );
+            }
+
+            return (
+              <List.Item
+                extra={
+                  <CustomButton
+                    size="sm"
+                    text="Invite User"
+                    onClick={() =>
+                      onInviteUser(bonfire.id, participantToInvite)
+                    }
+                  />
+                }
+              >
+                <Skeleton title={false} loading={false}>
+                  <List.Item.Meta
+                    title={bonfire.title}
+                    description={bonfire.description}
+                  />
+                </Skeleton>
+              </List.Item>
+            );
+          }}
+        />
+      </Modal>
+    </>
   );
 };
 
 const mapStateToProps = (state) => ({
   ...sessionSelector(state),
   userProfile: homeSelector(state).userProfile,
+  bonfires: bonfireSelector(state).bonfires,
 });
 
 const mapDispatchToProps = {
   getParticipants,
-  getRecommendedParticipants,
   getBonfires,
-  setRecomnendedParticipants,
-  setParticipants,
+  inviteUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Participants);

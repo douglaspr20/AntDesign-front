@@ -9,10 +9,13 @@
   padding: 2rem;
   position: relative;
   width: 100%;
-  max-width: 850px;
 
-  @media  (max-width: 500px){
-    max-width: 400px;
+  @media screen and (max-width: 1025px) {
+    margin-top: 15px;
+  }
+
+  @media screen and (max-width: 400px) {
+  max-width: 360px;
   }
 }
 
