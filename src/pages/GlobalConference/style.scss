@@ -24,7 +24,6 @@
     }
     @media (max-width: 1024px) {
       display: block;
-      margin-bottom: 1rem;
     }
   }
 
@@ -86,10 +85,10 @@
       }
 
       @media (max-width: 570px){
-        left: 5%;
+        left: 2%;
         padding: 20px 0px;
         top: 60px;
-        width: 90%;
+        width: 97%;
       }
 
       @media (max-width: 400px){
@@ -102,8 +101,14 @@
       .button-containers{
         display: flex !important;
         align-items: center;
+        margin-left: auto;
+        margin-right: auto;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
+        min-width: 300px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
         & .custom-button{
           margin-top: .5rem;
           max-width: 230px;
@@ -248,7 +253,7 @@
       }
 
       @media (max-width: 600px){
-        top: 12rem;
+        top: 11rem;
         left: -4%;
         width: 100%;
         }

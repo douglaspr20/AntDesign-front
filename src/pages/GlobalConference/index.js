@@ -291,8 +291,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
-        downloadPdf={downloadPdf}
       />
+
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
