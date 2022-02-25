@@ -233,6 +233,8 @@ const AdvertisementDrawer = ({
                 options={[
                   { text: "Home", value: "home" },
                   { text: "Events", value: "events" },
+                  { text: "Project X", value: "project-x" },
+                  { text: "Conference Library", value: "conference-library" },
                 ]}
                 bordered
                 onSelect={handleOnSelect}
