@@ -16,7 +16,6 @@ import {
   getAllSessions,
   getSessionsUserJoined,
 } from "redux/actions/session-actions";
-
 import {
   attendToGlobalConference,
   setLoading,
@@ -70,7 +69,6 @@ const GlobalConference = ({
   setLoading,
   attendToGlobalConference,
   children,
-  history,
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
@@ -190,7 +188,13 @@ const GlobalConference = ({
     SocketIO.on(SOCKET_EVENT_TYPE.SEND_MESSAGE_GLOBAL_CONFERENCE, (message) =>
       showModalMessage(message)
     );
-  }, []);
+  }, [userProfile]);
+
+  useEffect(() => {
+    if (userProfile.id && !userProfile.isOnline) {
+      SocketIO.emit(SOCKET_EVENT_TYPE.USER_ONLINE, { id: userProfile.id });
+    }
+  }, [userProfile]);
 
   const downloadPdf = async (option) => {
     setLoading(true);
@@ -311,7 +315,7 @@ const GlobalConference = ({
               }}
             />
 
-            {window.screen.width <= 930 && (
+            {window.screen.width <= 1024 && (
               <div
                 className="button-containers"
                 style={{ marginBottom: "10px" }}

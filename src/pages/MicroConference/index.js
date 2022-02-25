@@ -6,14 +6,19 @@ import { Tabs } from "antd";
 import MicroConferenceSkeleton from "./MicroConferenceSkeleton";
 import MicroConferenceVideosList from "./MicroConferenceVideosList";
 import MicroConferenceVideoWrapper from "./MicroConferenceVideoWrapper";
-
-import { getSession, getSessionClasses } from "redux/actions/session-actions";
-
+import {
+  getSession,
+  getSessionClasses,
+  getParticipants,
+  setParticipants,
+} from "redux/actions/session-actions";
+import { createConversartion } from "redux/actions/conversation-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
-
 import { INTERNAL_LINKS } from "enum";
-import { SpeakerCard } from "components";
+import { SpeakerCard, ParticipantCard } from "components";
+import SocketIO from "services/socket";
+import { SOCKET_EVENT_TYPE } from "enum";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
@@ -50,6 +55,10 @@ const MicroConference = ({
   classes,
   getSession,
   getSessionClasses,
+  getParticipants,
+  setParticipants,
+  participants,
+  createConversartion,
 }) => {
   const { status } = useMicroConferenceQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
@@ -62,6 +71,32 @@ const MicroConference = ({
     getSession(match.params.id);
     getSessionClasses(match.params.id);
   }, [getSession, getSessionClasses, match]);
+
+  useEffect(() => {
+    if (user.id) {
+      getParticipants(user.id);
+    }
+  }, [getParticipants, user]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (participant) => {
+      setParticipants(
+        participants.map((p) => (p.id === participant.id ? participant : p))
+      );
+    });
+  }, [participants, setParticipants]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (participant) => {
+      setParticipants(
+        participants.map((p) => (p.id === participant.id ? participant : p))
+      );
+    });
+  }, [participants, setParticipants]);
+
+  const handleCreateConversation = (members) => {
+    createConversartion(members);
+  };
 
   const activeVideoUrl = useMemo(() => {
     if (classes && classes.length) {
@@ -182,6 +217,37 @@ const MicroConference = ({
                         </div>
                       </div>
                     </TabPane>
+
+                    <TabPane
+                      tab="Participants in the Same Class Online"
+                      key="4"
+                    >
+                      <div>
+                        <div className="micro-conference__description-card">
+                          <h3>Online Participants in this Class</h3>
+
+                          <div className="micro-conference__description-speakers-list">
+                            {participants.length > 0 &&
+                              participants
+                                .filter(
+                                  (participant) =>
+                                    participant.sessionsJoined.includes(
+                                      +match.params.id
+                                    ) && participant.isOnline === true
+                                )
+                                .map((participant, i) => (
+                                  <ParticipantCard
+                                    key={i}
+                                    participant={participant}
+                                    handleCreateConversation={
+                                      handleCreateConversation
+                                    }
+                                  />
+                                ))}
+                          </div>
+                        </div>
+                      </div>
+                    </TabPane>
                   </Tabs>
                 </div>
               </div>
@@ -195,6 +261,7 @@ const MicroConference = ({
 
 const mapStateToProps = (state, props) => ({
   session: sessionSelector(state).session,
+  participants: sessionSelector(state).participants,
   classes: sessionSelector(state).classes,
   user: homeSelector(state).userProfile,
 });
@@ -202,6 +269,9 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   getSession,
   getSessionClasses,
+  getParticipants,
+  setParticipants,
+  createConversartion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MicroConference);

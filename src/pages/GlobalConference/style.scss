@@ -8,7 +8,7 @@
   height: calc(100vh - 72px);
   overflow: auto;
 
-  @media (max-width: 1023.98px) {
+  @media (max-width: 1024px) {
     .global-conference-filter-panel {
       display: none;
     }
@@ -23,7 +23,7 @@
     button {
       width: 100%;
     }
-    @media (max-width: 1023.98px) {
+    @media (max-width: 1024px) {
       display: block;
     }
   }
@@ -44,6 +44,7 @@
 
     @media (max-width: 1024px) {
       padding: 3rem 4%;
+      width: 700px;
 
       .acc-session-added-tag {
         right: -2px;
@@ -52,7 +53,7 @@
 
     @media (max-width: 500px) {
       padding: 3rem 2%;
-
+      width: 430px;
     }
 
     &-top-menu {
@@ -62,47 +63,25 @@
        display: flex;
        justify-content: center;
        flex-direction: column;
-       top: 71px;
-       padding: 1rem 10px;
-       left: 29%;
-       @media (max-width: 3000px) {
-         width: 60%;
-         left: 30%;
-       }
-
+       top: 50px;
+       padding: 2rem 10px;
+       left: 25%;
+       width: 60%;
        @media (max-width: 1500px){
-        left: 27%;
-        width: 71.5%;
+        left: 29%;
+        width: 56%;
         padding: 20px 0px;
       }
 
-      @media (max-width: 1300px){
-        left: 30%;
-        width: 70%;
-        padding: 20px 0px;
-      }
-
-      @media (max-width: 1300px){
-        left: 30%;
-        width: 70%;
-        padding: 20px 0px;
-      }
-
-      @media (max-width: 1256px){
-        left: 32%;
-        width: 65%;
-        padding: 20px 0px;
-      }
-
-      @media (max-width: 1100px){
-        left: 37%;
-        width: 63%;
+      @media (max-width: 1024px){
+        left: 12%;
+        width: 68%;
         padding: 20px 10px;
       }
 
       @media (max-width: 800px){
-        left: 15%;
-        width: 85%;
+        left: 12%;
+        width: 90%;
         padding: 20px 20px;
       }
 
@@ -117,7 +96,7 @@
         left: 1%;
         padding: 20px 0px;
         top: 60px;
-        width: 99%;
+        width: 98%;
       }
 
       .button-containers{
@@ -205,8 +184,8 @@
     max-width: 1200px;
 
     @media (max-width: 1500px){
-      position: relative;
-      max-width: 1100px;
+      position: relative;    
+      max-width: 900px;
       }
 
     @media (max-width: 1256px){
@@ -231,30 +210,47 @@
     z-index: 32;
     width: 52%;
     top: 9rem;
-    left: 34%;
+    left: 29%;
 
+    .ant-tabs-tab{
+      padding: 1rem 2rem !important;
+    }
     @media (max-width: 1500px){
-      top: 9rem;
+      top: 8rem;
       left: 28%;
-      width: 70.5%;
+      width: 56%;
+      .ant-tabs-tab{
+        padding: 1rem 1.2rem !important;
+      }
       }
 
       @media (max-width: 1300px){
         top: 9rem;
         left: 30%;
         width: 70.5%;
+
+        .ant-tabs-tab{
+          padding: 1rem 1rem !important;
+        }
         }
 
     @media (max-width: 1100px){
-      top: 9rem;
-      left: 38%;
-      width: 55%;
+      top: 18rem;
+      left: 10%;
+      width: 70%;
+      .ant-tabs-tab{
+        padding: 1rem .6rem !important;
+      }
       }
 
     @media (max-width: 800px){
-      top: 19rem;
-      left: 15%;
-      width: 80%;
+      top: 18rem;
+      left: 16%;
+      width: 82%;
+
+      .ant-tabs-tab{
+        padding: 1rem .4rem !important;
+      }
       }
 
       @media (max-width: 600px){
@@ -264,15 +260,18 @@
         }
 
     @media (max-width: 500px){
-      top: 19rem;
-      width: 110%;
-    left: -12%;
+      top: 18.5rem;
+      width: 113%;
+    left: -16%;
+
+    .ant-tabs-tab{
+      padding: 1rem .21rem !important;
+    }
       }
 
     @media (max-width: 400px){
-      top: 18.5rem;
-      width: 115%;
-    left: -16%;
+      top: 28rem;
+      left: -12%;
       }
 
     }

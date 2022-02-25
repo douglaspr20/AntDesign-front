@@ -6,6 +6,7 @@ const socketInstance = socketIOClient(ENDPOINT);
 
 const SocketService = {
   on: (event, fn) => socketInstance.on(event, fn),
+  emit: (event, data) => socketInstance.emit(event, data),
   off: () => socketInstance.disconnect(),
 };
 

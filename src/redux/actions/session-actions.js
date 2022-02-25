@@ -12,6 +12,8 @@ const GET_SESSIONS_USER_JOINED = "GET_SESSIONS_USER_JOINED";
 const SET_SESSIONS_USER_JOINED = "SET_SESSIONS_USER_JOINED";
 const GET_PARTICIPANTS = "GET_PARTICIPANTS";
 const SET_PARTICIPANTS = "SET_PARTICIPANTS";
+const GET_RECOMMENDED_PARTICIPANTS = "GET_RECOMMENDED_PARTICIPANTS";
+const SET_RECOMMENDED_PARTICIPANTS = "SET_RECOMMENDED_PARTICIPANTS";
 const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
 const SET_RECOMMENDED_AGENDA = "SET_RECOMMENDED_AGENDA";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
@@ -30,6 +32,8 @@ export const constants = {
   SET_SESSIONS_USER_JOINED,
   GET_PARTICIPANTS,
   SET_PARTICIPANTS,
+  GET_RECOMMENDED_PARTICIPANTS,
+  SET_RECOMMENDED_PARTICIPANTS,
   RECOMMENDED_AGENDA,
   SET_RECOMMENDED_AGENDA,
   SET_SESSION_LOADING,
@@ -84,15 +88,26 @@ export const setSessionsUserJoined = createAction(
   })
 );
 
-export const getParticipants = createAction(
-  GET_PARTICIPANTS,
-  (filters) => filters
-);
+export const getParticipants = createAction(GET_PARTICIPANTS, (userId) => ({
+  userId,
+}));
 
 export const setParticipants = createAction(
   SET_PARTICIPANTS,
   (participants) => ({
     participants,
+  })
+);
+
+export const getRecommendedParticipants = createAction(
+  GET_RECOMMENDED_PARTICIPANTS,
+  (filters) => filters
+);
+
+export const setRecomnendedParticipants = createAction(
+  SET_RECOMMENDED_PARTICIPANTS,
+  (recommendedParticipants) => ({
+    recommendedParticipants,
   })
 );
 
@@ -128,6 +143,8 @@ export const actions = {
   setSessionsUserJoined,
   getParticipants,
   setParticipants,
+  getRecommendedParticipants,
+  setRecomnendedParticipants,
   recommendedAgenda,
   setRecommendedAgenda,
   setSessionLoading,
