@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import ReactCrop from "react-image-crop";
-import "react-image-crop/lib/ReactCrop.scss";
+import "react-image-crop/dist/ReactCrop.css";
 
 import { CustomButton } from "../../../components";
 
