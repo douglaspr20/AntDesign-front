@@ -39,6 +39,8 @@ import marketplaceProfileReducer from "./marketplaceProfileReducer";
 import conversationReducer from "./conversationReducer";
 import businessPartnerReducer from "./businessPartnerReducer";
 import businessPartnerCommentsReducer from "./businessPartnerCommentsReducer";
+import advertisementReducer from "./advertisementsReducer";
+import matchmakingReducer from "./matchmakingReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -81,4 +83,6 @@ export default combineReducers({
   sessionClassUser: sessionClassUserReducer,
   marketplaceProfile: marketplaceProfileReducer,
   conversation: conversationReducer,
+  advertisement: advertisementReducer,
+  matchmaking: matchmakingReducer,
 });

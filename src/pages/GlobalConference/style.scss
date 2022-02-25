@@ -25,7 +25,6 @@
     }
     @media (max-width: 1024px) {
       display: block;
-      margin-bottom: 1rem;
     }
   }
 
@@ -42,7 +41,6 @@
     @media (max-width: 1500px) {
       padding: 3rem 0%;
     }
-  
 
     @media (max-width: 1024px) {
       padding: 3rem 4%;
@@ -55,7 +53,6 @@
     @media (max-width: 500px) {
       padding: 3rem 2%;
 
-    
     }
 
     &-top-menu {
@@ -87,7 +84,14 @@
         padding: 20px 20px;
       }
 
-      @media (max-width: 500px){
+      @media (max-width: 570px){
+        left: 2%;
+        padding: 20px 0px;
+        top: 60px;
+        width: 97%;
+      }
+
+      @media (max-width: 400px){
         left: 1%;
         padding: 20px 0px;
         top: 60px;
@@ -97,25 +101,37 @@
       .button-containers{
         display: flex !important;
         align-items: center;
+        margin-left: auto;
+        margin-right: auto;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
+        min-width: 300px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
         & .custom-button{
           margin-top: .5rem;
+          max-width: 230px;
+        }
+
+      @media (max-width: 500px) {
+        & .custom-button{
+          max-width: 190px;
+          padding: 0px 4px !important;
         }
       }
-      
-    }
 
-    .attending-label {
-      margin-right: 37px;
-      color: $color-success;
-      @include app-font(16px, 21px, normal);
-      white-space: nowrap;
-
-      span {
-        margin-left: 0.5rem;
+      @media (max-width: 400px) {
+        & .custom-button{
+          max-width: 180px;
+          padding: 0px 4px !important;
+        }
       }
+
+      }
+
     }
+
   }
 
   &-description {
@@ -123,16 +139,16 @@
     @include app-font(16px, 24px);
     color: $color-text-secondary;
 
-    @media (max-width: 1300px){
-      padding: 0px 10px;
-    }
+    // @media (max-width: 1300px){
+    //   padding: 0px 10px;
+    // }
 
-    @media (max-width: 800px){
-      margin-top: 1rem;
-      padding: 0px 10px;
-      max-height: 100px;
-      overflow-y: scroll;
-    }
+    // @media (max-width: 800px){
+    //   margin-top: 1rem;
+    //   padding: 0px 10px;
+    //   max-height: 100px;
+    //   overflow-y: scroll;
+    // }
   }
 
   .button-requirements{
@@ -140,6 +156,7 @@
     border: none !important;
     align-self: center;
     color: #fff;
+    padding: 0px 13px;
 
     &:hover, &:active{
       color: #fff !important;
@@ -147,13 +164,11 @@
     }
   }
 
-
-
   &-pagination {
     display: flex;
     justify-content: center;
     position: relative;
-  
+
     .custom-button {
       margin-left: 0.5rem;
       padding: 0 1rem;
@@ -172,13 +187,17 @@
       max-width: 900px;
       }
 
+    @media (max-width: 1256px){
+      position: relative;
+      max-width: 700px;
+    }
+
     @media (max-width: 1025px){
     position: relative;
     width: 100%
     }
 
   }
-
 
   &-tabs {
     width: 100%;
@@ -204,7 +223,7 @@
       }
 
       @media (max-width: 1300px){
-        top: 21.5rem;
+        top: 9rem;
         left: 30%;
         width: 70.5%;
 
@@ -230,8 +249,14 @@
       }
       }
 
+      @media (max-width: 600px){
+        top: 11rem;
+        left: -4%;
+        width: 100%;
+        }
+
     @media (max-width: 500px){
-      top: 26.5rem;
+      top: 19rem;
       width: 110%;
     left: -10%;
 
@@ -239,14 +264,13 @@
       padding: 1rem .4rem !important;
     }
       }
-  
+
     @media (max-width: 400px){
       top: 28rem;
       left: -12%;
       }
- 
-    }
 
+    }
 
     .ant-tabs-nav-wrap {
       display: flex;
@@ -259,15 +283,25 @@
   &-buttom-options{
     @media (max-width: 500px){
       padding: 5px 10px !important
-      }  
+      }
   }
-  
+
 }
 
+.attending-label {
+  margin-right: 37px;
+  color: $color-success;
+  @include app-font(16px, 21px, normal);
+  white-space: nowrap;
+
+  span {
+    margin-left: 0.5rem;
+  }
+}
 
 .zoom-button{
   width: 25px !important;
-  height: 25px !important; 
+  height: 25px !important;
   padding: 0px 5px !important;
   margin-bottom: 5px;
 }
@@ -286,7 +320,7 @@
 
 .sub-menu-item-global-conference {
   font-size: 16px;
-  margin: 0px 25px !important;
+  margin: 0 2rem !important;
 
   @media (max-width: 1300px){
     margin: 0px 20px !important;
@@ -311,7 +345,6 @@ a:active,
   border-bottom: 2px solid $color-primary !important;
   color: $color-primary !important;
 }
-
 
 .ant-modal-footer .ant-btn-primary{
   background: $color-primary;

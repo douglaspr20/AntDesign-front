@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import { Checkbox } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput } from "components";
+import { CustomButton, CustomCheckbox, SearchInput } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import { CONFERENCE_SETTING } from "enum";
 
 import "./style.scss";
+import { CheckOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
@@ -21,6 +23,11 @@ const FilterPanel = ({
   filters,
   view,
   userProfile,
+  onAttend,
+  onInviteColleague,
+  setModalRequirementsVisible,
+  setModalVisibleWelcomingMessage,
+  downloadPdf,
 }) => {
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -39,6 +46,80 @@ const FilterPanel = ({
 
   return (
     <div className="global-conference-filter-panel">
+      {userProfile.attendedToConference ? (
+        <>
+          <div className="attending-label">
+            <CheckOutlined />
+            <span>I'm attending</span>
+          </div>
+          <CustomButton
+            className="not-going-button"
+            text="Not attending"
+            size="xs"
+            type="remove"
+            remove={true}
+            onClick={onAttend}
+          />
+          <CustomButton
+            size="xs"
+            text="Invite Your Colleagues"
+            style={{ padding: "0px 28px" }}
+            onClick={onInviteColleague}
+          />
+        </>
+      ) : (
+        <CustomButton
+          size="xs"
+          text="Attend the conference"
+          onClick={onAttend}
+        />
+      )}
+      <div className="button-containers" style={{ marginBottom: "10px" }}>
+        <CustomButton
+          text="Accessibility Requirements"
+          size="xs"
+          type="info"
+          className="button-requirements"
+          onClick={() => setModalRequirementsVisible(true)}
+        />
+
+        <CustomButton
+          text="Welcoming Message"
+          size="xs"
+          style={{ padding: "0px 35px", marginTop: "12px" }}
+          onClick={() => setModalVisibleWelcomingMessage(true)}
+        />
+
+        {/* <CustomButton
+          size="xs"
+          type="primary"
+          text="Download Full Schedule"
+          style={{ marginTop: "12px", padding: "0px 22px" }}
+          onClick={() => downloadPdf("conference-schedule")}
+        /> */}
+
+        {view === "personal-agenda" && (
+          <>
+            <CustomButton
+              size="xs"
+              text="Download Personalized Agenda"
+              style={{ marginTop: "12px", padding: "0px 0px" }}
+              onClick={() => downloadPdf("personal-agenda")}
+            />
+
+            {moment().date() >= 7 &&
+              moment().month() >= 2 &&
+              moment().year >= 2022 && (
+                <CustomButton
+                  size="xs"
+                  text="Download Report Sessions Joined"
+                  style={{ marginTop: "12px", padding: "0px 0px" }}
+                  onClick={() => downloadPdf("report-sessions-joined")}
+                />
+              )}
+          </>
+        )}
+      </div>
       <h2 className="font-regular">{title}</h2>
       <div className="global-conference-filter-panel-content">
         <div className="search-filter">

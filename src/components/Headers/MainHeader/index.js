@@ -23,6 +23,7 @@ import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
+import IconHome from "images/icon-home.svg";
 
 import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -183,6 +184,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_HOME_PREVIEW}`)) {
+      pathInfo = {
+        icon: IconHome,
+        label: "Advertisement Preview",
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">
@@ -245,7 +253,7 @@ class MainHeader extends React.Component {
           /> */}
           {user.memberShip === "free" && (
             <CustomButton
-              text="Upgrade"
+              text="Upgrade to PREMIUM"
               type="primary"
               size="lg"
               className="btn-upgrade"

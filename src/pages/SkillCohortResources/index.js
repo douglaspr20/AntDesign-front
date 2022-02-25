@@ -1,4 +1,4 @@
-import { Row, Col, Card, Avatar, Spin } from "antd";
+import { Row, Col, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
@@ -7,7 +7,7 @@ import { CustomButton, Tabs } from "components";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
-import { UserOutlined } from "@ant-design/icons";
+// import { UserOutlined } from "@ant-design/icons";
 import OpengraphReactComponent from "opengraph-react";
 import qs from "query-string";
 
@@ -55,7 +55,7 @@ const SkillCohortResources = ({
 
   useEffect(() => {
     getSkillCohort(id);
-    getAllSkillCohortParticipants(id);
+    // getAllSkillCohortParticipants(id);
     getAllSkillCohortResources(id, {
       date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
     });
@@ -212,45 +212,45 @@ const SkillCohortResources = ({
     </div>
   );
 
-  const displayParticipants = allSkillCohortParticipants.map(
-    (participant, index) => {
-      const user = participant.User;
-      const name = `${user.firstName} ${user.lastName}`;
+  // const displayParticipants = allSkillCohortParticipants.map(
+  //   (participant, index) => {
+  //     const user = participant.User;
+  //     const name = `${user.firstName} ${user.lastName}`;
 
-      return (
-        <Col className="participant-col" key={index}>
-          <a
-            href={user.personalLinks.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Card
-              hoverable
-              bordered
-              type="inner"
-              extra={<UserOutlined />}
-              bodyStyle={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              {user.img ? (
-                <Avatar size={180} src={user.img} alt={name} />
-              ) : (
-                <Avatar size={180} icon={<UserOutlined />} />
-              )}
+  //     return (
+  //       <Col className="participant-col" key={index}>
+  //         <a
+  //           href={user.personalLinks.linkedin}
+  //           target="_blank"
+  //           rel="noopener noreferrer"
+  //         >
+  //           <Card
+  //             hoverable
+  //             bordered
+  //             type="inner"
+  //             extra={<UserOutlined />}
+  //             bodyStyle={{
+  //               display: "flex",
+  //               flexDirection: "column",
+  //               alignItems: "center",
+  //             }}
+  //           >
+  //             {user.img ? (
+  //               <Avatar size={180} src={user.img} alt={name} />
+  //             ) : (
+  //               <Avatar size={180} icon={<UserOutlined />} />
+  //             )}
 
-              <div style={{ textAlign: "center" }}>
-                <p className="participant-name">{name}</p>
-                <p>{user.titleProfessions}</p>
-              </div>
-            </Card>
-          </a>
-        </Col>
-      );
-    }
-  );
+  //             <div style={{ textAlign: "center" }}>
+  //               <p className="participant-name">{name}</p>
+  //               <p>{user.titleProfessions}</p>
+  //             </div>
+  //           </Card>
+  //         </a>
+  //       </Col>
+  //     );
+  //   }
+  // );
 
   const displayConversation = (
     <div className="display-conversation-container">
@@ -320,12 +320,12 @@ const SkillCohortResources = ({
       title: "Conversations",
       content: () => displayConversation,
     },
-    {
-      title: "Participants",
-      content: () => (
-        <div className="display-participants">{displayParticipants}</div>
-      ),
-    },
+    // {
+    //   title: "Participants",
+    //   content: () => (
+    //     <div className="display-participants">{displayParticipants}</div>
+    //   ),
+    // },
   ];
 
   return (

@@ -12,7 +12,10 @@ class CompanyLogoUploadForm extends PureComponent {
       src: props.src,
       crop: {
         unit: "%",
-        height: 20,
+        height: 50,
+        width: 50,
+        x: 25,
+        y: 25,
       },
       croppedImageUrl: null,
       base64: null,

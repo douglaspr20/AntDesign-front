@@ -39,7 +39,7 @@ const Notification = ({
   const history = useHistory();
 
   useEffect(() => {
-    if (!isEmpty(userProfile)) {
+    if (!isEmpty(userProfile) && userProfile.id) {
       getAllParticipated(userProfile.id);
     }
   }, [userProfile]);
@@ -82,6 +82,9 @@ const Notification = ({
         break;
       case "resource":
         history.push(cohortLink);
+        break;
+      case "post":
+        history.push(`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`);
         break;
       default:
         break;

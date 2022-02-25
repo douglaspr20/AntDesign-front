@@ -11,6 +11,17 @@ export const getBusinessPartnerResourcesFromAPI = (filter, order) => {
 export const getBusinessPartnerResourceByIdFromAPI = (payload) => {
   return httpClient.get(`private/business-partner/resource/${payload.id}`);
 };
+
+export const deleteBusinessPartnerResourceByIdFromAPI = (id) => {
+  return httpClient.delete(`private/business-partner/resource/${id}`);
+};
+
+export const updateBusinessPartnerResourceFromAPI = (payload) => {
+  return httpClient.put(`private/business-partner/resource/${payload.id}`, {
+    payload,
+  });
+};
+
 export const getBusinessPartnerDocumentsFromAPI = () => {
   return httpClient.get("private/business-partner/documents");
 };

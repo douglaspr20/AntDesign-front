@@ -62,3 +62,15 @@
   justify-content: space-between;
   width: 100%;
 }
+
+.qualified-people-modal {
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .qualified-people-modal-content {
+      display: flex;
+    }
+  }
+}

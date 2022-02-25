@@ -20,6 +20,8 @@ import {
   acceptInvitationJoin,
   confirmAccessibilityRequirements,
   getAllUsers,
+  acceptTermsAndConditions,
+  countAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -172,10 +174,12 @@ import {
 import {
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourcesFromAPI,
+  deleteBusinessPartnerResourceByIdFromAPI,
   createBusinessPartnerResourceFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
+  updateBusinessPartnerResourceFromAPI,
   deleteBusinessPartnerDocumentFromAPI,
 } from "./module/businessPartner";
 
@@ -201,7 +205,19 @@ import {
   getMoreMessages,
 } from "./module/conversation";
 
+import {
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  editAdvertisement,
+} from "./module/advertisement";
+
+import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
+
 import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -216,6 +232,8 @@ export {
   createCouncilResourceFromAPI,
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  updateBusinessPartnerResourceFromAPI,
+  deleteBusinessPartnerResourceByIdFromAPI,
   deleteBusinessPartnerDocumentFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   getBusinessPartnerResourcesFromAPI,
@@ -353,4 +371,14 @@ export {
   getConversations,
   readMessages,
   getMoreMessages,
+  acceptTermsAndConditions,
+  countAllUsers,
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  getMatchmake,
+  editAdvertisement,
+  sendMatchEmail,
 };

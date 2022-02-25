@@ -89,8 +89,10 @@ class EventCard extends React.Component {
   };
 
   onClickDownloadCalendar = (day) => {
+    const userTimezone = moment.tz.guess();
+
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${this.props.data.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };
@@ -185,7 +187,7 @@ class EventCard extends React.Component {
         ticket,
         location,
         status,
-        image,
+        image2,
         period,
         showClaim,
         startAndEndTimes,
@@ -223,9 +225,9 @@ class EventCard extends React.Component {
             <IconPlus />
           </div>
         ) : (
-          <>
+          <div>
             <div className="event-card-img">
-              {image && <img src={image} alt="card-img" />}
+              {image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
@@ -262,14 +264,13 @@ class EventCard extends React.Component {
                               }}
                             >
                               {startAndEndTimes.length > 1
-                                ? `Download Day ${index + 1}`
+                                ? `Download Calendar Day ${index + 1}: ${moment(
+                                    startTime
+                                  ).format("MMM DD")} `
                                 : "Download Calendar"}
                               <DownOutlined />
                             </a>
                           </Dropdown>
-                          <div>{`${moment(startTime).format(
-                            "HH:mm"
-                          )} - ${moment(endTime).format("HH:mm")}`}</div>
                         </Space>
                       </div>
                     );
@@ -331,7 +332,7 @@ class EventCard extends React.Component {
                 </div>
               </CardMenu>
             )}
-          </>
+          </div>
         )}
       </div>
     );
