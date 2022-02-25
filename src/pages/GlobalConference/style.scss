@@ -44,6 +44,7 @@
 
     @media (max-width: 1024px) {
       padding: 3rem 4%;
+      width: 700px;
 
       .acc-session-added-tag {
         right: -2px;
@@ -52,7 +53,7 @@
 
     @media (max-width: 500px) {
       padding: 3rem 2%;
-
+      width: 430px;
     }
 
     &-top-menu {
@@ -208,17 +209,18 @@
     background: $color-background;
     z-index: 32;
     width: 52%;
-    top: 18rem;
+    top: 9rem;
     left: 29%;
 
     .ant-tabs-tab{
       padding: 1rem 2rem !important;
     }
     @media (max-width: 1500px){
-      top: 21rem;
+      top: 8rem;
+      left: 28%;
       width: 56%;
       .ant-tabs-tab{
-        padding: 1rem 1.5rem !important;
+        padding: 1rem 1.2rem !important;
       }
       }
 
@@ -233,19 +235,21 @@
         }
 
     @media (max-width: 1100px){
-      top: 25.5rem;
-      left: 12%;
-      width: 68%;
-      
+      top: 18rem;
+      left: 10%;
+      width: 70%;
+      .ant-tabs-tab{
+        padding: 1rem .6rem !important;
+      }
       }
 
     @media (max-width: 800px){
-      top: 25rem;
+      top: 18rem;
       left: 16%;
-      width: 75%;
+      width: 82%;
 
       .ant-tabs-tab{
-        padding: 1rem .8rem !important;
+        padding: 1rem .4rem !important;
       }
       }
 
@@ -256,12 +260,12 @@
         }
 
     @media (max-width: 500px){
-      top: 19rem;
-      width: 110%;
-    left: -10%;
+      top: 18.5rem;
+      width: 113%;
+    left: -16%;
 
     .ant-tabs-tab{
-      padding: 1rem .4rem !important;
+      padding: 1rem .21rem !important;
     }
       }
 

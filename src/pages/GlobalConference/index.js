@@ -315,7 +315,7 @@ const GlobalConference = ({
               }}
             />
 
-            {window.screen.width <= 930 && (
+            {window.screen.width <= 1024 && (
               <div
                 className="button-containers"
                 style={{ marginBottom: "10px" }}
