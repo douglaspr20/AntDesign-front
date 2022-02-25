@@ -74,7 +74,7 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate] = useState(moment("2022-02-21", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
@@ -360,7 +360,7 @@ const GlobalConference = ({
                 />
                 <CustomButton
                   size="xs"
-                  text="Download Conference Schedule"
+                  text="Download Full Schedule"
                   style={{ marginTop: "12px", padding: "0px 0px" }}
                   onClick={() => downloadPdf("conference-schedule")}
                 />

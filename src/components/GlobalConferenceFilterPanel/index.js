@@ -93,8 +93,7 @@ const FilterPanel = ({
         <CustomButton
           size="xs"
           type="info"
-          className="button-requirements"
-          text="Download Conference Schedule"
+          text="Download Full Schedule"
           style={{ marginTop: "12px", padding: "0px 0px" }}
           onClick={() => downloadPdf("conference-schedule")}
         />
