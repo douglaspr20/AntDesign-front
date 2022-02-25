@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import { connect } from "react-redux";
 
 import { Spin, Layout } from "antd";
@@ -40,8 +40,8 @@ import { authSelector } from "redux/selectors/authSelector";
 import "./styles/main.scss";
 import "./App.scss";
 import SocketEventTypes from "enum/SocketEventTypes";
-import { Chat } from "components";
-import ChatMobile from "components/ChatMobile";
+const Chat = lazy(() => import("components/Chat"));
+const ChatMobile = lazy(() => import("components/ChatMobile"));
 
 class App extends Component {
   constructor(props) {
@@ -236,21 +236,23 @@ class App extends Component {
             <TopHeader />
             <div style={{ display: "flex", position: "relative" }}>
               <Content />
-              {(window.location.pathname.includes("/global-conference") ||
-                window.location.pathname.includes("/session")) &&
-              window.screen.width > 1000 &&
-              this.props.conversations.length > 0 ? (
-                <Chat conversations={this.props.conversations} />
-              ) : (window.location.pathname.includes("/global-conference") ||
+              <Suspense fallback={<div />}>
+                {(window.location.pathname.includes("/global-conference") ||
                   window.location.pathname.includes("/session")) &&
-                window.screen.width < 1000 &&
+                window.screen.width > 1000 &&
                 this.props.conversations.length > 0 ? (
-                <ChatMobile
-                  conversations={this.props.conversations}
-                  openChat={openChat}
-                  setOpenChat={() => this.setState({ openChat: !openChat })}
-                />
-              ) : null}
+                  <Chat conversations={this.props.conversations} />
+                ) : (window.location.pathname.includes("/global-conference") ||
+                    window.location.pathname.includes("/session")) &&
+                  window.screen.width < 1000 &&
+                  this.props.conversations.length > 0 ? (
+                  <ChatMobile
+                    conversations={this.props.conversations}
+                    openChat={openChat}
+                    setOpenChat={() => this.setState({ openChat: !openChat })}
+                  />
+                ) : null}
+              </Suspense>
             </div>
             <FeedbackBox />
           </Layout>
