@@ -263,7 +263,7 @@ const EventDrawer = ({
                   </React.Fragment>
                 ) : (
                   <CustomButton
-                    text="Upgrade to premium"
+                    text="Upgrade to PREMIUM"
                     size="md"
                     type="primary"
                     onClick={planUpgrade}
@@ -331,7 +331,9 @@ const EventDrawer = ({
                           }}
                         >
                           {event.startAndEndTimes.length > 1
-                            ? `Download Day ${index + 1}`
+                            ? `Download Calendar Day ${index + 1}: ${moment(
+                              startTime
+                            ).format("MMM DD")} `
                             : "Download Calendar"}
                           <DownOutlined />
                         </a>

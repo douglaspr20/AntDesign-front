@@ -25,7 +25,6 @@
     }
     @media (max-width: 1023.98px) {
       display: block;
-      margin-bottom: 1rem;
     }
   }
 
@@ -66,7 +65,7 @@
        justify-content: center;
        flex-direction: column;
        top: 71px;
-       padding: 2rem 10px;
+       padding: 1rem 10px;
        left: 29%;
        @media (max-width: 3000px) {
          width: 60%;
@@ -86,47 +85,82 @@
         padding: 20px 0px;
       }
 
+      @media (max-width: 1300px){
+        left: 30%;
+        width: 70%;
+        padding: 20px 0px;
+      }
+
+      @media (max-width: 1256px){
+        left: 32%;
+        width: 65%;
+        padding: 20px 0px;
+      }
+
+
       @media (max-width: 1100px){
         left: 37%;
         width: 63%;
         padding: 20px 10px;
       }
 
+ 
       @media (max-width: 800px){
         left: 15%;
         width: 85%;
         padding: 20px 20px;
       }
 
-      @media (max-width: 500px){
+      @media (max-width: 570px){
+        left: 2%;
+        padding: 20px 0px;
+        top: 60px;
+        width: 97%;
+      }
+
+      @media (max-width: 400px){
         left: 1%;
         padding: 20px 0px;
         top: 60px;
-        width: 100%;
+        width: 99%;
       }
 
       .button-containers{
         display: flex !important;
         align-items: center;
+        margin-left: auto;
+        margin-right: auto;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
+        min-width: 300px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
         & .custom-button{
           margin-top: .5rem;
+          max-width: 230px;
+        }
+
+
+      @media (max-width: 500px) {
+        & .custom-button{
+          max-width: 190px;
+          padding: 0px 4px !important;
+        }
+      }
+
+      @media (max-width: 400px) {
+        & .custom-button{
+          max-width: 180px;
+          padding: 0px 4px !important;
         }
       }
       
-    }
-
-    .attending-label {
-      margin-right: 37px;
-      color: $color-success;
-      @include app-font(16px, 21px, normal);
-      white-space: nowrap;
-
-      span {
-        margin-left: 0.5rem;
       }
+
     }
+
+   
   }
 
   &-description {
@@ -134,16 +168,16 @@
     @include app-font(16px, 24px);
     color: $color-text-secondary;
 
-    @media (max-width: 1300px){
-      padding: 0px 10px;
-    }
+    // @media (max-width: 1300px){
+    //   padding: 0px 10px;
+    // }
 
-    @media (max-width: 800px){
-      margin-top: 1rem;
-      padding: 0px 10px;
-      max-height: 100px;
-      overflow-y: scroll;
-    }
+    // @media (max-width: 800px){
+    //   margin-top: 1rem;
+    //   padding: 0px 10px;
+    //   max-height: 100px;
+    //   overflow-y: scroll;
+    // }
   }
 
   .button-requirements{
@@ -151,6 +185,7 @@
     border: none !important;
     align-self: center;
     color: #fff;
+    padding: 0px 13px;
 
     &:hover, &:active{
       color: #fff !important;
@@ -183,6 +218,11 @@
       max-width: 1100px;
       }
 
+    @media (max-width: 1256px){
+      position: relative;    
+      max-width: 700px;
+    }
+
     @media (max-width: 1025px){
     position: relative;
     width: 100%
@@ -200,43 +240,51 @@
     background: $color-background;
     z-index: 32;
     width: 52%;
-    top: 19rem;
+    top: 9rem;
     left: 34%;
 
     @media (max-width: 1500px){
-      top: 18rem;
+      top: 9rem;
       left: 28%;
       width: 70.5%;
       }
 
+     
+
       @media (max-width: 1300px){
-        top: 21.5rem;
+        top: 9rem;
         left: 30%;
         width: 70.5%;
         }
 
     @media (max-width: 1100px){
-      top: 22rem;
-      left: 40%;
+      top: 9rem;
+      left: 38%;
       width: 55%;
       }
 
     @media (max-width: 800px){
-      top: 25rem;
-      left: 20%;
-      width: 75%;
+      top: 19rem;
+      left: 15%;
+      width: 80%;
       }
 
+      @media (max-width: 600px){
+        top: 11rem;
+        left: -4%;
+        width: 100%;
+        }
+
     @media (max-width: 500px){
-      top: 26.5rem;
+      top: 19rem;
       width: 110%;
-    left: -10%;
+    left: -12%;
       }
   
     @media (max-width: 400px){
-      top: 26.5rem;
-      width: 107%;
-    left: -12%;
+      top: 18.5rem;
+      width: 115%;
+    left: -16%;
       }
  
     }
@@ -256,6 +304,17 @@
       }  
   }
   
+}
+
+.attending-label {
+  margin-right: 37px;
+  color: $color-success;
+  @include app-font(16px, 21px, normal);
+  white-space: nowrap;
+
+  span {
+    margin-left: 0.5rem;
+  }
 }
 
 
@@ -280,7 +339,7 @@
 
 .sub-menu-item-global-conference {
   font-size: 16px;
-  margin: 0px 25px !important;
+  margin: 0 2rem !important;
 
   @media (max-width: 1300px){
     margin: 0px 20px !important;

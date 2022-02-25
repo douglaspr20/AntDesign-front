@@ -249,7 +249,7 @@ const HomePage = ({
                   the LAB features
                 </h2>
                 <CustomButton
-                  text="Upgrade"
+                  text="Upgrade to PREMIUM"
                   type="primary"
                   size="xl"
                   className="recommend-card-upgrade"
@@ -258,6 +258,17 @@ const HomePage = ({
               </div>
             )}
           </div>
+          <div className="home-page-container--mobile-options">
+            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+            <Button
+              onClick={() => {
+                showFilterPanel();
+              }}
+            >
+              Filters
+            </Button>
+          </div>
+          <Posts onShowMore={onShowMore} history={history} />
         </div>
       </div>
       <AdvertisementDrawer
