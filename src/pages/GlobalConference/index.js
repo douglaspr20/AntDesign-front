@@ -357,12 +357,12 @@ const GlobalConference = ({
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
                 />
-                <CustomButton
+                {/* <CustomButton
                   size="xs"
                   text="Download Full Schedule"
                   style={{ marginTop: "12px", padding: "0px 22px" }}
                   onClick={() => downloadPdf("conference-schedule")}
-                />
+                /> */}
 
                 {localPathname === "personal-agenda" && (
                   <>
