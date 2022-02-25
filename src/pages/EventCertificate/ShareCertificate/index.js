@@ -49,9 +49,14 @@ const EventCertificatePage = ({
   const shareUrl = `${window.location.origin}${
     INTERNAL_LINKS.EVENT_CERTIFICATE
   }?id=${query.get("id")}`;
-  const userCertificated = myEvents.usersAssistence?.find(
-    (item) => item === user.id
+
+  const userAssistenceJson = myEvents?.usersAssistence?.map((item) =>
+    item.map((el) => JSON.parse(el))
   );
+  const userAssistence = userAssistenceJson?.map((item) => item);
+  const userCertificated =
+    userAssistence &&
+    userAssistence[0].filter((item) => item.usersAssistence === false);
 
   useEffect(() => {
     getEvent(id);
@@ -105,7 +110,6 @@ const EventCertificatePage = ({
   const domElement = document.getElementById("certificate-panel");
 
   useEffect(() => {
-
     const generateImage = async () => {
       const canvas = await html2canvas(domElement, { scale: 4 });
       const imgData = canvas.toDataURL("image/png");
@@ -121,7 +125,7 @@ const EventCertificatePage = ({
   }, [domElement, img, getMetadata]);
   return (
     <>
-      {userCertificated ? (
+      {userCertificated?.length === 0 ? (
         <>
           <HelmetMetaData
             title="Digital Certificate"

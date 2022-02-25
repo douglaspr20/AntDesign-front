@@ -4,10 +4,12 @@ import ReactPlayer from "react-player/youtube";
 
 import Interweave from "interweave";
 import { connect } from "react-redux";
-import { updateEvent } from "redux/actions/event-actions";
+import { updateEventUserAssistence } from "redux/actions/event-actions";
 import { getUser } from "redux/actions/home-actions";
+import { getEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 
 import Emitter from "services/emitter";
 import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
@@ -15,27 +17,121 @@ import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 
 import "./style.scss";
+import moment from "moment";
 
-const LivePage = ({ userProfile, getUser, history, live }) => {
+const LivePage = ({
+  userProfile,
+  getUser,
+  history,
+  updateEventUserAssistence,
+  live,
+  myEvents,
+  getEvent,
+}) => {
   const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
+  const [firstTimes, setFirstTimes] = useState([]);
+  const [times, setTimes] = useState(
+    myEvents.usersAssistence
+      ? myEvents.usersAssistence[0]?.map((el) => JSON.parse(el))
+      : []
+  );
   const handleConfirmAssistence = () => {
     setVisibleEventConfirm(true);
   };
 
   const onConfirmAssistence = () => {
-    updateEvent(live.event);
+    let usersAssistence;
+    usersAssistence = times.length > 0 && times.map((el) => JSON.stringify(el));
+    if (!usersAssistence) {
+      usersAssistence = firstTimes.map((el) => JSON.stringify(el));
+      usersAssistence = [...new Set(usersAssistence)];
+    }
+    updateEventUserAssistence({
+      ...myEvents,
+      usersAssistence,
+    });
     setVisibleEventConfirm(false);
   };
 
   useEffect(() => {
     getUser();
+    if (live.event) {
+      getEvent(Number(live.event));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /*
+   * validating event date to confirm live assistence
+   * adding user to the users assistence list
+   */
+
+  useEffect(() => {
+    if (!times || !times[0]?.start) {
+      if (userProfile.id && myEvents.id) {
+        const userAssistenceJsonToArray =
+          myEvents.usersAssistence?.length > 0 &&
+          myEvents.usersAssistence[0]?.map((el) => JSON.parse(el));
+
+        setTimes(userAssistenceJsonToArray);
+        myEvents.startAndEndTimes &&
+          myEvents.startAndEndTimes.map((time) => {
+            const start = moment(time.startTime).format("MMM DD HH ");
+            const end = moment(time.endTime).format("MMM DD HH");
+            const today = moment(new Date()).format("MMM DD HH");
+
+            const usersEventAssistence = [];
+            const userAssistence =
+              start <= today && end >= today && userProfile.id;
+            if (userAssistenceJsonToArray) {
+              const addingUserToTheListUserAssistence =
+                userAssistenceJsonToArray?.map((item) => {
+                  if (
+                    userAssistence &&
+                    item.start === start &&
+                    item.end === end
+                  ) {
+                    if (item.usersAssistence?.length > 0) {
+                      return usersEventAssistence.push(
+                        ...item.usersAssistence,
+                        userAssistence
+                      );
+                    }
+                    return usersEventAssistence.push(userAssistence);
+                  }
+                  return item;
+                });
+
+              console.log(addingUserToTheListUserAssistence);
+            }
+            const norepeat = [...new Set(usersEventAssistence)];
+            if (norepeat?.length > 0) {
+              return setTimes((prev) => {
+                const index = prev.findIndex(
+                  (el) => el.start === start && el.end === end
+                );
+                prev[index] = { start, end, usersAssistence: norepeat };
+                return [...prev];
+              });
+            } else {
+              return setFirstTimes((prev) => {
+                return [
+                  ...prev,
+                  {
+                    start,
+                    end,
+                    usersAssistence: userAssistence ? [userAssistence] : false,
+                  },
+                ];
+              });
+            }
+          });
+      }
+    }
+  }, [myEvents, live, userProfile.id, times]);
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
-
   return (
     <>
       {live.live === true ? (
@@ -76,7 +172,7 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
                         title="Attendance Confirmation"
                         width={500}
                         onCancel={() => setVisibleEventConfirm(false)}
-                        onOk={() => setVisibleEventConfirm(false)}
+                        onOk={() => onConfirmAssistence()}
                         okText="Confirm"
                       >
                         <p>
@@ -87,16 +183,6 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
                           tab:
                         </p>
                         <div className="buttons-confirm-container">
-                          <CustomButton
-                            text="Confirm"
-                            size="md"
-                            onClick={onConfirmAssistence}
-                          />
-                          <CustomButton
-                            text="Cancel"
-                            size="md"
-                            onClick={() => setVisibleEventConfirm(false)}
-                          />
                         </div>
                       </Modal>
                     </div>
@@ -145,11 +231,13 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   live: liveSelector(state).live,
+  myEvents: eventSelector(state).myEvents,
 });
 
 const mapDispatchToProps = {
-  updateEvent,
+  updateEventUserAssistence,
   getUser,
+  getEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LivePage);

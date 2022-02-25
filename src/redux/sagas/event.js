@@ -30,6 +30,7 @@ import {
   claimEventCredit,
   claimEventAttendance,
   getMetadata,
+  updateEventUserAssistenceFromAPI,
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -387,6 +388,39 @@ export function* updateEvent({ payload }) {
   }
 }
 
+export function* updateEventUserAssistenceSagas({ payload }) {
+  yield put(homeActions.setLoading(true));
+  try {
+    const response = yield call(updateEventUserAssistenceFromAPI, { ...payload });
+
+    if (response.status === 200) {
+      const data = response.data.affectedRows;
+      yield put(
+        eventActions.setEvent({
+          ...data,
+          date: convertToCertainTime(data.startDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          date2: convertToCertainTime(data.endDate, data.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          about: getEventDescription(data.description),
+          usersAssistence: data.usersAssistence,
+        })
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* createChannelEventSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
@@ -556,6 +590,7 @@ function* watchLogin() {
   yield takeLatest(eventConstants.GET_MY_EVENTS, getAllMyEvents);
   yield takeLatest(eventConstants.UPDATE_EVENT_STATUS, updateEventStatus);
   yield takeLatest(eventConstants.UPDATE_EVENT, updateEvent);
+  yield takeLatest(eventConstants.UPDATE_EVENT_USER_ASSISTENCE, updateEventUserAssistenceSagas);
   yield takeLatest(eventConstants.CREATE_CHANNEL_EVENT, createChannelEventSaga);
   yield takeLatest(eventConstants.GET_CHANNEL_EVENTS, getChannelEventsSaga);
   yield takeLatest(eventConstants.DELETE_EVENT, deleteEventSaga);
