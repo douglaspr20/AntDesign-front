@@ -32,8 +32,10 @@
     }
 
     @media screen and (max-width: 400px) {
+      
       & .ant-btn {
        max-width: 310px;
+       padding: 0px 14px;
       }
 
       h3{

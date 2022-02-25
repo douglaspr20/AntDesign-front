@@ -25,7 +25,6 @@
     }
     @media (max-width: 1023.98px) {
       display: block;
-      margin-bottom: 1rem;
     }
   }
 
@@ -42,7 +41,6 @@
     @media (max-width: 1500px) {
       padding: 3rem 0%;
     }
-  
 
     @media (max-width: 1024px) {
       padding: 3rem 4%;
@@ -55,7 +53,6 @@
     @media (max-width: 500px) {
       padding: 3rem 2%;
 
-    
     }
 
     &-top-menu {
@@ -72,7 +69,6 @@
          width: 60%;
          left: 30%;
        }
-     
 
        @media (max-width: 1500px){
         left: 27%;
@@ -98,14 +94,12 @@
         padding: 20px 0px;
       }
 
-
       @media (max-width: 1100px){
         left: 37%;
         width: 63%;
         padding: 20px 10px;
       }
 
- 
       @media (max-width: 800px){
         left: 15%;
         width: 85%;
@@ -113,10 +107,10 @@
       }
 
       @media (max-width: 570px){
-        left: 5%;
+        left: 2%;
         padding: 20px 0px;
         top: 60px;
-        width: 90%;
+        width: 97%;
       }
 
       @media (max-width: 400px){
@@ -129,16 +123,37 @@
       .button-containers{
         display: flex !important;
         align-items: center;
+        margin-left: auto;
+        margin-right: auto;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
+        min-width: 300px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
         & .custom-button{
           margin-top: .5rem;
+          max-width: 230px;
+        }
+
+      @media (max-width: 500px) {
+        & .custom-button{
+          max-width: 190px;
+          padding: 0px 4px !important;
         }
       }
-      
+
+      @media (max-width: 400px) {
+        & .custom-button{
+          max-width: 180px;
+          padding: 0px 4px !important;
+        }
+      }
+
+      }
+
     }
 
-   
   }
 
   &-description {
@@ -171,13 +186,11 @@
     }
   }
 
-
-
   &-pagination {
     display: flex;
     justify-content: center;
     position: relative;
-  
+
     .custom-button {
       margin-left: 0.5rem;
       padding: 0 1rem;
@@ -192,12 +205,12 @@
     max-width: 1200px;
 
     @media (max-width: 1500px){
-      position: relative;    
+      position: relative;
       max-width: 1100px;
       }
 
     @media (max-width: 1256px){
-      position: relative;    
+      position: relative;
       max-width: 700px;
     }
 
@@ -207,7 +220,6 @@
     }
 
   }
-
 
   &-tabs {
     width: 100%;
@@ -227,8 +239,6 @@
       width: 70.5%;
       }
 
-     
-
       @media (max-width: 1300px){
         top: 9rem;
         left: 30%;
@@ -242,31 +252,30 @@
       }
 
     @media (max-width: 800px){
-      top: 13rem;
+      top: 19rem;
       left: 15%;
       width: 80%;
       }
 
       @media (max-width: 600px){
-        top: 12rem;
+        top: 11rem;
         left: -4%;
         width: 100%;
         }
 
     @media (max-width: 500px){
-      top: 12rem;
+      top: 19rem;
       width: 110%;
-    left: -15%;
-      }
-  
-    @media (max-width: 400px){
-      top: 12rem;
-      width: 107%;
     left: -12%;
       }
- 
-    }
 
+    @media (max-width: 400px){
+      top: 18.5rem;
+      width: 115%;
+    left: -16%;
+      }
+
+    }
 
     .ant-tabs-nav-wrap {
       display: flex;
@@ -279,15 +288,25 @@
   &-buttom-options{
     @media (max-width: 500px){
       padding: 5px 10px !important
-      }  
+      }
   }
-  
+
 }
 
+.attending-label {
+  margin-right: 37px;
+  color: $color-success;
+  @include app-font(16px, 21px, normal);
+  white-space: nowrap;
+
+  span {
+    margin-left: 0.5rem;
+  }
+}
 
 .zoom-button{
   width: 25px !important;
-  height: 25px !important; 
+  height: 25px !important;
   padding: 0px 5px !important;
   margin-bottom: 5px;
 }
@@ -331,7 +350,6 @@ a:active,
   border-bottom: 2px solid $color-primary !important;
   color: $color-primary !important;
 }
-
 
 .ant-modal-footer .ant-btn-primary{
   background: $color-primary;

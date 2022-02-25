@@ -90,6 +90,14 @@ const FilterPanel = ({
           onClick={() => setModalVisibleWelcomingMessage(true)}
         />
 
+        {/* <CustomButton
+          size="xs"
+          type="primary"
+          text="Download Full Schedule"
+          style={{ marginTop: "12px", padding: "0px 22px" }}
+          onClick={() => downloadPdf("conference-schedule")}
+        /> */}
+
         {view === "personal-agenda" && (
           <>
             <CustomButton
