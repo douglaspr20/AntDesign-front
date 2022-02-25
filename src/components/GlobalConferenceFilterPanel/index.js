@@ -89,6 +89,7 @@ const FilterPanel = ({
           style={{ padding: "0px 35px", marginTop: "12px" }}
           onClick={() => setModalVisibleWelcomingMessage(true)}
         />
+
         {/* <CustomButton
           size="xs"
           type="primary"
@@ -96,6 +97,7 @@ const FilterPanel = ({
           style={{ marginTop: "12px", padding: "0px 22px" }}
           onClick={() => downloadPdf("conference-schedule")}
         /> */}
+
         {view === "personal-agenda" && (
           <>
             <CustomButton

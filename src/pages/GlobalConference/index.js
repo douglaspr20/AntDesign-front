@@ -46,12 +46,12 @@ import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
-Welcome to the Hacking HR 2022 Global Online Conference 
-planner. Here you will find all the sessions for the conference. You 
+Welcome to the Hacking HR 2022 Global Online Conference
+planner. Here you will find all the sessions for the conference. You
 can add sessions to your personalized agenda and then download a
-PDF. Notice that you can’t add two sessions that are happening the 
-same day at the same time. You can also download the calendar 
-invites to save the date. Finally, you can find the speakers and 
+PDF. Notice that you can’t add two sessions that are happening the
+same day at the same time. You can also download the calendar
+invites to save the date. Finally, you can find the speakers and
 connect with other participants. Enjoy!
 `;
 const TAB_NUM = 6;
@@ -199,8 +199,8 @@ const GlobalConference = ({
       setLoading(false);
       return notification.warning({
         message: "You have no sessions",
-        description: `Add your first session before downloading personalized agenda” if 
-        someone tries to download it without having added any session to 
+        description: `Add your first session before downloading personalized agenda” if
+        someone tries to download it without having added any session to
         their agenda`,
       });
     } else if (sessionsUserJoined < 1 && option === "report-sessions-joined") {
@@ -235,7 +235,7 @@ const GlobalConference = ({
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
         : option === "conference-schedule"
-        ? "Conference Full Schedule"
+        ? "Conference Schedule.pdf"
         : "Report sessions joined"
     );
 
@@ -299,8 +299,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
-        downloadPdf={downloadPdf}
       />
+
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -310,6 +310,7 @@ const GlobalConference = ({
                 showFilterPanel();
               }}
             />
+
             {window.screen.width <= 930 && (
               <div
                 className="button-containers"
@@ -388,7 +389,6 @@ const GlobalConference = ({
               </div>
             )}
           </div>
-
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
