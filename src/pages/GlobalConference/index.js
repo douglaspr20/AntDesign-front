@@ -43,6 +43,7 @@ import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
+import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
