@@ -43,7 +43,6 @@ import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
-import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -213,11 +212,7 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda"
-        ? sessionsUser
-        : option === "conference-schedule"
-        ? allSessions
-        : sessionsUserJoined,
+      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
       option
     );
 
@@ -234,8 +229,6 @@ const GlobalConference = ({
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
-        : option === "conference-schedule"
-        ? "Conference Schedule.pdf"
         : "Report sessions joined"
     );
 
@@ -299,8 +292,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
+        downloadPdf={downloadPdf}
       />
-
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -310,7 +303,6 @@ const GlobalConference = ({
                 showFilterPanel();
               }}
             />
-
             {window.screen.width <= 930 && (
               <div
                 className="button-containers"
@@ -389,6 +381,7 @@ const GlobalConference = ({
               </div>
             )}
           </div>
+
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"

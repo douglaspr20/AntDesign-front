@@ -116,3 +116,7 @@ export const acceptTermsAndConditions = ({ id }) => {
     `private/user/accept-terms-condition-g-conference/${id}`
   );
 };
+
+export const countAllUsers = async () => {
+  return await httpClient.get("private/users/count-all")
+}

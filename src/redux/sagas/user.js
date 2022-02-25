@@ -25,6 +25,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  countAllUsers,
 } from "../../api";
 import {
   acceptInvitationApplyBusinnesPartner,
@@ -220,17 +221,16 @@ export function* joinedASessionSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(homeActions.updateUserInformation(response.data.user));
-
-      if (payload.callback) payload.callback();
     }
   } catch (error) {
+    console.log(error);
+
     if (error && error.response && error.response.status === 401) {
       yield put(authActions.logout());
-    } else if (payload.callback) {
-      payload.callback(error.response.data.msg);
     }
   } finally {
     yield put(homeActions.setLoading(false));
+    if (payload.callback) payload.callback();
   }
 }
 
@@ -540,6 +540,31 @@ export function* acceptTermsAndConditionsSaga({ payload }) {
   }
 }
 
+export function* countAllUsersSaga() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(countAllUsers);
+
+    if (response.status === 200) {
+      yield put(homeActions.setCountUsers(response.data.userCount));
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -576,6 +601,7 @@ function* watchLogin() {
     homeConstants.ACCEPT_TERMS_CONDITIONS_GCONFERENCE,
     acceptTermsAndConditionsSaga
   );
+  yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
 }
 
 export const userSaga = [fork(watchLogin)];
