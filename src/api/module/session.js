@@ -1,4 +1,5 @@
 import httpClient from "./httpClient";
+import { SETTINGS } from "enum";
 
 export const getAllSessions = ({ startTime, endTime, meta }) => {
   if (startTime && endTime) {
@@ -32,13 +33,9 @@ export const getSessionsUserJoined = ({ sessionsId }) => {
 };
 
 export const getParticipants = (filters) => {
-  let newFilter = {};
-
-  if (filters.num) {
-    newFilter = {
-      num: filters.num,
-    };
-  }
+  let newFilter = {
+    num: SETTINGS.MAX_SEARCH_ROW_PARTICIPANTS_NUM,
+  };
 
   if (!filters.page) {
     newFilter = {

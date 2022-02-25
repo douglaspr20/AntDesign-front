@@ -205,16 +205,13 @@ const ParticipantCard = ({
   userProfile,
   jobPosts,
   invitationToApply,
-  handleCreateConversation,
 }) => {
   return (
     <Card
       hoverable
       bordered
       type="inner"
-      extra={
-        <UserOutlined className={participant.isOnline ? "userOnline" : ""} />
-      }
+      extra={<UserOutlined />}
       bodyStyle={{
         display: "flex",
         flexDirection: "column",
@@ -231,21 +228,6 @@ const ParticipantCard = ({
           onClick={() => onOpenModalBonfires(participant.id)}
         />
       ) : null}
-
-      {participant.isOnline && (
-        <CustomButton
-          size="sm"
-          text="Chat"
-          style={{
-            position: "absolute",
-            zIndex: "10",
-            top: 35,
-          }}
-          onClick={() =>
-            handleCreateConversation([participant.id, userProfile.id])
-          }
-        />
-      )}
 
       {marketplaceProfile ? (
         <>

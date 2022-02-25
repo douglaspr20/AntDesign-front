@@ -11,7 +11,6 @@ const resultSelector = createSelector(sessionDataSelector, (payload) => {
     sessionsUser: payload.get("sessionsUser"),
     sessionsUserJoined: payload.get("sessionsUserJoined"),
     participants: payload.get("participants"),
-    recommendedParticipants: payload.get("recommendedParticipants"),
     partners: payload.get("partners"),
     recommendedAgendaSessions: payload.get("recommendedAgendaSessions"),
     messageError: payload.get("messageError"),

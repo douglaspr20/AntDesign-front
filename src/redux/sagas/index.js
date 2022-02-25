@@ -35,11 +35,10 @@ import { sessionClassUserSaga } from "./sessionClassUser";
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
-import { conversationSaga } from "./conversation";
 import { businessPartnerSaga } from "./businessPartner";
 import { businessPartnerCommentSaga } from "./businessPartnerComments";
 import { advertisementSaga } from "./advertisement";
-import { matchmakeSaga } from "./matchmaking";
+import { matchmakeSaga } from './matchmaking'
 
 export default function* sagas() {
   yield all([
@@ -81,8 +80,7 @@ export default function* sagas() {
     ...jobBoardSaga,
     ...sessionClassUserSaga,
     ...marketplaceProfileSaga,
-    ...conversationSaga,
     ...advertisementSaga,
-    ...matchmakeSaga,
+    ...matchmakeSaga
   ]);
 }

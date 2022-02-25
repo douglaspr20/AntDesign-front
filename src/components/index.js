@@ -56,5 +56,4 @@ export { default as SpeakerCard } from "./SpeakerCard";
 export { default as ParticipantCard } from "./ParticipantCard";
 export { default as CategoriesSelect } from "./CategoriesSelect";
 export { default as UploadResumeModal } from "./UploadResumeModal";
-export { default as Chat } from "./Chat";
 export { default as BusinessDocumentsCard } from "./BusinessDocumentsCards";

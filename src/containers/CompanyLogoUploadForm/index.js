@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import ReactCrop from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import "react-image-crop/lib/ReactCrop.scss";
 
 import { CustomButton } from "components";
 

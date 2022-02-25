@@ -230,7 +230,11 @@ export function* getSessionsUserJoinedSaga({ payload }) {
 }
 
 export function* getParticipantsSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
+  if (payload.page === 1) {
+    yield put(homeActions.setLoading(true));
+  } else {
+    yield put(sessionActions.setSessionLoading(true));
+  }
 
   try {
     let response = yield call(getParticipants, payload);
@@ -244,26 +248,7 @@ export function* getParticipantsSaga({ payload }) {
     }
   } finally {
     yield put(homeActions.setLoading(false));
-  }
-}
-
-export function* getRecommendedParticipantsSaga({ payload }) {
-  yield put(homeActions.setLoading(true));
-  try {
-    let response = yield call(getParticipants, payload);
-    if (response.status === 200) {
-      const { participants: recommendedParticipants } = response.data;
-      yield put(
-        sessionActions.setRecomnendedParticipants(recommendedParticipants)
-      );
-    }
-  } catch (error) {
-    console.log(error);
-    if (error && error.response && error.response.status === 401) {
-      yield put(logout());
-    }
-  } finally {
-    yield put(homeActions.setLoading(false));
+    yield put(sessionActions.setSessionLoading(false));
   }
 }
 
@@ -326,10 +311,6 @@ function* watchSession() {
     getSessionsUserJoinedSaga
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
-  yield takeLatest(
-    sessionConstants.GET_RECOMMENDED_PARTICIPANTS,
-    getRecommendedParticipantsSaga
-  );
   yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
 }
 

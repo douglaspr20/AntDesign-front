@@ -65,7 +65,6 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
               <SpeakerCard key={speaker.id} speaker={speaker} />
             ))}
       </div>
-
       <Pagination
         defaultCurrent={page}
         defaultPageSize={20}
