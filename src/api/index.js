@@ -21,6 +21,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  countAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -197,7 +198,19 @@ import {
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
 
+import {
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  editAdvertisement
+} from "./module/advertisement";
+
+import { getMatchmake, sendMatchEmail } from './module/matchmaking'
+
 import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -348,4 +361,13 @@ export {
   createMarketplaceProfile,
   updateMarketplaceProfile,
   acceptTermsAndConditions,
+  countAllUsers,
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  getMatchmake,
+  editAdvertisement,
+  sendMatchEmail
 };
