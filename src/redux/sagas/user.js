@@ -220,16 +220,17 @@ export function* joinedASessionSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(homeActions.updateUserInformation(response.data.user));
+
+      if (payload.callback) payload.callback();
     }
   } catch (error) {
-    console.log(error);
-
     if (error && error.response && error.response.status === 401) {
       yield put(authActions.logout());
+    } else if (payload.callback) {
+      payload.callback(error.response.data.msg);
     }
   } finally {
     yield put(homeActions.setLoading(false));
-    if (payload.callback) payload.callback();
   }
 }
 

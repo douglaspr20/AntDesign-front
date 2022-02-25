@@ -43,6 +43,7 @@ import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
+import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference 
@@ -73,7 +74,7 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-02-21", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
@@ -212,7 +213,11 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
+      option === "personal-agenda"
+        ? sessionsUser
+        : option === "conference-schedule"
+        ? allSessions
+        : sessionsUserJoined,
       option
     );
 
@@ -229,6 +234,8 @@ const GlobalConference = ({
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
+        : option === "conference-schedule"
+        ? "Conference Schedule.pdf"
         : "Report sessions joined"
     );
 
@@ -292,8 +299,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
-        downloadPdf={downloadPdf}
       />
+
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -303,8 +310,85 @@ const GlobalConference = ({
                 showFilterPanel();
               }}
             />
-          </div>
 
+            {window.screen.width <= 930 && (
+              <div
+                className="button-containers"
+                style={{ marginBottom: "10px" }}
+              >
+                {userProfile.attendedToConference ? (
+                  <>
+                    <div className="attending-label">
+                      <CheckOutlined />
+                      <span>I'm attending</span>
+                    </div>
+                    <CustomButton
+                      className="not-going-button"
+                      text="Not attending"
+                      size="xs"
+                      type="remove"
+                      remove={true}
+                      onClick={onAttend}
+                    />
+                    <CustomButton
+                      size="xs"
+                      text="Invite Your Colleagues"
+                      style={{ padding: "0px 28px" }}
+                      onClick={onInviteColleague}
+                    />
+                  </>
+                ) : (
+                  <CustomButton
+                    size="xs"
+                    text="Attend the conference"
+                    onClick={onAttend}
+                  />
+                )}
+                <CustomButton
+                  text="Accessibility Requirements"
+                  size="xs"
+                  type="info"
+                  className="button-requirements"
+                  onClick={() => setModalRequirementsVisible(true)}
+                />
+
+                <CustomButton
+                  text="Welcoming Message"
+                  size="xs"
+                  style={{ padding: "0px 35px", marginTop: "12px" }}
+                  onClick={() => setModalVisibleWelcomingMessage(true)}
+                />
+                <CustomButton
+                  size="xs"
+                  text="Download Conference Schedule"
+                  style={{ marginTop: "12px", padding: "0px 0px" }}
+                  onClick={() => downloadPdf("conference-schedule")}
+                />
+
+                {localPathname === "personal-agenda" && (
+                  <>
+                    <CustomButton
+                      size="xs"
+                      text="Download Personalized Agenda"
+                      style={{ marginTop: "12px", padding: "0px 0px" }}
+                      onClick={() => downloadPdf("personal-agenda")}
+                    />
+
+                    {moment().date() >= 7 &&
+                      moment().month() >= 2 &&
+                      moment().year >= 2022 && (
+                        <CustomButton
+                          size="xs"
+                          text="Download Personalized Participation Report"
+                          style={{ marginTop: "12px", padding: "0px 0px" }}
+                          onClick={() => downloadPdf("report-sessions-joined")}
+                        />
+                      )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"
