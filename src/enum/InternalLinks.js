@@ -50,5 +50,6 @@ export default {
   PROJECTX: "/projectx",
   INVITATION: "/invitation",
   SPONSOR_DASHBOARD: "/sponsor-dashboard",
-  TALENT_MARKETPLACE: '/talent-marketplace'
+  TALENT_MARKETPLACE: '/talent-marketplace',
+  AD_HOME_PREVIEW: '/ad/home/preview'
 };

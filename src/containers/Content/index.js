@@ -375,6 +375,11 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
             render={(props) => <JobPostDetailsPage {...props} />}
           />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.AD_HOME_PREVIEW}/:id`}
+            exact
+            render={(props) => <HomePage {...props} isAdPreview />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}

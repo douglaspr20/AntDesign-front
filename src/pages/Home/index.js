@@ -1,7 +1,11 @@
+/* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
+// import { isEmpty } from "lodash";
+import { useParams } from "react-router-dom";
+import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
 import ProfileStatusBar from "./ProfileStatusBar";
 import { PostsFilterPanel, CustomButton } from "components";
@@ -16,6 +20,11 @@ import { getRecommendations } from "redux/actions/library-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { postSelector } from "redux/selectors/postSelector";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
+import {
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+} from "redux/actions/advertisment-actions";
 
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
@@ -32,9 +41,17 @@ const HomePage = ({
   getUser,
   currentPage,
   getAllPost,
+  getAdvertisementsTodayByPage,
+  advertisementsByPage,
+  getAdvertisementById,
+  advertisementById,
+  isAdPreview = false,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
+  const [visible, setVisible] = useState(false);
+  // const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
+  const { id } = useParams();
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -50,6 +67,24 @@ const HomePage = ({
     getAllPost({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isAdPreview) {
+      getAdvertisementById(id);
+    } else {
+      getAdvertisementsTodayByPage("home");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  // useEffect(() => {
+  //   if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
+  //     setHasAdvertisementData(true);
+  //   } else {
+  //     setHasAdvertisementData(false);
+  //   }
+  // }, [advertisementsByPage]);
 
   const onFilterChange = (filter) => {
     getAllPost({ ...filter, text });
@@ -75,6 +110,53 @@ const HomePage = ({
       page: currentPage + 1,
     });
   };
+
+  // const displayAds = hasAdvertisementData &&
+  //   !isEmpty(advertisementsByPage.home) && (
+  //     <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">
+  //       {advertisementsByPage.home.map((advertisement) => {
+  //         return (
+  //           <div
+  //             className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
+  //             key={advertisement.id}
+  //           >
+  //             <div
+  //               className="advertisement"
+  //               onClick={() =>
+  //                 window.open(advertisement.advertisementLink, "_blank")
+  //               }
+  //             >
+  //               <img
+  //                 src={advertisement.adContentLink}
+  //                 alt="advertisement"
+  //                 className="advertisement-img"
+  //               />
+  //             </div>
+  //           </div>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+
+  // const displayPreviewAd = isAdPreview && (
+  //   <div className="home-page-container--posts-central-panel-content-preview">
+  //     <div className="advertisement">
+  //       <img
+  //         src={advertisementById.adContentLink}
+  //         alt="advertisement"
+  //         className="advertisement-img"
+  //       />
+  //     </div>
+  //   </div>
+  // );
+
+  // const dipslayRentAd = !isAdPreview && hasAdvertisementData === false && (
+  //   <div className="home-page-container--posts-central-panel-content-preview">
+  //     <div className="advertisement" onClick={() => setVisible(true)}>
+  //       <h1>Advertise Here</h1>
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="home-page-container">
@@ -141,6 +223,24 @@ const HomePage = ({
               <ProfileStatusBar user={userProfile} />
             </div>
           )}
+          <div className="home-page-container--mobile-options">
+            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
+            <Button
+              onClick={() => {
+                showFilterPanel();
+              }}
+            >
+              Filters
+            </Button>
+          </div>
+          <div className="home-page-container--posts-central-panel-content">
+            <div className="home-page-container--posts-central-panel-content-posts">
+              <Posts onShowMore={onShowMore} history={history} />
+            </div>
+            {/* {displayAds}
+            {dipslayRentAd}
+            {displayPreviewAd} */}
+          </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
@@ -171,6 +271,11 @@ const HomePage = ({
           <Posts onShowMore={onShowMore} history={history} />
         </div>
       </div>
+      <AdvertisementDrawer
+        page="home"
+        visible={visible}
+        setVisible={setVisible}
+      />
     </div>
   );
 };
@@ -179,12 +284,15 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   recommendations: librarySelector(state).recommendations,
   currentPage: postSelector(state).currentPage,
+  ...advertisementSelector(state),
 });
 
 const mapDispatchToProps = {
   getRecommendations,
   getUser,
   getAllPost,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

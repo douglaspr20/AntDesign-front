@@ -43,14 +43,15 @@ import CreateBonfireModal from "./CreateBonfireModal";
 
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
+import { CheckOutlined } from "@ant-design/icons";
 
 const Description = `
-Welcome to the Hacking HR 2022 Global Online Conference 
-planner. Here you will find all the sessions for the conference. You 
+Welcome to the Hacking HR 2022 Global Online Conference
+planner. Here you will find all the sessions for the conference. You
 can add sessions to your personalized agenda and then download a
-PDF. Notice that you can’t add two sessions that are happening the 
-same day at the same time. You can also download the calendar 
-invites to save the date. Finally, you can find the speakers and 
+PDF. Notice that you can’t add two sessions that are happening the
+same day at the same time. You can also download the calendar
+invites to save the date. Finally, you can find the speakers and
 connect with other participants. Enjoy!
 `;
 const TAB_NUM = 6;
@@ -198,8 +199,8 @@ const GlobalConference = ({
       setLoading(false);
       return notification.warning({
         message: "You have no sessions",
-        description: `Add your first session before downloading personalized agenda” if 
-        someone tries to download it without having added any session to 
+        description: `Add your first session before downloading personalized agenda” if
+        someone tries to download it without having added any session to
         their agenda`,
       });
     } else if (sessionsUserJoined < 1 && option === "report-sessions-joined") {
@@ -212,7 +213,11 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
+      option === "personal-agenda"
+        ? sessionsUser
+        : option === "conference-schedule"
+        ? allSessions
+        : sessionsUserJoined,
       option
     );
 
@@ -229,6 +234,8 @@ const GlobalConference = ({
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
+        : option === "conference-schedule"
+        ? "Conference Schedule.pdf"
         : "Report sessions joined"
     );
 
@@ -292,8 +299,8 @@ const GlobalConference = ({
         onAttend={onAttend}
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
-        downloadPdf={downloadPdf}
       />
+
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -303,8 +310,85 @@ const GlobalConference = ({
                 showFilterPanel();
               }}
             />
-          </div>
 
+            {window.screen.width <= 930 && (
+              <div
+                className="button-containers"
+                style={{ marginBottom: "10px" }}
+              >
+                {userProfile.attendedToConference ? (
+                  <>
+                    <div className="attending-label">
+                      <CheckOutlined />
+                      <span>I'm attending</span>
+                    </div>
+                    <CustomButton
+                      className="not-going-button"
+                      text="Not attending"
+                      size="xs"
+                      type="remove"
+                      remove={true}
+                      onClick={onAttend}
+                    />
+                    <CustomButton
+                      size="xs"
+                      text="Invite Your Colleagues"
+                      style={{ padding: "0px 28px" }}
+                      onClick={onInviteColleague}
+                    />
+                  </>
+                ) : (
+                  <CustomButton
+                    size="xs"
+                    text="Attend the conference"
+                    onClick={onAttend}
+                  />
+                )}
+                <CustomButton
+                  text="Accessibility Requirements"
+                  size="xs"
+                  type="info"
+                  className="button-requirements"
+                  onClick={() => setModalRequirementsVisible(true)}
+                />
+
+                <CustomButton
+                  text="Welcoming Message"
+                  size="xs"
+                  style={{ padding: "0px 35px", marginTop: "12px" }}
+                  onClick={() => setModalVisibleWelcomingMessage(true)}
+                />
+                {/* <CustomButton
+                  size="xs"
+                  text="Download Full Schedule"
+                  style={{ marginTop: "12px", padding: "0px 22px" }}
+                  onClick={() => downloadPdf("conference-schedule")}
+                /> */}
+
+                {localPathname === "personal-agenda" && (
+                  <>
+                    <CustomButton
+                      size="xs"
+                      text="Download Personalized Agenda"
+                      style={{ marginTop: "12px", padding: "0px 0px" }}
+                      onClick={() => downloadPdf("personal-agenda")}
+                    />
+
+                    {moment().date() >= 7 &&
+                      moment().month() >= 2 &&
+                      moment().year >= 2022 && (
+                        <CustomButton
+                          size="xs"
+                          text="Download Personalized Participation Report"
+                          style={{ marginTop: "12px", padding: "0px 0px" }}
+                          onClick={() => downloadPdf("report-sessions-joined")}
+                        />
+                      )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
           <div className="global-conference-pagination">
             <Menu
               mode="horizontal"

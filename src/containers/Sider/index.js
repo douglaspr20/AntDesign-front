@@ -133,6 +133,11 @@ class Sider extends Component {
           path={INTERNAL_LINKS.TALENT_MARKETPLACE}
           render={() => <Sidebar />}
         />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_HOME_PREVIEW}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
       </Switch>
     );
   }
