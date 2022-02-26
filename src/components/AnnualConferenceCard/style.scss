@@ -9,13 +9,10 @@
   padding: 2rem;
   position: relative;
   width: 100%;
+  max-width: 850px;
 
-  @media screen and (max-width: 1025px) {
-    margin-top: 15px;
-  }
-
-  @media screen and (max-width: 400px) {
-  max-width: 360px;
+  @media  (max-width: 500px){
+    max-width: 400px;
   }
 }
 
@@ -32,10 +29,8 @@
     }
 
     @media screen and (max-width: 400px) {
-      
       & .ant-btn {
        max-width: 310px;
-       padding: 0px 14px;
       }
 
       h3{
@@ -174,7 +169,6 @@
     }
   }
 }
-
 
 .custom-button-disabled{
   color: rgba(0, 0, 0, 0.25) !important;
