@@ -199,15 +199,22 @@ import {
 } from "./module/marketplaceProfile";
 
 import {
+  createConversation,
+  getConversations,
+  readMessages,
+  getMoreMessages,
+} from "./module/conversation";
+
+import {
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
   createAdvertisement,
   getAdvertisementById,
   getAllActiveAdvertisements,
-  editAdvertisement
+  editAdvertisement,
 } from "./module/advertisement";
 
-import { getMatchmake, sendMatchEmail } from './module/matchmaking'
+import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
 
 import { getEditorSignature } from "./module/env";
 
@@ -360,6 +367,10 @@ export {
   getMarketplaceProfile,
   createMarketplaceProfile,
   updateMarketplaceProfile,
+  createConversation,
+  getConversations,
+  readMessages,
+  getMoreMessages,
   acceptTermsAndConditions,
   countAllUsers,
   getAdvertisementsByPage,
@@ -369,5 +380,5 @@ export {
   getAllActiveAdvertisements,
   getMatchmake,
   editAdvertisement,
-  sendMatchEmail
+  sendMatchEmail,
 };
