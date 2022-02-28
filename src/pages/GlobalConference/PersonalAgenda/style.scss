@@ -1,47 +1,50 @@
 .personal-agenda {
-    margin-top: 2rem;
-    width: 100%;
-  
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  
-    &-header {
+  margin-top: 2rem;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    margin-top: 11rem;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: flex-end;
+
+    &-select {
       display: flex;
-      justify-content: flex-end;
-  
-      &-select {
-        display: flex;
-        align-items: center;
-      }
-  
-      &-sort {
-        margin-left: 1rem;
-        max-width: 200px;
-      }
-    }
-  
-    &-container {
-      margin: 1rem 3rem;
-      display: grid;
-      position: relative;
-      grid-template-columns: 1fr;
-  
-      @media (max-width: 500px) {
-        margin: 2rem 0rem;
-      }
- 
-      .annual-conference-card {
-        margin-bottom: 1rem !important;
-      }
+      align-items: center;
     }
 
-    .sessions-not-found{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
+    &-sort {
+      margin-left: 1rem;
+      max-width: 200px;
     }
-    
   }
-  
+
+  &-container {
+    margin: 1rem 3rem;
+    display: grid;
+    position: relative;
+    grid-template-columns: 1fr;
+
+    @media (max-width: 500px) {
+      margin: 2rem 0rem;
+    }
+
+    .annual-conference-card {
+      margin-bottom: 1rem !important;
+    }
+  }
+
+  .sessions-not-found{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+}
