@@ -174,7 +174,7 @@ class TopHeader extends Component {
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD}
           render={(props) => <MainHeader {...props} />}
         />
-        
+
         <PrivateRoute
           path={`${INTERNAL_LINKS.SPEAKERS}`}
           render={(props) => <MainHeader {...props} />}
@@ -212,6 +212,7 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
+          exact
           path={`${INTERNAL_LINKS.PROJECTX}/:id`}
           render={(props) => <MainHeader {...props} />}
         />
@@ -236,6 +237,21 @@ class TopHeader extends Component {
         />
         <PrivateRoute
           path={`${INTERNAL_LINKS.AD_HOME_PREVIEW}/:id`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}/:id`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_EVENTS_PREVIEW}/:id`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}/:id`}
           exact
           render={(props) => <MainHeader {...props} />}
         />

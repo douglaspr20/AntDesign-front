@@ -6,7 +6,14 @@ import { Tabs } from "components";
 import { useLocation } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import { Space } from "antd";
+import { useParams } from "react-router-dom";
+import { isEmpty } from "lodash";
 
+import {
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+} from "redux/actions/advertisment-actions";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
 import { skillCohortParticipantSelector } from "redux/selectors/skillCohortParticipantSelector";
@@ -30,12 +37,18 @@ const SkillCohort = ({
   allParticipated,
   allOfMySkillCohorts,
   getAllOfMyCohort,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+  advertisementsByPage,
+  advertisementById,
+  isAdPreview = false,
 }) => {
   useEffect(() => {
     getAllSkillCohorts([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [currentTab, setCurrentTab] = useState("0");
+  const { id } = useParams();
 
   const location = useLocation();
 
@@ -50,6 +63,16 @@ const SkillCohort = ({
   }, [userProfile]);
 
   useEffect(() => {
+    if (isAdPreview) {
+      getAdvertisementById(id);
+    } else {
+      getAdvertisementsTodayByPage("project-x");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  useEffect(() => {
     setCurrentTab(parsed.key);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,6 +85,45 @@ const SkillCohort = ({
       `${INTERNAL_LINKS.PROJECTX}?key=${currentTab}`
     );
   }, [currentTab]);
+
+  const displayAds = (currentTab === undefined || currentTab === "0") &&
+    !isEmpty(advertisementsByPage["project-x"]) && (
+      <div className="project-x-advertisement-wrapper">
+        {advertisementsByPage["project-x"].map((advertisement) => {
+          return (
+            <div
+              className="project-x-advertisement-wrapper-content"
+              key={advertisement.id}
+            >
+              <div
+                className="advertisement"
+                onClick={() =>
+                  window.open(advertisement.advertisementLink, "_blank")
+                }
+              >
+                <img
+                  src={advertisement.adContentLink}
+                  alt="advertisement"
+                  className="advertisement-img"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+
+  const displayPreviewAd = isAdPreview && (
+    <div className="project-x-advertisement-wrapper-preview">
+      <div className="advertisement">
+        <img
+          src={advertisementById.adContentLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
 
   const handleFilterChange = (filter) => {
     getAllSkillCohorts(filter.category);
@@ -105,7 +167,7 @@ const SkillCohort = ({
 
   const displayGeneralInformation = () => {
     return (
-      <div style={{ marginTop: "1rem", fontSize: '16px', width: '75%' }}>
+      <div style={{ marginTop: "1rem", fontSize: "16px", width: "75%" }}>
         <Space direction="vertical" size="large">
           <Space direction="vertical">
             <div>Hi {userProfile.firstName},</div>
@@ -213,8 +275,18 @@ const SkillCohort = ({
     <div className="skill-cohort-page">
       <SkillCohortFilterDrawer onChange={handleFilterChange} />
       <div className="skill-cohort-page-container">
-        <div className="search-results-container">
-          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+        <div className="project-x-search-results-container">
+          <div className="project-x-advertisement-content">
+            <div>
+              <Tabs
+                data={TabData}
+                current={currentTab}
+                onChange={setCurrentTab}
+              />
+            </div>
+            {displayAds}
+            {displayPreviewAd}
+          </div>
         </div>
       </div>
     </div>
@@ -225,11 +297,14 @@ const mapStateToProps = (state) => ({
   ...skillCohortSelector(state),
   ...skillCohortParticipantSelector(state),
   userProfile: homeSelector(state).userProfile,
+  ...advertisementSelector(state),
 });
 
 const mapDispatchToProps = {
   ...skillCohortActions,
   ...skillCohortParticipantActions,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkillCohort);

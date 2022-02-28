@@ -17,10 +17,13 @@ const getMatchmake = createAction(GET_MATCHMAKE, (filters, callback) => ({
 const setMatchmake = createAction(SET_MATCHMAKE, (matchmakingUsers) => ({
   matchmakingUsers,
 }));
-const sendMatchEmail = createAction(SEND_MATCH_EMAIL, (id) => ({ id }));
+const sendMatchEmail = createAction(SEND_MATCH_EMAIL, (id, message) => ({
+  id,
+  message,
+}));
 
 export const actions = {
   getMatchmake,
   setMatchmake,
-  sendMatchEmail
+  sendMatchEmail,
 };

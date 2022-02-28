@@ -69,10 +69,33 @@ const AdvertisementDrawer = ({
         );
       }
 
-      let homeCount = 0;
+      let homeCount, eventsCount, conferenceCount, projectXCount;
+      homeCount = eventsCount = conferenceCount = projectXCount = 0;
+
       let disabledDates = filteredDisabledDates.map((advertisement) => {
         if (advertisement.page === "home" && homeCount < 2) {
           homeCount += 1;
+
+          return [];
+        }
+
+        if (advertisement.page === "project-x" && projectXCount < 2) {
+          projectXCount += 1;
+
+          return [];
+        }
+
+        if (
+          advertisement.page === "conference-library" &&
+          conferenceCount < 2
+        ) {
+          conferenceCount += 1;
+
+          return [];
+        }
+
+        if (advertisement.page === "events" && eventsCount < 2) {
+          eventsCount += 1;
 
           return [];
         }
@@ -260,7 +283,7 @@ const AdvertisementDrawer = ({
             name="advertisementLink"
             rules={[{ required: true, type: "url" }]}
           >
-            <CustomInput bordered/>
+            <CustomInput bordered />
           </Form.Item>
           <Form.Item>
             <h3>Total days: {totalDays}</h3>
