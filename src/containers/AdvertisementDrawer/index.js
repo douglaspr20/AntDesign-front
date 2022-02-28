@@ -69,49 +69,29 @@ const AdvertisementDrawer = ({
         );
       }
 
-      let homeCount, eventsCount, conferenceCount, projectXCount;
-      homeCount = eventsCount = conferenceCount = projectXCount = 0;
-
-      let disabledDates = filteredDisabledDates.map((advertisement) => {
-        if (advertisement.page === "home" && homeCount < 2) {
-          homeCount += 1;
-
-          return [];
-        }
-
-        if (advertisement.page === "project-x" && projectXCount < 2) {
-          projectXCount += 1;
-
-          return [];
-        }
-
-        if (
-          advertisement.page === "conference-library" &&
-          conferenceCount < 2
-        ) {
-          conferenceCount += 1;
-
-          return [];
-        }
-
-        if (advertisement.page === "events" && eventsCount < 2) {
-          eventsCount += 1;
-
-          return [];
-        }
-
-        return advertisement.datesBetweenStartDateAndEndDate;
-      });
+      let disabledDates = filteredDisabledDates.map(
+        (advertisement) => advertisement.datesBetweenStartDateAndEndDate
+      );
 
       disabledDates = disabledDates.flat();
-      disabledDates = disabledDates.map((date) => {
+
+      let _transformedDisabledDates = [];
+      disabledDates.forEach((date) => {
+        const filteredDates = disabledDates.filter((d) => d === date);
+
+        if (filteredDates.length >= 3) {
+          _transformedDisabledDates.push(date);
+        }
+      });
+
+      _transformedDisabledDates = _transformedDisabledDates.map((date) => {
         return moment
           .tz(date, "America/Los_Angeles")
           .startOf("day")
           .format("YYYY-MM-DD");
       });
 
-      setDisabledDates(disabledDates);
+      setDisabledDates(_transformedDisabledDates);
       form.resetFields(["startDate", "endDate"]);
     }
   }, [allActiveAdvertisements, page_]);
