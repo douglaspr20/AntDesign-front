@@ -460,21 +460,25 @@ const GlobalConference = ({
               </Menu.Item>
             </Menu>
 
-            <Menu
-              mode="horizontal"
-              className="sub-menu"
-              selectedKeys={selectTab}
-            >
-              {tabData.map((tab, index) => (
-                <Menu.Item
-                  key={tab.title}
-                  className="sub-menu-item-global-conference-fake-tabs"
-                  onClick={() => handleCustomTab(tab.title, index)}
-                >
-                  {tab.title}
-                </Menu.Item>
-              ))}
-            </Menu>
+            {!childrenWithFilterProp && (
+              <Menu
+                mode="horizontal"
+                className="sub-menu"
+                selectedKeys={selectTab}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {tabData.map((tab, index) => (
+                  <Menu.Item
+                    key={tab.title}
+                    className="sub-menu-item-global-conference-fake-tabs"
+                    onClick={() => handleCustomTab(tab.title, index)}
+                  >
+                    {tab.title}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            )}
+
             {/* <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"
