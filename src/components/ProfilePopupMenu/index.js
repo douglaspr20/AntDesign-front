@@ -309,14 +309,12 @@ const ProfilePopupMenu = (props) => {
       >
         My Learning
       </div>
-      {user.percentOfCompletion === 100 && (
-        <div
-          className="profile-popover-content-menu"
-          onClick={() => openChangePasswordModal(true)}
-        >
-          Change Password
-        </div>
-      )}
+      <div
+        className="profile-popover-content-menu"
+        onClick={() => openChangePasswordModal(true)}
+      >
+        Change Password
+      </div>
       {user.councilMember && (
         <div
           className="profile-popover-content-menu"
