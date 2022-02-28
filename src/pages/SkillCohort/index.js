@@ -113,17 +113,18 @@ const SkillCohort = ({
       </div>
     );
 
-  const displayPreviewAd = isAdPreview && (
-    <div className="project-x-advertisement-wrapper-preview">
-      <div className="advertisement">
-        <img
-          src={advertisementById.adContentLink}
-          alt="advertisement"
-          className="advertisement-img"
-        />
+  const displayPreviewAd = (currentTab === undefined || currentTab === "0") &&
+    isAdPreview && (
+      <div className="project-x-advertisement-wrapper-preview">
+        <div className="advertisement">
+          <img
+            src={advertisementById.adContentLink}
+            alt="advertisement"
+            className="advertisement-img"
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
 
   const handleFilterChange = (filter) => {
     getAllSkillCohorts(filter.category);
