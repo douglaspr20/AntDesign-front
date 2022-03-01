@@ -107,8 +107,8 @@ const FilterPanel = ({
               onClick={() => downloadPdf("personal-agenda")}
             />
 
-            {moment().date() >= 1 &&
-              moment().month() >= 2 &&
+            {moment().date() >= 28 &&
+              moment().month() >= 1 &&
               moment().year >= 2022 && (
                 <CustomButton
                   size="xs"
