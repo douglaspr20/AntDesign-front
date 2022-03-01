@@ -107,13 +107,17 @@ const FilterPanel = ({
               onClick={() => downloadPdf("personal-agenda")}
             />
 
-            {moment().date() >= 28 &&
+            {moment().date() >= 1 &&
               moment().month() >= 1 &&
-              moment().year >= 2022 && (
+              moment().year() >= 2022 && (
                 <CustomButton
                   size="xs"
                   text="Download Report Sessions Joined"
-                  style={{ marginTop: "12px", padding: "0px 0px" }}
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 0px",
+                    marginLeft: "-10px",
+                  }}
                   onClick={() => downloadPdf("report-sessions-joined")}
                 />
               )}

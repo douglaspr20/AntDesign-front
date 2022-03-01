@@ -374,7 +374,7 @@ const GlobalConference = ({
 
                     {moment().date() >= 7 &&
                       moment().month() >= 2 &&
-                      moment().year >= 2022 && (
+                      moment().year() >= 2022 && (
                         <CustomButton
                           size="xs"
                           text="Download Personalized Participation Report"
