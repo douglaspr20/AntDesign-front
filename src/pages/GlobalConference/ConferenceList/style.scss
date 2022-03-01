@@ -2,23 +2,12 @@
 @import "../../../styles/main.scss";
 
 .conference-list {
-  margin-top: 9rem;
+  margin-top: 2rem;
   width: 100%;
-
-//   @media (max-width: 1100px) {
-//     margin-top: 15rem;
-
-// }
-
-//   @media (max-width: 800px) {
-//       margin-top: 15rem;
-
-//   }
-
-//   @media (max-width: 500px) {
-//     margin-top: 16rem;
-
-// }
+  @media (max-width: 1024px) {
+    margin-top: 2rem;
+   
+}
 
   &::-webkit-scrollbar {
     display: none;

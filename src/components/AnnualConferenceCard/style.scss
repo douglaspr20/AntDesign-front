@@ -14,6 +14,10 @@
   @media  (max-width: 500px){
     max-width: 380px;
   }
+
+  @media  (max-width: 400px){
+    max-width: 338px;
+  }
 }
 
 .acc-session {
@@ -31,6 +35,7 @@
     @media screen and (max-width: 400px) {
       & .ant-btn {
        max-width: 310px;
+       padding: 0px 10px;
       }
 
       h3{

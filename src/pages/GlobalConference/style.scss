@@ -12,6 +12,11 @@
     .global-conference-filter-panel {
       display: none;
     }
+
+    .ant-menu{
+      display: flex !important;
+      justify-content: center !important;
+    }
   }
 
     &::-webkit-scrollbar {
@@ -52,7 +57,6 @@
       }
 
       &-top-menu {
-        position: fixed !important;
         z-index: 20 !important;
         background: $color-background;
         display: flex;
@@ -68,7 +72,7 @@
          flex-wrap: wrap;
          justify-content: space-between;
          min-width: 300px;
-         max-width: 500px;
+         max-width: 950px;
          width: 100%;
          text-align: center;
          & .custom-button{
@@ -85,31 +89,59 @@
  
        @media (max-width: 400px) {
          & .custom-button{
-           max-width: 180px;
-           padding: 0px 4px !important;
+           max-width: 155px !important;
+           font-size: 12px !important;
+           padding: 0px 0px !important;
          }
        }
  
        }
+
+       .sub-menu{
+        background: none;
+        // max-width: 1500px;
+    
+        @media (max-width: 1024px) {
+          max-width: none;
+            
+          }
+
+          &-item-global-conference {
+            font-size: 16px;
+            padding: 0px 2rem !important;
+          
+            @media (max-width: 1024px) {
+            padding: 0px 1.2rem !important;
+              
+            }
+
+            @media (max-width: 400px) {
+              font-size: 12px;
+              padding: 0px .2rem !important;
+                
+              }
+
+            &-fake-tabs{
+              font-size: 20px;
+              padding: 0px 14px !important;
+
+           
+          
+              @media (max-width: 400px) {
+                font-size: 18px;
+                padding: 0px .6rem !important;
+                  
+                }
+            }
+          
+          }
+      }
+    
  
      }
 
-     .sub-menu{
-    background: none;
-    width: 100%;
-    max-width: 1500px;
-  }
+  
 
-  .sub-menu-item-global-conference {
-  font-size: 16px;
-  padding: 0px 2rem !important;
-  &-fake-tabs{
-    font-size: 20px;
-    padding: 0px 20px !important;
-
-  }
-
-}
 a:hover,
 a:active,
 .ant-menu-item-selected a {
@@ -142,9 +174,21 @@ a:active,
  &-tabs{
   width: 100%;
   max-width: 1100px;
+  max-height: 100vh;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
  .ant-tabs-nav{
    display: none !important;
  }
+
+ @media (max-width: 430px) {
+    margin-top: -9rem;
+  }
+
  }
 }
 
@@ -176,6 +220,19 @@ a:active,
 .ant-modal-footer .ant-btn-primary:hover, .ant-btn-primary:focus{
   background: $color-primary;
   border-color: $color-primary;
+}
+
+
+
+.attending-label {
+  margin-right: 37px;
+  color: $color-success;
+  @include app-font(16px, 21px, normal);
+  white-space: nowrap;
+
+  span {
+    margin-left: 0.5rem;
+  }
 }
 
 
