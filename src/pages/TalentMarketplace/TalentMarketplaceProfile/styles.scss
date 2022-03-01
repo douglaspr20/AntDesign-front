@@ -7,7 +7,8 @@
   overflow-y: auto;
 
   @media (max-width: 1500px){
-    padding-left: 2rem;
+    padding: 0px;
+    // padding-left: 2rem;
     } 
 
   @media (max-width: 1100px){
@@ -43,15 +44,21 @@
 .preferred-skills-wrapper {
   display: flex;
   align-items: baseline;
+  @media (max-width: 900px){
+    justify-content: center;
+    gap: 100px;
+    } 
 
   .preferred-skills-main-content {
     margin-right: 2rem;
     margin-bottom: 1rem;
     padding-left: 1rem;
     width: 15%;
+    @media (max-width: 900px){
+      margin-right: 0px;
+      } 
   }
 }
-
 // .skills-wrapper {
   // background-color: white;
   // margin-bottom: 1rem;

@@ -245,7 +245,9 @@
     .ant-tabs-nav-wrap {
       display: flex;
       padding: 0px 15%;
-
+      @media(max-width) {
+        width: 100%;
+      }
     }
 
   }
