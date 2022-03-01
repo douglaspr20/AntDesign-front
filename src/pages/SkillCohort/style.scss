@@ -82,7 +82,7 @@
     position: relative;
 
     .advertisement {
-      width: 336px;
+      width: 275px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -91,7 +91,7 @@
       cursor: pointer;
 
       &-img {
-        width: 336px;
+        width: 275px;
         height: 275px;
         object-fit: cover;
       }
@@ -116,5 +116,21 @@
         object-fit: cover;
       }
     }
+  }
+}
+
+.display-general-information {
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1rem;
+
+  .information {
+    width: 60%;
+  }
+
+  .advertisements {
+    margin-left: auto;
+    margin-right: auto;
   }
 }

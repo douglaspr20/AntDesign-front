@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-template-curly-in-string */
 import React, { useState, useEffect } from "react";
-import { Drawer, Form, DatePicker } from "antd";
-import {
-  CustomButton,
-  CustomInput,
-  ImageUpload,
-  CustomSelect,
-} from "components";
+import { Drawer, Form, DatePicker, Modal } from "antd";
+import { CustomButton, CustomInput, CustomSelect } from "components";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
 import { connect } from "react-redux";
+import UploadImageForm from "../UploadImageForm";
 
 import {
   getAllActiveAdvertisements,
@@ -39,6 +35,10 @@ const AdvertisementDrawer = ({
   const [page_, setPage_] = useState(null);
   const [form] = Form.useForm();
   const [isPagePopulated, setIsPagePopulated] = useState(false);
+  const [editImageUrl, setEditImageUrl] = useState(null);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [hasAdvertisementStarted, setHasAdvertisementStarted] = useState(false);
+  const [isDraft, setIsDraft] = useState(false);
 
   useEffect(() => {
     getAllActiveAdvertisements();
@@ -51,8 +51,25 @@ const AdvertisementDrawer = ({
         date: [moment(advertisement.startDate), moment(advertisement.endDate)],
         image: advertisement.adContentLink,
       });
+
+      setEditImageUrl(advertisement.adContentLink);
+
+      const dateToday = moment().tz("America/Los_Angeles");
+      const hasStarted = dateToday.isAfter(
+        moment(advertisement.startDate).tz("America/Los_Angeles")
+      );
+      setHasAdvertisementStarted(hasStarted);
+      setIsDraft(advertisement.status === "draft");
+      setPage_(advertisement.page);
     }
-  }, [isEdit]);
+
+    return () => {
+      setHasAdvertisementStarted(false);
+      setEditImageUrl(null);
+      setIsDraft(false);
+      setIsPagePopulated(false);
+    };
+  }, [isEdit, advertisement]);
 
   useEffect(() => {
     if (
@@ -95,6 +112,14 @@ const AdvertisementDrawer = ({
       form.resetFields(["startDate", "endDate"]);
     }
   }, [allActiveAdvertisements, page_]);
+
+  const handleOnSave = (url, base64) => {
+    setEditImageUrl(url);
+    form.setFieldsValue({
+      image: base64,
+    });
+    setVisibleModal(false);
+  };
 
   const handleDisabledDate = (currentDate) => {
     const current = moment
@@ -143,6 +168,7 @@ const AdvertisementDrawer = ({
       const transformedValues = {
         image: values.image,
         advertisementLink: values.advertisementLink,
+        status: values.status,
       };
       editAdvertisement(advertisement.id, transformedValues);
     } else {
@@ -213,73 +239,131 @@ const AdvertisementDrawer = ({
     setVisible(false);
   };
 
+  const handleDynamicSubmit = (status) => {
+    form.setFieldsValue({
+      status,
+    });
+
+    form.submit();
+  };
+
   return (
-    <Drawer
-      visible={visible}
-      onClose={handleOnClose}
-      title="Rent this space"
-      width={420}
-    >
-      <div>
-        <Form
-          form={form}
-          onFinish={handleOnFinish}
-          layout="vertical"
-          validateMessages={{ required: "'${label}' is required!" }}
-        >
-          <Form.Item>
-            <h3>Available credits: 999</h3>
-          </Form.Item>
-          {onDashboard && (
-            <Form.Item label="Page" name="page" rules={[{ required: true }]}>
-              <CustomSelect
-                options={[
-                  { text: "Home", value: "home" },
-                  { text: "Events", value: "events" },
-                  { text: "Project X", value: "project-x" },
-                  { text: "Conference Library", value: "conference-library" },
-                ]}
-                bordered
-                onSelect={handleOnSelect}
-                disabled={isEdit}
+    <>
+      <Drawer
+        visible={visible}
+        onClose={handleOnClose}
+        title="Rent this space"
+        width={420}
+      >
+        <div>
+          <Form
+            form={form}
+            onFinish={handleOnFinish}
+            layout="vertical"
+            validateMessages={{ required: "'${label}' is required!" }}
+          >
+            <Form.Item>
+              <h3>Available credits: 999</h3>
+            </Form.Item>
+            {onDashboard && (
+              <Form.Item label="Page" name="page" rules={[{ required: true }]}>
+                <CustomSelect
+                  options={[
+                    { text: "Home", value: "home" },
+                    { text: "Events", value: "events" },
+                    { text: "Project X", value: "project-x" },
+                    { text: "Conference Library", value: "conference-library" },
+                  ]}
+                  bordered
+                  onSelect={handleOnSelect}
+                  disabled={isEdit}
+                />
+              </Form.Item>
+            )}
+            <Form.Item
+              name="date"
+              label="Date"
+              rules={[{ required: true }, { validator: validateDateRange }]}
+            >
+              <RangePicker
+                showTime={false}
+                style={{ width: "100%" }}
+                size="large"
+                disabledDate={handleDisabledDate}
+                disabled={(isEdit || !isPagePopulated) && !isDraft}
+                // disabled={(isEdit || !isPagePopulated) && !isDraft}
               />
             </Form.Item>
-          )}
-          <Form.Item
-            name="date"
-            label="Date"
-            rules={[{ required: true }, { validator: validateDateRange }]}
-          >
-            <RangePicker
-              showTime={false}
-              style={{ width: "100%" }}
-              size="large"
-              disabledDate={handleDisabledDate}
-              disabled={isEdit || !isPagePopulated}
-            />
-          </Form.Item>
-          <Form.Item
-            label="Advertisement Link"
-            name="advertisementLink"
-            rules={[{ required: true, type: "url" }]}
-          >
-            <CustomInput bordered />
-          </Form.Item>
-          <Form.Item>
-            <h3>Total days: {totalDays}</h3>
-          </Form.Item>
-          <Form.Item>
-            <h3>Total credits: 5 Credits</h3>
-          </Form.Item>
-          <Form.Item label="Image" name="image" rules={[{ required: true }]}>
-            <ImageUpload />
-          </Form.Item>
-          <Form.Item>
-            <CustomButton text="Rent" type="primary" htmlType="submit" block />
-          </Form.Item>
-        </Form>
-      </div>
-    </Drawer>
+            <Form.Item
+              label="Advertisement Link"
+              name="advertisementLink"
+              rules={[{ required: true, type: "url" }]}
+            >
+              <CustomInput bordered />
+            </Form.Item>
+            <Form.Item>
+              <h3>Total days: {totalDays}</h3>
+            </Form.Item>
+            <Form.Item>
+              <h3>Total credits: 5 Credits</h3>
+            </Form.Item>
+            <Form.Item name="image" noStyle />
+            <div style={{ marginBottom: "1rem" }}>
+              Image (Aspect Ratio: 1 / 1)
+            </div>
+            <div style={{ marginBottom: "1rem" }}>
+              {editImageUrl && (
+                <img
+                  src={editImageUrl}
+                  alt="advertisement-img"
+                  style={{ width: "100%", marginBottom: "1rem" }}
+                />
+              )}
+              <CustomButton
+                text="Upload Advertisement Image"
+                type="third"
+                block
+                onClick={() => setVisibleModal(true)}
+              />
+            </div>
+            <Form.Item name="status" noStyle />
+            <Form.Item>
+              <div className="d-flex">
+                {!hasAdvertisementStarted && (
+                  <CustomButton
+                    text="Save as Draft"
+                    type="secondary outline"
+                    block
+                    onClick={() => handleDynamicSubmit("draft")}
+                    style={{ width: "100%", marginRight: "1rem" }}
+                  />
+                )}
+                <CustomButton
+                  text="Save"
+                  type="primary"
+                  block
+                  onClick={() => handleDynamicSubmit("active")}
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </Form.Item>
+          </Form>
+        </div>
+      </Drawer>
+      <Modal
+        className="photo-upload-modal"
+        title={<div className="photo-upload-modal-title">Select an image.</div>}
+        centered
+        visible={visibleModal}
+        width={500}
+        closable={true}
+        maskClosable={false}
+        footer={[]}
+        onCancel={() => setVisibleModal(false)}
+      >
+        <UploadImageForm onSave={handleOnSave} isFixed aspectRatio={1 / 1} />
+      </Modal>
+    </>
   );
 };
 

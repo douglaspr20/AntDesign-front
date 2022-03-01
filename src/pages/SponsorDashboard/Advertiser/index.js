@@ -58,6 +58,11 @@ const Advertiser = ({
       },
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
       title: "Page",
       dataIndex: "page",
       key: "page",

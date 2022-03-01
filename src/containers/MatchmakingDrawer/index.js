@@ -100,6 +100,18 @@ const MatchmakingDrawer = ({
     form.resetFields(["topicsOfInterest"]);
   };
 
+  const handleSelectAllRecentWorkAreas = () => {
+    const areas = PROFILE_SETTINGS.WORK_AREAS.map((area) => area.value);
+
+    form.setFieldsValue({
+      recentWorkArea: areas,
+    });
+  };
+
+  const handleUnselectAllRecentWorkAreas = () => {
+    form.resetFields(["recentWorkArea"]);
+  };
+
   return (
     <Drawer
       visible={visible}
@@ -116,18 +128,22 @@ const MatchmakingDrawer = ({
             optionFilterProp="children"
           />
         </Form.Item>
-        <Form.Item>
-          <Space>
-            <div style={{ cursor: "pointer" }} onClick={handleSelectAll}>
-              Select All
-            </div>
-            <div>|</div>
-            <div style={{ cursor: "pointer" }} onClick={handleUnselectAll}>
-              Unselect
-            </div>
-          </Space>
-        </Form.Item>
-        <Form.Item name="topicsOfInterest" label="Topics of Interest">
+        <Form.Item
+          name="topicsOfInterest"
+          label={
+            <Space>
+              <div>Topics of Interest</div>
+              <div>|</div>
+              <div style={{ cursor: "pointer" }} onClick={handleSelectAll}>
+                Select All
+              </div>
+              <div>|</div>
+              <div style={{ cursor: "pointer" }} onClick={handleUnselectAll}>
+                Unselect All
+              </div>
+            </Space>
+          }
+        >
           <Checkbox.Group>
             {allCategories.map((topic) => {
               return (
@@ -149,7 +165,28 @@ const MatchmakingDrawer = ({
             })}
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="recentWorkArea" label="Recent Work Areas">
+        <Form.Item
+          name="recentWorkArea"
+          label={
+            <Space>
+              <div>Recent Work Areas</div>
+              <div>|</div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={handleSelectAllRecentWorkAreas}
+              >
+                Select All
+              </div>
+              <div>|</div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={handleUnselectAllRecentWorkAreas}
+              >
+                Unselect All
+              </div>
+            </Space>
+          }
+        >
           <Checkbox.Group>
             {PROFILE_SETTINGS.WORK_AREAS.map((area, index) => (
               <CustomCheckbox key={index} value={area.value}>

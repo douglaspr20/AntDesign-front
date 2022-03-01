@@ -190,10 +190,11 @@ const ProfilePopupMenu = (props) => {
   const handlePartnersDashboard = () => {
     if (user.isAdvertiser) {
       history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD);
-    } 
+    }
     // else {
     //   setIsAdvertisementModalVisible(true);
     // }
+    setVisible(false);
   };
 
   const handleAdvertisementPaymentModalClose = () => {
