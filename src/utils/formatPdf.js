@@ -1,6 +1,9 @@
 import moment from "moment";
 import { convertToCertainTime } from "utils/format";
 import LogoHackingHR from "images/img-hhr-logo.png";
+import ImgCertificateStamp from "images/img-certificate-stamp.png";
+import ImgHHRLogo from "images/img-certificate-logo.png";
+import ImgSignature from "images/img-signature.png";
 import { TIMEZONE_LIST } from "enum";
 
 const formatAnnualConference = (userProfile, sessions, option) => {
@@ -80,7 +83,7 @@ const formatAnnualConference = (userProfile, sessions, option) => {
       <p style="font-size: 1.3rem">${
         option === "personal-agenda"
           ? "Personalized Agenda – Created on"
-          : "Report Session Joined - generated on"
+          : "Personalized Participation Report - generated on"
       } ${moment().format("MM-DD-YYYY")} </p>
       <p style="font-size: 1.3rem">DOWNLOAD</p>
       <p style="font-size: 1.3rem">${userProfile.firstName} ${
@@ -527,4 +530,63 @@ const formatAnnualConference = (userProfile, sessions, option) => {
   return template;
 };
 
-export { formatAnnualConference };
+const certificateAnnualConference = () => {
+  const template = document.createElement("div");
+  template.setAttribute("id", "template-certificate");
+
+  template.style = "width: 1120px; height: 200px";
+
+  const certificate = `
+  <div style="width: 100%; height: calc(100vh - 72px); overflow: auto; padding:0; background: #ffffff; overflow-x: hidden; display: flex;
+  flex-direction: column; align-items: center;">
+  <div style="width: 100%; min-height: 793px; padding: 0 84px; border: 1px solid #e1e2ee; background: #0f233d; border-radius: 0.5rem; box-shadow: 4px 0px 14px #37215714;
+  display: flex; align-items: center; justify-content: center;" id="certificate-panel">
+    <div style="width: 100%;">
+      <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; border-bottom: 1px solid #cfd3d6;">
+        <div style=" width: 72px; min-width: 72px; max-width: 72px; height: 72px; overflow: hidden;">
+          <img style=" width: 72px; height: 72px; object-fit: cover;" src="${ImgHHRLogo}" alt="sidebar-logo">
+        </div>
+        <h3 style="color: #ffffff !important; margin: 24px 0 20px; font-size: 28px; line-height: 48px; font-weight: 600;">
+          Hacking HR's Certificate of Participation
+        </h3>
+        <h1 style="color: #ffffff !important; margin: 1rem; font-size: 40px; line-height: 48px; font-weight: 600;">Douglas Perez</h1>
+      </div>
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 28px 0 14px;">
+        <h5 style="color: #ffffff !important; margin: 1rem;font-size: 22px; line-height: 19px; text-transform: capitalize;">
+          For Attending Session:
+        </h5>
+        <h4 style="color: #ffffff !important; margin: 1rem; font-size: 24px; line-height: 24px; font-weight: bold;"></h4>
+        <h5 style="color: #ffffff !important; margin: 1rem;font-size: 22px; line-height: 19px; text-transform: capitalize;">
+        Duration:</h5>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+          <h5 style="color: #ffffff !important; margin: 1rem;font-size: 22px; line-height: 19px; height: 3rem; margin-bottom: 8px; 
+          display: flex;align-items: flex-end;"></h5>
+          <div style="display: block; width: 100%; height: 1px; background: #cfd3d6; margin-bottom: 10px;"></div>
+          <h5 style="color: #ffffff !important; margin: 1rem;font-size: 22px; line-height: 19px;">Date</h5>
+        </div>
+        <div style="width: 80px; height: 80px; overflow: hidden; margin: 0 56px;">
+          <img src="${ImgCertificateStamp}" alt="certificate-img" style=" width: 100%;height: 100%; object-fit: cover;"/>
+        </div>
+        <div style="display: flex; flex-direction: column;align-items: center; flex: 1;">
+          <div style=" width: 90px; height: 3rem; margin-bottom: 0.5rem;">
+            <img src="${ImgSignature}" alt="certificate-signature" style="width: 90px; object-fit: cover;">
+          </div>
+          <div style="display: block; width: 100%; height: 1px; background: #cfd3d6; margin-bottom: 10px;"></div>
+          <h5 style="color: #ffffff !important; margin: 1rem;font-size: 22px; line-height: 19px;">
+            Founder at Hacking HR
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+  template.innerHTML = certificate;
+
+  return template;
+};
+
+export { formatAnnualConference, certificateAnnualConference };

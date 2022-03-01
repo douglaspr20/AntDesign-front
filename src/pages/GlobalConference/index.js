@@ -29,7 +29,10 @@ import {
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-import { formatAnnualConference } from "utils/formatPdf";
+import {
+  certificateAnnualConference,
+  formatAnnualConference,
+} from "utils/formatPdf";
 import Emitter from "services/emitter";
 import SocketIO from "services/socket";
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
@@ -39,7 +42,6 @@ import RecommendedAgendaModal from "./RecommendedAgendaModal";
 import AccessibilityRequirementsModal from "./AccessibilityRequirementsModal";
 import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
 import CreateBonfireModal from "./CreateBonfireModal";
-
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
@@ -240,6 +242,28 @@ const GlobalConference = ({
     setLoading(false);
   };
 
+  const generateCertificate = async () => {
+    setLoading(true);
+
+    const template = certificateAnnualConference();
+
+    const pdf = new jsPdf({
+      orientation: "landscape",
+      format: "a4",
+      unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
+    });
+
+    console.log(template);
+
+    await pdf.html(template);
+
+    pdf.save("Certificate Annual Conference.pdf");
+
+    setLoading(false);
+  };
+
   // const onAddBonfire = () => {
   //   if (userProfile.memberShip && userProfile.memberShip !== "premium") {
   //     return notification.warning({
@@ -288,6 +312,7 @@ const GlobalConference = ({
         setModalRequirementsVisible={setModalRequirementsVisible}
         setModalVisibleWelcomingMessage={setModalVisibleWelcomingMessage}
         downloadPdf={downloadPdf}
+        generateCertificate={generateCertificate}
       />
       <FilterDrawer
         onChange={onFilterChange}
@@ -364,26 +389,25 @@ const GlobalConference = ({
                 /> */}
 
                 {localPathname === "personal-agenda" && (
-                  <>
+                  <CustomButton
+                    size="xs"
+                    text="Download Personalized Agenda"
+                    style={{ marginTop: "12px", padding: "0px 0px" }}
+                    onClick={() => downloadPdf("personal-agenda")}
+                    ƒ
+                  />
+                )}
+
+                {moment().date() >= 7 &&
+                  moment().month() >= 2 &&
+                  moment().year() >= 2022 && (
                     <CustomButton
                       size="xs"
-                      text="Download Personalized Agenda"
+                      text="Download Participation Report"
                       style={{ marginTop: "12px", padding: "0px 0px" }}
-                      onClick={() => downloadPdf("personal-agenda")}
+                      onClick={() => downloadPdf("report-sessions-joined")}
                     />
-
-                    {moment().date() >= 7 &&
-                      moment().month() >= 2 &&
-                      moment().year() >= 2022 && (
-                        <CustomButton
-                          size="xs"
-                          text="Download Personalized Participation Report"
-                          style={{ marginTop: "12px", padding: "0px 0px" }}
-                          onClick={() => downloadPdf("report-sessions-joined")}
-                        />
-                      )}
-                  </>
-                )}
+                  )}
               </div>
             )}
           </div>
