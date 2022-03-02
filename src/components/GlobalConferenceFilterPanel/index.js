@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Checkbox, notification } from "antd";
 import { connect } from "react-redux";
 
 import { CustomButton, CustomCheckbox, SearchInput } from "components";
@@ -28,6 +28,7 @@ const FilterPanel = ({
   setModalRequirementsVisible,
   setModalVisibleWelcomingMessage,
   downloadPdf,
+  setModalVisibleCertificate,
 }) => {
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -63,7 +64,7 @@ const FilterPanel = ({
           <CustomButton
             size="xs"
             text="Invite Your Colleagues"
-            style={{ padding: "0px 28px" }}
+            style={{ padding: "0px 41px", marginLeft: "-12px" }}
             onClick={onInviteColleague}
           />
         </>
@@ -80,13 +81,21 @@ const FilterPanel = ({
           size="xs"
           type="info"
           className="button-requirements"
+          style={{
+            padding: "0px 25px",
+            marginLeft: "-12px",
+          }}
           onClick={() => setModalRequirementsVisible(true)}
         />
 
         <CustomButton
           text="Welcoming Message"
           size="xs"
-          style={{ padding: "0px 35px", marginTop: "12px" }}
+          style={{
+            padding: "0px 47px",
+            marginLeft: "-12px",
+            marginTop: "12px",
+          }}
           onClick={() => setModalVisibleWelcomingMessage(true)}
         />
 
@@ -99,26 +108,55 @@ const FilterPanel = ({
         /> */}
 
         {view === "personal-agenda" && (
-          <>
-            <CustomButton
-              size="xs"
-              text="Download Personalized Agenda"
-              style={{ marginTop: "12px", padding: "0px 0px" }}
-              onClick={() => downloadPdf("personal-agenda")}
-            />
-
-            {moment().date() >= 7 &&
-              moment().month() >= 2 &&
-              moment().year >= 2022 && (
-                <CustomButton
-                  size="xs"
-                  text="Download Report Sessions Joined"
-                  style={{ marginTop: "12px", padding: "0px 0px" }}
-                  onClick={() => downloadPdf("report-sessions-joined")}
-                />
-              )}
-          </>
+          <CustomButton
+            size="xs"
+            text="Download Personalized Agenda"
+            style={{
+              marginTop: "12px",
+              padding: "0px 0px",
+              marginLeft: "-12px",
+            }}
+            onClick={() => downloadPdf("personal-agenda")}
+          />
         )}
+
+        <CustomButton
+          size="xs"
+          text="Download Participation Report"
+          style={{
+            marginTop: "12px",
+            padding: "0px 13px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 13) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 21",
+              });
+            }
+            downloadPdf("report-sessions-joined");
+          }}
+        />
+
+        <CustomButton
+          size="xs"
+          text="Download Certificate"
+          style={{
+            marginTop: "12px",
+            padding: "0px 46px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 12) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 14",
+              });
+            }
+            setModalVisibleCertificate(true);
+          }}
+        />
       </div>
       <h2 className="font-regular">{title}</h2>
       <div className="global-conference-filter-panel-content">

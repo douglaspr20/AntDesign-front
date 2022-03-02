@@ -80,7 +80,7 @@ const formatAnnualConference = (userProfile, sessions, option) => {
       <p style="font-size: 1.3rem">${
         option === "personal-agenda"
           ? "Personalized Agenda – Created on"
-          : "Report Session Joined - generated on"
+          : "Personalized Participation Report - generated on"
       } ${moment().format("MM-DD-YYYY")} </p>
       <p style="font-size: 1.3rem">DOWNLOAD</p>
       <p style="font-size: 1.3rem">${userProfile.firstName} ${
@@ -222,7 +222,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
              </div>
           </div>
           ${
-            option === "report-sessions-joined"
+            option === "report-sessions-joined" &&
+            day.data[i].type === "Certificate Track and Panels"
               ? `
           <div style="margin-top: -25px;">
           <h3>HR Recertification Credits</h3>
@@ -281,7 +282,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
              </div>
           </div>
           ${
-            option === "report-sessions-joined"
+            option === "report-sessions-joined" &&
+            day.data[i].type === "Certificate Track and Panels"
               ? `
           <div style="margin-top: -35px;">
           <h3>HR Recertification Credits</h3>
@@ -390,7 +392,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
              </div>
           </div>
           ${
-            option === "report-sessions-joined"
+            option === "report-sessions-joined" &&
+            day.data[i].type === "Certificate Track and Panels"
               ? `
           <div>
           <h3>HR Recertification Credits</h3>
@@ -479,7 +482,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
              </div>
           </div>
           ${
-            option === "report-sessions-joined"
+            option === "report-sessions-joined" &&
+            day.data[i].type === "Certificate Track and Panels"
               ? `
           <div>
           <h3>HR Recertification Credits</h3>
