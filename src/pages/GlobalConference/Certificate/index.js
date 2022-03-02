@@ -22,7 +22,7 @@ const Certificate = ({ visible, onCancel, sessionsUserJoined, user }) => {
       const durationSession = +moment
         .duration(
           moment(sessionsUserJoined[i].endTime).diff(
-            sessionsUserJoined[0]?.startTime
+            sessionsUserJoined[i]?.startTime
           )
         )
         .asHours()
@@ -61,27 +61,13 @@ const Certificate = ({ visible, onCancel, sessionsUserJoined, user }) => {
         "",
         "SLOW"
       );
-      return pdf.save("certificate.pdf");
+      return pdf.save("Certificate.pdf");
     }
 
     var link = document.createElement("a");
-    link.download = "certificate.png";
+    link.download = "Certificate.png";
     link.href = imgData;
     link.click();
-
-    // const template = certificateAnnualConference();
-
-    // const pdf = new jsPdf({
-    //   orientation: "landscape",
-    //   format: "a4",
-    //   unit: "px",
-    //   hotfixes: ["px_scaling"],
-    //   precision: 32,
-    // });
-
-    // await pdf.html(template);
-
-    // pdf.save("Certificate Annual Conference.pdf");
 
     setLoading(false);
   };

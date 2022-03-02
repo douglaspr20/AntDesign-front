@@ -235,7 +235,7 @@ const GlobalConference = ({
         ? "Personalizated Agenda.pdf"
         : option === "conference-schedule"
         ? "Conference Schedule.pdf"
-        : "Report sessions joined"
+        : "Personalized Participation Report.pdf"
     );
 
     setLoading(false);
