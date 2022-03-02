@@ -58,7 +58,9 @@ const AdvertisementDrawer = ({
       const hasStarted = dateToday.isAfter(
         moment(advertisement.startDate).tz("America/Los_Angeles")
       );
-      setHasAdvertisementStarted(hasStarted);
+      setHasAdvertisementStarted(
+        hasStarted && advertisement.status === "active"
+      );
       setIsDraft(advertisement.status === "draft");
       setPage_(advertisement.page);
     }
@@ -134,9 +136,8 @@ const AdvertisementDrawer = ({
     });
 
     return (
-      // (currentDate &&
-      //   currentDate.valueOf() <
-      //     moment().tz("America/Los_Angeles")) ||
+      (currentDate &&
+        currentDate.valueOf() < moment().tz("America/Los_Angeles")) ||
       isMatch
     );
   };
@@ -253,7 +254,7 @@ const AdvertisementDrawer = ({
         visible={visible}
         onClose={handleOnClose}
         title="Rent this space"
-        width={420}
+        width={500}
       >
         <div>
           <Form
@@ -339,7 +340,7 @@ const AdvertisementDrawer = ({
                   />
                 )}
                 <CustomButton
-                  text="Save"
+                  text={isEdit ? "Start Campaign" : "Save"}
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
