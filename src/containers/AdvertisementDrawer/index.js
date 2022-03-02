@@ -340,7 +340,7 @@ const AdvertisementDrawer = ({
                   />
                 )}
                 <CustomButton
-                  text={isEdit ? "Start Campaign" : "Save"}
+                  text='Start Campaign'
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
