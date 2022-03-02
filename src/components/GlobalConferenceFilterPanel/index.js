@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Checkbox, notification } from "antd";
 import { connect } from "react-redux";
 
 import { CustomButton, CustomCheckbox, SearchInput } from "components";
@@ -120,31 +120,43 @@ const FilterPanel = ({
           />
         )}
 
-        {moment().weeks() >= 13 && (
-          <CustomButton
-            size="xs"
-            text="Download Participation Report"
-            style={{
-              marginTop: "12px",
-              padding: "0px 13px",
-              marginLeft: "-12px",
-            }}
-            onClick={() => downloadPdf("report-sessions-joined")}
-          />
-        )}
+        <CustomButton
+          size="xs"
+          text="Download Participation Report"
+          style={{
+            marginTop: "12px",
+            padding: "0px 13px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 13) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 21",
+              });
+            }
+            downloadPdf("report-sessions-joined");
+          }}
+        />
 
-        {moment().weeks() >= 12 && (
-          <CustomButton
-            size="xs"
-            text="Download Certificate"
-            style={{
-              marginTop: "12px",
-              padding: "0px 46px",
-              marginLeft: "-12px",
-            }}
-            onClick={() => setModalVisibleCertificate(true)}
-          />
-        )}
+        <CustomButton
+          size="xs"
+          text="Download Certificate"
+          style={{
+            marginTop: "12px",
+            padding: "0px 46px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 12) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 14",
+              });
+            }
+            setModalVisibleCertificate(true);
+          }}
+        />
       </div>
       <h2 className="font-regular">{title}</h2>
       <div className="global-conference-filter-panel-content">
