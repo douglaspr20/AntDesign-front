@@ -51,16 +51,21 @@ const SponsorDashboard = ({
   const [usersGeneral, setUsersGeneral] = useState(generalDemographics);
 
   useEffect(() => {
-    if (!isEmpty(userProfile) && !isEmpty(userProfile.isAdvertiser)) {
+    if (!isEmpty(userProfile)) {
       if (userProfile.isAdvertiser) {
         getAllUsers();
         countAllUsers();
-      } else {
+      }
+
+      if (
+        userProfile.hasOwnProperty("isAdvertiser") &&
+        !userProfile.isAdvertiser
+      ) {
         history.push(INTERNAL_LINKS.HOME);
       }
     }
     // eslint-disable-next-line
-  }, []);
+  }, [userProfile]);
 
   const content = (totalUsers) => (
     <>
