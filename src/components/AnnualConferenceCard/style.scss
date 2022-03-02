@@ -25,17 +25,21 @@
     height: auto;
     display: flex;
     align-items: center;
+    align-items: flex-start !important;
     justify-content: space-between;
-    flex-wrap: wrap-reverse;
+    flex-wrap: nowrap !important;
 
     h3 {
       max-width: 50%;
     }
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 600px) {
+
+      flex-wrap: wrap-reverse !important;
 
       h3{
-        max-width: 90% !important
+        max-width: 95% !important;
+        margin-top: 10px !important;
       }
     }
 
@@ -45,13 +49,19 @@
       justify-content: space-between;
       height: auto;
 
-      @media screen and (max-width: 500px) {
 
+      @media screen and (max-width: 800px) {
         & .ant-btn {
           max-width: 350px;
-          padding: 0px 20px;
+          padding: 0px 0px;
          }
         justify-content: center;
+      }
+
+      @media screen and (max-width: 500px) {
+        & .ant-btn {
+          padding: 0px 20px;
+         }
       }
 
       @media screen and (max-width: 400px) {
