@@ -375,14 +375,18 @@ const GlobalConference = ({
                   />
                 )}
 
-                {moment().date() >= 7 &&
-                  moment().month() >= 2 &&
+                {moment().date() >= 1 &&
+                  moment().month() >= 1 &&
                   moment().year() >= 2022 && (
                     <>
                       <CustomButton
                         size="xs"
                         text="Download Participation Report"
-                        style={{ marginTop: "12px", padding: "0px 0px" }}
+                        style={{
+                          marginTop: "12px",
+                          padding: "0px 13px",
+                          marginLeft: "-12px",
+                        }}
                         onClick={() => downloadPdf("report-sessions-joined")}
                       />
                       <CustomButton
