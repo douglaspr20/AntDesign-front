@@ -120,32 +120,31 @@ const FilterPanel = ({
           />
         )}
 
-        {moment().date() >= 1 &&
-          moment().month() >= 1 &&
-          moment().year() >= 2022 && (
-            <>
-              <CustomButton
-                size="xs"
-                text="Download Participation Report"
-                style={{
-                  marginTop: "12px",
-                  padding: "0px 13px",
-                  marginLeft: "-12px",
-                }}
-                onClick={() => downloadPdf("report-sessions-joined")}
-              />
-              <CustomButton
-                size="xs"
-                text="Download Certificate"
-                style={{
-                  marginTop: "12px",
-                  padding: "0px 46px",
-                  marginLeft: "-12px",
-                }}
-                onClick={() => setModalVisibleCertificate(true)}
-              />
-            </>
-          )}
+        {moment().weeks() >= 13 && (
+          <CustomButton
+            size="xs"
+            text="Download Participation Report"
+            style={{
+              marginTop: "12px",
+              padding: "0px 13px",
+              marginLeft: "-12px",
+            }}
+            onClick={() => downloadPdf("report-sessions-joined")}
+          />
+        )}
+
+        {moment().weeks() >= 12 && (
+          <CustomButton
+            size="xs"
+            text="Download Certificate"
+            style={{
+              marginTop: "12px",
+              padding: "0px 46px",
+              marginLeft: "-12px",
+            }}
+            onClick={() => setModalVisibleCertificate(true)}
+          />
+        )}
       </div>
       <h2 className="font-regular">{title}</h2>
       <div className="global-conference-filter-panel-content">
