@@ -211,7 +211,11 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
+      option === "personal-agenda"
+        ? sessionsUser
+        : option === "conference-schedule"
+        ? allSessions
+        : sessionsUserJoined,
       option
     );
 
@@ -228,6 +232,8 @@ const GlobalConference = ({
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
+        : option === "conference-schedule"
+        ? "Conference Schedule"
         : "Report sessions joined"
     );
 
@@ -350,12 +356,12 @@ const GlobalConference = ({
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
                 />
-                {/* <CustomButton
+                <CustomButton
                   size="xs"
                   text="Download Full Schedule"
                   style={{ marginTop: "12px", padding: "0px 22px" }}
                   onClick={() => downloadPdf("conference-schedule")}
-                /> */}
+                />
 
                 {localPathname === "personal-agenda" && (
                   <>

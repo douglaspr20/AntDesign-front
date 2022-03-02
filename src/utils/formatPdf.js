@@ -80,6 +80,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
       <p style="font-size: 1.3rem">${
         option === "personal-agenda"
           ? "Personalized Agenda – Created on"
+          : option === "conference-schedule"
+          ? "Conference Schedule - Generated on"
           : "Report Session Joined - generated on"
       } ${moment().format("MM-DD-YYYY")} </p>
       <p style="font-size: 1.3rem">DOWNLOAD</p>
@@ -97,6 +99,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
             <p style="margin-top: -20px">Global Online Conference | ${
               option === "personal-agenda"
                 ? "Personalized Agenda"
+                : option === "conference-schedule"
+                ? "Conference Schedule"
                 : "Report sessions Joined"
             }</p>
           </div>
@@ -105,11 +109,18 @@ const formatAnnualConference = (userProfile, sessions, option) => {
         <div>
           <p style="font-weight: 800 !important; font-size: 2.5rem !important; text-align: center">Event Overview</p>
           <p style="font-size: 1.5rem; padding: 0px 2.5rem">
-          This is your ${
-            option === "personal-agenda"
-              ? "personalized agenda"
-              : "report sessions joined"
-          }. It includes the sessions 
+          This is ${option !== "conference-schedule" ? "your" : ""} ${
+    option === "personal-agenda"
+      ? "personalized agenda"
+      : option === "conference-schedule"
+      ? "Conference Schedule"
+      : "report sessions joined"
+  }. It includes
+    ${
+      option === "conference-schedule"
+        ? "all sessions of Global Conference"
+        : `
+      the sessions 
           you ${
             option === "personal-agenda" ? "are planning to join" : "joined"
           }. 
@@ -136,6 +147,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
           Thank you and enjoy! `
               : ""
           }
+      `
+    }  
           </p>
         </div>
     </div>
@@ -308,6 +321,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 } </p>
               </div>
@@ -332,6 +347,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
@@ -417,6 +434,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
@@ -505,6 +524,8 @@ const formatAnnualConference = (userProfile, sessions, option) => {
                 <p style="margin-top: -20px">Global Online Conference | ${
                   option === "personal-agenda"
                     ? "Personalized Agenda"
+                    : option === "conference-schedule"
+                    ? "Conference Schedule"
                     : "Reported sessions joined"
                 }</p>
               </div>
