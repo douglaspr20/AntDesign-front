@@ -212,11 +212,7 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda"
-        ? sessionsUser
-        : option === "conference-schedule"
-        ? allSessions
-        : sessionsUserJoined,
+      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
       option
     );
 

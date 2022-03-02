@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Form, Checkbox, Popconfirm } from "antd";
+import { Drawer, Form, Checkbox, Popconfirm, Space } from "antd";
 import {
   CustomSelect,
   CustomButton,
@@ -25,6 +25,7 @@ const MatchmakingDrawer = ({
   sendMatchEmail,
 }) => {
   const [form] = Form.useForm();
+  const [matchForm] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPromptVisible, setIsPromptVisible] = useState(false);
   const [matchedUser, setMatchedUser] = useState(null);
@@ -38,11 +39,11 @@ const MatchmakingDrawer = ({
   const handleOnFinish = (values) => {
     getMatchmake(
       {
-        countries: JSON.stringify(values.countries),
-        topicsOfInterest: JSON.stringify(values.topicsOfInterest),
-        recentJobLevel: JSON.stringify(values.recentJobLevel),
-        recentWorkArea: JSON.stringify(values.recentWorkArea),
-        sizeOfOrganization: JSON.stringify(values.sizeOfOrganization),
+        countries: JSON.stringify(values.countries || []),
+        topicsOfInterest: JSON.stringify(values.topicsOfInterest || []),
+        recentJobLevel: JSON.stringify(values.recentJobLevel || []),
+        recentWorkArea: JSON.stringify(values.recentWorkArea || []),
+        sizeOfOrganization: JSON.stringify(values.sizeOfOrganization || []),
       },
       setIsModalVisible
     );
@@ -50,9 +51,18 @@ const MatchmakingDrawer = ({
     setVisible(false);
   };
 
-  const handleConfirm = () => {
+  const handleMatchOnFinish = (values) => {
     setIsPromptVisible(false);
-    sendMatchEmail(matchedUser);
+    sendMatchEmail(matchedUser, values.message);
+    setMatchedUser(null);
+  };
+
+  const handleConfirm = () => {
+    matchForm.submit();
+  };
+
+  const handleClosePromptVisible = () => {
+    setIsPromptVisible(false);
     setMatchedUser(null);
   };
 
@@ -78,6 +88,30 @@ const MatchmakingDrawer = ({
     );
   });
 
+  const handleSelectAll = () => {
+    const topics = allCategories.map((category) => category.value);
+
+    form.setFieldsValue({
+      topicsOfInterest: topics,
+    });
+  };
+
+  const handleUnselectAll = () => {
+    form.resetFields(["topicsOfInterest"]);
+  };
+
+  const handleSelectAllRecentWorkAreas = () => {
+    const areas = PROFILE_SETTINGS.WORK_AREAS.map((area) => area.value);
+
+    form.setFieldsValue({
+      recentWorkArea: areas,
+    });
+  };
+
+  const handleUnselectAllRecentWorkAreas = () => {
+    form.resetFields(["recentWorkArea"]);
+  };
+
   return (
     <Drawer
       visible={visible}
@@ -87,9 +121,29 @@ const MatchmakingDrawer = ({
     >
       <Form form={form} layout="vertical" onFinish={handleOnFinish}>
         <Form.Item name="countries" label="Countries">
-          <CustomSelect mode="multiple" options={COUNTRIES} bordered />
+          <CustomSelect
+            bordered
+            mode="multiple"
+            options={COUNTRIES}
+            optionFilterProp="children"
+          />
         </Form.Item>
-        <Form.Item name="topicsOfInterest" label="Topics of Interest">
+        <Form.Item
+          name="topicsOfInterest"
+          label={
+            <Space>
+              <div>Topics of Interest</div>
+              <div>|</div>
+              <div style={{ cursor: "pointer" }} onClick={handleSelectAll}>
+                Select All
+              </div>
+              <div>|</div>
+              <div style={{ cursor: "pointer" }} onClick={handleUnselectAll}>
+                Unselect All
+              </div>
+            </Space>
+          }
+        >
           <Checkbox.Group>
             {allCategories.map((topic) => {
               return (
@@ -111,7 +165,28 @@ const MatchmakingDrawer = ({
             })}
           </Checkbox.Group>
         </Form.Item>
-        <Form.Item name="recentWorkArea" label="Recent Work Areas">
+        <Form.Item
+          name="recentWorkArea"
+          label={
+            <Space>
+              <div>Recent Work Areas</div>
+              <div>|</div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={handleSelectAllRecentWorkAreas}
+              >
+                Select All
+              </div>
+              <div>|</div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={handleUnselectAllRecentWorkAreas}
+              >
+                Unselect All
+              </div>
+            </Space>
+          }
+        >
           <Checkbox.Group>
             {PROFILE_SETTINGS.WORK_AREAS.map((area, index) => (
               <CustomCheckbox key={index} value={area.value}>
@@ -143,11 +218,15 @@ const MatchmakingDrawer = ({
       </CustomModal>
       <CustomModal
         visible={isPromptVisible}
-        onClose={() => setIsPromptVisible(false)}
+        onCancel={handleClosePromptVisible}
         title="Enter here a one paragraph description of how you would like us to introduce you and your company"
         width={720}
       >
-        <CustomInput multiple />
+        <Form form={matchForm} onFinish={handleMatchOnFinish} layout="vertical">
+          <Form.Item label="Message" name="message">
+            <CustomInput multiple />
+          </Form.Item>
+        </Form>
         <Popconfirm
           title="Do you want to connect?"
           onConfirm={handleConfirm}

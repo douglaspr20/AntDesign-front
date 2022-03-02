@@ -15,6 +15,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
 import { actions as homeActions } from "redux/actions/home-actions";
 import UploadResumeModal from "../UploadResumeModal";
+import AdvertisementPaymentModal from "../../containers/AdvertiserPaymentModal";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
@@ -69,6 +70,8 @@ const ProfilePopupMenu = (props) => {
   const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
   const [showPremiumFirewall, setShowPremiumFirewall] = useState(false);
   const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
+  const [isAdvertisementModalVisible, setIsAdvertisementModalVisible] =
     useState(false);
 
   const history = useHistory();
@@ -184,6 +187,20 @@ const ProfilePopupMenu = (props) => {
     acceptApply({ userId: userProfile.id, applyState });
   };
 
+  const handlePartnersDashboard = () => {
+    if (user.isAdvertiser) {
+      history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD);
+    }
+    // else {
+    //   setIsAdvertisementModalVisible(true);
+    // }
+    setVisible(false);
+  };
+
+  const handleAdvertisementPaymentModalClose = () => {
+    setIsAdvertisementModalVisible(false);
+  };
+
   const TitleSection = () => (
     <div className="profile-popover-title" onClick={onViewProfile}>
       <div className="user-avatar">
@@ -295,14 +312,12 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
-      {user.isSponsor && (
-        <div
-          className="profile-popover-content-menu"
-          onClick={() => history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD)}
-        >
-          Partners Dashboard
-        </div>
-      )}
+      <div
+        className="profile-popover-content-menu"
+        onClick={handlePartnersDashboard}
+      >
+        Partners Dashboard
+      </div>
       <div
         className="profile-popover-content-menu"
         onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
@@ -489,6 +504,10 @@ const ProfilePopupMenu = (props) => {
           </Form.Item>
         </Form>
       </CustomModal>
+      <AdvertisementPaymentModal
+        visible={isAdvertisementModalVisible}
+        onClose={handleAdvertisementPaymentModalClose}
+      />
     </div>
   );
 

@@ -9,6 +9,7 @@ import { notification } from "antd";
 import converter from "number-to-words";
 import html2canvas from "html2canvas";
 import jsPdf from "jspdf";
+import { useParams } from "react-router-dom";
 
 import { Tabs, EventFilterPanel } from "components";
 import EventDrawer from "containers/EventDrawer";
@@ -26,6 +27,11 @@ import {
   setLoading,
   attendToGlobalConference,
 } from "redux/actions/home-actions";
+import {
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+} from "redux/actions/advertisment-actions";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import EventFilterDrawer from "./EventFilterDrawer";
@@ -52,6 +58,11 @@ const EventsPage = ({
   claimEventAttendance,
   claimEventCredit,
   setLoading,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+  advertisementsByPage,
+  advertisementById,
+  isAdPreview = false,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -63,6 +74,55 @@ const EventsPage = ({
   const [event, setEvent] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [eventForCredit, setEventForCredit] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (isAdPreview) {
+      getAdvertisementById(id);
+    } else {
+      getAdvertisementsTodayByPage("events");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const displayAds = !isEmpty(advertisementsByPage.events) && (
+    <div className="events-advertisement-wrapper">
+      {advertisementsByPage.events.map((advertisement) => {
+        return (
+          <div
+            className="events-advertisement-wrapper-content"
+            key={advertisement.id}
+          >
+            <div
+              className="advertisement"
+              onClick={() =>
+                window.open(advertisement.advertisementLink, "_blank")
+              }
+            >
+              <img
+                src={advertisement.adContentLink}
+                alt="advertisement"
+                className="advertisement-img"
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const displayPreviewAd = isAdPreview && (
+    <div className="events-advertisement-wrapper-preview">
+      <div className="advertisement">
+        <img
+          src={advertisementById.adContentLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
 
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
@@ -118,14 +178,11 @@ const EventsPage = ({
     });
   };
 
-  // console.log(filteredEvents, "filteredEvents");
-
   const TabData = [
     {
       title: "Upcoming events",
       content: () => (
         <EventList
-          // data={allEvents}
           data={filteredEvents}
           onAttend={addMyEvents}
           onClick={onEventClick}
@@ -202,7 +259,7 @@ const EventsPage = ({
         const last = item.startAndEndTimes.at(-1);
 
         if (!isEmpty(last) && moment().isBefore(last.endTime)) {
-          flag = true
+          flag = true;
         }
 
         return flag;
@@ -352,8 +409,15 @@ const EventsPage = ({
       </div>
       <div className="events-page-wrapper">
         <div className="events-page-container">
-          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+          <Tabs
+            data={TabData}
+            current={currentTab}
+            onChange={setCurrentTab}
+            centered
+          />
         </div>
+        {displayAds}
+        {displayPreviewAd}
       </div>
       <EventDrawer
         visible={visible}
@@ -434,6 +498,7 @@ const mapStateToProps = (state) => ({
   allEvents: eventSelector(state).allEvents,
   updatedEvent: eventSelector(state).updatedEvent,
   userProfile: homeSelector(state).userProfile,
+  ...advertisementSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -445,6 +510,8 @@ const mapDispatchToProps = {
   claimEventAttendance,
   claimEventCredit,
   setLoading,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

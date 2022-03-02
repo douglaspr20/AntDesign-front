@@ -9,7 +9,7 @@
 		height: calc(100vh - 72px);
 		background: $color-background;
 		overflow: auto;
-		padding: 4rem;
+		padding: 2rem;
 		position: relative;
 
 		@media (max-width: 576px) {
@@ -63,5 +63,74 @@
 
   .skill-cohort-page {
     grid-template-columns: none;
+  }
+}
+
+.project-x-advertisement-content {
+  display: flex;
+}
+
+.project-x-advertisement-wrapper {
+  // margin-left: auto;
+  // margin-right: auto;
+
+  &-preview {
+    margin-top: 1.5rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    .advertisement {
+      width: 275px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: lightgray;
+      height: 275px;
+      cursor: pointer;
+
+      &-img {
+        width: 275px;
+        height: 275px;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  &-content {
+    margin-top: 10px;
+    
+    .advertisement {
+      width: 275px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: lightgray;
+      height: 275px;
+      cursor: pointer;
+
+      &-img {
+        width: 275px;
+        height: 275px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.display-general-information {
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1rem;
+
+  .information {
+    width: 60%;
+  }
+
+  .advertisements {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
