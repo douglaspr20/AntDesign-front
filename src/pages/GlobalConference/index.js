@@ -29,10 +29,7 @@ import {
   removeFromMyEventList,
 } from "redux/actions/event-actions";
 import { convertToUTCTime, convertToLocalTime } from "utils/format";
-import {
-  certificateAnnualConference,
-  formatAnnualConference,
-} from "utils/formatPdf";
+import { formatAnnualConference } from "utils/formatPdf";
 import Emitter from "services/emitter";
 import SocketIO from "services/socket";
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
@@ -45,6 +42,7 @@ import CreateBonfireModal from "./CreateBonfireModal";
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
+import Certificate from "./Certificate";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference
@@ -93,6 +91,7 @@ const GlobalConference = ({
     useState(false);
   const [modalVisibleWelcomingMessage, setModalVisibleWelcomingMessage] =
     useState(false);
+  const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
 
   const localPathname =
     location.pathname.split("/")[2] || location.pathname.split("/")[1];
@@ -242,28 +241,6 @@ const GlobalConference = ({
     setLoading(false);
   };
 
-  const generateCertificate = async () => {
-    setLoading(true);
-
-    const template = certificateAnnualConference();
-
-    const pdf = new jsPdf({
-      orientation: "landscape",
-      format: "a4",
-      unit: "px",
-      hotfixes: ["px_scaling"],
-      precision: 32,
-    });
-
-    console.log(template);
-
-    await pdf.html(template);
-
-    pdf.save("Certificate Annual Conference.pdf");
-
-    setLoading(false);
-  };
-
   // const onAddBonfire = () => {
   //   if (userProfile.memberShip && userProfile.memberShip !== "premium") {
   //     return notification.warning({
@@ -312,7 +289,7 @@ const GlobalConference = ({
         setModalRequirementsVisible={setModalRequirementsVisible}
         setModalVisibleWelcomingMessage={setModalVisibleWelcomingMessage}
         downloadPdf={downloadPdf}
-        generateCertificate={generateCertificate}
+        setModalVisibleCertificate={setModalVisibleCertificate}
       />
       <FilterDrawer
         onChange={onFilterChange}
@@ -545,6 +522,11 @@ const GlobalConference = ({
         <p className="global-conference-description">{Description}</p>
       </CustomModal>
 
+      <Certificate
+        visible={modalVisibleCertificate}
+        onCancel={() => setModalVisibleCertificate(false)}
+        sessionsUserJoined={sessionsUserJoined}
+      />
       <AcceptTermsAndConditions />
     </div>
   );

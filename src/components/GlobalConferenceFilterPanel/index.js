@@ -28,7 +28,7 @@ const FilterPanel = ({
   setModalRequirementsVisible,
   setModalVisibleWelcomingMessage,
   downloadPdf,
-  generateCertificate,
+  setModalVisibleCertificate,
 }) => {
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -134,7 +134,6 @@ const FilterPanel = ({
                 }}
                 onClick={() => downloadPdf("report-sessions-joined")}
               />
-
               <CustomButton
                 size="xs"
                 text="Download Certificate"
@@ -143,7 +142,7 @@ const FilterPanel = ({
                   padding: "0px 46px",
                   marginLeft: "-12px",
                 }}
-                onClick={() => generateCertificate()}
+                onClick={() => setModalVisibleCertificate(true)}
               />
             </>
           )}
