@@ -233,7 +233,7 @@ const Advertiser = ({
         dataSource={advertisementsByAdvertiser}
         columns={columns}
         rowKey="id"
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 20 }}
       />
       <AdvertisementDrawer
         visible={visible}
