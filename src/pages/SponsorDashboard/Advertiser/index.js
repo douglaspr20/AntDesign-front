@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Space } from "antd";
-// import moment from "moment-timezone";
+import { Space, Tooltip, Table } from "antd";
+import moment from "moment-timezone";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { CustomButton } from "components";
-// import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 
-// import AdvertisementDrawer from "containers/AdvertisementDrawer";
+import AdvertisementDrawer from "containers/AdvertisementDrawer";
 import MatchmakingDrawer from "containers/MatchmakingDrawer";
 
 import {
@@ -27,137 +27,137 @@ const Advertiser = ({
   createAdvertisement,
   getAllActiveAdvertisements,
 }) => {
-  // const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [matchmakingVisible, setMatchmakingVisible] = useState(false);
-  // const [isEdit, setIsEdit] = useState(false);
-  // const [advertisement, setAdvertisement] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
+  const [advertisement, setAdvertisement] = useState({});
 
-  // const handleEdit = (id) => {
-  //   setIsEdit(true);
+  const handleEdit = (id) => {
+    setIsEdit(true);
 
-  //   const _advertisement = advertisementsByAdvertiser.find(
-  //     (ad) => ad.id === id
-  //   );
+    const _advertisement = advertisementsByAdvertiser.find(
+      (ad) => ad.id === id
+    );
 
-  //   setAdvertisement(_advertisement);
-  //   setVisible(true);
-  // };
+    setAdvertisement(_advertisement);
+    setVisible(true);
+  };
 
-  // const clearEditAndAdvertisement = () => {
-  //   setIsEdit(false);
-  //   setAdvertisement({});
-  // };
+  const clearEditAndAdvertisement = () => {
+    setIsEdit(false);
+    setAdvertisement({});
+  };
 
-  // const columns = [
-  //   {
-  //     title: "ID",
-  //     dataIndex: "id",
-  //     key: "id",
-  //     render: (_, __, index) => {
-  //       return <div>{index + 1}</div>;
-  //     },
-  //   },
-  //   {
-  //     title: "Page",
-  //     dataIndex: "page",
-  //     key: "page",
-  //   },
-  //   {
-  //     title: "Ad Link",
-  //     dataIndex: "advertisementLink",
-  //     key: "advertisementLink",
-  //     ellipsis: true,
-  //     render: (text) => {
-  //       return (
-  //         <a href={text} target="_blank" rel="noopener noreferrer">
-  //           {text}
-  //         </a>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     title: "Ad Content Link",
-  //     dataIndex: "adContentLink",
-  //     key: "adContentLink",
-  //     ellipsis: true,
-  //     render: (text) => {
-  //       return (
-  //         <a href={text} target="_blank" rel="noopener noreferrer">
-  //           {text}
-  //         </a>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     title: "Start Date",
-  //     dataIndex: "startDate",
-  //     key: "startDate",
-  //     render: (text) => {
-  //       return moment(text).format("LL");
-  //     },
-  //   },
-  //   {
-  //     title: "End Date",
-  //     dataIndex: "endDate",
-  //     key: "endDate",
-  //     render: (text) => {
-  //       return moment(text).format("LL");
-  //     },
-  //   },
-  //   {
-  //     title: "Ad Cost Per Day",
-  //     dataIndex: "adCostPerDay",
-  //     key: "adCostPerDay",
-  //     align: "right",
-  //   },
-  //   {
-  //     title: "Ad Duration By Day",
-  //     dataIndex: "adDurationByDays",
-  //     key: "adDurationByDays",
-  //     align: "right",
-  //   },
-  //   {
-  //     title: "Ad Preview Link",
-  //     dataIndex: "adPreviewLink",
-  //     key: "adPreviewLink",
-  //     ellipsis: true,
-  //     render: (_, record) => {
-  //       const url = `${process.env.REACT_APP_DOMAIN_URL}/ad/${record.page}/preview/${record.id}`;
-  //       return (
-  //         <a href={url} target="_blank" rel="noopener noreferrer">
-  //           {url}
-  //         </a>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     title: "Actions",
-  //     dataIndex: "action",
-  //     key: "action",
-  //     fixed: "right",
-  //     width: 150,
-  //     align: "center",
-  //     render: (_, data) => (
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //         }}
-  //       >
-  //         <Tooltip title="Edit">
-  //           <CustomButton
-  //             style={{ marginRight: "0.5rem", padding: "0 8px" }}
-  //             type="primary outlined"
-  //             size="xs"
-  //             icon={<EditOutlined />}
-  //             onClick={() => handleEdit(data.id)}
-  //           />
-  //         </Tooltip>
-  //       </div>
-  //     ),
-  //   },
-  // ];
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      render: (_, __, index) => {
+        return <div>{index + 1}</div>;
+      },
+    },
+    {
+      title: "Page",
+      dataIndex: "page",
+      key: "page",
+    },
+    {
+      title: "Ad Link",
+      dataIndex: "advertisementLink",
+      key: "advertisementLink",
+      ellipsis: true,
+      render: (text) => {
+        return (
+          <a href={text} target="_blank" rel="noopener noreferrer">
+            {text}
+          </a>
+        );
+      },
+    },
+    {
+      title: "Ad Content Link",
+      dataIndex: "adContentLink",
+      key: "adContentLink",
+      ellipsis: true,
+      render: (text) => {
+        return (
+          <a href={text} target="_blank" rel="noopener noreferrer">
+            {text}
+          </a>
+        );
+      },
+    },
+    {
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+      render: (text) => {
+        return moment(text).format("LL");
+      },
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
+      render: (text) => {
+        return moment(text).format("LL");
+      },
+    },
+    {
+      title: "Ad Cost Per Day",
+      dataIndex: "adCostPerDay",
+      key: "adCostPerDay",
+      align: "right",
+    },
+    {
+      title: "Ad Duration By Day",
+      dataIndex: "adDurationByDays",
+      key: "adDurationByDays",
+      align: "right",
+    },
+    {
+      title: "Ad Preview Link",
+      dataIndex: "adPreviewLink",
+      key: "adPreviewLink",
+      ellipsis: true,
+      render: (_, record) => {
+        const url = `${process.env.REACT_APP_DOMAIN_URL}/ad/${record.page}/preview/${record.id}`;
+        return (
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            {url}
+          </a>
+        );
+      },
+    },
+    {
+      title: "Actions",
+      dataIndex: "action",
+      key: "action",
+      fixed: "right",
+      width: 150,
+      align: "center",
+      render: (_, data) => (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Tooltip title="Edit">
+            <CustomButton
+              style={{ marginRight: "0.5rem", padding: "0 8px" }}
+              type="primary outlined"
+              size="xs"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(data.id)}
+            />
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
 
   useEffect(() => {
     if (!isEmpty(userProfile) && userProfile.id) {
@@ -171,7 +171,7 @@ const Advertiser = ({
 
   return (
     <div className="advertiser-dashboard-wrapper">
-      {/* <Space direction="vertical">
+      <Space direction="vertical">
         <h3>Available Credits: 100 Credits</h3>
         <CustomButton text="Buy credits" type="primary" />
       </Space>
@@ -198,7 +198,7 @@ const Advertiser = ({
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-      </div> */}
+      </div>
       <Space direction="vertical">
         <h3>Matchmaking</h3>
         <CustomButton
@@ -216,7 +216,7 @@ const Advertiser = ({
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
       </Space>
-      {/* <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+      <Space direction="vertical" style={{ marginBottom: "1rem" }}>
         <h3>Campaigns</h3>
         <CustomButton
           text="New campaign"
@@ -238,7 +238,7 @@ const Advertiser = ({
         advertisement={advertisement}
         isEdit={isEdit}
         clearEditAndAdvertisement={clearEditAndAdvertisement}
-      /> */}
+      />
       <MatchmakingDrawer
         visible={matchmakingVisible}
         setVisible={setMatchmakingVisible}
