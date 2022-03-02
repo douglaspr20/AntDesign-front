@@ -211,11 +211,7 @@ const GlobalConference = ({
 
     const template = formatAnnualConference(
       userProfile,
-      option === "personal-agenda"
-        ? sessionsUser
-        : option === "conference-schedule"
-        ? allSessions
-        : sessionsUserJoined,
+      option === "personal-agenda" ? sessionsUser : sessionsUserJoined,
       option
     );
 
@@ -232,8 +228,6 @@ const GlobalConference = ({
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
-        : option === "conference-schedule"
-        ? "Conference Schedule.pdf"
         : "Report sessions joined"
     );
 
