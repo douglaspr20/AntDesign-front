@@ -166,14 +166,7 @@ const AnnualConferenceCard = React.memo(
         <div className="acc-session-header">
           <h3>{session.title}</h3>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "auto",
-            }}
-          >
+          <div className="button-container">
             {added ? (
               <CustomButton
                 type="primary outlined"

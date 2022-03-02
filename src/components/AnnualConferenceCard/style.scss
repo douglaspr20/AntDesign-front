@@ -16,7 +16,7 @@
   }
 
   @media  (max-width: 400px){
-    max-width: 338px;
+    max-width: 337px;
   }
 }
 
@@ -33,13 +33,29 @@
     }
 
     @media screen and (max-width: 400px) {
-      & .ant-btn {
-       max-width: 310px;
-       padding: 0px 10px;
-      }
 
       h3{
         max-width: 90% !important
+      }
+    }
+
+    .button-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: auto;
+
+      @media screen and (max-width: 500px) {
+
+        & .ant-btn {
+          max-width: 350px;
+          padding: 0px 20px;
+         }
+        justify-content: center;
+      }
+
+      @media screen and (max-width: 400px) {
+        margin-left: -10PX;
       }
     }
   }
