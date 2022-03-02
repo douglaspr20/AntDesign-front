@@ -262,7 +262,7 @@ const SkillCohort = ({
       content: displayGeneralInformation,
     },
     {
-      title: "All Cohorts",
+      title: "Upcoming Cohorts",
       content: () => {
         return <div className="skill-cohort-list">{displaySkillCohorts}</div>;
       },
@@ -286,19 +286,6 @@ const SkillCohort = ({
       <SkillCohortFilterDrawer onChange={handleFilterChange} />
       <div className="skill-cohort-page-container">
         <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
-        {/* <div className="project-x-search-results-container">
-          <div className="project-x-advertisement-content">
-            <div>
-              <Tabs
-                data={TabData}
-                current={currentTab}
-                onChange={setCurrentTab}
-              />
-            </div>
-            {displayAds}
-            {displayPreviewAd}
-          </div>
-        </div> */}
       </div>
     </div>
   );
