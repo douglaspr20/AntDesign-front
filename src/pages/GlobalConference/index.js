@@ -375,31 +375,43 @@ const GlobalConference = ({
                   />
                 )}
 
-                {moment().weeks() >= 13 && (
-                  <CustomButton
-                    size="xs"
-                    text="Download Participation Report"
-                    style={{
-                      marginTop: "12px",
-                      padding: "0px 13px",
-                      marginLeft: "-12px",
-                    }}
-                    onClick={() => downloadPdf("report-sessions-joined")}
-                  />
-                )}
+                <CustomButton
+                  size="xs"
+                  text="Download Participation Report"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 13px",
+                    marginLeft: "-12px",
+                  }}
+                  onClick={() => {
+                    if (moment().weeks() <= 13) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 21",
+                      });
+                    }
+                    downloadPdf("report-sessions-joined");
+                  }}
+                />
 
-                {moment().weeks() >= 12 && (
-                  <CustomButton
-                    size="xs"
-                    text="Download Certificate"
-                    style={{
-                      marginTop: "12px",
-                      padding: "0px 46px",
-                      marginLeft: "-12px",
-                    }}
-                    onClick={() => setModalVisibleCertificate(true)}
-                  />
-                )}
+                <CustomButton
+                  size="xs"
+                  text="Download Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                    marginLeft: "-12px",
+                  }}
+                  onClick={() => {
+                    if (moment().weeks() <= 12) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 14",
+                      });
+                    }
+                    setModalVisibleCertificate(true);
+                  }}
+                />
               </div>
             )}
           </div>
