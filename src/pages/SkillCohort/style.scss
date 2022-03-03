@@ -39,7 +39,7 @@
 
 .skill-cohort-list {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	grid-template-columns: repeat(4, minmax(260px, 1fr));
 	grid-gap: 2rem;
 	margin-bottom: 44px;
 	margin-top: 3rem;
