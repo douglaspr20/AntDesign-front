@@ -103,7 +103,11 @@ const FilterPanel = ({
           size="xs"
           type="primary"
           text="Download Full Schedule"
-          style={{ marginTop: "12px", padding: "0px 22px" }}
+          style={{
+            marginTop: "12px",
+            padding: "0px 35px",
+            marginLeft: "-12px",
+          }}
           onClick={() => downloadPdf("conference-schedule")}
         />
 
