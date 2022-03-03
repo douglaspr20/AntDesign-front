@@ -43,16 +43,8 @@ import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
 import Certificate from "./Certificate";
+import ThingsYouNeedToKnow from "./ThingsYouNeedToKnow";
 
-const Description = `
-Welcome to the Hacking HR 2022 Global Online Conference
-planner. Here you will find all the sessions for the conference. You
-can add sessions to your personalized agenda and then download a
-PDF. Notice that you can’t add two sessions that are happening the
-same day at the same time. You can also download the calendar
-invites to save the date. Finally, you can find the speakers and
-connect with other participants. Enjoy!
-`;
 const TAB_NUM = 6;
 
 const GlobalConference = ({
@@ -353,7 +345,7 @@ const GlobalConference = ({
                 />
 
                 <CustomButton
-                  text="Welcoming Message"
+                  text="Things You Need To Know"
                   size="xs"
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
@@ -540,14 +532,10 @@ const GlobalConference = ({
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
 
-      <CustomModal
+      <ThingsYouNeedToKnow
         visible={modalVisibleWelcomingMessage}
-        title="Welcome to Hacking HR 2022"
-        width={500}
         onCancel={() => setModalVisibleWelcomingMessage(false)}
-      >
-        <p className="global-conference-description">{Description}</p>
-      </CustomModal>
+      />
 
       <Certificate
         visible={modalVisibleCertificate}
