@@ -38,14 +38,14 @@
 }
 
 .check-icon{
-  color: $color-success !important;
+   color: $color-success !important;
 }
 
 .preferred-skills-wrapper {
   display: flex;
   align-items: baseline;
   @media (max-width: 900px){
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 100px;
     } 
 
@@ -55,8 +55,16 @@
     padding-left: 1rem;
     width: 15%;
     @media (max-width: 900px){
+      width: 30%;
       margin-right: 0px;
       } 
+  }
+}
+
+.preferred-skills-level-content {
+  @media(max-width: 900px) {
+    display: flex;
+    flex-direction: column;
   }
 }
 // .skills-wrapper {
