@@ -51,7 +51,7 @@ const SkillCohortCard = (props) => {
   if (hasCohortStarted && hasAccess) {
     displayBtn = "Enter Dashboard";
   } else if (hasCohortStarted && !hasAccess) {
-    displayBtn = "You missed activities"
+    displayBtn = "You missed 2 activities"
   } else {
     displayBtn = "More";
   }
