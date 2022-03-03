@@ -72,6 +72,8 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
+  const [selectTab, setSelectTab] = useState("Mar 07");
+
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
@@ -277,6 +279,11 @@ const GlobalConference = ({
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
+  const handleCustomTab = (tabTitle, tabIndex) => {
+    setCurrentTab(`${tabIndex}`);
+    setSelectTab(tabTitle);
+  };
+
   return (
     <div className="global-conference">
       <GlobalConferenceFilterPanel
@@ -468,6 +475,26 @@ const GlobalConference = ({
                 </Link>
               </Menu.Item>
             </Menu>
+
+            {!childrenWithFilterProp && (
+              <Menu
+                mode="horizontal"
+                className="sub-menu"
+                selectedKeys={selectTab}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {tabData.map((tab, index) => (
+                  <Menu.Item
+                    key={tab.title}
+                    className="sub-menu-item-global-conference-fake-tabs"
+                    onClick={() => handleCustomTab(tab.title, index)}
+                  >
+                    {tab.title}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            )}
+
             {/* <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"

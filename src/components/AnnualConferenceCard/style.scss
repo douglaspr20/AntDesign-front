@@ -9,10 +9,14 @@
   padding: 2rem;
   position: relative;
   width: 100%;
-  max-width: 850px;
+  max-width: 1200px;
 
   @media  (max-width: 500px){
-    max-width: 400px;
+    max-width: 380px;
+  }
+
+  @media  (max-width: 400px){
+    max-width: 337px;
   }
 }
 
@@ -21,20 +25,47 @@
     height: auto;
     display: flex;
     align-items: center;
+    align-items: flex-start !important;
     justify-content: space-between;
-    flex-wrap: wrap-reverse;
+    flex-wrap: nowrap !important;
 
     h3 {
       max-width: 50%;
     }
 
-    @media screen and (max-width: 400px) {
-      & .ant-btn {
-       max-width: 310px;
-      }
+    @media screen and (max-width: 600px) {
+
+      flex-wrap: wrap-reverse !important;
 
       h3{
-        max-width: 90% !important
+        max-width: 95% !important;
+        margin-top: 10px !important;
+      }
+    }
+
+    .button-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: auto;
+
+
+      @media screen and (max-width: 800px) {
+        & .ant-btn {
+          max-width: 350px;
+          padding: 0px 0px;
+         }
+        justify-content: center;
+      }
+
+      @media screen and (max-width: 500px) {
+        & .ant-btn {
+          padding: 0px 20px;
+         }
+      }
+
+      @media screen and (max-width: 400px) {
+        margin-left: -10PX;
       }
     }
   }
@@ -107,7 +138,7 @@
     @include app-font(14px, 19px);
     position: absolute;
     top: -14px;
-    right: -24px;
+    right: 0px !important;
   }
 
   &-categories {

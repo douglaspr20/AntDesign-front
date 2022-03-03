@@ -7,7 +7,6 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { getParticipants } from "redux/actions/session-actions";
 import { CustomButton, ParticipantCard } from "components";
 import { Modal, List, Skeleton, notification, Pagination } from "antd";
-import "./style.scss";
 
 const Participants = ({
   participants,
@@ -59,7 +58,9 @@ const Participants = ({
   return (
     <>
       <div className="speakers-list">
-        <h2>{participants.length} Recommended Participants To Connect With</h2>
+        <h2 style={{ textAlign: "center" }}>
+          {participants.length} Recommended Participants To Connect With
+        </h2>
         <div className="speakers-list-container">
           {participants.length > 0 &&
             participants
