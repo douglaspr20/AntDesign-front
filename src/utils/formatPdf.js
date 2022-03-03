@@ -1320,7 +1320,149 @@ const formatAnnualConference = (userProfile, sessions, option) => {
     <a href="https://studiozao.com/intrapreneurship-white-paper-2022">
     studiozao.com
     </a>
+  </div>
 
+  </div>
+</div>
+
+<div style="height: 950px; width: 90%; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+  <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
+    <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+    <div>
+      <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+      <p style="margin-top: -20px">Global Online Conference | ${
+        option === "personal-agenda"
+          ? "Personalized Agenda"
+          : option === "conference-schedule"
+          ? "Conference Schedule"
+          : "Reported sessions joined"
+      } </p>
+    </div>
+  </div>
+  <div style="margin-top: 1rem; width: 800px; padding: 0px 40px; margin-bottom: 160px">
+    <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>Joanne (Jo) Fair</p>
+
+    <a href="https://www.futureworkstudio.com">
+    www.futureworkstudio.com
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=6VocrPMrZ-U&feature=youtu.be">
+   www.youtube.com
+    </a>
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>John O'Duinn</p>
+
+    <a href="https://distributedteamsbook.com/">
+    distributedteamsbook.com
+    </a>
+
+    <a href="https://distributedgov.com/">
+    distributedgov.com
+    </a>
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Julie Missaggia
+    </p>
+
+    <a href="https://cmimediagroup.com/">
+    cmimediagroup.com
+    </a>
+
+    <a href="https://www.wpp.com/people/careers">
+    www.wpp.com
+    </a>
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Kate Lister
+    </p>
+
+    <a href="http://globalworkplaceanalytics.com/whitepapers">
+    globalworkplaceanalytics.com
+    </a>
+
+    <a href="http://globalworkplaceanalytics.com/roi">
+    GlobalWorkplaceAnalytics.com
+    </a>
+
+    <a href="https://globalworkplaceanalytics.com/videos">
+    globalworkplaceanalytics.com
+    </a>
+
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Khalil Zafar
+    </p>
+
+    <a href="https://www.amazon.com/Future-Work-Simplified-Understand-Organization/dp/B08DSND2L9">
+    www.amazon.com
+    </a>
+
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Kristy Wallace
+    </p>
+
+    <a href="https://www.ellevatenetwork.com/">
+    www.ellevatenetwork.com
+    </a>
+
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Kyle Elliott, MPA, CHES
+    </p>
+
+    <a href="https://caffeinatedkyle.com/">
+    caffeinatedkyle.com
+    </a>
+
+    <a href="https://www.instagram.com/caffeinatedkyle/">
+    www.instagram.com
+    </a>
+
+  </div>
+
+  <div
+  style="width: 100%; display: flex; flex-direction: column; margin-top: 20px;"
+    >
+    <p>
+    Lauren Lefkowitz
+    </p>
+
+    <a href="https://www.fineisatrap.com">
+    www.fineisatrap.com
+    </a>
+
+    <a href="https://laurenlefkowitzcoach.com">
+    laurenlefkowitzcoach.com
+    </a>
   </div>
 
   </div>
