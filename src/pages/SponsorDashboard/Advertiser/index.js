@@ -179,7 +179,9 @@ const Advertiser = ({
   return (
     <div className="advertiser-dashboard-wrapper">
       <Space direction="vertical">
-        <h3>{`Available Credits: ${userProfile.advertisementCredits} Credits`}</h3>
+        <h3>{`Available Credits: ${
+          userProfile.advertisementCredits || 0
+        } Credits`}</h3>
         <CustomButton
           text="Buy credits"
           type="primary"

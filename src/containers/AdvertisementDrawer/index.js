@@ -266,7 +266,9 @@ const AdvertisementDrawer = ({
             validateMessages={{ required: "'${label}' is required!" }}
           >
             <Form.Item>
-              <h3>{`Available credits: ${userProfile.advertisementCredits}`}</h3>
+              <h3>{`Available credits: ${
+                userProfile.advertisementCredits || 0
+              }`}</h3>
             </Form.Item>
             {onDashboard && (
               <Form.Item label="Page" name="page" rules={[{ required: true }]}>
