@@ -202,10 +202,9 @@ const ProfilePopupMenu = (props) => {
   const handlePartnersDashboard = () => {
     if (user.isAdvertiser) {
       history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD);
+    } else {
+      setIsAdvertisementModalVisible(true);
     }
-    // else {
-    //   setIsAdvertisementModalVisible(true);
-    // }
     setVisible(false);
   };
 
@@ -519,6 +518,7 @@ const ProfilePopupMenu = (props) => {
       <AdvertisementPaymentModal
         visible={isAdvertisementModalVisible}
         onClose={handleAdvertisementPaymentModalClose}
+        userProfile={userProfile}
       />
     </div>
   );

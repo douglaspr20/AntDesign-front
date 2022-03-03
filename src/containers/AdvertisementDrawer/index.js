@@ -14,6 +14,7 @@ import {
   editAdvertisement,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const { RangePicker } = DatePicker;
 
@@ -29,6 +30,7 @@ const AdvertisementDrawer = ({
   advertisement = {},
   clearEditAndAdvertisement,
   editAdvertisement,
+  userProfile,
 }) => {
   const [totalDays, setTotalDays] = useState(0);
   const [disabledDates, setDisabledDates] = useState([]);
@@ -264,7 +266,7 @@ const AdvertisementDrawer = ({
             validateMessages={{ required: "'${label}' is required!" }}
           >
             <Form.Item>
-              <h3>Available credits: 999</h3>
+              <h3>{`Available credits: ${userProfile.advertisementCredits}`}</h3>
             </Form.Item>
             {onDashboard && (
               <Form.Item label="Page" name="page" rules={[{ required: true }]}>
@@ -340,7 +342,7 @@ const AdvertisementDrawer = ({
                   />
                 )}
                 <CustomButton
-                  text='Start Campaign'
+                  text="Start Campaign"
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
@@ -370,6 +372,7 @@ const AdvertisementDrawer = ({
 
 const mapStateToProps = (state) => ({
   ...advertisementSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

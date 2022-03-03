@@ -8,6 +8,7 @@ import { EditOutlined } from "@ant-design/icons";
 
 import AdvertisementDrawer from "containers/AdvertisementDrawer";
 import MatchmakingDrawer from "containers/MatchmakingDrawer";
+import AdvertisementPaymentModal from "containers/AdvertiserPaymentModal";
 
 import {
   getAdvertisementsByAdvertiser,
@@ -31,6 +32,7 @@ const Advertiser = ({
   const [matchmakingVisible, setMatchmakingVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [advertisement, setAdvertisement] = useState({});
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
 
   const handleEdit = (id) => {
     setIsEdit(true);
@@ -177,8 +179,12 @@ const Advertiser = ({
   return (
     <div className="advertiser-dashboard-wrapper">
       <Space direction="vertical">
-        <h3>Available Credits: 100 Credits</h3>
-        <CustomButton text="Buy credits" type="primary" />
+        <h3>{`Available Credits: ${userProfile.advertisementCredits} Credits`}</h3>
+        <CustomButton
+          text="Buy credits"
+          type="primary"
+          onClick={() => setPaymentModalVisible(true)}
+        />
       </Space>
       <div className="advertiser-content">
         <h3>How it works</h3>
@@ -247,6 +253,11 @@ const Advertiser = ({
       <MatchmakingDrawer
         visible={matchmakingVisible}
         setVisible={setMatchmakingVisible}
+      />
+      <AdvertisementPaymentModal
+        visible={paymentModalVisible}
+        onClose={() => setPaymentModalVisible(false)}
+        userProfile={userProfile}
       />
     </div>
   );

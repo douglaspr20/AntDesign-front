@@ -3,19 +3,13 @@ import { CustomModal } from "components";
 import { loadStripe } from "@stripe/stripe-js";
 import { CustomButton } from "components";
 import { Alert } from "antd";
+import { STRIPE_PRICES } from "enum";
 
 import { getCheckoutSession } from "api/module/stripe";
 
-const ADVERTISER_PRICE = {
-  price: "100",
-  country: "GLOBAL",
-  character: "&#36",
-  priceId: process.env.REACT_APP_STRIPE_ONE_TIME_ADVERTISER_ID,
-};
-
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
-const AdvertisementPaymentModal = ({ visible, onClose }) => {
+const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
   const [loading, setLoading] = useState(false);
   const [checkoutSessionError, setCheckoutSessionError] = useState(false);
   const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
@@ -29,16 +23,38 @@ const AdvertisementPaymentModal = ({ visible, onClose }) => {
     setStripe(await stripePromise);
   };
 
-  const requestCheckoutSessionTable = async () => {
+  const requestCheckoutSessionTable = async ({
+    isAdvertiser = false,
+    isBuyingCredits = false,
+    credits = 0,
+  }) => {
     setLoading(true);
     setCheckoutSessionError(false);
     setCheckoutSessionErrorMsg("");
 
     try {
-      let sessionData = await getCheckoutSession({
-        prices: [ADVERTISER_PRICE.priceId],
-        isAdvertisement: true,
-      });
+      let sessionData = {};
+
+      if (isAdvertiser) {
+        sessionData = await getCheckoutSession({
+          prices: [STRIPE_PRICES.ADVERTISER_PRICE.priceId],
+          isAdvertisement: true,
+        });
+      }
+
+      if (isBuyingCredits) {
+        const credit = STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.find(
+          (cred) => cred.credits === credits
+        );
+
+        if (credit) {
+          sessionData = await getCheckoutSession({
+            isBuyingCredits: true,
+            credits: credits,
+            prices: [credit.priceId],
+          });
+        }
+      }
 
       return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
     } catch (error) {
@@ -48,15 +64,48 @@ const AdvertisementPaymentModal = ({ visible, onClose }) => {
     }
   };
 
+  const displayBuyCredits =
+    STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map((credit) => {
+      return (
+        <CustomButton
+          key={credit.credits}
+          type="primary"
+          loading={loading}
+          onClick={() =>
+            requestCheckoutSessionTable({
+              isBuyingCredits: true,
+              credits: credit.credits,
+            })
+          }
+          text={`Buy ${credit.credits} credits`}
+          block
+          style={{ marginTop: "1rem" }}
+        />
+      );
+    });
+
   return (
     <CustomModal visible={visible} onCancel={onClose}>
-      Advertisement Payment Modal
-      <CustomButton
-        type="primary"
-        loading={loading}
-        onClick={() => requestCheckoutSessionTable()}
-        text="Upgrade to Advertiser"
-      />
+      {userProfile.isAdvertiser ? (
+        <>
+          Buy more credits!
+          {displayBuyCredits}
+        </>
+      ) : (
+        <>
+          Advertisement Payment Modal
+          <CustomButton
+            type="primary"
+            loading={loading}
+            onClick={() =>
+              requestCheckoutSessionTable({
+                isAdvertiser: true,
+              })
+            }
+            text="Upgrade to Advertiser"
+          />
+        </>
+      )}
       {checkoutSessionError && (
         <Alert
           message="Error"
