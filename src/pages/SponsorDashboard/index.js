@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Tabs } from "components";
+import { useHistory } from "react-router-dom";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
+import { isEmpty } from "lodash";
+import { INTERNAL_LINKS } from "enum";
 
 import { Doughnut, VerticalBar } from "./components";
 import SponsorsFilters from "./components/SponsorsFilters";
@@ -33,6 +36,8 @@ const SponsorDashboard = ({
   countAllUsers,
   userCount,
 }) => {
+  const history = useHistory();
+
   const generalDemographics = allUsers.filter(
     (item) => item.percentOfCompletion === 100
   );
@@ -46,11 +51,21 @@ const SponsorDashboard = ({
   const [usersGeneral, setUsersGeneral] = useState(generalDemographics);
 
   useEffect(() => {
-    getAllUsers();
-    countAllUsers();
+    if (!isEmpty(userProfile)) {
+      if (userProfile.isAdvertiser) {
+        getAllUsers();
+        countAllUsers();
+      }
 
+      if (
+        userProfile.hasOwnProperty("isAdvertiser") &&
+        !userProfile.isAdvertiser
+      ) {
+        history.push(INTERNAL_LINKS.HOME);
+      }
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [userProfile]);
 
   const content = (totalUsers) => (
     <>

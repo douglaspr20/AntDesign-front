@@ -231,19 +231,3 @@ a:active,
   background: $color-primary;
   border-color: $color-primary;
 }
-
-
-
-.attending-label {
-  margin-right: 37px;
-  color: $color-success;
-  @include app-font(16px, 21px, normal);
-  white-space: nowrap;
-
-  span {
-    margin-left: 0.5rem;
-  }
-}
-
-
-

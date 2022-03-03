@@ -39,10 +39,10 @@ import RecommendedAgendaModal from "./RecommendedAgendaModal";
 import AccessibilityRequirementsModal from "./AccessibilityRequirementsModal";
 import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
 import CreateBonfireModal from "./CreateBonfireModal";
-
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
+import Certificate from "./Certificate";
 
 const Description = `
 Welcome to the Hacking HR 2022 Global Online Conference
@@ -93,6 +93,7 @@ const GlobalConference = ({
     useState(false);
   const [modalVisibleWelcomingMessage, setModalVisibleWelcomingMessage] =
     useState(false);
+  const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
 
   const localPathname =
     location.pathname.split("/")[2] || location.pathname.split("/")[1];
@@ -236,7 +237,7 @@ const GlobalConference = ({
         ? "Personalizated Agenda.pdf"
         : option === "conference-schedule"
         ? "Conference Schedule.pdf"
-        : "Report sessions joined"
+        : "Personalized Participation Report.pdf"
     );
 
     setLoading(false);
@@ -295,6 +296,7 @@ const GlobalConference = ({
         setModalRequirementsVisible={setModalRequirementsVisible}
         setModalVisibleWelcomingMessage={setModalVisibleWelcomingMessage}
         downloadPdf={downloadPdf}
+        setModalVisibleCertificate={setModalVisibleCertificate}
       />
       <FilterDrawer
         onChange={onFilterChange}
@@ -363,33 +365,47 @@ const GlobalConference = ({
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
                 />
-                {/* <CustomButton
+                <CustomButton
                   size="xs"
                   text="Download Full Schedule"
                   style={{ marginTop: "12px", padding: "0px 22px" }}
                   onClick={() => downloadPdf("conference-schedule")}
-                /> */}
+                />
 
                 {localPathname === "personal-agenda" && (
-                  <>
-                    <CustomButton
-                      size="xs"
-                      text="Download Personalized Agenda"
-                      style={{ marginTop: "12px", padding: "0px 0px" }}
-                      onClick={() => downloadPdf("personal-agenda")}
-                    />
+                  <CustomButton
+                    size="xs"
+                    text="Download Personalized Agenda"
+                    style={{ marginTop: "12px", padding: "0px 0px" }}
+                    onClick={() => downloadPdf("personal-agenda")}
+                    ƒ
+                  />
+                )}
 
-                    {moment().date() >= 7 &&
-                      moment().month() >= 2 &&
-                      moment().year >= 2022 && (
-                        <CustomButton
-                          size="xs"
-                          text="Download Personalized Participation Report"
-                          style={{ marginTop: "12px", padding: "0px 0px" }}
-                          onClick={() => downloadPdf("report-sessions-joined")}
-                        />
-                      )}
-                  </>
+                {moment().weeks() >= 13 && (
+                  <CustomButton
+                    size="xs"
+                    text="Download Participation Report"
+                    style={{
+                      marginTop: "12px",
+                      padding: "0px 13px",
+                      marginLeft: "-12px",
+                    }}
+                    onClick={() => downloadPdf("report-sessions-joined")}
+                  />
+                )}
+
+                {moment().weeks() >= 12 && (
+                  <CustomButton
+                    size="xs"
+                    text="Download Certificate"
+                    style={{
+                      marginTop: "12px",
+                      padding: "0px 46px",
+                      marginLeft: "-12px",
+                    }}
+                    onClick={() => setModalVisibleCertificate(true)}
+                  />
                 )}
               </div>
             )}
@@ -548,6 +564,11 @@ const GlobalConference = ({
         <p className="global-conference-description">{Description}</p>
       </CustomModal>
 
+      <Certificate
+        visible={modalVisibleCertificate}
+        onCancel={() => setModalVisibleCertificate(false)}
+        sessionsUserJoined={sessionsUserJoined}
+      />
       <AcceptTermsAndConditions />
     </div>
   );
