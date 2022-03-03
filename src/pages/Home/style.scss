@@ -121,6 +121,10 @@
           margin-top: 1.5rem;
           position: relative;
 
+          @media (max-width: 1600px) {
+            display: none;
+          }
+
           &-content {
             margin-bottom: 5px;
 
