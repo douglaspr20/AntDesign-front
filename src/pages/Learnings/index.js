@@ -17,6 +17,7 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
 import { myLearningSelector } from "redux/selectors/myLearningSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import { actions as conferenceActions } from "redux/actions/conference-actions";
 
@@ -46,6 +47,7 @@ const MyLearingPage = ({
   getMoreCompleted,
   allSavedCurrentPage,
   getMoreSaved,
+  userProfile,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [listOfYears, setListOfYears] = useState([2020]);
@@ -296,8 +298,29 @@ const MyLearingPage = ({
       <div className="event-videos">
         <Collapse>
           {(allEventVideos || []).map((event) => {
+            const isEventPremium = event.ticket === "premium";
+            const isUserPremium = userProfile.memberShip === "premium";
+
+            let collapsible = "disabled";
+
+            if (isEventPremium && isUserPremium) {
+              collapsible = "header";
+            } else if (!isEventPremium) {
+              collapsible = "header";
+            }
+
+            const header =
+              collapsible === "disabled" ? (
+                <div>
+                  {`${event.title} - `}
+                  <b>FOR PREMIUM USERS ONLY</b>
+                </div>
+              ) : (
+                event.title
+              );
+
             return (
-              <Panel header={event.title} key={event.id}>
+              <Panel header={header} key={event.id} collapsible={collapsible}>
                 {event.Libraries.map((library) => {
                   return <EventVideo library={library} key={library.id} />;
                 })}
@@ -369,6 +392,7 @@ const MyLearingPage = ({
 
 const mapStateToProps = (state) => ({
   ...myLearningSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

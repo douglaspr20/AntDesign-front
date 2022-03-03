@@ -21,6 +21,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  countAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -173,10 +174,12 @@ import {
 import {
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourcesFromAPI,
+  deleteBusinessPartnerResourceByIdFromAPI,
   createBusinessPartnerResourceFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   uploadBusinessPartnerDocumentFileFromAPI,
+  updateBusinessPartnerResourceFromAPI,
   deleteBusinessPartnerDocumentFromAPI,
 } from "./module/businessPartner";
 
@@ -195,7 +198,19 @@ import {
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
 
+import {
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  editAdvertisement
+} from "./module/advertisement";
+
+import { getMatchmake, sendMatchEmail } from './module/matchmaking'
+
 import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -210,6 +225,8 @@ export {
   createCouncilResourceFromAPI,
   getBusinessPartnerMembersFromAPI,
   getBusinessPartnerResourceByIdFromAPI,
+  updateBusinessPartnerResourceFromAPI,
+  deleteBusinessPartnerResourceByIdFromAPI,
   deleteBusinessPartnerDocumentFromAPI,
   getBusinessPartnerDocumentsFromAPI,
   getBusinessPartnerResourcesFromAPI,
@@ -344,4 +361,13 @@ export {
   createMarketplaceProfile,
   updateMarketplaceProfile,
   acceptTermsAndConditions,
+  countAllUsers,
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  getMatchmake,
+  editAdvertisement,
+  sendMatchEmail
 };

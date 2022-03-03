@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "antd";
+import { Checkbox, notification } from "antd";
 import { connect } from "react-redux";
 
-import { CustomCheckbox, SearchInput } from "components";
+import { CustomButton, CustomCheckbox, SearchInput } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
 import { CONFERENCE_SETTING } from "enum";
 
 import "./style.scss";
+import { CheckOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 const SessionType = [...CONFERENCE_SETTING.SESSION_TYPE];
 
@@ -21,6 +23,12 @@ const FilterPanel = ({
   filters,
   view,
   userProfile,
+  onAttend,
+  onInviteColleague,
+  setModalRequirementsVisible,
+  setModalVisibleWelcomingMessage,
+  downloadPdf,
+  setModalVisibleCertificate,
 }) => {
   const [filterValues, setFilterValues] = useState(filters);
 
@@ -39,6 +47,121 @@ const FilterPanel = ({
 
   return (
     <div className="global-conference-filter-panel">
+      {userProfile.attendedToConference ? (
+        <>
+          <div className="attending-label">
+            <CheckOutlined />
+            <span>I'm attending</span>
+          </div>
+          <CustomButton
+            className="not-going-button"
+            text="Not attending"
+            size="xs"
+            type="remove"
+            remove={true}
+            onClick={onAttend}
+          />
+          <CustomButton
+            size="xs"
+            text="Invite Your Colleagues"
+            style={{ padding: "0px 41px", marginLeft: "-12px" }}
+            onClick={onInviteColleague}
+          />
+        </>
+      ) : (
+        <CustomButton
+          size="xs"
+          text="Attend the conference"
+          onClick={onAttend}
+        />
+      )}
+      <div className="button-containers" style={{ marginBottom: "10px" }}>
+        <CustomButton
+          text="Accessibility Requirements"
+          size="xs"
+          type="info"
+          className="button-requirements"
+          style={{
+            padding: "0px 25px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => setModalRequirementsVisible(true)}
+        />
+
+        <CustomButton
+          text="Welcoming Message"
+          size="xs"
+          style={{
+            padding: "0px 47px",
+            marginLeft: "-12px",
+            marginTop: "12px",
+          }}
+          onClick={() => setModalVisibleWelcomingMessage(true)}
+        />
+
+        <CustomButton
+          size="xs"
+          type="primary"
+          text="Download Full Schedule"
+          style={{
+            marginTop: "12px",
+            padding: "0px 35px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => downloadPdf("conference-schedule")}
+        />
+
+        {view === "personal-agenda" && (
+          <CustomButton
+            size="xs"
+            text="Download Personalized Agenda"
+            style={{
+              marginTop: "12px",
+              padding: "0px 0px",
+              marginLeft: "-12px",
+            }}
+            onClick={() => downloadPdf("personal-agenda")}
+          />
+        )}
+
+        <CustomButton
+          size="xs"
+          text="Download Participation Report"
+          style={{
+            marginTop: "12px",
+            padding: "0px 13px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 13) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 21",
+              });
+            }
+            downloadPdf("report-sessions-joined");
+          }}
+        />
+
+        <CustomButton
+          size="xs"
+          text="Download Certificate"
+          style={{
+            marginTop: "12px",
+            padding: "0px 46px",
+            marginLeft: "-12px",
+          }}
+          onClick={() => {
+            if (moment().weeks() <= 12) {
+              return notification.info({
+                message: "Coming soon",
+                description: "Available On March 14",
+              });
+            }
+            setModalVisibleCertificate(true);
+          }}
+        />
+      </div>
       <h2 className="font-regular">{title}</h2>
       <div className="global-conference-filter-panel-content">
         <div className="search-filter">

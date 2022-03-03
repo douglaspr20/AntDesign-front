@@ -104,8 +104,10 @@ const PublicEventPage = ({
   };
 
   const onClickDownloadCalendar = (day) => {
+    const userTimezone = moment.tz.guess();
+
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };
@@ -296,7 +298,9 @@ const PublicEventPage = ({
                         >
                           <Space>
                             {updatedEvent?.startAndEndTimes.length > 1
-                              ? `Download Day ${index + 1}`
+                              ? `Download Calendar Day ${index + 1}: ${moment(
+                                  startTime
+                                ).format("MMM DD")} `
                               : "Download Calendar"}
                             <DownOutlined />
                           </Space>

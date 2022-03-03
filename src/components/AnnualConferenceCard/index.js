@@ -56,7 +56,10 @@ const AnnualConferenceCard = React.memo(
       } ${duration.minutes()} minutes`
     );
     const [timeLeft, setTimeLeft] = useState(
-      moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
+      moment
+        .duration(convertedStartTime.diff(moment.now()))
+        .asMinutes()
+        .toFixed()
     );
 
     setInterval(() => {
@@ -66,10 +69,10 @@ const AnnualConferenceCard = React.memo(
           duration.asHours().toFixed() > 0
             ? `${duration.asHours().toFixed()} hours and `
             : ""
-        } ${duration.minutes()} minutes`
+        } ${duration.minutes().toFixed()} minutes`
       );
 
-      setTimeLeft(duration.asMinutes());
+      setTimeLeft(duration.asMinutes().toFixed());
     }, 60000);
 
     const onClickDownloadCalendar = (e) => {
@@ -111,6 +114,15 @@ const AnnualConferenceCard = React.memo(
 
       window.open(yahooCalendarUrl, "_blank");
     };
+
+    if (
+      moment().date() < 1 &&
+      moment().month() <= 2 &&
+      moment().year() <= 2022 &&
+      timeLeft < 69120
+    ) {
+      setTimeLeft(80000);
+    }
 
     const downloadDropdownOptions = () => (
       <Menu style={{ position: "relative", bottom: "70px" }}>
@@ -154,14 +166,7 @@ const AnnualConferenceCard = React.memo(
         <div className="acc-session-header">
           <h3>{session.title}</h3>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "auto",
-            }}
-          >
+          <div className="button-container">
             {added ? (
               <CustomButton
                 type="primary outlined"
@@ -179,14 +184,24 @@ const AnnualConferenceCard = React.memo(
               />
             ) : null}
 
-            {timeLeft < 5 && timeLeft >= -10 ? (
+            {session.totalusersjoined >= 30 &&
+            session.type === "Roundtable" &&
+            !userProfile?.sessionsJoined?.includes(session.id) ? (
+              <CustomButton
+                type="primary"
+                size="md"
+                text="Session Full"
+                disabled={true}
+                style={{ marginTop: "5px" }}
+              />
+            ) : timeLeft <= 5 && timeLeft >= -10 ? (
               <CustomButton
                 type="primary"
                 size="md"
                 text="Join"
                 className={
                   joinedOtherSession &&
-                  !userProfile.sessionsJoined.includes(session.id)
+                  !userProfile?.sessionsJoined?.includes(session.id)
                     ? "custom-button-disabled"
                     : null
                 }
@@ -198,7 +213,7 @@ const AnnualConferenceCard = React.memo(
                   alignSelf: "flex-end",
                 }}
               />
-            ) : timeLeft >= -10 && timeLeft < 7200 ? (
+            ) : timeLeft >= -10 && timeLeft < 69120 ? (
               <CustomButton
                 type="primary"
                 size="md"
@@ -207,7 +222,7 @@ const AnnualConferenceCard = React.memo(
                 style={{ marginTop: "5px" }}
               />
             ) : timeLeft <= -10 &&
-              !userProfile.sessionsJoined.includes(session.id) ? (
+              !userProfile?.sessionsJoined?.includes(session.id) ? (
               <CustomButton
                 type="primary"
                 size="md"
@@ -216,14 +231,14 @@ const AnnualConferenceCard = React.memo(
                 style={{ marginTop: "5px" }}
               />
             ) : timeLeft <= 5 &&
-              userProfile.sessionsJoined.includes(session.id) ? (
+              userProfile?.sessionsJoined?.includes(session.id) ? (
               <CustomButton
                 type="primary"
                 size="md"
                 text="Join"
                 className={
                   joinedOtherSession &&
-                  !userProfile.sessionsJoined.includes(session.id)
+                  !userProfile?.sessionsJoined?.includes(session.id)
                     ? "custom-button-disabled"
                     : null
                 }

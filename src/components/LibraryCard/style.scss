@@ -11,6 +11,15 @@
   position: relative;
   cursor: pointer;
   width: 100%;
+  position: relative;
+
+  .overlay {
+    position: absolute;
+    background-color: #f2f2f2;
+    opacity: 0.75;
+    height: 100%;
+    width: 100%;
+  }
 
   &.add {
     border: 1px dashed $color-border;
@@ -246,6 +255,10 @@
       }
     }
   }
+}
+
+.isNotClickable {
+  cursor: not-allowed !important;
 }
 
 @keyframes shade {

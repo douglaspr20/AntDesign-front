@@ -4,19 +4,33 @@ import "react-image-crop/lib/ReactCrop.scss";
 
 import { CustomButton } from "components";
 
-class CompanyLogoUploadForm extends PureComponent {
+class UploadImageForm extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      src: props.src,
-      crop: {
+    let crop = {};
+
+    if (this.props.isFixed) {
+      crop = {
+        aspect: this.props.aspectRatio,
+        height: 50,
+        width: 50,
+        x: 25,
+        y: 25,
+      };
+    } else {
+      crop = {
         unit: "%",
         height: 50,
         width: 50,
         x: 25,
         y: 25,
-      },
+      };
+    }
+
+    this.state = {
+      src: props.src,
+      crop,
       croppedImageUrl: null,
       base64: null,
       type: "image/jpeg",
@@ -162,4 +176,4 @@ class CompanyLogoUploadForm extends PureComponent {
   }
 }
 
-export default CompanyLogoUploadForm;
+export default UploadImageForm;
