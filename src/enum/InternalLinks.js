@@ -51,5 +51,8 @@ export default {
   INVITATION: "/invitation",
   SPONSOR_DASHBOARD: "/sponsor-dashboard",
   TALENT_MARKETPLACE: '/talent-marketplace',
-  AD_HOME_PREVIEW: '/ad/home/preview'
+  AD_HOME_PREVIEW: '/ad/home/preview',
+  AD_PROJECT_X_PREVIEW: '/ad/project-x/preview',
+  AD_EVENTS_PREVIEW: '/ad/events/preview',
+  AD_CONFERENCE_LIBRARY_PREVIEW: '/ad/conference-library/preview',
 };

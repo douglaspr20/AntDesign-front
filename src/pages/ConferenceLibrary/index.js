@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import { useParams } from "react-router-dom";
+import { isEmpty } from "lodash";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
@@ -12,6 +14,11 @@ import {
   getMoreConferenceLibraries,
   searchConferenceLibraries,
 } from "redux/actions/conference-actions";
+import {
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+} from "redux/actions/advertisment-actions";
+import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { conferenceSelector } from "redux/selectors/conferenceSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
@@ -23,6 +30,11 @@ const ConferenceLibrary = ({
   allConferenceLibraries,
   getMoreConferenceLibraries,
   searchConferenceLibraries,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
+  advertisementsByPage,
+  advertisementById,
+  isAdPreview = false,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
@@ -30,6 +42,55 @@ const ConferenceLibrary = ({
   const [countOfResults, setCountOfResults] = useState(0);
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (isAdPreview) {
+      getAdvertisementById(id);
+    } else {
+      getAdvertisementsTodayByPage("conference-library");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const displayAds = !isEmpty(advertisementsByPage["conference-library"]) && (
+    <div className="conference-library-advertisement-wrapper">
+      {advertisementsByPage["conference-library"].map((advertisement) => {
+        return (
+          <div
+            className="conference-library-advertisement-wrapper-content"
+            key={advertisement.id}
+          >
+            <div
+              className="advertisement"
+              onClick={() =>
+                window.open(advertisement.advertisementLink, "_blank")
+              }
+            >
+              <img
+                src={advertisement.adContentLink}
+                alt="advertisement"
+                className="advertisement-img"
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const displayPreviewAd = isAdPreview && (
+    <div className="conference-library-advertisement-wrapper-preview">
+      <div className="advertisement">
+        <img
+          src={advertisementById.adContentLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
 
   const onShowMore = () => {
     getMoreConferenceLibraries(
@@ -156,26 +217,36 @@ const ConferenceLibrary = ({
             </div>
           </Col>
         </Row>
-        <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
-        {allConferenceLibraries[+currentTab]?.currentPage *
-          SETTINGS.MAX_SEARCH_ROW_NUM <
-          allConferenceLibraries[+currentTab]?.count && (
-          <div className="search-results-container-footer d-flex justify-center items-center">
-            {loading && (
-              <div className="conference-library-page-loading-more">
-                <img src={IconLoadingMore} alt="loading-more-img" />
+        <div className="conference-library-content">
+          <div>
+            <Tabs
+              data={TabData}
+              current={currentTab}
+              onChange={setCurrentTab}
+            />
+            {allConferenceLibraries[+currentTab]?.currentPage *
+              SETTINGS.MAX_SEARCH_ROW_NUM <
+              allConferenceLibraries[+currentTab]?.count && (
+              <div className="conference-library-footer d-flex justify-center items-center">
+                {loading && (
+                  <div className="conference-library-page-loading-more">
+                    <img src={IconLoadingMore} alt="loading-more-img" />
+                  </div>
+                )}
+                {!loading && (
+                  <CustomButton
+                    text="Show more"
+                    type="primary outlined"
+                    size="lg"
+                    onClick={onShowMore}
+                  />
+                )}
               </div>
             )}
-            {!loading && (
-              <CustomButton
-                text="Show more"
-                type="primary outlined"
-                size="lg"
-                onClick={onShowMore}
-              />
-            )}
           </div>
-        )}
+          {displayAds}
+          {displayPreviewAd}
+        </div>
       </div>
     </div>
   );
@@ -194,11 +265,14 @@ const mapStateToProps = (state, props) => ({
   allConferenceLibraries: conferenceSelector(state).allConferenceLibraries,
   countOfResults: conferenceSelector(state).countOfResults,
   currentPage: conferenceSelector(state).currentPage,
+  ...advertisementSelector(state),
 });
 
 const mapDispatchToProps = {
   getMoreConferenceLibraries,
   searchConferenceLibraries,
+  getAdvertisementsTodayByPage,
+  getAdvertisementById,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceLibrary);
