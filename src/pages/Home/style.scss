@@ -96,7 +96,7 @@
           position: relative;
 
           .advertisement {
-            width: 336px;
+            width: 275px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -105,7 +105,7 @@
             cursor: pointer;
 
             &-img {
-              width: 336px;
+              width: 275px;
               height: 275px;
               object-fit: cover;
             }
@@ -125,18 +125,19 @@
             margin-bottom: 5px;
 
             .advertisement {
-              width: 336px;
+              width: 275px;
               display: flex;
               justify-content: center;
               align-items: center;
-              background-color: lightgray;
+              // background-color: lightgray;
               height: 275px;
               cursor: pointer;
   
               &-img {
-                width: 336px;
+                width: 275px;
                 height: 275px;
-                object-fit: cover;
+                object-fit: fill;
+                // object-fit: scale-down;
               }
             }
           }

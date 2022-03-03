@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
-// import { isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import { useParams } from "react-router-dom";
 import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
@@ -50,7 +50,7 @@ const HomePage = ({
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
   const [visible, setVisible] = useState(false);
-  // const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
+  const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
   const { id } = useParams();
 
   const onUpgrade = () => {
@@ -78,13 +78,13 @@ const HomePage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // useEffect(() => {
-  //   if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
-  //     setHasAdvertisementData(true);
-  //   } else {
-  //     setHasAdvertisementData(false);
-  //   }
-  // }, [advertisementsByPage]);
+  useEffect(() => {
+    if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
+      setHasAdvertisementData(true);
+    } else {
+      setHasAdvertisementData(false);
+    }
+  }, [advertisementsByPage]);
 
   const onFilterChange = (filter) => {
     getAllPost({ ...filter, text });
@@ -111,44 +111,44 @@ const HomePage = ({
     });
   };
 
-  // const displayAds = hasAdvertisementData &&
-  //   !isEmpty(advertisementsByPage.home) && (
-  //     <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">
-  //       {advertisementsByPage.home.map((advertisement) => {
-  //         return (
-  //           <div
-  //             className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
-  //             key={advertisement.id}
-  //           >
-  //             <div
-  //               className="advertisement"
-  //               onClick={() =>
-  //                 window.open(advertisement.advertisementLink, "_blank")
-  //               }
-  //             >
-  //               <img
-  //                 src={advertisement.adContentLink}
-  //                 alt="advertisement"
-  //                 className="advertisement-img"
-  //               />
-  //             </div>
-  //           </div>
-  //         );
-  //       })}
-  //     </div>
-  //   );
+  const displayAds = hasAdvertisementData &&
+    !isEmpty(advertisementsByPage.home) && (
+      <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">
+        {advertisementsByPage.home.map((advertisement) => {
+          return (
+            <div
+              className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
+              key={advertisement.id}
+            >
+              <div
+                className="advertisement"
+                onClick={() =>
+                  window.open(advertisement.advertisementLink, "_blank")
+                }
+              >
+                <img
+                  src={advertisement.adContentLink}
+                  alt="advertisement"
+                  className="advertisement-img"
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
 
-  // const displayPreviewAd = isAdPreview && (
-  //   <div className="home-page-container--posts-central-panel-content-preview">
-  //     <div className="advertisement">
-  //       <img
-  //         src={advertisementById.adContentLink}
-  //         alt="advertisement"
-  //         className="advertisement-img"
-  //       />
-  //     </div>
-  //   </div>
-  // );
+  const displayPreviewAd = isAdPreview && (
+    <div className="home-page-container--posts-central-panel-content-preview">
+      <div className="advertisement">
+        <img
+          src={advertisementById.adContentLink}
+          alt="advertisement"
+          className="advertisement-img"
+        />
+      </div>
+    </div>
+  );
 
   // const dipslayRentAd = !isAdPreview && hasAdvertisementData === false && (
   //   <div className="home-page-container--posts-central-panel-content-preview">
@@ -237,9 +237,9 @@ const HomePage = ({
             <div className="home-page-container--posts-central-panel-content-posts">
               <Posts onShowMore={onShowMore} history={history} />
             </div>
-            {/* {displayAds}
-            {dipslayRentAd}
-            {displayPreviewAd} */}
+            {displayAds}
+            {displayPreviewAd}
+            {/* {dipslayRentAd} */}
           </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (

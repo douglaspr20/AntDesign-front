@@ -188,6 +188,27 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}`)) {
+      pathInfo = {
+        icon: IconHome,
+        label: "Advertisement Preview",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_EVENTS_PREVIEW}`)) {
+      pathInfo = {
+        icon: IconHome,
+        label: "Advertisement Preview",
+      };
+    }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}`)) {
+      pathInfo = {
+        icon: IconFlaskOutline,
+        label: "Advertisement Preview",
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">
