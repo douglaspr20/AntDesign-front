@@ -304,7 +304,7 @@ const GlobalConference = ({
   const handleCustomTab = (tabTitle, tabIndex) => {
     const element = document.querySelector(".global-conference-tabs");
     element.scrollTo({
-      top: 100,
+      top: 0,
     });
     setCurrentTab(`${tabIndex}`);
     setSelectTab(tabTitle);
