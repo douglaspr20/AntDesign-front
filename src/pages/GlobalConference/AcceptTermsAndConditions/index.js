@@ -16,10 +16,15 @@ const AcceptTermsAndConditions = ({
 }) => {
   const [visibleModalTermsCondition, setVisibleModalTermsCondition] =
     useState(false);
+  const [visibleModalViewVideo, setVisibleModalViewVideo] = useState(false);
 
   useEffect(() => {
     if (userProfile.acceptTermsConditionGConference === false) {
       setVisibleModalTermsCondition(true);
+    }
+
+    if (userProfile.viewRulesGConference === false) {
+      setVisibleModalViewVideo(true);
     }
   }, [userProfile]);
 
@@ -129,7 +134,7 @@ const AcceptTermsAndConditions = ({
         </div>
       </CustomModal>
       <CustomModal
-        visible={!userProfile.viewRulesGConference}
+        visible={visibleModalViewVideo}
         onCancel={() => {
           viewRulesGConference(userProfile.id);
         }}
