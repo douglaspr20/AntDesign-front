@@ -64,6 +64,8 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
+  const [selectTab, setSelectTab] = useState("Mar 07");
+
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
@@ -222,6 +224,25 @@ const GlobalConference = ({
 
     await pdf.html(template);
 
+    if (option !== "conference-schedule") {
+      pdf.setFontSize(16);
+      pdf.text(120, 200, "SUGGESTED LINKS TO CHECK OUT (BY SPEAKERS)");
+      pdf.setFontSize(12);
+      pdf.text(
+        50,
+        230,
+        "This link includes a comprehensive list of references and learning material suggested by the\nconference speakers."
+      );
+      pdf.setFontSize(10);
+      pdf.setTextColor("#438cef");
+      pdf.textWithLink("Please click here", 50, 280, {
+        url: "https://docs.google.com/document/d/1RRy2yhPps3ebcYHVehtIsEkMN8NikrKDixdvIeVIPb0/edit?usp=sharing",
+      });
+
+      pdf.setTextColor("#000");
+      pdf.text(50, 320, "Thank you!");
+    }
+
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
@@ -268,6 +289,13 @@ const GlobalConference = ({
 
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
+
+  const handleCustomTab = (tabTitle, tabIndex) => {
+    const element = document.querySelector(".global-conference-tabs");
+    element.scrollIntoView();
+    setCurrentTab(`${tabIndex}`);
+    setSelectTab(tabTitle);
+  };
 
   return (
     <div className="global-conference">
@@ -472,6 +500,26 @@ const GlobalConference = ({
                 </Link>
               </Menu.Item>
             </Menu>
+
+            {!childrenWithFilterProp && (
+              <Menu
+                mode="horizontal"
+                className="sub-menu"
+                selectedKeys={selectTab}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {tabData.map((tab, index) => (
+                  <Menu.Item
+                    key={tab.title}
+                    className="sub-menu-item-global-conference-fake-tabs"
+                    onClick={() => handleCustomTab(tab.title, index)}
+                  >
+                    {tab.title}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            )}
+
             {/* <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"

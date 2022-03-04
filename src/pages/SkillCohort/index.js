@@ -144,27 +144,26 @@ const SkillCohort = ({
     );
   });
 
-  const sortedAllOfMySkillCohorts = allOfMySkillCohorts.sort((a, b) => {
-    if (
-      moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") >
-      moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")
-    ) {
-      return 1;
+  const kickedOutCohorts = allOfMySkillCohorts.filter(
+    (cohort) => !cohort.hasAccess
+  );
+
+  const sortedAllOfMyActiveSkillCohorts = allOfMySkillCohorts
+    .filter((cohort) => cohort.hasAccess)
+    .sort((a, b) => {
+      if (moment().isAfter(a.endDate) && moment().isBefore(b.endDate)) return 1;
+
+      if (moment().isBefore(a.endDate) && moment().isAfter(b.endDate))
+        return -1;
+
+      return 0;
+    });
+
+  const displayMySkillCohorts = [...sortedAllOfMyActiveSkillCohorts, ...kickedOutCohorts].map(
+    (skillCohort) => {
+      return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} />;
     }
-
-    if (
-      moment(a.startDate).format("YYYY-MM-DD HH:mm:ss") <
-      moment(b.startDate).format("YYYY-MM-DD HH:mm:ss")
-    ) {
-      return -1;
-    }
-
-    return 0;
-  });
-
-  const displayMySkillCohorts = sortedAllOfMySkillCohorts.map((skillCohort) => {
-    return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} />;
-  });
+  );
 
   const displayGeneralInformation = () => {
     return (
