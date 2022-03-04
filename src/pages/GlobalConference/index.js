@@ -188,6 +188,17 @@ const GlobalConference = ({
   const downloadPdf = async (option) => {
     setLoading(true);
 
+    if (option === "conference-schedule") {
+      const link = document.createElement("a");
+      link.download = "Conference Schedule.pdf";
+      link.href =
+        "https://hackinghr-lab-assets.s3.us-east-1.amazonaws.com/pdfs/A%20-%20Hacking%20HR%202022%20Global%20Conference%20-%20Schedule.pdf";
+      link.target = "_blank";
+      link.click();
+      setLoading(false);
+      return;
+    }
+
     if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
       return notification.warning({
