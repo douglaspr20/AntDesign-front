@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { notification, Tooltip } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { Affix, Button, notification, Tooltip } from "antd";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { AnnualConferenceCard } from "components";
 import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 
@@ -29,7 +33,9 @@ const ConferenceList = ({
   messageError,
 }) => {
   const [sessionData, setSessionData] = useState([]);
+  const [icon, setIcon] = useState(<ArrowDownOutlined />);
   const history = useHistory();
+  const ref = useRef(null);
 
   const onAddSession = (session) => {
     addSession(session);
@@ -195,8 +201,17 @@ const ConferenceList = ({
     }
   }, [data, filters]);
 
+  const handleScroll = () => {
+    if (ref.current) {
+      if (ref.current.scrollTop !== 0) {
+        setIcon(<ArrowUpOutlined />);
+      } else {
+        setIcon(<ArrowDownOutlined />);
+      }
+    }
+  };
   return (
-    <div className="conference-list">
+    <div className="conference-list" ref={ref} onScroll={handleScroll}>
       <div className="conference-list-container">
         {sessionData.length > 0 ? (
           sessionData.map((session, index) => {
@@ -248,6 +263,12 @@ const ConferenceList = ({
           <h1 style={{ textAlign: "center" }}>{messageError}</h1>
         )}
       </div>
+      <Affix
+        offsetBottom={10}
+        style={{ position: "absolute", right: "7%", bottom: "80px" }}
+      >
+        <Button type="primary" shape="circle" icon={icon} size="large" />
+      </Affix>
     </div>
   );
 };

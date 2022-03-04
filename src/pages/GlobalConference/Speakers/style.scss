@@ -5,6 +5,8 @@
   margin-top: 2rem;
   width: 100%;
   max-width: 1100px;
+  height: calc(100vh - 72px);
+  overflow: auto;
 
 //   @media (max-width: 1100px){
 //     padding-top: 8rem;

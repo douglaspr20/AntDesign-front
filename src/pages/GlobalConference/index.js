@@ -65,6 +65,7 @@ const GlobalConference = ({
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [selectTab, setSelectTab] = useState("Mar 07");
+  const globalConferenceRef = React.createRef();
 
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
@@ -302,8 +303,7 @@ const GlobalConference = ({
     return <Redirect to="/" />;
 
   const handleCustomTab = (tabTitle, tabIndex) => {
-    const element = document.querySelector(".global-conference-tabs");
-    element.scrollTo({
+    globalConferenceRef.current.scrollTo({
       top: 0,
     });
     setCurrentTab(`${tabIndex}`);
