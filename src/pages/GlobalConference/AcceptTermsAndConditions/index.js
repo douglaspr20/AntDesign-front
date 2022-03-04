@@ -137,6 +137,7 @@ const AcceptTermsAndConditions = ({
         visible={visibleModalViewVideo}
         onCancel={() => {
           viewRulesGConference(userProfile.id);
+          setVisibleModalViewVideo(false);
         }}
         width={800}
       >
@@ -162,6 +163,7 @@ const AcceptTermsAndConditions = ({
             text="Continue"
             onClick={() => {
               viewRulesGConference(userProfile.id);
+              setVisibleModalViewVideo(false);
             }}
             style={{ marginTop: "1rem" }}
           />
