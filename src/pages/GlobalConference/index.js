@@ -43,16 +43,8 @@ import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
 import Certificate from "./Certificate";
+import ThingsYouNeedToKnow from "./ThingsYouNeedToKnow";
 
-const Description = `
-Welcome to the Hacking HR 2022 Global Online Conference
-planner. Here you will find all the sessions for the conference. You
-can add sessions to your personalized agenda and then download a
-PDF. Notice that you can’t add two sessions that are happening the
-same day at the same time. You can also download the calendar
-invites to save the date. Finally, you can find the speakers and
-connect with other participants. Enjoy!
-`;
 const TAB_NUM = 6;
 
 const GlobalConference = ({
@@ -196,6 +188,17 @@ const GlobalConference = ({
   const downloadPdf = async (option) => {
     setLoading(true);
 
+    if (option === "conference-schedule") {
+      const link = document.createElement("a");
+      link.download = "Conference Schedule.pdf";
+      link.href =
+        "https://hackinghr-lab-assets.s3.us-east-1.amazonaws.com/pdfs/A%20-%20Hacking%20HR%202022%20Global%20Conference%20-%20Schedule.pdf";
+      link.target = "_blank";
+      link.click();
+      setLoading(false);
+      return;
+    }
+
     if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
       return notification.warning({
@@ -231,6 +234,25 @@ const GlobalConference = ({
     });
 
     await pdf.html(template);
+
+    if (option !== "conference-schedule") {
+      pdf.setFontSize(16);
+      pdf.text(120, 200, "SUGGESTED LINKS TO CHECK OUT (BY SPEAKERS)");
+      pdf.setFontSize(12);
+      pdf.text(
+        50,
+        230,
+        "This link includes a comprehensive list of references and learning material suggested by the\nconference speakers."
+      );
+      pdf.setFontSize(10);
+      pdf.setTextColor("#438cef");
+      pdf.textWithLink("Please click here", 50, 280, {
+        url: "https://docs.google.com/document/d/1RRy2yhPps3ebcYHVehtIsEkMN8NikrKDixdvIeVIPb0/edit?usp=sharing",
+      });
+
+      pdf.setTextColor("#000");
+      pdf.text(50, 320, "Thank you!");
+    }
 
     pdf.save(
       option === "personal-agenda"
@@ -280,6 +302,10 @@ const GlobalConference = ({
     return <Redirect to="/" />;
 
   const handleCustomTab = (tabTitle, tabIndex) => {
+    const element = document.querySelector(".global-conference-tabs");
+    element.scrollTo({
+      top: 0,
+    });
     setCurrentTab(`${tabIndex}`);
     setSelectTab(tabTitle);
   };
@@ -360,7 +386,7 @@ const GlobalConference = ({
                 />
 
                 <CustomButton
-                  text="Welcoming Message"
+                  text="Things You Need To Know"
                   size="xs"
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
@@ -382,31 +408,43 @@ const GlobalConference = ({
                   />
                 )}
 
-                {moment().weeks() >= 13 && (
-                  <CustomButton
-                    size="xs"
-                    text="Download Participation Report"
-                    style={{
-                      marginTop: "12px",
-                      padding: "0px 13px",
-                      marginLeft: "-12px",
-                    }}
-                    onClick={() => downloadPdf("report-sessions-joined")}
-                  />
-                )}
+                <CustomButton
+                  size="xs"
+                  text="Download Participation Report"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 13px",
+                    marginLeft: "-12px",
+                  }}
+                  onClick={() => {
+                    if (moment().weeks() <= 13) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 21",
+                      });
+                    }
+                    downloadPdf("report-sessions-joined");
+                  }}
+                />
 
-                {moment().weeks() >= 12 && (
-                  <CustomButton
-                    size="xs"
-                    text="Download Certificate"
-                    style={{
-                      marginTop: "12px",
-                      padding: "0px 46px",
-                      marginLeft: "-12px",
-                    }}
-                    onClick={() => setModalVisibleCertificate(true)}
-                  />
-                )}
+                <CustomButton
+                  size="xs"
+                  text="Download Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                    marginLeft: "-12px",
+                  }}
+                  onClick={() => {
+                    if (moment().weeks() <= 12) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 14",
+                      });
+                    }
+                    setModalVisibleCertificate(true);
+                  }}
+                />
               </div>
             )}
           </div>
@@ -555,14 +593,10 @@ const GlobalConference = ({
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
 
-      <CustomModal
+      <ThingsYouNeedToKnow
         visible={modalVisibleWelcomingMessage}
-        title="Welcome to Hacking HR 2022"
-        width={500}
         onCancel={() => setModalVisibleWelcomingMessage(false)}
-      >
-        <p className="global-conference-description">{Description}</p>
-      </CustomModal>
+      />
 
       <Certificate
         visible={modalVisibleCertificate}
