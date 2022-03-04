@@ -41,7 +41,7 @@ const ActivityStatus = ({
     }
   };
 
-  const displayPanels = allOfMySkillCohorts.map((cohort, index) => {
+  const activity = (cohort, index) => {
     return (
       <Panel header={cohort.title} key={`${index}`}>
         <Collapse bordered={false}>
@@ -119,11 +119,34 @@ const ActivityStatus = ({
         </Collapse>
       </Panel>
     );
-  });
+  };
+
+  const displayHasAccessCohorts = allOfMySkillCohorts
+    .filter(
+      (cohort) => cohort.hasAccess && moment().isBefore(moment(cohort.endDate))
+    )
+    .map((cohort, index) => activity(cohort, index));
+
+  const displayPastAndCohorts = allOfMySkillCohorts
+    .filter(
+      (cohort) => !cohort.hasAccess || moment().isAfter(moment(cohort.endDate))
+    )
+    .map((cohort, index) => activity(cohort, index));
 
   return (
     <div className="activity-status-wrapper">
-      <Collapse>{displayPanels}</Collapse>
+      <div className="activity-status-content">
+        <div style={{ marginBottom: "1rem" }}>
+          <h1>Active Cohorts</h1>
+        </div>
+        <Collapse>{displayHasAccessCohorts}</Collapse>
+      </div>
+      <div>
+        <div style={{ marginBottom: "1rem" }}>
+          <h1>Past Cohorts</h1>
+        </div>
+        <Collapse>{displayPastAndCohorts}</Collapse>
+      </div>
     </div>
   );
 };

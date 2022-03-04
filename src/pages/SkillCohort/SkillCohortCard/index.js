@@ -10,24 +10,26 @@ const HARDCODED_COVER_PLACEHOLDER =
   "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
 
 const SkillCohortCard = (props) => {
-  const { id, title, description, image, startDate, endDate, hasAccess: participantHasAccess } =
-    props.skillCohort;
+  const {
+    id,
+    title,
+    description,
+    image,
+    startDate,
+    endDate,
+    hasAccess: participantHasAccess,
+  } = props.skillCohort;
   const { hasAccess: hasAccessProps } = props;
 
-  const  hasAccess = participantHasAccess || hasAccessProps
+  const hasAccess = participantHasAccess || hasAccessProps;
 
   const [hasCohortStarted, setHasCohortStarted] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    const dateToday = moment()
-      .tz("America/Los_Angeles")
-      .format("YYYY-MM-DD HH:mm:ssZ");
+    const dateToday = moment().tz("America/Los_Angeles");
 
-    if (
-      dateToday >
-      moment(startDate).tz("America/Los_Angeles").format("YYYY-MM-DD HH:mm:ssZ")
-    ) {
+    if (dateToday.isAfter(moment(startDate).tz("America/Los_Angeles"))) {
       setHasCohortStarted(true);
     } else {
       setHasCohortStarted(false);
@@ -48,10 +50,12 @@ const SkillCohortCard = (props) => {
   };
 
   let displayBtn;
-  if (hasCohortStarted && hasAccess) {
+  if (hasCohortStarted && hasAccess && moment().isBefore(moment(endDate))) {
     displayBtn = "Enter Dashboard";
   } else if (hasCohortStarted && !hasAccess) {
-    displayBtn = "You missed 2 activities"
+    displayBtn = "You missed 2 activities";
+  } else if (hasAccess && moment().isAfter(moment(endDate))) {
+    displayBtn = "Completed";
   } else {
     displayBtn = "More";
   }
@@ -85,6 +89,11 @@ const SkillCohortCard = (props) => {
           <CustomButton
             text={displayBtn}
             onClick={handleClickMore}
+            type={
+              hasAccess && moment().isAfter(moment(endDate))
+                ? "secondary"
+                : "primary"
+            }
             size="md"
             block={true}
             disabled={hasCohortStarted && !hasAccess}
