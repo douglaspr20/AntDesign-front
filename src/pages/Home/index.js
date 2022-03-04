@@ -233,14 +233,6 @@ const HomePage = ({
               Filters
             </Button>
           </div>
-          <div className="home-page-container--posts-central-panel-content">
-            <div className="home-page-container--posts-central-panel-content-posts">
-              <Posts onShowMore={onShowMore} history={history} />
-            </div>
-            {displayAds}
-            {displayPreviewAd}
-            {/* {dipslayRentAd} */}
-          </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
@@ -258,17 +250,14 @@ const HomePage = ({
               </div>
             )}
           </div>
-          <div className="home-page-container--mobile-options">
-            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-            <Button
-              onClick={() => {
-                showFilterPanel();
-              }}
-            >
-              Filters
-            </Button>
+          <div className="home-page-container--posts-central-panel-content">
+            <div className="home-page-container--posts-central-panel-content-posts">
+              <Posts onShowMore={onShowMore} history={history} />
+            </div>
+            {displayAds}
+            {displayPreviewAd}
+            {/* {dipslayRentAd} */}
           </div>
-          <Posts onShowMore={onShowMore} history={history} />
         </div>
       </div>
       <AdvertisementDrawer
