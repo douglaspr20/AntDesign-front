@@ -36,6 +36,9 @@
 			display: block;
 		}
 	}
+  @media (max-width: 1023.98px) {
+    display: block;
+  }
 
 	@media (max-width: 1023.98px) {
 		.podcast-filter-panel {
@@ -56,6 +59,10 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
+  @media (max-width: 1029px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .items-with-hr-credits {
@@ -63,6 +70,10 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
+  @media (max-width: 1029px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .my-learnings-list {
@@ -89,4 +100,35 @@
   width: 75%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.learnings-filter-panel {
+  @media (max-width: 1029px) {
+    display: none;
+  }
+}
+
+.search-results-container {
+  &-mobile-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    height: 82px;
+    padding: 0 1rem;
+    background: $color-white;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #e1e2ee;
+    @media (max-width: 1029px) {
+      display: flex;
+      margin-bottom: 0px;
+    }
+    .filters-btn {
+      color: $color-primary !important;
+      cursor: pointer;
+
+      &.disabled {
+        color: $color-disabled !important;
+        cursor: not-allowed;
+      }
+    }}
 }

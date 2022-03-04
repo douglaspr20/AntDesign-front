@@ -58,6 +58,10 @@ export function* addLibrarySaga({ payload }) {
 
     if (response.status === 200) {
       yield put(libraryActions.setLibrary(response.data.library));
+
+      notification.info({
+        message: "Your suggested content has been submitted for approval.",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -323,7 +327,7 @@ export function* markLibraryViewedSaga({ payload }) {
       yield put(
         myLearningActions.updateHRCredits(
           payload.id,
-          response.data.affectedRows,
+          response.data.affectedRows
         )
       );
     }
