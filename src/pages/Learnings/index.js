@@ -1,4 +1,4 @@
-import { Collapse } from "antd";
+import { Collapse, Row, Col } from "antd";
 import React, { useState, useEffect } from "react";
 import { Tabs } from "components";
 import { connect } from "react-redux";
@@ -21,6 +21,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import { actions as conferenceActions } from "redux/actions/conference-actions";
 
+import FilterDrawer from "pages/Library/FilterDrawer";
 import LearningFilterDrawer from "./LearningFilterDrawer";
 import EventVideo from "./EventVideo";
 import "./style.scss";
@@ -51,6 +52,7 @@ const MyLearingPage = ({
   const [currentTab, setCurrentTab] = useState("0");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [filters, setFilters] = useState({});
+  const [, setFilter] = useState({});
 
   useEffect(() => {
     getAllSaved({});
@@ -121,6 +123,14 @@ const MyLearingPage = ({
       ...filters,
       page: allSavedCurrentPage + 1,
     });
+  };
+
+  const onFilterChange = (values) => {
+    setFilter(values);
+  };
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
   const displaySavedItems = () => (
@@ -352,10 +362,28 @@ const MyLearingPage = ({
 
   return (
     <div className="my-learnings-page">
-      <LearningFilterDrawer onChange={handleFilterChange} />
-      <div className="my-learnings-page-container">
-        <div className="search-results-container">
-          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+      <div className="learnings-filter-panel">
+        <LearningFilterDrawer onChange={handleFilterChange} />
+      </div>
+      <FilterDrawer onChange={onFilterChange} />
+      <div className="search-results-container">
+        <Row>
+          <Col span={24}>
+            <div className="search-results-container-mobile-header">
+              <h3 className="filters-btn" onClick={showFilterPanel}>
+                Filters
+              </h3>
+            </div>
+          </Col>
+        </Row>
+        <div className="my-learnings-page-container">
+          <div className="search-results-container">
+            <Tabs
+              data={TabData}
+              current={currentTab}
+              onChange={setCurrentTab}
+            />
+          </div>
         </div>
       </div>
     </div>
