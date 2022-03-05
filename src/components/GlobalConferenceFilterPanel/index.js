@@ -62,6 +62,17 @@ const FilterPanel = ({
             onClick={onAttend}
           />
           <CustomButton
+            text="Things You Need To Know"
+            size="xs"
+            style={{
+              padding: "0px 28px",
+              marginLeft: "-12px",
+              marginTop: "12px",
+            }}
+            onClick={() => setModalVisibleWelcomingMessage(true)}
+          />
+
+          <CustomButton
             size="xs"
             text="Invite Your Colleagues"
             style={{ padding: "0px 41px", marginLeft: "-12px" }}
@@ -89,17 +100,6 @@ const FilterPanel = ({
         />
 
         <CustomButton
-          text="Welcoming Message"
-          size="xs"
-          style={{
-            padding: "0px 47px",
-            marginLeft: "-12px",
-            marginTop: "12px",
-          }}
-          onClick={() => setModalVisibleWelcomingMessage(true)}
-        />
-
-        <CustomButton
           size="xs"
           type="primary"
           text="Download Full Schedule"
@@ -117,7 +117,7 @@ const FilterPanel = ({
             text="Download Personalized Agenda"
             style={{
               marginTop: "12px",
-              padding: "0px 0px",
+              padding: "0px 10px",
               marginLeft: "-12px",
             }}
             onClick={() => downloadPdf("personal-agenda")}

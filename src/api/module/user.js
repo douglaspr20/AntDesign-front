@@ -117,6 +117,10 @@ export const acceptTermsAndConditions = ({ id }) => {
   );
 };
 
+export const viewRulesConference = ({ id }) => {
+  return httpClient.put(`private/user/view-rules-g-conference/${id}`);
+};
+
 export const countAllUsers = async () => {
-  return await httpClient.get("private/users/count-all")
-}
+  return await httpClient.get("private/users/count-all");
+};

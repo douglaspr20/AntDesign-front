@@ -547,6 +547,29 @@ const formatAnnualConference = (userProfile, sessions, option) => {
     }
   }
 
+  if (option === "personal-agenda" || option === "report-sessions-joined") {
+    content += `
+    <div style="height: 950px; width: 90%; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start; border-bottom: 1px solid #cfd3d6; padding-bottom: 3rem; margin-bottom: 180px">
+    <div style="display: flex; justify-content: space-between; width: 90%; padding: 0px 10px 10px 0px">
+      <img src=${LogoHackingHR} style="width: 70px; height: 70px">
+      <div>
+        <p style="font-size: 1.2rem; font-weight: bolder">2022 HR Innovation and Future of Work</p>
+        <p style="margin-top: -20px">Global Online Conference | ${
+          option === "personal-agenda"
+            ? "Personalized Agenda"
+            : option === "conference-schedule"
+            ? "Conference Schedule"
+            : "Reported sessions joined"
+        } </p>
+      </div>
+    </div>
+</div>
+
+
+`;
+  }
+
   template.innerHTML = content;
 
   return template;
