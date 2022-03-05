@@ -81,8 +81,6 @@ const LibraryCard = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
-  console.log(isClickable, "owo");
-
   const getRowNum = () => {
     const descElement = document.querySelector(`#${randomId}`);
     if (descElement) {
@@ -275,9 +273,9 @@ const LibraryCard = ({
               {type === CARD_TYPE.EDIT && (
                 <CardMenu
                   menus={CARD_MENUS}
-                  onClick={() => {
+                  onClick={(value) => {
                     if (isClickable) {
-                      onMenuClick();
+                      onMenuClick(value);
                     }
                   }}
                 >
@@ -320,7 +318,7 @@ const LibraryCard = ({
             </div>
           </div>
         )}
-        
+
         <LibraryClaimModal
           visible={modalVisible}
           title="HR Credit Offered"

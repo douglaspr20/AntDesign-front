@@ -21,6 +21,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  viewRulesConference,
   countAllUsers,
 } from "./module/user";
 import {
@@ -204,10 +205,10 @@ import {
   createAdvertisement,
   getAdvertisementById,
   getAllActiveAdvertisements,
-  editAdvertisement
+  editAdvertisement,
 } from "./module/advertisement";
 
-import { getMatchmake, sendMatchEmail } from './module/matchmaking'
+import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
 
 import { getEditorSignature } from "./module/env";
 
@@ -239,6 +240,7 @@ export {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  viewRulesConference,
   confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
@@ -369,5 +371,5 @@ export {
   getAllActiveAdvertisements,
   getMatchmake,
   editAdvertisement,
-  sendMatchEmail
+  sendMatchEmail,
 };
