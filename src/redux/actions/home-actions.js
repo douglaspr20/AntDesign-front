@@ -27,8 +27,9 @@ const GET_USERS = "GET_USERS";
 const SET_USERS = "SET_USERS";
 const ACCEPT_TERMS_CONDITIONS_GCONFERENCE =
   "ACCEPT_TERMS_CONDITIONS_GCONFERENCE";
-const COUNT_ALL_USERS = "COUNT_ALL_USERS"
-const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS"
+const VIEW_RULES_G_CONFERENCE = "VIEW_RULES_G_CONFERENCE";
+const COUNT_ALL_USERS = "COUNT_ALL_USERS";
+const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
 
 export const constants = {
   SET_LOADING,
@@ -56,8 +57,9 @@ export const constants = {
   GET_USERS,
   SET_USERS,
   ACCEPT_TERMS_CONDITIONS_GCONFERENCE,
+  VIEW_RULES_G_CONFERENCE,
   COUNT_ALL_USERS,
-  SET_ALL_COUNT_USERS
+  SET_ALL_COUNT_USERS,
 };
 
 // ------------------------------------
@@ -144,8 +146,15 @@ export const acceptTermsAndConditions = createAction(
   (id) => ({ id })
 );
 
-export const countAllUsers = createAction(COUNT_ALL_USERS)
-export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({ userCount }))
+export const viewRulesGConference = createAction(
+  VIEW_RULES_G_CONFERENCE,
+  (id) => ({ id })
+);
+
+export const countAllUsers = createAction(COUNT_ALL_USERS);
+export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({
+  userCount,
+}));
 
 export const actions = {
   setLoading,
@@ -171,6 +180,7 @@ export const actions = {
   getAllUsers,
   setAllUsers,
   acceptTermsAndConditions,
+  viewRulesGConference,
   countAllUsers,
-  setCountUsers
+  setCountUsers,
 };
