@@ -552,7 +552,7 @@ const GlobalConference = ({
         {childrenWithFilterProp ? (
           childrenWithFilterProp
         ) : (
-          <div className="global-conference-tabs">
+          <div className="global-conference-tabs" ref={globalConferenceRef}>
             <Tabs
               data={tabData}
               current={currentTab}
