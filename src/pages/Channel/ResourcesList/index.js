@@ -90,6 +90,7 @@ const ResourcesList = ({
         break;
       case "share":
         shareChannelLibrary(library, (err) => {
+          console.log('hahaha')
           if (err) {
             notification.error({
               message: err,
