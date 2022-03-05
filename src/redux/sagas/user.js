@@ -25,6 +25,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  viewRulesConference,
   countAllUsers,
 } from "../../api";
 import {
@@ -540,6 +541,38 @@ export function* acceptTermsAndConditionsSaga({ payload }) {
   }
 }
 
+export function* viewRulesGConferenceSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(viewRulesConference, { ...payload });
+
+    if (response.status === 200) {
+      const { user } = response.data;
+
+      yield put(
+        homeActions.updateUserInformation({
+          ...defaultUserInfo,
+          ...user,
+        })
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* countAllUsersSaga() {
   yield put(homeActions.setLoading(true));
 
@@ -600,6 +633,10 @@ function* watchLogin() {
   yield takeLatest(
     homeConstants.ACCEPT_TERMS_CONDITIONS_GCONFERENCE,
     acceptTermsAndConditionsSaga
+  );
+  yield takeLatest(
+    homeConstants.VIEW_RULES_G_CONFERENCE,
+    viewRulesGConferenceSaga
   );
   yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
 }
