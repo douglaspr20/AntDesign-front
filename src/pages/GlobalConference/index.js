@@ -411,11 +411,7 @@ const GlobalConference = ({
                 <CustomButton
                   size="xs"
                   text="Download Participation Report"
-                  style={{
-                    marginTop: "12px",
-                    padding: "0px 13px",
-                    marginLeft: "-12px",
-                  }}
+                  className="button-participation-report"
                   onClick={() => {
                     if (moment().weeks() <= 13) {
                       return notification.info({
@@ -433,7 +429,6 @@ const GlobalConference = ({
                   style={{
                     marginTop: "12px",
                     padding: "0px 46px",
-                    marginLeft: "-12px",
                   }}
                   onClick={() => {
                     if (moment().weeks() <= 12) {

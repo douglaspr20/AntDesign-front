@@ -1,18 +1,25 @@
+
+@import "../../../styles/main.scss";
+
+
 .personal-agenda {
   margin-top: 2rem;
   width: 100%;
   max-width: 1100px;
   height: calc(100vh - 72px);
-  overflow: auto;
-
+  overflow: auto !important;
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: $color-text-secondary;
+  }
+    
   // @media (max-width: 1024px) {
   //   margin-top: 11rem;
   // }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
   &-header {
     display: flex;
     justify-content: flex-end;
