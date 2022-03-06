@@ -398,7 +398,7 @@ const GlobalConference = ({
                   onClick={() => downloadPdf("conference-schedule")}
                 />
 
-                {localPathname === "personal-agenda" && (
+                {/* {localPathname === "personal-agenda" && (
                   <CustomButton
                     size="xs"
                     text="Download Personalized Agenda"
@@ -406,7 +406,7 @@ const GlobalConference = ({
                     onClick={() => downloadPdf("personal-agenda")}
                     ƒ
                   />
-                )}
+                )} */}
 
                 <CustomButton
                   size="xs"

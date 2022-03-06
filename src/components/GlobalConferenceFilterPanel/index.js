@@ -111,7 +111,7 @@ const FilterPanel = ({
           onClick={() => downloadPdf("conference-schedule")}
         />
 
-        {view === "personal-agenda" && (
+        {/* {view === "personal-agenda" && (
           <CustomButton
             size="xs"
             text="Download Personalized Agenda"
@@ -122,7 +122,7 @@ const FilterPanel = ({
             }}
             onClick={() => downloadPdf("personal-agenda")}
           />
-        )}
+        )} */}
 
         <CustomButton
           size="xs"
