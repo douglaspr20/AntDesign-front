@@ -133,7 +133,7 @@ const GlobalConference = ({
     setModalMessageVisible(true);
     setTimeout(() => {
       setModalMessageVisible(false);
-    }, 5000);
+    }, 60000);
   };
 
   useEffect(() => {
