@@ -85,14 +85,23 @@ const Participants = ({
                 />
               ))}
         </div>
-        <Pagination
-          defaultCurrent={page}
-          defaultPageSize={20}
-          total={participants.length}
-          showSizeChanger={false}
-          onChange={handlePaginated}
-          style={{ marginTop: "1.5rem" }}
-        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            margin: "1rem 0rem",
+          }}
+        >
+          <Pagination
+            defaultCurrent={page}
+            defaultPageSize={20}
+            total={participants.length}
+            showSizeChanger={false}
+            onChange={handlePaginated}
+            style={{ marginTop: "1.5rem" }}
+          />
+        </div>
       </div>
 
       <Modal
