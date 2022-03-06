@@ -133,7 +133,7 @@ const GlobalConference = ({
     setModalMessageVisible(true);
     setTimeout(() => {
       setModalMessageVisible(false);
-    }, 5000);
+    }, 60000);
   };
 
   useEffect(() => {
@@ -398,7 +398,7 @@ const GlobalConference = ({
                   onClick={() => downloadPdf("conference-schedule")}
                 />
 
-                {localPathname === "personal-agenda" && (
+                {/* {localPathname === "personal-agenda" && (
                   <CustomButton
                     size="xs"
                     text="Download Personalized Agenda"
@@ -406,16 +406,12 @@ const GlobalConference = ({
                     onClick={() => downloadPdf("personal-agenda")}
                     ƒ
                   />
-                )}
+                )} */}
 
                 <CustomButton
                   size="xs"
                   text="Download Participation Report"
-                  style={{
-                    marginTop: "12px",
-                    padding: "0px 13px",
-                    marginLeft: "-12px",
-                  }}
+                  className="button-participation-report"
                   onClick={() => {
                     if (moment().weeks() <= 13) {
                       return notification.info({
@@ -433,7 +429,6 @@ const GlobalConference = ({
                   style={{
                     marginTop: "12px",
                     padding: "0px 46px",
-                    marginLeft: "-12px",
                   }}
                   onClick={() => {
                     if (moment().weeks() <= 12) {
