@@ -50,29 +50,26 @@ const AnnualConferenceCard = React.memo(
     ] = useState(false);
     const [hoursStartSession, setHoursStartSession] = useState(
       `Starting in: ${
-        duration.asHours().toFixed() > 0
-          ? `${duration.asHours().toFixed()} hours and `
+        Math.floor(duration.asHours().toFixed(2)) > 0
+          ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
           : ""
       } ${duration.minutes()} minutes`
     );
     const [timeLeft, setTimeLeft] = useState(
-      moment
-        .duration(convertedStartTime.diff(moment.now()))
-        .asMinutes()
-        .toFixed()
+      moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
     );
 
     setInterval(() => {
       duration = moment.duration(duration - 60000, "milliseconds");
       setHoursStartSession(
         `Starting in: ${
-          duration.asHours().toFixed() > 0
-            ? `${duration.asHours().toFixed()} hours and `
+          Math.floor(duration.asHours().toFixed(2)) > 0
+            ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
             : ""
-        } ${duration.minutes().toFixed()} minutes`
+        } ${duration.minutes()} minutes`
       );
 
-      setTimeLeft(duration.asMinutes().toFixed());
+      setTimeLeft(duration.asMinutes());
     }, 60000);
 
     const onClickDownloadCalendar = (e) => {

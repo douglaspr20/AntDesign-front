@@ -4,7 +4,6 @@
 .conference-list {
   margin-top: 2rem;
   width: 100%;
-  height: calc(100vh - 72px);
   overflow: auto;
 
   @media (max-width: 1024px) {
