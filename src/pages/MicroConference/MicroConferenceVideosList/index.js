@@ -51,7 +51,9 @@ function MicroConferenceVideosList({
     } else if (
       list.length > 0 &&
       activeVideoId === null &&
-      sessionUserProgress === 0
+      sessionUserProgress.every(
+        (sessionUser) => sessionUser.progressVideo === null
+      )
     ) {
       setActiveVideoId(list[0].id);
     }

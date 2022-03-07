@@ -74,8 +74,6 @@ const MicroConference = ({
     return null;
   }, [activeVideoId, classes]);
 
-  console.log(classes);
-
   return (
     <div className="micro-conference__page">
       <div className="micro-conference__container">
