@@ -191,7 +191,9 @@ const AnnualConferenceCard = React.memo(
                 disabled={true}
                 style={{ marginTop: "5px" }}
               />
-            ) : timeLeft <= 5 && timeLeft >= -200 ? (
+            ) : timeLeft <= 5 &&
+              moment.duration(convertedEndTime.diff(moment.now())).asMinutes() >
+                0 ? (
               <CustomButton
                 type="primary"
                 size="md"
