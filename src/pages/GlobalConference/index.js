@@ -131,10 +131,16 @@ const GlobalConference = ({
   const showModalMessage = (message) => {
     setMessageAdmin(message);
     setModalMessageVisible(true);
-    setTimeout(() => {
-      setModalMessageVisible(false);
-    }, 60000);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (modalMessageVisible) {
+        setModalMessageVisible(false);
+      }
+    }, 60000);
+    return () => clearTimeout(timer);
+  }, [modalMessageVisible]);
 
   useEffect(() => {
     if (firstTabDate) {
@@ -170,6 +176,16 @@ const GlobalConference = ({
       };
     });
 
+    for (let i = 0; i < tData.length; i++) {
+      if (tData[i].title === moment().format("MMM DD")) {
+        setCurrentTab(`${i}`);
+        setSelectTab(tData[i].title);
+        break;
+      }
+
+      setCurrentTab(`${tData.length - 1}`);
+      setSelectTab(tData[tData.length - 1].title);
+    }
     setTabData(tData);
   }, [firstTabDate, allSessions, filters, meta]);
 
@@ -521,6 +537,9 @@ const GlobalConference = ({
                     key={tab.title}
                     className="sub-menu-item-global-conference-fake-tabs"
                     onClick={() => handleCustomTab(tab.title, index)}
+                    disabled={
+                      +tab.title.replace("Mar ", "") < +moment().format("DD")
+                    }
                   >
                     {tab.title}
                   </Menu.Item>
