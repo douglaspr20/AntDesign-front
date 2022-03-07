@@ -64,10 +64,10 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [selectTab, setSelectTab] = useState("Mar 07");
+  const [selectTab, setSelectTab] = useState("Mar 06");
   const globalConferenceRef = React.createRef();
 
-  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-03-06", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
@@ -535,11 +535,22 @@ const GlobalConference = ({
                 {tabData.map((tab, index) => (
                   <Menu.Item
                     key={tab.title}
-                    className="sub-menu-item-global-conference-fake-tabs"
-                    onClick={() => handleCustomTab(tab.title, index)}
-                    disabled={
+                    className={`sub-menu-item-global-conference-fake-tabs ${
                       +tab.title.replace("Mar ", "") < +moment().format("DD")
-                    }
+                        ? "disabled"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      if (
+                        +tab.title.replace("Mar ", "") < +moment().format("DD")
+                      ) {
+                        return notification.error({
+                          message: "Error",
+                          description: "This day's sessions are closed",
+                        });
+                      }
+                      handleCustomTab(tab.title, index);
+                    }}
                   >
                     {tab.title}
                   </Menu.Item>
