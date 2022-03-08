@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -59,18 +59,21 @@ const AnnualConferenceCard = React.memo(
       moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
     );
 
-    setInterval(() => {
-      duration = moment.duration(duration - 60000, "milliseconds");
-      setHoursStartSession(
-        `Starting in: ${
-          Math.floor(duration.asHours().toFixed(2)) > 0
-            ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
-            : ""
-        } ${duration.minutes()} minutes`
-      );
+    useEffect(() => {
+      let duration = moment.duration(diffTime * interval, "milliseconds");
+      setInterval(() => {
+        duration = moment.duration(duration - 60000, "milliseconds");
+        setHoursStartSession(
+          `Starting in: ${
+            Math.floor(duration.asHours().toFixed(2)) > 0
+              ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
+              : ""
+          } ${duration.minutes()} minutes`
+        );
 
-      setTimeLeft(duration.asMinutes());
-    }, 60000);
+        setTimeLeft(duration.asMinutes());
+      }, 60000);
+    }, [diffTime]);
 
     const counterdown = useMemo(() => {
       return (
@@ -132,8 +135,6 @@ const AnnualConferenceCard = React.memo(
     ) {
       setTimeLeft(80000);
     }
-
-    console.log(counterdown);
 
     const downloadDropdownOptions = () => (
       <Menu style={{ position: "relative", bottom: "70px" }}>
