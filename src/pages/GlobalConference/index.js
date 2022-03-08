@@ -64,10 +64,10 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [selectTab, setSelectTab] = useState("Mar 06");
+  const [selectTab, setSelectTab] = useState("Mar 07");
   const globalConferenceRef = React.createRef();
 
-  const [firstTabDate] = useState(moment("2022-03-06", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
