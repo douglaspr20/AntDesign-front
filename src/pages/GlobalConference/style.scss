@@ -160,7 +160,12 @@
               font-size: 20px;
               padding: 0px 14px !important;
 
-           
+            &.disabled{
+              color: $color-text-secondary !important;
+              &:hover{
+                border-bottom: none !important;
+              }
+            }
           
               @media (max-width: 400px) {
                 font-size: 18px;
