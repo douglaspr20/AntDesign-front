@@ -535,20 +535,8 @@ const GlobalConference = ({
                 {tabData.map((tab, index) => (
                   <Menu.Item
                     key={tab.title}
-                    className={`sub-menu-item-global-conference-fake-tabs ${
-                      +tab.title.replace("Mar ", "") < +moment().format("DD")
-                        ? "disabled"
-                        : ""
-                    }`}
+                    className={`sub-menu-item-global-conference-fake-tabs`}
                     onClick={() => {
-                      if (
-                        +tab.title.replace("Mar ", "") < +moment().format("DD")
-                      ) {
-                        return notification.error({
-                          message: "Error",
-                          description: "This day's sessions are closed",
-                        });
-                      }
                       handleCustomTab(tab.title, index);
                     }}
                   >
