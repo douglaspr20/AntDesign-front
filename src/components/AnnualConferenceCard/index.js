@@ -218,7 +218,7 @@ const AnnualConferenceCard = React.memo(
                 size="md"
                 text={`${hoursStartSession}`}
                 disabled={true}
-                style={{ marginTop: "5px" }}
+                style={{ marginTop: "5px", maxWidth: "340px" }}
               />
             ) : timeLeft <= -10 &&
               !userProfile?.sessionsJoined?.includes(session.id) ? (
