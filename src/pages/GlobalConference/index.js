@@ -64,10 +64,10 @@ const GlobalConference = ({
   location,
 }) => {
   const [currentTab, setCurrentTab] = useState("0");
-  const [selectTab, setSelectTab] = useState("Mar 07");
+  const [selectTab, setSelectTab] = useState("Mar 06");
   const globalConferenceRef = React.createRef();
 
-  const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
+  const [firstTabDate] = useState(moment("2022-03-06", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
@@ -131,10 +131,16 @@ const GlobalConference = ({
   const showModalMessage = (message) => {
     setMessageAdmin(message);
     setModalMessageVisible(true);
-    setTimeout(() => {
-      setModalMessageVisible(false);
-    }, 60000);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (modalMessageVisible) {
+        setModalMessageVisible(false);
+      }
+    }, 60000);
+    return () => clearTimeout(timer);
+  }, [modalMessageVisible]);
 
   useEffect(() => {
     if (firstTabDate) {
@@ -170,6 +176,16 @@ const GlobalConference = ({
       };
     });
 
+    for (let i = 0; i < tData.length; i++) {
+      if (tData[i].title === moment().format("MMM DD")) {
+        setCurrentTab(`${i}`);
+        setSelectTab(tData[i].title);
+        break;
+      }
+
+      setCurrentTab(`${tData.length - 1}`);
+      setSelectTab(tData[tData.length - 1].title);
+    }
     setTabData(tData);
   }, [firstTabDate, allSessions, filters, meta]);
 
@@ -519,8 +535,22 @@ const GlobalConference = ({
                 {tabData.map((tab, index) => (
                   <Menu.Item
                     key={tab.title}
-                    className="sub-menu-item-global-conference-fake-tabs"
-                    onClick={() => handleCustomTab(tab.title, index)}
+                    className={`sub-menu-item-global-conference-fake-tabs ${
+                      +tab.title.replace("Mar ", "") < +moment().format("DD")
+                        ? "disabled"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      if (
+                        +tab.title.replace("Mar ", "") < +moment().format("DD")
+                      ) {
+                        return notification.error({
+                          message: "Error",
+                          description: "This day's sessions are closed",
+                        });
+                      }
+                      handleCustomTab(tab.title, index);
+                    }}
                   >
                     {tab.title}
                   </Menu.Item>
