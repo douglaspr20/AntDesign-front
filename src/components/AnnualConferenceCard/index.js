@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -72,6 +72,18 @@ const AnnualConferenceCard = React.memo(
       setTimeLeft(duration.asMinutes());
     }, 60000);
 
+    const counterdown = useMemo(() => {
+      return (
+        <CustomButton
+          type="primary"
+          size="md"
+          text={`${hoursStartSession}`}
+          disabled={true}
+          style={{ marginTop: "5px", maxWidth: "340px" }}
+        />
+      );
+    }, [hoursStartSession]);
+
     const onClickDownloadCalendar = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -120,6 +132,8 @@ const AnnualConferenceCard = React.memo(
     ) {
       setTimeLeft(80000);
     }
+
+    console.log(counterdown);
 
     const downloadDropdownOptions = () => (
       <Menu style={{ position: "relative", bottom: "70px" }}>
@@ -213,13 +227,7 @@ const AnnualConferenceCard = React.memo(
                 }}
               />
             ) : timeLeft >= -10 && timeLeft < 69120 ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text={`${hoursStartSession}`}
-                disabled={true}
-                style={{ marginTop: "5px", maxWidth: "340px" }}
-              />
+              counterdown
             ) : timeLeft <= -10 &&
               !userProfile?.sessionsJoined?.includes(session.id) ? (
               <CustomButton
