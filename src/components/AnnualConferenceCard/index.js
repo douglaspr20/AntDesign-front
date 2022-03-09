@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
@@ -59,18 +59,33 @@ const AnnualConferenceCard = React.memo(
       moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
     );
 
-    setInterval(() => {
-      duration = moment.duration(duration - 60000, "milliseconds");
-      setHoursStartSession(
-        `Starting in: ${
-          Math.floor(duration.asHours().toFixed(2)) > 0
-            ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
-            : ""
-        } ${duration.minutes()} minutes`
-      );
+    useEffect(() => {
+      let duration = moment.duration(diffTime * interval, "milliseconds");
+      setInterval(() => {
+        duration = moment.duration(duration - 60000, "milliseconds");
+        setHoursStartSession(
+          `Starting in: ${
+            Math.floor(duration.asHours().toFixed(2)) > 0
+              ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
+              : ""
+          } ${duration.minutes()} minutes`
+        );
 
-      setTimeLeft(duration.asMinutes());
-    }, 60000);
+        setTimeLeft(duration.asMinutes());
+      }, 60000);
+    }, [diffTime]);
+
+    const counterdown = useMemo(() => {
+      return (
+        <CustomButton
+          type="primary"
+          size="md"
+          text={`${hoursStartSession}`}
+          disabled={true}
+          style={{ marginTop: "5px", maxWidth: "340px" }}
+        />
+      );
+    }, [hoursStartSession]);
 
     const onClickDownloadCalendar = (e) => {
       e.preventDefault();
@@ -213,13 +228,7 @@ const AnnualConferenceCard = React.memo(
                 }}
               />
             ) : timeLeft >= -10 && timeLeft < 69120 ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text={`${hoursStartSession}`}
-                disabled={true}
-                style={{ marginTop: "5px" }}
-              />
+              counterdown
             ) : timeLeft <= -10 &&
               !userProfile?.sessionsJoined?.includes(session.id) ? (
               <CustomButton
