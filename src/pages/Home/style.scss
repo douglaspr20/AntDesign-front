@@ -67,7 +67,7 @@
     width: 100%;
     overflow-y: scroll;
 
-    @media (max-width: 1023.98px) {
+    @media (max-width: 1230.98px) {
       .posts-filter-panel {
         display: none;
       }
@@ -85,7 +85,9 @@
       &-content {
         display: flex;
         width: 100%;
-
+        @media (max-width: 1200px) {
+        display: block;
+        }
         &-preview {
           margin-top: 1.5rem;
           width: 100%;
