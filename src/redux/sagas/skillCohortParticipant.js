@@ -98,10 +98,16 @@ export function* createSkillCohortParticipantSaga({ payload }) {
       );
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
+
+    let message = "Something went wrong.";
+
+    if (error.response.status === 403) {
+      message = error.response.data.msg;
+    }
+
     notification.error({
-      message: "Internal Error.",
-      description: "Something went wrong.",
+      message,
     });
   } finally {
     yield put(homeActions.setLoading(false));
