@@ -16,7 +16,9 @@ import {
   getSession,
   getSessionClasses,
   recommendedAgenda,
+  saveForLaterSession,
 } from "../../api";
+import { notification } from "antd";
 
 export function* getAllSessionsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -298,6 +300,48 @@ export function* recommendedAgendaSaga({ payload }) {
   }
 }
 
+export function* saveForLaterSessionSaga({ payload }) {
+  try {
+    const response = yield call(saveForLaterSession, { ...payload });
+
+    if (response.status === 200) {
+      // yield put(
+      //   conferenceActions.updateSaveForLaterConference(
+      //     response.data.affectedRows,
+      //     payload.yearIndex
+      //   )
+      // );
+
+      // yield put(
+      //   myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      // );
+
+      if (payload.isInHRCredits) {
+        // yield put(
+        //   myLearningActions.updateHRCredits(
+        //     payload.id,
+        //     response.data.affectedRows
+        //   )
+        // );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(sessionConstants.GET_SESSION, getSessionSaga);
@@ -312,6 +356,10 @@ function* watchSession() {
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
   yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
+  yield takeLatest(
+    sessionConstants.SAVE_FOR_LATER_SESSION,
+    saveForLaterSessionSaga
+  );
 }
 
 export const sessionSaga = [fork(watchSession)];

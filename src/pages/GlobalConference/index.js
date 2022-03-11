@@ -103,7 +103,7 @@ const GlobalConference = ({
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
     setMeta(value);
-    getAllSessions(startTime, endTime, value);
+    getAllSessions({ startTime, endTime, meta: value });
   };
 
   // const goToPrevPage = () => {
@@ -149,7 +149,7 @@ const GlobalConference = ({
       const endTime = convertToUTCTime(
         firstTabDate.clone().add(TAB_NUM, "days")
       );
-      getAllSessions(startTime, endTime);
+      getAllSessions({ startTime, endTime });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

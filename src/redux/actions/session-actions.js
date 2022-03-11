@@ -16,6 +16,7 @@ const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
 const SET_RECOMMENDED_AGENDA = "SET_RECOMMENDED_AGENDA";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
 const SET_MESSAGE_ERROR = "SET_MESSAGE_ERROR";
+const SAVE_FOR_LATER_SESSION = "SAVE_FOR_LATER_SESSION";
 
 export const constants = {
   GET_ALL_SESSIONS,
@@ -34,15 +35,15 @@ export const constants = {
   SET_RECOMMENDED_AGENDA,
   SET_SESSION_LOADING,
   SET_MESSAGE_ERROR,
+  SAVE_FOR_LATER_SESSION,
 };
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllSessions = createAction(
-  GET_ALL_SESSIONS,
-  (startTime, endTime, meta) => ({ startTime, endTime, meta })
-);
+export const getAllSessions = createAction(GET_ALL_SESSIONS, (filters) => ({
+  filters,
+}));
 
 export const setAllSessions = createAction(SET_ALL_SESSIONS, (allSessions) => ({
   allSessions,
@@ -114,6 +115,11 @@ export const setSessionLoading = createAction(
 export const setMessageError = createAction(SET_MESSAGE_ERROR, (message) => ({
   message,
 }));
+
+export const saveForLaterSession = createAction(
+  SAVE_FOR_LATER_SESSION,
+  (id, UserId, status) => ({ id, UserId, status })
+);
 
 export const actions = {
   getAllSessions,

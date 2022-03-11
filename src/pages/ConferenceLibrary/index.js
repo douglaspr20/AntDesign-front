@@ -7,9 +7,15 @@ import { isEmpty } from "lodash";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
 import { numberWithCommas } from "utils/format";
-import { ConferenceCard, CustomButton, Tabs } from "components";
+import {
+  AnnualConferenceCard,
+  ConferenceCard,
+  CustomButton,
+  Tabs,
+} from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
-import { SETTINGS } from "enum";
+import { INTERNAL_LINKS, SETTINGS } from "enum";
+import { getAllSessions } from "redux/actions/session-actions";
 import {
   getMoreConferenceLibraries,
   searchConferenceLibraries,
@@ -18,12 +24,14 @@ import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
 } from "redux/actions/advertisment-actions";
+import { sessionSelector } from "redux/selectors/sessionSelector";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { conferenceSelector } from "redux/selectors/conferenceSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ConferenceLibrary = ({
   loading,
@@ -35,6 +43,8 @@ const ConferenceLibrary = ({
   advertisementsByPage,
   advertisementById,
   isAdPreview = false,
+  getAllSessions,
+  allSessions,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
@@ -43,6 +53,7 @@ const ConferenceLibrary = ({
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     if (isAdPreview) {
@@ -50,6 +61,8 @@ const ConferenceLibrary = ({
     } else {
       getAdvertisementsTodayByPage("conference-library");
     }
+
+    getAllSessions({ type: "conference" });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -173,12 +186,31 @@ const ConferenceLibrary = ({
     });
   };
 
+  const onWatch = (id) => {
+    history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${id}`);
+  };
+
   const TabData =
     listOfYears?.map((year, index) => {
       return {
         title: year,
         content: () => (
-          <div className="search-results-list">{displayData(index)}</div>
+          <>
+            {year === 2022 ? (
+              <div>
+                {allSessions.map((session) => (
+                  <AnnualConferenceCard
+                    key={session.id}
+                    session={session}
+                    typeConference="conference-library"
+                    onWatch={() => onWatch(session.id)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="search-results-list">{displayData(index)}</div>
+            )}
+          </>
         ),
       };
     }) || [];
@@ -263,6 +295,7 @@ ConferenceLibrary.defaultProps = {
 const mapStateToProps = (state, props) => ({
   loading: conferenceSelector(state).loading,
   allConferenceLibraries: conferenceSelector(state).allConferenceLibraries,
+  allSessions: sessionSelector(state).allSessions,
   countOfResults: conferenceSelector(state).countOfResults,
   currentPage: conferenceSelector(state).currentPage,
   ...advertisementSelector(state),
@@ -273,6 +306,7 @@ const mapDispatchToProps = {
   searchConferenceLibraries,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  getAllSessions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceLibrary);
