@@ -8,6 +8,7 @@ import {
 } from "../actions/session-actions";
 import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -17,6 +18,7 @@ import {
   getSessionClasses,
   recommendedAgenda,
   saveForLaterSession,
+  markSessionViewed,
 } from "../../api";
 import { notification } from "antd";
 
@@ -300,21 +302,49 @@ export function* recommendedAgendaSaga({ payload }) {
   }
 }
 
+export function* markSessionViewedSaga({ payload }) {
+  try {
+    const response = yield call(markSessionViewed, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        sessionActions.updateSessionViewed(
+          response.data.affectedRows
+          // payload.index
+        )
+      );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
+      );
+      // yield put(
+      //   myLearningActions.updateHRCredits(
+      //     payload.id,
+      //     response.data.affectedRows
+      //   )
+      // );
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 export function* saveForLaterSessionSaga({ payload }) {
   try {
     const response = yield call(saveForLaterSession, { ...payload });
 
     if (response.status === 200) {
-      // yield put(
-      //   conferenceActions.updateSaveForLaterConference(
-      //     response.data.affectedRows,
-      //     payload.yearIndex
-      //   )
-      // );
-
-      // yield put(
-      //   myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
-      // );
+      yield put(
+        sessionActions.updateSaveForLaterSession(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
 
       if (payload.isInHRCredits) {
         // yield put(
@@ -356,6 +386,7 @@ function* watchSession() {
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
   yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
+  yield takeLatest(sessionConstants.SET_SESSION_VIEWED, markSessionViewedSaga);
   yield takeLatest(
     sessionConstants.SAVE_FOR_LATER_SESSION,
     saveForLaterSessionSaga

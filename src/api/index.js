@@ -105,6 +105,7 @@ import {
   getParticipants,
   recommendedAgenda,
   saveForLaterSession,
+  markSessionViewed,
 } from "./module/session";
 import {
   createBonfire,
@@ -304,6 +305,7 @@ export {
   removeSession,
   joinedASession,
   saveForLaterSession,
+  markSessionViewed,
   addBonfire,
   removeBonfire,
   updateBonfire,

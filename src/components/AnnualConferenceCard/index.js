@@ -5,7 +5,10 @@ import clsx from "clsx";
 import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { CustomButton, SpecialtyItem } from "components";
-import { saveForLaterSession } from "redux/actions/session-actions";
+import {
+  saveForLaterSession,
+  setSessionViewed,
+} from "redux/actions/session-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { DownOutlined } from "@ant-design/icons";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
@@ -169,6 +172,7 @@ const ButtonContainerConference = ({
   userProfile,
   onWatch,
   saveForLaterSession,
+  setSessionViewed,
 }) => {
   const handleSaveForLater = (e) => {
     e.preventDefault();
@@ -198,16 +202,13 @@ const ButtonContainerConference = ({
             : "Mark As Completed"
         }
         onClick={(e) => {
-          // e.preventDefault();
-          // e.stopPropagation();
-          // setConferenceLibraryViewed(
-          //   session.id,
-          //   session.viewed[userProfile.id] === "mark" ? "unmark" : "mark",
-          //   listOfYearsIndex
-          // );
-          // setTimeout(() => {
-          //   afterUpdate();
-          // }, 500);
+          e.preventDefault();
+          e.stopPropagation();
+          setSessionViewed(
+            session.id,
+            userProfile.id,
+            session.viewed[userProfile.id] === "mark" ? "unmark" : "mark"
+          );
         }}
         style={{
           marginTop: "8px",
@@ -261,6 +262,7 @@ const AnnualConferenceCard = React.memo(
     onWatch,
     userProfile,
     saveForLaterSession,
+    setSessionViewed,
   }) => {
     const timezone = TIMEZONE_LIST.find(
       (item) => item.value === session.timezone
@@ -382,6 +384,7 @@ const AnnualConferenceCard = React.memo(
               userProfile={userProfile}
               onWatch={onWatch}
               saveForLaterSession={saveForLaterSession}
+              setSessionViewed={setSessionViewed}
             />
           )}
         </div>
@@ -540,6 +543,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   saveForLaterSession,
+  setSessionViewed,
 };
 
 export default connect(

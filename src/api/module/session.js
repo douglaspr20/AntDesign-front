@@ -68,6 +68,10 @@ export const recommendedAgenda = ({ filters }) => {
   });
 };
 
+export const markSessionViewed = ({ id, UserId, viewed }) => {
+  return httpClient.put("private/session/viewed", { id, UserId, mark: viewed });
+};
+
 export const saveForLaterSession = ({ id, UserId, status }) => {
   return httpClient.put(`private/session/${id}/save-for-later`, {
     UserId,

@@ -197,7 +197,7 @@ const ConferenceLibrary = ({
         content: () => (
           <>
             {year === 2022 ? (
-              <div>
+              <>
                 {allSessions.map((session) => (
                   <AnnualConferenceCard
                     key={session.id}
@@ -206,7 +206,7 @@ const ConferenceLibrary = ({
                     onWatch={() => onWatch(session.id)}
                   />
                 ))}
-              </div>
+              </>
             ) : (
               <div className="search-results-list">{displayData(index)}</div>
             )}

@@ -233,6 +233,12 @@
 
   &-content {
     display: flex;
+    justify-content: center;
+
+    & .annual-conference-card {
+      margin: 1rem 0;
+      max-width: 950px;
+    }
 
   }
 }
