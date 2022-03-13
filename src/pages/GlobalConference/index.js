@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
 import { Menu, notification } from "antd";
@@ -63,8 +63,10 @@ const GlobalConference = ({
   children,
   location,
 }) => {
+  const history = useHistory();
   const [currentTab, setCurrentTab] = useState("0");
   const [selectTab, setSelectTab] = useState("Mar 07");
+
   const globalConferenceRef = React.createRef();
 
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
@@ -616,6 +618,58 @@ const GlobalConference = ({
         onCancel={() => setModalVisibleCertificate(false)}
         sessionsUserJoined={sessionsUserJoined}
       />
+
+      <CustomModal
+        visible={true}
+        title="Thank you so much for joining the Hacking HR 2022 Global Online Conference."
+        onCancel={() => history.goBack()}
+        width={650}
+      >
+        <p>
+          The Global Conference application is closed (until 2023!). The videos
+          from the tracks and their panels will be available on March 21st in
+          the Conference Library (see the left hand menu. For now, only 2020 and
+          2021 videos are available).
+        </p>
+
+        <p>
+          You can download your Digital Certificate of Participation in the
+          button below, only if you participated in at least one session at the
+          Hacking HR 2022 Global Online Conference. The Digital Certificate is
+          not applicable to those who only watch the recorded sessions after the
+          conference.
+        </p>
+
+        <p>
+          For the HR credits corresponding to the sessions you watch during the
+          conference: a Personalized Participation Report will be available on
+          March 21st. It will show you all the sessions you joined and the
+          corresponding codes (ONLY if you are a PREMIUM member in the LAB,
+          otherwise the credit codes will not be visible). For those who want to
+          earn HR credits for watching the recorded videos you will be able to
+          do so by clicking on CLAIM credits after watching the sessions.
+        </p>
+
+        <p>Thank you!</p>
+
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          {userProfile.sessionsJoined.length > 0 ? (
+            <CustomButton
+              size="md"
+              text="Download Certificate"
+              onClick={() => setModalVisibleCertificate(true)}
+            />
+          ) : (
+            <CustomButton
+              size="md"
+              text="Close"
+              onClick={() => history.goBack()}
+            />
+          )}
+        </div>
+      </CustomModal>
       <AcceptTermsAndConditions />
     </div>
   );
