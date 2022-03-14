@@ -31,7 +31,7 @@ const CertificateList = ({
   createBusinessPartnerResource,
 }) => {
   const [setlives] = useState(live);
-  const [isUserAssistence, setIsUserAssistence] = useState();
+  const [eventsFiltered, setEventsFiltered] = useState([]);
   useEffect(() => {
     getLive();
     getLiveEvents();
@@ -52,20 +52,39 @@ const CertificateList = ({
   }, [getEvent, live.event]);
 
   useEffect(() => {
-    if (myEvent.id) {
-      const usersAssistence =
-        myEvent.usersAssistence.length > 0 &&
-        myEvent.usersAssistence[0]?.map((el) => JSON.parse(el));
-      const usersAssistencefilter = usersAssistence?.filter(
-        (el) =>
-          el.usersAssistence.length > 0 &&
-          el.usersAssistence.includes(userProfile.id)
-      );
-      setIsUserAssistence(
-        usersAssistencefilter.length === usersAssistence?.length ? true : false
-      );
+    if (liveEvents) {
+      setEventsFiltered((prev) => {
+        prev = liveEvents.map((event) => {
+          const usersAssistence =
+            event.usersAssistence.length > 0 &&
+            event.usersAssistence.map((el) => JSON.parse(el));
+
+          const usersAssistencefilter =
+            usersAssistence &&
+            usersAssistence?.filter(
+              (el) =>
+                el.usersAssistence &&
+                el.usersAssistence.includes(userProfile.id)
+            );
+          const date =
+            event.startAndEndTimes[event.startAndEndTimes.length - 1];
+          const usersAssistenceValidation =
+            usersAssistencefilter.length === usersAssistence?.length
+              ? true
+              : false;
+
+          if (
+            new Date(date.endTime) <= new Date() &&
+            usersAssistenceValidation
+          ) {
+            return event;
+          } else return false
+        });
+        return prev;
+      });
     }
-  }, [myEvent, userProfile]);
+  }, [userProfile, liveEvents]);
+
   return (
     <div className="channel-page__list-wrap">
       {!isOwner && live?.length === 0 ? (
@@ -79,22 +98,18 @@ const CertificateList = ({
           <div className="certificate-list-container">
             <div className="certificate-card-list">
               {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
-              {liveEvents &&
-                liveEvents?.map((liveEvent) => {
-                  if (
-                    new Date(myEvent?.endDate) < new Date() &&
-                    isUserAssistence
-                  ) {
-                    return (
+              {eventsFiltered &&
+                eventsFiltered?.map(
+                  (liveEvent) =>
+                    liveEvent && (
                       <CertificateCard
                         type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                         key={liveEvent.id}
                         data={liveEvent}
                         // setCurrentValue={setCurrentValue}
                       />
-                    );
-                  } else return <div key={liveEvent.id}></div>;
-                })}
+                    )
+                )}
             </div>
           </div>
         </>

@@ -42,6 +42,7 @@ const EventCertificatePage = ({
   metadata,
 }) => {
   const [img, setImg] = useState("");
+  const [userCertificated, setUserCertificated] = useState();
   const history = useHistory();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -50,13 +51,15 @@ const EventCertificatePage = ({
     INTERNAL_LINKS.EVENT_CERTIFICATE
   }?id=${query.get("id")}`;
 
-  const userAssistenceJson = myEvents?.usersAssistence?.map((item) =>
-    item.map((el) => JSON.parse(el))
-  );
-  const userAssistence = userAssistenceJson?.map((item) => item);
-  const userCertificated =
-    userAssistence &&
-    userAssistence[0].filter((item) => item.usersAssistence === false);
+  useEffect(() => {
+    if (myEvents.usersAssistence) {
+      const userAssistence = JSON.parse(myEvents?.usersAssistence);
+      setUserCertificated(
+        userAssistence &&
+          userAssistence.filter((item) => item.usersAssistence === false)
+      );
+    }
+  }, [myEvents]);
 
   useEffect(() => {
     getEvent(id);

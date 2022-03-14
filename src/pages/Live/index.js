@@ -30,11 +30,7 @@ const LivePage = ({
 }) => {
   const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
   const [firstTimes, setFirstTimes] = useState([]);
-  const [times, setTimes] = useState(
-    myEvents.usersAssistence
-      ? myEvents.usersAssistence[0]?.map((el) => JSON.parse(el))
-      : []
-  );
+  const [times, setTimes] = useState([]);
   const handleConfirmAssistence = () => {
     setVisibleEventConfirm(true);
   };
@@ -55,12 +51,18 @@ const LivePage = ({
 
   useEffect(() => {
     getUser();
-    console.log(live)
     if (live.event) {
       getEvent(Number(live.event));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [live]);
+
+  useEffect(() => {
+    if (myEvents.usersAssistence) {
+      myEvents.usersAssistence.length > 0 &&
+        setTimes(JSON.parse(myEvents.usersAssistence));
+    }
+  }, [myEvents]);
 
   /*
    * validating event date to confirm live assistence
@@ -183,8 +185,7 @@ const LivePage = ({
                           profile, in My Learning, in the Digital Certificates
                           tab:
                         </p>
-                        <div className="buttons-confirm-container">
-                        </div>
+                        <div className="buttons-confirm-container"></div>
                       </Modal>
                     </div>
                   )}
