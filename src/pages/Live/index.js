@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Divider, Modal } from "antd";
+import moment from "moment";
 import ReactPlayer from "react-player/youtube";
 
 import Interweave from "interweave";
@@ -17,7 +18,6 @@ import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 
 import "./style.scss";
-import moment from "moment";
 
 const LivePage = ({
   userProfile,
@@ -55,11 +55,12 @@ const LivePage = ({
 
   useEffect(() => {
     getUser();
+    console.log(live)
     if (live.event) {
       getEvent(Number(live.event));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [live]);
 
   /*
    * validating event date to confirm live assistence
