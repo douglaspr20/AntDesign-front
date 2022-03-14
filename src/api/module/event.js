@@ -19,6 +19,7 @@ export const getLiveEventFromAPI = () => {
 };
 
 export const updateEventUserAssistenceFromAPI = ({ payload }) => {
+  console.log(payload)
   return httpClient.put(`private/event/user-assistence/${payload.id}`, payload);
 };
 
