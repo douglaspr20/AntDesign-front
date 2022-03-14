@@ -56,7 +56,7 @@ const EventCertificatePage = ({
       const userAssistence = JSON.parse(myEvents?.usersAssistence);
       setUserCertificated(
         userAssistence &&
-          userAssistence.filter((item) => item.usersAssistence === false)
+          userAssistence.usersAssistence.filter((item) => item.usersAssistence === false)
       );
     }
   }, [myEvents]);
