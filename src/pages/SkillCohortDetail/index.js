@@ -108,8 +108,6 @@ const SkillCohortDetail = ({
         userProfile.hasOwnProperty("memberShip") &&
         userProfile.memberShip === "premium";
 
-        console.log(userProfile, 'userProfile')
-
       if (hasFreeTrial || isUserPremium) {
         setConfirmJoinModal(true);
       } else {
