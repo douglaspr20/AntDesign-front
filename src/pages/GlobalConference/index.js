@@ -81,7 +81,8 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
-
+  const [modalCloseConferenceVisible, setModalCloseConferenceVisible] =
+    useState(true);
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
@@ -615,12 +616,15 @@ const GlobalConference = ({
 
       <Certificate
         visible={modalVisibleCertificate}
-        onCancel={() => setModalVisibleCertificate(false)}
+        onCancel={() => {
+          setModalVisibleCertificate(false);
+          setModalCloseConferenceVisible(true);
+        }}
         sessionsUserJoined={sessionsUserJoined}
       />
 
       <CustomModal
-        visible={true}
+        visible={modalCloseConferenceVisible}
         title="Thank you so much for joining the Hacking HR 2022 Global Online Conference."
         onCancel={() => history.goBack()}
         width={650}
@@ -655,11 +659,14 @@ const GlobalConference = ({
         <div
           style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
-          {userProfile.sessionsJoined.length > 0 ? (
+          {userProfile?.sessionsJoined?.length > 0 ? (
             <CustomButton
               size="md"
               text="Download Certificate"
-              onClick={() => setModalVisibleCertificate(true)}
+              onClick={() => {
+                setModalVisibleCertificate(true);
+                setModalCloseConferenceVisible(false);
+              }}
             />
           ) : (
             <CustomButton
