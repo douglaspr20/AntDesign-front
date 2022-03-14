@@ -152,6 +152,7 @@ export function* getLiveEventSaga() {
       const community = storage.get("community");
       const { id: userId } = community || {};
       const { events } = response.data;
+      console.log(events)
       yield put(
         eventActions.setMyLiveEvents(
           events
@@ -390,9 +391,10 @@ export function* updateEvent({ payload }) {
 
 export function* updateEventUserAssistenceSagas({ payload }) {
   yield put(homeActions.setLoading(true));
+  console.log(payload)
   try {
     const response = yield call(updateEventUserAssistenceFromAPI, { ...payload });
-
+    console.log(response)
     if (response.status === 200) {
       const data = response.data.affectedRows;
       yield put(
