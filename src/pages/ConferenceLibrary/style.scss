@@ -30,7 +30,7 @@
     height: calc(100vh - 72px);
     background: $color-background;
     overflow: auto;
-    padding: 4rem;
+    padding: 1rem 4rem;
     position: relative;
 
     &-header {
@@ -237,7 +237,9 @@
 
     & .annual-conference-card {
       margin: 1rem 0;
+      width: 100%;
       max-width: 950px;
+      min-height: 300px;
     }
 
   }

@@ -16,6 +16,7 @@ const RECOMMENDED_AGENDA = "RECOMMENDED_AGENDA";
 const SET_RECOMMENDED_AGENDA = "SET_RECOMMENDED_AGENDA";
 const SET_SESSION_LOADING = "SET_SESSION_LOADING";
 const SET_MESSAGE_ERROR = "SET_MESSAGE_ERROR";
+const CLAIM_SESSION = "CLAIM_SESSION";
 const SET_SESSION_VIEWED = "SET_SESSION_VIEWED";
 const UPDATE_SESSION_VIEWED = "UPDATE_SESSION_VIEWED";
 const SAVE_FOR_LATER_SESSION = "SAVE_FOR_LATER_SESSION";
@@ -38,6 +39,7 @@ export const constants = {
   SET_RECOMMENDED_AGENDA,
   SET_SESSION_LOADING,
   SET_MESSAGE_ERROR,
+  CLAIM_SESSION,
   SET_SESSION_VIEWED,
   UPDATE_SESSION_VIEWED,
   SAVE_FOR_LATER_SESSION,
@@ -122,6 +124,11 @@ export const setMessageError = createAction(SET_MESSAGE_ERROR, (message) => ({
   message,
 }));
 
+export const claimSession = createAction(CLAIM_SESSION, (id, callback) => ({
+  id,
+  callback,
+}));
+
 export const setSessionViewed = createAction(
   SET_SESSION_VIEWED,
   (id, UserId, viewed) => ({
@@ -167,4 +174,5 @@ export const actions = {
   updateSaveForLaterSession,
   setSessionLoading,
   setMessageError,
+  claimSession,
 };

@@ -2,21 +2,24 @@ import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { CustomButton, SpecialtyItem } from "components";
+import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
+import { InfoCircleOutlined, DownOutlined } from "@ant-design/icons";
+import moment from "moment-timezone";
+import { isEmpty } from "lodash";
+import { homeSelector } from "redux/selectors/homeSelector";
 import {
   saveForLaterSession,
   setSessionViewed,
+  claimSession,
 } from "redux/actions/session-actions";
-import { homeSelector } from "redux/selectors/homeSelector";
-import { DownOutlined } from "@ant-design/icons";
+import Emitter from "services/emitter";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
-import { TIMEZONE_LIST } from "../../enum";
-import "./style.scss";
+import { EVENT_TYPES, TIMEZONE_LIST } from "../../enum";
+
 import { convertToLocalTime } from "utils/format";
-import moment from "moment-timezone";
-import { isEmpty } from "lodash";
+import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
+import "./style.scss";
 
 const ButtonContainer = ({
   session,
@@ -173,6 +176,7 @@ const ButtonContainerConference = ({
   onWatch,
   saveForLaterSession,
   setSessionViewed,
+  onClaimCredits,
 }) => {
   const handleSaveForLater = (e) => {
     e.preventDefault();
@@ -187,7 +191,7 @@ const ButtonContainerConference = ({
   };
 
   return (
-    <div className="d-flex flex-column">
+    <div className="button-container">
       <CustomButton type="primary" size="xs" text="Watch" onClick={onWatch} />
 
       <CustomButton
@@ -214,7 +218,6 @@ const ButtonContainerConference = ({
           marginTop: "8px",
         }}
       />
-
       <CustomButton
         className="claim-credits"
         type="primary"
@@ -223,7 +226,7 @@ const ButtonContainerConference = ({
         style={{
           marginTop: "8px",
         }}
-        // onClick={onClaimCredits}
+        onClick={onClaimCredits}
       />
 
       {session.viewed && session.viewed[userProfile.id] !== "mark" && (
@@ -262,7 +265,9 @@ const AnnualConferenceCard = React.memo(
     onWatch,
     userProfile,
     saveForLaterSession,
+    claimSession,
     setSessionViewed,
+    savedItem,
   }) => {
     const timezone = TIMEZONE_LIST.find(
       (item) => item.value === session.timezone
@@ -278,6 +283,8 @@ const AnnualConferenceCard = React.memo(
       .utcOffset(offset, true);
 
     const [hideInfo, setHideInfo] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [showFirewall, setShowFirewall] = useState(false);
     const [
       visibleConfirmJoinedOtherSession,
       setVisibleConfirmJoinedOtherSession,
@@ -360,6 +367,36 @@ const AnnualConferenceCard = React.memo(
       setVisibleConfirmJoinedOtherSession(true);
     };
 
+    const onClaimCredits = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (userProfile && userProfile.memberShip === "premium") {
+        setModalVisible(true);
+      } else {
+        setShowFirewall(true);
+      }
+    };
+
+    const onHRClaimOffered = async () => {
+      claimSession(session.id, (err) => {
+        if (err) {
+          notification.error({
+            message: "Error",
+            description: (err || {}).msg,
+          });
+        } else {
+          notification.info({
+            message: "Email was send successfully.",
+          });
+          setModalVisible(false);
+        }
+      });
+    };
+
+    const planUpgrade = () => {
+      Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+    };
+
     return (
       <div className="annual-conference-card acc">
         <div className="acc-session-header">
@@ -385,6 +422,7 @@ const AnnualConferenceCard = React.memo(
               onWatch={onWatch}
               saveForLaterSession={saveForLaterSession}
               setSessionViewed={setSessionViewed}
+              onClaimCredits={onClaimCredits}
             />
           )}
         </div>
@@ -443,17 +481,20 @@ const AnnualConferenceCard = React.memo(
               <SpecialtyItem key={i} title={category} />
             ))}
           </div>
-          <div
-            className="acc-session-toggle"
-            onClick={() => setHideInfo(!hideInfo)}
-          >
-            {hideInfo ? "Review session" : "Hide information"}
+
+          {!savedItem && (
             <div
-              className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}
+              className="acc-session-toggle"
+              onClick={() => setHideInfo(!hideInfo)}
             >
-              <IconChevronDown />
+              {hideInfo ? "Review session" : "Hide information"}
+              <div
+                className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}
+              >
+                <IconChevronDown />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {!hideInfo && (
           <div className="acc-details">
@@ -501,6 +542,20 @@ const AnnualConferenceCard = React.memo(
           </div>
         )}
 
+        {showFirewall && (
+          <div
+            className="conference-card-firewall"
+            onClick={() => setShowFirewall(false)}
+          >
+            <div className="upgrade-notification-panel" onClick={planUpgrade}>
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
+            </div>
+          </div>
+        )}
+
         <Modal
           visible={visibleConfirmJoinedOtherSession}
           title="Are you sure you want to join this session?"
@@ -516,6 +571,15 @@ const AnnualConferenceCard = React.memo(
             You will not be able to join any other session at the same time.
           </p>
         </Modal>
+
+        <LibraryClaimModal
+          visible={modalVisible}
+          title="HR Credit Offered"
+          destroyOnClose={true}
+          data={session}
+          onClaim={onHRClaimOffered}
+          onCancel={() => setModalVisible(false)}
+        />
       </div>
     );
   }
@@ -544,6 +608,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   saveForLaterSession,
   setSessionViewed,
+  claimSession,
 };
 
 export default connect(

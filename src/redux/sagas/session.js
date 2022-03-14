@@ -17,6 +17,7 @@ import {
   getSession,
   getSessionClasses,
   recommendedAgenda,
+  claimSession,
   saveForLaterSession,
   markSessionViewed,
 } from "../../api";
@@ -302,6 +303,30 @@ export function* recommendedAgendaSaga({ payload }) {
   }
 }
 
+export function* claimSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimSession, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* markSessionViewedSaga({ payload }) {
   try {
     const response = yield call(markSessionViewed, { ...payload });
@@ -386,6 +411,7 @@ function* watchSession() {
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
   yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
+  yield takeLatest(sessionConstants.CLAIM_SESSION, claimSessionSaga);
   yield takeLatest(sessionConstants.SET_SESSION_VIEWED, markSessionViewedSaga);
   yield takeLatest(
     sessionConstants.SAVE_FOR_LATER_SESSION,

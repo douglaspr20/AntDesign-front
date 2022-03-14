@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
-import { numberWithCommas } from "utils/format";
 import {
   AnnualConferenceCard,
   ConferenceCard,
@@ -15,7 +14,10 @@ import {
 } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { INTERNAL_LINKS, SETTINGS } from "enum";
-import { getAllSessions } from "redux/actions/session-actions";
+import {
+  getAllSessions,
+  getSessionsUserJoined,
+} from "redux/actions/session-actions";
 import {
   getMoreConferenceLibraries,
   searchConferenceLibraries,
@@ -25,13 +27,14 @@ import {
   getAdvertisementById,
 } from "redux/actions/advertisment-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { conferenceSelector } from "redux/selectors/conferenceSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Certificate from "pages/GlobalConference/Certificate";
 
 const ConferenceLibrary = ({
   loading,
@@ -44,14 +47,17 @@ const ConferenceLibrary = ({
   advertisementById,
   isAdPreview = false,
   getAllSessions,
+  getSessionsUserJoined,
+  sessionsUserJoined,
   allSessions,
+  userProfile,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
   const [currentTab, setCurrentTab] = useState("0");
-  const [countOfResults, setCountOfResults] = useState(0);
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
+  const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
   const { id } = useParams();
   const history = useHistory();
 
@@ -66,6 +72,11 @@ const ConferenceLibrary = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  useEffect(() => {
+    if (userProfile?.sessionsJoined?.length > 0) {
+      getSessionsUserJoined(userProfile.sessionsJoined);
+    }
+  }, [getSessionsUserJoined, userProfile]);
 
   const displayAds = !isEmpty(advertisementsByPage["conference-library"]) && (
     <div className="conference-library-advertisement-wrapper">
@@ -158,11 +169,11 @@ const ConferenceLibrary = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
+  // useEffect(() => {
+  //   setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
 
-    // eslint-disable-next-line
-  }, [currentTab, allConferenceLibraries]);
+  //   // eslint-disable-next-line
+  // }, [currentTab, allConferenceLibraries]);
 
   const displayData = (index) => {
     const libraries = allConferenceLibraries[index]?.rows || [];
@@ -198,14 +209,27 @@ const ConferenceLibrary = ({
           <>
             {year === 2022 ? (
               <>
-                {allSessions.map((session) => (
-                  <AnnualConferenceCard
-                    key={session.id}
-                    session={session}
-                    typeConference="conference-library"
-                    onWatch={() => onWatch(session.id)}
-                  />
-                ))}
+                <CustomButton
+                  size="xs"
+                  text="Download Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                  }}
+                  onClick={() => {
+                    setModalVisibleCertificate(true);
+                  }}
+                />
+                <div>
+                  {allSessions.map((session) => (
+                    <AnnualConferenceCard
+                      key={session.id}
+                      session={session}
+                      typeConference="conference-library"
+                      onWatch={() => onWatch(session.id)}
+                    />
+                  ))}
+                </div>
               </>
             ) : (
               <div className="search-results-list">{displayData(index)}</div>
@@ -234,23 +258,11 @@ const ConferenceLibrary = ({
               <h3 className="filters-btn" onClick={() => setVisible(true)}>
                 Filters
               </h3>
-              <h3>{`${numberWithCommas(countOfResults)} video${
-                countOfResults > 1 ? "s" : ""
-              }`}</h3>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <div className="search-results-container-header d-flex justify-between items-center">
-              <h3>{`${numberWithCommas(countOfResults)} video${
-                countOfResults > 1 ? "s" : ""
-              }`}</h3>
             </div>
           </Col>
         </Row>
         <div className="conference-library-content">
-          <div>
+          <div style={{ width: "100%", maxWidth: "980px" }}>
             <Tabs
               data={TabData}
               current={currentTab}
@@ -280,6 +292,12 @@ const ConferenceLibrary = ({
           {displayPreviewAd}
         </div>
       </div>
+
+      <Certificate
+        visible={modalVisibleCertificate}
+        onCancel={() => setModalVisibleCertificate(false)}
+        sessionsUserJoined={sessionsUserJoined}
+      />
     </div>
   );
 };
@@ -296,8 +314,10 @@ const mapStateToProps = (state, props) => ({
   loading: conferenceSelector(state).loading,
   allConferenceLibraries: conferenceSelector(state).allConferenceLibraries,
   allSessions: sessionSelector(state).allSessions,
+  sessionsUserJoined: sessionSelector(state).sessionsUserJoined,
   countOfResults: conferenceSelector(state).countOfResults,
   currentPage: conferenceSelector(state).currentPage,
+  userProfile: homeSelector(state).userProfile,
   ...advertisementSelector(state),
 });
 
@@ -306,6 +326,7 @@ const mapDispatchToProps = {
   searchConferenceLibraries,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  getSessionsUserJoined,
   getAllSessions,
 };
 

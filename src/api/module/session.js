@@ -68,6 +68,10 @@ export const recommendedAgenda = ({ filters }) => {
   });
 };
 
+export const claimSession = ({ id }) => {
+  return httpClient.post(`private/session/claim`, { id });
+};
+
 export const markSessionViewed = ({ id, UserId, viewed }) => {
   return httpClient.put("private/session/viewed", { id, UserId, mark: viewed });
 };

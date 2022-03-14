@@ -349,7 +349,6 @@ const GlobalConference = ({
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
       />
-
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -574,24 +573,20 @@ const GlobalConference = ({
           </div>
         )}
       </div>
-
       <CreateBonfireModal
         visible={createBonfireModalVisible}
         onCancel={() => setCreateBonfireModalVisible(false)}
       />
-
       <InviteColleaguesFormModal
         visible={modalFormInviteColleaguesVisible}
         onCancel={() => {
           setModalFormInviteColleaguesVisible(false);
         }}
       />
-
       <AccessibilityRequirementsModal
         visible={modalRequirementsVisible}
         onCancel={() => setModalRequirementsVisible(false)}
       />
-
       <CustomModal
         visible={modalMessageVisible}
         title="Attention!"
@@ -600,22 +595,21 @@ const GlobalConference = ({
       >
         <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }} />
       </CustomModal>
-
       <RecommendedAgendaModal
         visible={modalRecommendeAgendaVisible}
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
-
       <ThingsYouNeedToKnow
         visible={modalVisibleWelcomingMessage}
         onCancel={() => setModalVisibleWelcomingMessage(false)}
       />
-
+      `
       <Certificate
         visible={modalVisibleCertificate}
         onCancel={() => setModalVisibleCertificate(false)}
         sessionsUserJoined={sessionsUserJoined}
       />
+      `
       <AcceptTermsAndConditions />
     </div>
   );
