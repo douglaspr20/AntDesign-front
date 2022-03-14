@@ -73,7 +73,7 @@ const SkillCohort = ({
   }, [id]);
 
   useEffect(() => {
-    setCurrentTab(parsed.key);
+    setCurrentTab(parsed.key || '0');
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
