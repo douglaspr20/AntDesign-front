@@ -47,7 +47,7 @@ const ActivityStatus = ({
         <Collapse bordered={false}>
           {cohort.SkillCohortResources.sort(
             (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
-          ).map((resource, resourceIndex) => {
+          ).filter(resource => moment(resource.releaseDate).isBefore(moment())).map((resource, resourceIndex) => {
             const countPersonalReflection =
               cohort.SkillCohortResourceResponses.filter(
                 (response) =>
