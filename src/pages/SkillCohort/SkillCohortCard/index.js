@@ -54,21 +54,14 @@ const SkillCohortCard = (props) => {
   };
 
   const downloadPdf = async () => {
+    console.log(props)
     setLoading(true);
     const domElement = document.getElementById("certificate-panel");
-    // domElement.style.display = 'block';
     const canvas = await html2canvas(domElement, {
       scale: 4,
-      onclone: (clonedDoc) => {
-        clonedDoc.getElementById("certificate-panel").style.display = "block";
-        // clonedDoc.style.display = 'block';
-      },
     });
     const width = domElement.clientWidth;
     const height = domElement.clientHeight;
-
-    console.log(width)
-    console.log(height)
 
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPdf({
