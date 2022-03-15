@@ -36,7 +36,7 @@ import {
 const getEventStatus = (data, userId) => {
   let res = data.status[userId];
 
-  const last = data.startAndEndTimes.at(-1);
+  const last = data.startAndEndTimes[data.startAndEndTimes - 1];
 
   if (res === "going") {
     res = moment().isBefore((last || {}).endTime) ? res : "past";
@@ -391,7 +391,9 @@ export function* updateEvent({ payload }) {
 export function* updateEventUserAssistenceSagas({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
-    const response = yield call(updateEventUserAssistenceFromAPI, { ...payload });
+    const response = yield call(updateEventUserAssistenceFromAPI, {
+      ...payload,
+    });
     if (response.status === 200) {
       const data = response.data.affectedRows;
       yield put(
@@ -589,7 +591,10 @@ function* watchLogin() {
   yield takeLatest(eventConstants.GET_MY_EVENTS, getAllMyEvents);
   yield takeLatest(eventConstants.UPDATE_EVENT_STATUS, updateEventStatus);
   yield takeLatest(eventConstants.UPDATE_EVENT, updateEvent);
-  yield takeLatest(eventConstants.UPDATE_EVENT_USER_ASSISTENCE, updateEventUserAssistenceSagas);
+  yield takeLatest(
+    eventConstants.UPDATE_EVENT_USER_ASSISTENCE,
+    updateEventUserAssistenceSagas
+  );
   yield takeLatest(eventConstants.CREATE_CHANNEL_EVENT, createChannelEventSaga);
   yield takeLatest(eventConstants.GET_CHANNEL_EVENTS, getChannelEventsSaga);
   yield takeLatest(eventConstants.DELETE_EVENT, deleteEventSaga);
