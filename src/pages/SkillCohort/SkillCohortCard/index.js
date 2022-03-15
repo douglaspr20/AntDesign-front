@@ -4,7 +4,6 @@ import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 import moment from "moment-timezone";
 import html2canvas from "html2canvas";
-import jsPdf from "jspdf";
 
 import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
@@ -46,8 +45,6 @@ const SkillCohortCard = (props) => {
     Math.random() * 1000
   )}`;
 
-  const certificateId = `certificate-panel-${id}`;
-
   const handleClickMore = () => {
     if (hasAccess && hasCohortStarted) {
       history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1`);
@@ -62,31 +59,11 @@ const SkillCohortCard = (props) => {
     const canvas = await html2canvas(domElement, {
       scale: 4,
     });
-    const width = domElement.clientWidth;
-    const height = domElement.clientHeight;
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPdf({
-      orientation: "landscape",
-      format: [2000, (2000 / width) * height],
-      unit: "px",
-      hotfixes: ["px_scaling"],
-      precision: 32,
-    });
-
-    pdf.addImage(
-      imgData,
-      "jpeg",
-      0,
-      0,
-      2000,
-      (2000 / width) * height,
-      "",
-      "SLOW"
-    );
-    pdf.save(
-      `${title} - ${userProfile.firstName} ${userProfile.lastName} Certificate.pdf`
-    );
+    let a = document.createElement('a')
+    a.href = canvas.toDataURL("image/png");
+    a.download = `${title} - ${userProfile.firstName} ${userProfile.lastName} Certificate.png`
+    a.click()
     setLoading(false);
   };
 
