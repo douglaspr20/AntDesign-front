@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
@@ -29,6 +29,7 @@ const SkillCohortCard = (props) => {
   const [hasCohortStarted, setHasCohortStarted] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const certificateRef = useRef(null);
 
   useEffect(() => {
     const dateToday = moment().tz("America/Los_Angeles");
@@ -45,6 +46,8 @@ const SkillCohortCard = (props) => {
     Math.random() * 1000
   )}`;
 
+  const certificateId = `certificate-panel-${id}`;
+
   const handleClickMore = () => {
     if (hasAccess && hasCohortStarted) {
       history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1`);
@@ -54,9 +57,8 @@ const SkillCohortCard = (props) => {
   };
 
   const downloadPdf = async () => {
-    console.log(props)
     setLoading(true);
-    const domElement = document.getElementById("certificate-panel");
+    const domElement = certificateRef.current
     const canvas = await html2canvas(domElement, {
       scale: 4,
     });
@@ -157,8 +159,8 @@ const SkillCohortCard = (props) => {
           )}
         </div>
       </div>
-      <>
-        <div className="certificate-page-wrapper" id="certificate-panel">
+      {canDownloadCertificate && (
+        <div className="certificate-page-wrapper" id="certificate-panel" ref={certificateRef}>
           <div className="certificate">
             <div className="certificate-top">
               <div className="certificate-logo">
@@ -198,7 +200,7 @@ const SkillCohortCard = (props) => {
             </div>
           </div>
         </div>
-      </>
+      )}
     </div>
   );
 };
