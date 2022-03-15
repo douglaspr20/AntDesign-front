@@ -42,6 +42,8 @@ const LivePage = ({
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
       usersAssistence = [...new Set(usersAssistence)];
     }
+    console.log(myEvents);
+    console.log(usersAssistence);
     updateEventUserAssistence({
       ...myEvents,
       usersAssistence,
