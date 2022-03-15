@@ -93,18 +93,26 @@ const SkillCohortDetail = ({
   };
 
   const handleOnJoin = () => {
-    if (userProfile && userProfile.memberShip === "premium") {
-      if (hasCohortStarted && skillCohortParticipant.hasAccess) {
-        history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources`);
-      } else {
-        if (!userProfile.completed) {
-          return setShowProfileCompletionFirewall(true);
-        }
-
-        setConfirmJoinModal(true);
-      }
+    if (hasCohortStarted && skillCohortParticipant.hasAccess) {
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources`);
     } else {
-      setShowPremiumFirewall(true);
+      if (!userProfile.completed) {
+        return setShowProfileCompletionFirewall(true);
+      }
+
+      const hasFreeTrial =
+        userProfile.hasOwnProperty("projectXFreeTrialAvailability") &&
+        userProfile.projectXFreeTrialAvailability;
+
+      const isUserPremium =
+        userProfile.hasOwnProperty("memberShip") &&
+        userProfile.memberShip === "premium";
+
+      if (hasFreeTrial || isUserPremium) {
+        setConfirmJoinModal(true);
+      } else {
+        setShowPremiumFirewall(true);
+      }
     }
   };
 
