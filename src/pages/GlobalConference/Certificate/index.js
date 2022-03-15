@@ -128,13 +128,13 @@ const Certificate = ({ visible, onCancel, sessionsUserJoined, user }) => {
             size="lg"
             onClick={() => generateCertificate("img")}
           />
-          <CustomButton
+          {/* <CustomButton
             id="print-button"
             text="Download PDF"
             type="primary"
             size="lg"
             onClick={() => generateCertificate("pdf")}
-          />
+          /> */}
         </div>
       </div>
     </CustomModal>
