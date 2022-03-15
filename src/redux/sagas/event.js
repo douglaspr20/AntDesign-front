@@ -152,7 +152,6 @@ export function* getLiveEventSaga() {
       const community = storage.get("community");
       const { id: userId } = community || {};
       const { events } = response.data;
-      console.log(events)
       yield put(
         eventActions.setMyLiveEvents(
           events
