@@ -78,7 +78,7 @@ const CertificateList = ({
             usersAssistenceValidation
           ) {
             return event;
-          } else return false
+          } else return false;
         });
         return prev;
       });
