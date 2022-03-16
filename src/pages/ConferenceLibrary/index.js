@@ -268,7 +268,7 @@ const ConferenceLibrary = ({
                     onClick={() => {
                       downloadPdf("report-sessions-joined");
                     }}
-                    style={{ marginLeft: "10px" }}
+                    style={{ marginLeft: "10px", marginTop: "12px" }}
                   />
                 </div>
                 <div>
