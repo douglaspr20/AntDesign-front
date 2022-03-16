@@ -11,14 +11,12 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import {
   saveForLaterSession,
   setSessionViewed,
-  claimSession,
 } from "redux/actions/session-actions";
 import Emitter from "services/emitter";
 import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
 import { EVENT_TYPES, TIMEZONE_LIST } from "../../enum";
 
 import { convertToLocalTime } from "utils/format";
-import LibraryClaimModal from "../LibraryCard/LibraryClaimModal";
 import "./style.scss";
 
 const ButtonContainer = ({
@@ -176,7 +174,6 @@ const ButtonContainerConference = ({
   onWatch,
   saveForLaterSession,
   setSessionViewed,
-  onClaimCredits,
 }) => {
   const handleSaveForLater = (e) => {
     e.preventDefault();
@@ -217,16 +214,6 @@ const ButtonContainerConference = ({
         style={{
           marginTop: "8px",
         }}
-      />
-      <CustomButton
-        className="claim-credits"
-        type="primary"
-        size="xs"
-        text="Claim HR Credits"
-        style={{
-          marginTop: "8px",
-        }}
-        onClick={onClaimCredits}
       />
 
       {session.viewed && session.viewed[userProfile.id] !== "mark" && (
@@ -283,7 +270,6 @@ const AnnualConferenceCard = React.memo(
       .utcOffset(offset, true);
 
     const [hideInfo, setHideInfo] = useState(true);
-    const [modalVisible, setModalVisible] = useState(false);
     const [showFirewall, setShowFirewall] = useState(false);
     const [
       visibleConfirmJoinedOtherSession,
@@ -367,38 +353,20 @@ const AnnualConferenceCard = React.memo(
       setVisibleConfirmJoinedOtherSession(true);
     };
 
-    const onClaimCredits = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (userProfile && userProfile.memberShip === "premium") {
-        setModalVisible(true);
-      } else {
-        setShowFirewall(true);
-      }
-    };
-
-    const onHRClaimOffered = async () => {
-      claimSession(session.id, (err) => {
-        if (err) {
-          notification.error({
-            message: "Error",
-            description: (err || {}).msg,
-          });
-        } else {
-          notification.info({
-            message: "Email was send successfully.",
-          });
-          setModalVisible(false);
-        }
-      });
-    };
-
     const planUpgrade = () => {
       Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
     };
 
     return (
-      <div className="annual-conference-card acc">
+      <div
+        className="annual-conference-card acc"
+        style={
+          userProfile?.sessionsJoined?.includes(session.id) ||
+          session.viewed[userProfile.id] === "mark"
+            ? { background: "#f5f5f8" }
+            : null
+        }
+      >
         <div className="acc-session-header">
           <h3>{session.title}</h3>
 
@@ -422,7 +390,6 @@ const AnnualConferenceCard = React.memo(
               onWatch={onWatch}
               saveForLaterSession={saveForLaterSession}
               setSessionViewed={setSessionViewed}
-              onClaimCredits={onClaimCredits}
             />
           )}
         </div>
@@ -571,15 +538,6 @@ const AnnualConferenceCard = React.memo(
             You will not be able to join any other session at the same time.
           </p>
         </Modal>
-
-        <LibraryClaimModal
-          visible={modalVisible}
-          title="HR Credit Offered"
-          destroyOnClose={true}
-          data={session}
-          onClaim={onHRClaimOffered}
-          onCancel={() => setModalVisible(false)}
-        />
       </div>
     );
   }
@@ -608,7 +566,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   saveForLaterSession,
   setSessionViewed,
-  claimSession,
 };
 
 export default connect(

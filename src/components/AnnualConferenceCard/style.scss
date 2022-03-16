@@ -49,6 +49,11 @@
       justify-content: space-between;
       height: auto;
 
+      & .ant-btn {
+        min-width: 220px;
+       }
+     
+
 
       @media screen and (max-width: 800px) {
         & .ant-btn {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Tabs as TabsAntd } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col, notification } from "antd";
@@ -13,7 +14,7 @@ import {
   Tabs,
 } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
-import { INTERNAL_LINKS, SETTINGS } from "enum";
+import { INTERNAL_LINKS, SETTINGS, TIMEZONE_LIST } from "enum";
 import { setLoading } from "redux/actions/home-actions";
 import {
   getAllSessions,
@@ -38,6 +39,9 @@ import "./style.scss";
 import Certificate from "pages/GlobalConference/Certificate";
 import jsPDF from "jspdf";
 import { formatAnnualConference } from "utils/formatPdf";
+import { convertToCertainTime } from "utils/format";
+
+const { TabPane } = TabsAntd;
 
 const ConferenceLibrary = ({
   loading,
@@ -62,6 +66,8 @@ const ConferenceLibrary = ({
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
+
+  const [sessionData, setSessionData] = useState([]);
   const { id } = useParams();
   const history = useHistory();
 
@@ -209,6 +215,47 @@ const ConferenceLibrary = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (sessionsUserJoined) {
+      const sData = sessionsUserJoined
+        .map((item) => {
+          const sTime = convertToCertainTime(item.startTime, item.timezone);
+          const eTime = convertToCertainTime(item.endTime, item.timezone);
+          let tz = TIMEZONE_LIST.find((t) => t.value === item.timezone);
+          if (tz) {
+            if (tz.offset > 0) {
+              tz = `${tz.abbr} (GMT+${tz.offset})`;
+            } else if (tz.offset < 0) {
+              tz = `${tz.abbr} (GMT-${-tz.offset})`;
+            } else {
+              tz = `${tz.abbr} (GMT)`;
+            }
+          } else {
+            tz = "";
+          }
+
+          return {
+            ...item,
+            date: sTime.format("MMM, D, YYYY"),
+            period: `${sTime.format("MMMM D")} | From ${sTime.format(
+              "h:mm a"
+            )} to ${eTime.format("h:mm a")}`,
+            tz: `${tz}`,
+          };
+        })
+        .sort((a, b) => {
+          if (a.startTime > b.startTime) {
+            return 1;
+          } else if (b.startTime > a.startTime) {
+            return -1;
+          }
+          return 0;
+        });
+
+      setSessionData(sData);
+    }
+  }, [sessionsUserJoined]);
+
   // useEffect(() => {
   //   setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
 
@@ -249,37 +296,52 @@ const ConferenceLibrary = ({
           <>
             {year === 2022 ? (
               <>
-                <div style={{ display: "flex" }}>
-                  <CustomButton
-                    size="xs"
-                    text="Download Certificate"
-                    style={{
-                      marginTop: "12px",
-                      padding: "0px 46px",
-                    }}
-                    onClick={() => {
-                      setModalVisibleCertificate(true);
-                    }}
-                  />
-                  <CustomButton
-                    size="xs"
-                    text="Download Participation Report"
-                    className="button-participation-report"
-                    onClick={() => {
-                      downloadPdf("report-sessions-joined");
-                    }}
-                    style={{ marginLeft: "10px", marginTop: "12px" }}
-                  />
-                </div>
+                <CustomButton
+                  size="xs"
+                  text="Download Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                  }}
+                  onClick={() => {
+                    setModalVisibleCertificate(true);
+                  }}
+                />
                 <div>
-                  {allSessions.map((session) => (
-                    <AnnualConferenceCard
-                      key={session.id}
-                      session={session}
-                      typeConference="conference-library"
-                      onWatch={() => onWatch(session.id)}
-                    />
-                  ))}
+                  <TabsAntd
+                    defaultActiveKey="1"
+                    //  onChange={callback}
+                  >
+                    <TabPane tab="All Sessions" key="1">
+                      {allSessions.map((session) => (
+                        <AnnualConferenceCard
+                          key={session.id}
+                          session={session}
+                          typeConference="conference-library"
+                          onWatch={() => onWatch(session.id)}
+                        />
+                      ))}
+                    </TabPane>
+                    <TabPane
+                      tab="Participation During the Conference Week"
+                      key="2"
+                    >
+                      <div style={{ marginTop: "1rem" }}>
+                        {sessionData.map((session, i) => (
+                          <div key={index}>
+                            <h3 className="session-step">{session.period}</h3>
+
+                            <AnnualConferenceCard
+                              key={session.id}
+                              session={session}
+                              typeConference="conference-library"
+                              onWatch={() => onWatch(session.id)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </TabPane>
+                  </TabsAntd>
                 </div>
               </>
             ) : (
