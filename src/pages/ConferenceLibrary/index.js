@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Tabs as TabsAntd } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Row, Col, notification } from "antd";
+import { Row, Col } from "antd";
 import { useParams, useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 
@@ -37,8 +37,6 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 import Certificate from "pages/GlobalConference/Certificate";
-import jsPDF from "jspdf";
-import { formatAnnualConference } from "utils/formatPdf";
 import { convertToCertainTime } from "utils/format";
 
 const { TabPane } = TabsAntd;
@@ -158,42 +156,6 @@ const ConferenceLibrary = ({
       listOfYears
     );
     setMeta(value);
-  };
-
-  const downloadPdf = async (option) => {
-    setLoading(true);
-    if (sessionsUserJoined.length < 1) {
-      setLoading(false);
-      return notification.warning({
-        message: "You haven't joined any session",
-        description: `The participation report is only available to those who joined at least one session during the Global Conference 2022.`,
-      });
-    }
-
-    const template = formatAnnualConference(
-      userProfile,
-      sessionsUserJoined,
-      option
-    );
-
-    const pdf = new jsPDF({
-      orientation: "p",
-      format: "a4",
-      unit: "px",
-      hotfixes: ["px_scaling"],
-      precision: 32,
-    });
-
-    await pdf.html(template);
-    pdf.save(
-      option === "personal-agenda"
-        ? "Personalizated Agenda.pdf"
-        : option === "conference-schedule"
-        ? "Conference Schedule.pdf"
-        : "Personalized Participation Report.pdf"
-    );
-
-    setLoading(false);
   };
 
   useEffect(() => {
