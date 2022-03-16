@@ -9,11 +9,12 @@ import { CARD_TYPE } from "enum";
 import { liveSelector } from "redux/selectors/liveSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
+import { eventSelector } from "redux/selectors/eventSelector";
 import { getLive } from "redux/actions/live-actions";
 import { getLiveEvents, getEvent } from "redux/actions/event-actions";
 
+import { HelmetMetaData } from "components";
 import CertificateCard from "./CertificateCard";
-import { eventSelector } from "redux/selectors/eventSelector";
 
 import "./style.scss";
 
@@ -102,12 +103,21 @@ const CertificateList = ({
                 eventsFiltered?.map(
                   (liveEvent) =>
                     liveEvent && (
-                      <CertificateCard
-                        type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                        key={liveEvent.id}
-                        data={liveEvent}
-                        // setCurrentValue={setCurrentValue}
-                      />
+                      <>
+                        <HelmetMetaData
+                          title="Digital Certificate"
+                          metatitle="Digital Certificate"
+                          image={liveEvent.image}
+                          description="Digital certificate"
+                          metadescription="Digital certificate"
+                          // data={metadata}
+                        ></HelmetMetaData>
+                        <CertificateCard
+                          type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                          key={liveEvent.id}
+                          data={liveEvent}
+                        />
+                      </>
                     )
                 )}
             </div>

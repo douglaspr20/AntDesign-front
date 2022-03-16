@@ -133,7 +133,7 @@ const EventCertificatePage = ({
           <HelmetMetaData
             title="Digital Certificate"
             metatitle="Digital Certificate"
-            image={ImgCertificateStamp}
+            image={myEvents.image}
             description="Digital certificate"
             metadescription="Digital certificate"
             // data={metadata}
