@@ -1,23 +1,29 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Tabs } from "antd";
+import { notification, Tabs } from "antd";
 
 import MicroConferenceSkeleton from "./MicroConferenceSkeleton";
 import MicroConferenceVideosList from "./MicroConferenceVideosList";
 import MicroConferenceVideoWrapper from "./MicroConferenceVideoWrapper";
 
-import { getSession, getSessionClasses } from "redux/actions/session-actions";
+import {
+  getSession,
+  getSessionClasses,
+  claimSession,
+} from "redux/actions/session-actions";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 
-import { INTERNAL_LINKS } from "enum";
-import { SpeakerCard } from "components";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { CustomButton, SpeakerCard } from "components";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
 import { DownloadOutlined } from "@ant-design/icons";
+import Emitter from "services/emitter";
+import LibraryClaimModal from "components/LibraryCard/LibraryClaimModal";
 
 const { TabPane } = Tabs;
 
@@ -50,9 +56,12 @@ const MicroConference = ({
   classes,
   getSession,
   getSessionClasses,
+  claimSession,
 }) => {
   const { status } = useMicroConferenceQuery(match.params.id);
   const [activeVideoId, setActiveVideoId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
 
   if (user.sessionsJoined && !user.sessionsJoined.includes(+match.params.id)) {
     history.push("/global-conference");
@@ -74,6 +83,36 @@ const MicroConference = ({
     return null;
   }, [activeVideoId, classes]);
 
+  const onClaimCredits = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (user && user.memberShip === "premium") {
+      setModalVisible(true);
+    } else {
+      setShowFirewall(true);
+    }
+  };
+
+  const onHRClaimOffered = async () => {
+    claimSession(session.id, (err) => {
+      if (err) {
+        notification.error({
+          message: "Error",
+          description: (err || {}).msg,
+        });
+      } else {
+        notification.info({
+          message: "Email was send successfully.",
+        });
+        setModalVisible(false);
+      }
+    });
+  };
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   return (
     <div className="micro-conference__page">
       <div className="micro-conference__container">
@@ -94,12 +133,24 @@ const MicroConference = ({
                     sessionId={match.params.id}
                   />
 
+                  <CustomButton
+                    className="claim-credits"
+                    type="primary"
+                    size="md"
+                    text="Claim HR Credits"
+                    style={{
+                      marginTop: "8px",
+                      width: "100%",
+                    }}
+                    onClick={onClaimCredits}
+                  />
+
                   <Link
-                    to={INTERNAL_LINKS.GLOBAL_CONFERENCE}
+                    to={INTERNAL_LINKS.CONFERENCE_LIBRARY}
                     className="micro-conference__row-1--video-list--back-link"
                   >
                     <img src={IconBack} alt="icon-back" />
-                    <h2>Back to Global Conference</h2>
+                    <h2>Back to Conference Library</h2>
                   </Link>
                 </div>
                 <div className="micro-class__row-1--video-player">
@@ -183,7 +234,32 @@ const MicroConference = ({
                   </Tabs>
                 </div>
               </div>
+              {showFirewall && (
+                <div
+                  className="conference-card-firewall"
+                  onClick={() => setShowFirewall(false)}
+                >
+                  <div
+                    className="upgrade-notification-panel"
+                    onClick={planUpgrade}
+                  >
+                    <h3>
+                      Upgrade to a PREMIUM Membership and get unlimited access
+                      to the LAB features
+                    </h3>
+                  </div>
+                </div>
+              )}
             </div>
+
+            <LibraryClaimModal
+              visible={modalVisible}
+              title="HR Credit Offered"
+              destroyOnClose={true}
+              data={session}
+              onClaim={onHRClaimOffered}
+              onCancel={() => setModalVisible(false)}
+            />
           </>
         )}
       </div>
@@ -200,6 +276,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
   getSession,
   getSessionClasses,
+  claimSession,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MicroConference);

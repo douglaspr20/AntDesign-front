@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Row, Col } from "antd";
+import { Row, Col, notification } from "antd";
 import { useParams, useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 
@@ -14,6 +14,7 @@ import {
 } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
 import { INTERNAL_LINKS, SETTINGS } from "enum";
+import { setLoading } from "redux/actions/home-actions";
 import {
   getAllSessions,
   getSessionsUserJoined,
@@ -35,6 +36,8 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 import Certificate from "pages/GlobalConference/Certificate";
+import jsPDF from "jspdf";
+import { formatAnnualConference } from "utils/formatPdf";
 
 const ConferenceLibrary = ({
   loading,
@@ -51,6 +54,7 @@ const ConferenceLibrary = ({
   sessionsUserJoined,
   allSessions,
   userProfile,
+  setLoading,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
@@ -150,6 +154,42 @@ const ConferenceLibrary = ({
     setMeta(value);
   };
 
+  const downloadPdf = async (option) => {
+    setLoading(true);
+    if (sessionsUserJoined.length < 1) {
+      setLoading(false);
+      return notification.warning({
+        message: "You haven't joined any session",
+        description: `The participation report is only available to those who joined at least one session during the Global Conference 2022.`,
+      });
+    }
+
+    const template = formatAnnualConference(
+      userProfile,
+      sessionsUserJoined,
+      option
+    );
+
+    const pdf = new jsPDF({
+      orientation: "p",
+      format: "a4",
+      unit: "px",
+      hotfixes: ["px_scaling"],
+      precision: 32,
+    });
+
+    await pdf.html(template);
+    pdf.save(
+      option === "personal-agenda"
+        ? "Personalizated Agenda.pdf"
+        : option === "conference-schedule"
+        ? "Conference Schedule.pdf"
+        : "Personalized Participation Report.pdf"
+    );
+
+    setLoading(false);
+  };
+
   useEffect(() => {
     const getListOfYears = (startYear) => {
       const currentYear = new Date().getFullYear();
@@ -220,6 +260,16 @@ const ConferenceLibrary = ({
                     setModalVisibleCertificate(true);
                   }}
                 />
+                <CustomButton
+                  size="xs"
+                  text="Download Participation Report"
+                  className="button-participation-report"
+                  onClick={() => {
+                    downloadPdf("report-sessions-joined");
+                  }}
+                  style={{ marginLeft: "10px" }}
+                />
+
                 <div>
                   {allSessions.map((session) => (
                     <AnnualConferenceCard
@@ -262,7 +312,7 @@ const ConferenceLibrary = ({
           </Col>
         </Row>
         <div className="conference-library-content">
-          <div style={{ width: "100%", maxWidth: "980px" }}>
+          <div style={{ width: "100%" }}>
             <Tabs
               data={TabData}
               current={currentTab}
@@ -328,6 +378,7 @@ const mapDispatchToProps = {
   getAdvertisementById,
   getSessionsUserJoined,
   getAllSessions,
+  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceLibrary);
