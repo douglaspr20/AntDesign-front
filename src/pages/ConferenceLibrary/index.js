@@ -249,27 +249,28 @@ const ConferenceLibrary = ({
           <>
             {year === 2022 ? (
               <>
-                <CustomButton
-                  size="xs"
-                  text="Download Certificate"
-                  style={{
-                    marginTop: "12px",
-                    padding: "0px 46px",
-                  }}
-                  onClick={() => {
-                    setModalVisibleCertificate(true);
-                  }}
-                />
-                <CustomButton
-                  size="xs"
-                  text="Download Participation Report"
-                  className="button-participation-report"
-                  onClick={() => {
-                    downloadPdf("report-sessions-joined");
-                  }}
-                  style={{ marginLeft: "10px" }}
-                />
-
+                <div style={{ display: "flex" }}>
+                  <CustomButton
+                    size="xs"
+                    text="Download Certificate"
+                    style={{
+                      marginTop: "12px",
+                      padding: "0px 46px",
+                    }}
+                    onClick={() => {
+                      setModalVisibleCertificate(true);
+                    }}
+                  />
+                  <CustomButton
+                    size="xs"
+                    text="Download Participation Report"
+                    className="button-participation-report"
+                    onClick={() => {
+                      downloadPdf("report-sessions-joined");
+                    }}
+                    style={{ marginLeft: "10px" }}
+                  />
+                </div>
                 <div>
                   {allSessions.map((session) => (
                     <AnnualConferenceCard
