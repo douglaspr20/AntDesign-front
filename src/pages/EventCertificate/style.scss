@@ -7,3 +7,12 @@
 .certificate-card-list {
     width: 70%
 }
+
+.channel-page__list-wrap {
+    padding-top: 1rem;
+    overflow: auto;
+  
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
