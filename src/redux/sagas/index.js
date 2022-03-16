@@ -38,7 +38,8 @@ import { councilCommentSaga } from "./councilComments";
 import { businessPartnerSaga } from "./businessPartner";
 import { businessPartnerCommentSaga } from "./businessPartnerComments";
 import { advertisementSaga } from "./advertisement";
-import { matchmakeSaga } from './matchmaking'
+import { matchmakeSaga } from "./matchmaking";
+import { councilEventSaga } from "./councilEvent";
 
 export default function* sagas() {
   yield all([
@@ -81,6 +82,7 @@ export default function* sagas() {
     ...sessionClassUserSaga,
     ...marketplaceProfileSaga,
     ...advertisementSaga,
-    ...matchmakeSaga
+    ...matchmakeSaga,
+    ...councilEventSaga,
   ]);
 }

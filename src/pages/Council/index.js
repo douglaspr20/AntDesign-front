@@ -13,6 +13,7 @@ import { LibraryFilterPanel, Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import CouncilMembers from "./CouncilMembers";
 import CouncilList from "./CouncilList.js";
+import CouncilEvents from './CouncilEvents'
 
 import IconBack from "images/icon-back.svg";
 
@@ -22,7 +23,7 @@ const CouncilPage = ({ userProfile, councilResources }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
-  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "2");
   const [filter, setFilter] = useState({});
 
   const onFilterChange = (values) => {
@@ -53,6 +54,10 @@ const CouncilPage = ({ userProfile, councilResources }) => {
     {
       title: "Council Members",
       content: () => <CouncilMembers />,
+    },
+    {
+      title: "Events",
+      content: () => <CouncilEvents />,
     },
   ];
 
