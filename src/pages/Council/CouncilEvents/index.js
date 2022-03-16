@@ -6,7 +6,7 @@ import {
   CustomButton,
   CustomModal,
 } from "components";
-import { Form, DatePicker, InputNumber, Tag, Avatar } from "antd";
+import { Form, DatePicker, InputNumber, Tag, Avatar, Space } from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 
@@ -284,7 +284,7 @@ const CouncilEvents = ({
           Number of panels: {eve.numberOfPanels}
         </div>
         {userProfile.isExpertCouncilAdmin ? (
-          <>
+          <Space>
             <CustomButton
               text="Edit"
               style={{ marginRight: "1rem" }}
@@ -295,7 +295,7 @@ const CouncilEvents = ({
               type="secondary"
               onClick={() => deleteCouncilEvent(eve.id)}
             />
-          </>
+          </Space>
         ) : (
           <CustomButton
             text="More info"
