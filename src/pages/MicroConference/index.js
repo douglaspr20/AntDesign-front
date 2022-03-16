@@ -63,10 +63,6 @@ const MicroConference = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
 
-  if (user.sessionsJoined && !user.sessionsJoined.includes(+match.params.id)) {
-    history.push("/global-conference");
-  }
-
   useEffect(() => {
     getSession(match.params.id);
     getSessionClasses(match.params.id);
