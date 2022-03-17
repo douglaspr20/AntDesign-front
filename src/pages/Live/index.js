@@ -110,6 +110,8 @@ const LivePage = ({
                     moment(el.end).format("MM DD") ===
                       moment(end).format("MM DD")
                 );
+                console.log("index", index);
+                console.log('prev', prev)
                 prev[index] = {
                   start: prev[index].start,
                   end: prev[index].end,
