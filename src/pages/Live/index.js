@@ -42,9 +42,6 @@ const LivePage = ({
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
       usersAssistence = [...new Set(usersAssistence)];
     }
-    console.log('confirma?')
-    console.log(myEvents);
-    console.log(usersAssistence);
     updateEventUserAssistence({
       ...myEvents,
       usersAssistence,
@@ -54,7 +51,7 @@ const LivePage = ({
 
   useEffect(() => {
     getUser();
-    if (live.event) { 
+    if (live.event) {
       getEvent(Number(live.event));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,6 +89,7 @@ const LivePage = ({
             if (userAssistenceJsonToArray) {
               const addingUserToTheListUserAssistence =
                 userAssistenceJsonToArray?.map((item) => {
+                  console.log(item);
                   if (
                     userAssistence &&
                     item.start === start &&

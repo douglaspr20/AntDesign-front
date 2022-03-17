@@ -101,9 +101,9 @@ const CertificateList = ({
               {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
               {eventsFiltered &&
                 eventsFiltered?.map(
-                  (liveEvent) =>
+                  (liveEvent, index) =>
                     liveEvent && (
-                      <>
+                      <div key={index}>
                         <HelmetMetaData
                           title="Digital Certificate"
                           metatitle="Digital Certificate"
@@ -117,7 +117,7 @@ const CertificateList = ({
                           key={liveEvent.id}
                           data={liveEvent}
                         />
-                      </>
+                      </div>
                     )
                 )}
             </div>
