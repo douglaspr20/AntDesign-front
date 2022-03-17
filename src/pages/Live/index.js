@@ -79,22 +79,14 @@ const LivePage = ({
         setTimes(userAssistenceJsonToArray);
         myEvents.startAndEndTimes &&
           myEvents.startAndEndTimes.map((time) => {
-            const start = moment(time.startTime).format("MMM DD HH ");
+            const start = moment(time.startTime).format("MMM DD HH");
             const end = moment(time.endTime).format("MMM DD HH");
-            const today = moment(new Date()).format("MMM DD HH");
-
             const usersEventAssistence = [];
-            const userAssistence =
-              start <= today && end >= today && userProfile.id;
+            const userAssistence = userProfile.id;
             if (userAssistenceJsonToArray) {
               const addingUserToTheListUserAssistence =
                 userAssistenceJsonToArray?.map((item) => {
-                  console.log(item);
-                  if (
-                    userAssistence &&
-                    item.start === start &&
-                    item.end === end
-                  ) {
+                  if (userAssistence) {
                     if (item.usersAssistence?.length > 0) {
                       return usersEventAssistence.push(
                         ...item.usersAssistence,
@@ -112,9 +104,17 @@ const LivePage = ({
             if (norepeat?.length > 0) {
               return setTimes((prev) => {
                 const index = prev.findIndex(
-                  (el) => el.start === start && el.end === end
+                  (el) =>
+                    moment(el.start).format("MM DD") ===
+                      moment(start).format("MM DD") &&
+                    moment(el.end).format("MM DD") ===
+                      moment(end).format("MM DD")
                 );
-                prev[index] = { start, end, usersAssistence: norepeat };
+                prev[index] = {
+                  start: prev[index].start,
+                  end: prev[index].end,
+                  usersAssistence: norepeat,
+                };
                 return [...prev];
               });
             } else {
