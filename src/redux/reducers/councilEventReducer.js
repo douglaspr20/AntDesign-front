@@ -1,5 +1,6 @@
 import { handleActions } from "redux-actions";
 import { Map } from "immutable";
+import { cloneDeep } from "lodash";
 
 import { constants as councilEventConstants } from "../actions/council-events-actions";
 
@@ -9,7 +10,7 @@ export const reducers = {
       allCouncilEvents: payload.councilEvents,
     });
   },
-  [councilEventConstants.SET_UPSERT_COUNCIL_EVENT]: (state, { payload }) => {
+  [councilEventConstants.SET_COUNCIL_EVENT]: (state, { payload }) => {
     const allCouncilEvents = state.get("allCouncilEvents");
     let transformedCouncilEvents = [...allCouncilEvents];
 
@@ -30,6 +31,30 @@ export const reducers = {
 
     return state.merge({
       allCouncilEvents: transformedCouncilEvents,
+    });
+  },
+  [councilEventConstants.SET_JOIN_COUNCIL_EVENT]: (state, { payload }) => {
+    const allCouncilEvents = state.get("allCouncilEvents");
+    let newAllCouncilEvents = [...allCouncilEvents];
+
+    const eventIndex = allCouncilEvents.findIndex(
+      (event) => event.id === payload.councilEventPanel.CouncilEventId
+    );
+
+    if (eventIndex >= 0) {
+      const panelIndex = allCouncilEvents[
+        eventIndex
+      ].CouncilEventPanels.findIndex(
+        (panel) => panel.id === payload.councilEventPanel.id
+      );
+
+      if (panelIndex >= 0) {
+        newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex] = payload.councilEventPanel;
+      }
+    }
+
+    return state.merge({
+      allCouncilEvents: cloneDeep([...newAllCouncilEvents]),
     });
   },
 };

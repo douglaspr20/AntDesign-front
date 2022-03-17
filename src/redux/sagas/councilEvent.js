@@ -6,7 +6,12 @@ import {
   actions as councilEventActions,
 } from "../actions/council-events-actions";
 import { actions as homeActions } from "../actions/home-actions";
-import { upsertCouncilEvent, getCouncilEvents, deleteCouncilEvent } from "api";
+import {
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+} from "api";
 
 export function* upsertCouncilEventSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -58,7 +63,7 @@ export function* getCouncilEventsSaga() {
   }
 }
 
-export function* deleteCouncilEventSaga({payload}) {
+export function* deleteCouncilEventSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
@@ -70,6 +75,31 @@ export function* deleteCouncilEventSaga({payload}) {
       });
       yield put(
         councilEventActions.setCouncilEvents(response.data.councilEvents)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+    notification.error({
+      message: "Something went wrong.",
+    });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* joinCouncilEventSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(joinCouncilEvent, payload);
+
+    if (response.status === 200) {
+      notification.success({
+        message: "Success",
+      });
+
+      yield put(
+        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
       );
     }
   } catch (err) {
@@ -94,6 +124,10 @@ function* watchCouncilEvent() {
   yield takeLatest(
     councilEventConstants.DELETE_COUNCIL_EVENT,
     deleteCouncilEventSaga
+  );
+  yield takeLatest(
+    councilEventConstants.JOIN_COUNCIL_EVENT,
+    joinCouncilEventSaga
   );
 }
 

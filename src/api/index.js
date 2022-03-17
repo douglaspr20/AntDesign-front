@@ -210,7 +210,7 @@ import {
 
 import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
 
-import { upsertCouncilEvent, getCouncilEvents, deleteCouncilEvent } from './module/council-event'
+import { upsertCouncilEvent, getCouncilEvents, deleteCouncilEvent, joinCouncilEvent } from './module/council-event'
 
 import { getEditorSignature } from "./module/env";
 
@@ -376,5 +376,6 @@ export {
   sendMatchEmail,
   upsertCouncilEvent,
   getCouncilEvents,
-  deleteCouncilEvent
+  deleteCouncilEvent,
+  joinCouncilEvent
 };
