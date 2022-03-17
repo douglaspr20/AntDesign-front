@@ -5,7 +5,6 @@ import moment from "moment-timezone";
 import { Space, Tooltip } from "antd";
 
 import { actions as SkillCohortResourceActions } from "redux/actions/skillCohortResource-actions";
-
 import "./style.scss";
 
 const ResourceCard = ({
