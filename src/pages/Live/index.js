@@ -103,17 +103,19 @@ const LivePage = ({
             const norepeat = [...new Set(usersEventAssistence)];
             if (norepeat?.length > 0) {
               return setTimes((prev) => {
-                const index = prev.findIndex(
-                  (el) =>
+                console.log(prev)
+                const index = prev.findIndex((el) => {
+                  console.log(moment(el.start).format("MM DD"));
+                  console.log(moment(el.end).format("MM DD"));
+                  return (
                     moment(el.start).format("MM DD") ===
                       moment(start).format("MM DD") &&
                     moment(el.end).format("MM DD") ===
                       moment(end).format("MM DD")
-                );
-                console.log('end', moment(end).format("MM DD"))
-                console.log('start', moment(start).format("MM DD"))
-                console.log("index", index);
-                console.log('prev', prev)
+                  );
+                });
+                console.log("end", moment(end).format("MM DD"));
+                console.log("start", moment(start).format("MM DD"));
                 prev[index] = {
                   start: prev[index].start,
                   end: prev[index].end,
