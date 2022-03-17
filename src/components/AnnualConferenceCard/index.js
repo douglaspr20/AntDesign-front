@@ -358,15 +358,7 @@ const AnnualConferenceCard = React.memo(
     };
 
     return (
-      <div
-        className="annual-conference-card acc"
-        style={
-          userProfile?.sessionsJoined?.includes(session.id) ||
-          session.viewed[userProfile.id] === "mark"
-            ? { background: "#f5f5f8" }
-            : null
-        }
-      >
+      <div className="annual-conference-card acc">
         <div className="acc-session-header">
           <h3>{session.title}</h3>
 
@@ -394,6 +386,11 @@ const AnnualConferenceCard = React.memo(
           )}
         </div>
         {added && <div className="acc-session-added-tag">Added</div>}
+        {userProfile.sessionsJoined?.includes(session.id) && (
+          <div className="acc-session-added-tag">
+            Viewed During The Conference
+          </div>
+        )}
         <div className="d-flex justify-between">
           <div>
             <div className="acc-session-type">{`Session type: ${session.type}`}</div>
@@ -479,6 +476,15 @@ const AnnualConferenceCard = React.memo(
                   <img src={brand} alt="brand-img" />
                 </div>
               ))}
+            </div>
+
+            <div className="acc-details">
+              <h4>Recertifications Credits</h4>
+              <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+                {userProfile.memberShip === "premium"
+                  ? session.recertification_credits
+                  : "HR Recertification Credits: Only available to PREMIUM"}
+              </p>
             </div>
 
             <div className="acc-details">

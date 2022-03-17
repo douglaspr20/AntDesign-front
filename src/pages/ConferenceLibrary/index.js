@@ -345,7 +345,7 @@ const ConferenceLibrary = ({
                       </div>
                     </TabPane>
                     <TabPane
-                      tab="Participation During the Conference Week"
+                      tab="Sessions You Joined During The Conference"
                       key="2"
                     >
                       <div style={{ marginTop: "1rem" }}>
