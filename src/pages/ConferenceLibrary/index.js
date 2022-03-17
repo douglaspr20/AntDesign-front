@@ -14,7 +14,7 @@ import {
   Tabs,
 } from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
-import { INTERNAL_LINKS, SETTINGS, TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, SETTINGS } from "enum";
 import { setLoading } from "redux/actions/home-actions";
 import {
   getAllSessions,
@@ -37,7 +37,6 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
 import Certificate from "pages/GlobalConference/Certificate";
-import { convertToCertainTime } from "utils/format";
 
 const { TabPane } = TabsAntd;
 
@@ -56,16 +55,15 @@ const ConferenceLibrary = ({
   sessionsUserJoined,
   allSessions,
   userProfile,
-  setLoading,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
+  const [sessionData, setSessionData] = useState([]);
+  const [sessionJoinedData, setSessionJoinedData] = useState([]);
   const [currentTab, setCurrentTab] = useState("0");
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
-
-  const [sessionData, setSessionData] = useState([]);
   const { id } = useParams();
   const history = useHistory();
 
@@ -178,45 +176,105 @@ const ConferenceLibrary = ({
   }, []);
 
   useEffect(() => {
-    if (sessionsUserJoined) {
-      const sData = sessionsUserJoined
-        .map((item) => {
-          const sTime = convertToCertainTime(item.startTime, item.timezone);
-          const eTime = convertToCertainTime(item.endTime, item.timezone);
-          let tz = TIMEZONE_LIST.find((t) => t.value === item.timezone);
-          if (tz) {
-            if (tz.offset > 0) {
-              tz = `${tz.abbr} (GMT+${tz.offset})`;
-            } else if (tz.offset < 0) {
-              tz = `${tz.abbr} (GMT-${-tz.offset})`;
-            } else {
-              tz = `${tz.abbr} (GMT)`;
-            }
-          } else {
-            tz = "";
-          }
+    if (filters.topics && JSON.parse(filters.topics).length > 0) {
+      const topics = JSON.parse(filters.topics);
 
-          return {
-            ...item,
-            date: sTime.format("MMM, D, YYYY"),
-            period: `${sTime.format("MMMM D")} | From ${sTime.format(
-              "h:mm a"
-            )} to ${eTime.format("h:mm a")}`,
-            tz: `${tz}`,
-          };
-        })
-        .sort((a, b) => {
-          if (a.startTime > b.startTime) {
-            return 1;
-          } else if (b.startTime > a.startTime) {
-            return -1;
+      const sessionsFiltered = allSessions.filter((session) => {
+        let canFiltered = false;
+        for (const topic of topics) {
+          if (session.categories.some((categorie) => categorie === topic)) {
+            canFiltered = true;
+            break;
           }
-          return 0;
-        });
+        }
 
-      setSessionData(sData);
+        if (
+          !session.title.includes(meta) &&
+          !session?.description?.includes(meta) &&
+          !session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          canFiltered = false;
+        }
+        if (canFiltered) {
+          return session;
+        }
+
+        return null;
+      });
+
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        let canFiltered = false;
+        for (const topic of topics) {
+          if (session.categories.some((categorie) => categorie === topic)) {
+            canFiltered = true;
+            break;
+          }
+        }
+        if (
+          !session.title.includes(meta) &&
+          !session?.description?.includes(meta) &&
+          !session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          canFiltered = false;
+        }
+
+        if (canFiltered) {
+          return session;
+        }
+
+        return null;
+      });
+
+      setSessionData(sessionsFiltered);
+      setSessionJoinedData(sessionsJoinedFiltered);
+    } else if (meta && meta !== null) {
+      const sessionsFiltered = allSessions.filter((session) => {
+        if (
+          session.title.includes(meta) ||
+          session?.description?.includes(meta) ||
+          session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          return session;
+        }
+
+        return null;
+      });
+
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        if (
+          session.title.includes(meta) ||
+          session?.description?.includes(meta) ||
+          session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          return session;
+        }
+
+        return null;
+      });
+
+      setSessionData(sessionsFiltered);
+      setSessionJoinedData(sessionsJoinedFiltered);
+    } else {
+      setSessionData(allSessions);
+      setSessionJoinedData(sessionsUserJoined);
     }
-  }, [sessionsUserJoined]);
+  }, [filters, meta, allSessions, sessionsUserJoined]);
 
   // useEffect(() => {
   //   setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
@@ -275,31 +333,29 @@ const ConferenceLibrary = ({
                     //  onChange={callback}
                   >
                     <TabPane tab="All Sessions" key="1">
-                      {allSessions.map((session) => (
-                        <AnnualConferenceCard
-                          key={session.id}
-                          session={session}
-                          typeConference="conference-library"
-                          onWatch={() => onWatch(session.id)}
-                        />
-                      ))}
+                      <div className="sessions-2022-container">
+                        {sessionData.map((session) => (
+                          <AnnualConferenceCard
+                            key={session.id}
+                            session={session}
+                            typeConference="conference-library"
+                            onWatch={() => onWatch(session.id)}
+                          />
+                        ))}
+                      </div>
                     </TabPane>
                     <TabPane
                       tab="Participation During the Conference Week"
                       key="2"
                     >
                       <div style={{ marginTop: "1rem" }}>
-                        {sessionData.map((session, i) => (
-                          <div key={index}>
-                            <h3 className="session-step">{session.period}</h3>
-
-                            <AnnualConferenceCard
-                              key={session.id}
-                              session={session}
-                              typeConference="conference-library"
-                              onWatch={() => onWatch(session.id)}
-                            />
-                          </div>
+                        {sessionJoinedData.map((session, i) => (
+                          <AnnualConferenceCard
+                            key={session.id}
+                            session={session}
+                            typeConference="conference-library"
+                            onWatch={() => onWatch(session.id)}
+                          />
                         ))}
                       </div>
                     </TabPane>
