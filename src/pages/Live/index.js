@@ -42,6 +42,8 @@ const LivePage = ({
     if (!usersAssistence) {
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
     }
+    usersAssistence = [...new Set(usersAssistence)];
+
     if (!isIdRepeated) {
       updateEventUserAssistence({
         ...myEvents,
@@ -58,13 +60,6 @@ const LivePage = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [live]);
-
-  useEffect(() => {
-    if (myEvents.usersAssistence) {
-      myEvents.usersAssistence.length > 0 &&
-        setTimes(JSON.parse(myEvents.usersAssistence));
-    }
-  }, [myEvents]);
 
   /*
    * validating event date to confirm live assistence
@@ -149,9 +144,7 @@ const LivePage = ({
                     {
                       start,
                       end,
-                      usersAssistence: userAssistence
-                        ? [userAssistence]
-                        : false,
+                      usersAssistence: [userAssistence],
                     },
                   ];
                 });
