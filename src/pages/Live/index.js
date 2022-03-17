@@ -31,6 +31,7 @@ const LivePage = ({
   const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
   const [firstTimes, setFirstTimes] = useState([]);
   const [times, setTimes] = useState([]);
+  const [isIdRepeated, setIsIdRepeated] = useState(false);
   const handleConfirmAssistence = () => {
     setVisibleEventConfirm(true);
   };
@@ -40,12 +41,13 @@ const LivePage = ({
     usersAssistence = times.length > 0 && times.map((el) => JSON.stringify(el));
     if (!usersAssistence) {
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
-      usersAssistence = [...new Set(usersAssistence)];
     }
-    updateEventUserAssistence({
-      ...myEvents,
-      usersAssistence,
-    });
+    if (!isIdRepeated) {
+      updateEventUserAssistence({
+        ...myEvents,
+        usersAssistence,
+      });
+    }
     setVisibleEventConfirm(false);
   };
 
@@ -84,19 +86,20 @@ const LivePage = ({
 
             const usersEventAssistence = [];
             const userAssistence = userProfile.id;
+
             if (userAssistenceJsonToArray) {
               const addingUserToTheListUserAssistence =
                 userAssistenceJsonToArray?.map((item) => {
-                  if (userAssistence) {
-                    if (item.usersAssistence?.length > 0) {
-                      return usersEventAssistence.push(
-                        ...item.usersAssistence,
-                        userAssistence
-                      );
-                    }
-                    return usersEventAssistence.push(userAssistence);
+                  if (item.usersAssistence?.includes(userAssistence)) {
+                    return setIsIdRepeated(true);
                   }
-                  return item;
+                  if (item.usersAssistence?.length > 0) {
+                    return usersEventAssistence.push(
+                      ...item.usersAssistence,
+                      userAssistence
+                    );
+                  }
+                  return usersEventAssistence.push(userAssistence);
                 });
 
               console.log(addingUserToTheListUserAssistence);
@@ -135,7 +138,7 @@ const LivePage = ({
                 prev[index] = {
                   start: prev[index].start,
                   end: prev[index].end,
-                  usersAssistence: norepeat,
+                  usersAssistence: usersEventAssistence,
                 };
                 return [...prev];
               });
