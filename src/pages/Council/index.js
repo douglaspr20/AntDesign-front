@@ -23,7 +23,7 @@ const CouncilPage = ({ userProfile, councilResources }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
-  const [currentTab, setCurrentTab] = useState(query.get("tab") || "2");
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [filter, setFilter] = useState({});
 
   const onFilterChange = (values) => {
