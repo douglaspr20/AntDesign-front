@@ -123,41 +123,45 @@ const LivePage = ({
               .tz(timezone.utc[0])
               .utcOffset(timezone.offset, true)
               .format();
-
-            const norepeat = [...new Set(usersEventAssistence)];
-            if (norepeat?.length > 0) {
-              return setTimes((prev) => {
-                const index = prev.findIndex((el) => {
-                  return (
-                    moment(convertedStartEventTime).format("MM DD") ===
-                      moment(localDate).format("MM DD") &&
-                    moment(convertedEndEventTime).format("MM DD") ===
-                      moment(localDate).format("MM DD")
-                  );
+            if (!isIdRepeated) {
+              const norepeat = [...new Set(usersEventAssistence)];
+              if (norepeat?.length > 0) {
+                return setTimes((prev) => {
+                  const index = prev.findIndex((el) => {
+                    return (
+                      moment(convertedStartEventTime).format("MM DD") ===
+                        moment(localDate).format("MM DD") &&
+                      moment(convertedEndEventTime).format("MM DD") ===
+                        moment(localDate).format("MM DD")
+                    );
+                  });
+                  prev[index] = {
+                    start: prev[index].start,
+                    end: prev[index].end,
+                    usersAssistence: usersEventAssistence,
+                  };
+                  return [...prev];
                 });
-                prev[index] = {
-                  start: prev[index].start,
-                  end: prev[index].end,
-                  usersAssistence: usersEventAssistence,
-                };
-                return [...prev];
-              });
-            } else {
-              return setFirstTimes((prev) => {
-                return [
-                  ...prev,
-                  {
-                    start,
-                    end,
-                    usersAssistence: userAssistence ? [userAssistence] : false,
-                  },
-                ];
-              });
+              } else {
+                return setFirstTimes((prev) => {
+                  return [
+                    ...prev,
+                    {
+                      start,
+                      end,
+                      usersAssistence: userAssistence
+                        ? [userAssistence]
+                        : false,
+                    },
+                  ];
+                });
+              }
             }
+            return time;
           });
       }
     }
-  }, [myEvents, live, userProfile.id, times]);
+  }, [myEvents, live, userProfile.id, times, isIdRepeated]);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
