@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs as TabsAntd } from "antd";
+import { notification, Tabs as TabsAntd } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
@@ -318,12 +318,18 @@ const ConferenceLibrary = ({
               <>
                 <CustomButton
                   size="xs"
-                  text="Download Certificate"
+                  text="Download Digital Certificate"
                   style={{
                     marginTop: "12px",
                     padding: "0px 46px",
                   }}
                   onClick={() => {
+                    if (userProfile?.sessionsJoined?.length < 1) {
+                      return notification.info({
+                        message:
+                          "Available only for those who joined during the week of the conference",
+                      });
+                    }
                     setModalVisibleCertificate(true);
                   }}
                 />

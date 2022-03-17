@@ -50,14 +50,14 @@
 .saved-for-later {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 3fr));
   gap: 1.25rem;
 }
 
 .completed-items {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 3fr));
   gap: 1.25rem;
   @media (max-width: 1029px) {
     display: flex;
