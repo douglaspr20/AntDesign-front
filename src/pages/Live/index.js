@@ -124,7 +124,7 @@ const LivePage = ({
                 return setTimes((prev) => {
                   const index = prev.findIndex((el) => {
                     return (
-                      moment(convertedStartEventTime).format("MM DD") ===
+                      moment(convertedStartEventTime).format("MM DD") <=
                         moment(localDate).format("MM DD") &&
                       moment(convertedEndEventTime).format("MM DD") ===
                         moment(localDate).format("MM DD")
