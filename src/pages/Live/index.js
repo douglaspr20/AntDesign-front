@@ -13,7 +13,7 @@ import { liveSelector } from "redux/selectors/liveSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 
 import Emitter from "services/emitter";
-import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 
 import { CustomButton } from "components";
 
@@ -79,8 +79,9 @@ const LivePage = ({
         setTimes(userAssistenceJsonToArray);
         myEvents.startAndEndTimes &&
           myEvents.startAndEndTimes.map((time) => {
-            const start = moment(time.startTime).format("MMM DD HH");
-            const end = moment(time.endTime).format("MMM DD HH");
+            const start = time.startTime;
+            const end = time.endTime;
+
             const usersEventAssistence = [];
             const userAssistence = userProfile.id;
             if (userAssistenceJsonToArray) {
@@ -100,22 +101,37 @@ const LivePage = ({
 
               console.log(addingUserToTheListUserAssistence);
             }
+
+            const timezone = TIMEZONE_LIST.find(
+              (item) => item.value === myEvents.timezone
+            );
+
+            const convertedStartEventTime = moment(start)
+              .tz(timezone.utc[0])
+              .utcOffset(timezone.offset, true)
+              .format();
+            const convertedEndEventTime = moment(end)
+              .tz(timezone.utc[0])
+              .utcOffset(timezone.offset, true)
+              .format();
+
+            const localDate = moment()
+              .utc()
+              .tz(timezone.utc[0])
+              .utcOffset(timezone.offset, true)
+              .format();
+
             const norepeat = [...new Set(usersEventAssistence)];
             if (norepeat?.length > 0) {
               return setTimes((prev) => {
-                console.log(prev)
                 const index = prev.findIndex((el) => {
-                  console.log(moment(el.start).format("MM DD"));
-                  console.log(moment(el.end).format("MM DD"));
                   return (
-                    moment(el.start).format("MM DD") ===
-                      moment(start).format("MM DD") &&
-                    moment(el.end).format("MM DD") ===
-                      moment(end).format("MM DD")
+                    moment(convertedStartEventTime).format("MM DD") ===
+                      moment(localDate).format("MM DD") &&
+                    moment(convertedEndEventTime).format("MM DD") ===
+                      moment(localDate).format("MM DD")
                   );
                 });
-                console.log("end", moment(end).format("MM DD"));
-                console.log("start", moment(start).format("MM DD"));
                 prev[index] = {
                   start: prev[index].start,
                   end: prev[index].end,
