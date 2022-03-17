@@ -110,6 +110,8 @@ const LivePage = ({
                     moment(el.end).format("MM DD") ===
                       moment(end).format("MM DD")
                 );
+                console.log('end', moment(end).format("MM DD"))
+                console.log('start', moment(start).format("MM DD"))
                 console.log("index", index);
                 console.log('prev', prev)
                 prev[index] = {
@@ -135,6 +137,7 @@ const LivePage = ({
       }
     }
   }, [myEvents, live, userProfile.id, times]);
+
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
