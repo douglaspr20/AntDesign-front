@@ -5,10 +5,20 @@ import {
   CustomInput,
   CustomButton,
   CustomModal,
+  CustomSelect,
 } from "components";
-import { Form, DatePicker, InputNumber, Tag, Space, Popconfirm } from "antd";
+import {
+  Form,
+  DatePicker,
+  InputNumber,
+  Tag,
+  Space,
+  Popconfirm,
+  Tooltip,
+} from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
+import { TIMEZONE_LIST } from "enum";
 
 import { actions as councilEventActions } from "redux/actions/council-events-actions";
 import { councilEventSelector } from "redux/selectors/councilEventSelector";
@@ -17,6 +27,7 @@ import CouncilEventPanel from "./CouncilEventPanel";
 
 import "./style.scss";
 import moment from "moment-timezone";
+import TimezoneList from "enum/TimezoneList";
 
 const { RangePicker } = DatePicker;
 
@@ -57,7 +68,8 @@ const CouncilEvents = ({
     if (!isEmpty(event)) {
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
-      console.log("panel", panel);
+      const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
+
       panel = {
         ...panel,
         councilEventPanelId: panel.id,
@@ -67,14 +79,14 @@ const CouncilEvents = ({
         return {
           ...panel,
           panelStartAndEndDate: [
-            moment.tz(panel.panelStartAndEndDate[0], "America/Los_Angeles"),
-            moment.tz(panel.panelStartAndEndDate[1], "America/Los_Angeles"),
+            moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
+            moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
           ],
         };
       });
 
-      const startDate = moment.tz(event.startDate, "America/Los_Angeles");
-      const endDate = moment.tz(event.endDate, "America/Los_Angeles");
+      const startDate = moment.tz(event.startDate, timezone?.utc[0]);
+      const endDate = moment.tz(event.endDate, timezone?.utc[0]);
       const startAndEndDate = [startDate, endDate];
 
       form.setFieldsValue({
@@ -85,8 +97,8 @@ const CouncilEvents = ({
         numberOfPanelists: panel.numberOfPanelists,
         councilEventPanelId: panel.councilEventPanelId,
         panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], "America/Los_Angeles"),
-          moment.tz(panel.panelStartAndEndDate[1], "America/Los_Angeles"),
+          moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
+          moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
         ],
         linkToJoin: panel.linkToJoin,
       });
@@ -114,11 +126,12 @@ const CouncilEvents = ({
   };
 
   const handleOnFinish = (values) => {
+    const timezone = TimezoneList.find((tz) => tz.value === values.timezone);
     const panel = {
       panelName: values.panelName,
       panelStartAndEndDate: [
-        moment.tz(values.panelStartAndEndDate[0], "America/Los_Angeles"),
-        moment.tz(values.panelStartAndEndDate[1], "America/Los_Angeles"),
+        moment.tz(values.panelStartAndEndDate[0], timezone.utc[0]),
+        moment.tz(values.panelStartAndEndDate[1], timezone.utc[0]),
       ],
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
@@ -131,8 +144,8 @@ const CouncilEvents = ({
       return {
         ...panel,
         panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], "America/Los_Angeles"),
-          moment.tz(panel.panelStartAndEndDate[1], "America/Los_Angeles"),
+          moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]),
+          moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]),
         ],
       };
     });
@@ -141,10 +154,10 @@ const CouncilEvents = ({
       ...values,
       id: event.id || null,
       startDate: moment
-        .tz(values.startAndEndDate[0], "America/Los_Angeles")
+        .tz(values.startAndEndDate[0], timezone.utc[0])
         .startOf("day"),
       endDate: moment
-        .tz(values.startAndEndDate[1], "America/Los_Angeles")
+        .tz(values.startAndEndDate[1], timezone.utc[0])
         .startOf("day"),
       panels,
       status,
@@ -171,8 +184,9 @@ const CouncilEvents = ({
     deleteCouncilEvent(id);
   };
 
-  const displayPanels = event.CouncilEventPanels?.map((panel, index) => (
+  const displayPanels = event.CouncilEventPanels?.map((panel) => (
     <CouncilEventPanel
+      key={panel.id}
       panel={panel}
       userProfile={userProfile}
       joinCouncilEvent={joinCouncilEvent}
@@ -189,15 +203,19 @@ const CouncilEvents = ({
     })
     .map((eve) => (
       <div className="council-event-card2" key={eve.eventName}>
-        <div>
+        <div className="council-event-card2-content">
           <div
             className="d-flex justify-between"
             style={{ marginBottom: "1rem" }}
           >
             <h3>{eve.eventName}</h3>
-            <Tag color={eve.status === "active" ? "#108ee9" : "orange"}>
-              {eve.status}
-            </Tag>
+            {userProfile.isExpertCouncilAdmin && (
+              <div>
+                <Tag color={eve.status === "active" ? "#108ee9" : "orange"}>
+                  {eve.status}
+                </Tag>
+              </div>
+            )}
           </div>
           <div style={{ marginBottom: "1rem" }}>
             Start date: {moment(eve.startDate).format("LL")}
@@ -205,40 +223,56 @@ const CouncilEvents = ({
           <div style={{ marginBottom: "1rem" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
-          <div style={{ marginBottom: "1rem" }} className="truncate">
-            Description: {eve.description}
-          </div>
+          <Tooltip title={eve.description}>
+            <div
+              style={{ marginBottom: "1rem", width: "100%" }}
+              className="truncate"
+            >
+              Description: {eve.description}
+            </div>
+          </Tooltip>
           <div style={{ marginBottom: "1rem" }}>
             Number of panels: {eve.numberOfPanels}
           </div>
-          {userProfile.isExpertCouncilAdmin ? (
-            <Space>
+          <div style={{ marginTop: "auto" }}>
+            {userProfile.isExpertCouncilAdmin ? (
+              <Space>
+                <CustomButton
+                  text="Edit"
+                  onClick={() => handleEdit(eve)}
+                  size="small"
+                />
+                <Popconfirm
+                  title="Are you sure to delete this event?"
+                  onConfirm={() => handleConfirmDelete(eve.id)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <CustomButton text="Delete" type="secondary" size="small" />
+                </Popconfirm>
+                <CustomButton
+                  text="More info"
+                  type="third"
+                  block
+                  onClick={() => {
+                    setEvent(eve);
+                    setIsModalOpen(true);
+                  }}
+                  size="small"
+                />
+              </Space>
+            ) : (
               <CustomButton
-                text="Edit"
-                style={{ marginRight: "1rem" }}
-                onClick={() => handleEdit(eve)}
+                text="More info"
+                type="primary"
+                block
+                onClick={() => {
+                  setEvent(eve);
+                  setIsModalOpen(true);
+                }}
               />
-              <Popconfirm
-                title="Are you sure to delete this event?"
-                onConfirm={() => handleConfirmDelete(eve.id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <CustomButton text="Delete" type="secondary" />
-              </Popconfirm>
-              ,
-            </Space>
-          ) : (
-            <CustomButton
-              text="More info"
-              type="primary"
-              block
-              onClick={() => {
-                setEvent(eve);
-                setIsModalOpen(true);
-              }}
-            />
-          )}
+            )}
+          </div>
         </div>
       </div>
     ));
@@ -282,7 +316,6 @@ const CouncilEvents = ({
               style={{ width: "100%" }}
               size="large"
               disabledDate={disableDate}
-              format="YYYY-MM-DD HH:mm"
             />
           </Form.Item>
           <Form.Item
@@ -305,6 +338,21 @@ const CouncilEvents = ({
               onChange={limitOnChange}
             />
           </Form.Item>
+          <Form.Item
+            label="Timezone"
+            name="timezone"
+            rules={[{ required: true }]}
+          >
+            <CustomSelect
+              showSearch
+              options={TIMEZONE_LIST}
+              optionFilterProp="children"
+              bordered
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+          </Form.Item>
           <Form.Item>
             <div>
               <h3>Panel #1</h3>
@@ -324,11 +372,11 @@ const CouncilEvents = ({
             rules={[{ required: true }]}
           >
             <RangePicker
-              showTime
               disabledDate={disableDate}
               style={{ width: "100%" }}
               size="large"
               format="YYYY-MM-DD HH:mm"
+              showTime
             />
           </Form.Item>
           <Form.Item

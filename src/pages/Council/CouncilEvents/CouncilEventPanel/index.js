@@ -116,11 +116,11 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent }) => {
           Panel Date: {moment(panel.panelStartAndEndDate[0]).format("LL")}
         </div>
         <div>
-          Panel Start Time:
+          Panel Start Time:{" "}
           {moment(panel.panelStartAndEndDate[0]).format("HH:mm")}
         </div>
         <div>
-          Panel End Time:
+          Panel End Time:{" "}
           {moment(panel.panelStartAndEndDate[1]).format("HH:mm")}
         </div>
         <div className="d-flex" style={{ marginTop: "1rem", flexWrap: "wrap" }}>

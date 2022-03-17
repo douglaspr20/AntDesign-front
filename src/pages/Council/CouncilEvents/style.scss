@@ -9,8 +9,10 @@
 
     .council-event-card {
       background-color: white;
-      height: 275px;
-      width: 275px;
+      height: 300px;
+      width: 300px;
+      max-height: 300px;
+      max-width: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -21,11 +23,20 @@
 
     .council-event-card2 {
       background-color: white;
-      height: 275px;
-      width: 275px;
+      height: 300px;
+      width: 300px;
+      max-height: 300px;
+      max-width: 300px;
       margin-right: 1rem;
       margin-bottom: 1rem;
-      padding: 1rem;
+
+      &-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding: 1rem;
+      }
     }
   }
 }
