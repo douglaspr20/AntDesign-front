@@ -7,15 +7,7 @@ import {
   CustomModal,
   CustomSelect,
 } from "components";
-import {
-  Form,
-  DatePicker,
-  InputNumber,
-  Tag,
-  Space,
-  Popconfirm,
-  Tooltip,
-} from "antd";
+import { Form, DatePicker, InputNumber, Tag, Space, Popconfirm } from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { TIMEZONE_LIST } from "enum";
@@ -47,6 +39,9 @@ const CouncilEvents = ({
   const [event, setEvent] = useState({});
 
   const [form] = Form.useForm();
+
+  const timezone =
+    !isEmpty(event) && TIMEZONE_LIST.find((tz) => tz.value === event.timezone);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -110,8 +105,13 @@ const CouncilEvents = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
-  const disableDate = (date) => {
-    return moment(date).isBefore(moment());
+  const disableDate = (date, isPanel = false) => {
+    const startAndEndDate = isPanel && form.getFieldValue(["startAndEndDate"]);
+
+    return (
+      moment(date).isBefore(moment()) ||
+      (isPanel && moment(date).isBefore(moment(startAndEndDate[0])))
+    );
   };
 
   const limitOnChange = (value) => {
@@ -165,6 +165,7 @@ const CouncilEvents = ({
 
     upsertCouncilEvent(transformedValues);
     form.resetFields();
+    setEvent({});
     setIsDrawerOpen(false);
   };
 
@@ -190,6 +191,7 @@ const CouncilEvents = ({
       panel={panel}
       userProfile={userProfile}
       joinCouncilEvent={joinCouncilEvent}
+      tz={event.timezone}
     />
   ));
 
@@ -223,14 +225,6 @@ const CouncilEvents = ({
           <div style={{ marginBottom: "1rem" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
-          <Tooltip title={eve.description}>
-            <div
-              style={{ marginBottom: "1rem", width: "100%" }}
-              className="truncate"
-            >
-              Description: {eve.description}
-            </div>
-          </Tooltip>
           <div style={{ marginBottom: "1rem" }}>
             Number of panels: {eve.numberOfPanels}
           </div>
@@ -372,7 +366,7 @@ const CouncilEvents = ({
             rules={[{ required: true }]}
           >
             <RangePicker
-              disabledDate={disableDate}
+              disabledDate={(date) => disableDate(date, true)}
               style={{ width: "100%" }}
               size="large"
               format="YYYY-MM-DD HH:mm"
@@ -426,7 +420,7 @@ const CouncilEvents = ({
                     >
                       <RangePicker
                         showTime
-                        disabledDate={disableDate}
+                        disabledDate={(date) => disableDate(date, true)}
                         style={{ width: "100%" }}
                         size="large"
                         format="YYYY-MM-DD HH:mm"
@@ -493,10 +487,21 @@ const CouncilEvents = ({
         width={1000}
       >
         <div style={{ padding: "1rem" }}>
-          <div>Event Name: {event.eventName}</div>
-          <div>Start Date: {moment(event.startDate).format("LL")}</div>
-          <div>Ebd Date: {moment(event.endDate).format("LL")}</div>
-          <div>Description: {event.description}</div>
+          <Space direction="vertical">
+            <h2>Event Name: {event.eventName}</h2>
+            <h4>
+              Date:{" "}
+              {moment
+                .tz(event.startDate, !isEmpty(timezone) && timezone?.utc[0])
+                .format("LL")}{" "}
+              -{" "}
+              {moment
+                .tz(event.endDate, !isEmpty(timezone) && timezone?.utc[0])
+                .format("LL")}{" "}
+              ({timezone.abbr})
+            </h4>
+            <h4>Description: {event.description}</h4>
+          </Space>
         </div>
         <div>
           <div className="display-panel">{displayPanels}</div>

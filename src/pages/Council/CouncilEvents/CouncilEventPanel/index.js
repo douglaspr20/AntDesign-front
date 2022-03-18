@@ -3,14 +3,22 @@ import { Avatar, Dropdown, Menu } from "antd";
 import { CustomButton } from "components";
 import moment from "moment-timezone";
 import { DownOutlined } from "@ant-design/icons";
+import { TIMEZONE_LIST } from "enum";
+import { convertToLocalTime } from "utils/format";
 
-const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent }) => {
-  const userTimezone = moment.tz.guess();
-  const startTime = panel.panelStartAndEndDate[0];
-  const endDate = panel.panelStartAndEndDate[1];
+const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
+  const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
+  const offset = timezone.offset;
 
-  const convertedStartTimeToLocalTimezone = moment.tz(startTime, userTimezone);
-  const convertedEndTimeToLocalTimezone = moment.tz(endDate, userTimezone);
+  let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
+  let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+
+  const convertedStartTime = convertToLocalTime(
+    moment(startTime).utcOffset(offset, true)
+  );
+  const convertedEndTime = convertToLocalTime(
+    moment(endTime).utcOffset(offset, true)
+  );
 
   const handleJoinPanel = (panel, state) => {
     joinCouncilEvent(panel.id, state);
@@ -33,9 +41,9 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent }) => {
 
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
       panel.panelName
-    }&dates=${convertedStartTimeToLocalTimezone.format(
+    }&dates=${convertedStartTime.format(
       "YYYYMMDDTHHmmSSS"
-    )}/${convertedEndTimeToLocalTimezone.format(
+    )}/${convertedEndTime.format(
       "YYYYMMDDTHHmmSSS"
     )}&details=${`Link to join: ${panel.linkToJoin}`}`;
     window.open(googleCalendarUrl, "_blank");
@@ -45,9 +53,9 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTimeToLocalTimezone.format(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTime.format(
       "YYYYMMDDTHHmm"
-    )}&et=${convertedEndTimeToLocalTimezone.format("YYYYMMDDTHHmm")}&title=${
+    )}&et=${convertedEndTime.format("YYYYMMDDTHHmm")}&title=${
       panel.panelName
     }&desc=${`Link to join: ${panel.linkToJoin}`}`;
 
@@ -111,17 +119,27 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent }) => {
       style={{ marginTop: "1rem", background: "#f2f2f2", padding: "1rem" }}
     >
       <div>
-        <div>Panel: {panel.panelName}</div>
         <div>
-          Panel Date: {moment(panel.panelStartAndEndDate[0]).format("LL")}
+          <b>Panel</b>: {panel.panelName}
         </div>
         <div>
-          Panel Start Time:{" "}
-          {moment(panel.panelStartAndEndDate[0]).format("HH:mm")}
+          <b>Panel Date</b>:{" "}
+          {moment
+            .tz(panel.panelStartAndEndDate[0], timezone.utc[0])
+            .format("LL")}{" "}
+          ({timezone.abbr})
         </div>
         <div>
-          Panel End Time:{" "}
-          {moment(panel.panelStartAndEndDate[1]).format("HH:mm")}
+          <b>Panel Start Time</b>:{" "}
+          {moment
+            .tz(panel.panelStartAndEndDate[0], timezone.utc[0])
+            .format("HH:mm")}
+        </div>
+        <div>
+          <b>Panel End Time</b>:{" "}
+          {moment
+            .tz(panel.panelStartAndEndDate[1], timezone.utc[0])
+            .format("HH:mm")}
         </div>
         <div className="d-flex" style={{ marginTop: "1rem", flexWrap: "wrap" }}>
           {displayPanelists}
