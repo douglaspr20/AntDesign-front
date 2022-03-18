@@ -395,25 +395,17 @@ export function* updateEventUserAssistenceSagas({ payload }) {
       ...payload,
     });
     if (response.status === 200) {
-      const data = response.data.affectedRows;
-      yield put(
-        eventActions.setEvent({
-          ...data,
-          date: convertToCertainTime(data.startDate, data.timezone).format(
-            "YYYY.MM.DD h:mm a"
-          ),
-          date2: convertToCertainTime(data.endDate, data.timezone).format(
-            "YYYY.MM.DD h:mm a"
-          ),
-          period: getEventPeriod(data.startDate, data.endDate, data.timezone),
-          about: getEventDescription(data.description),
-          usersAssistence: data.usersAssistence,
-        })
-      );
+      const data = response.data.affectedRows
+      notification.success({
+        message: `Thank you for confirming your participation to ${data?.title}`,
+      });
     }
   } catch (error) {
+    notification.error({
+      message: "Error updating user participate.",
+    });
     console.log(error);
-
+    
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }

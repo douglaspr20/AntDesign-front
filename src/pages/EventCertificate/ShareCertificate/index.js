@@ -3,9 +3,18 @@ import { useHistory, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import html2canvas from "html2canvas";
-import jsPdf from "jspdf";
 import moment from "moment";
 import converter from "number-to-words";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+} from "react-share";
+
+import { DownloadOutlined } from "@ant-design/icons";
 
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 
@@ -20,16 +29,6 @@ import ImgCertificateStamp from "images/img-certificate-stamp.png";
 import ImgHHRLogo from "images/img-certificate-logo.png";
 import ImgSignature from "images/img-signature.png";
 import IconBack from "images/icon-back.svg";
-// import imageCertificate from "images/certificate_2.jpeg";
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-} from "react-share";
-import { DownloadOutlined } from "@ant-design/icons";
 
 import "./style.scss";
 
@@ -56,7 +55,9 @@ const EventCertificatePage = ({
       const userAssistence = JSON.parse(myEvents?.usersAssistence);
       setUserCertificated(
         userAssistence &&
-          userAssistence.usersAssistence.filter((item) => item.usersAssistence === false)
+          userAssistence.usersAssistence.filter(
+            (item) => item.usersAssistence === false
+          )
       );
     }
   }, [myEvents]);
@@ -69,29 +70,14 @@ const EventCertificatePage = ({
     setLoading(true);
     const domElement = document.getElementById("certificate-panel");
     const canvas = await html2canvas(domElement, { scale: 4 });
-    const width = domElement.clientWidth;
-    const height = domElement.clientHeight;
 
     const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPdf({
-      orientation: "landscape",
-      format: [2000, (2000 / width) * height],
-      unit: "px",
-      hotfixes: ["px_scaling"],
-      precision: 32,
-    });
 
-    pdf.addImage(
-      imgData,
-      "jpeg",
-      0,
-      0,
-      2000,
-      (2000 / width) * height,
-      "",
-      "SLOW"
-    );
-    pdf.save("certificate.pdf");
+    var link = document.createElement("a");
+    link.download = "Certificate.png";
+    link.href = imgData;
+    link.click();
+
     setLoading(false);
   };
 
