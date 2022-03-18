@@ -2,10 +2,9 @@ import { CustomButton } from "components";
 import React from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
-import { Space } from "antd";
+import { Space, Tooltip } from "antd";
 
 import { actions as SkillCohortResourceActions } from "redux/actions/skillCohortResource-actions";
-
 import "./style.scss";
 
 const ResourceCard = ({
@@ -41,7 +40,11 @@ const ResourceCard = ({
         <div className="card">
           <Space direction="vertical" size="middle">
             <h3>{skillCohortResource.title}</h3>
-            <div className="description">{skillCohortResource.description}</div>
+            <Tooltip title={skillCohortResource.description}>
+              <div className="description truncate">
+                {skillCohortResource.description}
+              </div>
+            </Tooltip>
             <div className="description">
               {moment(skillCohortResource.releaseDate).format("LL")}
             </div>
