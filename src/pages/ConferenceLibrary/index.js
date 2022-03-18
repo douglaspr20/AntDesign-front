@@ -399,7 +399,7 @@ const ConferenceLibrary = ({
           </Col>
         </Row>
         <div className="conference-library-content">
-          <div style={{ width: "100%" }}>
+          <div style={{ width: "90%" }}>
             <Tabs
               data={TabData}
               current={currentTab}
