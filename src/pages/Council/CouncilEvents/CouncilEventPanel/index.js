@@ -123,23 +123,24 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
           <b>Panel</b>: {panel.panelName}
         </div>
         <div>
-          <b>Panel Date</b>:{" "}
-          {moment
+          <b>Panel Date</b>:
+          {` ${moment
             .tz(panel.panelStartAndEndDate[0], timezone.utc[0])
-            .format("LL")}{" "}
-          ({timezone.abbr})
+            .format("LL")} ${timezone.abbr}`}
         </div>
         <div>
           <b>Panel Start Time</b>:{" "}
           {moment
             .tz(panel.panelStartAndEndDate[0], timezone.utc[0])
-            .format("HH:mm")}
+            .format("HH:mm")}{" "}
+          {timezone.abbr}
         </div>
         <div>
           <b>Panel End Time</b>:{" "}
           {moment
             .tz(panel.panelStartAndEndDate[1], timezone.utc[0])
-            .format("HH:mm")}
+            .format("HH:mm")}{" "}
+          {timezone.abbr}
         </div>
         <div className="d-flex" style={{ marginTop: "1rem", flexWrap: "wrap" }}>
           {displayPanelists}
