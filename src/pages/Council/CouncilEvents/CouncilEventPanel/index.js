@@ -39,13 +39,13 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
       panel.panelName
-    }&dates=${convertedStartTime.format(
+    )}&dates=${convertedStartTime.format(
       "YYYYMMDDTHHmmSSS"
     )}/${convertedEndTime.format(
       "YYYYMMDDTHHmmSSS"
-    )}&details=${`Link to join: ${panel.linkToJoin}`}`;
+    )}&details=${encodeURIComponent(`Link to join: ${panel.linkToJoin}`)}`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -55,9 +55,11 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
 
     let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTime.format(
       "YYYYMMDDTHHmm"
-    )}&et=${convertedEndTime.format("YYYYMMDDTHHmm")}&title=${
-      panel.panelName
-    }&desc=${`Link to join: ${panel.linkToJoin}`}`;
+    )}&et=${convertedEndTime.format(
+      "YYYYMMDDTHHmm"
+    )}&title=${encodeURIComponent(panel.panelName)}&desc=${encodeURIComponent(
+      `Link to join: ${panel.linkToJoin}`
+    )}`;
 
     window.open(yahooCalendarUrl, "_blank");
   };
