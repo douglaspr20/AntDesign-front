@@ -233,11 +233,11 @@ class Content extends Component {
             path={INTERNAL_LINKS.NOTIFICATIONS}
             render={(props) => <NotificationPage {...props} />}
           />
-          <PrivateRoute
+          {/* <PrivateRoute
             exact
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
-          />
+          /> */}
 
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}

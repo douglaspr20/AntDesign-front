@@ -195,7 +195,7 @@ const ButtonContainerConference = ({
         className="mark-viewed"
         type={
           session?.viewed[userProfile.id] === "mark" ||
-          userProfile.sessionsJoined.includes(session.id)
+          userProfile?.sessionsJoined?.includes(session.id)
             ? "remove"
             : "secondary"
         }
@@ -345,14 +345,14 @@ const AnnualConferenceCard = React.memo(
     const joinedSession = () => {
       if (
         joinedOtherSession &&
-        !userProfile.sessionsJoined.includes(session.id)
+        !userProfile?.sessionsJoined?.includes(session.id)
       ) {
         return notification.error({
           message: "Error",
           description:
             "You can’t join this session since you are registered for another session at this same time",
         });
-      } else if (userProfile.sessionsJoined.includes(session.id)) {
+      } else if (userProfile?.sessionsJoined?.includes(session.id)) {
         return onJoinedSession(session);
       }
 
@@ -392,7 +392,7 @@ const AnnualConferenceCard = React.memo(
           )}
         </div>
         {added && <div className="acc-session-added-tag">Added</div>}
-        {userProfile.sessionsJoined?.includes(session.id) && (
+        {userProfile?.sessionsJoined?.includes(session.id) && (
           <div className="acc-session-added-tag">
             Viewed During The Conference
           </div>
