@@ -93,12 +93,27 @@
     max-width: 280px;
   }
 
+  &-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 900px) {
+       justify-content: center;
+    }
+  }
+
   &-toggle {
     display: flex;
     align-items: center;
     color: $color-accent;
     @include app-font(16px, 21px, 600);
     cursor: pointer;
+
+    @media screen and (max-width: 900px) {
+     margin-top: 1rem;
+   }
 
     &-icon {
       width: 1.5rem;

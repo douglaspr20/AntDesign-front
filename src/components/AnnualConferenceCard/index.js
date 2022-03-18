@@ -445,7 +445,7 @@ const AnnualConferenceCard = React.memo(
           )}
         </div>
 
-        <div className="d-flex justify-between align-center">
+        <div className="acc-session-container">
           <div className="acc-session-categories">
             {session.categories.map((category, i) => (
               <SpecialtyItem key={i} title={category} />
