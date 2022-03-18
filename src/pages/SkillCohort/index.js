@@ -73,7 +73,7 @@ const SkillCohort = ({
   }, [id]);
 
   useEffect(() => {
-    setCurrentTab(parsed.key);
+    setCurrentTab(parsed.key || "0");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -159,11 +159,18 @@ const SkillCohort = ({
       return 0;
     });
 
-  const displayMySkillCohorts = [...sortedAllOfMyActiveSkillCohorts, ...kickedOutCohorts].map(
-    (skillCohort) => {
-      return <SkillCohortCard key={skillCohort.id} skillCohort={skillCohort} />;
-    }
-  );
+  const displayMySkillCohorts = [
+    ...sortedAllOfMyActiveSkillCohorts,
+    ...kickedOutCohorts,
+  ].map((skillCohort) => {
+    return (
+      <SkillCohortCard
+        key={skillCohort.id}
+        skillCohort={skillCohort}
+        userProfile={userProfile}
+      />
+    );
+  });
 
   const displayGeneralInformation = () => {
     return (
