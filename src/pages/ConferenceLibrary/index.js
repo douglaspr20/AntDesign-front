@@ -354,7 +354,7 @@ const ConferenceLibrary = ({
                       tab="Sessions You Joined During The Conference"
                       key="2"
                     >
-                      <div style={{ marginTop: "1rem" }}>
+                      <div className="sessions-2022-container">
                         {sessionJoinedData.map((session, i) => (
                           <AnnualConferenceCard
                             key={session.id}

@@ -194,15 +194,15 @@ const ButtonContainerConference = ({
       <CustomButton
         className="mark-viewed"
         type={
-          session.viewed[userProfile.id] === "mark" ||
+          session?.viewed[userProfile.id] === "mark" ||
           userProfile.sessionsJoined.includes(session.id)
             ? "remove"
             : "secondary"
         }
         size="xs"
         text={
-          session.viewed[userProfile.id] === "mark" ||
-          userProfile.sessionsJoined.includes(session.id)
+          session?.viewed[userProfile.id] === "mark" ||
+          userProfile?.sessionsJoined?.includes(session.id)
             ? "Viewed"
             : "Mark As Completed"
         }
@@ -210,7 +210,7 @@ const ButtonContainerConference = ({
           e.preventDefault();
           e.stopPropagation();
 
-          if (userProfile.sessionsJoined.includes(session.id)) return;
+          if (userProfile?.sessionsJoined?.includes(session.id)) return;
           setSessionViewed(
             session.id,
             userProfile.id,
