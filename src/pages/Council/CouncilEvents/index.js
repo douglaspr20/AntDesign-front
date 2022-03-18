@@ -225,9 +225,6 @@ const CouncilEvents = ({
           <div style={{ marginBottom: "1rem" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
-          <div style={{ marginBottom: "1rem" }}>
-            Number of panels: {eve.numberOfPanels}
-          </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
               <Space>
