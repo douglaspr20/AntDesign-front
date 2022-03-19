@@ -2,27 +2,265 @@ import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { CustomButton, SpecialtyItem } from "components";
-import { homeSelector } from "redux/selectors/homeSelector";
-import { DownOutlined } from "@ant-design/icons";
-import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
-import { TIMEZONE_LIST } from "../../enum";
-import "./style.scss";
-import { convertToLocalTime } from "utils/format";
+import { Dropdown, Menu, Tooltip, notification, Modal } from "antd";
+import { InfoCircleOutlined, DownOutlined } from "@ant-design/icons";
 import moment from "moment-timezone";
+import { isEmpty } from "lodash";
+import { homeSelector } from "redux/selectors/homeSelector";
+import {
+  saveForLaterSession,
+  setSessionViewed,
+} from "redux/actions/session-actions";
+import Emitter from "services/emitter";
+import { ReactComponent as IconChevronDown } from "images/icon-chevron-down.svg";
+import { EVENT_TYPES, TIMEZONE_LIST } from "../../enum";
+
+import { convertToLocalTime } from "utils/format";
+import "./style.scss";
+
+const ButtonContainer = ({
+  session,
+  added,
+  attended,
+  convertedStartTime,
+  convertedEndTime,
+  userProfile,
+  onAddSession,
+  onRemoveSession,
+  joinedOtherSession,
+  joinedSession,
+}) => {
+  const interval = 1000;
+  const currentTime = moment().unix();
+  const diffTime = convertedStartTime.unix() - currentTime;
+  let duration = moment.duration(diffTime * interval, "milliseconds");
+
+  const [hoursStartSession, setHoursStartSession] = useState(
+    `Starting in: ${
+      Math.floor(duration.asHours().toFixed(2)) > 0
+        ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
+        : ""
+    } ${duration.minutes()} minutes`
+  );
+  const [timeLeft, setTimeLeft] = useState(
+    moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
+  );
+
+  useEffect(() => {
+    let duration = moment.duration(diffTime * interval, "milliseconds");
+    setInterval(() => {
+      duration = moment.duration(duration - 60000, "milliseconds");
+      setHoursStartSession(
+        `Starting in: ${
+          Math.floor(duration.asHours().toFixed(2)) > 0
+            ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
+            : ""
+        } ${duration.minutes()} minutes`
+      );
+
+      setTimeLeft(duration.asMinutes());
+    }, 60000);
+  }, [diffTime]);
+
+  if (
+    moment().date() < 1 &&
+    moment().month() <= 2 &&
+    moment().year() <= 2022 &&
+    timeLeft < 69120
+  ) {
+    setTimeLeft(80000);
+  }
+
+  const counterdown = useMemo(() => {
+    return (
+      <CustomButton
+        type="primary"
+        size="md"
+        text={`${hoursStartSession}`}
+        disabled={true}
+        style={{ marginTop: "5px", maxWidth: "340px" }}
+      />
+    );
+  }, [hoursStartSession]);
+
+  return (
+    <div className="button-container">
+      {added ? (
+        <CustomButton
+          type="primary outlined"
+          size="sm"
+          text="Remove from My Personalized Agenda"
+          onClick={onRemoveSession}
+          className="remove-buttom"
+          style={{ alignSelf: "flex-end" }}
+        />
+      ) : attended ? (
+        <CustomButton
+          size="sm"
+          text="Add To My Personalized Agenda"
+          onClick={onAddSession}
+        />
+      ) : null}
+
+      {session.totalusersjoined >= 30 &&
+      session.type === "Roundtable" &&
+      !userProfile?.sessionsJoined?.includes(session.id) ? (
+        <CustomButton
+          type="primary"
+          size="md"
+          text="Session Full"
+          disabled={true}
+          style={{ marginTop: "5px" }}
+        />
+      ) : timeLeft <= 5 &&
+        moment.duration(convertedEndTime.diff(moment.now())).asMinutes() > 0 ? (
+        <CustomButton
+          type="primary"
+          size="md"
+          text="Join"
+          className={
+            joinedOtherSession &&
+            !userProfile?.sessionsJoined?.includes(session.id)
+              ? "custom-button-disabled"
+              : null
+          }
+          onClick={() => joinedSession()}
+          style={{
+            marginTop: "5px",
+            maxWidth: "150px",
+            width: "100%",
+            alignSelf: "flex-end",
+          }}
+        />
+      ) : timeLeft >= -10 && timeLeft < 69120 ? (
+        counterdown
+      ) : timeLeft <= -10 &&
+        !userProfile?.sessionsJoined?.includes(session.id) ? (
+        <CustomButton
+          type="primary"
+          size="md"
+          text="This Session Is Now Closed"
+          disabled={true}
+          style={{ marginTop: "5px" }}
+        />
+      ) : timeLeft <= 5 && userProfile?.sessionsJoined?.includes(session.id) ? (
+        <CustomButton
+          type="primary"
+          size="md"
+          text="Join"
+          className={
+            joinedOtherSession &&
+            !userProfile?.sessionsJoined?.includes(session.id)
+              ? "custom-button-disabled"
+              : null
+          }
+          onClick={() => joinedSession()}
+          style={{
+            marginTop: "5px",
+            maxWidth: "150px",
+            width: "100%",
+            alignSelf: "flex-end",
+          }}
+        />
+      ) : null}
+    </div>
+  );
+};
+
+const ButtonContainerConference = ({
+  session,
+  userProfile,
+  onWatch,
+  saveForLaterSession,
+  setSessionViewed,
+}) => {
+  const handleSaveForLater = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isSavedForLater =
+      !isEmpty(session.saveForLater) &&
+      session.saveForLater.includes(userProfile.id);
+    const status = isSavedForLater ? "not saved" : "saved";
+
+    saveForLaterSession(session.id, userProfile.id, status);
+  };
+
+  return (
+    <div className="button-container">
+      <CustomButton type="primary" size="xs" text="Watch" onClick={onWatch} />
+
+      <CustomButton
+        className="mark-viewed"
+        type={
+          session?.viewed[userProfile.id] === "mark" ||
+          userProfile?.sessionsJoined?.includes(session.id)
+            ? "remove"
+            : "secondary"
+        }
+        size="xs"
+        text={
+          session?.viewed[userProfile.id] === "mark" ||
+          userProfile?.sessionsJoined?.includes(session.id)
+            ? "Viewed"
+            : "Mark As Completed"
+        }
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (userProfile?.sessionsJoined?.includes(session.id)) return;
+          setSessionViewed(
+            session.id,
+            userProfile.id,
+            session.viewed[userProfile.id] === "mark" ? "unmark" : "mark"
+          );
+        }}
+        style={{
+          marginTop: "8px",
+        }}
+      />
+
+      {session.viewed && session.viewed[userProfile.id] !== "mark" && (
+        <CustomButton
+          className="save-for-later"
+          type={
+            !isEmpty(session.saveForLater) &&
+            session.saveForLater.includes(userProfile.id)
+              ? "remove"
+              : "third"
+          }
+          size="xs"
+          text={
+            !isEmpty(session.saveForLater) &&
+            session.saveForLater.includes(userProfile.id)
+              ? "Unsave"
+              : "Save for later"
+          }
+          onClick={handleSaveForLater}
+        />
+      )}
+    </div>
+  );
+};
 
 const AnnualConferenceCard = React.memo(
   ({
     session,
+    typeConference,
     attended,
     added,
     joinedOtherSession,
     onAddSession,
     onRemoveSession,
     onJoinedSession,
+    onWatch,
     userProfile,
+    saveForLaterSession,
+    claimSession,
+    setSessionViewed,
+    savedItem,
   }) => {
     const timezone = TIMEZONE_LIST.find(
       (item) => item.value === session.timezone
@@ -37,55 +275,12 @@ const AnnualConferenceCard = React.memo(
       .tz(timezone.utc[0])
       .utcOffset(offset, true);
 
-    const currentTime = moment().unix();
-    const diffTime = convertedStartTime.unix() - currentTime;
-
-    const interval = 1000;
-    let duration = moment.duration(diffTime * interval, "milliseconds");
-
     const [hideInfo, setHideInfo] = useState(true);
+    const [showFirewall, setShowFirewall] = useState(false);
     const [
       visibleConfirmJoinedOtherSession,
       setVisibleConfirmJoinedOtherSession,
     ] = useState(false);
-    const [hoursStartSession, setHoursStartSession] = useState(
-      `Starting in: ${
-        Math.floor(duration.asHours().toFixed(2)) > 0
-          ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
-          : ""
-      } ${duration.minutes()} minutes`
-    );
-    const [timeLeft, setTimeLeft] = useState(
-      moment.duration(convertedStartTime.diff(moment.now())).asMinutes()
-    );
-
-    useEffect(() => {
-      let duration = moment.duration(diffTime * interval, "milliseconds");
-      setInterval(() => {
-        duration = moment.duration(duration - 60000, "milliseconds");
-        setHoursStartSession(
-          `Starting in: ${
-            Math.floor(duration.asHours().toFixed(2)) > 0
-              ? `${Math.floor(duration.asHours().toFixed(2))} hours and `
-              : ""
-          } ${duration.minutes()} minutes`
-        );
-
-        setTimeLeft(duration.asMinutes());
-      }, 60000);
-    }, [diffTime]);
-
-    const counterdown = useMemo(() => {
-      return (
-        <CustomButton
-          type="primary"
-          size="md"
-          text={`${hoursStartSession}`}
-          disabled={true}
-          style={{ marginTop: "5px", maxWidth: "340px" }}
-        />
-      );
-    }, [hoursStartSession]);
 
     const onClickDownloadCalendar = (e) => {
       e.preventDefault();
@@ -127,15 +322,6 @@ const AnnualConferenceCard = React.memo(
       window.open(yahooCalendarUrl, "_blank");
     };
 
-    if (
-      moment().date() < 1 &&
-      moment().month() <= 2 &&
-      moment().year() <= 2022 &&
-      timeLeft < 69120
-    ) {
-      setTimeLeft(80000);
-    }
-
     const downloadDropdownOptions = () => (
       <Menu style={{ position: "relative", bottom: "70px" }}>
         <Menu.Item key="1">
@@ -159,18 +345,22 @@ const AnnualConferenceCard = React.memo(
     const joinedSession = () => {
       if (
         joinedOtherSession &&
-        !userProfile.sessionsJoined.includes(session.id)
+        !userProfile?.sessionsJoined?.includes(session.id)
       ) {
         return notification.error({
           message: "Error",
           description:
             "You can’t join this session since you are registered for another session at this same time",
         });
-      } else if (userProfile.sessionsJoined.includes(session.id)) {
+      } else if (userProfile?.sessionsJoined?.includes(session.id)) {
         return onJoinedSession(session);
       }
 
       setVisibleConfirmJoinedOtherSession(true);
+    };
+
+    const planUpgrade = () => {
+      Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
     };
 
     return (
@@ -178,119 +368,66 @@ const AnnualConferenceCard = React.memo(
         <div className="acc-session-header">
           <h3>{session.title}</h3>
 
-          <div className="button-container">
-            {added ? (
-              <CustomButton
-                type="primary outlined"
-                size="sm"
-                text="Remove from My Personalized Agenda"
-                onClick={onRemoveSession}
-                className="remove-buttom"
-                style={{ alignSelf: "flex-end" }}
-              />
-            ) : attended ? (
-              <CustomButton
-                size="sm"
-                text="Add To My Personalized Agenda"
-                onClick={onAddSession}
-              />
-            ) : null}
-
-            {session.totalusersjoined >= 30 &&
-            session.type === "Roundtable" &&
-            !userProfile?.sessionsJoined?.includes(session.id) ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="Session Full"
-                disabled={true}
-                style={{ marginTop: "5px" }}
-              />
-            ) : timeLeft <= 5 &&
-              moment.duration(convertedEndTime.diff(moment.now())).asMinutes() >
-                0 ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="Join"
-                className={
-                  joinedOtherSession &&
-                  !userProfile?.sessionsJoined?.includes(session.id)
-                    ? "custom-button-disabled"
-                    : null
-                }
-                onClick={() => joinedSession()}
-                style={{
-                  marginTop: "5px",
-                  maxWidth: "150px",
-                  width: "100%",
-                  alignSelf: "flex-end",
-                }}
-              />
-            ) : timeLeft >= -10 && timeLeft < 69120 ? (
-              counterdown
-            ) : timeLeft <= -10 &&
-              !userProfile?.sessionsJoined?.includes(session.id) ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="This Session Is Now Closed"
-                disabled={true}
-                style={{ marginTop: "5px" }}
-              />
-            ) : timeLeft <= 5 &&
-              userProfile?.sessionsJoined?.includes(session.id) ? (
-              <CustomButton
-                type="primary"
-                size="md"
-                text="Join"
-                className={
-                  joinedOtherSession &&
-                  !userProfile?.sessionsJoined?.includes(session.id)
-                    ? "custom-button-disabled"
-                    : null
-                }
-                onClick={() => joinedSession()}
-                style={{
-                  marginTop: "5px",
-                  maxWidth: "150px",
-                  width: "100%",
-                  alignSelf: "flex-end",
-                }}
-              />
-            ) : null}
-          </div>
+          {typeConference !== "conference-library" ? (
+            <ButtonContainer
+              session={session}
+              added={added}
+              attended={attended}
+              userProfile={userProfile}
+              convertedStartTime={convertedStartTime}
+              convertedEndTime={convertedEndTime}
+              onAddSession={onAddSession}
+              onRemoveSession={onRemoveSession}
+              joinedOtherSession={joinedOtherSession}
+              joinedSession={joinedSession}
+            />
+          ) : (
+            <ButtonContainerConference
+              session={session}
+              userProfile={userProfile}
+              onWatch={onWatch}
+              saveForLaterSession={saveForLaterSession}
+              setSessionViewed={setSessionViewed}
+            />
+          )}
         </div>
         {added && <div className="acc-session-added-tag">Added</div>}
+        {userProfile?.sessionsJoined?.includes(session.id) && (
+          <div className="acc-session-added-tag">
+            Viewed During The Conference
+          </div>
+        )}
         <div className="d-flex justify-between">
           <div>
             <div className="acc-session-type">{`Session type: ${session.type}`}</div>
             <div className="acc-session-date">{session.date}</div>
-            <div className="acc-session-time">
-              {session.period} {session.timezone}{" "}
-              <Tooltip
-                placement="right"
-                title={
-                  <span>
-                    Where are you located? If you are not located in the West
-                    Coast of the United States, Canada or Mexico, then you are
-                    NOT in Pacific Time Zone. Please convert to your
-                    corresponding time zone here:{" "}
-                    <a
-                      href="https://www.timeanddate.com/worldclock/converter.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      www.timeanddate.com
-                    </a>
-                  </span>
-                }
-                overlayStyle={{ background: "black" }}
-                overlayInnerStyle={{ background: "black" }}
-              >
-                <InfoCircleOutlined className="conference-list-info-icon" />
-              </Tooltip>
-            </div>
+            {typeConference !== "conference-library" && (
+              <div className="acc-session-time">
+                {session.period} {session.timezone}{" "}
+                <Tooltip
+                  placement="right"
+                  title={
+                    <span>
+                      Where are you located? If you are not located in the West
+                      Coast of the United States, Canada or Mexico, then you are
+                      NOT in Pacific Time Zone. Please convert to your
+                      corresponding time zone here:{" "}
+                      <a
+                        href="https://www.timeanddate.com/worldclock/converter.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        www.timeanddate.com
+                      </a>
+                    </span>
+                  }
+                  overlayStyle={{ background: "black" }}
+                  overlayInnerStyle={{ background: "black" }}
+                >
+                  <InfoCircleOutlined className="conference-list-info-icon" />
+                </Tooltip>
+              </div>
+            )}
           </div>
           {added && (
             <Dropdown overlay={downloadDropdownOptions}>
@@ -308,23 +445,26 @@ const AnnualConferenceCard = React.memo(
           )}
         </div>
 
-        <div className="d-flex justify-between align-center">
+        <div className="acc-session-container">
           <div className="acc-session-categories">
             {session.categories.map((category, i) => (
               <SpecialtyItem key={i} title={category} />
             ))}
           </div>
-          <div
-            className="acc-session-toggle"
-            onClick={() => setHideInfo(!hideInfo)}
-          >
-            {hideInfo ? "Review session" : "Hide information"}
+
+          {!savedItem && (
             <div
-              className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}
+              className="acc-session-toggle"
+              onClick={() => setHideInfo(!hideInfo)}
             >
-              <IconChevronDown />
+              {hideInfo ? "Review session" : "Hide information"}
+              <div
+                className={clsx("acc-session-toggle-icon", { hide: !hideInfo })}
+              >
+                <IconChevronDown />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {!hideInfo && (
           <div className="acc-details">
@@ -342,6 +482,15 @@ const AnnualConferenceCard = React.memo(
                   <img src={brand} alt="brand-img" />
                 </div>
               ))}
+            </div>
+
+            <div className="acc-details">
+              <h4>Recertifications Credits</h4>
+              <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>
+                {userProfile.memberShip === "premium"
+                  ? session.recertification_credits
+                  : "HR Recertification Credits: Only available to PREMIUM"}
+              </p>
             </div>
 
             <div className="acc-details">
@@ -368,6 +517,20 @@ const AnnualConferenceCard = React.memo(
                   </div>
                 </a>
               ))}
+            </div>
+          </div>
+        )}
+
+        {showFirewall && (
+          <div
+            className="conference-card-firewall"
+            onClick={() => setShowFirewall(false)}
+          >
+            <div className="upgrade-notification-panel" onClick={planUpgrade}>
+              <h3>
+                Upgrade to a PREMIUM Membership and get unlimited access to the
+                LAB features
+              </h3>
             </div>
           </div>
         )}
@@ -412,4 +575,12 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(AnnualConferenceCard);
+const mapDispatchToProps = {
+  saveForLaterSession,
+  setSessionViewed,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnnualConferenceCard);
