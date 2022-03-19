@@ -87,10 +87,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
           render={() => <Sidebar />}
         />
-        <PrivateRoute
+        {/* <PrivateRoute
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={() => <Sidebar />}
-        />
+        /> */}
 
         <PrivateRoute
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}

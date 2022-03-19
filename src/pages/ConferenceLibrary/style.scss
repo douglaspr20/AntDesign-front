@@ -30,7 +30,7 @@
     height: calc(100vh - 72px);
     background: $color-background;
     overflow: auto;
-    padding: 4rem;
+    padding: 1rem 4rem;
     position: relative;
 
     &-header {
@@ -233,6 +233,14 @@
 
   &-content {
     display: flex;
+    justify-content: center;
+
+    & .annual-conference-card {
+      margin: 1.5rem 0;
+      width: 100%;
+      max-width: 1500px;
+      min-height: 300px;
+    }
 
   }
 }
@@ -286,4 +294,20 @@
       }
     }
   }
+}
+
+
+.sessions-2022-container{
+  max-height: calc(100vh - 280px);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: $color-text-secondary;
+  }
+    
 }

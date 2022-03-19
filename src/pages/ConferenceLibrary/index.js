@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { notification, Tabs as TabsAntd } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import ConferenceLibraryFilterDrawer from "./ConferenceLibraryFilterDrawer";
-import { numberWithCommas } from "utils/format";
-import { ConferenceCard, CustomButton, Tabs } from "components";
+import {
+  AnnualConferenceCard,
+  ConferenceCard,
+  CustomButton,
+  Tabs,
+} from "components";
 import ConferenceLibraryFilterPanel from "containers/ConferenceLibraryFilterPanel";
-import { SETTINGS } from "enum";
+import { INTERNAL_LINKS, SETTINGS } from "enum";
+import { setLoading } from "redux/actions/home-actions";
+import {
+  getAllSessions,
+  getSessionsUserJoined,
+} from "redux/actions/session-actions";
 import {
   getMoreConferenceLibraries,
   searchConferenceLibraries,
@@ -18,12 +28,17 @@ import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
 } from "redux/actions/advertisment-actions";
+import { sessionSelector } from "redux/selectors/sessionSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { conferenceSelector } from "redux/selectors/conferenceSelector";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
 import "./style.scss";
+import Certificate from "pages/GlobalConference/Certificate";
+
+const { TabPane } = TabsAntd;
 
 const ConferenceLibrary = ({
   loading,
@@ -35,14 +50,22 @@ const ConferenceLibrary = ({
   advertisementsByPage,
   advertisementById,
   isAdPreview = false,
+  getAllSessions,
+  getSessionsUserJoined,
+  sessionsUserJoined,
+  allSessions,
+  userProfile,
 }) => {
   const [filters, setFilters] = useState({});
   const [visible, setVisible] = useState(false);
+  const [sessionData, setSessionData] = useState([]);
+  const [sessionJoinedData, setSessionJoinedData] = useState([]);
   const [currentTab, setCurrentTab] = useState("0");
-  const [countOfResults, setCountOfResults] = useState(0);
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
+  const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     if (isAdPreview) {
@@ -51,8 +74,15 @@ const ConferenceLibrary = ({
       getAdvertisementsTodayByPage("conference-library");
     }
 
+    getAllSessions({ type: "conference" });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  useEffect(() => {
+    if (userProfile?.sessionsJoined?.length > 0) {
+      getSessionsUserJoined(userProfile.sessionsJoined);
+    }
+  }, [getSessionsUserJoined, userProfile]);
 
   const displayAds = !isEmpty(advertisementsByPage["conference-library"]) && (
     <div className="conference-library-advertisement-wrapper">
@@ -146,10 +176,111 @@ const ConferenceLibrary = ({
   }, []);
 
   useEffect(() => {
-    setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
+    if (filters.topics && JSON.parse(filters.topics).length > 0) {
+      const topics = JSON.parse(filters.topics);
 
-    // eslint-disable-next-line
-  }, [currentTab, allConferenceLibraries]);
+      const sessionsFiltered = allSessions.filter((session) => {
+        let canFiltered = false;
+        for (const topic of topics) {
+          if (session.categories.some((categorie) => categorie === topic)) {
+            canFiltered = true;
+            break;
+          }
+        }
+
+        if (
+          !session.title.includes(meta) &&
+          !session?.description?.includes(meta) &&
+          !session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          canFiltered = false;
+        }
+        if (canFiltered) {
+          return session;
+        }
+
+        return null;
+      });
+
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        let canFiltered = false;
+        for (const topic of topics) {
+          if (session.categories.some((categorie) => categorie === topic)) {
+            canFiltered = true;
+            break;
+          }
+        }
+        if (
+          !session.title.includes(meta) &&
+          !session?.description?.includes(meta) &&
+          !session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          canFiltered = false;
+        }
+
+        if (canFiltered) {
+          return session;
+        }
+
+        return null;
+      });
+
+      setSessionData(sessionsFiltered);
+      setSessionJoinedData(sessionsJoinedFiltered);
+    } else if (meta && meta !== null) {
+      const sessionsFiltered = allSessions.filter((session) => {
+        if (
+          session.title.includes(meta) ||
+          session?.description?.includes(meta) ||
+          session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          return session;
+        }
+
+        return null;
+      });
+
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        if (
+          session.title.includes(meta) ||
+          session?.description?.includes(meta) ||
+          session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          return session;
+        }
+
+        return null;
+      });
+
+      setSessionData(sessionsFiltered);
+      setSessionJoinedData(sessionsJoinedFiltered);
+    } else {
+      setSessionData(allSessions);
+      setSessionJoinedData(sessionsUserJoined);
+    }
+  }, [filters, meta, allSessions, sessionsUserJoined]);
+
+  // useEffect(() => {
+  //   setCountOfResults(allConferenceLibraries[+currentTab]?.count || 0);
+
+  //   // eslint-disable-next-line
+  // }, [currentTab, allConferenceLibraries]);
 
   const displayData = (index) => {
     const libraries = allConferenceLibraries[index]?.rows || [];
@@ -173,12 +304,74 @@ const ConferenceLibrary = ({
     });
   };
 
+  const onWatch = (id) => {
+    history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${id}`);
+  };
+
   const TabData =
     listOfYears?.map((year, index) => {
       return {
         title: year,
         content: () => (
-          <div className="search-results-list">{displayData(index)}</div>
+          <>
+            {year === 2022 ? (
+              <>
+                <CustomButton
+                  size="xs"
+                  text="Download Digital Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                  }}
+                  onClick={() => {
+                    if (userProfile?.sessionsJoined?.length < 1) {
+                      return notification.info({
+                        message:
+                          "Available only for those who joined during the week of the conference",
+                      });
+                    }
+                    setModalVisibleCertificate(true);
+                  }}
+                />
+                <div>
+                  <TabsAntd
+                    defaultActiveKey="1"
+                    //  onChange={callback}
+                  >
+                    <TabPane tab="All Sessions" key="1">
+                      <div className="sessions-2022-container">
+                        {sessionData.map((session) => (
+                          <AnnualConferenceCard
+                            key={session.id}
+                            session={session}
+                            typeConference="conference-library"
+                            onWatch={() => onWatch(session.id)}
+                          />
+                        ))}
+                      </div>
+                    </TabPane>
+                    <TabPane
+                      tab="Sessions You Joined During The Conference"
+                      key="2"
+                    >
+                      <div className="sessions-2022-container">
+                        {sessionJoinedData.map((session, i) => (
+                          <AnnualConferenceCard
+                            key={session.id}
+                            session={session}
+                            typeConference="conference-library"
+                            onWatch={() => onWatch(session.id)}
+                          />
+                        ))}
+                      </div>
+                    </TabPane>
+                  </TabsAntd>
+                </div>
+              </>
+            ) : (
+              <div className="search-results-list">{displayData(index)}</div>
+            )}
+          </>
         ),
       };
     }) || [];
@@ -202,23 +395,11 @@ const ConferenceLibrary = ({
               <h3 className="filters-btn" onClick={() => setVisible(true)}>
                 Filters
               </h3>
-              <h3>{`${numberWithCommas(countOfResults)} video${
-                countOfResults > 1 ? "s" : ""
-              }`}</h3>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <div className="search-results-container-header d-flex justify-between items-center">
-              <h3>{`${numberWithCommas(countOfResults)} video${
-                countOfResults > 1 ? "s" : ""
-              }`}</h3>
             </div>
           </Col>
         </Row>
         <div className="conference-library-content">
-          <div>
+          <div style={{ width: "70%" }}>
             <Tabs
               data={TabData}
               current={currentTab}
@@ -248,6 +429,12 @@ const ConferenceLibrary = ({
           {displayPreviewAd}
         </div>
       </div>
+
+      <Certificate
+        visible={modalVisibleCertificate}
+        onCancel={() => setModalVisibleCertificate(false)}
+        sessionsUserJoined={sessionsUserJoined}
+      />
     </div>
   );
 };
@@ -263,8 +450,11 @@ ConferenceLibrary.defaultProps = {
 const mapStateToProps = (state, props) => ({
   loading: conferenceSelector(state).loading,
   allConferenceLibraries: conferenceSelector(state).allConferenceLibraries,
+  allSessions: sessionSelector(state).allSessions,
+  sessionsUserJoined: sessionSelector(state).sessionsUserJoined,
   countOfResults: conferenceSelector(state).countOfResults,
   currentPage: conferenceSelector(state).currentPage,
+  userProfile: homeSelector(state).userProfile,
   ...advertisementSelector(state),
 });
 
@@ -273,6 +463,9 @@ const mapDispatchToProps = {
   searchConferenceLibraries,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  getSessionsUserJoined,
+  getAllSessions,
+  setLoading,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConferenceLibrary);

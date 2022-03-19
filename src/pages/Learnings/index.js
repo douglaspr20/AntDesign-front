@@ -1,6 +1,7 @@
 import { Collapse, Row, Col } from "antd";
 import React, { useState, useEffect } from "react";
-import { Tabs } from "components";
+import { useHistory } from "react-router-dom";
+import { AnnualConferenceCard, Tabs } from "components";
 import { connect } from "react-redux";
 import {
   LibraryCard,
@@ -10,7 +11,7 @@ import {
   CustomButton,
 } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS, SETTINGS } from "enum";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
 
@@ -53,6 +54,8 @@ const MyLearingPage = ({
   const [listOfYears, setListOfYears] = useState([2020]);
   const [filters, setFilters] = useState({});
   const [, setFilter] = useState({});
+
+  const history = useHistory();
 
   useEffect(() => {
     getAllSaved({});
@@ -159,6 +162,21 @@ const MyLearingPage = ({
                 episode={item}
               />
             );
+          } else if (
+            item.type === "Certificate Track and Panels" ||
+            item.type === "Presentation"
+          ) {
+            return (
+              <AnnualConferenceCard
+                key={item.id}
+                session={item}
+                typeConference="conference-library"
+                onWatch={() =>
+                  history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${item.id}`)
+                }
+                savedItem
+              />
+            );
           } else {
             return <PodcastSeriesCard key={index} data={item} />;
           }
@@ -210,6 +228,21 @@ const MyLearingPage = ({
                 key={index}
                 links={getPodcastLinks(item)}
                 episode={item}
+              />
+            );
+          } else if (
+            item.type === "Certificate Track and Panels" ||
+            item.type === "Presentation"
+          ) {
+            return (
+              <AnnualConferenceCard
+                key={item.id}
+                session={item}
+                typeConference="conference-library"
+                onWatch={() =>
+                  history.push(`${INTERNAL_LINKS.MICRO_CONFERENCE}/${item.id}`)
+                }
+                savedItem
               />
             );
           } else {

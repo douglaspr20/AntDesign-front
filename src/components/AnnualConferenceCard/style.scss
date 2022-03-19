@@ -49,6 +49,11 @@
       justify-content: space-between;
       height: auto;
 
+      & .ant-btn {
+        min-width: 220px;
+       }
+     
+
 
       @media screen and (max-width: 800px) {
         & .ant-btn {
@@ -88,12 +93,27 @@
     max-width: 280px;
   }
 
+  &-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 900px) {
+       justify-content: center;
+    }
+  }
+
   &-toggle {
     display: flex;
     align-items: center;
     color: $color-accent;
     @include app-font(16px, 21px, 600);
     cursor: pointer;
+
+    @media screen and (max-width: 900px) {
+     margin-top: 1rem;
+   }
 
     &-icon {
       width: 1.5rem;
@@ -127,7 +147,7 @@
   }
 
   &-added-tag {
-    width: 76px;
+    width: 220px !important;
     height: 28px;
     border-radius: 100px;
     background: $color-accent;
@@ -138,7 +158,7 @@
     @include app-font(14px, 19px);
     position: absolute;
     top: -14px;
-    right: 0px !important;
+    left: 0px !important;
   }
 
   &-categories {
@@ -146,6 +166,11 @@
     width: 70%;
     flex-wrap: wrap;
     margin-top: 1rem;
+
+    & .specialty-item {
+      min-width: 300px !important;
+      max-width: auto !important;
+    }
 
     @media screen and (max-width: 500px) {
       width: 30% !important;
