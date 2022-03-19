@@ -123,11 +123,11 @@ class TopHeader extends Component {
           path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
           render={(props) => <MainHeader {...props} />}
         />
-        <PrivateRoute
+        {/* <PrivateRoute
           exact
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={(props) => <MainHeader {...props} />}
-        />
+        /> */}
         <PrivateRoute
           exact
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}

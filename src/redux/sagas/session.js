@@ -8,6 +8,7 @@ import {
 } from "../actions/session-actions";
 import { logout } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
+import { actions as myLearningActions } from "redux/actions/myLearning-actions";
 import {
   getAllSessions,
   getSessionsAddedbyUser,
@@ -16,7 +17,11 @@ import {
   getSession,
   getSessionClasses,
   recommendedAgenda,
+  claimSession,
+  saveForLaterSession,
+  markSessionViewed,
 } from "../../api";
+import { notification } from "antd";
 
 export function* getAllSessionsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -298,6 +303,100 @@ export function* recommendedAgendaSaga({ payload }) {
   }
 }
 
+export function* claimSessionSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(claimSession, { ...payload });
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback(
+        error.response.data || "Something went wrong, Please try again."
+      );
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* markSessionViewedSaga({ payload }) {
+  try {
+    const response = yield call(markSessionViewed, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        sessionActions.updateSessionViewed(
+          response.data.affectedRows
+          // payload.index
+        )
+      );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateCompletedLibrary(response.data.affectedRows)
+      );
+      // yield put(
+      //   myLearningActions.updateHRCredits(
+      //     payload.id,
+      //     response.data.affectedRows
+      //   )
+      // );
+    }
+  } catch (error) {
+    console.log(error);
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* saveForLaterSessionSaga({ payload }) {
+  try {
+    const response = yield call(saveForLaterSession, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        sessionActions.updateSaveForLaterSession(response.data.affectedRows)
+      );
+      yield put(
+        myLearningActions.updateSaveForLaterLibrary(response.data.affectedRows)
+      );
+
+      if (payload.isInHRCredits) {
+        // yield put(
+        //   myLearningActions.updateHRCredits(
+        //     payload.id,
+        //     response.data.affectedRows
+        //   )
+        // );
+      }
+
+      notification.success({
+        message: "Success",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: "Error",
+      description: "Something went wrong.",
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchSession() {
   yield takeLatest(sessionConstants.GET_ALL_SESSIONS, getAllSessionsSaga);
   yield takeLatest(sessionConstants.GET_SESSION, getSessionSaga);
@@ -312,6 +411,12 @@ function* watchSession() {
   );
   yield takeLatest(sessionConstants.GET_PARTICIPANTS, getParticipantsSaga);
   yield takeLatest(sessionConstants.RECOMMENDED_AGENDA, recommendedAgendaSaga);
+  yield takeLatest(sessionConstants.CLAIM_SESSION, claimSessionSaga);
+  yield takeLatest(sessionConstants.SET_SESSION_VIEWED, markSessionViewedSaga);
+  yield takeLatest(
+    sessionConstants.SAVE_FOR_LATER_SESSION,
+    saveForLaterSessionSaga
+  );
 }
 
 export const sessionSaga = [fork(watchSession)];
