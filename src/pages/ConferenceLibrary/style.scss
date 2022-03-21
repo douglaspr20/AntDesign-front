@@ -217,11 +217,6 @@
       }
     }
   }
-  .ant-tabs-nav-list {
-    @media (max-width: 1029px) {
-      width: 100%;
-    }
-  }
 }
 
 .conference-library {
@@ -234,6 +229,12 @@
   &-content {
     display: flex;
     justify-content: center;
+
+    .tabs-container{
+      width: 100%;
+      padding: 0px 10px;
+      max-width: 1000px;
+    }
 
     & .annual-conference-card {
       margin: 1.5rem 0;
