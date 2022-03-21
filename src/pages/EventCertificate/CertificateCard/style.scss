@@ -2,7 +2,8 @@
 
 .event-card {
 	display: flex;
-	margin-bottom: 30px;
+	// margin-bottom: 30px;
+	height: 100%;
 	align-items: stretch;
 	background: $color-white;
 	box-shadow: 4px 0px 14px #37215714;
@@ -34,7 +35,7 @@
 	}
 
 	&-content {
-		padding: 1.5rem 28px;
+		padding: 12px 28px;
 		flex: 1;
 		position: relative;
 
@@ -276,4 +277,21 @@
 			}
 		}
 	}
+}
+
+.filter-drawer {
+	&-content-share {
+		padding: 0px;
+		margin-top: 0px;
+		width: 88%;
+	}
+}
+
+.custom-button.xs {
+	padding: 0px;
+}
+
+.certificate-card-content-footer {
+	display: flex;
+	justify-content: center;
 }

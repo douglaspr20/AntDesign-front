@@ -6,10 +6,9 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 
-
 import { CARD_TYPE, INTERNAL_LINKS } from "enum";
 
-import { CustomButton} from "components";
+import { CustomButton } from "components";
 
 import "./style.scss";
 
@@ -18,16 +17,8 @@ const CertificateCard = ({ data }) => {
 
   const history = useHistory();
 
-  const {
-    id,
-    title,
-    type,
-    ticket,
-    location,
-    status,
-    image2,
-    period,
-  } = data || {};
+  const { id, title, type, image2, period } =
+    data || {};
   const randomId = `article-description-${Math.floor(Math.random() * 1000)}`;
 
   useEffect(() => {
@@ -56,23 +47,19 @@ const CertificateCard = ({ data }) => {
   };
   return (
     <div className={clsx("event-card", { add: type === CARD_TYPE.ADD })}>
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
         <div className="event-card-img">
           {image2 && <img src={image2} alt="card-img" />}
         </div>
         <div className="event-card-content d-flex flex-column justify-between items-start">
           <h3>{title}</h3>
           <h5>{period}</h5>
-          <h5>{`${location ? location.join(",") : ""} event`}</h5>
-          {status !== "past" && status !== "confirmed" && (
-            <h6 className="event-card-cost">{ticket}</h6>
-          )}
         </div>
         <div className="certificate-card-content-footer">
           <CustomButton
             className="filter-drawer-content-share"
-            text="Claim digital certificate"
-            size="md"
+            text="Claim Digital Certificate"
+            size="xs"
             type="primary"
             onClick={() =>
               history.push(`${INTERNAL_LINKS.EVENT_CERTIFICATE}?id=${id}`)

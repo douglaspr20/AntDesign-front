@@ -43,7 +43,6 @@ const LivePage = ({
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
     }
     usersAssistence = [...new Set(usersAssistence)];
-
     if (!isIdRepeated) {
       updateEventUserAssistence({
         ...myEvents,
@@ -67,94 +66,100 @@ const LivePage = ({
    */
 
   useEffect(() => {
-    if (!times || !times[0]?.start) {
-      if (userProfile.id && myEvents.id) {
-        const userAssistenceJsonToArray =
-          myEvents.usersAssistence?.length > 0 &&
-          myEvents.usersAssistence[0]?.map((el) => JSON.parse(el));
+    if (userProfile.id && myEvents.id) {
+      const userAssistenceJsonToArray =
+        myEvents.usersAssistence?.length > 0 &&
+        myEvents.usersAssistence[0]?.map((el) => JSON.parse(el));
+      setTimes(userAssistenceJsonToArray);
 
-        setTimes(userAssistenceJsonToArray);
-        myEvents.startAndEndTimes &&
-          myEvents.startAndEndTimes.map((time) => {
-            const start = time.startTime;
-            const end = time.endTime;
+      myEvents.startAndEndTimes &&
+        myEvents.startAndEndTimes.map((time) => {
+          const start = time.startTime;
+          const end = time.endTime;
 
-            const usersEventAssistence = [];
-            const userAssistence = userProfile.id;
+          const usersEventAssistence = [];
+          const userAssistence = userProfile.id;
+          const timezone = TIMEZONE_LIST.find(
+            (item) => item.value === myEvents.timezone
+          );
+          const convertedStartEventTime = moment(start)
+            .tz(timezone.utc[0])
+            .utcOffset(timezone.offset, true)
+            .format();
+          const convertedEndEventTime = moment(end)
+            .tz(timezone.utc[0])
+            .utcOffset(timezone.offset, true)
+            .format();
 
-            if (userAssistenceJsonToArray) {
-              const addingUserToTheListUserAssistence =
-                userAssistenceJsonToArray?.map((item) => {
-                  if (item.usersAssistence?.includes(userAssistence)) {
-                    return setIsIdRepeated(true);
-                  }
-                  if (item.usersAssistence?.length > 0) {
-                    return usersEventAssistence.push(
-                      ...item.usersAssistence,
-                      userAssistence
-                    );
-                  }
+          const localDate = moment()
+            .utc()
+            .tz(timezone.utc[0])
+            .utcOffset(timezone.offset, true)
+            .format();
+
+          const isTodayEvent =
+            moment(convertedStartEventTime).format("MM DD") <=
+              moment(localDate).format("MM DD") &&
+            moment(convertedEndEventTime).format("MM DD") ===
+              moment(localDate).format("MM DD");
+              
+          if (userAssistenceJsonToArray) {
+            const addingUserToTheListUserAssistence =
+              userAssistenceJsonToArray?.map((item) => {
+                if (
+                  item.usersAssistence?.includes(userAssistence) &&
+                  isTodayEvent
+                ) {
+                  return setIsIdRepeated(true);
+                }
+                if (item.usersAssistence?.length > 0 && isTodayEvent) {
+                  return usersEventAssistence.push(
+                    ...item.usersAssistence,
+                    userAssistence
+                  );
+                } else if (isTodayEvent) {
                   return usersEventAssistence.push(userAssistence);
-                });
+                }
+                return item;
+              });
+            console.log(addingUserToTheListUserAssistence);
+          }
 
-              console.log(addingUserToTheListUserAssistence);
-            }
-
-            const timezone = TIMEZONE_LIST.find(
-              (item) => item.value === myEvents.timezone
-            );
-
-            const convertedStartEventTime = moment(start)
-              .tz(timezone.utc[0])
-              .utcOffset(timezone.offset, true)
-              .format();
-            const convertedEndEventTime = moment(end)
-              .tz(timezone.utc[0])
-              .utcOffset(timezone.offset, true)
-              .format();
-
-            const localDate = moment()
-              .utc()
-              .tz(timezone.utc[0])
-              .utcOffset(timezone.offset, true)
-              .format();
-            if (!isIdRepeated) {
-              const norepeat = [...new Set(usersEventAssistence)];
-              if (norepeat?.length > 0) {
-                return setTimes((prev) => {
-                  const index = prev.findIndex((el) => {
-                    return (
-                      moment(convertedStartEventTime).format("MM DD") <=
-                        moment(localDate).format("MM DD") &&
-                      moment(convertedEndEventTime).format("MM DD") ===
-                        moment(localDate).format("MM DD")
-                    );
-                  });
+          if (!isIdRepeated) {
+            const norepeat = [...new Set(usersEventAssistence)];
+            if (norepeat?.length > 0) {
+              return setTimes((prev) => {
+                const index = prev.findIndex((el) => isTodayEvent);
+                if (isTodayEvent) {
                   prev[index] = {
                     start: prev[index].start,
                     end: prev[index].end,
-                    usersAssistence: usersEventAssistence,
+                    usersAssistence: [
+                      ...prev[index].usersAssistence,
+                      userAssistence,
+                    ],
                   };
-                  return [...prev];
-                });
-              } else {
-                return setFirstTimes((prev) => {
-                  return [
-                    ...prev,
-                    {
-                      start,
-                      end,
-                      usersAssistence: [userAssistence],
-                    },
-                  ];
-                });
-              }
+                }
+                return [...prev];
+              });
+            } else {
+              return setFirstTimes((prev) => {
+                prev = [
+                  ...prev,
+                  {
+                    start,
+                    end,
+                    usersAssistence: isTodayEvent ? [userAssistence] : [],
+                  },
+                ];
+                return [...prev];
+              });
             }
-            return time;
-          });
-      }
+          }
+          return time;
+        });
     }
-  }, [myEvents, live, userProfile.id, times, isIdRepeated]);
+  }, [myEvents, live, userProfile.id, isIdRepeated]);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -192,7 +197,8 @@ const LivePage = ({
                     <div className="live-confirm-assistence-button-container">
                       <CustomButton
                         text="Click here to confirm you are participating in this event"
-                        onClick={handleConfirmAssistence}
+                        onClick={isIdRepeated || handleConfirmAssistence}
+                        className={isIdRepeated ? "custom-button-disabled" : ""}
                       />
                       <Modal
                         visible={visibleEventConfirm}

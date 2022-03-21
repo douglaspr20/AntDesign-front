@@ -58,14 +58,16 @@ const CertificateList = ({
         prev = liveEvents.map((event) => {
           const usersAssistence =
             event.usersAssistence.length > 0 &&
-            event.usersAssistence.map((el) => JSON.parse(el));
-
+            event.usersAssistence.map((el) =>
+              el.map((item) => JSON.parse(item))
+            );
+            
           const usersAssistencefilter =
             usersAssistence &&
-            usersAssistence?.filter(
+            usersAssistence[0]?.filter(
               (el) =>
-                el.usersAssistence &&
-                el.usersAssistence.includes(userProfile.id)
+                el?.usersAssistence &&
+                el?.usersAssistence.includes(userProfile.id)
             );
           const date =
             event.startAndEndTimes[event.startAndEndTimes.length - 1];
@@ -87,7 +89,7 @@ const CertificateList = ({
   }, [userProfile, liveEvents]);
 
   return (
-    <div className="channel-page__list-wrap">
+    <div className="items-with-hr-credits">
       {!isOwner && live?.length === 0 ? (
         <NoItemsMessageCard
           message={`There are no ${
@@ -96,32 +98,32 @@ const CertificateList = ({
         />
       ) : (
         <>
-          <div className="certificate-list-container">
-            <div className="certificate-card-list">
-              {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
-              {eventsFiltered &&
-                eventsFiltered?.map(
-                  (liveEvent, index) =>
-                    liveEvent && (
-                      <div key={index}>
-                        <HelmetMetaData
-                          title="Digital Certificate"
-                          metatitle="Digital Certificate"
-                          image={liveEvent.image}
-                          description="Digital certificate"
-                          metadescription="Digital certificate"
-                          // data={metadata}
-                        ></HelmetMetaData>
-                        <CertificateCard
-                          type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                          key={liveEvent.id}
-                          data={liveEvent}
-                        />
-                      </div>
-                    )
-                )}
-            </div>
-          </div>
+          {/* <div className="certificate-list-container"> */}
+          {/* <div className="certificate-card-list"> */}
+          {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
+          {eventsFiltered &&
+            eventsFiltered?.map(
+              (liveEvent, index) =>
+                liveEvent && (
+                  <div key={index}>
+                    <HelmetMetaData
+                      title="Digital Certificate"
+                      metatitle="Digital Certificate"
+                      image={liveEvent.image}
+                      description="Digital certificate"
+                      metadescription="Digital certificate"
+                      // data={metadata}
+                    ></HelmetMetaData>
+                    <CertificateCard
+                      type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                      key={liveEvent.id}
+                      data={liveEvent}
+                    />
+                  </div>
+                )
+            )}
+          {/* </div> */}
+          {/* </div> */}
         </>
       )}
     </div>

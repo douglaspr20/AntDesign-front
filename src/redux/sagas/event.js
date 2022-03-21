@@ -395,9 +395,26 @@ export function* updateEventUserAssistenceSagas({ payload }) {
       ...payload,
     });
     if (response.status === 200) {
-      const data = response.data.affectedRows
+      const event = response.data.affectedRows;
+      yield put(
+        eventActions.setMyEvents({
+          ...event,
+          date: convertToCertainTime(event.startDate, event.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          date2: convertToCertainTime(event.endDate, event.timezone).format(
+            "YYYY.MM.DD h:mm a"
+          ),
+          period: getEventPeriod(
+            event.startDate,
+            event.endDate,
+            event.timezone
+          ),
+          about: getEventDescription(event.description),
+        })
+      );
       notification.success({
-        message: `Thank you for confirming your participation to ${data?.title}`,
+        message: `Thank you for confirming your participation to ${event?.title}`,
       });
     }
   } catch (error) {
@@ -405,7 +422,7 @@ export function* updateEventUserAssistenceSagas({ payload }) {
       message: "Error updating user participate.",
     });
     console.log(error);
-    
+
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     }
