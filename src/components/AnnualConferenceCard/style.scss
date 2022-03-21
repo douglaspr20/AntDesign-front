@@ -64,6 +64,7 @@
       }
 
       @media screen and (max-width: 500px) {
+        width: 100%;
         & .ant-btn {
           padding: 0px 20px;
          }
@@ -168,16 +169,19 @@
     margin-top: 1rem;
 
     & .specialty-item {
-      min-width: 300px !important;
+      min-width: 290px !important;
       max-width: auto !important;
     }
 
     @media screen and (max-width: 500px) {
-      width: 30% !important;
+      width: 100% !important;
+
       & .specialty-item {
-        min-width: 140px !important;
-        max-width: 140px !important;
+        min-width: 330px !important;
+        max-width: auto !important;
       }
+  
+    
     }
   }
 }

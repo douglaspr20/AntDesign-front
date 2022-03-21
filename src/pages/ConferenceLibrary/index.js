@@ -176,6 +176,9 @@ const ConferenceLibrary = ({
   }, []);
 
   useEffect(() => {
+    let sessionsJoinedUserData = sessionsUserJoined.filter(
+      (session) => session.type === "Certificate Track and Panels"
+    );
     if (filters.topics && JSON.parse(filters.topics).length > 0) {
       const topics = JSON.parse(filters.topics);
 
@@ -206,32 +209,34 @@ const ConferenceLibrary = ({
         return null;
       });
 
-      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
-        let canFiltered = false;
-        for (const topic of topics) {
-          if (session.categories.some((categorie) => categorie === topic)) {
-            canFiltered = true;
-            break;
+      const sessionsJoinedFiltered = sessionsJoinedUserData.filter(
+        (session) => {
+          let canFiltered = false;
+          for (const topic of topics) {
+            if (session.categories.some((categorie) => categorie === topic)) {
+              canFiltered = true;
+              break;
+            }
           }
-        }
-        if (
-          !session.title.includes(meta) &&
-          !session?.description?.includes(meta) &&
-          !session?.speakers?.some(
-            (speaker) =>
-              speaker?.name?.includes(meta) ||
-              speaker?.description?.includes(meta)
-          )
-        ) {
-          canFiltered = false;
-        }
+          if (
+            !session.title.includes(meta) &&
+            !session?.description?.includes(meta) &&
+            !session?.speakers?.some(
+              (speaker) =>
+                speaker?.name?.includes(meta) ||
+                speaker?.description?.includes(meta)
+            )
+          ) {
+            canFiltered = false;
+          }
 
-        if (canFiltered) {
-          return session;
-        }
+          if (canFiltered) {
+            return session;
+          }
 
-        return null;
-      });
+          return null;
+        }
+      );
 
       setSessionData(sessionsFiltered);
       setSessionJoinedData(sessionsJoinedFiltered);
@@ -252,27 +257,29 @@ const ConferenceLibrary = ({
         return null;
       });
 
-      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
-        if (
-          session.title.includes(meta) ||
-          session?.description?.includes(meta) ||
-          session?.speakers?.some(
-            (speaker) =>
-              speaker?.name?.includes(meta) ||
-              speaker?.description?.includes(meta)
-          )
-        ) {
-          return session;
-        }
+      const sessionsJoinedFiltered = sessionsJoinedUserData.filter(
+        (session) => {
+          if (
+            session.title.includes(meta) ||
+            session?.description?.includes(meta) ||
+            session?.speakers?.some(
+              (speaker) =>
+                speaker?.name?.includes(meta) ||
+                speaker?.description?.includes(meta)
+            )
+          ) {
+            return session;
+          }
 
-        return null;
-      });
+          return null;
+        }
+      );
 
       setSessionData(sessionsFiltered);
       setSessionJoinedData(sessionsJoinedFiltered);
     } else {
       setSessionData(allSessions);
-      setSessionJoinedData(sessionsUserJoined);
+      setSessionJoinedData(sessionsJoinedUserData);
     }
   }, [filters, meta, allSessions, sessionsUserJoined]);
 
@@ -399,7 +406,7 @@ const ConferenceLibrary = ({
           </Col>
         </Row>
         <div className="conference-library-content">
-          <div style={{ width: "70%" }}>
+          <div className="tabs-container">
             <Tabs
               data={TabData}
               current={currentTab}
