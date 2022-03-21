@@ -7,7 +7,7 @@ import {
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
-import Conversation from "./Conversation";
+import Conversation from "./Conversations";
 import InternalChat from "./Chat";
 
 import "./style.scss";

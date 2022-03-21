@@ -65,13 +65,22 @@ const Speakers = ({ allSessions, getAllSessions, setLoading }) => {
               <SpeakerCard key={speaker.id} speaker={speaker} />
             ))}
       </div>
-      <Pagination
-        defaultCurrent={page}
-        defaultPageSize={20}
-        total={speakers.length}
-        showSizeChanger={false}
-        onChange={handlePaginated}
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          margin: "1rem 0rem",
+        }}
+      >
+        <Pagination
+          defaultCurrent={page}
+          defaultPageSize={20}
+          total={speakers.length}
+          showSizeChanger={false}
+          onChange={handlePaginated}
+        />
+      </div>
     </div>
   );
 };

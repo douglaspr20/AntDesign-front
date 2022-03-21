@@ -87,10 +87,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.CONFERENCE_LIBRARY}
           render={() => <Sidebar />}
         />
-        <PrivateRoute
+        {/* <PrivateRoute
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={() => <Sidebar />}
-        />
+        /> */}
 
         <PrivateRoute
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
@@ -135,6 +135,21 @@ class Sider extends Component {
         />
         <PrivateRoute
           path={`${INTERNAL_LINKS.AD_HOME_PREVIEW}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_EVENTS_PREVIEW}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}/:id`}
           exact
           render={() => <Sidebar />}
         />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -30,6 +30,7 @@ const ConferenceList = ({
 }) => {
   const [sessionData, setSessionData] = useState([]);
   const history = useHistory();
+  const ref = useRef(null);
 
   const onAddSession = (session) => {
     addSession(session);
@@ -196,7 +197,7 @@ const ConferenceList = ({
   }, [data, filters]);
 
   return (
-    <div className="conference-list">
+    <div className="conference-list" ref={ref}>
       <div className="conference-list-container">
         {sessionData.length > 0 ? (
           sessionData.map((session, index) => {

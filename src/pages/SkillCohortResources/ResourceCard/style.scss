@@ -58,7 +58,7 @@
 
 .card {
   width: 320px;
-  height: 320px;
+  height: 300px;
 	background: white;
 	padding: 28px 24px;
   display: flex;
@@ -99,4 +99,10 @@
 .view-comments {
   height: 250px;
   overflow: auto;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

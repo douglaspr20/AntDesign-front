@@ -21,6 +21,7 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  viewRulesConference,
   countAllUsers,
 } from "./module/user";
 import {
@@ -103,6 +104,9 @@ import {
   getSessionsUserJoined,
   getParticipants,
   recommendedAgenda,
+  saveForLaterSession,
+  claimSession,
+  markSessionViewed,
 } from "./module/session";
 import {
   createBonfire,
@@ -246,6 +250,7 @@ export {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  viewRulesConference,
   confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
@@ -307,6 +312,9 @@ export {
   addSession,
   removeSession,
   joinedASession,
+  claimSession,
+  saveForLaterSession,
+  markSessionViewed,
   addBonfire,
   removeBonfire,
   updateBonfire,

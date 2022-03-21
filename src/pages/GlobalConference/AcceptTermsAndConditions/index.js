@@ -4,18 +4,27 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { CustomButton, CustomModal } from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { acceptTermsAndConditions } from "redux/actions/home-actions";
+import {
+  acceptTermsAndConditions,
+  viewRulesGConference,
+} from "redux/actions/home-actions";
 import { Timeline } from "antd";
 const AcceptTermsAndConditions = ({
   userProfile,
   acceptTermsAndConditions,
+  viewRulesGConference,
 }) => {
   const [visibleModalTermsCondition, setVisibleModalTermsCondition] =
     useState(false);
+  const [visibleModalViewVideo, setVisibleModalViewVideo] = useState(false);
 
   useEffect(() => {
     if (userProfile.acceptTermsConditionGConference === false) {
       setVisibleModalTermsCondition(true);
+    }
+
+    if (userProfile.viewRulesGConference === false) {
+      setVisibleModalViewVideo(true);
     }
   }, [userProfile]);
 
@@ -72,56 +81,95 @@ const AcceptTermsAndConditions = ({
 
   const history = useHistory();
   return (
-    <CustomModal
-      visible={visibleModalTermsCondition}
-      title="Before you join the conference"
-      width={800}
-      onCancel={() => {
-        history.goBack();
-        setVisibleModalTermsCondition(false);
-      }}
-    >
-      <p>
-        The Hacking HR 2022 Global Online Conference brings the most robust
-        agenda and largest lineup of speakers ever put together for an HR event.
-        The content of this conference during and post-event is completely FREE.
-      </p>
-
-      <p>
-        We do have some rules that you must acknowledge before getting access to
-        the conference.
-      </p>
-
-      <p>Please read CAREFULLY and click on CONFIRM to continue:</p>
-
-      <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-        <Timeline style={{ padding: "20px" }}>
-          {rules.map((rule, i) => (
-            <Timeline.Item key={i} dot={<span>{i + 1}</span>}>
-              <span style={{ fontWeight: "bold" }}>{rule.title}</span>
-              {rule.description}
-            </Timeline.Item>
-          ))}
-        </Timeline>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
+    <>
+      <CustomModal
+        visible={visibleModalTermsCondition}
+        title="Before you join the conference"
+        width={800}
+        onCancel={() => {
+          history.goBack();
+          setVisibleModalTermsCondition(false);
         }}
       >
-        <CustomButton
-          size="xs"
-          text="CONFIRM"
-          onClick={() => {
-            acceptTermsAndConditions(userProfile.id);
-            setVisibleModalTermsCondition(false);
+        <p>
+          The Hacking HR 2022 Global Online Conference brings the most robust
+          agenda and largest lineup of speakers ever put together for an HR
+          event. The content of this conference during and post-event is
+          completely FREE.
+        </p>
+
+        <p>
+          We do have some rules that you must acknowledge before getting access
+          to the conference.
+        </p>
+
+        <p>Please read CAREFULLY and click on CONFIRM to continue:</p>
+
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+          <Timeline style={{ padding: "20px" }}>
+            {rules.map((rule, i) => (
+              <Timeline.Item key={i} dot={<span>{i + 1}</span>}>
+                <span style={{ fontWeight: "bold" }}>{rule.title}</span>
+                {rule.description}
+              </Timeline.Item>
+            ))}
+          </Timeline>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
           }}
-          style={{ marginTop: "1rem" }}
+        >
+          <CustomButton
+            size="xs"
+            text="CONFIRM"
+            onClick={() => {
+              acceptTermsAndConditions(userProfile.id);
+              setVisibleModalTermsCondition(false);
+            }}
+            style={{ marginTop: "1rem" }}
+          />
+        </div>
+      </CustomModal>
+      <CustomModal
+        visible={visibleModalViewVideo}
+        onCancel={() => {
+          viewRulesGConference(userProfile.id);
+          setVisibleModalViewVideo(false);
+        }}
+        width={800}
+      >
+        <iframe
+          width="750"
+          height="500"
+          src="https://www.youtube.com/embed/L-AGwKr4X-s"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
         />
-      </div>
-    </CustomModal>
+
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <CustomButton
+            size="xs"
+            text="Continue"
+            onClick={() => {
+              viewRulesGConference(userProfile.id);
+              setVisibleModalViewVideo(false);
+            }}
+            style={{ marginTop: "1rem" }}
+          />
+        </div>
+      </CustomModal>
+    </>
   );
 };
 
@@ -131,6 +179,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   acceptTermsAndConditions,
+  viewRulesGConference,
 };
 
 export default connect(

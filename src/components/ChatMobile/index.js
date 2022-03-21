@@ -11,7 +11,7 @@ import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
 import moment from "moment";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
-import Conversation from "./Conversation";
+import Conversation from "./Conversations";
 import FormMessage from "./FormMessage";
 
 import "./style.scss";

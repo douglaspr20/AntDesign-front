@@ -1,15 +1,8 @@
 import httpClient from "./httpClient";
 import { SETTINGS } from "enum";
 
-export const getAllSessions = ({ startTime, endTime, meta }) => {
-  if (startTime && endTime) {
-    return httpClient.get(
-      `private/session?startTime=${startTime}&endTime=${endTime} ${
-        meta ? `&meta=${meta}` : ""
-      }`
-    );
-  }
-  return httpClient.get(`private/session`);
+export const getAllSessions = ({ filters }) => {
+  return httpClient.get(`private/session`, { params: { ...filters } });
 };
 
 export const getSession = ({ id }) => {
@@ -72,5 +65,20 @@ export const recommendedAgenda = ({ filters }) => {
     params: {
       ...filters,
     },
+  });
+};
+
+export const claimSession = ({ id }) => {
+  return httpClient.post(`private/session/claim`, { id });
+};
+
+export const markSessionViewed = ({ id, UserId, viewed }) => {
+  return httpClient.put("private/session/viewed", { id, UserId, mark: viewed });
+};
+
+export const saveForLaterSession = ({ id, UserId, status }) => {
+  return httpClient.put(`private/session/${id}/save-for-later`, {
+    UserId,
+    status,
   });
 };

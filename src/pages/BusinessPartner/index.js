@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation, useHistory } from "react-router-dom";
+import { Col, Row } from "antd";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as homeActions } from "redux/actions/home-actions";
-import { LibraryFilterPanel, Tabs } from "components";
-import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
+import Emitter from "services/emitter";
+
 import BusinessPartnerList from "./BusinessPartnerList";
+import BusinessPartnerMembers from "./BusinessPartnerMembers";
+
+import FilterDrawer from "pages/Library/FilterDrawer";
+import BusinessPartnerDocuments from "containers/BusinessPartnerDocuments";
+import { LibraryFilterPanel, Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 
 import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 
 import IconBack from "images/icon-back.svg";
 
-import BusinessPartnerMembers from "./BusinessPartnerMembers";
 import "./style.scss";
-import FilterDrawer from "pages/Library/FilterDrawer";
-import { Col, Row } from "antd";
-import Emitter from "services/emitter";
 
 const BusinessPartnerPage = ({ userProfile, confirmApply, getUser }) => {
   const { search } = useLocation();

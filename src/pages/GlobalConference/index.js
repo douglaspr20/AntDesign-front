@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import jsPdf from "jspdf";
 import { Menu, notification } from "antd";
@@ -39,20 +39,12 @@ import RecommendedAgendaModal from "./RecommendedAgendaModal";
 import AccessibilityRequirementsModal from "./AccessibilityRequirementsModal";
 import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
 import CreateBonfireModal from "./CreateBonfireModal";
-
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
+import Certificate from "./Certificate";
+import ThingsYouNeedToKnow from "./ThingsYouNeedToKnow";
 
-const Description = `
-Welcome to the Hacking HR 2022 Global Online Conference
-planner. Here you will find all the sessions for the conference. You
-can add sessions to your personalized agenda and then download a
-PDF. Notice that you can’t add two sessions that are happening the
-same day at the same time. You can also download the calendar
-invites to save the date. Finally, you can find the speakers and
-connect with other participants. Enjoy!
-`;
 const TAB_NUM = 6;
 
 const GlobalConference = ({
@@ -71,7 +63,12 @@ const GlobalConference = ({
   children,
   location,
 }) => {
+  const history = useHistory();
   const [currentTab, setCurrentTab] = useState("0");
+  const [selectTab, setSelectTab] = useState("Mar 07");
+
+  const globalConferenceRef = React.createRef();
+
   const [firstTabDate] = useState(moment("2022-03-07", "YYYY-MM-DD"));
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
@@ -84,13 +81,15 @@ const GlobalConference = ({
   ] = useState(false);
   const [modalRequirementsVisible, setModalRequirementsVisible] =
     useState(false);
-
+  const [modalCloseConferenceVisible, setModalCloseConferenceVisible] =
+    useState(true);
   const [modalMessageVisible, setModalMessageVisible] = useState(false);
   const [messageAdmin, setMessageAdmin] = useState("");
   const [modalRecommendeAgendaVisible, setModalRecommendeAgendaVisible] =
     useState(false);
   const [modalVisibleWelcomingMessage, setModalVisibleWelcomingMessage] =
     useState(false);
+  const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
 
   const localPathname =
     location.pathname.split("/")[2] || location.pathname.split("/")[1];
@@ -107,7 +106,7 @@ const GlobalConference = ({
     const startTime = convertToUTCTime(firstTabDate.clone());
     const endTime = convertToUTCTime(firstTabDate.clone().add(TAB_NUM, "days"));
     setMeta(value);
-    getAllSessions(startTime, endTime, value);
+    getAllSessions({ startTime, endTime, meta: value });
   };
 
   // const goToPrevPage = () => {
@@ -135,10 +134,16 @@ const GlobalConference = ({
   const showModalMessage = (message) => {
     setMessageAdmin(message);
     setModalMessageVisible(true);
-    setTimeout(() => {
-      setModalMessageVisible(false);
-    }, 5000);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (modalMessageVisible) {
+        setModalMessageVisible(false);
+      }
+    }, 60000);
+    return () => clearTimeout(timer);
+  }, [modalMessageVisible]);
 
   useEffect(() => {
     if (firstTabDate) {
@@ -147,7 +152,7 @@ const GlobalConference = ({
       const endTime = convertToUTCTime(
         firstTabDate.clone().add(TAB_NUM, "days")
       );
-      getAllSessions(startTime, endTime);
+      getAllSessions({ startTime, endTime });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,6 +179,16 @@ const GlobalConference = ({
       };
     });
 
+    for (let i = 0; i < tData.length; i++) {
+      if (tData[i].title === moment().format("MMM DD")) {
+        setCurrentTab(`${i}`);
+        setSelectTab(tData[i].title);
+        break;
+      }
+
+      setCurrentTab(`${tData.length - 1}`);
+      setSelectTab(tData[tData.length - 1].title);
+    }
     setTabData(tData);
   }, [firstTabDate, allSessions, filters, meta]);
 
@@ -192,6 +207,17 @@ const GlobalConference = ({
 
   const downloadPdf = async (option) => {
     setLoading(true);
+
+    if (option === "conference-schedule") {
+      const link = document.createElement("a");
+      link.download = "Conference Schedule.pdf";
+      link.href =
+        "https://hackinghr-lab-assets.s3.us-east-1.amazonaws.com/pdfs/A%20-%20Hacking%20HR%202022%20Global%20Conference%20-%20Schedule.pdf";
+      link.target = "_blank";
+      link.click();
+      setLoading(false);
+      return;
+    }
 
     if (sessionsUser.length < 1 && option === "personal-agenda") {
       setLoading(false);
@@ -229,12 +255,31 @@ const GlobalConference = ({
 
     await pdf.html(template);
 
+    if (option !== "conference-schedule") {
+      pdf.setFontSize(16);
+      pdf.text(120, 200, "SUGGESTED LINKS TO CHECK OUT (BY SPEAKERS)");
+      pdf.setFontSize(12);
+      pdf.text(
+        50,
+        230,
+        "This link includes a comprehensive list of references and learning material suggested by the\nconference speakers."
+      );
+      pdf.setFontSize(10);
+      pdf.setTextColor("#438cef");
+      pdf.textWithLink("Please click here", 50, 280, {
+        url: "https://docs.google.com/document/d/1RRy2yhPps3ebcYHVehtIsEkMN8NikrKDixdvIeVIPb0/edit?usp=sharing",
+      });
+
+      pdf.setTextColor("#000");
+      pdf.text(50, 320, "Thank you!");
+    }
+
     pdf.save(
       option === "personal-agenda"
         ? "Personalizated Agenda.pdf"
         : option === "conference-schedule"
         ? "Conference Schedule.pdf"
-        : "Report sessions joined"
+        : "Personalized Participation Report.pdf"
     );
 
     setLoading(false);
@@ -276,6 +321,14 @@ const GlobalConference = ({
   if (userProfile.percentOfCompletion && userProfile.percentOfCompletion < 100)
     return <Redirect to="/" />;
 
+  const handleCustomTab = (tabTitle, tabIndex) => {
+    globalConferenceRef.current.scrollTo({
+      top: 0,
+    });
+    setCurrentTab(`${tabIndex}`);
+    setSelectTab(tabTitle);
+  };
+
   return (
     <div className="global-conference">
       <GlobalConferenceFilterPanel
@@ -288,6 +341,7 @@ const GlobalConference = ({
         setModalRequirementsVisible={setModalRequirementsVisible}
         setModalVisibleWelcomingMessage={setModalVisibleWelcomingMessage}
         downloadPdf={downloadPdf}
+        setModalVisibleCertificate={setModalVisibleCertificate}
       />
       <FilterDrawer
         onChange={onFilterChange}
@@ -298,7 +352,6 @@ const GlobalConference = ({
         onInviteColleague={onInviteColleague}
         setModalRequirementsVisible={setModalRequirementsVisible}
       />
-
       <div className="global-conference-container">
         <div className="global-conference-container-top-menu">
           <div className="global-conference__filters--button">
@@ -351,39 +404,60 @@ const GlobalConference = ({
                 />
 
                 <CustomButton
-                  text="Welcoming Message"
+                  text="Things You Need To Know"
                   size="xs"
                   style={{ padding: "0px 35px", marginTop: "12px" }}
                   onClick={() => setModalVisibleWelcomingMessage(true)}
                 />
-                {/* <CustomButton
+                <CustomButton
                   size="xs"
                   text="Download Full Schedule"
                   style={{ marginTop: "12px", padding: "0px 22px" }}
                   onClick={() => downloadPdf("conference-schedule")}
-                /> */}
+                />
 
-                {localPathname === "personal-agenda" && (
-                  <>
-                    <CustomButton
-                      size="xs"
-                      text="Download Personalized Agenda"
-                      style={{ marginTop: "12px", padding: "0px 0px" }}
-                      onClick={() => downloadPdf("personal-agenda")}
-                    />
+                {/* {localPathname === "personal-agenda" && (
+                  <CustomButton
+                    size="xs"
+                    text="Download Personalized Agenda"
+                    style={{ marginTop: "12px", padding: "0px 0px" }}
+                    onClick={() => downloadPdf("personal-agenda")}
+                    ƒ
+                  />
+                )} */}
 
-                    {moment().date() >= 7 &&
-                      moment().month() >= 2 &&
-                      moment().year >= 2022 && (
-                        <CustomButton
-                          size="xs"
-                          text="Download Personalized Participation Report"
-                          style={{ marginTop: "12px", padding: "0px 0px" }}
-                          onClick={() => downloadPdf("report-sessions-joined")}
-                        />
-                      )}
-                  </>
-                )}
+                <CustomButton
+                  size="xs"
+                  text="Download Participation Report"
+                  className="button-participation-report"
+                  onClick={() => {
+                    if (moment().weeks() <= 13) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 21",
+                      });
+                    }
+                    downloadPdf("report-sessions-joined");
+                  }}
+                />
+
+                <CustomButton
+                  size="xs"
+                  text="Download Certificate"
+                  style={{
+                    marginTop: "12px",
+                    padding: "0px 46px",
+                  }}
+                  onClick={() => {
+                    if (moment().weeks() <= 12) {
+                      return notification.info({
+                        message: "Coming soon",
+                        description: "Available On March 14",
+                      });
+                    }
+                    setModalVisibleCertificate(true);
+                  }}
+                />
               </div>
             )}
           </div>
@@ -452,6 +526,28 @@ const GlobalConference = ({
                 </Link>
               </Menu.Item>
             </Menu>
+
+            {!childrenWithFilterProp && (
+              <Menu
+                mode="horizontal"
+                className="sub-menu"
+                selectedKeys={selectTab}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {tabData.map((tab, index) => (
+                  <Menu.Item
+                    key={tab.title}
+                    className={`sub-menu-item-global-conference-fake-tabs`}
+                    onClick={() => {
+                      handleCustomTab(tab.title, index);
+                    }}
+                  >
+                    {tab.title}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            )}
+
             {/* <div style={{ display: "flex" }}>
               <CustomButton
                 type="primary outlined"
@@ -471,7 +567,7 @@ const GlobalConference = ({
         {childrenWithFilterProp ? (
           childrenWithFilterProp
         ) : (
-          <div className="global-conference-tabs">
+          <div className="global-conference-tabs" ref={globalConferenceRef}>
             <Tabs
               data={tabData}
               current={currentTab}
@@ -480,24 +576,20 @@ const GlobalConference = ({
           </div>
         )}
       </div>
-
       <CreateBonfireModal
         visible={createBonfireModalVisible}
         onCancel={() => setCreateBonfireModalVisible(false)}
       />
-
       <InviteColleaguesFormModal
         visible={modalFormInviteColleaguesVisible}
         onCancel={() => {
           setModalFormInviteColleaguesVisible(false);
         }}
       />
-
       <AccessibilityRequirementsModal
         visible={modalRequirementsVisible}
         onCancel={() => setModalRequirementsVisible(false)}
       />
-
       <CustomModal
         visible={modalMessageVisible}
         title="Attention!"
@@ -506,21 +598,78 @@ const GlobalConference = ({
       >
         <div dangerouslySetInnerHTML={{ __html: messageAdmin.html }} />
       </CustomModal>
-
       <RecommendedAgendaModal
         visible={modalRecommendeAgendaVisible}
         onCancel={() => setModalRecommendeAgendaVisible(false)}
       />
+      <ThingsYouNeedToKnow
+        visible={modalVisibleWelcomingMessage}
+        onCancel={() => setModalVisibleWelcomingMessage(false)}
+      />
+      `
+      <Certificate
+        visible={modalVisibleCertificate}
+        onCancel={() => {
+          setModalVisibleCertificate(false);
+          setModalCloseConferenceVisible(true);
+        }}
+        sessionsUserJoined={sessionsUserJoined}
+      />
 
       <CustomModal
-        visible={modalVisibleWelcomingMessage}
-        title="Welcome to Hacking HR 2022"
-        width={500}
-        onCancel={() => setModalVisibleWelcomingMessage(false)}
+        visible={modalCloseConferenceVisible}
+        title="Thank you so much for joining the Hacking HR 2022 Global Online Conference."
+        onCancel={() => history.goBack()}
+        width={650}
       >
-        <p className="global-conference-description">{Description}</p>
-      </CustomModal>
+        <p>
+          The Global Conference application is closed (until 2023!). The videos
+          from the tracks and their panels will be available on March 21st in
+          the Conference Library (see the left hand menu. For now, only 2020 and
+          2021 videos are available).
+        </p>
 
+        <p>
+          You can download your Digital Certificate of Participation in the
+          button below, only if you participated in at least one session at the
+          Hacking HR 2022 Global Online Conference. The Digital Certificate is
+          not applicable to those who only watch the recorded sessions after the
+          conference.
+        </p>
+
+        <p>
+          For the HR credits corresponding to the sessions you watch during the
+          conference: a Personalized Participation Report will be available on
+          March 21st. It will show you all the sessions you joined and the
+          corresponding codes (ONLY if you are a PREMIUM member in the LAB,
+          otherwise the credit codes will not be visible). For those who want to
+          earn HR credits for watching the recorded videos you will be able to
+          do so by clicking on CLAIM credits after watching the sessions.
+        </p>
+
+        <p>Thank you!</p>
+
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          {userProfile?.sessionsJoined?.length > 0 ? (
+            <CustomButton
+              size="md"
+              text="Download Certificate"
+              onClick={() => {
+                setModalVisibleCertificate(true);
+                setModalCloseConferenceVisible(false);
+              }}
+            />
+          ) : (
+            <CustomButton
+              size="md"
+              text="Close"
+              onClick={() => history.goBack()}
+            />
+          )}
+        </div>
+      </CustomModal>
       <AcceptTermsAndConditions />
     </div>
   );

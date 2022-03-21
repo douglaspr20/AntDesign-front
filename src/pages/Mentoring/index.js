@@ -49,14 +49,24 @@ const Mentoring = ({
   getMoreMentorList,
   getMoreMenteeList,
   setMatch,
+  isUserPremium,
 }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [selectedType, setSelectedType] = useState("mentor");
   const [drawerState, setDrawerState] = useState({});
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const showSetting = (type) => {
-    setOpenSetting(true);
-    setSelectedType(type);
+    if (isUserPremium) {
+      setOpenSetting(true);
+      setSelectedType(type);
+    } else {
+      setShowFirewall(true);
+    }
+  };
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
 
   const onSaveMentorSetting = (data) => {
@@ -283,6 +293,19 @@ const Mentoring = ({
           </div>
         </div>
       )}
+      {showFirewall && (
+        <div
+          className="mentoring-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              Upgrade to a PREMIUM Membership and get unlimited access to the
+              LAB features
+            </h3>
+          </div>
+        </div>
+      )}
       <MemberDrawer
         {...drawerState}
         onClose={onDrawerClose}
@@ -304,6 +327,7 @@ const mapStateToProps = (state) => {
   return {
     isMentor: !!homeSelector(state).userProfile.mentor,
     isMentee: !!homeSelector(state).userProfile.mentee,
+    isUserPremium: homeSelector(state).userProfile.memberShip === "premium",
     ...mentoringSelector(state),
   };
 };

@@ -1,9 +1,11 @@
 @import "../../../styles/main.scss";
 
 .conference-leaderboard {
-  margin-top: 3rem;
+  margin-top: 2rem;
   width: 1000px;
   position: relative;
+  height: calc(100vh - 72px);
+  overflow: auto;
 
   @media (max-width: 1100px) {
     margin-top: 23rem;
