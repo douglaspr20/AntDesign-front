@@ -9,6 +9,7 @@ import qs from "query-string";
 
 import { actions as councilCommentActions } from "redux/actions/council-conversation-comment-actions";
 import { authSelector } from "redux/selectors/authSelector";
+import { councilConversationSelector } from "redux/selectors/councilConversationSelector";
 
 import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.svg";
 import { ReactComponent as IconChatBubblesOutline } from "images/icon-chatbubbles-outline.svg";
@@ -23,6 +24,7 @@ const CouncilComment = ({
   enableReply,
   upsertCouncilConversationComment,
   deleteCouncilConversationComment,
+  councilConversation
 }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showEditForm, setEditForm] = useState(false);
@@ -35,11 +37,13 @@ const CouncilComment = ({
     deleteCouncilConversationComment(data.id, parsed.id);
   };
 
+  console.log(councilConversation, 'councilConversation')
+
   const handleOnFinish = (values) => {
     upsertCouncilConversationComment({
       ...values,
       id: data.id,
-      CouncilConversationId: parsed.id,
+      CouncilConversationId: councilConversation.id,
     });
 
     form.resetFields();
@@ -127,6 +131,7 @@ const CouncilComment = ({
 
 const mapStateToProps = (state) => ({
   userId: authSelector(state).id,
+  ...councilConversationSelector(state)
 });
 
 const mapDispatchToProps = {

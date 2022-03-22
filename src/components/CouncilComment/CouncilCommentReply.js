@@ -4,12 +4,11 @@ import { Popconfirm, Comment, Avatar, Form } from "antd";
 import moment from "moment-timezone";
 import { EditOutlined } from "@ant-design/icons";
 import { CustomInput, CustomButton } from "components";
-import { useLocation } from "react-router-dom";
-import qs from "query-string";
 
 import { ReactComponent as IconTrashOutline } from "images/icon-trash-outline.svg";
 import { actions as councilConversationReplyActions } from "redux/actions/council-conversation-reply-actions";
 
+import { councilConversationSelector } from "redux/selectors/councilConversationSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import "./style.scss";
@@ -18,15 +17,14 @@ const CouncilConversationCommentReply = ({
   userProfile,
   data,
   upsertCouncilConversationReply,
-  deleteCouncilConversationReply
+  deleteCouncilConversationReply,
+  councilConversation
 }) => {
   const [isEditResponse, setIsEditResponse] = useState(false);
   const [form] = Form.useForm();
-  const location = useLocation();
-  const parsed = qs.parse(location.search);
 
   const handleDeleteResponse = () => {
-    deleteCouncilConversationReply(data.id, parsed.id)
+    deleteCouncilConversationReply(data.id, councilConversation.id)
   };
 
   const handleOnFinish = (values) => {
@@ -34,7 +32,7 @@ const CouncilConversationCommentReply = ({
       ...values,
       id: data.id,
       CouncilConversationCommentId: data.CouncilConversationCommentId,
-      CouncilConversationId: parsed.id,
+      CouncilConversationId: councilConversation.id,
     });
 
     form.resetFields();
@@ -93,6 +91,7 @@ const CouncilConversationCommentReply = ({
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  ...councilConversationSelector(state)
 });
 
 const mapDispatchToProps = {
