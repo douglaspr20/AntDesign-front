@@ -6,7 +6,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { TIMEZONE_LIST } from "enum";
 import { convertToLocalTime } from "utils/format";
 
-const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
+const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status }) => {
   const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
   const offset = timezone.offset;
 
@@ -149,7 +149,7 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz }) => {
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {displayJoinBtn}
+        {status !== "closed" && displayJoinBtn}
         {hasJoined && (
           <div style={{ marginTop: "1rem" }}>
             <Dropdown overlay={downloadDropdownOptions}>

@@ -192,6 +192,7 @@ const CouncilEvents = ({
       userProfile={userProfile}
       joinCouncilEvent={joinCouncilEvent}
       tz={event.timezone}
+      status={event.status}
     />
   ));
 

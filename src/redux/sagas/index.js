@@ -40,6 +40,10 @@ import { businessPartnerCommentSaga } from "./businessPartnerComments";
 import { advertisementSaga } from "./advertisement";
 import { matchmakeSaga } from "./matchmaking";
 import { councilEventSaga } from "./councilEvent";
+import { councilConversationSaga } from "./councilConversation";
+import { councilConversationCommentSaga } from "./councilConversationComment";
+import { councilConversationReplySaga } from "./councilConversationReply"
+import { councilConversationLikeSaga } from "./councilConversationLike"
 
 export default function* sagas() {
   yield all([
@@ -84,5 +88,9 @@ export default function* sagas() {
     ...advertisementSaga,
     ...matchmakeSaga,
     ...councilEventSaga,
+    ...councilConversationSaga,
+    ...councilConversationCommentSaga,
+    ...councilConversationReplySaga,
+    ...councilConversationLikeSaga
   ]);
 }
