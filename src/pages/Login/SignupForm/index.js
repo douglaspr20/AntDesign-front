@@ -58,6 +58,12 @@ const SignupForm = ({ step }) => {
                 message: "Please enter your email!",
               },
               {
+                required: true,
+                type: "regexp",
+                pattern: new RegExp(/^\S*$/),
+                message: "The blank spaces are not allowed"
+              },
+              {
                 type: "email",
                 message: "Please enter the valid email!",
               },
@@ -72,6 +78,10 @@ const SignupForm = ({ step }) => {
               {
                 required: true,
                 message: "Please enter your email!",
+              },
+              {
+                pattern: new RegExp(/^\S*$/),
+                message: "The blank spaces are not allowed"
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
