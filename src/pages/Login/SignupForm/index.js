@@ -9,7 +9,7 @@ import {
   CustomCheckbox,
   CustomSelect,
 } from "components";
-import { COUNTRIES, PROFILE_SETTINGS } from "enum";
+import { COUNTRIES, PROFILE_SETTINGS, LANGUAGES } from "enum";
 
 import { isValidPassword } from "utils/format";
 
@@ -20,6 +20,8 @@ const JobLevels = PROFILE_SETTINGS.JOB_LEVELS;
 const WorkAreas = PROFILE_SETTINGS.WORK_AREAS;
 
 const OrgSizes = PROFILE_SETTINGS.ORG_SIZES;
+
+const Languages = LANGUAGES.ParsedLanguageData;
 
 const SignupForm = ({ step }) => {
   return (
@@ -61,7 +63,8 @@ const SignupForm = ({ step }) => {
                 required: true,
                 type: "regexp",
                 pattern: new RegExp(/^\S*$/),
-                message: "Blank spaces are not allowed. Please remove the blank space at the end of your email"
+                message:
+                  "Blank spaces are not allowed. Please remove the blank space at the end of your email",
               },
               {
                 type: "email",
@@ -81,7 +84,8 @@ const SignupForm = ({ step }) => {
               },
               {
                 pattern: new RegExp(/^\S*$/),
-                message: "Blank spaces are not allowed. Please remove the blank space at the end of your email"
+                message:
+                  "Blank spaces are not allowed. Please remove the blank space at the end of your email",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -188,24 +192,75 @@ const SignupForm = ({ step }) => {
         </React.Fragment>
       )}
       {step === 1 && (
-        <Form.Item
-          label="What best defines your current or most recent job level?"
-          name="recentJobLevel"
-          rules={[
-            {
-              required: true,
-              message: "Please select one!",
-            },
-          ]}
-        >
-          <Radio.Group className="d-flex flex-column form-job-level">
-            {JobLevels.map((job) => (
-              <CustomRadio key={job.value} value={job.value}>
-                {job.label}
-              </CustomRadio>
-            ))}
-          </Radio.Group>
-        </Form.Item>
+        <>
+          <Form.Item
+            name="titleProfessions"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <CustomInput placeholder="Title" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            name="company"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <CustomInput placeholder="Company" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            name="languages"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <CustomSelect
+              placeholder="Main language"
+              className="border"
+              showSearch
+              options={Languages}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            name="city"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <CustomInput placeholder="City" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            label="What best defines your current or most recent job level?"
+            name="recentJobLevel"
+            rules={[
+              {
+                required: true,
+                message: "Please select one!",
+              },
+            ]}
+          >
+            <Radio.Group className="d-flex flex-column form-job-level">
+              {JobLevels.map((job) => (
+                <CustomRadio key={job.value} value={job.value}>
+                  {job.label}
+                </CustomRadio>
+              ))}
+            </Radio.Group>
+          </Form.Item>
+        </>
       )}
       {step === 2 && (
         <Form.Item
