@@ -16,6 +16,21 @@ export const reducers = {
       conversation: payload.conversation,
     });
   },
+  [conversationConstants.UPDATE_CONVERSATION]: (state, { payload }) => {
+    const allConversations = state.get("conversations");
+
+    const conversationsUpdate = allConversations.map((conversation) =>
+      conversation.id === payload.conversation.id
+        ? {
+            ...payload.conversation,
+            messages: conversation.messages,
+          }
+        : conversation
+    );
+    return state.merge({
+      conversations: conversationsUpdate,
+    });
+  },
 };
 
 export const initialState = () =>

@@ -30,6 +30,7 @@ const ACCEPT_TERMS_CONDITIONS_GCONFERENCE =
 const VIEW_RULES_G_CONFERENCE = "VIEW_RULES_G_CONFERENCE";
 const COUNT_ALL_USERS = "COUNT_ALL_USERS";
 const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
+const HANDLE_ONLINE = "HANDLE_ONLINE";
 
 export const constants = {
   SET_LOADING,
@@ -60,6 +61,7 @@ export const constants = {
   VIEW_RULES_G_CONFERENCE,
   COUNT_ALL_USERS,
   SET_ALL_COUNT_USERS,
+  HANDLE_ONLINE,
 };
 
 // ------------------------------------
@@ -156,6 +158,8 @@ export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({
   userCount,
 }));
 
+export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
+
 export const actions = {
   setLoading,
   updateUserInformation,
@@ -183,4 +187,5 @@ export const actions = {
   viewRulesGConference,
   countAllUsers,
   setCountUsers,
+  handleOnline,
 };

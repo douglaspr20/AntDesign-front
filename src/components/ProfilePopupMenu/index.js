@@ -10,12 +10,13 @@ import { isValidPassword } from "utils/format";
 import { CustomButton, CustomModal, CustomInput } from "components";
 import { EVENT_TYPES, USER_ROLES, INTERNAL_LINKS } from "enum";
 import Emitter from "services/emitter";
-
+import SocketIO from "services/socket";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as authActions } from "redux/actions/auth-actions";
 import { actions as homeActions } from "redux/actions/home-actions";
 import UploadResumeModal from "../UploadResumeModal";
 import AdvertisementPaymentModal from "../../containers/AdvertiserPaymentModal";
+import SocketEventTypes from "enum/SocketEventTypes";
 
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
@@ -121,6 +122,9 @@ const ProfilePopupMenu = (props) => {
   };
 
   const onLogout = () => {
+    SocketIO.emit(SocketEventTypes.USER_OFFLINE, {
+      id: userProfile.id,
+    });
     logout();
   };
 

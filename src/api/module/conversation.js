@@ -8,6 +8,10 @@ export const getConversations = ({ id }) => {
   return httpClient.get(`private/conversations/${id}`);
 };
 
+export const getConversation = ({ conversationId }) => {
+  return httpClient.get(`private/conversation/${conversationId}`);
+};
+
 export const readMessages = ({ id, ConversationId }) => {
   return httpClient.put(`private/messages/${ConversationId}`, {
     userId: id,

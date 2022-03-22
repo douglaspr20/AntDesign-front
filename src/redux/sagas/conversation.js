@@ -11,6 +11,7 @@ import {
   getConversations,
   readMessages,
   getMoreMessages,
+  getConversation,
 } from "../../api";
 
 export function* createConversationSaga({ payload }) {
@@ -117,6 +118,73 @@ export function* getConversationsSaga({ payload }) {
 
 export function* getConversationSaga({ payload }) {
   try {
+    const response = yield call(getConversation, { ...payload });
+
+    if (response.status === 200) {
+      const [conversationData] = Object.values(
+        groupBy(response.data.conversation || [], "id")
+      ).map((conversation) => {
+        const newConversation = conversation.reduce(
+          (res, item) => ({
+            ...res,
+            ...omit(item, [
+              "userid",
+              "abbrName",
+              "email",
+              "firstName",
+              "lastname",
+              "img",
+              "timezone",
+              "messageid",
+              "ConversationId",
+              "sender",
+              "text",
+              "messagedate",
+              "viewedUser",
+              "isOnline",
+            ]),
+            members: [
+              ...(res.members || []),
+              {
+                id: item.userid,
+                abbrName: item.abbrName,
+                email: item.email,
+                firstName: item.firstName,
+                lastName: item.lastName,
+                img: item.img,
+                timezone: item.timezone,
+                isOnline: item.isOnline,
+              },
+            ],
+            messages: [
+              ...(res.messages || []),
+              item.messageid && {
+                id: item.messageid,
+                ConversationId: item.ConversationId,
+                sender: item.sender,
+                text: item.text,
+                messageDate: item.messagedate,
+                viewedUser: item.viewedUser,
+              },
+            ],
+          }),
+          {}
+        );
+
+        const membersReduce = (newConversation.members || []).filter(
+          (member, index, self) =>
+            index === self.findIndex((m) => m.id === member.id)
+        );
+
+        return {
+          ...newConversation,
+          messages: { ...conversation.messages },
+          members: membersReduce,
+        };
+      });
+
+      yield put(conversationActions.updateConversation(conversationData));
+    }
   } catch (error) {
     console.log(error);
 

@@ -20,6 +20,14 @@ const Chat = ({
 }) => {
   const [currentConversations, setCurrentConversations] = useState([]);
 
+  useEffect(() => {
+    if (userProfile?.isOnline === false) {
+      SocketIO.emit(SOCKET_EVENT_TYPE.USER_ONLINE, {
+        id: userProfile.id,
+      });
+    }
+  }, [userProfile]);
+
   const handleConversation = (conversation) => {
     if (
       conversation.messages.find(
@@ -298,21 +306,33 @@ const Chat = ({
         />
       ))}
 
-      <div className="conversations">
-        {conversations.map((conversation) => {
-          const otherMember = conversation.members.find(
-            (member) => member.id !== userProfile.id
-          );
+      <div
+        className={`conversations ${
+          userProfile.memberShip === "free" ? "conversations-not-available" : ""
+        }`}
+      >
+        {userProfile.memberShip === "free" ? (
+          <>
+            <h2>Update your account to start chatting with other members</h2>
+          </>
+        ) : (
+          <>
+            {conversations.map((conversation) => {
+              const otherMember = conversation.members.find(
+                (member) => member.id !== userProfile.id
+              );
 
-          return (
-            <Conversation
-              key={conversation.id}
-              user={otherMember}
-              conversation={conversation}
-              handleConversation={handleConversation}
-            />
-          );
-        })}
+              return (
+                <Conversation
+                  key={conversation.id}
+                  user={otherMember}
+                  conversation={conversation}
+                  handleConversation={handleConversation}
+                />
+              );
+            })}
+          </>
+        )}
       </div>
     </>
   );

@@ -25,8 +25,15 @@ import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
-import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
-import { getConversations } from "redux/actions/conversation-actions";
+import {
+  upgradePlan,
+  inviteFriend,
+  handleOnline,
+} from "redux/actions/home-actions";
+import {
+  getConversations,
+  getConversation,
+} from "redux/actions/conversation-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { getLive } from "redux/actions/live-actions";
@@ -39,7 +46,7 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
 import "./App.scss";
-import SocketEventTypes from "enum/SocketEventTypes";
+
 const Chat = lazy(() => import("components/Chat"));
 const ChatMobile = lazy(() => import("components/ChatMobile"));
 
@@ -137,35 +144,39 @@ class App extends Component {
       this.props.getConversations(curUser.id);
     }
 
-    if (
-      !window.location.pathname.includes("/global-conference") &&
-      this.props.userProfile.id
-    ) {
-      SocketIO.emit(SocketEventTypes.USER_OFFLINE, {
-        id: this.props.userProfile.id,
-      });
-    }
-
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, () => {
       this.props.getConversations(this.props.userProfile.id);
       this.setState({ openChat: true });
     });
+
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
-      if (
-        user.id === this.props.userProfile.id ||
-        this.props.conversations.length === 0
-      )
-        return;
-      this.props.getConversations(this.props.userProfile.id);
+      if (user?.id === this.props?.userProfile?.id) {
+        this.props.handleOnline(user);
+      } else if (
+        user?.id !== this.props?.userProfile?.id &&
+        this.props.conversations.length > 0
+      ) {
+        const conversationToUpdate = this.props.conversations.find(
+          (conversation) =>
+            conversation.members.some((member) => member.id === user.id)
+        );
+        this.props.getConversation(conversationToUpdate.id);
+      }
     });
 
     SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
-      if (
-        user.id === this.props.userProfile.id ||
-        this.props.conversations.length === 0
-      )
-        return;
-      this.props.getConversations(this.props.userProfile.id);
+      if (user?.id === this.props?.userProfile?.id) {
+        this.props.handleOnline(user);
+      } else if (
+        user?.id !== this.props?.userProfile?.id &&
+        this.props.conversations.length > 0
+      ) {
+        const conversationToUpdate = this.props.conversations.find(
+          (conversation) =>
+            conversation.members.some((member) => member.id === user.id)
+        );
+        this.props.getConversation(conversationToUpdate.id);
+      }
     });
   }
 
@@ -237,15 +248,11 @@ class App extends Component {
             <div style={{ display: "flex", position: "relative" }}>
               <Content />
               <Suspense fallback={<div />}>
-                {(window.location.pathname.includes("/global-conference") ||
-                  window.location.pathname.includes("/session")) &&
-                window.screen.width > 1000 &&
-                this.props.conversations.length > 0 ? (
+                {window.screen.width > 1000 &&
+                window.location.pathname !== "/login" ? (
                   <Chat conversations={this.props.conversations} />
-                ) : (window.location.pathname.includes("/global-conference") ||
-                    window.location.pathname.includes("/session")) &&
-                  window.screen.width < 1000 &&
-                  this.props.conversations.length > 0 ? (
+                ) : window.screen.width < 1000 &&
+                  window.location.pathname !== "/login" ? (
                   <ChatMobile
                     conversations={this.props.conversations}
                     openChat={openChat}
@@ -318,9 +325,11 @@ const mapDispatchToProps = {
   inviteFriend,
   getCategories,
   getConversations,
+  getConversation,
   getChannelCategories,
   getLive,
   pushNotification,
+  handleOnline,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

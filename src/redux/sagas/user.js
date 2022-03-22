@@ -598,6 +598,16 @@ export function* countAllUsersSaga() {
   }
 }
 
+export function* handleOnlineSaga({ payload }) {
+  try {
+    if (payload) {
+      yield put(homeActions.updateUserInformation(payload.user));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -639,6 +649,7 @@ function* watchLogin() {
     viewRulesGConferenceSaga
   );
   yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
+  yield takeLatest(homeConstants.HANDLE_ONLINE, handleOnlineSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

@@ -15,8 +15,12 @@
         width: 5px;
         display: none
       }
-      
 
+    &-not-available{
+     background: $color-disabled;
+     display: flex;
+    padding: 15% 0;
+    }
 }
 
 .chat{  

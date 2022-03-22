@@ -207,6 +207,7 @@ import {
   getConversations,
   readMessages,
   getMoreMessages,
+  getConversation,
 } from "./module/conversation";
 
 import {
@@ -389,4 +390,5 @@ export {
   getMatchmake,
   editAdvertisement,
   sendMatchEmail,
+  getConversation,
 };
