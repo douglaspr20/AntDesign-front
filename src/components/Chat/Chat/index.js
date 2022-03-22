@@ -66,17 +66,17 @@ const Chat = React.memo(
           >
             {otherUser.img ? (
               <div
-              // className={`${
-              //   otherUser.isOnline === true ? "avatar-container" : ""
-              // }`}
+                className={`${
+                  otherUser.isOnline === true ? "avatar-container" : ""
+                }`}
               >
                 <Avatar size={40} src={otherUser.img} />
               </div>
             ) : (
               <div
-              // className={`${
-              //   otherUser.isOnline === true ? "avatar-container" : ""
-              // }`}
+                className={`${
+                  otherUser.isOnline === true ? "avatar-container" : ""
+                }`}
               >
                 <Avatar
                   size={40}
@@ -93,9 +93,9 @@ const Chat = React.memo(
                 {otherUser.firstName} {otherUser.lastName}
               </p>
 
-              {/* {otherUser.isOnline && (
+              {otherUser.isOnline && (
                 <p style={{ marginBottom: 0, fontSize: ".7rem" }}>Active now</p>
-              )} */}
+              )}
             </div>
           </div>
 

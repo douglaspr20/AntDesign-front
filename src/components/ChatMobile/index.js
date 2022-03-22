@@ -157,36 +157,6 @@ const ChatMobile = ({
     });
   }, [currentConversation, userProfile]);
 
-  // useMemo(() => {
-  //   SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
-  //     if (user.id === userProfile.id && !currentConversation.members) return;
-
-  //     const newMembers = currentConversation.members.map((member) => {
-  //       if (member.id === user.id) {
-  //         return {
-  //           id: user.id,
-  //           abbrName: user.abbrName,
-  //           email: user.email,
-  //           firstName: user.firstName,
-  //           img: user.img,
-  //           isOnline: user.isOnline,
-  //           lastName: user.lastName,
-  //           timezone: user.timezone,
-  //         };
-  //       }
-
-  //       return {
-  //         ...member,
-  //       };
-  //     });
-
-  //     setCurrentConversation({
-  //       ...currentConversation,
-  //       members: newMembers,
-  //     });
-  //   });
-  // }, [currentConversation, userProfile]);
-
   const BadgeProps = {
     count: messasgesNotViewed > 0 ? messasgesNotViewed : null,
   };
