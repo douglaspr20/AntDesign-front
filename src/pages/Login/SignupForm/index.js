@@ -198,6 +198,7 @@ const SignupForm = ({ step }) => {
             rules={[
               {
                 required: true,
+                message: "Please enter your title!",
               },
             ]}
           >
@@ -208,6 +209,7 @@ const SignupForm = ({ step }) => {
             rules={[
               {
                 required: true,
+                message: "Please enter your company!",
               },
             ]}
           >
@@ -218,6 +220,7 @@ const SignupForm = ({ step }) => {
             rules={[
               {
                 required: true,
+                message: "Please select one!",
               },
             ]}
           >
@@ -237,6 +240,7 @@ const SignupForm = ({ step }) => {
             rules={[
               {
                 required: true,
+                message: "Please enter your city!",
               },
             ]}
           >
