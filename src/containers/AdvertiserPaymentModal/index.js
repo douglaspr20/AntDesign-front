@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { CustomModal } from "components";
 import { loadStripe } from "@stripe/stripe-js";
 import { CustomButton } from "components";
-import { Alert } from "antd";
+import { Alert, Form, Select } from "antd";
 import { STRIPE_PRICES } from "enum";
 
 import { getCheckoutSession } from "api/module/stripe";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
+const Option = Select;
+
 const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
   const [loading, setLoading] = useState(false);
   const [checkoutSessionError, setCheckoutSessionError] = useState(false);
   const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
   const [stripe, setStripe] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     instanceStripe();
@@ -43,15 +46,17 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
       }
 
       if (isBuyingCredits) {
-        const credit = STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.find(
-          (cred) => cred.credits === credits
-        );
+        if (credits) {
+          const prices = STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.find(
+            (p) => p.credits === credits
+          );
 
-        if (credit) {
+          console.log('prices', prices)
+
           sessionData = await getCheckoutSession({
             isBuyingCredits: true,
             credits: credits,
-            prices: [credit.priceId],
+            prices: [prices.priceId],
           });
         }
       }
@@ -64,32 +69,72 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
     }
   };
 
-  const displayBuyCredits =
-    STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map((credit) => {
-      return (
-        <CustomButton
-          key={credit.credits}
-          type="primary"
-          loading={loading}
-          onClick={() =>
-            requestCheckoutSessionTable({
-              isBuyingCredits: true,
-              credits: credit.credits,
-            })
-          }
-          text={`Buy ${credit.credits} credits`}
-          block
-          style={{ marginTop: "1rem" }}
-        />
-      );
+  // const displayBuyCredits =
+  //   STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map((credit) => {
+  //     return (
+  //       <CustomButton
+  //         key={credit.credits}
+  //         type="primary"
+  //         loading={loading}
+  //         onClick={() =>
+  //           requestCheckoutSessionTable({
+  //             isBuyingCredits: true,
+  //             credits: credit.credits,
+  //           })
+  //         }
+  //         text={`Buy ${credit.credits} credits`}
+  //         block
+  //         style={{ marginTop: "1rem" }}
+  //       />
+  //     );
+  //   });
+
+  const handleOnFinish = (values) => {
+    setLoading(true);
+    let { advertisementCredits } = values;
+
+    requestCheckoutSessionTable({
+      isBuyingCredits: true,
+      credits: advertisementCredits,
     });
+  };
 
   return (
-    <CustomModal visible={visible} onCancel={onClose}>
+    <CustomModal visible={visible} onCancel={onClose} title="Buy more credits!">
       {userProfile.isAdvertiser ? (
         <>
-          Buy more credits!
-          {displayBuyCredits}
+          <Form layout="vertical" onFinish={handleOnFinish} form={form}>
+            <Form.Item
+              label="Advertisement Credits"
+              name="advertisementCredits"
+              rules={[{ required: true }]}
+            >
+              <Select style={{ width: "100%" }}>
+                {STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map(
+                  (prices) => (
+                    <Option value={prices.credits}>{prices.credits} credits</Option>
+                  )
+                )}
+              </Select>
+            </Form.Item>
+            <Form.Item>
+              <CustomButton text="Buy" htmlType="submit" loading={loading} />
+            </Form.Item>
+          </Form>
+          {/* <CustomButton
+            key={credit.credits}
+            type="primary"
+            loading={loading}
+            onClick={() =>
+              requestCheckoutSessionTable({
+                isBuyingCredits: true,
+                credits: credit.credits,
+              })
+            }
+            text={`Buy ${credit.credits} credits`}
+            block
+            style={{ marginTop: "1rem" }}
+          /> */}
         </>
       ) : (
         <>

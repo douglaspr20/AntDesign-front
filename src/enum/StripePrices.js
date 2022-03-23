@@ -47,35 +47,41 @@ export default {
       priceId: process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_RECRUITER_ID,
     },
   ],
-  ADVERTISER_PRICE: [
-    {
-      price: "100",
-      country: "GLOBAL",
-      character: "&#36",
-      priceId: process.env.REACT_APP_STRIPE_ONE_TIME_ADVERTISER_ID,
-    },
-  ],
+  ADVERTISER_PRICE: {
+    price: "500",
+    country: "GLOBAL",
+    character: "&#36",
+    priceId: process.env.REACT_APP_STRIPE_ONE_TIME_ADVERTISER_ID,
+  },
   ADVERTISEMENT_CREDITS_STRIPE_PRICES: [
     {
-      price: "100",
-      credits: 10,
+      price: "150",
+      credits: "10",
       country: "GLOBAL",
       character: "&#36",
-      priceId: process.env.REACT_APP_STRIPE_ADVERTISER_CREDIT_10_CREDITS_ID,
+      priceId: process.env.REACT_APP_STRIPE_ADVERTISEMENT_CREDITS_10,
     },
     {
-      price: 200,
+      price: "260",
       credits: "20",
       country: "GLOBAL",
       character: "&#36",
-      priceId: process.env.REACT_APP_STRIPE_ADVERTISER_CREDIT_20_CREDITS_ID,
+      priceId: process.env.REACT_APP_STRIPE_ADVERTISEMENT_CREDITS_20,
     },
     {
-      price: "300",
-      credits: 30,
+      price: "360",
+      credits: "30",
       country: "GLOBAL",
       character: "&#36",
-      priceId: process.env.REACT_APP_STRIPE_ADVERTISER_CREDIT_30_CREDITS_ID,
+      priceId: process.env.REACT_APP_STRIPE_ADVERTISEMENT_CREDITS_30,
     },
+    {
+      price: "500",
+      credits: "50",
+      country: "GLOBAL",
+      character: "&#36",
+      priceId: process.env.REACT_APP_STRIPE_ADVERTISEMENT_CREDITS_50,
+    },
+   
   ],
 };
