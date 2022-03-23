@@ -106,6 +106,15 @@ const Chat = ({
             return newConversation;
           }
 
+          for (let i = 0; i < currentConversations.length; i++) {
+            if (
+              newConversation.members[i].isOnline !==
+              conversation.members[i].isOnline
+            ) {
+              return newConversation;
+            }
+          }
+
           return conversation;
         }
       );
@@ -113,6 +122,16 @@ const Chat = ({
       let canUpdate = false;
 
       for (let i = 0; i < currentConversations.length; i++) {
+        for (let j = 0; j < currentConversations[i].members.length; j++) {
+          if (
+            newCurrentConversations[i].members[j].isOnline !==
+            currentConversations[i].members[j].isOnline
+          ) {
+            canUpdate = true;
+            break;
+          }
+        }
+
         if (
           newCurrentConversations[i].messages.length !==
           currentConversations[i].messages.length
