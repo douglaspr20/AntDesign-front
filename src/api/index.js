@@ -216,6 +216,7 @@ import {
   deleteCouncilEvent,
   joinCouncilEvent,
   removeCouncilEventPanelist,
+  searchUserForCouncilEventPanelist,
 } from "./module/council-event";
 
 import {
@@ -416,4 +417,5 @@ export {
   deleteCouncilConversationReply,
   createCouncilConversationLike,
   deleteCouncilConversationLike,
+  searchUserForCouncilEventPanelist,
 };

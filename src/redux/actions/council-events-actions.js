@@ -8,6 +8,9 @@ const DELETE_COUNCIL_EVENT = "DELETE_COUNCIL_EVENT";
 const JOIN_COUNCIL_EVENT = "JOIN_COUNCIL_EVENT";
 const SET_JOIN_COUNCIL_EVENT = "SET_JOIN_COUNCIL_EVENT";
 const REMOVE_COUNCIL_EVENT_PANELIST = "REMOVE_COUNCIL_EVENT_PANELIST";
+const COUNCIL_EVENT_SEARCH_USER = "COUNCIL_EVENT_SEARCH_USER";
+const SET_SEARCHED_USERS_FOR_COUNCIL_EVENT =
+  "SET_SEARCHED_USERS_FOR_COUNCIL_EVENT";
 
 export const constants = {
   UPSERT_COUNCIL_EVENT,
@@ -18,6 +21,8 @@ export const constants = {
   JOIN_COUNCIL_EVENT,
   SET_JOIN_COUNCIL_EVENT,
   REMOVE_COUNCIL_EVENT_PANELIST,
+  COUNCIL_EVENT_SEARCH_USER,
+  SET_SEARCHED_USERS_FOR_COUNCIL_EVENT,
 };
 
 const upsertCouncilEvent = createAction(
@@ -38,8 +43,9 @@ const deleteCouncilEvent = createAction(
 );
 const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, status) => ({
+  (councilEventPanelId, UserId, status) => ({
     councilEventPanelId,
+    UserId,
     status,
   })
 );
@@ -54,6 +60,14 @@ const removeCouncilEventPanelist = createAction(
     CouncilEventPanelistId,
   })
 );
+const searchUserForCouncilEventPanelist = createAction(
+  COUNCIL_EVENT_SEARCH_USER,
+  (keyword) => ({ keyword })
+);
+const setSearchedUserForCouncilEventPanelist = createAction(
+  SET_SEARCHED_USERS_FOR_COUNCIL_EVENT,
+  (users) => ({ users })
+);
 
 export const actions = {
   upsertCouncilEvent,
@@ -64,4 +78,6 @@ export const actions = {
   joinCouncilEvent,
   setJoinCouncilEvent,
   removeCouncilEventPanelist,
+  searchUserForCouncilEventPanelist,
+  setSearchedUserForCouncilEventPanelist,
 };

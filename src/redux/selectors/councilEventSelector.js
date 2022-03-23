@@ -6,6 +6,7 @@ const resultSelector = createSelector(councilEventDataSelector, (payload) => {
   return {
     allCouncilEvents: payload.get("allCouncilEvents"),
     councilEvent: payload.get("councilEvent"),
+    searchedUsersForCouncilEvent: payload.get("searchedUsersForCouncilEvent")
   };
 });
 

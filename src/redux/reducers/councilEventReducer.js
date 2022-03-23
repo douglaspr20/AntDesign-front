@@ -49,12 +49,30 @@ export const reducers = {
       );
 
       if (panelIndex >= 0) {
-        newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex] = payload.councilEventPanel;
+        newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex] =
+          payload.councilEventPanel;
       }
     }
 
     return state.merge({
       allCouncilEvents: cloneDeep([...newAllCouncilEvents]),
+    });
+  },
+  [councilEventConstants.SET_SEARCHED_USERS_FOR_COUNCIL_EVENT]: (
+    state,
+    { payload }
+  ) => {
+
+    const options = payload.users.map((user) => {
+      return {
+        label: `${user.firstName} ${user.lastName} / ${user.email}`,
+        value: `${user.firstName} ${user.lastName} / ${user.email}`,
+        id: user.id,
+      };
+    });
+
+    return state.merge({
+      searchedUsersForCouncilEvent: options,
     });
   },
 };
@@ -63,6 +81,7 @@ export const initialState = () =>
   Map({
     allCouncilEvents: [],
     councilEvent: {},
+    searchedUsersForCouncilEvent: [],
   });
 
 export default handleActions(reducers, initialState());

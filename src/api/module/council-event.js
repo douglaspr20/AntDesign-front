@@ -27,3 +27,10 @@ export const removeCouncilEventPanelist = (payload) => {
     `private/council/event/panel/${payload.CouncilEventPanelId}/panelist/${payload.CouncilEventPanelistId}`
   );
 };
+
+export const searchUserForCouncilEventPanelist = (payload) => {
+  const keyword = encodeURIComponent(payload.keyword);
+
+  return httpClient.get(`private/council/event/search-user?keyword=${keyword}`);
+};
+

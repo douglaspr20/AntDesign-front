@@ -1,10 +1,16 @@
-import React from "react";
-import { Avatar, Dropdown, Menu } from "antd";
-import { CustomButton } from "components";
+import React, { useState } from "react";
+import { Avatar, Dropdown, Menu, Form, Popconfirm, AutoComplete } from "antd";
+import { CustomButton, CustomModal } from "components";
 import moment from "moment-timezone";
 import { DownOutlined } from "@ant-design/icons";
 import { TIMEZONE_LIST } from "enum";
 import { convertToLocalTime } from "utils/format";
+import { connect } from "react-redux";
+import { debounce } from "lodash";
+
+import { actions as councilEventActions } from "redux/actions/council-events-actions";
+import { councilEventSelector } from "redux/selectors/councilEventSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const CouncilEventPanel = ({
   panel,
@@ -13,8 +19,12 @@ const CouncilEventPanel = ({
   tz,
   status,
   removeCouncilEventPanelist,
-  maxNumberOfPanelsUsersCanJoin
+  searchUserForCouncilEventPanelist,
+  searchedUsersForCouncilEvent,
 }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+
   const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
   const offset = timezone.offset;
 
@@ -29,7 +39,7 @@ const CouncilEventPanel = ({
   );
 
   const handleJoinPanel = (panel, state) => {
-    joinCouncilEvent(panel.id, state);
+    joinCouncilEvent(panel.id, userProfile.id, state);
   };
 
   const onClickDownloadCalendar = (e) => {
@@ -98,22 +108,42 @@ const CouncilEventPanel = ({
     (panelist) => panelist.User.id === userProfile.id
   );
 
-  const displayJoinBtn = (hasJoined) ? (
+  const displayJoinBtn = hasJoined ? (
     <CustomButton
       text="Withdraw"
       onClick={() => handleJoinPanel(panel, "Unjoin")}
       type="third"
+      size="small"
     />
   ) : (
     <CustomButton
       text={isFull ? "Already Full" : "Join"}
       disabled={isFull}
       onClick={() => handleJoinPanel(panel, "Join")}
+      size="small"
     />
   );
 
   const handleRemovePanelist = (id) => {
     removeCouncilEventPanelist(panel.id, id);
+  };
+
+  const handleSearchUser = (values) => {
+    const runDebounce = debounce(() => {
+      searchUserForCouncilEventPanelist(values);
+    }, 1500);
+
+    runDebounce();
+  };
+
+  const handleOnFinish = (values) => {
+    const user = searchedUsersForCouncilEvent.find(
+      (_user) => _user.value === values.user
+    );
+
+    joinCouncilEvent(panel.id, user.id, "Join");
+    form.resetFields();
+    setIsModalVisible(false);
   };
 
   const displayPanelists = panel.CouncilEventPanelists.map((panelist) => {
@@ -125,16 +155,25 @@ const CouncilEventPanel = ({
         <div>{`${user.firstName} ${user.lastName}`}</div>
         <div>{user.titleProfessions}</div>
         {userProfile.isExpertCouncilAdmin && (
-          <CustomButton
-            text="Remove"
-            type="third"
-            size="small"
-            onClick={() => handleRemovePanelist(panelist.id)}
-          />
+          <Popconfirm
+            title="Do you want to remove this panelist?"
+            onConfirm={() => handleRemovePanelist(panelist.id)}
+          >
+            <CustomButton text="Remove" type="third" size="small" />
+          </Popconfirm>
         )}
       </div>
     );
   });
+
+  // console.log(panel.CouncilEventPanelists, "panel.CouncilEventPanelists");
+  // console.log(searchedUsersForCouncilEvent, 'searchedUsersForCouncilEvent')
+
+  const filteredSearchUser = searchedUsersForCouncilEvent.filter((user) =>
+    !panel.CouncilEventPanelists.some((panelist) => panelist.UserId === user.id)
+  );
+
+  console.log(filteredSearchUser, 'filteredSearchUser')
 
   return (
     <div
@@ -171,9 +210,18 @@ const CouncilEventPanel = ({
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {(status !== "closed") && displayJoinBtn}
+        {userProfile.isExpertCouncilAdmin && (
+          <CustomButton
+            size="small"
+            text="Add user"
+            style={{ marginBottom: "1rem" }}
+            type="secondary"
+            onClick={() => setIsModalVisible(true)}
+          />
+        )}
+        {status !== "closed" && displayJoinBtn}
         {hasJoined && (
-          <div style={{ marginTop: "1rem" }}>
+          <div style={{ marginTop: "5px" }}>
             <Dropdown overlay={downloadDropdownOptions}>
               <a
                 href="/#"
@@ -189,8 +237,40 @@ const CouncilEventPanel = ({
           </div>
         )}
       </div>
+      <CustomModal
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        title="Add user"
+        width={420}
+      >
+        <Form form={form} layout="vertical" onFinish={handleOnFinish}>
+          <Form.Item
+            name="user"
+            label="Search user"
+            required={[{ required: true }]}
+          >
+            <AutoComplete
+              size="large"
+              onSearch={handleSearchUser}
+              options={filteredSearchUser}
+            />
+          </Form.Item>
+          <Form.Item>
+            <CustomButton htmlType="submit" text="Add" block />
+          </Form.Item>
+        </Form>
+      </CustomModal>
     </div>
   );
 };
 
-export default CouncilEventPanel;
+const mapStateToProps = (state) => ({
+  ...councilEventSelector(state),
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {
+  ...councilEventActions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CouncilEventPanel);
