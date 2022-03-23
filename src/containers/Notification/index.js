@@ -86,6 +86,9 @@ const Notification = ({
       case "post":
         history.push(`${INTERNAL_LINKS.POST}/${noti.meta.dataValues.PostId}`);
         break;
+      case "council-conversation":
+        history.push(`${INTERNAL_LINKS.COUNCIL}?id=${noti.meta.dataValues.id}`);
+        break;
       default:
         break;
     }

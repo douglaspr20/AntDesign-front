@@ -127,6 +127,7 @@ const NotificationPage = ({
   };
 
   const renderNotification = (noti) => {
+    console.log('noti', noti)
     return (
       <div className="notification-list-item" key={noti.id}>
         <div className="notification-list-item-left">
@@ -194,6 +195,15 @@ const NotificationPage = ({
             onClick={() => markNotificationToRead([noti.id], userProfile.id)}
           >
             Go to the Post
+          </Link>
+        )}
+        {noti.type === "council-conversation" && (
+          <Link
+            className="notification-list-item-link"
+            to={`${INTERNAL_LINKS.COUNCIL}?id=${noti.meta.dataValues.id}`}
+            onClick={() => markNotificationToRead([noti.id], userProfile.id)}
+          >
+            Go to the Conversation
           </Link>
         )}
       </div>

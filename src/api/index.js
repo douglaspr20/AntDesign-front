@@ -213,6 +213,36 @@ import {
 
 import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
 
+import {
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  searchUserForCouncilEventPanelist,
+} from "./module/council-event";
+
+import {
+  upsertCouncilConversation,
+  getCouncilConversations,
+  deleteCouncilConversation,
+  getCouncilConversation,
+} from "./module/council-conversation";
+
+import {
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+} from "./module/councilConversationComment";
+import {
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+} from "./module/council-conversation-reply";
+
+import {
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+} from "./module/council-conversation-like";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -378,4 +408,20 @@ export {
   getMatchmake,
   editAdvertisement,
   sendMatchEmail,
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  upsertCouncilConversation,
+  deleteCouncilConversation,
+  getCouncilConversation,
+  getCouncilConversations,
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+  searchUserForCouncilEventPanelist,
 };
