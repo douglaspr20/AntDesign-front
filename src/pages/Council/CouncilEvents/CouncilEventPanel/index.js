@@ -137,7 +137,7 @@ const CouncilEventPanel = ({
   };
 
   const handleOnFinish = (values) => {
-    const user = searchedUsersForCouncilEvent.find(
+    const user = filteredSearchUser.find(
       (_user) => _user.value === values.user
     );
 
@@ -166,14 +166,9 @@ const CouncilEventPanel = ({
     );
   });
 
-  // console.log(panel.CouncilEventPanelists, "panel.CouncilEventPanelists");
-  // console.log(searchedUsersForCouncilEvent, 'searchedUsersForCouncilEvent')
-
   const filteredSearchUser = searchedUsersForCouncilEvent.filter((user) =>
     !panel.CouncilEventPanelists.some((panelist) => panelist.UserId === user.id)
   );
-
-  console.log(filteredSearchUser, 'filteredSearchUser')
 
   return (
     <div
