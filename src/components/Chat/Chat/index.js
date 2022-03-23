@@ -164,15 +164,15 @@ const Chat = React.memo(
                   {currentConversation?.messages[i + 1]?.sender !==
                   message?.sender ? (
                     <>
-                      {user.img ? (
+                      {user?.img ? (
                         <Avatar
-                          src={user.img}
-                          alt={`${user.firstName} ${user.lastName}`}
+                          src={user?.img}
+                          alt={`${user?.firstName} ${user?.lastName}`}
                           size={25}
                         />
                       ) : (
                         <Avatar size={25} style={{ marginTop: "10px" }}>
-                          {user.abbrName}
+                          {user?.abbrName}
                         </Avatar>
                       )}
                     </>
