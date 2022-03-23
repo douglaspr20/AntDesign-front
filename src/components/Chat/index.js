@@ -108,8 +108,8 @@ const Chat = ({
 
           for (let i = 0; i < currentConversations.length; i++) {
             if (
-              newConversation.members[i].isOnline !==
-              conversation.members[i].isOnline
+              newConversation?.members[i]?.isOnline !==
+              conversation?.members[i]?.isOnline
             ) {
               return newConversation;
             }
