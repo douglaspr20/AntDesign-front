@@ -156,10 +156,14 @@ class App extends Component {
         user?.id !== this.props?.userProfile?.id &&
         this.props.conversations.length > 0
       ) {
+        console.log(this.props.conversations);
+        console.log(user);
         const conversationToUpdate = this.props.conversations.find(
           (conversation) =>
             conversation.members.some((member) => member.id === user.id)
         );
+
+        console.log(conversationToUpdate);
         this.props.getConversation(conversationToUpdate.id);
       }
     });
@@ -171,10 +175,14 @@ class App extends Component {
         user?.id !== this.props?.userProfile?.id &&
         this.props.conversations.length > 0
       ) {
+        console.log(this.props.conversations);
+        console.log(user);
         const conversationToUpdate = this.props.conversations.find(
           (conversation) =>
             conversation.members.some((member) => member.id === user.id)
         );
+
+        console.log(conversationToUpdate);
         this.props.getConversation(conversationToUpdate.id);
       }
     });
