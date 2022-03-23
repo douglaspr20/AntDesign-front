@@ -30,6 +30,7 @@ const CouncilEvents = ({
   deleteCouncilEvent,
   userProfile,
   joinCouncilEvent,
+  removeCouncilEventPanelist,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -185,16 +186,38 @@ const CouncilEvents = ({
     deleteCouncilEvent(id);
   };
 
-  const displayPanels = event.CouncilEventPanels?.map((panel) => (
-    <CouncilEventPanel
-      key={panel.id}
-      panel={panel}
-      userProfile={userProfile}
-      joinCouncilEvent={joinCouncilEvent}
-      tz={event.timezone}
-      status={event.status}
-    />
-  ));
+  // const numberOfPanelsUserJoined = event.CouncilEventPanels?.reduce(
+  //   (prev, curr) => {
+  //     const hasJoined = curr.CouncilEventPanelists.some(
+  //       (panelists) => panelists.UserId === userProfile.id
+  //     );
+
+  //     if (hasJoined) {
+  //       return prev + 1;
+  //     } 
+
+  //     return prev;
+  //   },
+  //   0
+  // );
+
+  // const canJoin = numberOfPanelsUserJoined < event.maxNumberOfPanelsUsersCanJoin
+
+  const displayPanels = event.CouncilEventPanels?.map((panel) => {
+    return (
+      <CouncilEventPanel
+        key={panel.id}
+        panel={panel}
+        userProfile={userProfile}
+        joinCouncilEvent={joinCouncilEvent}
+        removeCouncilEventPanelist={removeCouncilEventPanelist}
+        tz={event.timezone}
+        status={event.status}
+        // canJoin={canJoin}
+        maxNumberOfPanelsUsersCanJoin={event.maxNumberOfPanelsUsersCanJoin}
+      />
+    );
+  });
 
   const displayCouncilEvents = allCouncilEvents
     .filter((eve) => {
@@ -220,9 +243,7 @@ const CouncilEvents = ({
               </div>
             )}
           </div>
-          <div>
-            Start date: {moment(eve.startDate).format("LL")}
-          </div>
+          <div>Start date: {moment(eve.startDate).format("LL")}</div>
           <div style={{ marginBottom: "1rem" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
@@ -329,6 +350,13 @@ const CouncilEvents = ({
               style={{ width: "100%" }}
               onChange={limitOnChange}
             />
+          </Form.Item>
+          <Form.Item
+            label="Max number of panels a user can join"
+            name="maxNumberOfPanelsUsersCanJoin"
+            rules={[{ required: true }]}
+          >
+            <CustomInput style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item
             label="Timezone"

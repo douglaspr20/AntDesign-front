@@ -11,6 +11,7 @@ import {
   getCouncilEvents,
   deleteCouncilEvent,
   joinCouncilEvent,
+  removeCouncilEventPanelist,
 } from "api";
 
 export function* upsertCouncilEventSaga({ payload }) {
@@ -33,7 +34,7 @@ export function* upsertCouncilEventSaga({ payload }) {
       );
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.msg);
     notification.error({
       message: "Something went wrong.",
     });
@@ -101,6 +102,35 @@ export function* joinCouncilEventSaga({ payload }) {
       yield put(
         councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
       );
+    } else if (response.status === 202) {
+      notification.warn({
+        message: `You can only join up to ${payload.maxNumberOfPanelsUsersCanJoin} panels.`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    notification.error({
+      message: "Something went wrong.",
+    });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* removeCouncilEventPanelistSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(removeCouncilEventPanelist, payload);
+
+    if (response.status === 200) {
+      notification.success({
+        message: "Success",
+      });
+
+      yield put(
+        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
+      );
     }
   } catch (err) {
     console.log(err);
@@ -128,6 +158,10 @@ function* watchCouncilEvent() {
   yield takeLatest(
     councilEventConstants.JOIN_COUNCIL_EVENT,
     joinCouncilEventSaga
+  );
+  yield takeLatest(
+    councilEventConstants.REMOVE_COUNCIL_EVENT_PANELIST,
+    removeCouncilEventPanelistSaga
   );
 }
 

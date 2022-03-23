@@ -7,6 +7,7 @@ const SET_COUNCIL_EVENTS = "SET_COUNCIL_EVENTS";
 const DELETE_COUNCIL_EVENT = "DELETE_COUNCIL_EVENT";
 const JOIN_COUNCIL_EVENT = "JOIN_COUNCIL_EVENT";
 const SET_JOIN_COUNCIL_EVENT = "SET_JOIN_COUNCIL_EVENT";
+const REMOVE_COUNCIL_EVENT_PANELIST = "REMOVE_COUNCIL_EVENT_PANELIST";
 
 export const constants = {
   UPSERT_COUNCIL_EVENT,
@@ -16,6 +17,7 @@ export const constants = {
   DELETE_COUNCIL_EVENT,
   JOIN_COUNCIL_EVENT,
   SET_JOIN_COUNCIL_EVENT,
+  REMOVE_COUNCIL_EVENT_PANELIST,
 };
 
 const upsertCouncilEvent = createAction(
@@ -36,14 +38,22 @@ const deleteCouncilEvent = createAction(
 );
 const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, status) => ({
+  (councilEventPanelId, status, maxNumberOfPanelsUsersCanJoin) => ({
     councilEventPanelId,
     status,
+    maxNumberOfPanelsUsersCanJoin,
   })
 );
 const setJoinCouncilEvent = createAction(
   SET_JOIN_COUNCIL_EVENT,
   (councilEventPanel) => ({ councilEventPanel })
+);
+const removeCouncilEventPanelist = createAction(
+  REMOVE_COUNCIL_EVENT_PANELIST,
+  (CouncilEventPanelId, CouncilEventPanelistId) => ({
+    CouncilEventPanelId,
+    CouncilEventPanelistId,
+  })
 );
 
 export const actions = {
@@ -54,4 +64,5 @@ export const actions = {
   deleteCouncilEvent,
   joinCouncilEvent,
   setJoinCouncilEvent,
+  removeCouncilEventPanelist,
 };

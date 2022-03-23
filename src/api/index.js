@@ -215,6 +215,7 @@ import {
   getCouncilEvents,
   deleteCouncilEvent,
   joinCouncilEvent,
+  removeCouncilEventPanelist,
 } from "./module/council-event";
 
 import {
@@ -404,6 +405,7 @@ export {
   getCouncilEvents,
   deleteCouncilEvent,
   joinCouncilEvent,
+  removeCouncilEventPanelist,
   upsertCouncilConversation,
   deleteCouncilConversation,
   getCouncilConversation,

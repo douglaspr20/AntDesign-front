@@ -21,3 +21,9 @@ export const joinCouncilEvent = (payload) => {
     payload
   );
 };
+
+export const removeCouncilEventPanelist = (payload) => {
+  return httpClient.delete(
+    `private/council/event/panel/${payload.CouncilEventPanelId}/panelist/${payload.CouncilEventPanelistId}`
+  );
+};

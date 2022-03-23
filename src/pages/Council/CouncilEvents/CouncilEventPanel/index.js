@@ -6,7 +6,15 @@ import { DownOutlined } from "@ant-design/icons";
 import { TIMEZONE_LIST } from "enum";
 import { convertToLocalTime } from "utils/format";
 
-const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status }) => {
+const CouncilEventPanel = ({
+  panel,
+  userProfile,
+  joinCouncilEvent,
+  tz,
+  status,
+  removeCouncilEventPanelist,
+  maxNumberOfPanelsUsersCanJoin
+}) => {
   const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
   const offset = timezone.offset;
 
@@ -21,7 +29,7 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status })
   );
 
   const handleJoinPanel = (panel, state) => {
-    joinCouncilEvent(panel.id, state);
+    joinCouncilEvent(panel.id, state, maxNumberOfPanelsUsersCanJoin);
   };
 
   const onClickDownloadCalendar = (e) => {
@@ -90,10 +98,11 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status })
     (panelist) => panelist.User.id === userProfile.id
   );
 
-  const displayJoinBtn = hasJoined ? (
+  const displayJoinBtn = (hasJoined) ? (
     <CustomButton
       text="Withdraw"
       onClick={() => handleJoinPanel(panel, "Unjoin")}
+      type="third"
     />
   ) : (
     <CustomButton
@@ -103,13 +112,26 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status })
     />
   );
 
+  const handleRemovePanelist = (id) => {
+    removeCouncilEventPanelist(panel.id, id);
+  };
+
   const displayPanelists = panel.CouncilEventPanelists.map((panelist) => {
     const user = panelist.User;
+
     return (
       <div className="panelist" key={user.email}>
         <Avatar src={user.img} size={100} />
         <div>{`${user.firstName} ${user.lastName}`}</div>
         <div>{user.titleProfessions}</div>
+        {userProfile.isExpertCouncilAdmin && (
+          <CustomButton
+            text="Remove"
+            type="third"
+            size="small"
+            onClick={() => handleRemovePanelist(panelist.id)}
+          />
+        )}
       </div>
     );
   });
@@ -149,7 +171,7 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status })
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {status !== "closed" && displayJoinBtn}
+        {(status !== "closed") && displayJoinBtn}
         {hasJoined && (
           <div style={{ marginTop: "1rem" }}>
             <Dropdown overlay={downloadDropdownOptions}>
