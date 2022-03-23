@@ -1,0 +1,79 @@
+@import "styles/main.scss";
+
+.council-events-wrapper {
+  margin-top: 1rem;
+
+  .council-event-content {
+    display: flex;
+    flex-wrap: wrap;
+
+    .council-event-card {
+      background-color: white;
+      box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
+      height: 250px;
+      width: 300px;
+      max-height: 250px;
+      max-width: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+
+      &:hover {
+        box-shadow: 0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a;
+      }
+    }
+
+    .council-event-card2 {
+      background-color: white;
+      box-shadow: 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a;
+      height: 250px;
+      width: 300px;
+      max-height: 250px;
+      max-width: 300px;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+
+      &:hover {
+        box-shadow: 0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a;
+      }
+
+      &-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding: 1rem;
+      }
+    }
+  }
+}
+
+.add-panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} 
+
+.form-btns {
+  display: flex;
+  width: 100%;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panelist {
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.display-panel {
+  height: 500px;
+  overflow-y: auto;
+}

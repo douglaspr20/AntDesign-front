@@ -1,117 +1,189 @@
-import React, { useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-
-import PropTypes from "prop-types";
-import { Spin } from "antd";
-import OpengraphReactComponent from "opengraph-react";
-
+import { Avatar, Popconfirm } from "antd";
 import {
-  getCouncilResources,
-  getCouncilResourceById,
-} from "redux/actions/council-actions";
-import { getAllCouncilComments } from "redux/actions/council-comments-actions";
+  EditOutlined,
+  DeleteOutlined,
+  LikeOutlined,
+  LikeFilled,
+} from "@ant-design/icons";
 
-import { councilSelector } from "redux/selectors/councilSelector";
+import { actions as councilConversationActions } from "redux/actions/councilConversation-actions";
+import { actions as councilConversationLikeActions } from "redux/actions/council-conversation-like-actions";
+
 import { categorySelector } from "redux/selectors/categorySelector";
 import { authSelector } from "redux/selectors/authSelector";
-import { councilCommentsSelector } from "redux/selectors/councilCommentsSelector";
-
-import { INTERNAL_LINKS } from "enum";
 
 import CouncilComment from "components/CouncilComment";
-import IconBack from "images/icon-back.svg";
 import CouncilCommentForm from "containers/CouncilCommentForm.js";
+import CouncilConversationDrawer from "containers/CouncilConversationDrawer";
 
 import "./style.scss";
+import moment from "moment";
 
 const CouncilConversationsCard = ({
-  councilResource,
-  getCouncilResourceById,
-  getAllCouncilComments,
-  allComments,
+  councilConversation,
+  destroyCouncilConversation,
+  allCategories,
+  userId,
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+  getCouncilConversation,
 }) => {
-  const { search } = useLocation();
-  const history = useHistory();
-  const query = new URLSearchParams(search);
-  const id = query.get("id");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    getCouncilResourceById(id);
-    getAllCouncilComments({ councilId: id });
-  }, [getCouncilResourceById, getAllCouncilComments, id]);
+  const handleDeleteConversation = () => {
+    destroyCouncilConversation(councilConversation.id);
+  };
+
+  const hasLiked = councilConversation.CouncilConversationLikes?.some(
+    (like) => like.UserId === userId
+  );
+
+  const displayLike = hasLiked ? (
+    <LikeFilled
+      style={{ fontSize: "1.5rem", cursor: "pointer", color: "dodgerblue" }}
+      onClick={() => deleteCouncilConversationLike(councilConversation.id)}
+    />
+  ) : (
+    <LikeOutlined
+      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+      onClick={() => createCouncilConversationLike(councilConversation.id)}
+    />
+  );
 
   return (
     <div className="post-card-container-council">
       <div
-        key={`custom-post-card-council${councilResource?.id}`}
-        className={`custom-post-card-council`}
+        key={`custom-post-card-council${councilConversation?.id}`}
+        className="custom-post-card-council"
       >
-        <div
-          className="skill-cohort-detail-page-header-content-back-btn"
-          onClick={() => history.push(INTERNAL_LINKS.COUNCIL)}
-        >
-          <div className="skill-cohort-detail-page-header-content-back backToList">
-            <div className="skill-cohort-detail-page-header-content-back-img">
-              <img src={IconBack} alt="icon-back" />
-            </div>
-            <h4>Back to List</h4>
-          </div>
-        </div>
-        <section className="custom-post-card--header" >
+        <section className="custom-post-card--header">
           <section className="custom-post-card-council--content">
-            <div className="custom-image">
-              <OpengraphReactComponent
-                site={councilResource?.link}
-                appId={process.env.REACT_APP_OPENGRAPH_KEY}
-                loader={<Spin className="d-center"></Spin>}
-                size={"large"}
-                acceptLang="auto"                
+            <div
+              className="d-flex justify-between"
+              style={{
+                width: "75%",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              <div className="d-flex">
+                <div style={{ marginRight: "1rem" }}>
+                  <Avatar src={councilConversation?.User?.img} size={100} />
+                </div>
+                <div className="user-text">
+                  <h4>{`${councilConversation?.User?.firstName} ${councilConversation?.User?.lastName}`}</h4>
+                  <p>{councilConversation?.User?.titleProfessions}</p>
+                  <p>{councilConversation?.User?.company}</p>
+                  <span>
+                    Posted {moment(councilConversation.createdAt).fromNow()}
+                  </span>
+                </div>
+              </div>
+              {userId === councilConversation?.User?.id && (
+                <section className="d-flex items-baseline">
+                  <div
+                    className="d-flex items-baseline"
+                    style={{ marginRight: "1rem", cursor: "pointer" }}
+                    onClick={() => setIsDrawerOpen(true)}
+                  >
+                    <span style={{ marginRight: "5px" }}>
+                      <EditOutlined />
+                    </span>
+                    <span>Edit</span>
+                  </div>
+                  <Popconfirm
+                    title="Are you sure you want to permanently remove this item?"
+                    onConfirm={handleDeleteConversation}
+                  >
+                    <div className="d-flex" style={{ cursor: "pointer" }}>
+                      <span style={{ marginRight: "5px" }}>
+                        <DeleteOutlined />
+                      </span>
+                      <span>Delete</span>
+                    </div>
+                  </Popconfirm>
+                </section>
+              )}
+            </div>
+            <div className="conversation-content">
+              <h1 className="text-center">{councilConversation.title}</h1>
+              <section
+                dangerouslySetInnerHTML={{
+                  __html: (councilConversation.text || {}).html,
+                }}
               />
+              <div className="d-flex">
+                {councilConversation?.topics?.map((topic) => {
+                  const category = allCategories.find(
+                    (cat) => cat.value === topic
+                  );
+
+                  return (
+                    <div
+                      key={category.title}
+                      style={{ marginRight: "1rem", color: "dodgerblue" }}
+                    >
+                      #{category.title}
+                    </div>
+                  );
+                })}
+              </div>
+              {councilConversation.imageUrl && (
+                <div>
+                  <img
+                    src={councilConversation.imageUrl}
+                    alt="conversation-img"
+                    style={{
+                      objectFit: "fill",
+                      width: "100%",
+                      marginTop: "1rem",
+                    }}
+                  />
+                </div>
+              )}
+              <div style={{ margin: "1rem 0" }}>
+                {displayLike}{" "}
+                {councilConversation.CouncilConversationLikes.length}
+              </div>
             </div>
             <div className="custom-comment-card-container">
               <CouncilCommentForm />
               <div>
-                {allComments?.map((item) => (
-                  <CouncilComment data={item} />
-                ))}
+                {(councilConversation.CouncilConversationComments || []).map(
+                  (item) => (
+                    <CouncilComment
+                      data={item}
+                      enableReply
+                      key={item.comment}
+                    />
+                  )
+                )}
               </div>
             </div>
           </section>
         </section>
       </div>
+      <CouncilConversationDrawer
+        visible={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        councilConversation={councilConversation}
+        isEdit
+      />
     </div>
   );
 };
 
-CouncilConversationsCard.propTypes = {
-  showEdit: PropTypes.bool,
-  generalFooter: PropTypes.bool,
-  onCommentClick: PropTypes.func,
-  afterRemove: PropTypes.func,
-  details: PropTypes.bool,
-};
-
-CouncilConversationsCard.defaultProps = {
-  showEdit: false,
-  generalFooter: true,
-  onCommentClick: () => {},
-  afterRemove: () => {},
-  details: false,
-};
-
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
-  councilResources: councilSelector(state).councilResources,
-  councilResource: councilSelector(state).councilResource,
-  allComments: councilCommentsSelector(state).allComments,
+  ...categorySelector(state),
   userId: authSelector(state).id,
 });
 
 const mapDispatchToProps = {
-  getCouncilResources,
-  getCouncilResourceById,
-  getAllCouncilComments,
+  ...councilConversationActions,
+  ...councilConversationLikeActions,
 };
 
 export default connect(
