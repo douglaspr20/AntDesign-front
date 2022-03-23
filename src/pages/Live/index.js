@@ -42,7 +42,7 @@ const LivePage = ({
     if (!usersAssistence) {
       usersAssistence = firstTimes.map((el) => JSON.stringify(el));
     }
-    usersAssistence = [...new Set(usersAssistence)];
+
     if (!isIdRepeated) {
       updateEventUserAssistence({
         ...myEvents,
@@ -73,7 +73,7 @@ const LivePage = ({
       setTimes(userAssistenceJsonToArray);
 
       myEvents.startAndEndTimes &&
-        myEvents.startAndEndTimes.map((time) => {
+        myEvents.startAndEndTimes.map((time, index) => {
           const start = time.startTime;
           const end = time.endTime;
 
@@ -98,38 +98,32 @@ const LivePage = ({
             .format();
 
           const isTodayEvent =
-            moment(convertedStartEventTime).format("MM DD") <=
+            moment(convertedStartEventTime).format("MM DD") ===
               moment(localDate).format("MM DD") &&
             moment(convertedEndEventTime).format("MM DD") ===
               moment(localDate).format("MM DD");
-              
+
           if (userAssistenceJsonToArray) {
-            const addingUserToTheListUserAssistence =
-              userAssistenceJsonToArray?.map((item) => {
-                if (
-                  item.usersAssistence?.includes(userAssistence) &&
-                  isTodayEvent
-                ) {
-                  return setIsIdRepeated(true);
-                }
-                if (item.usersAssistence?.length > 0 && isTodayEvent) {
-                  return usersEventAssistence.push(
-                    ...item.usersAssistence,
-                    userAssistence
-                  );
-                } else if (isTodayEvent) {
-                  return usersEventAssistence.push(userAssistence);
-                }
-                return item;
-              });
-            console.log(addingUserToTheListUserAssistence);
+            const item = userAssistenceJsonToArray[index];
+            if (
+              item.usersAssistence?.includes(userAssistence) &&
+              isTodayEvent
+            ) {
+              setIsIdRepeated(true);
+            }
+            if (item.usersAssistence?.length > 0 && isTodayEvent) {
+              usersEventAssistence.push(
+                ...item.usersAssistence,
+                userAssistence
+              );
+            } else if (isTodayEvent) {
+              usersEventAssistence.push(userAssistence);
+            }
           }
 
           if (!isIdRepeated) {
-            const norepeat = [...new Set(usersEventAssistence)];
-            if (norepeat?.length > 0) {
+            if (userAssistenceJsonToArray) {
               return setTimes((prev) => {
-                const index = prev.findIndex((el) => isTodayEvent);
                 if (isTodayEvent) {
                   prev[index] = {
                     start: prev[index].start,
@@ -140,6 +134,7 @@ const LivePage = ({
                     ],
                   };
                 }
+                prev = [...new Set(prev)];
                 return [...prev];
               });
             } else {
@@ -152,6 +147,7 @@ const LivePage = ({
                     usersAssistence: isTodayEvent ? [userAssistence] : [],
                   },
                 ];
+                prev = [...new Set(prev)];
                 return [...prev];
               });
             }

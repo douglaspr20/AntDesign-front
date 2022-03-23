@@ -45,7 +45,6 @@ const CertificateList = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh, createBusinessPartnerResource]);
-
   useEffect(() => {
     if (Number(live.event)) {
       getEvent(Number(live.event));
@@ -56,30 +55,10 @@ const CertificateList = ({
     if (liveEvents) {
       setEventsFiltered((prev) => {
         prev = liveEvents.map((event) => {
-          const usersAssistence =
-            event.usersAssistence.length > 0 &&
-            event.usersAssistence.map((el) =>
-              el.map((item) => JSON.parse(item))
-            );
-            
-          const usersAssistencefilter =
-            usersAssistence &&
-            usersAssistence[0]?.filter(
-              (el) =>
-                el?.usersAssistence &&
-                el?.usersAssistence.includes(userProfile.id)
-            );
           const date =
             event.startAndEndTimes[event.startAndEndTimes.length - 1];
-          const usersAssistenceValidation =
-            usersAssistencefilter.length === usersAssistence?.length
-              ? true
-              : false;
 
-          if (
-            new Date(date.endTime) <= new Date() &&
-            usersAssistenceValidation
-          ) {
+          if (new Date(date.endTime) <= new Date()) {
             return event;
           } else return false;
         });
@@ -122,8 +101,6 @@ const CertificateList = ({
                   </div>
                 )
             )}
-          {/* </div> */}
-          {/* </div> */}
         </>
       )}
     </div>
