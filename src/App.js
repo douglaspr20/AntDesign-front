@@ -247,6 +247,8 @@ class App extends Component {
       openChat,
     } = this.state;
 
+    console.log(this.props.conversations);
+
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
         <Layout style={{ height: "100vh", overflow: "hidden" }}>
