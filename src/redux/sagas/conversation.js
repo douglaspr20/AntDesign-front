@@ -31,6 +31,7 @@ export function* getConversationsSaga({ payload }) {
     const response = yield call(getConversations, { ...payload });
 
     if (response.status === 200) {
+      console.log(response);
       const conversationSort = response.data.conversations.sort((a, b) => {
         if (a.messagedate > b.messagedate) {
           return 1;
