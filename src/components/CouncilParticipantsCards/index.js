@@ -16,6 +16,8 @@ const CouncilParticipantCard = ({
   userProfile,
   marketplaceProfile,
 }) => {
+
+  console.log(participant)
   return (
     <>
       <div className="council-participant-container">
@@ -44,6 +46,7 @@ const CouncilParticipantCard = ({
             <p style={{ marginTop: -10 }}>{participant.titleProfessions}</p>
           )}
           <p style={{ marginTop: -10 }}>{participant.company}</p>
+          <p style={{ marginTop: -10 }}>{`${participant.city}, ${participant.location}`}</p>
 
           {participant.location && marketplaceProfile && (
             <div style={{ marginBottom: "50px" }}>
