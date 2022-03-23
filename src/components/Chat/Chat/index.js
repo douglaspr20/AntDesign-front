@@ -139,7 +139,9 @@ const Chat = React.memo(
                 >
                   <Tooltip
                     placement={
-                      user.id !== userProfile.id ? "bottomRight" : "bottomLeft"
+                      user?.id !== userProfile?.id
+                        ? "bottomRight"
+                        : "bottomLeft"
                     }
                     title={
                       <p className="date-messages">
@@ -151,7 +153,7 @@ const Chat = React.memo(
                   >
                     <div
                       className={`chat-message ${
-                        user.id !== userProfile.id
+                        user?.id !== userProfile?.id
                           ? "chat-message-contact"
                           : "chat-message-user"
                       }`}
