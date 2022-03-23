@@ -159,25 +159,6 @@ const SignupForm = ({ step }) => {
             />
           </Form.Item>
           <Form.Item
-            label="Country"
-            name="location"
-            rules={[
-              {
-                required: true,
-                message: "Please select one!",
-              },
-            ]}
-          >
-            <CustomSelect
-              className="border"
-              showSearch
-              options={COUNTRIES}
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            />
-          </Form.Item>
-          <Form.Item
             name="recaptcha"
             rules={[
               {
@@ -245,6 +226,25 @@ const SignupForm = ({ step }) => {
             ]}
           >
             <CustomInput placeholder="City" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            label="Country"
+            name="location"
+            rules={[
+              {
+                required: true,
+                message: "Please select one!",
+              },
+            ]}
+          >
+            <CustomSelect
+              className="border"
+              showSearch
+              options={COUNTRIES}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
           </Form.Item>
           <Form.Item
             label="What best defines your current or most recent job level?"
