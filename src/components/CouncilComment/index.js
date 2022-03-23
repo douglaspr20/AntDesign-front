@@ -37,8 +37,6 @@ const CouncilComment = ({
     deleteCouncilConversationComment(data.id, parsed.id);
   };
 
-  console.log(councilConversation, 'councilConversation')
-
   const handleOnFinish = (values) => {
     upsertCouncilConversationComment({
       ...values,
