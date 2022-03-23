@@ -130,7 +130,7 @@ const Chat = React.memo(
                   }
                   style={{
                     textAlign: `${
-                      user.id !== userProfile.id ? "left" : "right"
+                      user?.id !== userProfile?.id ? "left" : "right"
                     }`,
                     marginBottom: "5px",
                   }}
