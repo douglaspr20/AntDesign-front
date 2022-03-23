@@ -92,7 +92,7 @@ const CouncilEventPanel = ({ panel, userProfile, joinCouncilEvent, tz, status })
 
   const displayJoinBtn = hasJoined ? (
     <CustomButton
-      text="Unjoin"
+      text="Withdraw"
       onClick={() => handleJoinPanel(panel, "Unjoin")}
     />
   ) : (

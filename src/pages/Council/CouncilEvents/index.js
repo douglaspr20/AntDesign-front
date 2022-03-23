@@ -220,7 +220,7 @@ const CouncilEvents = ({
               </div>
             )}
           </div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div>
             Start date: {moment(eve.startDate).format("LL")}
           </div>
           <div style={{ marginBottom: "1rem" }}>
