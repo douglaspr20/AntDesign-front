@@ -31,11 +31,10 @@ export function* getConversationsSaga({ payload }) {
     const response = yield call(getConversations, { ...payload });
 
     if (response.status === 200) {
-      console.log(response);
       const conversationSort = response.data.conversations.sort((a, b) => {
-        if (a.messagedate > b.messagedate) {
+        if (a?.messages[0]?.messageDate > b?.messages[0]?.messageDate) {
           return 1;
-        } else if (b.messagedate > a.messagedate) {
+        } else if (b?.messagedate > a?.messagedate) {
           return -1;
         }
         return 0;
@@ -54,12 +53,6 @@ export function* getConversationsSaga({ payload }) {
               "lastname",
               "img",
               "timezone",
-              "messageid",
-              "ConversationId",
-              "sender",
-              "text",
-              "messagedate",
-              "viewedUser",
               "isOnline",
             ]),
             members: [
@@ -75,17 +68,6 @@ export function* getConversationsSaga({ payload }) {
                 isOnline: item.isOnline,
               },
             ],
-            messages: [
-              ...(res.messages || []),
-              item.messageid && {
-                id: item.messageid,
-                ConversationId: item.ConversationId,
-                sender: item.sender,
-                text: item.text,
-                messageDate: item.messagedate,
-                viewedUser: item.viewedUser,
-              },
-            ],
           }),
           {}
         );
@@ -94,15 +76,10 @@ export function* getConversationsSaga({ payload }) {
           (member, index, self) =>
             index === self.findIndex((m) => m.id === member.id)
         );
-        const messagesReduce = (newConversation.messages || []).filter(
-          (message, index, self) =>
-            index === self.findIndex((m) => m?.id === message?.id && m !== null)
-        );
 
         return {
           ...newConversation,
           members: membersReduce,
-          messages: messagesReduce,
         };
       });
 
