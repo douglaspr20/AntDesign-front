@@ -103,8 +103,9 @@ export function* joinCouncilEventSaga({ payload }) {
         councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
       );
     } else if (response.status === 202) {
+      console.log(response, 'res')
       notification.warn({
-        message: `You can only join up to ${payload.maxNumberOfPanelsUsersCanJoin} panels.`,
+        message: response.data.msg,
       });
     }
   } catch (err) {

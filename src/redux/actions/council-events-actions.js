@@ -38,10 +38,9 @@ const deleteCouncilEvent = createAction(
 );
 const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, status, maxNumberOfPanelsUsersCanJoin) => ({
+  (councilEventPanelId, status) => ({
     councilEventPanelId,
     status,
-    maxNumberOfPanelsUsersCanJoin,
   })
 );
 const setJoinCouncilEvent = createAction(

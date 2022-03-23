@@ -29,7 +29,7 @@ const CouncilEventPanel = ({
   );
 
   const handleJoinPanel = (panel, state) => {
-    joinCouncilEvent(panel.id, state, maxNumberOfPanelsUsersCanJoin);
+    joinCouncilEvent(panel.id, state);
   };
 
   const onClickDownloadCalendar = (e) => {
