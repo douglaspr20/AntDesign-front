@@ -135,6 +135,7 @@ const LivePage = ({
                   };
                 }
                 prev = [...new Set(prev)];
+                console.log('prev if exist', prev)
                 return [...prev];
               });
             } else {
@@ -148,6 +149,7 @@ const LivePage = ({
                   },
                 ];
                 prev = [...new Set(prev)];
+                console.log('prev if not exist', prev)
                 return [...prev];
               });
             }
