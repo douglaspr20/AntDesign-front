@@ -11,6 +11,7 @@ import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import Conversation from "./Conversations";
 import InternalChat from "./Chat";
+import BubbleNotification from "../../sound/bubble.mp3";
 
 import "./style.scss";
 
@@ -22,7 +23,7 @@ const Chat = ({
   currentConversations,
   setCurrentConversations,
 }) => {
-  // const [currentConversations, setCurrentConversations] = useState([]);
+  const notificationSound = new Audio(BubbleNotification);
 
   useEffect(() => {
     if (userProfile?.isOnline === false) {
@@ -93,7 +94,6 @@ const Chat = ({
               }
             : conversation
         );
-
         setConversations(newConversations);
       });
     }
@@ -135,6 +135,8 @@ const Chat = ({
           };
         });
 
+        notificationSound.play();
+
         setConversations(conversationsData);
       }
     }
@@ -144,6 +146,7 @@ const Chat = ({
     currentConversations,
     readMessages,
     setConversations,
+    notificationSound,
   ]);
 
   useEffect(() => {
