@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { conversationsSelector } from "redux/selectors/conversationSelector";
 import {
   setConversations,
   readMessages,
+  setCurrentConversations,
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
@@ -17,8 +19,10 @@ const Chat = ({
   userProfile,
   setConversations,
   readMessages,
+  currentConversations,
+  setCurrentConversations,
 }) => {
-  const [currentConversations, setCurrentConversations] = useState([]);
+  // const [currentConversations, setCurrentConversations] = useState([]);
 
   useEffect(() => {
     if (userProfile?.isOnline === false) {
@@ -65,7 +69,7 @@ const Chat = ({
     setCurrentConversations(newConversations);
   };
 
-  useMemo(() => {
+  useEffect(() => {
     if (conversations.length > 0) {
       SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
         const updateConversation = conversations.find(
@@ -83,7 +87,10 @@ const Chat = ({
 
         const newConversations = conversations.map((conversation) =>
           conversation.id === updateConversation.id
-            ? updateConversation
+            ? {
+                ...updateConversation,
+                members: conversation.members,
+              }
             : conversation
         );
 
@@ -91,6 +98,53 @@ const Chat = ({
       });
     }
   }, [conversations, setConversations]);
+
+  useEffect(() => {
+    if (conversations.length > 0) {
+      const conversationWithMessageNotViewed = conversations.find(
+        (conversation) =>
+          conversation.messages.some(
+            (message) => !message.viewedUser.includes(userProfile.id)
+          )
+      );
+
+      const existCurrentConversation = currentConversations?.find(
+        (currentConversation) =>
+          currentConversation?.id === conversationWithMessageNotViewed?.id
+      );
+
+      if (existCurrentConversation) {
+        readMessages(userProfile.id, existCurrentConversation.id);
+
+        const conversationsData = conversations.map((conversation) => {
+          const newConversationMessages = conversation.messages.map(
+            (message) => {
+              if (!message.viewedUser.includes(userProfile.id)) {
+                return {
+                  ...message,
+                  viewedUser: [...message.viewedUser, userProfile.id],
+                };
+              }
+              return message;
+            }
+          );
+
+          return {
+            ...conversation,
+            messages: newConversationMessages,
+          };
+        });
+
+        setConversations(conversationsData);
+      }
+    }
+  }, [
+    conversations,
+    userProfile,
+    currentConversations,
+    readMessages,
+    setConversations,
+  ]);
 
   useEffect(() => {
     if (currentConversations.length > 0) {
@@ -145,7 +199,7 @@ const Chat = ({
         setCurrentConversations(newCurrentConversations);
       }
     }
-  }, [conversations, currentConversations]);
+  }, [conversations, currentConversations, setCurrentConversations]);
 
   useMemo(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, (newConversation) => {
@@ -179,7 +233,13 @@ const Chat = ({
 
       setCurrentConversations([...currentConversations, currentConversation]);
     });
-  }, [conversations, currentConversations, readMessages, userProfile.id]);
+  }, [
+    conversations,
+    currentConversations,
+    readMessages,
+    userProfile.id,
+    setCurrentConversations,
+  ]);
 
   return (
     <>
@@ -227,11 +287,13 @@ const Chat = ({
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  currentConversations: conversationsSelector(state).currentConversations,
 });
 
 const mapDispatchToProps = {
   setConversations,
   readMessages,
+  setCurrentConversations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Chat));

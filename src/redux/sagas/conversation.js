@@ -177,32 +177,6 @@ export function* readMessagesSaga({ payload }) {
     const response = yield call(readMessages, { ...payload });
 
     if (response.status === 200) {
-      const selectAllState = (state) => state;
-
-      const allState = yield select(selectAllState);
-
-      const conversations = allState.conversation.get("conversations");
-
-      const conversationsData = conversations.map((conversation) => {
-        const newConversationMessages = conversation.messages.map((message) => {
-          const newMessage = response.data.messages.find(
-            (newMessage) => newMessage.id === message.id
-          );
-
-          if (newMessage) {
-            return newMessage;
-          }
-
-          return message;
-        });
-
-        return {
-          ...conversation,
-          messages: newConversationMessages,
-        };
-      });
-
-      yield put(conversationActions.setConversations(conversationsData));
     }
   } catch (error) {
     console.log(error);

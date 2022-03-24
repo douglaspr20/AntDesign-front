@@ -16,6 +16,11 @@ export const reducers = {
       conversation: payload.conversation,
     });
   },
+  [conversationConstants.SET_CURRENT_CONVERSATIONS]: (state, { payload }) => {
+    return state.merge({
+      currentConversations: payload.currentConversations,
+    });
+  },
   [conversationConstants.UPDATE_CONVERSATION]: (state, { payload }) => {
     const allConversations = state.get("conversations");
 
@@ -37,6 +42,7 @@ export const initialState = () =>
   Map({
     conversations: [],
     conversation: {},
+    currentConversations: [],
   });
 
 export default handleActions(reducers, initialState());

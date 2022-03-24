@@ -53,7 +53,6 @@ const Chat = React.memo(
     const otherUser = currentConversation.members.find(
       (member) => member.id !== userProfile.id
     );
-
     return (
       <div className="chat" {...rest}>
         <div className="chat-user-info">
