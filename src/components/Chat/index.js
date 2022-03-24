@@ -246,44 +246,52 @@ const Chat = ({
 
   return (
     <>
-      {currentConversations.map((currentConversation, i) => (
-        <InternalChat
-          key={currentConversation.id}
-          style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
-          currentConversation={currentConversation}
-          closeConversation={closeConversation}
-          onClick={() => handleConversation(currentConversation)}
-        />
-      ))}
+      {window.location.pathname !== "/login" ? (
+        <>
+          {currentConversations.map((currentConversation, i) => (
+            <InternalChat
+              key={currentConversation.id}
+              style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
+              currentConversation={currentConversation}
+              closeConversation={closeConversation}
+              onClick={() => handleConversation(currentConversation)}
+            />
+          ))}
 
-      <div
-        className={`conversations ${
-          userProfile.memberShip === "free" ? "conversations-not-available" : ""
-        }`}
-      >
-        {userProfile.memberShip === "free" ? (
-          <>
-            <h2>Update your account to start chatting with other members</h2>
-          </>
-        ) : (
-          <>
-            {conversations.map((conversation) => {
-              const otherMember = conversation.members.find(
-                (member) => member.id !== userProfile.id
-              );
+          <div
+            className={`conversations ${
+              userProfile.memberShip === "free"
+                ? "conversations-not-available"
+                : ""
+            }`}
+          >
+            {userProfile.memberShip === "free" ? (
+              <>
+                <h2>
+                  Update your account to start chatting with other members
+                </h2>
+              </>
+            ) : (
+              <>
+                {conversations.map((conversation) => {
+                  const otherMember = conversation.members.find(
+                    (member) => member.id !== userProfile.id
+                  );
 
-              return (
-                <Conversation
-                  key={conversation.id}
-                  user={otherMember}
-                  conversation={conversation}
-                  handleConversation={handleConversation}
-                />
-              );
-            })}
-          </>
-        )}
-      </div>
+                  return (
+                    <Conversation
+                      key={conversation.id}
+                      user={otherMember}
+                      conversation={conversation}
+                      handleConversation={handleConversation}
+                    />
+                  );
+                })}
+              </>
+            )}
+          </div>
+        </>
+      ) : null}
     </>
   );
 };

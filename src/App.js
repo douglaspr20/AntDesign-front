@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { Spin, Layout } from "antd";
@@ -9,6 +9,8 @@ import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 import LibraryShareDrawer from "containers/LibraryShareDrawer";
+import Chat from "components/Chat";
+import ChatMobile from "components/ChatMobile";
 import Emitter from "services/emitter";
 import SocketIO from "services/socket";
 
@@ -46,9 +48,6 @@ import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
 import "./App.scss";
-
-const Chat = lazy(() => import("components/Chat"));
-const ChatMobile = lazy(() => import("components/ChatMobile"));
 
 class App extends Component {
   constructor(props) {
@@ -248,19 +247,15 @@ class App extends Component {
             <TopHeader />
             <div style={{ display: "flex", position: "relative" }}>
               <Content />
-              <Suspense fallback={<div />}>
-                {window.screen.width > 1000 &&
-                window.location.pathname !== "/login" ? (
-                  <Chat conversations={this.props.conversations} />
-                ) : window.screen.width < 1000 &&
-                  window.location.pathname !== "/login" ? (
-                  <ChatMobile
-                    conversations={this.props.conversations}
-                    openChat={openChat}
-                    setOpenChat={() => this.setState({ openChat: !openChat })}
-                  />
-                ) : null}
-              </Suspense>
+              {window.screen.width > 1000 ? (
+                <Chat conversations={this.props.conversations} />
+              ) : window.screen.width < 1000 ? (
+                <ChatMobile
+                  conversations={this.props.conversations}
+                  openChat={openChat}
+                  setOpenChat={() => this.setState({ openChat: !openChat })}
+                />
+              ) : null}
             </div>
             <FeedbackBox />
           </Layout>
