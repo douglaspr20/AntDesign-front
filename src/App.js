@@ -238,6 +238,7 @@ class App extends Component {
       openPostFormPanel,
       openChat,
     } = this.state;
+    console.log();
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
@@ -247,9 +248,9 @@ class App extends Component {
             <TopHeader />
             <div style={{ display: "flex", position: "relative" }}>
               <Content />
-              {window.screen.width > 1000 ? (
+              {window.screen.width > 1000 && this.props.userProfile?.id ? (
                 <Chat conversations={this.props.conversations} />
-              ) : window.screen.width < 1000 ? (
+              ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
                 <ChatMobile
                   conversations={this.props.conversations}
                   openChat={openChat}
