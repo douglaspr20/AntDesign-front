@@ -176,9 +176,6 @@ const ConferenceLibrary = ({
   }, []);
 
   useEffect(() => {
-    let sessionsJoinedUserData = sessionsUserJoined.filter(
-      (session) => session.type === "Certificate Track and Panels"
-    );
     if (filters.topics && JSON.parse(filters.topics).length > 0) {
       const topics = JSON.parse(filters.topics);
 
@@ -209,34 +206,32 @@ const ConferenceLibrary = ({
         return null;
       });
 
-      const sessionsJoinedFiltered = sessionsJoinedUserData.filter(
-        (session) => {
-          let canFiltered = false;
-          for (const topic of topics) {
-            if (session.categories.some((categorie) => categorie === topic)) {
-              canFiltered = true;
-              break;
-            }
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        let canFiltered = false;
+        for (const topic of topics) {
+          if (session.categories.some((categorie) => categorie === topic)) {
+            canFiltered = true;
+            break;
           }
-          if (
-            !session.title.includes(meta) &&
-            !session?.description?.includes(meta) &&
-            !session?.speakers?.some(
-              (speaker) =>
-                speaker?.name?.includes(meta) ||
-                speaker?.description?.includes(meta)
-            )
-          ) {
-            canFiltered = false;
-          }
-
-          if (canFiltered) {
-            return session;
-          }
-
-          return null;
         }
-      );
+        if (
+          !session.title.includes(meta) &&
+          !session?.description?.includes(meta) &&
+          !session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          canFiltered = false;
+        }
+
+        if (canFiltered) {
+          return session;
+        }
+
+        return null;
+      });
 
       setSessionData(sessionsFiltered);
       setSessionJoinedData(sessionsJoinedFiltered);
@@ -257,29 +252,27 @@ const ConferenceLibrary = ({
         return null;
       });
 
-      const sessionsJoinedFiltered = sessionsJoinedUserData.filter(
-        (session) => {
-          if (
-            session.title.includes(meta) ||
-            session?.description?.includes(meta) ||
-            session?.speakers?.some(
-              (speaker) =>
-                speaker?.name?.includes(meta) ||
-                speaker?.description?.includes(meta)
-            )
-          ) {
-            return session;
-          }
-
-          return null;
+      const sessionsJoinedFiltered = sessionsUserJoined.filter((session) => {
+        if (
+          session.title.includes(meta) ||
+          session?.description?.includes(meta) ||
+          session?.speakers?.some(
+            (speaker) =>
+              speaker?.name?.includes(meta) ||
+              speaker?.description?.includes(meta)
+          )
+        ) {
+          return session;
         }
-      );
+
+        return null;
+      });
 
       setSessionData(sessionsFiltered);
       setSessionJoinedData(sessionsJoinedFiltered);
     } else {
       setSessionData(allSessions);
-      setSessionJoinedData(sessionsJoinedUserData);
+      setSessionJoinedData(sessionsUserJoined);
     }
   }, [filters, meta, allSessions, sessionsUserJoined]);
 

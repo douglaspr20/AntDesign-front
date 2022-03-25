@@ -19,17 +19,23 @@ const Certificate = ({ visible, onCancel, sessionsUserJoined, user }) => {
 
   if (sessionsUserJoined.length > 0) {
     for (let i = 0; i < sessionsUserJoined.length; i++) {
-      const durationSession = +moment
-        .duration(
-          moment(sessionsUserJoined[i].endTime).diff(
-            sessionsUserJoined[i]?.startTime
-          )
-        )
-        .asHours()
-        .toFixed();
+      const durationSession = moment.duration(
+        moment(sessionsUserJoined[i].endTime).diff(
+          sessionsUserJoined[i]?.startTime
+        ),
+        "milliseconds"
+      );
 
       duration += durationSession;
     }
+
+    duration = `${
+      moment.duration(duration).asHours() < 1
+        ? `${moment.duration(duration).asMinutes()} minutes`
+        : `${moment.duration(duration).asHours()} hour${
+            moment.duration(duration).asHours() > 1 ? "s" : ""
+          }`
+    }`;
   }
 
   const generateCertificate = async (option) => {
@@ -94,9 +100,7 @@ const Certificate = ({ visible, onCancel, sessionsUserJoined, user }) => {
               <h4 className="certificate-text2">
                 The Hacking HR 2022 Global Online Conference
               </h4>
-              <h5 className="certificate-text1 duration">{`Participation time: ${duration} ${
-                duration > 1 ? "hours" : "hour"
-              }`}</h5>
+              <h5 className="certificate-text1 duration">{`Participation time: ${duration}`}</h5>
             </div>
             <div className="certificate-bottom">
               <div className="certificate-bottom-sign">
