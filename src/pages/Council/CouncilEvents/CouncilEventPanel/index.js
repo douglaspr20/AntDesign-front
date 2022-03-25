@@ -237,9 +237,6 @@ const CouncilEventPanel = ({
           {hasJoined && (
             <>
               <div style={{ marginTop: "5px" }}>
-                <CustomButton text="Add topic/comment" size="small" />
-              </div>
-              <div style={{ marginTop: "5px" }}>
                 <Dropdown overlay={downloadDropdownOptions}>
                   <a
                     href="/#"
