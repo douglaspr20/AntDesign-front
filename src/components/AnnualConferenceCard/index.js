@@ -189,7 +189,9 @@ const ButtonContainerConference = ({
 
   return (
     <div className="button-container">
-      <CustomButton type="primary" size="xs" text="Watch" onClick={onWatch} />
+      {session.type === "Certificate Track and Panels" && (
+        <CustomButton type="primary" size="xs" text="Watch" onClick={onWatch} />
+      )}
 
       <CustomButton
         className="mark-viewed"
@@ -222,25 +224,27 @@ const ButtonContainerConference = ({
         }}
       />
 
-      {session.viewed && session.viewed[userProfile.id] !== "mark" && (
-        <CustomButton
-          className="save-for-later"
-          type={
-            !isEmpty(session.saveForLater) &&
-            session.saveForLater.includes(userProfile.id)
-              ? "remove"
-              : "third"
-          }
-          size="xs"
-          text={
-            !isEmpty(session.saveForLater) &&
-            session.saveForLater.includes(userProfile.id)
-              ? "Unsave"
-              : "Save for later"
-          }
-          onClick={handleSaveForLater}
-        />
-      )}
+      {session.viewed &&
+        session.viewed[userProfile.id] !== "mark" &&
+        session.type === "Certificate Track and Panels" && (
+          <CustomButton
+            className="save-for-later"
+            type={
+              !isEmpty(session.saveForLater) &&
+              session.saveForLater.includes(userProfile.id)
+                ? "remove"
+                : "third"
+            }
+            size="xs"
+            text={
+              !isEmpty(session.saveForLater) &&
+              session.saveForLater.includes(userProfile.id)
+                ? "Unsave"
+                : "Save for later"
+            }
+            onClick={handleSaveForLater}
+          />
+        )}
     </div>
   );
 };
