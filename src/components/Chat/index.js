@@ -6,6 +6,7 @@ import {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversation,
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
@@ -22,6 +23,7 @@ const Chat = ({
   readMessages,
   currentConversations,
   setCurrentConversations,
+  getConversation,
 }) => {
   const notificationSound = new Audio(BubbleNotification);
 
@@ -70,34 +72,13 @@ const Chat = ({
     setCurrentConversations(newConversations);
   };
 
-  useEffect(() => {
-    if (conversations.length > 0) {
-      SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
-        const updateConversation = conversations.find(
-          (conversation) => conversation.id === message.ConversationId
-        );
-
-        if (
-          updateConversation.messages.some(
-            (oldMessage) => oldMessage.id === message.id
-          )
-        ) {
-          return;
-        }
-        updateConversation.messages.push(message);
-
-        const newConversations = conversations.map((conversation) =>
-          conversation.id === updateConversation.id
-            ? {
-                ...updateConversation,
-                members: conversation.members,
-              }
-            : conversation
-        );
-        setConversations(newConversations);
-      });
+  SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
+    if (message.sender !== userProfile.id) {
+      notificationSound.play();
     }
-  }, [conversations, setConversations]);
+
+    getConversation(message.ConversationId, message);
+  });
 
   useEffect(() => {
     if (conversations.length > 0) {
@@ -135,8 +116,6 @@ const Chat = ({
           };
         });
 
-        notificationSound.play();
-
         setConversations(conversationsData);
       }
     }
@@ -146,7 +125,6 @@ const Chat = ({
     currentConversations,
     readMessages,
     setConversations,
-    notificationSound,
   ]);
 
   useEffect(() => {
@@ -178,23 +156,25 @@ const Chat = ({
 
       let canUpdate = false;
 
-      for (let i = 0; i < currentConversations.length; i++) {
-        for (let j = 0; j < currentConversations[i].members.length; j++) {
+      if (currentConversations.length > 0) {
+        for (let i = 0; i < currentConversations.length; i++) {
+          for (let j = 0; j < currentConversations[i]?.members?.length; j++) {
+            if (
+              newCurrentConversations[i]?.members[j]?.isOnline !==
+              currentConversations[i]?.members[j]?.isOnline
+            ) {
+              canUpdate = true;
+              break;
+            }
+          }
+
           if (
-            newCurrentConversations[i].members[j].isOnline !==
-            currentConversations[i].members[j].isOnline
+            newCurrentConversations[i]?.messages?.length !==
+            currentConversations[i]?.messages?.length
           ) {
             canUpdate = true;
             break;
           }
-        }
-
-        if (
-          newCurrentConversations[i].messages.length !==
-          currentConversations[i].messages.length
-        ) {
-          canUpdate = true;
-          break;
         }
       }
 
@@ -246,15 +226,16 @@ const Chat = ({
 
   return (
     <>
-      {currentConversations.map((currentConversation, i) => (
-        <InternalChat
-          key={currentConversation.id}
-          style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
-          currentConversation={currentConversation}
-          closeConversation={closeConversation}
-          onClick={() => handleConversation(currentConversation)}
-        />
-      ))}
+      {currentConversations?.length > 0 &&
+        currentConversations.map((currentConversation, i) => (
+          <InternalChat
+            key={currentConversation?.id}
+            style={{ right: i === 0 ? "210px" : i === 1 ? "550px" : "890px" }}
+            currentConversation={currentConversation}
+            closeConversation={closeConversation}
+            onClick={() => handleConversation(currentConversation)}
+          />
+        ))}
 
       <div
         className={`conversations ${
@@ -297,6 +278,7 @@ const mapDispatchToProps = {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Chat));

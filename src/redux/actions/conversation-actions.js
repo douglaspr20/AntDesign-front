@@ -45,8 +45,9 @@ export const setConversations = createAction(
 
 export const getConversation = createAction(
   GET_CONVERSATION,
-  (conversationId) => ({
+  (conversationId, message) => ({
     conversationId,
+    message,
   })
 );
 

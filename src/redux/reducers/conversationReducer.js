@@ -28,7 +28,6 @@ export const reducers = {
       conversation.id === payload.conversation.id
         ? {
             ...payload.conversation,
-            messages: conversation.messages,
           }
         : conversation
     );

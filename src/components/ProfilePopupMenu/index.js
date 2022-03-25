@@ -21,7 +21,10 @@ import SocketEventTypes from "enum/SocketEventTypes";
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
 import Modal from "antd/lib/modal/Modal";
-import { setConversations } from "redux/actions/conversation-actions";
+import {
+  setConversations,
+  setCurrentConversations,
+} from "redux/actions/conversation-actions";
 
 // const ProfileMenus = [
 //   {
@@ -62,6 +65,7 @@ const ProfilePopupMenu = (props) => {
     userProfile,
     acceptApply,
     setConversations,
+    setCurrentConversations,
     ...rest
   } = props;
 
@@ -128,6 +132,7 @@ const ProfilePopupMenu = (props) => {
       id: userProfile.id,
     });
     setConversations([]);
+    setCurrentConversations([]);
     logout();
   };
 
@@ -552,6 +557,7 @@ const mapDispatchToProps = {
   logout: authActions.logout,
   acceptApply: homeActions.acceptInvitationApply,
   setConversations,
+  setCurrentConversations,
   ...homeActions,
 };
 

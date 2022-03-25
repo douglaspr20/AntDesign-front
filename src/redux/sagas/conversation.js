@@ -98,6 +98,16 @@ export function* getConversationSaga({ payload }) {
   try {
     const response = yield call(getConversation, { ...payload });
 
+    const selectAllState = (state) => state;
+
+    const allState = yield select(selectAllState);
+
+    const conversations = allState.conversation.get("conversations");
+
+    const currentConversation = conversations.find(
+      (conversation) => conversation.id === payload.conversationId
+    );
+
     if (response.status === 200) {
       const [conversationData] = Object.values(
         groupBy(response.data.conversation || [], "id")
@@ -156,7 +166,7 @@ export function* getConversationSaga({ payload }) {
 
         return {
           ...newConversation,
-          messages: { ...conversation.messages },
+          messages: [...currentConversation.messages, payload.message],
           members: membersReduce,
         };
       });
