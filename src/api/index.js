@@ -217,6 +217,7 @@ import {
   joinCouncilEvent,
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
+  upsertCouncilEventPanelComment
 } from "./module/council-event";
 
 import {
@@ -418,4 +419,5 @@ export {
   createCouncilConversationLike,
   deleteCouncilConversationLike,
   searchUserForCouncilEventPanelist,
+  upsertCouncilEventPanelComment
 };

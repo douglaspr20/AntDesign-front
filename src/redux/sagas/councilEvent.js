@@ -13,6 +13,7 @@ import {
   joinCouncilEvent,
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
+  upsertCouncilEventPanelComment,
 } from "api";
 
 export function* upsertCouncilEventSaga({ payload }) {
@@ -149,8 +150,34 @@ export function* searchUserForCouncilEventPanelistSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(
-        councilEventActions.setSearchedUserForCouncilEventPanelist(response.data.users)
+        councilEventActions.setSearchedUserForCouncilEventPanelist(
+          response.data.users
+        )
       );
+    }
+  } catch (err) {
+    console.log(err);
+    notification.error({
+      message: "Something went wrong.",
+    });
+  }
+}
+
+export function* commentCouncilEventPanelSaga({ payload }) {
+  try {
+    const response = yield call(
+      upsertCouncilEventPanelComment,
+      payload.councilEventPanelComment
+    );
+
+    if (response.status === 200) {
+      yield put(
+        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
+      );
+
+      notification.success({
+        message: "Success",
+      });
     }
   } catch (err) {
     console.log(err);
@@ -184,6 +211,10 @@ function* watchCouncilEvent() {
   yield takeLatest(
     councilEventConstants.COUNCIL_EVENT_SEARCH_USER,
     searchUserForCouncilEventPanelistSaga
+  );
+  yield takeLatest(
+    councilEventConstants.COUNCIL_EVENT_PANEL_COMMENT,
+    commentCouncilEventPanelSaga
   );
 }
 

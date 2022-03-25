@@ -180,6 +180,13 @@ const CouncilEvents = ({
     setIsDrawerOpen(true);
   };
 
+  const handleCloseEvent = (eve) => {
+    upsertCouncilEvent({
+      id: eve.id,
+      status: "closed",
+    });
+  };
+
   const handleConfirmDelete = (id) => {
     deleteCouncilEvent(id);
   };
@@ -204,7 +211,14 @@ const CouncilEvents = ({
       }
     })
     .map((eve) => (
-      <div className="council-event-card2" key={eve.eventName}>
+      <div
+        className="council-event-card2"
+        key={eve.eventName}
+        onClick={(e) => {
+          setEvent(eve);
+          setIsModalOpen(true);
+        }}
+      >
         <div className="council-event-card2-content">
           <div
             className="d-flex justify-between"
@@ -228,27 +242,45 @@ const CouncilEvents = ({
               <Space>
                 <CustomButton
                   text="Edit"
-                  onClick={() => handleEdit(eve)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleEdit(eve);
+                  }}
                   size="small"
                 />
-                <Popconfirm
-                  title="Are you sure to delete this event?"
-                  onConfirm={() => handleConfirmDelete(eve.id)}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <CustomButton text="Delete" type="secondary" size="small" />
-                </Popconfirm>
                 <CustomButton
+                  text="Close"
+                  type="secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCloseEvent(eve);
+                  }}
+                  size="small"
+                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Popconfirm
+                    title="Are you sure to delete this event?"
+                    onConfirm={() => handleConfirmDelete(eve.id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <CustomButton text="Delete" type="third" size="small" />
+                  </Popconfirm>
+                </div>
+                {/* <CustomButton
                   text="More info"
                   type="third"
                   block
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     setEvent(eve);
                     setIsModalOpen(true);
                   }}
                   size="small"
-                />
+                /> */}
               </Space>
             ) : (
               <CustomButton
