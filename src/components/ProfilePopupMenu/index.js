@@ -21,6 +21,7 @@ import SocketEventTypes from "enum/SocketEventTypes";
 import "./style.scss";
 import { getPortalSession, getSubscription } from "../../api/module/stripe";
 import Modal from "antd/lib/modal/Modal";
+import { setConversations } from "redux/actions/conversation-actions";
 
 // const ProfileMenus = [
 //   {
@@ -60,6 +61,7 @@ const ProfilePopupMenu = (props) => {
     changePassword,
     userProfile,
     acceptApply,
+    setConversations,
     ...rest
   } = props;
 
@@ -125,6 +127,7 @@ const ProfilePopupMenu = (props) => {
     SocketIO.emit(SocketEventTypes.USER_OFFLINE, {
       id: userProfile.id,
     });
+    setConversations([]);
     logout();
   };
 
@@ -548,6 +551,7 @@ const mapStateToProps = (state) => homeSelector(state);
 const mapDispatchToProps = {
   logout: authActions.logout,
   acceptApply: homeActions.acceptInvitationApply,
+  setConversations,
   ...homeActions,
 };
 
