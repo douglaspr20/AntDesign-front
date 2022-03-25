@@ -246,7 +246,7 @@ class App extends Component {
           <Sider />
           <Layout>
             <TopHeader />
-            <div style={{ display: "flex", position: "relative" }}>
+            <div className="content-container">
               <Content />
               {window.screen.width > 1000 && this.props.userProfile?.id ? (
                 <Chat conversations={this.props.conversations} />

@@ -79,7 +79,7 @@ class Content extends Component {
 
   render() {
     return (
-      <Layout.Content>
+      <Layout.Content style={{ overflow: "hidden" }}>
         <Switch>
           <PrivateRoute
             path={INTERNAL_LINKS.HOME}
