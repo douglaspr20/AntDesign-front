@@ -57,8 +57,16 @@ const LivePage = ({
     if (live.event) {
       getEvent(Number(live.event));
     }
+    setTimes([]);
+    setFirstTimes([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [live]);
+
+  useEffect(() => {
+    setTimes([]);
+    setFirstTimes([]);
+    setIsIdRepeated(false)
+  }, [myEvents]);
 
   /*
    * validating event date to confirm live assistence
@@ -135,7 +143,6 @@ const LivePage = ({
                   };
                 }
                 prev = [...new Set(prev)];
-                console.log('prev if exist', prev)
                 return [...prev];
               });
             } else {
@@ -149,7 +156,6 @@ const LivePage = ({
                   },
                 ];
                 prev = [...new Set(prev)];
-                console.log('prev if not exist', prev)
                 return [...prev];
               });
             }
