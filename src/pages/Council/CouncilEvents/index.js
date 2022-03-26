@@ -62,7 +62,13 @@ const CouncilEvents = ({
     if (!isEmpty(event)) {
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
+
       const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
+
+      let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
+      let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+
+      console.log("zz", startTime.format("YYYY-MM-DD HH:mm:ssZ"));
 
       panel = {
         ...panel,
@@ -70,12 +76,15 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
+        let startTime = moment.tz(
+          panel.panelStartAndEndDate[0],
+          timezone.utc[0]
+        );
+        let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+
         return {
           ...panel,
-          panelStartAndEndDate: [
-            moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
-            moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
-          ],
+          panelStartAndEndDate: [startTime, endTime],
         };
       });
 
@@ -90,10 +99,7 @@ const CouncilEvents = ({
         panelName: panel.panelName,
         numberOfPanelists: panel.numberOfPanelists,
         councilEventPanelId: panel.councilEventPanelId,
-        panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
-          moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
-        ],
+        panelStartAndEndDate: [startTime, endTime],
         linkToJoin: panel.linkToJoin,
       });
 
@@ -109,7 +115,8 @@ const CouncilEvents = ({
 
     return (
       moment(date).isBefore(moment()) ||
-      (isPanel && moment(date).isBefore(moment(startAndEndDate[0])))
+      (isPanel &&
+        moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
     );
   };
 
@@ -129,8 +136,8 @@ const CouncilEvents = ({
     const panel = {
       panelName: values.panelName,
       panelStartAndEndDate: [
-        moment.tz(values.panelStartAndEndDate[0], timezone.utc[0]),
-        moment.tz(values.panelStartAndEndDate[1], timezone.utc[0]),
+        values.panelStartAndEndDate[0].utcOffset(timezone.offset, true),
+        values.panelStartAndEndDate[1].utcOffset(timezone.offset, true),
       ],
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
@@ -143,8 +150,8 @@ const CouncilEvents = ({
       return {
         ...panel,
         panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]),
-          moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]),
+          panel.panelStartAndEndDate[0].utcOffset(timezone.offset, true),
+          panel.panelStartAndEndDate[1].utcOffset(timezone.offset, true),
         ],
       };
     });
@@ -152,12 +159,12 @@ const CouncilEvents = ({
     const transformedValues = {
       ...values,
       id: event.id || null,
-      startDate: moment
-        .tz(values.startAndEndDate[0], timezone.utc[0])
-        .startOf("day"),
-      endDate: moment
-        .tz(values.startAndEndDate[1], timezone.utc[0])
-        .startOf("day"),
+      startDate: values.startAndEndDate[0]
+        .startOf("day")
+        .utcOffset(timezone.offset, true),
+      endDate: values.startAndEndDate[1]
+        .startOf("day")
+        .utcOffset(timezone.offset, true),
       panels,
       status,
     };
@@ -482,7 +489,7 @@ const CouncilEvents = ({
                     </Form.Item>
                   </div>
                 ))}
-                {numOfPanels !== limit && (
+                {numOfPanels < limit && (
                   <Form.Item>
                     <CustomButton
                       text="Add Panel"
