@@ -25,6 +25,7 @@ import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
+import { setJoinCouncilEvent } from "redux/actions/council-events-actions";
 import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
@@ -108,6 +109,10 @@ class App extends Component {
 
     SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
       this.props.getLive();
+    });
+
+    SocketIO.on(SOCKET_EVENT_TYPE.UPDATE_COUNCIL_EVENT_PANEL, (data) => {
+      this.props.setJoinCouncilEvent(data)
     });
 
     this.props.getCategories();
@@ -253,6 +258,7 @@ const mapDispatchToProps = {
   getChannelCategories,
   getLive,
   pushNotification,
+  setJoinCouncilEvent
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

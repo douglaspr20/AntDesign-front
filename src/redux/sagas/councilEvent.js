@@ -100,10 +100,6 @@ export function* joinCouncilEventSaga({ payload }) {
       notification.success({
         message: "Success",
       });
-
-      yield put(
-        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
-      );
     } else if (response.status === 202) {
       notification.warn({
         message: response.data.msg,
@@ -130,9 +126,9 @@ export function* removeCouncilEventPanelistSaga({ payload }) {
         message: "Success",
       });
 
-      yield put(
-        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
-      );
+      // yield put(
+      //   councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
+      // );
     }
   } catch (err) {
     console.log(err);
@@ -171,10 +167,6 @@ export function* commentCouncilEventPanelSaga({ payload }) {
     );
 
     if (response.status === 200) {
-      yield put(
-        councilEventActions.setJoinCouncilEvent(response.data.councilEventPanel)
-      );
-
       notification.success({
         message: "Success",
       });

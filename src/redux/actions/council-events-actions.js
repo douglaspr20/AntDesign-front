@@ -27,51 +27,54 @@ export const constants = {
   COUNCIL_EVENT_PANEL_COMMENT,
 };
 
-const upsertCouncilEvent = createAction(
+export const upsertCouncilEvent = createAction(
   UPSERT_COUNCIL_EVENT,
   (councilEvent) => ({ councilEvent })
 );
-const setUpsertCouncilEvent = createAction(
+export const setUpsertCouncilEvent = createAction(
   SET_COUNCIL_EVENT,
   (councilEvent, isEdit) => ({ councilEvent, isEdit })
 );
-const getCouncilEvents = createAction(GET_COUNCIL_EVENTS);
-const setCouncilEvents = createAction(SET_COUNCIL_EVENTS, (councilEvents) => ({
-  councilEvents,
-}));
-const deleteCouncilEvent = createAction(
+export const getCouncilEvents = createAction(GET_COUNCIL_EVENTS);
+export const setCouncilEvents = createAction(
+  SET_COUNCIL_EVENTS,
+  (councilEvents) => ({
+    councilEvents,
+  })
+);
+export const deleteCouncilEvent = createAction(
   DELETE_COUNCIL_EVENT,
   (councilEventId) => ({ councilEventId })
 );
-const joinCouncilEvent = createAction(
+export const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
   (councilEventPanelId, UserId, status, isAddedByAdmin = false) => ({
     councilEventPanelId,
     UserId,
     status,
-    isAddedByAdmin
+    isAddedByAdmin,
   })
 );
-const setJoinCouncilEvent = createAction(
+export const setJoinCouncilEvent = createAction(
   SET_JOIN_COUNCIL_EVENT,
   (councilEventPanel) => ({ councilEventPanel })
 );
-const removeCouncilEventPanelist = createAction(
+export const removeCouncilEventPanelist = createAction(
   REMOVE_COUNCIL_EVENT_PANELIST,
   (CouncilEventPanelId, CouncilEventPanelistId) => ({
     CouncilEventPanelId,
     CouncilEventPanelistId,
   })
 );
-const searchUserForCouncilEventPanelist = createAction(
+export const searchUserForCouncilEventPanelist = createAction(
   COUNCIL_EVENT_SEARCH_USER,
   (keyword) => ({ keyword })
 );
-const setSearchedUserForCouncilEventPanelist = createAction(
+export const setSearchedUserForCouncilEventPanelist = createAction(
   SET_SEARCHED_USERS_FOR_COUNCIL_EVENT,
   (users) => ({ users })
 );
-const upsertCommentCouncilEventPanel = createAction(
+export const upsertCommentCouncilEventPanel = createAction(
   COUNCIL_EVENT_PANEL_COMMENT,
   (councilEventPanelComment) => ({ councilEventPanelComment })
 );
@@ -87,5 +90,5 @@ export const actions = {
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
   setSearchedUserForCouncilEventPanelist,
-  upsertCommentCouncilEventPanel
+  upsertCommentCouncilEventPanel,
 };
