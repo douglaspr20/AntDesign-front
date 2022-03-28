@@ -6,6 +6,7 @@ import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { Modal, Dropdown, Space, Menu } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
+import GoogleMap from "./GoogleMaps";
 
 import {
   convertToLocalTime,
@@ -184,6 +185,16 @@ const PublicEventPage = ({
     );
   };
 
+  const displayVenueLocation = !isEmpty(updatedEvent.venueAddress) && (
+    <div>
+      <h5>Venue Address: {updatedEvent.venueAddress.formatted_address}</h5>
+      <GoogleMap
+        lat={updatedEvent.venueAddress.lat}
+        lng={updatedEvent.venueAddress.lng}
+      />
+    </div>
+  );
+
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -358,6 +369,7 @@ const PublicEventPage = ({
         ) : (
           <RichEdit data={updatedEvent.description} />
         )}
+        {displayVenueLocation}
       </div>
     </div>
   );
