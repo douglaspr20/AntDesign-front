@@ -21,6 +21,8 @@ import {
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
+  viewRulesConference,
+  countAllUsers,
 } from "./module/user";
 import {
   getAllEvents,
@@ -106,6 +108,9 @@ import {
   getSessionsUserJoined,
   getParticipants,
   recommendedAgenda,
+  saveForLaterSession,
+  claimSession,
+  markSessionViewed,
 } from "./module/session";
 import {
   createBonfire,
@@ -201,7 +206,49 @@ import {
   updateMarketplaceProfile,
 } from "./module/marketplaceProfile";
 
+import {
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  editAdvertisement,
+} from "./module/advertisement";
+
+import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
+
+import {
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  searchUserForCouncilEventPanelist,
+} from "./module/council-event";
+
+import {
+  upsertCouncilConversation,
+  getCouncilConversations,
+  deleteCouncilConversation,
+  getCouncilConversation,
+} from "./module/council-conversation";
+
+import {
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+} from "./module/councilConversationComment";
+import {
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+} from "./module/council-conversation-reply";
+
+import {
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+} from "./module/council-conversation-like";
+
 import { getEditorSignature } from "./module/env";
+
 export {
   signIn,
   signUp,
@@ -231,6 +278,7 @@ export {
   getMetadata,
   createInvitation,
   acceptInvitationJoin,
+  viewRulesConference,
   confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
@@ -294,6 +342,9 @@ export {
   addSession,
   removeSession,
   joinedASession,
+  claimSession,
+  saveForLaterSession,
+  markSessionViewed,
   addBonfire,
   removeBonfire,
   updateBonfire,
@@ -356,4 +407,29 @@ export {
   createMarketplaceProfile,
   updateMarketplaceProfile,
   acceptTermsAndConditions,
+  countAllUsers,
+  getAdvertisementsByPage,
+  getAdvertisementByAdvertiser,
+  createAdvertisement,
+  getAdvertisementById,
+  getAllActiveAdvertisements,
+  getMatchmake,
+  editAdvertisement,
+  sendMatchEmail,
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  upsertCouncilConversation,
+  deleteCouncilConversation,
+  getCouncilConversation,
+  getCouncilConversations,
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+  searchUserForCouncilEventPanelist,
 };

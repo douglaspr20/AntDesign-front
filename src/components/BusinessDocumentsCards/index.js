@@ -159,7 +159,7 @@ const BusinessDocumentsCard = ({
             </div>
           )}
           {userProfile?.id === documentFile?.User?.id && (
-            <div>
+            <div className="business-actions">
               {" "}
               <CustomButton
                 text="Update"

@@ -30,7 +30,7 @@
     height: calc(100vh - 72px);
     background: $color-background;
     overflow: auto;
-    padding: 4rem;
+    padding: 1rem 4rem;
     position: relative;
 
     &-header {
@@ -71,11 +71,6 @@
       }
     }
 
-    &-footer {
-      height: 40px;
-      padding-bottom: 64px;
-    }
-
     .upgrade-notification {
       position: sticky;
       bottom: 50%;
@@ -109,7 +104,7 @@
 
   .search-results-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, minmax(260px, 1fr));
     grid-gap: 2rem;
     margin-bottom: 44px;
     margin-top: 1rem;
@@ -222,4 +217,98 @@
       }
     }
   }
+}
+
+.conference-library {
+
+  &-library-footer {
+    height: 40px;
+    padding-bottom: 64px;
+  }
+
+  &-content {
+    display: flex;
+    justify-content: center;
+
+    .tabs-container{
+      width: 100%;
+      padding: 0px 10px;
+      max-width: 1000px;
+    }
+
+    & .annual-conference-card {
+      margin: 1.5rem 0;
+      width: 100%;
+      max-width: 1500px;
+      min-height: 300px;
+    }
+
+  }
+}
+
+.conference-library-advertisement-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+
+  &-preview {
+    margin-top: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+
+    .advertisement {
+      width: 275px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: lightgray;
+      height: 275px;
+      cursor: pointer;
+
+      &-img {
+        width: 275px;
+        height: 275px;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  &-content {
+    margin-top: 10px;
+    
+    .advertisement {
+      width: 275px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: lightgray;
+      height: 275px;
+      cursor: pointer;
+
+      &-img {
+        width: 275px;
+        height: 275px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+
+.sessions-2022-container{
+  max-height: calc(100vh - 280px);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: $color-text-secondary;
+  }
+    
 }

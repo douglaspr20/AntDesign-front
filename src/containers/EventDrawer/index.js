@@ -99,8 +99,10 @@ const EventDrawer = ({
   };
 
   const onClickDownloadCalendar = (day) => {
+    const userTimezone = moment.tz.guess()
+
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };
@@ -263,7 +265,7 @@ const EventDrawer = ({
                   </React.Fragment>
                 ) : (
                   <CustomButton
-                    text="Upgrade to premium"
+                    text="Upgrade to PREMIUM"
                     size="md"
                     type="primary"
                     onClick={planUpgrade}

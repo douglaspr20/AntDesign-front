@@ -238,11 +238,11 @@ class Content extends Component {
             path={INTERNAL_LINKS.NOTIFICATIONS}
             render={(props) => <NotificationPage {...props} />}
           />
-          <PrivateRoute
+          {/* <PrivateRoute
             exact
             path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
             render={(props) => <GlobalConferencePage {...props} />}
-          />
+          /> */}
 
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
@@ -379,6 +379,26 @@ class Content extends Component {
             exact
             path={`${INTERNAL_LINKS.TALENT_MARKETPLACE}/job-post/:id`}
             render={(props) => <JobPostDetailsPage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.AD_HOME_PREVIEW}/:id`}
+            exact
+            render={(props) => <HomePage {...props} isAdPreview />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}/:id`}
+            exact
+            render={(props) => <ConferenceLibrary {...props} isAdPreview />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.AD_EVENTS_PREVIEW}/:id`}
+            exact
+            render={(props) => <EventsPage {...props} isAdPreview />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}/:id`}
+            exact
+            render={(props) => <SkillCohortPage {...props} isAdPreview />}
           />
           <Route
             exact

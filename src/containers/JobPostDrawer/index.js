@@ -8,7 +8,7 @@ import {
   CustomCheckbox,
   FroalaEdit,
 } from "components";
-import CompanyLogoUploadForm from "../CompanyLogoUploadForm";
+import UploadImageForm from "../UploadImageForm";
 import { COUNTRIES, PROFILE_SETTINGS, JOB_BOARD } from "enum";
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
@@ -497,7 +497,7 @@ const JobPostDrawer = ({
         footer={[]}
         onCancel={() => setVisibleModal(false)}
       >
-        <CompanyLogoUploadForm onSave={handleOnSave} />
+        <UploadImageForm onSave={handleOnSave} />
       </Modal>
     </CustomDrawer>
   );

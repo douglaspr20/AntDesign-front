@@ -9,9 +9,14 @@
   padding: 2rem;
   position: relative;
   width: 100%;
+  max-width: 1200px;
 
-  @media screen and (max-width: 400px) {
-  max-width: 360px;
+  @media  (max-width: 500px){
+    max-width: 380px;
+  }
+
+  @media  (max-width: 400px){
+    max-width: 337px;
   }
 }
 
@@ -20,20 +25,53 @@
     height: auto;
     display: flex;
     align-items: center;
+    align-items: flex-start !important;
     justify-content: space-between;
-    flex-wrap: wrap-reverse;
+    flex-wrap: nowrap !important;
 
     h3 {
       max-width: 50%;
     }
 
-    @media screen and (max-width: 400px) {
-      & .ant-btn {
-       max-width: 310px;
-      }
+    @media screen and (max-width: 600px) {
+
+      flex-wrap: wrap-reverse !important;
 
       h3{
-        max-width: 90% !important
+        max-width: 95% !important;
+        margin-top: 10px !important;
+      }
+    }
+
+    .button-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: auto;
+
+      & .ant-btn {
+        min-width: 220px;
+       }
+     
+
+
+      @media screen and (max-width: 800px) {
+        & .ant-btn {
+          max-width: 350px;
+          padding: 0px 0px;
+         }
+        justify-content: center;
+      }
+
+      @media screen and (max-width: 500px) {
+        width: 100%;
+        & .ant-btn {
+          padding: 0px 20px;
+         }
+      }
+
+      @media screen and (max-width: 400px) {
+        margin-left: -10PX;
       }
     }
   }
@@ -56,12 +94,27 @@
     max-width: 280px;
   }
 
+  &-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 900px) {
+       justify-content: center;
+    }
+  }
+
   &-toggle {
     display: flex;
     align-items: center;
     color: $color-accent;
     @include app-font(16px, 21px, 600);
     cursor: pointer;
+
+    @media screen and (max-width: 900px) {
+     margin-top: 1rem;
+   }
 
     &-icon {
       width: 1.5rem;
@@ -95,7 +148,7 @@
   }
 
   &-added-tag {
-    width: 76px;
+    width: 220px !important;
     height: 28px;
     border-radius: 100px;
     background: $color-accent;
@@ -106,7 +159,7 @@
     @include app-font(14px, 19px);
     position: absolute;
     top: -14px;
-    right: -24px;
+    left: 0px !important;
   }
 
   &-categories {
@@ -115,12 +168,20 @@
     flex-wrap: wrap;
     margin-top: 1rem;
 
+    & .specialty-item {
+      min-width: 290px !important;
+      max-width: auto !important;
+    }
+
     @media screen and (max-width: 500px) {
-      width: 30% !important;
+      width: 100% !important;
+
       & .specialty-item {
-        min-width: 140px !important;
-        max-width: 140px !important;
+        min-width: 330px !important;
+        max-width: auto !important;
       }
+  
+    
     }
   }
 }
@@ -168,7 +229,6 @@
     }
   }
 }
-
 
 .custom-button-disabled{
   color: rgba(0, 0, 0, 0.25) !important;

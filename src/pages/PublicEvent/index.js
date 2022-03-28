@@ -104,8 +104,10 @@ const PublicEventPage = ({
   };
 
   const onClickDownloadCalendar = (day) => {
+    const userTimezone = moment.tz.guess();
+
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };

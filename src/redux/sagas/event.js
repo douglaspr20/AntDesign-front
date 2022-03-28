@@ -36,7 +36,7 @@ import {
 const getEventStatus = (data, userId) => {
   let res = data.status[userId];
 
-  const last = data.startAndEndTimes[data.startAndEndTimes - 1];
+  const last = data.startAndEndTimes[data.startAndEndTimes.length - 1];
 
   if (res === "going") {
     res = moment().isBefore((last || {}).endTime) ? res : "past";

@@ -30,13 +30,20 @@ import { SkillCohortResourceResponseAssessmentSaga } from "./skillCohortResource
 import { SkillCohortResourceResponseRatingSaga } from "./skillCohortResourceResponseRating";
 import { learningSaga } from "./myLearning";
 import { partnersSaga } from "./partners";
-import { jobBoardSaga } from "./jobBoard"
+import { jobBoardSaga } from "./jobBoard";
 import { sessionClassUserSaga } from "./sessionClassUser";
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
 import { businessPartnerSaga } from "./businessPartner";
 import { businessPartnerCommentSaga } from "./businessPartnerComments";
+import { advertisementSaga } from "./advertisement";
+import { matchmakeSaga } from "./matchmaking";
+import { councilEventSaga } from "./councilEvent";
+import { councilConversationSaga } from "./councilConversation";
+import { councilConversationCommentSaga } from "./councilConversationComment";
+import { councilConversationReplySaga } from "./councilConversationReply"
+import { councilConversationLikeSaga } from "./councilConversationLike"
 
 export default function* sagas() {
   yield all([
@@ -78,5 +85,12 @@ export default function* sagas() {
     ...jobBoardSaga,
     ...sessionClassUserSaga,
     ...marketplaceProfileSaga,
+    ...advertisementSaga,
+    ...matchmakeSaga,
+    ...councilEventSaga,
+    ...councilConversationSaga,
+    ...councilConversationCommentSaga,
+    ...councilConversationReplySaga,
+    ...councilConversationLikeSaga
   ]);
 }

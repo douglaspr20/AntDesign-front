@@ -40,6 +40,36 @@ export const reducers = {
       recommendedAgendaSessions: cloneDeep(payload.recommendedAgendaSessions),
     });
   },
+  [sessionConstants.UPDATE_SESSION_VIEWED]: (state, { payload }) => {
+    const allSessions = state.get("allSessions");
+    return state.merge({
+      allSessions: cloneDeep(
+        allSessions.map((session) =>
+          session.id === payload.session.id
+            ? {
+                ...payload.session,
+                speakers: [...session.speakers],
+              }
+            : session
+        )
+      ),
+    });
+  },
+  [sessionConstants.UPDATE_SAVE_FOR_LATER_SESSION]: (state, { payload }) => {
+    const allSessions = state.get("allSessions");
+    return state.merge({
+      allSessions: cloneDeep(
+        allSessions.map((session) =>
+          session.id === payload.session.id
+            ? {
+                ...payload.session,
+                speakers: [...session.speakers],
+              }
+            : session
+        )
+      ),
+    });
+  },
   [sessionConstants.SET_SESSION_LOADING]: (state, { payload }) => {
     return state.merge({
       sessionLoading: payload.loading,
