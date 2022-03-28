@@ -23,6 +23,12 @@ import TimezoneList from "enum/TimezoneList";
 
 const { RangePicker } = DatePicker;
 
+const statusColor = {
+  active: '#108ee9',
+  draft: 'orange',
+  closed: 'black'
+}
+
 const CouncilEvents = ({
   upsertCouncilEvent,
   allCouncilEvents,
@@ -234,7 +240,7 @@ const CouncilEvents = ({
             <h3>{eve.eventName}</h3>
             {userProfile.isExpertCouncilAdmin && (
               <div>
-                <Tag color={eve.status === "active" ? "#108ee9" : "orange"}>
+                <Tag color={statusColor[eve.status]}>
                   {eve.status}
                 </Tag>
               </div>

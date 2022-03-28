@@ -42,7 +42,6 @@ const CouncilEventPanel = ({
   let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
   let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
 
-
   const handleJoinPanel = (panel, state) => {
     joinCouncilEvent(panel.id, userProfile.id, state);
   };
@@ -61,12 +60,6 @@ const CouncilEventPanel = ({
   const onClickAddGoogleCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(
-      moment
-        .tz(panel.panelStartAndEndDate[0], userTimezone)
-        .format("YYYY-MM-DD HH:mm:ssZ"),
-      "panel.panelStartAndEndDate[0]"
-    );
 
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
       panel.panelName
