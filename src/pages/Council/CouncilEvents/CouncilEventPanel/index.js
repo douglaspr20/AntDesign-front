@@ -149,7 +149,7 @@ const CouncilEventPanel = ({
       (_user) => _user.value === values.user
     );
 
-    joinCouncilEvent(panel.id, user.id, "Join");
+    joinCouncilEvent(panel.id, user.id, "Join", true);
     form.resetFields();
     setIsModalVisible(false);
   };

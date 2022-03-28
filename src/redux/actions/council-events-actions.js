@@ -45,10 +45,11 @@ const deleteCouncilEvent = createAction(
 );
 const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, UserId, status) => ({
+  (councilEventPanelId, UserId, status, isAddedByAdmin = false) => ({
     councilEventPanelId,
     UserId,
     status,
+    isAddedByAdmin
   })
 );
 const setJoinCouncilEvent = createAction(
