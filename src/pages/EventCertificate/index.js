@@ -77,11 +77,9 @@ const CertificateList = ({
         />
       ) : (
         <>
-          {/* <div className="certificate-list-container"> */}
-          {/* <div className="certificate-card-list"> */}
           {isOwner && <CertificateCard type={CARD_TYPE.ADD} />}
           {eventsFiltered &&
-            eventsFiltered?.map(
+            eventsFiltered.sort((a, b) => new Date(b.startDate) - new Date(a.endDate))?.map(
               (liveEvent, index) =>
                 liveEvent && (
                   <div key={index}>

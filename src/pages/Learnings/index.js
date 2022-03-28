@@ -1,7 +1,11 @@
 import { Collapse } from "antd";
 import React, { useState, useEffect } from "react";
-import { Tabs } from "components";
 import { connect } from "react-redux";
+import {
+  useHistory,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
+
 import {
   LibraryCard,
   ConferenceCard,
@@ -13,6 +17,7 @@ import Emitter from "services/emitter";
 import { EVENT_TYPES, SETTINGS } from "enum";
 
 import IconLoadingMore from "images/icon-loading-more.gif";
+import { Tabs } from "components";
 
 import getPodcastLinks from "utils/getPodcastLinks.js";
 
@@ -25,6 +30,7 @@ import LearningFilterDrawer from "./LearningFilterDrawer";
 import EventCertificate from "../EventCertificate";
 import EventVideo from "./EventVideo";
 import "./style.scss";
+
 
 const { Panel } = Collapse;
 
@@ -49,9 +55,21 @@ const MyLearingPage = ({
   getMoreSaved,
   userProfile,
 }) => {
-  const [currentTab, setCurrentTab] = useState("0");
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const history = useHistory();
+
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [filters, setFilters] = useState({});
+
+  const handleTabChange = (tab) => {
+    history.replace({
+      pathname: window.location.pathname,
+      search: `tab=${tab}`,
+    });
+    setCurrentTab(tab);
+  };
 
   useEffect(() => {
     getAllSaved({});
@@ -364,7 +382,11 @@ const MyLearingPage = ({
       <LearningFilterDrawer onChange={handleFilterChange} />
       <div className="my-learnings-page-container">
         <div className="search-results-container">
-          <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+          <Tabs
+            data={TabData}
+            current={currentTab}
+            onChange={handleTabChange}
+          />
         </div>
       </div>
     </div>

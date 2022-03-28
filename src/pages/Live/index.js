@@ -90,9 +90,6 @@ const LivePage = ({
           const timezone = TIMEZONE_LIST.find(
             (item) => item.value === myEvents.timezone
           );
-          console.log('event',myEvents)
-          console.log('timmezone event',myEvents.timezone)
-          console.log('timezone',timezone)
           const convertedStartEventTime = moment(start)
             .tz(timezone?.utc[0])
             .utcOffset(timezone?.offset, true)

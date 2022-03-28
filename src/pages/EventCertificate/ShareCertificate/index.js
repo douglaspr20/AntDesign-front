@@ -130,7 +130,7 @@ const EventCertificatePage = ({
           <div className="certificate-page">
             <div
               className="certificate-page-header-content-back-btn"
-              onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
+              onClick={() => history.push(`${INTERNAL_LINKS.MY_LEARNINGS}?tab=4`)}
             >
               <div className="certificate-page-header-content-back">
                 <div className="certificate-page-header-content-back-img">
