@@ -90,18 +90,20 @@ const LivePage = ({
           const timezone = TIMEZONE_LIST.find(
             (item) => item.value === myEvents.timezone
           );
+          console.log('timmezone event',myEvents.timezone)
+          console.log('timezone',timezone)
           const convertedStartEventTime = moment(start)
-            .tz(timezone.utc[0])
-            .utcOffset(timezone.offset, true)
+            .tz(timezone?.utc[0])
+            .utcOffset(timezone?.offset, true)
             .format();
           const convertedEndEventTime = moment(end)
-            .tz(timezone.utc[0])
+            .tz(timezone?.utc[0])
             .utcOffset(timezone.offset, true)
             .format();
 
           const localDate = moment()
             .utc()
-            .tz(timezone.utc[0])
+            .tz(timezone?.utc[0])
             .utcOffset(timezone.offset, true)
             .format();
 
