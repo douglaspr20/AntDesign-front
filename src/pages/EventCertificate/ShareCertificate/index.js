@@ -5,14 +5,14 @@ import { connect } from "react-redux";
 import html2canvas from "html2canvas";
 import moment from "moment";
 import converter from "number-to-words";
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-} from "react-share";
+// import {
+//   FacebookIcon,
+//   FacebookShareButton,
+//   LinkedinIcon,
+//   LinkedinShareButton,
+//   TwitterIcon,
+//   TwitterShareButton,
+// } from "react-share";
 
 import { DownloadOutlined } from "@ant-design/icons";
 
@@ -46,9 +46,9 @@ const EventCertificatePage = ({
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const id = query.get("id");
-  const shareUrl = `${window.location.origin}${
-    INTERNAL_LINKS.EVENT_CERTIFICATE
-  }?id=${query.get("id")}`;
+  // const shareUrl = `${window.location.origin}${
+  //   INTERNAL_LINKS.EVENT_CERTIFICATE
+  // }?id=${query.get("id")}`;
 
   // useEffect(() => {
   //   if (myEvents.usersAssistence) {
@@ -196,9 +196,9 @@ const EventCertificatePage = ({
               </div>
             </div>
             <div className="share-certificate">
-              <h3>Share your badge</h3>
+              <h3>download your badge</h3>
               <div className="certificate-page-actions">
-                <FacebookShareButton url={shareUrl} quote="comentario default">
+                {/* <FacebookShareButton url={shareUrl} quote="comentario default">
                   <FacebookIcon size={40} round />
                 </FacebookShareButton>
                 <LinkedinShareButton
@@ -210,7 +210,7 @@ const EventCertificatePage = ({
                 </LinkedinShareButton>
                 <TwitterShareButton url={shareUrl} title="title default">
                   <TwitterIcon size={40} round />
-                </TwitterShareButton>
+                </TwitterShareButton> */}
                 <button
                   onClick={downloadPdf}
                   className="custom-download-button"
