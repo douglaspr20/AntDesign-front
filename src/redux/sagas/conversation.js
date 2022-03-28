@@ -166,7 +166,9 @@ export function* getConversationSaga({ payload }) {
 
         return {
           ...newConversation,
-          messages: [...currentConversation.messages, payload.message],
+          messages: payload.message
+            ? [...currentConversation.messages, payload.message]
+            : [...currentConversation.messages],
           members: membersReduce,
         };
       });

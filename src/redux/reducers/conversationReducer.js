@@ -24,6 +24,8 @@ export const reducers = {
   [conversationConstants.UPDATE_CONVERSATION]: (state, { payload }) => {
     const allConversations = state.get("conversations");
 
+    const allCurrentConversations = state.get("currentConversations");
+
     const conversationsUpdate = allConversations.map((conversation) =>
       conversation.id === payload.conversation.id
         ? {
@@ -31,8 +33,18 @@ export const reducers = {
           }
         : conversation
     );
+
+    const currentConversationsUpdate = allCurrentConversations.map(
+      (currentConversation) =>
+        currentConversation.id === payload.conversation.id
+          ? {
+              ...payload.conversation,
+            }
+          : currentConversation
+    );
     return state.merge({
       conversations: conversationsUpdate,
+      currentConversations: currentConversationsUpdate,
     });
   },
 };

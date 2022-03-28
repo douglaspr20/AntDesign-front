@@ -133,7 +133,7 @@ const Chat = React.memo(
                     }`,
                     marginBottom: "5px",
                   }}
-                  key={message.id}
+                  key={message?.id}
                   visible="true"
                 >
                   <Tooltip

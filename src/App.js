@@ -175,6 +175,7 @@ class App extends Component {
           (conversation) =>
             conversation.members.some((member) => member.id === user.id)
         );
+
         this.props.getConversation(conversationToUpdate.id);
       }
     });
@@ -238,7 +239,6 @@ class App extends Component {
       openPostFormPanel,
       openChat,
     } = this.state;
-    console.log();
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>

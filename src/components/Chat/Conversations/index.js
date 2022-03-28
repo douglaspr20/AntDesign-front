@@ -13,7 +13,7 @@ const Conversation = ({
   userProfile,
 }) => {
   const messagesNotViewed = conversation.messages.filter(
-    (message) => !message.viewedUser.includes(userProfile.id)
+    (message) => !message?.viewedUser?.includes(userProfile.id)
   ).length;
 
   return (

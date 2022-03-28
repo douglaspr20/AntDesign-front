@@ -38,7 +38,7 @@ const Chat = ({
   const handleConversation = (conversation) => {
     if (
       conversation.messages.find(
-        (message) => !message.viewedUser.includes(userProfile.id)
+        (message) => !message?.viewedUser?.includes(userProfile.id)
       )
     ) {
       readMessages(userProfile.id, conversation.id);
@@ -76,16 +76,15 @@ const Chat = ({
     if (message.sender !== userProfile.id) {
       notificationSound.play();
     }
-
     getConversation(message.ConversationId, message);
   });
 
   useEffect(() => {
-    if (conversations.length > 0) {
+    if (conversations.length > 0 && currentConversations.length > 0) {
       const conversationWithMessageNotViewed = conversations.find(
         (conversation) =>
           conversation.messages.some(
-            (message) => !message.viewedUser.includes(userProfile.id)
+            (message) => !message?.viewedUser?.includes(userProfile.id)
           )
       );
 
@@ -100,10 +99,10 @@ const Chat = ({
         const conversationsData = conversations.map((conversation) => {
           const newConversationMessages = conversation.messages.map(
             (message) => {
-              if (!message.viewedUser.includes(userProfile.id)) {
+              if (!message?.viewedUser?.includes(userProfile.id)) {
                 return {
                   ...message,
-                  viewedUser: [...message.viewedUser, userProfile.id],
+                  viewedUser: [...message.viewedUser, userProfile?.id],
                 };
               }
               return message;
