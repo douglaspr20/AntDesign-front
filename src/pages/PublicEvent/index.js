@@ -272,6 +272,10 @@ const PublicEventPage = ({
               onClose={onCancelModal}
             />
           </Modal>
+        </div>
+      </div>
+      <div className="public-event-page-content">
+        <div className="public-event-page-content-calendar">
           {updatedEvent.status === "attend" && (
             <CustomButton
               text="REGISTER HERE"
@@ -286,10 +290,6 @@ const PublicEventPage = ({
               <span>I'm going</span>
             </div>
           )}
-        </div>
-      </div>
-      <div className="public-event-page-content">
-        <div className="public-event-page-content-calendar">
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes?.map((time, index) => {
@@ -383,6 +383,22 @@ const PublicEventPage = ({
           <RichEdit data={updatedEvent.description} />
         )}
         {displayVenueLocation}
+        <div style={{ marginTop: "1rem", display: "flex", justifyContent: 'center' }}>
+          {updatedEvent.status === "attend" && (
+            <CustomButton
+              text="REGISTER HERE"
+              size={isMobile ? "md" : "lg"}
+              type="primary"
+              onClick={onAttend}
+            />
+          )}
+          {updatedEvent.status === "going" && (
+            <div className="going-label">
+              <CheckOutlined />
+              <span>I'm going</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

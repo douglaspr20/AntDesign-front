@@ -99,7 +99,7 @@ const EventDrawer = ({
   };
 
   const onClickDownloadCalendar = (day) => {
-    const userTimezone = moment.tz.guess()
+    const userTimezone = moment.tz.guess();
 
     window.open(
       `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}&userTimezone=${userTimezone}`,
@@ -226,8 +226,13 @@ const EventDrawer = ({
           </div>
         )}
         <div className="event-details-header">
-          {event.image2 && <img src={event.image2} alt="event-img" />}
-          {!event.image2 && event.image && (
+          {!isEmpty(event.images) && (
+            <img src={event.images[0]} alt="event-img" />
+          )}
+          {isEmpty(event.images) && event.image2 && (
+            <img src={event.image2} alt="event-img" />
+          )}
+          {isEmpty(event.images) && !event.image2 && event.image && (
             <img src={event.image} alt="event-img" />
           )}
         </div>
@@ -334,8 +339,8 @@ const EventDrawer = ({
                         >
                           {event.startAndEndTimes.length > 1
                             ? `Download Calendar Day ${index + 1}: ${moment(
-                              startTime
-                            ).format("MMM DD")} `
+                                startTime
+                              ).format("MMM DD")} `
                             : "Download Calendar"}
                           <DownOutlined />
                         </a>
