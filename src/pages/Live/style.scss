@@ -51,18 +51,40 @@
     }
 
     .live-item {
-      padding-top: 1rem;
+      padding-top: 5px;
       @media (max-width: 1023.98px) {
         padding: 1rem;
       }
+    }
+
+    .live-confirm-assistence-button-container {
+      display: flex;
+      justify-content: center;
+      padding-top: 5px;
+    }
+
+    .live-item-container {
+      display: flex;
+      padding-top: 1rem;
+      margin: 0 auto;
+      justify-content: center;
     }
 
     p {
       text-align: justify;
     }
   }
+}
+.buttons-confirm-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 
-  .home-page-container--upgrade{
-    margin: 0 auto;
-  }
+}
+.home-page-container--upgrade{
+  margin: 0 auto ;
+}
+
+.confirmParticipationDisabled {
+  cursor: not-allowed;
 }

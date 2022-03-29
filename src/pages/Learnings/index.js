@@ -1,8 +1,10 @@
 import { Collapse, Row, Col } from "antd";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { AnnualConferenceCard, Tabs } from "components";
+import { useHistory,useLocation } from "react-router-dom";
 import { connect } from "react-redux";
+
+import { AnnualConferenceCard, Tabs } from "components";
+
 import {
   LibraryCard,
   ConferenceCard,
@@ -24,8 +26,10 @@ import { actions as conferenceActions } from "redux/actions/conference-actions";
 
 import FilterDrawer from "pages/Library/FilterDrawer";
 import LearningFilterDrawer from "./LearningFilterDrawer";
+import EventCertificate from "../EventCertificate";
 import EventVideo from "./EventVideo";
 import "./style.scss";
+
 
 const { Panel } = Collapse;
 
@@ -50,12 +54,23 @@ const MyLearingPage = ({
   getMoreSaved,
   userProfile,
 }) => {
-  const [currentTab, setCurrentTab] = useState("0");
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const history = useHistory();
+
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [filters, setFilters] = useState({});
   const [, setFilter] = useState({});
 
-  const history = useHistory();
+
+  const handleTabChange = (tab) => {
+    history.replace({
+      pathname: window.location.pathname,
+      search: `tab=${tab}`,
+    });
+    setCurrentTab(tab);
+  };
 
   useEffect(() => {
     getAllSaved({});
@@ -365,6 +380,10 @@ const MyLearingPage = ({
     );
   };
 
+  const liveCertificate = () => {
+    return <EventCertificate />;
+  };
+
   const TabData = [
     {
       title: "Event Videos",
@@ -381,6 +400,10 @@ const MyLearingPage = ({
     {
       title: "Completed Items",
       content: displayCompletedItems,
+    },
+    {
+      title: "Digital Certificates",
+      content: liveCertificate,
     },
   ];
 
@@ -414,7 +437,7 @@ const MyLearingPage = ({
             <Tabs
               data={TabData}
               current={currentTab}
-              onChange={setCurrentTab}
+              onChange={handleTabChange}
             />
           </div>
         </div>

@@ -1,31 +1,173 @@
-import React, { useEffect } from "react";
-import { Divider } from "antd";
+import React, { useState, useEffect } from "react";
+import { Divider, Modal } from "antd";
+import moment from "moment";
 import ReactPlayer from "react-player/youtube";
 
+import Interweave from "interweave";
 import { connect } from "react-redux";
+import { updateEventUserAssistence } from "redux/actions/event-actions";
 import { getUser } from "redux/actions/home-actions";
+import { getEvent } from "redux/actions/event-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { liveSelector } from "redux/selectors/liveSelector";
+import { eventSelector } from "redux/selectors/eventSelector";
 
 import Emitter from "services/emitter";
-import { EVENT_TYPES } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 
 import { CustomButton } from "components";
 
-import Interweave from "interweave";
 import "./style.scss";
-import { INTERNAL_LINKS } from "enum";
 
-const LivePage = ({ userProfile, getUser, history, live }) => {
+const LivePage = ({
+  userProfile,
+  getUser,
+  history,
+  updateEventUserAssistence,
+  live,
+  myEvents,
+  getEvent,
+}) => {
+  const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
+  const [firstTimes, setFirstTimes] = useState([]);
+  const [times, setTimes] = useState([]);
+  const [isIdRepeated, setIsIdRepeated] = useState(false);
+  const handleConfirmAssistence = () => {
+    setVisibleEventConfirm(true);
+  };
+
+  const onConfirmAssistence = () => {
+    let usersAssistence;
+    usersAssistence = times.length > 0 && times.map((el) => JSON.stringify(el));
+    if (!usersAssistence) {
+      usersAssistence = firstTimes.map((el) => JSON.stringify(el));
+    }
+
+    if (!isIdRepeated) {
+      updateEventUserAssistence({
+        ...myEvents,
+        usersAssistence,
+      });
+    }
+    setVisibleEventConfirm(false);
+  };
+
   useEffect(() => {
     getUser();
+    if (live.event) {
+      getEvent(Number(live.event));
+    }
+    setTimes([]);
+    setFirstTimes([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [live]);
+
+  useEffect(() => {
+    setTimes([]);
+    setFirstTimes([]);
+    setIsIdRepeated(false)
+  }, [myEvents]);
+
+  /*
+   * validating event date to confirm live assistence
+   * adding user to the users assistence list
+   */
+
+  useEffect(() => {
+    if (userProfile.id && myEvents.id) {
+      const userAssistenceJsonToArray =
+        myEvents.usersAssistence?.length > 0 &&
+        myEvents.usersAssistence[0]?.map((el) => JSON.parse(el));
+      setTimes(userAssistenceJsonToArray);
+
+      myEvents.startAndEndTimes &&
+        myEvents.startAndEndTimes.map((time, index) => {
+          const start = time.startTime;
+          const end = time.endTime;
+
+          const usersEventAssistence = [];
+          const userAssistence = userProfile.id;
+          const timezone = TIMEZONE_LIST.find(
+            (item) => item.value === myEvents.timezone
+          );
+          const convertedStartEventTime = moment(start)
+            .tz(timezone?.utc[0])
+            .utcOffset(timezone?.offset, true)
+            .format();
+          const convertedEndEventTime = moment(end)
+            .tz(timezone?.utc[0])
+            .utcOffset(timezone.offset, true)
+            .format();
+
+          const localDate = moment()
+            .utc()
+            .tz(timezone?.utc[0])
+            .utcOffset(timezone.offset, true)
+            .format();
+
+          const isTodayEvent =
+            moment(convertedStartEventTime).format("MM DD") ===
+              moment(localDate).format("MM DD") &&
+            moment(convertedEndEventTime).format("MM DD") ===
+              moment(localDate).format("MM DD");
+
+          if (userAssistenceJsonToArray) {
+            const item = userAssistenceJsonToArray[index];
+            if (
+              item.usersAssistence?.includes(userAssistence) &&
+              isTodayEvent
+            ) {
+              setIsIdRepeated(true);
+            }
+            if (item.usersAssistence?.length > 0 && isTodayEvent) {
+              usersEventAssistence.push(
+                ...item.usersAssistence,
+                userAssistence
+              );
+            } else if (isTodayEvent) {
+              usersEventAssistence.push(userAssistence);
+            }
+          }
+
+          if (!isIdRepeated) {
+            if (userAssistenceJsonToArray) {
+              return setTimes((prev) => {
+                if (isTodayEvent) {
+                  prev[index] = {
+                    start: prev[index].start,
+                    end: prev[index].end,
+                    usersAssistence: [
+                      ...prev[index].usersAssistence,
+                      userAssistence,
+                    ],
+                  };
+                }
+                prev = [...new Set(prev)];
+                return [...prev];
+              });
+            } else {
+              return setFirstTimes((prev) => {
+                prev = [
+                  ...prev,
+                  {
+                    start,
+                    end,
+                    usersAssistence: isTodayEvent ? [userAssistence] : [],
+                  },
+                ];
+                prev = [...new Set(prev)];
+                return [...prev];
+              });
+            }
+          }
+          return time;
+        });
+    }
+  }, [myEvents, live, userProfile.id, isIdRepeated]);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
   };
-
   return (
     <>
       {live.live === true ? (
@@ -53,6 +195,34 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
                       }&embed_domain=${window.location.hostname}`}
                     ></iframe>
                   </div>
+                </div>
+                <div live-item>
+                  {live.eventAssistence && (
+                    <div className="live-confirm-assistence-button-container">
+                      <CustomButton
+                        text="Click here to confirm you are participating in this event"
+                        onClick={isIdRepeated || handleConfirmAssistence}
+                        className={isIdRepeated ? "custom-button-disabled" : ""}
+                      />
+                      <Modal
+                        visible={visibleEventConfirm}
+                        title="Attendance Confirmation"
+                        width={500}
+                        onCancel={() => setVisibleEventConfirm(false)}
+                        onOk={() => onConfirmAssistence()}
+                        okText="Confirm"
+                      >
+                        <p>
+                          Confirming your participation to this event will
+                          generate a Digital Badge of participation. The badge
+                          will be available at the end of the event under your
+                          profile, in My Learning, in the Digital Certificates
+                          tab:
+                        </p>
+                        <div className="buttons-confirm-container"></div>
+                      </Modal>
+                    </div>
+                  )}
                 </div>
                 <div className="live-item">
                   <Divider />
@@ -97,10 +267,13 @@ const LivePage = ({ userProfile, getUser, history, live }) => {
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   live: liveSelector(state).live,
+  myEvents: eventSelector(state).myEvents,
 });
 
 const mapDispatchToProps = {
+  updateEventUserAssistence,
   getUser,
+  getEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LivePage);

@@ -220,6 +220,7 @@ const SponsorsFilters = ({
     }
     handleFilter(value);
   };
+
   return (
     <div className="filters-container">
       <div className="filter-item">

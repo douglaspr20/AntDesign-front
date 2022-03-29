@@ -156,8 +156,6 @@ const reducers = {
       (event) => event.id === payload.data.EventId
     );
 
-    console.log(payload, "payload");
-
     if (eventIndex >= 0) {
       const libraryIndex = newAllEventVideos[eventIndex].Libraries.findIndex(
         (library) => library.id === payload.data.id
