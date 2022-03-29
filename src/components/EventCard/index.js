@@ -18,6 +18,7 @@ import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
+import { isEmpty } from "lodash";
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
@@ -188,6 +189,7 @@ class EventCard extends React.Component {
         location,
         status,
         image2,
+        images,
         period,
         showClaim,
         startAndEndTimes,
@@ -227,7 +229,10 @@ class EventCard extends React.Component {
         ) : (
           <div>
             <div className="event-card-img">
-              {image2 && <img src={image2} alt="card-img" />}
+              {!isEmpty(images) && (
+                <img src={images[0]} alt="card-img" style={{ width: "100%" }} />
+              )}
+              {isEmpty(images) && image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>

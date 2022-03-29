@@ -233,11 +233,6 @@ const PublicEventPage = ({
         />
       </Helmet>
       <div className="public-event-page-header">
-        {isEmpty(updatedEvent.images) &&
-          !updatedEvent.image &&
-          !updatedEvent.image2 && (
-            <div className="public-event-page-header-defaultimg" />
-          )}
         {!isEmpty(updatedEvent.images) && (
           <Carousel autoplay dots={false}>
             {updatedEvent.images.map((image) => (
@@ -254,6 +249,11 @@ const PublicEventPage = ({
           !updatedEvent.image &&
           updatedEvent.image2 && (
             <img src={updatedEvent.image2} alt="updatedEvent-img" />
+          )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image &&
+          !updatedEvent.image2 && (
+            <div className="public-event-page-header-defaultimg" />
           )}
         <div className="public-event-page-header-title">
           <Modal
