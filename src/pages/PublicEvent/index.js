@@ -233,18 +233,28 @@ const PublicEventPage = ({
         />
       </Helmet>
       <div className="public-event-page-header">
-        {isEmpty(updatedEvent.images) && !updatedEvent.image && (
-          <div className="public-event-page-header-defaultimg" />
-        )}
-        {!isEmpty(updatedEvent.images) ? (
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image &&
+          !updatedEvent.image2 && (
+            <div className="public-event-page-header-defaultimg" />
+          )}
+        {!isEmpty(updatedEvent.images) && (
           <Carousel autoplay dots={false}>
             {updatedEvent.images.map((image) => (
               <img src={image} alt="updatedEvent-img" />
             ))}
           </Carousel>
-        ) : (
-          <img src={updatedEvent.image} alt="updatedEvent-img" />
         )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image2 &&
+          updatedEvent.image && (
+            <img src={updatedEvent.image} alt="updatedEvent-img" />
+          )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image &&
+          updatedEvent.image2 && (
+            <img src={updatedEvent.image2} alt="updatedEvent-img" />
+          )}
         <div className="public-event-page-header-title">
           <Modal
             visible={modalVisible}
