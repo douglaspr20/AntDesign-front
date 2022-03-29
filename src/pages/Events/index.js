@@ -256,7 +256,7 @@ const EventsPage = ({
         let flag = true;
         flag = dateFilter(flag, params, item);
 
-        const last = item.startAndEndTimes.at(-1);
+        const last = item.startAndEndTimes[item.startAndEndTimes - 1];
 
         if (!isEmpty(last) && moment().isBefore(last.endTime)) {
           flag = true;
