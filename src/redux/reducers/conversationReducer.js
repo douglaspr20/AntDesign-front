@@ -47,6 +47,30 @@ export const reducers = {
       currentConversations: currentConversationsUpdate,
     });
   },
+  [conversationConstants.SET_MESSAGE]: (state, { payload }) => {
+    const allConversations = state.get("conversations");
+
+    const allCurrentConversations = state.get("currentConversations");
+
+    return state.merge({
+      conversations: allConversations.map((conversation) =>
+        conversation.id === payload.message.ConversationId
+          ? {
+              ...conversation,
+              messages: [...conversation.messages, payload.message],
+            }
+          : conversation
+      ),
+      currentConversations: allCurrentConversations.map((currentConversation) =>
+        currentConversation.id === payload.message.ConversationId
+          ? {
+              ...currentConversation,
+              messages: [...currentConversation.messages, payload.message],
+            }
+          : currentConversation
+      ),
+    });
+  },
 };
 
 export const initialState = () =>

@@ -7,6 +7,7 @@ const GET_CONVERSATION = "GET_CONVERSATION";
 const SET_CONVERSATION = "SET_CONVERSATION";
 const SET_CURRENT_CONVERSATIONS = "SET_CURRENT_CONVERSATIONS";
 const UPDATE_CONVERSATION = "UPDATE_CONVERSATION";
+const SET_MESSAGE = "SET_MESSAGE";
 const READ_MESSAGES = "READ_MESSAGES";
 const GET_MORE_MESSAGES = "GET_MORE_MESSAGES";
 
@@ -17,6 +18,7 @@ export const constants = {
   GET_CONVERSATION,
   SET_CONVERSATION,
   SET_CURRENT_CONVERSATIONS,
+  SET_MESSAGE,
   READ_MESSAGES,
   GET_MORE_MESSAGES,
   UPDATE_CONVERSATION,
@@ -65,6 +67,9 @@ export const setCurrentConversations = createAction(
   })
 );
 
+export const setMessage = createAction(SET_MESSAGE, (message) => ({
+  message,
+}));
 export const readMessages = createAction(
   READ_MESSAGES,
   (id, ConversationId) => ({
@@ -93,6 +98,7 @@ export const actions = {
   getConversation,
   setConversation,
   setCurrentConversations,
+  setMessage,
   readMessages,
   getMoreMessages,
   updateConversation,

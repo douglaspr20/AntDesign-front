@@ -35,6 +35,7 @@ import {
 import {
   getConversations,
   getConversation,
+  setMessage,
 } from "redux/actions/conversation-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
@@ -115,6 +116,22 @@ class App extends Component {
         data.onlyFor.includes(this.props.userProfile.id)
       ) {
         this.props.pushNotification(data);
+      }
+    });
+
+    SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
+      const conversationToUpdate = this.props.conversations.find(
+        (conversation) => conversation.id === message.ConversationId
+      );
+
+      if (
+        conversationToUpdate &&
+        message &&
+        !conversationToUpdate.messages.some(
+          (oldMessage) => oldMessage.id === message.id
+        )
+      ) {
+        this.props.setMessage(message);
       }
     });
 
@@ -327,6 +344,7 @@ const mapDispatchToProps = {
   getLive,
   pushNotification,
   handleOnline,
+  setMessage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
