@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import Helmet from "react-helmet";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
-import { Modal, Dropdown, Space, Menu } from "antd";
+import { Modal, Dropdown, Space, Menu, Carousel } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import GoogleMap from "./GoogleMaps";
@@ -233,14 +233,17 @@ const PublicEventPage = ({
         />
       </Helmet>
       <div className="public-event-page-header">
-        {updatedEvent.image2 && (
-          <img src={updatedEvent.image2} alt="updatedEvent-img" />
-        )}
-        {!updatedEvent.image2 && updatedEvent.image && (
-          <img src={updatedEvent.image} alt="event-img" />
-        )}
-        {!updatedEvent.image2 && !updatedEvent.image && (
+        {isEmpty(updatedEvent.images) && !updatedEvent.image && (
           <div className="public-event-page-header-defaultimg" />
+        )}
+        {!isEmpty(updatedEvent.images) ? (
+          <Carousel autoplay dots={false}>
+            {updatedEvent.images.map((image) => (
+              <img src={image} alt="updatedEvent-img" />
+            ))}
+          </Carousel>
+        ) : (
+          <img src={updatedEvent.image} alt="updatedEvent-img" />
         )}
         <div className="public-event-page-header-title">
           <Modal
