@@ -20,6 +20,9 @@ import PostFormModal from "./containers/PostFormModal";
 import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
+
+import { HelmetMetaData } from "components";
+
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
@@ -184,6 +187,7 @@ class App extends Component {
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
+         <HelmetMetaData></HelmetMetaData>
         <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
