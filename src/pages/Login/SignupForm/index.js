@@ -9,7 +9,7 @@ import {
   CustomCheckbox,
   CustomSelect,
 } from "components";
-import { COUNTRIES, PROFILE_SETTINGS } from "enum";
+import { COUNTRIES, PROFILE_SETTINGS, LANGUAGES } from "enum";
 
 import { isValidPassword } from "utils/format";
 
@@ -20,6 +20,8 @@ const JobLevels = PROFILE_SETTINGS.JOB_LEVELS;
 const WorkAreas = PROFILE_SETTINGS.WORK_AREAS;
 
 const OrgSizes = PROFILE_SETTINGS.ORG_SIZES;
+
+const Languages = LANGUAGES.ParsedLanguageData;
 
 const SignupForm = ({ step }) => {
   return (
@@ -58,6 +60,13 @@ const SignupForm = ({ step }) => {
                 message: "Please enter your email!",
               },
               {
+                required: true,
+                type: "regexp",
+                pattern: new RegExp(/^\S*$/),
+                message:
+                  "Blank spaces are not allowed. Please remove the blank space at the end of your email",
+              },
+              {
                 type: "email",
                 message: "Please enter the valid email!",
               },
@@ -72,6 +81,11 @@ const SignupForm = ({ step }) => {
               {
                 required: true,
                 message: "Please enter your email!",
+              },
+              {
+                pattern: new RegExp(/^\S*$/),
+                message:
+                  "Blank spaces are not allowed. Please remove the blank space at the end of your email",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -145,6 +159,75 @@ const SignupForm = ({ step }) => {
             />
           </Form.Item>
           <Form.Item
+            name="recaptcha"
+            rules={[
+              {
+                required: true,
+                message: "Please resolve the reCAPTCHA!",
+              },
+            ]}
+            className="form-recaptcha"
+          >
+            <ReCAPTCHA sitekey={SecretKey} />
+          </Form.Item>
+        </React.Fragment>
+      )}
+      {step === 1 && (
+        <>
+          <Form.Item
+            name="titleProfessions"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your title!",
+              },
+            ]}
+          >
+            <CustomInput placeholder="Title" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            name="company"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your company!",
+              },
+            ]}
+          >
+            <CustomInput placeholder="Company" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
+            name="languages"
+            rules={[
+              {
+                required: true,
+                message: "Please select one!",
+              },
+            ]}
+          >
+            <CustomSelect
+              placeholder="Main language"
+              className="border"
+              showSearch
+              options={Languages}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            name="city"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your city!",
+              },
+            ]}
+          >
+            <CustomInput placeholder="City" size="sm"></CustomInput>
+          </Form.Item>
+          <Form.Item
             label="Country"
             name="location"
             rules={[
@@ -164,38 +247,24 @@ const SignupForm = ({ step }) => {
             />
           </Form.Item>
           <Form.Item
-            name="recaptcha"
+            label="What best defines your current or most recent job level?"
+            name="recentJobLevel"
             rules={[
               {
                 required: true,
-                message: "Please resolve the reCAPTCHA!",
+                message: "Please select one!",
               },
             ]}
-            className="form-recaptcha"
           >
-            <ReCAPTCHA sitekey={SecretKey} />
+            <Radio.Group className="d-flex flex-column form-job-level">
+              {JobLevels.map((job) => (
+                <CustomRadio key={job.value} value={job.value}>
+                  {job.label}
+                </CustomRadio>
+              ))}
+            </Radio.Group>
           </Form.Item>
-        </React.Fragment>
-      )}
-      {step === 1 && (
-        <Form.Item
-          label="What best defines your current or most recent job level?"
-          name="recentJobLevel"
-          rules={[
-            {
-              required: true,
-              message: "Please select one!",
-            },
-          ]}
-        >
-          <Radio.Group className="d-flex flex-column form-job-level">
-            {JobLevels.map((job) => (
-              <CustomRadio key={job.value} value={job.value}>
-                {job.label}
-              </CustomRadio>
-            ))}
-          </Radio.Group>
-        </Form.Item>
+        </>
       )}
       {step === 2 && (
         <Form.Item
