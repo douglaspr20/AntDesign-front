@@ -24,10 +24,10 @@ import TimezoneList from "enum/TimezoneList";
 const { RangePicker } = DatePicker;
 
 const statusColor = {
-  active: '#108ee9',
-  draft: 'orange',
-  closed: 'black'
-}
+  active: "#108ee9",
+  draft: "orange",
+  closed: "black",
+};
 
 const CouncilEvents = ({
   upsertCouncilEvent,
@@ -73,8 +73,6 @@ const CouncilEvents = ({
 
       let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
       let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
-
-      console.log("zz", startTime.format("YYYY-MM-DD HH:mm:ssZ"));
 
       panel = {
         ...panel,
@@ -142,8 +140,12 @@ const CouncilEvents = ({
     const panel = {
       panelName: values.panelName,
       panelStartAndEndDate: [
-        values.panelStartAndEndDate[0].utcOffset(timezone.offset, true),
-        values.panelStartAndEndDate[1].utcOffset(timezone.offset, true),
+        values.panelStartAndEndDate[0]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
+        values.panelStartAndEndDate[1]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
       ],
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
@@ -156,8 +158,12 @@ const CouncilEvents = ({
       return {
         ...panel,
         panelStartAndEndDate: [
-          panel.panelStartAndEndDate[0].utcOffset(timezone.offset, true),
-          panel.panelStartAndEndDate[1].utcOffset(timezone.offset, true),
+          panel.panelStartAndEndDate[0]
+            .utcOffset(timezone.offset, true)
+            .set({ second: 0, millisecond: 0 }),
+          panel.panelStartAndEndDate[1]
+            .utcOffset(timezone.offset, true)
+            .set({ second: 0, millisecond: 0 }),
         ],
       };
     });
@@ -167,10 +173,12 @@ const CouncilEvents = ({
       id: event.id || null,
       startDate: values.startAndEndDate[0]
         .startOf("day")
-        .utcOffset(timezone.offset, true),
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
       endDate: values.startAndEndDate[1]
         .startOf("day")
-        .utcOffset(timezone.offset, true),
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
       panels,
       status,
     };
@@ -184,6 +192,7 @@ const CouncilEvents = ({
   const handleSubmit = (status) => {
     setStatus(status);
     form.submit();
+    console.log("uwu");
   };
 
   const handleEdit = (eve) => {
@@ -240,9 +249,7 @@ const CouncilEvents = ({
             <h3>{eve.eventName}</h3>
             {userProfile.isExpertCouncilAdmin && (
               <div>
-                <Tag color={statusColor[eve.status]}>
-                  {eve.status}
-                </Tag>
+                <Tag color={statusColor[eve.status]}>{eve.status}</Tag>
               </div>
             )}
           </div>
@@ -252,7 +259,7 @@ const CouncilEvents = ({
           </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
-              <Space>
+              <Space wrap>
                 <CustomButton
                   text="Edit"
                   onClick={(e) => {
@@ -282,10 +289,9 @@ const CouncilEvents = ({
                     <CustomButton text="Delete" type="third" size="small" />
                   </Popconfirm>
                 </div>
-                {/* <CustomButton
+                <CustomButton
                   text="More info"
                   type="third"
-                  block
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -293,7 +299,7 @@ const CouncilEvents = ({
                     setIsModalOpen(true);
                   }}
                   size="small"
-                /> */}
+                />
               </Space>
             ) : (
               <CustomButton
