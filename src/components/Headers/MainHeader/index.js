@@ -313,11 +313,11 @@ class MainHeader extends React.Component {
                 size="large"
                 onChange={this.handleSearch}
                 value={inputSearchValue}
-                // onBlur={() => {
-                //   if (window.screen.width < 920) {
-                //     this.setState({ showSearchInput: false });
-                //   }
-                // }}
+                onBlur={() => {
+                  if (window.screen.width < 920) {
+                    this.setState({ showSearchInput: false });
+                  }
+                }}
                 autoFocus
               />
 
