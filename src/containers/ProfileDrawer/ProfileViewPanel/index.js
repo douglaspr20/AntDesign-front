@@ -81,7 +81,7 @@ class ProfileViewPanel extends React.Component {
           />
           <h1 className="user-info-name">{`${user.firstName} ${user.lastName}`}</h1>
           {}
-          {this.props.userProfile.id === user.id && (
+          {this.props.userProfile.id === user.id ? (
             <CustomButton
               className="profile-complete-btn"
               text={user.completed ? "Edit Profile" : "Complete profile"}
@@ -89,6 +89,8 @@ class ProfileViewPanel extends React.Component {
               size="lg"
               onClick={this.onEdit}
             />
+          ) : (
+            <CustomButton type="primary" size="lg" text={`Chat`} />
           )}
         </div>
         <div className="profile-view-panel-content">
