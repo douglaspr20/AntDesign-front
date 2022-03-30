@@ -120,14 +120,19 @@ class ProfileViewPanel extends React.Component {
           <h3 className={clsx("textfield-value", { completed: !!user.city })}>
             {user.city || "-"}
           </h3>
-          <h5 className="textfield-label">Time zone</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.timezone,
-            })}
-          >
-            {timezone || "-"}
-          </h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">Time zone</h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: !!user.timezone,
+                })}
+              >
+                {timezone || "-"}
+              </h3>
+            </>
+          )}
+
           <h5 className="textfield-label">Main language</h5>
           {user.languages && user.languages.length > 0 ? (
             user.languages.map((lang, index) => (
@@ -179,23 +184,29 @@ class ProfileViewPanel extends React.Component {
               }
             })}
           {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">
+                Are open to receiving information/being contacted via email
+                about open job positions?
+              </h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: user.isOpenReceivingEmail !== -1,
+                })}
+              >
+                {user.isOpenReceivingEmail === 1
+                  ? "Yes"
+                  : user.isOpenReceivingEmail === 0
+                  ? "No"
+                  : "-"}
+              </h3>
+            </>
+          )}
           <h5 className="textfield-label">
-            Are open to receiving information/being contacted via email about
-            open job positions?
-          </h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: user.isOpenReceivingEmail !== -1,
-            })}
-          >
-            {user.isOpenReceivingEmail === 1
-              ? "Yes"
-              : user.isOpenReceivingEmail === 0
-              ? "No"
-              : "-"}
-          </h3>
-          <h5 className="textfield-label">
-            What best defines your current or most recent job level?
+            {user.id === this.props.userProfile.id
+              ? "What best defines your current or most recent job level?"
+              : "Job Level"}
           </h5>
           <h3
             className={clsx("textfield-value", {
@@ -204,22 +215,29 @@ class ProfileViewPanel extends React.Component {
           >
             {user.recentJobLevel || "-"}
           </h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">
+                In what area of HR do you currently work or most recently
+                worked?
+              </h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: user.recentWorkArea && user.recentWorkArea.length,
+                })}
+              >
+                {user.recentWorkArea.includes("all")
+                  ? WorkAreas.filter((item) => item.value !== "all")
+                      .map((item) => item.label)
+                      .join(", ")
+                  : user.recentWorkArea.join(", ") || "-"}
+              </h3>
+            </>
+          )}
           <h5 className="textfield-label">
-            In what area of HR do you currently work or most recently worked?
-          </h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: user.recentWorkArea && user.recentWorkArea.length,
-            })}
-          >
-            {user.recentWorkArea.includes("all")
-              ? WorkAreas.filter((item) => item.value !== "all")
-                  .map((item) => item.label)
-                  .join(", ")
-              : user.recentWorkArea.join(", ") || "-"}
-          </h3>
-          <h5 className="textfield-label">
-            What is the size of the organization your work for?
+            {user.id === this.props.userProfile.id
+              ? "What is the size of the organization your work for?"
+              : "Size of the organization"}
           </h5>
           <h3
             className={clsx("textfield-value", {
