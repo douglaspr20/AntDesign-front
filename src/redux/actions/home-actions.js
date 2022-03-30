@@ -31,6 +31,8 @@ const VIEW_RULES_G_CONFERENCE = "VIEW_RULES_G_CONFERENCE";
 const COUNT_ALL_USERS = "COUNT_ALL_USERS";
 const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
 const HANDLE_ONLINE = "HANDLE_ONLINE";
+const SEARCH_USER = "SEARCH_USER";
+const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
 
 export const constants = {
   SET_LOADING,
@@ -62,6 +64,8 @@ export const constants = {
   COUNT_ALL_USERS,
   SET_ALL_COUNT_USERS,
   HANDLE_ONLINE,
+  SEARCH_USER,
+  SET_SEARCHED_USERS,
 };
 
 // ------------------------------------
@@ -158,6 +162,12 @@ export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({
   userCount,
 }));
 
+export const searchUser = createAction(SEARCH_USER, (search) => ({ search }));
+export const setSearchedUsers = createAction(
+  SET_SEARCHED_USERS,
+  (searchUsers) => ({ searchUsers })
+);
+
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
 export const actions = {
@@ -188,4 +198,6 @@ export const actions = {
   countAllUsers,
   setCountUsers,
   handleOnline,
+  searchUser,
+  setSearchedUsers,
 };

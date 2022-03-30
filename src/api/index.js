@@ -23,6 +23,7 @@ import {
   acceptTermsAndConditions,
   viewRulesConference,
   countAllUsers,
+  searchUser,
 } from "./module/user";
 import {
   getAllEvents,
@@ -391,4 +392,5 @@ export {
   editAdvertisement,
   sendMatchEmail,
   getConversation,
+  searchUser,
 };

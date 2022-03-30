@@ -268,11 +268,13 @@ class App extends Component {
               {window.screen.width > 1000 && this.props.userProfile?.id ? (
                 <Chat conversations={this.props.conversations} />
               ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
-                <ChatMobile
+                <>
+                  {/* <ChatMobile
                   conversations={this.props.conversations}
                   openChat={openChat}
                   setOpenChat={() => this.setState({ openChat: !openChat })}
-                />
+                /> */}
+                </>
               ) : null}
             </div>
             <FeedbackBox />

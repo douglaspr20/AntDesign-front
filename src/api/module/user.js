@@ -124,3 +124,7 @@ export const viewRulesConference = ({ id }) => {
 export const countAllUsers = async () => {
   return await httpClient.get("private/users/count-all");
 };
+
+export const searchUser = ({ search }) => {
+  return httpClient.get(`private/user/search?search=${search}`);
+};

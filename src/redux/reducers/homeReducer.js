@@ -27,14 +27,19 @@ export const reducers = {
   },
   [homeConstants.SET_USERS]: (state, { payload }) => {
     return state.merge({
-      allUsers: cloneDeep([...payload.users])
-    })
+      allUsers: cloneDeep([...payload.users]),
+    });
   },
-  [homeConstants.SET_ALL_COUNT_USERS]: (state, { payload}) => {
+  [homeConstants.SET_ALL_COUNT_USERS]: (state, { payload }) => {
     return state.merge({
-      userCount: payload.userCount
-    })
-  }
+      userCount: payload.userCount,
+    });
+  },
+  [homeConstants.SET_SEARCHED_USERS]: (state, { payload }) => {
+    return state.merge({
+      searchedUsers: payload.searchUsers,
+    });
+  },
 };
 
 export const initialState = () =>
@@ -63,7 +68,8 @@ export const initialState = () =>
       },
     },
     allUsers: [],
-    userCount: 0
+    userCount: 0,
+    searchedUsers: [],
   });
 
 export default handleActions(reducers, initialState());

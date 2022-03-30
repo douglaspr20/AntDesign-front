@@ -12,6 +12,7 @@ import {
   COUNTRIES,
   PROFILE_SETTINGS,
 } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { isEmptyPersonalLinks } from "utils/profile";
 
@@ -79,13 +80,16 @@ class ProfileViewPanel extends React.Component {
             percent={user.percentOfCompletion}
           />
           <h1 className="user-info-name">{`${user.firstName} ${user.lastName}`}</h1>
-          <CustomButton
-            className="profile-complete-btn"
-            text={user.completed ? "Edit Profile" : "Complete profile"}
-            type="primary"
-            size="lg"
-            onClick={this.onEdit}
-          />
+          {}
+          {this.props.userProfile.id === user.id && (
+            <CustomButton
+              className="profile-complete-btn"
+              text={user.completed ? "Edit Profile" : "Complete profile"}
+              type="primary"
+              size="lg"
+              onClick={this.onEdit}
+            />
+          )}
         </div>
         <div className="profile-view-panel-content">
           <h5 className="textfield-label">Email</h5>
@@ -159,8 +163,8 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
             Object.keys(user.personalLinks).map((contact) => {
-              if(contact === "linkedin"){
-                return(
+              if (contact === "linkedin") {
+                return (
                   <div className="personal-link" key={contact}>
                     <div className="personal-link-icon">
                       <i className={CONTACT_ICONS[contact]} />
@@ -170,10 +174,10 @@ class ProfileViewPanel extends React.Component {
                     </h3>
                   </div>
                 );
-              }else{
+              } else {
                 return null;
               }
-          })}
+            })}
           {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
           <h5 className="textfield-label">
             Are open to receiving information/being contacted via email about
@@ -242,6 +246,7 @@ ProfileViewPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
 export default connect(mapStateToProps)(ProfileViewPanel);

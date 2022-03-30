@@ -8,7 +8,8 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
     userProfile: payload.get("userProfile"),
     setting: payload.get("setting"),
     allUsers: payload.get("allUsers"),
-    userCount: payload.get("userCount")
+    userCount: payload.get("userCount"),
+    searchedUsers: payload.get("searchedUsers"),
   };
 });
 
