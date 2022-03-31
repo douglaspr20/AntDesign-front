@@ -21,7 +21,7 @@ const GET_CHANNEL_EVENTS = "GET_CHANNEL_EVENTS";
 const SET_CHANNEL_EVENTS = "SET_CHANNEL_EVENTS";
 const DELETE_EVENT = "DELETE_EVENT";
 const UPDATE_EVENT = "UPDATE_EVENT";
-const UPDATE_EVENT_USER_ASSISTENCE = 'UPDATE_EVENT_USER_ASSISTENCE';
+const UPDATE_EVENT_USER_ASSISTENCE = "UPDATE_EVENT_USER_ASSISTENCE";
 const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 const EVENT_CLAIM_CREDIT = "EVENT_CLAIM_CREDIT";
 const EVENT_CLAIM_ATTENDANCE = "EVENT_CLAIM_ATTENDANCE";
@@ -94,8 +94,8 @@ export const setMyEvents = createAction(SET_MY_EVENTS, (myEvents) => ({
 export const setMyLiveEvents = createAction(SET_MY_LIVE_EVENTS, (myEvents) => ({
   myEvents,
 }));
-export const setMyLiveEvent = createAction(SET_MY_LIVE_EVENT, (myEvent) => ({
-  myEvent,
+export const setMyLiveEvent = createAction(SET_MY_LIVE_EVENT, (event) => ({
+  event,
 }));
 export const updateEventUserAssistence = createAction(
   UPDATE_EVENT_USER_ASSISTENCE,
@@ -153,7 +153,7 @@ export const actions = {
   setEvent,
   setMyLiveEvents,
   updateEventUserAssistence,
-  // setMyLiveEvent,
+  setMyLiveEvent,
   setError,
   setLoading,
   addToMyEventList,
