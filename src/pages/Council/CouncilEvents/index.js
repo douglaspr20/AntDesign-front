@@ -71,8 +71,8 @@ const CouncilEvents = ({
 
       const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
 
-      let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
-      let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+      let startTime = moment.tz(panel.startDate, timezone.utc[0]);
+      let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
       panel = {
         ...panel,
@@ -81,14 +81,15 @@ const CouncilEvents = ({
 
       const panels = councilEventPanels.slice(1).map((panel) => {
         let startTime = moment.tz(
-          panel.panelStartAndEndDate[0],
+          panel.startDate,
           timezone.utc[0]
         );
-        let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+        let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
         return {
           ...panel,
-          panelStartAndEndDate: [startTime, endTime],
+          startTime,
+          endTime,
         };
       });
 
@@ -139,14 +140,12 @@ const CouncilEvents = ({
     const timezone = TimezoneList.find((tz) => tz.value === values.timezone);
     const panel = {
       panelName: values.panelName,
-      panelStartAndEndDate: [
-        values.panelStartAndEndDate[0]
-          .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
-        values.panelStartAndEndDate[1]
-          .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
-      ],
+      startDate: values.panelStartAndEndDate[0]
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
+      endDate: values.panelStartAndEndDate[1]
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
@@ -157,14 +156,12 @@ const CouncilEvents = ({
     panels = panels.map((panel) => {
       return {
         ...panel,
-        panelStartAndEndDate: [
-          panel.panelStartAndEndDate[0]
-            .utcOffset(timezone.offset, true)
-            .set({ second: 0, millisecond: 0 }),
-          panel.panelStartAndEndDate[1]
-            .utcOffset(timezone.offset, true)
-            .set({ second: 0, millisecond: 0 }),
-        ],
+        startDate: panel.startDate
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
+        endDate: panel.endDate
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
       };
     });
 
@@ -192,7 +189,6 @@ const CouncilEvents = ({
   const handleSubmit = (status) => {
     setStatus(status);
     form.submit();
-    console.log("uwu");
   };
 
   const handleEdit = (eve) => {

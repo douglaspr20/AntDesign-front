@@ -39,8 +39,8 @@ const CouncilEventPanel = ({
   const userTimezone = moment.tz.guess();
   const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
 
-  let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
-  let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+  let startTime = moment.tz(panel.startDate, timezone.utc[0]);
+  let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
   const handleJoinPanel = (panel, state) => {
     joinCouncilEvent(panel.id, userProfile.id, state);
@@ -64,9 +64,9 @@ const CouncilEventPanel = ({
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
       panel.panelName
     )}&dates=${moment
-      .tz(panel.panelStartAndEndDate[0], userTimezone)
+      .tz(panel.startDate, userTimezone)
       .format("YYYYMMDDTHHmmSSS")}/${moment
-      .tz(panel.panelStartAndEndDate[1], userTimezone)
+      .tz(panel.endDate, userTimezone)
       .format("YYYYMMDDTHHmmSSS")}&details=${encodeURIComponent(
       `Link to join: ${panel.linkToJoin}`
     )}`;
@@ -191,7 +191,7 @@ const CouncilEventPanel = ({
           <div>
             <b>Panel Date</b>:
             {` ${moment
-              .tz(panel.panelStartAndEndDate[0], timezone.utc[0])
+              .tz(panel.startDate, timezone.utc[0])
               .format("LL")} ${timezone.abbr}`}
           </div>
           <div>
