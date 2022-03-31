@@ -160,11 +160,6 @@ class App extends Component {
       this.props.getConversations(curUser.id);
     }
 
-    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, () => {
-      this.props.getConversations(this.props.userProfile.id);
-      this.setState({ openChat: true });
-    });
-
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
       if (user?.id === this.props?.userProfile?.id) {
         this.props.handleOnline(user);

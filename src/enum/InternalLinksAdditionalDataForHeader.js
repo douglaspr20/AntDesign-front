@@ -1,6 +1,7 @@
 import INTERNAL_LINKS from "./InternalLinks";
 import IconMedal from "images/icon-medal.svg";
 import IconGlobal from "images/icon-global.svg";
+import IconSearch from "images/icon-search.svg";
 
 export default [
   {
@@ -53,5 +54,10 @@ export default [
     label: "Global Conference",
     icon: IconGlobal,
     url: INTERNAL_LINKS.GLOBAL_CONFERENCE_LEADERBOARD,
+  },
+  {
+    label: "Search Results",
+    icon: IconSearch,
+    url: INTERNAL_LINKS.SEARCH,
   },
 ];

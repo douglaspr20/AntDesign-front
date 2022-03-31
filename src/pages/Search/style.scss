@@ -1,0 +1,31 @@
+@import "../../styles/main.scss";
+
+.search{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &-filters{
+        background: $color-white;
+        width: 100%;
+        padding: 10px;
+        box-shadow: 0px 2px 3px $color-disabled;
+        display: flex;
+        justify-content: center;
+
+        .custom-button{
+            margin-right: 10px;
+            color: $color-text-secondary;
+        }
+    }
+
+    &-container{
+        margin-top: 20px;
+        background: $color-white;
+        padding: 5px 10px;
+        width: 100%;
+        max-width: 1200px;
+        box-shadow: 0px 1px 3px $color-disabled;
+
+    }
+}

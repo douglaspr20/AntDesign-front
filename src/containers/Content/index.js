@@ -66,6 +66,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import SearchPage from "pages/Search";
 
 class Content extends Component {
   componentDidMount() {
@@ -394,6 +395,12 @@ class Content extends Component {
             path={`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}/:id`}
             exact
             render={(props) => <SkillCohortPage {...props} isAdPreview />}
+          />
+
+          <PrivateRoute
+            path={INTERNAL_LINKS.SEARCH}
+            exact
+            render={(props) => <SearchPage {...props} />}
           />
           <Route
             exact

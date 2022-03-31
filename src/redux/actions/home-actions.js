@@ -33,6 +33,8 @@ const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
 const HANDLE_ONLINE = "HANDLE_ONLINE";
 const SEARCH_USER = "SEARCH_USER";
 const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
+const SET_USER_SHOW = "SET_USER_SHOW";
+const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
 
 export const constants = {
   SET_LOADING,
@@ -66,6 +68,8 @@ export const constants = {
   HANDLE_ONLINE,
   SEARCH_USER,
   SET_SEARCHED_USERS,
+  SET_USER_SHOW,
+  SET_VISIBLE_PROFILE_USER,
 };
 
 // ------------------------------------
@@ -168,6 +172,15 @@ export const setSearchedUsers = createAction(
   (searchUsers) => ({ searchUsers })
 );
 
+export const setUserShow = createAction(SET_USER_SHOW, (userShow) => ({
+  userShow,
+}));
+
+export const setVisibleProfileUser = createAction(
+  SET_VISIBLE_PROFILE_USER,
+  (visibleProfileUser) => ({ visibleProfileUser })
+);
+
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
 export const actions = {
@@ -200,4 +213,6 @@ export const actions = {
   handleOnline,
   searchUser,
   setSearchedUsers,
+  setUserShow,
+  setVisibleProfileUser,
 };

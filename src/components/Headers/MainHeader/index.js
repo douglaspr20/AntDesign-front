@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Input, Button, Avatar } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -13,7 +14,12 @@ import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
-import { searchUser, setSearchedUsers } from "redux/actions/home-actions";
+import {
+  searchUser,
+  setSearchedUsers,
+  setUserShow,
+  setVisibleProfileUser,
+} from "redux/actions/home-actions";
 import { setCollapsed } from "redux/actions/env-actions";
 import Notification from "containers/Notification";
 
@@ -56,11 +62,12 @@ class MainHeader extends React.Component {
     this.state = {
       visiblePremiumAlert: false,
       showSearchInput: window.screen.width > 920,
+      showSearchResult: false,
       inputSearchValue: "",
-      visibleProfileUser: false,
-      userShow: {},
     };
   }
+
+  timeout;
 
   planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -88,7 +95,12 @@ class MainHeader extends React.Component {
       this.props.setSearchedUsers([]);
       return;
     }
-    this.props.searchUser(e.target.value);
+
+    this.timeout = setTimeout(() => {
+      this.props.searchUser(this.state.inputSearchValue);
+      this.setState({ showSearchResult: true });
+      clearTimeout(this.timeout);
+    }, 1000);
   };
 
   onDrawerClose = () => {
@@ -96,13 +108,18 @@ class MainHeader extends React.Component {
   };
 
   render() {
-    const { userProfile: user } = this.props;
+    const {
+      userProfile: user,
+      userShow,
+      visibleProfileUser,
+      setUserShow,
+      setVisibleProfileUser,
+    } = this.props;
     const {
       visiblePremiumAlert,
       showSearchInput,
+      showSearchResult,
       inputSearchValue,
-      visibleProfileUser,
-      userShow,
     } = this.state;
     const { pathname } = this.props.history.location || {};
     let pathInfo = MenuList.find((item) => item.url.includes(pathname));
@@ -110,9 +127,10 @@ class MainHeader extends React.Component {
       <div className="search-result" key={searchedUser.id}>
         <div
           className="search-result-container"
-          onClick={() =>
-            this.setState({ userShow: searchedUser, visibleProfileUser: true })
-          }
+          onClick={() => {
+            setUserShow(searchedUser);
+            setVisibleProfileUser(true);
+          }}
         >
           {searchedUser.img ? (
             <Avatar
@@ -130,10 +148,6 @@ class MainHeader extends React.Component {
             </h5>
             <span>{searchedUser.titleProfessions}</span>
           </div>
-        </div>
-
-        <div className="button-container">
-          <CustomButton type="primary" size="sm" text={`Chat`} />
         </div>
       </div>
     ));
@@ -307,30 +321,37 @@ class MainHeader extends React.Component {
             <div className="search-results-container">
               <Search
                 placeholder="Search Users"
-                onSearch={() => {}}
+                onSearch={() => {
+                  this.props.history.push("/search");
+                }}
                 enterButton
                 className="search-input"
                 size="large"
                 onChange={this.handleSearch}
                 value={inputSearchValue}
                 onBlur={() => {
+                  // this.setState({ showSearchResult: false });
+                  // this.props.setSearchedUsers([]);
                   if (window.screen.width < 920) {
                     this.setState({ showSearchInput: false });
                   }
                 }}
-                autoFocus
               />
 
               <div
                 className={`dropdown-custom ${
-                  users.length === 0 ? "not-visible" : ""
+                  users.length === 0 || !showSearchResult ? "not-visible" : ""
                 }`}
               >
-                {users.slice(0, 10).map((user) => user)}
+                {showSearchResult &&
+                  users.length > 0 &&
+                  users.slice(0, 10).map((user) => user)}
 
-                {users.length > 5 && (
+                {showSearchResult && users.length > 5 && (
                   <div className="view-more-results">
-                    <h4>View More Results</h4>
+                    <Link to="/search">
+                      <h4>View More Results</h4>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -408,7 +429,9 @@ class MainHeader extends React.Component {
         <CustomDrawer
           title=""
           visible={visibleProfileUser}
-          onClose={this.onDrawerClose}
+          onClose={() => {
+            setVisibleProfileUser(false);
+          }}
         >
           <ProfileViewPanel user={userShow} />
         </CustomDrawer>
@@ -439,12 +462,16 @@ const mapStateToProps = (state) => ({
   podcastSeries: podcastSelector(state).podcastSeries,
   skillCohort: skillCohortSelector(state).skillCohort,
   searchedUsers: homeSelector(state).searchedUsers,
+  userShow: homeSelector(state).userShow,
+  visibleProfileUser: homeSelector(state).visibleProfileUser,
 });
 
 const mapDispatchToProps = {
   setCollapsed,
   searchUser,
   setSearchedUsers,
+  setUserShow,
+  setVisibleProfileUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);

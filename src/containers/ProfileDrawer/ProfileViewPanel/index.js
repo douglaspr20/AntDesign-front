@@ -14,6 +14,8 @@ import {
 } from "enum";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { createConversartion } from "redux/actions/conversation-actions";
+import { setVisibleProfileUser } from "redux/actions/home-actions";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
@@ -61,6 +63,11 @@ class ProfileViewPanel extends React.Component {
     return language;
   };
 
+  handleStartConversation = (members) => {
+    this.props.createConversartion(members);
+    this.props.setVisibleProfileUser(false);
+  };
+
   render() {
     const { user } = this.state;
     const personalLinksCompleted = !isEmptyPersonalLinks(user.personalLinks);
@@ -90,12 +97,26 @@ class ProfileViewPanel extends React.Component {
               onClick={this.onEdit}
             />
           ) : (
-            <CustomButton type="primary" size="lg" text={`Chat`} />
+            <CustomButton
+              type="primary"
+              size="lg"
+              text={`Chat`}
+              onClick={() =>
+                this.handleStartConversation([
+                  user.id,
+                  this.props.userProfile.id,
+                ])
+              }
+            />
           )}
         </div>
         <div className="profile-view-panel-content">
-          <h5 className="textfield-label">Email</h5>
-          <h3 className="textfield-value completed">{user.email}</h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">Email</h5>
+              <h3 className="textfield-value completed">{user.email}</h3>
+            </>
+          )}
           <h5 className="textfield-label">Title</h5>
           <h3
             className={clsx("textfield-value", {
@@ -269,4 +290,9 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(ProfileViewPanel);
+const mapDispatchToProps = {
+  createConversartion,
+  setVisibleProfileUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileViewPanel);

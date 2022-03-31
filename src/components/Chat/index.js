@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { conversationsSelector } from "redux/selectors/conversationSelector";
@@ -6,7 +6,6 @@ import {
   setConversations,
   readMessages,
   setCurrentConversations,
-  getConversation,
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
@@ -23,7 +22,6 @@ const Chat = ({
   readMessages,
   currentConversations,
   setCurrentConversations,
-  getConversation,
 }) => {
   // const notificationSound = new Audio(BubbleNotification);
 
@@ -183,37 +181,60 @@ const Chat = ({
     }
   }, [conversations, currentConversations, setCurrentConversations]);
 
-  useMemo(() => {
+  useEffect(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, (newConversation) => {
-      const currentConversation = conversations.find(
-        (conversation) => conversation.id === newConversation
-      );
-
-      if (
-        currentConversation.messages.find(
-          (message) => !message.viewedUser.includes(userProfile.id)
+      if (conversations.length > 0) {
+        if (
+          !newConversation.members.includes(userProfile.id) &&
+          !newConversation.members.some(
+            (member) => member.id === userProfile.id
+          )
         )
-      ) {
-        readMessages(userProfile.id, currentConversation.id);
-      }
+          return;
 
-      if (currentConversations.find((c) => c.id === currentConversation.id)) {
-        return;
-      }
+        const conversation = conversations.find(
+          (conversation) => conversation.id === newConversation.id
+        );
 
-      if (
-        (currentConversations.length === 3 && window.screen.width > 1600) ||
-        (currentConversations.length === 2 && window.screen.width <= 1600)
-      ) {
-        const newCurrentConversations = [
-          ...currentConversations,
-          currentConversation,
-        ];
-        newCurrentConversations.splice(0, 1);
-        return setCurrentConversations(newCurrentConversations);
-      }
+        if (!conversation) {
+          setConversations([
+            ...conversations,
+            { ...newConversation, messages: [] },
+          ]);
+          setCurrentConversations([
+            ...currentConversations,
+            { ...newConversation, messages: [] },
+          ]);
 
-      setCurrentConversations([...currentConversations, currentConversation]);
+          return;
+        }
+
+        if (
+          conversation.messages.find(
+            (message) => !message.viewedUser.includes(userProfile.id)
+          )
+        ) {
+          readMessages(userProfile.id, conversation.id);
+        }
+
+        if (currentConversations.find((c) => c.id === conversation.id)) {
+          return;
+        }
+
+        if (
+          (currentConversations.length === 3 && window.screen.width > 1600) ||
+          (currentConversations.length === 2 && window.screen.width <= 1600)
+        ) {
+          const newCurrentConversations = [
+            ...currentConversations,
+            conversation,
+          ];
+          newCurrentConversations.splice(0, 1);
+          return setCurrentConversations(newCurrentConversations);
+        }
+
+        setCurrentConversations([...currentConversations, conversation]);
+      }
     });
   }, [
     conversations,
@@ -221,6 +242,7 @@ const Chat = ({
     readMessages,
     userProfile.id,
     setCurrentConversations,
+    setConversations,
   ]);
 
   return (
@@ -277,7 +299,6 @@ const mapDispatchToProps = {
   setConversations,
   readMessages,
   setCurrentConversations,
-  getConversation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Chat));

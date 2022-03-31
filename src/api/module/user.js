@@ -126,5 +126,12 @@ export const countAllUsers = async () => {
 };
 
 export const searchUser = ({ search }) => {
-  return httpClient.get(`private/user/search?search=${search}`);
+  if (typeof search === "string") {
+    return httpClient.get(`private/user/search?search=${search}`);
+  }
+  return httpClient.get(`private/user/search`, {
+    params: {
+      ...search,
+    },
+  });
 };
