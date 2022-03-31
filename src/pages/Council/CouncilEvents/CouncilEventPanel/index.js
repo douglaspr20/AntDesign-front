@@ -9,11 +9,13 @@ import {
   Collapse,
 } from "antd";
 import { CustomButton, CustomModal } from "components";
+import Emitter from "services/emitter";
 import moment from "moment-timezone";
 import { DownOutlined } from "@ant-design/icons";
 import { TIMEZONE_LIST } from "enum";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
+import { EVENT_TYPES } from "enum";
 
 import { actions as councilEventActions } from "redux/actions/council-events-actions";
 import { councilEventSelector } from "redux/selectors/councilEventSelector";
@@ -34,6 +36,7 @@ const CouncilEventPanel = ({
   searchedUsersForCouncilEvent,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] = useState(false);
   const [form] = Form.useForm();
 
   const userTimezone = moment.tz.guess();
@@ -116,6 +119,14 @@ const CouncilEventPanel = ({
 
   const hasJoined = !!councilEventPanelist;
 
+  const checkIfUserProfileIsCompletedAndJoin = () => {
+    if (userProfile.percentOfCompletion !== 100) {
+      return setShowProfileCompletionFirewall(true);
+    }
+
+    handleJoinPanel(panel, "Join");
+  };
+
   const displayJoinBtn = hasJoined ? (
     <CustomButton
       text="Withdraw"
@@ -127,7 +138,7 @@ const CouncilEventPanel = ({
     <CustomButton
       text={isFull ? "Already Full" : "Join"}
       disabled={isFull}
-      onClick={() => handleJoinPanel(panel, "Join")}
+      onClick={() => checkIfUserProfileIsCompletedAndJoin()}
       size="small"
     />
   );
@@ -181,6 +192,10 @@ const CouncilEventPanel = ({
       )
   );
 
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
   return (
     <div style={{ marginTop: "1rem", background: "#f2f2f2", padding: "1rem" }}>
       <div className="d-flex justify-between" key={panel.panelName}>
@@ -190,9 +205,9 @@ const CouncilEventPanel = ({
           </div>
           <div>
             <b>Panel Date</b>:
-            {` ${moment
-              .tz(panel.startDate, timezone.utc[0])
-              .format("LL")} ${timezone.abbr}`}
+            {` ${moment.tz(panel.startDate, timezone.utc[0]).format("LL")} ${
+              timezone.abbr
+            }`}
           </div>
           <div>
             <b>Panel Start Time</b>: {startTime.format("HH:mm")} {timezone.abbr}
@@ -272,6 +287,18 @@ const CouncilEventPanel = ({
               />
             </Panel>
           </Collapse>
+        </div>
+      )}
+      {showProfileCompletionFirewall && (
+        <div
+          className="skill-cohort-firewall"
+          onClick={() => setShowProfileCompletionFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={completeProfile}>
+            <h3>
+              You must fully complete your profile before joining an event.
+            </h3>
+          </div>
         </div>
       )}
     </div>

@@ -7,7 +7,15 @@ import {
   CustomModal,
   CustomSelect,
 } from "components";
-import { Form, DatePicker, InputNumber, Tag, Space, Popconfirm } from "antd";
+import {
+  Form,
+  DatePicker,
+  InputNumber,
+  Tag,
+  Space,
+  Popconfirm,
+  Tooltip,
+} from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { TIMEZONE_LIST } from "enum";
@@ -238,7 +246,13 @@ const CouncilEvents = ({
             className="d-flex justify-between"
             style={{ marginBottom: "1rem" }}
           >
-            <h3>{eve.eventName}</h3>
+            <div style={{ width: "175px" }}>
+              <Tooltip title={eve.eventName}>
+                <h3 className="truncate">
+                  {eve.eventName}
+                </h3>
+              </Tooltip>
+            </div>
             {userProfile.isExpertCouncilAdmin && (
               <div>
                 <Tag color={statusColor[eve.status]}>{eve.status}</Tag>
