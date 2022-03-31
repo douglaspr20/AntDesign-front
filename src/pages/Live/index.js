@@ -25,7 +25,7 @@ const LivePage = ({
   history,
   updateEventUserAssistence,
   live,
-  myEvents,
+  myEvent,
   getEvent,
 }) => {
   const [visibleEventConfirm, setVisibleEventConfirm] = useState(false);
@@ -45,7 +45,7 @@ const LivePage = ({
 
     if (!isIdRepeated) {
       updateEventUserAssistence({
-        ...myEvents,
+        ...myEvent,
         usersAssistence,
       });
     }
@@ -65,8 +65,8 @@ const LivePage = ({
   useEffect(() => {
     setTimes([]);
     setFirstTimes([]);
-    setIsIdRepeated(false)
-  }, [myEvents]);
+    setIsIdRepeated(false);
+  }, [myEvent]);
 
   /*
    * validating event date to confirm live assistence
@@ -74,21 +74,21 @@ const LivePage = ({
    */
 
   useEffect(() => {
-    if (userProfile.id && myEvents.id) {
+    if (userProfile.id && myEvent.id) {
       const userAssistenceJsonToArray =
-        myEvents.usersAssistence?.length > 0 &&
-        myEvents.usersAssistence[0]?.map((el) => JSON.parse(el));
+        myEvent.usersAssistence?.length > 0 &&
+        myEvent.usersAssistence[0]?.map((el) => JSON.parse(el));
       setTimes(userAssistenceJsonToArray);
 
-      myEvents.startAndEndTimes &&
-        myEvents.startAndEndTimes.map((time, index) => {
+      myEvent.startAndEndTimes &&
+        myEvent.startAndEndTimes.map((time, index) => {
           const start = time.startTime;
           const end = time.endTime;
 
           const usersEventAssistence = [];
           const userAssistence = userProfile.id;
           const timezone = TIMEZONE_LIST.find(
-            (item) => item.value === myEvents.timezone
+            (item) => item.value === myEvent.timezone
           );
           const convertedStartEventTime = moment(start)
             .tz(timezone?.utc[0])
@@ -163,7 +163,7 @@ const LivePage = ({
           return time;
         });
     }
-  }, [myEvents, live, userProfile.id, isIdRepeated]);
+  }, [myEvent, live, userProfile.id, isIdRepeated]);
 
   const onUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -267,7 +267,7 @@ const LivePage = ({
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   live: liveSelector(state).live,
-  myEvents: eventSelector(state).myEvents,
+  myEvent: eventSelector(state).liveEvent,
 });
 
 const mapDispatchToProps = {

@@ -18,7 +18,7 @@ export const getLiveEventFromAPI = () => {
   return httpClient.get(`private/events-live/`);
 };
 
-export const updateEventUserAssistenceFromAPI = ({ payload }) => {
+export const updateEventUserAssistenceFromAPI = ( payload ) => {
   return httpClient.put(`private/event/user-assistence/${payload.id}`, payload);
 };
 
