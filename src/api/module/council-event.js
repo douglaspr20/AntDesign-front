@@ -34,3 +34,6 @@ export const searchUserForCouncilEventPanelist = (payload) => {
   return httpClient.get(`private/council/event/search-user?keyword=${keyword}`);
 };
 
+export const upsertCouncilEventPanelComment = (payload) => {
+  return httpClient.post(`private/council/event/panel/comment`, payload);
+};
