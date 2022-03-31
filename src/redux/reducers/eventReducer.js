@@ -45,7 +45,11 @@ export const reducers = {
       allEvents: [...allEvents],
       myEvents: [...myEvents],
       updatedEvent: { ...payload.event },
+      liveEvent: { ...payload.event },
     });
+  },
+  [eventConstants.SET_MY_LIVE_EVENT]: (state, { payload }) => {
+    return state.merge({ ...payload.event });
   },
   [eventConstants.SET_ERROR]: (state, { payload }) => {
     return state.merge({ ...payload });
@@ -66,7 +70,7 @@ export const initialState = () =>
     loading: false,
     error: null,
     allEvents: [],
-    allLiveEvents: [],
+    liveEvent: [],
     metadata: "",
     myEvents: [],
     updatedEvent: {},

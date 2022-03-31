@@ -103,7 +103,6 @@ export function* getAllEventsSaga() {
 
 export function* getEventSaga({ payload }) {
   yield put(homeActions.setLoading(true));
-
   try {
     const response = yield call(getEvent, { ...payload });
 
@@ -112,7 +111,7 @@ export function* getEventSaga({ payload }) {
       const { id: userId } = community || {};
       const { event } = response.data;
       yield put(
-        eventActions.setMyEvents({
+        eventActions.setEvent({
           ...event,
           date: convertToCertainTime(event.startDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
@@ -392,12 +391,12 @@ export function* updateEventUserAssistenceSagas({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
     const response = yield call(updateEventUserAssistenceFromAPI, {
-      ...payload,
+      ...payload.payload,
     });
     if (response.status === 200) {
       const event = response.data.affectedRows;
       yield put(
-        eventActions.setMyEvents({
+        eventActions.setEvent({
           ...event,
           date: convertToCertainTime(event.startDate, event.timezone).format(
             "YYYY.MM.DD h:mm a"
