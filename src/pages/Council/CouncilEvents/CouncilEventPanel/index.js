@@ -34,9 +34,11 @@ const CouncilEventPanel = ({
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
   searchedUsersForCouncilEvent,
+  closeMainModal,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] = useState(false);
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
   const [form] = Form.useForm();
 
   const userTimezone = moment.tz.guess();
@@ -292,7 +294,10 @@ const CouncilEventPanel = ({
       {showProfileCompletionFirewall && (
         <div
           className="skill-cohort-firewall"
-          onClick={() => setShowProfileCompletionFirewall(false)}
+          onClick={() => {
+            closeMainModal()
+            setShowProfileCompletionFirewall(false);
+          }}
         >
           <div className="upgrade-notification-panel" onClick={completeProfile}>
             <h3>

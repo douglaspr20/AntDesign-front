@@ -219,7 +219,7 @@ const CouncilEvents = ({
         key={panel.id}
         panel={panel}
         tz={event.timezone}
-        status={event.status}
+        closeMainModal={() => setIsModalOpen(false)}
       />
     );
   });
@@ -248,9 +248,7 @@ const CouncilEvents = ({
           >
             <div style={{ width: "175px" }}>
               <Tooltip title={eve.eventName}>
-                <h3 className="truncate">
-                  {eve.eventName}
-                </h3>
+                <h3 className="truncate">{eve.eventName}</h3>
               </Tooltip>
             </div>
             {userProfile.isExpertCouncilAdmin && (
