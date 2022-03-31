@@ -23,6 +23,12 @@ import TimezoneList from "enum/TimezoneList";
 
 const { RangePicker } = DatePicker;
 
+const statusColor = {
+  active: "#108ee9",
+  draft: "orange",
+  closed: "black",
+};
+
 const CouncilEvents = ({
   upsertCouncilEvent,
   allCouncilEvents,
@@ -62,7 +68,11 @@ const CouncilEvents = ({
     if (!isEmpty(event)) {
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
+
       const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
+
+      let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
+      let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
 
       panel = {
         ...panel,
@@ -70,12 +80,15 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
+        let startTime = moment.tz(
+          panel.panelStartAndEndDate[0],
+          timezone.utc[0]
+        );
+        let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+
         return {
           ...panel,
-          panelStartAndEndDate: [
-            moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
-            moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
-          ],
+          panelStartAndEndDate: [startTime, endTime],
         };
       });
 
@@ -90,10 +103,7 @@ const CouncilEvents = ({
         panelName: panel.panelName,
         numberOfPanelists: panel.numberOfPanelists,
         councilEventPanelId: panel.councilEventPanelId,
-        panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], timezone?.utc[0]),
-          moment.tz(panel.panelStartAndEndDate[1], timezone?.utc[0]),
-        ],
+        panelStartAndEndDate: [startTime, endTime],
         linkToJoin: panel.linkToJoin,
       });
 
@@ -109,7 +119,8 @@ const CouncilEvents = ({
 
     return (
       moment(date).isBefore(moment()) ||
-      (isPanel && moment(date).isBefore(moment(startAndEndDate[0])))
+      (isPanel &&
+        moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
     );
   };
 
@@ -129,8 +140,12 @@ const CouncilEvents = ({
     const panel = {
       panelName: values.panelName,
       panelStartAndEndDate: [
-        moment.tz(values.panelStartAndEndDate[0], timezone.utc[0]),
-        moment.tz(values.panelStartAndEndDate[1], timezone.utc[0]),
+        values.panelStartAndEndDate[0]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
+        values.panelStartAndEndDate[1]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
       ],
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
@@ -143,8 +158,12 @@ const CouncilEvents = ({
       return {
         ...panel,
         panelStartAndEndDate: [
-          moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]),
-          moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]),
+          panel.panelStartAndEndDate[0]
+            .utcOffset(timezone.offset, true)
+            .set({ second: 0, millisecond: 0 }),
+          panel.panelStartAndEndDate[1]
+            .utcOffset(timezone.offset, true)
+            .set({ second: 0, millisecond: 0 }),
         ],
       };
     });
@@ -152,12 +171,14 @@ const CouncilEvents = ({
     const transformedValues = {
       ...values,
       id: event.id || null,
-      startDate: moment
-        .tz(values.startAndEndDate[0], timezone.utc[0])
-        .startOf("day"),
-      endDate: moment
-        .tz(values.startAndEndDate[1], timezone.utc[0])
-        .startOf("day"),
+      startDate: values.startAndEndDate[0]
+        .startOf("day")
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
+      endDate: values.startAndEndDate[1]
+        .startOf("day")
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
       panels,
       status,
     };
@@ -171,6 +192,7 @@ const CouncilEvents = ({
   const handleSubmit = (status) => {
     setStatus(status);
     form.submit();
+    console.log("uwu");
   };
 
   const handleEdit = (eve) => {
@@ -178,6 +200,13 @@ const CouncilEvents = ({
     setLimit(event.numberOfPanels);
     setNumOfPanels(event.numberOfPanels);
     setIsDrawerOpen(true);
+  };
+
+  const handleCloseEvent = (eve) => {
+    upsertCouncilEvent({
+      id: eve.id,
+      status: "closed",
+    });
   };
 
   const handleConfirmDelete = (id) => {
@@ -204,7 +233,14 @@ const CouncilEvents = ({
       }
     })
     .map((eve) => (
-      <div className="council-event-card2" key={eve.eventName}>
+      <div
+        className="council-event-card2"
+        key={eve.eventName}
+        onClick={(e) => {
+          setEvent(eve);
+          setIsModalOpen(true);
+        }}
+      >
         <div className="council-event-card2-content">
           <div
             className="d-flex justify-between"
@@ -213,9 +249,7 @@ const CouncilEvents = ({
             <h3>{eve.eventName}</h3>
             {userProfile.isExpertCouncilAdmin && (
               <div>
-                <Tag color={eve.status === "active" ? "#108ee9" : "orange"}>
-                  {eve.status}
-                </Tag>
+                <Tag color={statusColor[eve.status]}>{eve.status}</Tag>
               </div>
             )}
           </div>
@@ -225,25 +259,42 @@ const CouncilEvents = ({
           </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
-              <Space>
+              <Space wrap>
                 <CustomButton
                   text="Edit"
-                  onClick={() => handleEdit(eve)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleEdit(eve);
+                  }}
                   size="small"
                 />
-                <Popconfirm
-                  title="Are you sure to delete this event?"
-                  onConfirm={() => handleConfirmDelete(eve.id)}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <CustomButton text="Delete" type="secondary" size="small" />
-                </Popconfirm>
+                <CustomButton
+                  text="Close"
+                  type="secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCloseEvent(eve);
+                  }}
+                  size="small"
+                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Popconfirm
+                    title="Are you sure to delete this event?"
+                    onConfirm={() => handleConfirmDelete(eve.id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <CustomButton text="Delete" type="third" size="small" />
+                  </Popconfirm>
+                </div>
                 <CustomButton
                   text="More info"
                   type="third"
-                  block
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     setEvent(eve);
                     setIsModalOpen(true);
                   }}
@@ -450,7 +501,7 @@ const CouncilEvents = ({
                     </Form.Item>
                   </div>
                 ))}
-                {numOfPanels !== limit && (
+                {numOfPanels < limit && (
                   <Form.Item>
                     <CustomButton
                       text="Add Panel"
