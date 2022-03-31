@@ -80,16 +80,12 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
-        let startTime = moment.tz(
-          panel.startDate,
-          timezone.utc[0]
-        );
+        let startTime = moment.tz(panel.startDate, timezone.utc[0]);
         let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
         return {
           ...panel,
-          startTime,
-          endTime,
+          panelStartAndEndDate: [startTime, endTime],
         };
       });
 
@@ -152,18 +148,18 @@ const CouncilEvents = ({
       councilEventId: event.id || null,
     };
     let panels = values.panels || [];
-    panels = [panel, ...panels];
     panels = panels.map((panel) => {
       return {
         ...panel,
-        startDate: panel.startDate
+        startDate: panel.panelStartAndEndDate[0]
           .utcOffset(timezone.offset, true)
           .set({ second: 0, millisecond: 0 }),
-        endDate: panel.endDate
+        endDate: panel.panelStartAndEndDate[1]
           .utcOffset(timezone.offset, true)
           .set({ second: 0, millisecond: 0 }),
       };
     });
+    panels = [panel, ...panels];
 
     const transformedValues = {
       ...values,
@@ -250,53 +246,57 @@ const CouncilEvents = ({
             )}
           </div>
           <div>Start date: {moment(eve.startDate).format("LL")}</div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div style={{ marginBottom: "10px" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
-              <Space wrap>
-                <CustomButton
-                  text="Edit"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleEdit(eve);
-                  }}
-                  size="small"
-                />
-                <CustomButton
-                  text="Close"
-                  type="secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleCloseEvent(eve);
-                  }}
-                  size="small"
-                />
-                <div onClick={(e) => e.stopPropagation()}>
-                  <Popconfirm
-                    title="Are you sure to delete this event?"
-                    onConfirm={() => handleConfirmDelete(eve.id)}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <CustomButton text="Delete" type="third" size="small" />
-                  </Popconfirm>
+              <>
+                <Space wrap>
+                  <CustomButton
+                    text="Edit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleEdit(eve);
+                    }}
+                    size="small"
+                  />
+                  <CustomButton
+                    text="Close"
+                    type="secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleCloseEvent(eve);
+                    }}
+                    size="small"
+                  />
+                  <span onClick={(e) => e.stopPropagation()}>
+                    <Popconfirm
+                      title="Are you sure to delete this event?"
+                      onConfirm={() => handleConfirmDelete(eve.id)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <CustomButton text="Delete" type="third" size="small" />
+                    </Popconfirm>
+                  </span>
+                </Space>
+                <div style={{ marginTop: "5px" }}>
+                  <CustomButton
+                    text="More info"
+                    type="third"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setEvent(eve);
+                      setIsModalOpen(true);
+                    }}
+                    size="small"
+                  />
                 </div>
-                <CustomButton
-                  text="More info"
-                  type="third"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setEvent(eve);
-                    setIsModalOpen(true);
-                  }}
-                  size="small"
-                />
-              </Space>
+              </>
             ) : (
               <CustomButton
                 text="More info"
