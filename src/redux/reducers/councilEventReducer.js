@@ -38,19 +38,66 @@ export const reducers = {
     let newAllCouncilEvents = [...allCouncilEvents];
 
     const eventIndex = allCouncilEvents.findIndex(
-      (event) => event.id === payload.councilEventPanel.CouncilEventId
+      (event) => event.id === payload.councilEventPanelist.CouncilEventId
     );
 
     if (eventIndex >= 0) {
       const panelIndex = allCouncilEvents[
         eventIndex
       ].CouncilEventPanels.findIndex(
-        (panel) => panel.id === payload.councilEventPanel.id
+        (panel) => panel.id === payload.councilEventPanelist.CouncilEventPanelId
       );
 
       if (panelIndex >= 0) {
-        newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex] =
-          payload.councilEventPanel;
+        if (payload.councilEventPanelist.isJoining) {
+          newAllCouncilEvents[eventIndex].CouncilEventPanels[
+            panelIndex
+          ].CouncilEventPanelists = [
+            ...newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex]
+              .CouncilEventPanelists,
+            payload.councilEventPanelist,
+          ];
+        } else {
+          newAllCouncilEvents[eventIndex].CouncilEventPanels[
+            panelIndex
+          ].CouncilEventPanelists = newAllCouncilEvents[
+            eventIndex
+          ].CouncilEventPanels[panelIndex].CouncilEventPanelists.filter(
+            (panelist) =>
+              panelist.UserId !== payload.councilEventPanelist.UserId
+          );
+        }
+      }
+    }
+
+    return state.merge({
+      allCouncilEvents: cloneDeep([...newAllCouncilEvents]),
+    });
+  },
+  [councilEventConstants.SET_COUNCIL_EVENT_COMMENT]: (state, { payload }) => {
+    const allCouncilEvents = state.get("allCouncilEvents");
+    let newAllCouncilEvents = [...allCouncilEvents];
+
+    const eventIndex = allCouncilEvents.findIndex(
+      (event) => event.id === payload.councilEventPanelComment.CouncilEventId
+    );
+
+    if (eventIndex >= 0) {
+      const panelIndex = allCouncilEvents[
+        eventIndex
+      ].CouncilEventPanels.findIndex(
+        (panel) =>
+          panel.id === payload.councilEventPanelComment.CouncilEventPanelId
+      );
+
+      if (panelIndex >= 0) {
+        newAllCouncilEvents[eventIndex].CouncilEventPanels[
+          panelIndex
+        ].CouncilEventPanelComments = [
+          ...newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex]
+            .CouncilEventPanelComments,
+          payload.councilEventPanelComment,
+        ];
       }
     }
 
@@ -62,7 +109,6 @@ export const reducers = {
     state,
     { payload }
   ) => {
-
     const options = payload.users.map((user) => {
       return {
         label: `${user.firstName} ${user.lastName} / ${user.email}`,

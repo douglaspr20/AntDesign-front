@@ -111,10 +111,6 @@ class App extends Component {
       this.props.getLive();
     });
 
-    SocketIO.on(SOCKET_EVENT_TYPE.UPDATE_COUNCIL_EVENT_PANEL, (data) => {
-      this.props.setJoinCouncilEvent(data)
-    });
-
     this.props.getCategories();
     this.props.getLive();
     this.props.getEditorSignature();

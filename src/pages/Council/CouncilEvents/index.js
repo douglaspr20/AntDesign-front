@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import SocketIO from "services/socket";
 import {
   CustomDrawer,
   CustomInput,
@@ -18,7 +19,7 @@ import {
 } from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import { TIMEZONE_LIST } from "enum";
+import { TIMEZONE_LIST, SOCKET_EVENT_TYPE } from "enum";
 
 import { actions as councilEventActions } from "redux/actions/council-events-actions";
 import { councilEventSelector } from "redux/selectors/councilEventSelector";
@@ -42,7 +43,9 @@ const CouncilEvents = ({
   allCouncilEvents,
   getCouncilEvents,
   deleteCouncilEvent,
+  setJoinCouncilEvent,
   userProfile,
+  setCouncilEventPanelComment,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,6 +62,14 @@ const CouncilEvents = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getCouncilEvents();
+
+    SocketIO.on(SOCKET_EVENT_TYPE.UPDATE_COUNCIL_EVENT_PANEL, (data) =>
+      setJoinCouncilEvent(data)
+    );
+
+    SocketIO.on(SOCKET_EVENT_TYPE.UPDATE_COUNCIL_EVENT_COMMENTS, (data) =>
+      setCouncilEventPanelComment(data)
+    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -220,6 +231,7 @@ const CouncilEvents = ({
         panel={panel}
         tz={event.timezone}
         closeMainModal={() => setIsModalOpen(false)}
+        councilEventId={event.id}
       />
     );
   });

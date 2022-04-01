@@ -39,6 +39,7 @@ const CouncilEventPanel = ({
   searchUserForCouncilEventPanelist,
   searchedUsersForCouncilEvent,
   closeMainModal,
+  councilEventId
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
@@ -52,7 +53,7 @@ const CouncilEventPanel = ({
   let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
   const handleJoinPanel = (panel, state) => {
-    joinCouncilEvent(panel.id, userProfile.id, state);
+    joinCouncilEvent(panel.id, userProfile.id, state, false, false, councilEventId);
   };
 
   const onClickDownloadCalendar = (e) => {
