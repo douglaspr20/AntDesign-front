@@ -7,7 +7,15 @@ import {
   CustomModal,
   CustomSelect,
 } from "components";
-import { Form, DatePicker, InputNumber, Tag, Space, Popconfirm } from "antd";
+import {
+  Form,
+  DatePicker,
+  InputNumber,
+  Tag,
+  Space,
+  Popconfirm,
+  Tooltip,
+} from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { TIMEZONE_LIST } from "enum";
@@ -71,8 +79,8 @@ const CouncilEvents = ({
 
       const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
 
-      let startTime = moment.tz(panel.panelStartAndEndDate[0], timezone.utc[0]);
-      let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+      let startTime = moment.tz(panel.startDate, timezone.utc[0]);
+      let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
       panel = {
         ...panel,
@@ -80,11 +88,8 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
-        let startTime = moment.tz(
-          panel.panelStartAndEndDate[0],
-          timezone.utc[0]
-        );
-        let endTime = moment.tz(panel.panelStartAndEndDate[1], timezone.utc[0]);
+        let startTime = moment.tz(panel.startDate, timezone.utc[0]);
+        let endTime = moment.tz(panel.endDate, timezone.utc[0]);
 
         return {
           ...panel,
@@ -139,34 +144,30 @@ const CouncilEvents = ({
     const timezone = TimezoneList.find((tz) => tz.value === values.timezone);
     const panel = {
       panelName: values.panelName,
-      panelStartAndEndDate: [
-        values.panelStartAndEndDate[0]
-          .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
-        values.panelStartAndEndDate[1]
-          .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
-      ],
+      startDate: values.panelStartAndEndDate[0]
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
+      endDate: values.panelStartAndEndDate[1]
+        .utcOffset(timezone.offset, true)
+        .set({ second: 0, millisecond: 0 }),
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
       councilEventId: event.id || null,
     };
     let panels = values.panels || [];
-    panels = [panel, ...panels];
     panels = panels.map((panel) => {
       return {
         ...panel,
-        panelStartAndEndDate: [
-          panel.panelStartAndEndDate[0]
-            .utcOffset(timezone.offset, true)
-            .set({ second: 0, millisecond: 0 }),
-          panel.panelStartAndEndDate[1]
-            .utcOffset(timezone.offset, true)
-            .set({ second: 0, millisecond: 0 }),
-        ],
+        startDate: panel.panelStartAndEndDate[0]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
+        endDate: panel.panelStartAndEndDate[1]
+          .utcOffset(timezone.offset, true)
+          .set({ second: 0, millisecond: 0 }),
       };
     });
+    panels = [panel, ...panels];
 
     const transformedValues = {
       ...values,
@@ -192,7 +193,6 @@ const CouncilEvents = ({
   const handleSubmit = (status) => {
     setStatus(status);
     form.submit();
-    console.log("uwu");
   };
 
   const handleEdit = (eve) => {
@@ -219,7 +219,7 @@ const CouncilEvents = ({
         key={panel.id}
         panel={panel}
         tz={event.timezone}
-        status={event.status}
+        closeMainModal={() => setIsModalOpen(false)}
       />
     );
   });
@@ -246,7 +246,11 @@ const CouncilEvents = ({
             className="d-flex justify-between"
             style={{ marginBottom: "1rem" }}
           >
-            <h3>{eve.eventName}</h3>
+            <div style={{ width: "175px" }}>
+              <Tooltip title={eve.eventName}>
+                <h3 className="truncate">{eve.eventName}</h3>
+              </Tooltip>
+            </div>
             {userProfile.isExpertCouncilAdmin && (
               <div>
                 <Tag color={statusColor[eve.status]}>{eve.status}</Tag>
@@ -254,53 +258,57 @@ const CouncilEvents = ({
             )}
           </div>
           <div>Start date: {moment(eve.startDate).format("LL")}</div>
-          <div style={{ marginBottom: "1rem" }}>
+          <div style={{ marginBottom: "10px" }}>
             End date: {moment(eve.endDate).format("LL")}
           </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
-              <Space wrap>
-                <CustomButton
-                  text="Edit"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleEdit(eve);
-                  }}
-                  size="small"
-                />
-                <CustomButton
-                  text="Close"
-                  type="secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleCloseEvent(eve);
-                  }}
-                  size="small"
-                />
-                <div onClick={(e) => e.stopPropagation()}>
-                  <Popconfirm
-                    title="Are you sure to delete this event?"
-                    onConfirm={() => handleConfirmDelete(eve.id)}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <CustomButton text="Delete" type="third" size="small" />
-                  </Popconfirm>
+              <>
+                <Space wrap>
+                  <CustomButton
+                    text="Edit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleEdit(eve);
+                    }}
+                    size="small"
+                  />
+                  <CustomButton
+                    text="Close"
+                    type="secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleCloseEvent(eve);
+                    }}
+                    size="small"
+                  />
+                  <span onClick={(e) => e.stopPropagation()}>
+                    <Popconfirm
+                      title="Are you sure to delete this event?"
+                      onConfirm={() => handleConfirmDelete(eve.id)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <CustomButton text="Delete" type="third" size="small" />
+                    </Popconfirm>
+                  </span>
+                </Space>
+                <div style={{ marginTop: "5px" }}>
+                  <CustomButton
+                    text="More info"
+                    type="third"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setEvent(eve);
+                      setIsModalOpen(true);
+                    }}
+                    size="small"
+                  />
                 </div>
-                <CustomButton
-                  text="More info"
-                  type="third"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setEvent(eve);
-                    setIsModalOpen(true);
-                  }}
-                  size="small"
-                />
-              </Space>
+              </>
             ) : (
               <CustomButton
                 text="More info"
