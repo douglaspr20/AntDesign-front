@@ -13,11 +13,9 @@ import "./style.scss";
 
 const CouncilParticipantCard = ({
   participant,
-  userProfile,
   marketplaceProfile,
 }) => {
 
-  console.log(participant)
   return (
     <>
       <div className="council-participant-container">
