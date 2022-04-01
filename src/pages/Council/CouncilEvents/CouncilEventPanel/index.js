@@ -181,13 +181,15 @@ const CouncilEventPanel = ({
     const user = panelist.User;
 
     const isPanelModerator = panelist.isModerator;
-    console.log(panelist, "isPanelModerator");
-
     const displayIsPanelModerator = isPanelModerator && <span>Moderator</span>;
 
     return (
       <div className="panelist" key={user.email}>
-        <Avatar src={user.img} size={100} style={{ marginLeft: 'auto', marginRight: 'auto' }}/>
+        <Avatar
+          src={user.img}
+          size={100}
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
         <div>{`${user.firstName} ${user.lastName}`}</div>
         <div>
           <div className="truncate">
@@ -198,7 +200,13 @@ const CouncilEventPanel = ({
           {displayIsPanelModerator}
         </div>
         {userProfile.isExpertCouncilAdmin && (
-          <div style={{ marginTop: "auto" }}>
+          <div
+            style={{
+              marginTop: "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
             <Popconfirm
               title="Do you want to remove this panelist?"
               onConfirm={() => handleRemovePanelist(panelist.id)}
