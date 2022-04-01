@@ -48,11 +48,18 @@ export const deleteCouncilEvent = createAction(
 );
 export const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, UserId, status, isAddedByAdmin = false) => ({
+  (
+    councilEventPanelId,
+    UserId,
+    status,
+    isAddedByAdmin = false,
+    isModerator = false
+  ) => ({
     councilEventPanelId,
     UserId,
     status,
     isAddedByAdmin,
+    isModerator,
   })
 );
 export const setJoinCouncilEvent = createAction(

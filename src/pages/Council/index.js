@@ -32,7 +32,7 @@ const CouncilPage = ({
   const { search } = useLocation();
   const query = new URLSearchParams(search);
 
-  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "3");
   const [filter, setFilter] = useState([]);
   const location = useLocation();
 

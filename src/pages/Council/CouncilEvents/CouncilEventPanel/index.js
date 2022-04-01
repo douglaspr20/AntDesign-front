@@ -7,6 +7,8 @@ import {
   Popconfirm,
   AutoComplete,
   Collapse,
+  Switch,
+  notification,
 } from "antd";
 import { CustomButton, CustomModal } from "components";
 import Emitter from "services/emitter";
@@ -158,11 +160,17 @@ const CouncilEventPanel = ({
   };
 
   const handleOnFinish = (values) => {
+    if (!values.user) {
+      return notification.warn({
+        message: "User can't be empty.",
+      });
+    }
+
     const user = filteredSearchUser.find(
       (_user) => _user.value === values.user
     );
 
-    joinCouncilEvent(panel.id, user.id, "Join", true);
+    joinCouncilEvent(panel.id, user.id, "Join", true, !!values.isModerator);
     form.resetFields();
     setIsModalVisible(false);
   };
@@ -170,11 +178,17 @@ const CouncilEventPanel = ({
   const displayPanelists = panel.CouncilEventPanelists.map((panelist) => {
     const user = panelist.User;
 
+    const isPanelModerator = panelist.isModerator;
+    console.log(panelist, "isPanelModerator");
+
+    const displayIsPanelModerator = isPanelModerator && <div>Moderator</div>;
+
     return (
       <div className="panelist" key={user.email}>
         <Avatar src={user.img} size={100} />
         <div>{`${user.firstName} ${user.lastName}`}</div>
         <div>{user.titleProfessions}</div>
+        <div>{displayIsPanelModerator}</div>
         {userProfile.isExpertCouncilAdmin && (
           <Popconfirm
             title="Do you want to remove this panelist?"
@@ -272,6 +286,9 @@ const CouncilEventPanel = ({
                 options={filteredSearchUser}
               />
             </Form.Item>
+            <Form.Item name="isModerator" label="Is a moderator">
+              <Switch />
+            </Form.Item>
             <Form.Item>
               <CustomButton htmlType="submit" text="Add" block />
             </Form.Item>
@@ -295,7 +312,7 @@ const CouncilEventPanel = ({
         <div
           className="skill-cohort-firewall"
           onClick={() => {
-            closeMainModal()
+            closeMainModal();
             setShowProfileCompletionFirewall(false);
           }}
         >
