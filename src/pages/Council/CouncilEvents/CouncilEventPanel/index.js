@@ -9,6 +9,7 @@ import {
   Collapse,
   Switch,
   notification,
+  Tooltip,
 } from "antd";
 import { CustomButton, CustomModal } from "components";
 import Emitter from "services/emitter";
@@ -24,6 +25,7 @@ import { councilEventSelector } from "redux/selectors/councilEventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import CommentForm from "./CommentForm";
+import "./style.scss";
 
 const { Panel } = Collapse;
 
@@ -181,21 +183,29 @@ const CouncilEventPanel = ({
     const isPanelModerator = panelist.isModerator;
     console.log(panelist, "isPanelModerator");
 
-    const displayIsPanelModerator = isPanelModerator && <div>Moderator</div>;
+    const displayIsPanelModerator = isPanelModerator && <span>Moderator</span>;
 
     return (
       <div className="panelist" key={user.email}>
-        <Avatar src={user.img} size={100} />
+        <Avatar src={user.img} size={100} style={{ marginLeft: 'auto', marginRight: 'auto' }}/>
         <div>{`${user.firstName} ${user.lastName}`}</div>
-        <div>{user.titleProfessions}</div>
-        <div>{displayIsPanelModerator}</div>
+        <div>
+          <div className="truncate">
+            <Tooltip title={user.titleProfessions}>
+              {user.titleProfessions}
+            </Tooltip>
+          </div>
+          {displayIsPanelModerator}
+        </div>
         {userProfile.isExpertCouncilAdmin && (
-          <Popconfirm
-            title="Do you want to remove this panelist?"
-            onConfirm={() => handleRemovePanelist(panelist.id)}
-          >
-            <CustomButton text="Remove" type="third" size="small" />
-          </Popconfirm>
+          <div style={{ marginTop: "auto" }}>
+            <Popconfirm
+              title="Do you want to remove this panelist?"
+              onConfirm={() => handleRemovePanelist(panelist.id)}
+            >
+              <CustomButton text="Remove" type="third" size="small" />
+            </Popconfirm>
+          </div>
         )}
       </div>
     );
