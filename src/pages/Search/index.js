@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, List, Skeleton } from "antd";
+import { Avatar, List, Pagination, Skeleton } from "antd";
 import {
   searchUser,
   setVisibleProfileUser,
@@ -8,7 +8,9 @@ import {
 } from "redux/actions/home-actions";
 import { createConversartion } from "redux/actions/conversation-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { CustomButton } from "components";
+import { categorySelector } from "redux/selectors/categorySelector";
+import { CustomButton, CustomSelect } from "components";
+import { COUNTRIES, PROFILE_SETTINGS } from "enum";
 import "./style.scss";
 
 const data = [
@@ -24,6 +26,21 @@ const data = [
   {
     title: "Ant Design Title 4",
   },
+  {
+    title: "Ant Design Title 5",
+  },
+  {
+    title: "Ant Design Title 6",
+  },
+  {
+    title: "Ant Design Title 7",
+  },
+  {
+    title: "Ant Design Title 8",
+  },
+  {
+    title: "Ant Design Title 9",
+  },
 ];
 
 const SearchPage = ({
@@ -33,7 +50,14 @@ const SearchPage = ({
   setUserShow,
   setVisibleProfileUser,
   createConversartion,
+  allCategories,
+  pagesSearchedUsers,
 }) => {
+  const [countryFilterValue, setCountryFilterValue] = useState("");
+  const [jobLevelFilterValue, setJobLevelFilterValue] = useState("");
+  const [topicsFilterValue, setTopicFilterValue] = useState("");
+  const [OrgSizeFilterValue, setOrgSizeFilterValue] = useState("");
+
   useEffect(() => {
     if (searchedUsers.length === 0) {
       searchUser({
@@ -53,10 +77,111 @@ const SearchPage = ({
   return (
     <div className="search">
       <div className="search-filters">
-        <CustomButton text="Country" type="" size="md" />
-        <CustomButton text="Topics of interest" type="" size="md" />
-        <CustomButton text="Job Level" type="" size="md" />
-        <CustomButton text="Size Of Organization" type="" size="md" />
+        <CustomSelect
+          bordered={true}
+          mode="multiple"
+          options={COUNTRIES}
+          placeholder={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span
+                className="ant-select-selection-item"
+                style={{ background: "none", border: "none" }}
+              >
+                Countries
+              </span>
+
+              <span className="ant-select-arrow">
+                <i className="fal fa-angle-down" />
+              </span>
+            </div>
+          }
+          onChange={(value) => setCountryFilterValue(value)}
+        />
+        <CustomSelect
+          bordered={true}
+          mode="multiple"
+          placeholder={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span
+                className="ant-select-selection-item"
+                style={{ background: "none", border: "none" }}
+              >
+                Job Levels
+              </span>
+
+              <span className="ant-select-arrow">
+                <i className="fal fa-angle-down" />
+              </span>
+            </div>
+          }
+          options={PROFILE_SETTINGS.JOB_LEVELS}
+          onChange={(value) => setJobLevelFilterValue(value)}
+        />
+        <CustomSelect
+          mode="multiple"
+          placeholder={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span
+                className="ant-select-selection-item"
+                style={{ background: "none", border: "none" }}
+              >
+                Topics
+              </span>
+
+              <span className="ant-select-arrow">
+                <i className="fal fa-angle-down" />
+              </span>
+            </div>
+          }
+          bordered={true}
+          options={allCategories}
+          onChange={(value) => setTopicFilterValue(value)}
+        />
+
+        <CustomSelect
+          bordered={true}
+          mode="multiple"
+          placeholder={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span
+                className="ant-select-selection-item"
+                style={{ background: "none", border: "none" }}
+              >
+                Organization Size
+              </span>
+
+              <span className="ant-select-arrow">
+                <i className="fal fa-angle-down" />
+              </span>
+            </div>
+          }
+          options={PROFILE_SETTINGS.ORG_SIZES}
+          onChange={(value) => setOrgSizeFilterValue(value)}
+        />
       </div>
       <div className="search-container">
         <List
@@ -67,11 +192,15 @@ const SearchPage = ({
               <Skeleton loading={searchedUsers.length === 0} active avatar>
                 <List.Item.Meta
                   avatar={
-                    <Avatar
-                      size={30}
-                      src={user.img}
-                      alt={`${user.firstName} ${user.lastName}`}
-                    />
+                    user.img ? (
+                      <Avatar
+                        size={30}
+                        src={user.img}
+                        alt={`${user.firstName} ${user.lastName}`}
+                      />
+                    ) : (
+                      <Avatar size={30}>{user.abbrName}</Avatar>
+                    )
                   }
                   title={
                     <h5>
@@ -102,6 +231,16 @@ const SearchPage = ({
           )}
         />
       </div>
+
+      <div className="search-pagination">
+        <Pagination
+          defaultPageSize={50}
+          pageSize={50}
+          showSizeChanger={false}
+          pageSizeOptions={[]}
+          total={pagesSearchedUsers}
+        />
+      </div>
     </div>
   );
 };
@@ -109,6 +248,8 @@ const SearchPage = ({
 const mapStateToProps = (state) => ({
   searchedUsers: homeSelector(state).searchedUsers,
   userProfile: homeSelector(state).userProfile,
+  pagesSearchedUsers: homeSelector(state).pagesSearchedUsers,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {

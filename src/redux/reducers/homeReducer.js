@@ -50,6 +50,11 @@ export const reducers = {
       visibleProfileUser: payload.visibleProfileUser,
     });
   },
+  [homeConstants.SET_PAGES_SEARCHED_USERS]: (state, { payload }) => {
+    return state.merge({
+      pagesSearchedUsers: payload.count,
+    });
+  },
 };
 
 export const initialState = () =>
@@ -82,6 +87,7 @@ export const initialState = () =>
     searchedUsers: [],
     userShow: {},
     visibleProfileUser: false,
+    pagesSearchedUsers: 0,
   });
 
 export default handleActions(reducers, initialState());

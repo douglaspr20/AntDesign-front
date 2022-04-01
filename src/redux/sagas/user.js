@@ -614,9 +614,10 @@ export function* searchUserSaga({ payload }) {
     const response = yield call(searchUser, { ...payload });
 
     if (response.status === 200) {
-      const { users } = response.data;
+      const { users, count } = response.data;
 
       yield put(homeActions.setSearchedUsers(users));
+      yield put(homeActions.setPagesSearchedUsers(count));
     }
   } catch (error) {
     console.log(error);

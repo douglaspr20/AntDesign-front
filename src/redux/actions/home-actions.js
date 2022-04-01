@@ -35,6 +35,7 @@ const SEARCH_USER = "SEARCH_USER";
 const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
 const SET_USER_SHOW = "SET_USER_SHOW";
 const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
+const SET_PAGES_SEARCHED_USERS = "SET_PAGES_SEARCHED_USERS";
 
 export const constants = {
   SET_LOADING,
@@ -70,6 +71,7 @@ export const constants = {
   SET_SEARCHED_USERS,
   SET_USER_SHOW,
   SET_VISIBLE_PROFILE_USER,
+  SET_PAGES_SEARCHED_USERS,
 };
 
 // ------------------------------------
@@ -181,6 +183,11 @@ export const setVisibleProfileUser = createAction(
   (visibleProfileUser) => ({ visibleProfileUser })
 );
 
+export const setPagesSearchedUsers = createAction(
+  SET_PAGES_SEARCHED_USERS,
+  (count) => ({ count })
+);
+
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
 export const actions = {
@@ -215,4 +222,5 @@ export const actions = {
   setSearchedUsers,
   setUserShow,
   setVisibleProfileUser,
+  setPagesSearchedUsers,
 };
