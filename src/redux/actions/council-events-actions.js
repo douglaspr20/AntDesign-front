@@ -12,6 +12,7 @@ const COUNCIL_EVENT_SEARCH_USER = "COUNCIL_EVENT_SEARCH_USER";
 const SET_SEARCHED_USERS_FOR_COUNCIL_EVENT =
   "SET_SEARCHED_USERS_FOR_COUNCIL_EVENT";
 const COUNCIL_EVENT_PANEL_COMMENT = "COUNCIL_EVENT_PANEL_COMMENT";
+const SET_COUNCIL_EVENT_COMMENT = "SET_COUNCIL_EVENT_COMMENT";
 
 export const constants = {
   UPSERT_COUNCIL_EVENT,
@@ -25,6 +26,7 @@ export const constants = {
   COUNCIL_EVENT_SEARCH_USER,
   SET_SEARCHED_USERS_FOR_COUNCIL_EVENT,
   COUNCIL_EVENT_PANEL_COMMENT,
+  SET_COUNCIL_EVENT_COMMENT,
 };
 
 export const upsertCouncilEvent = createAction(
@@ -48,16 +50,25 @@ export const deleteCouncilEvent = createAction(
 );
 export const joinCouncilEvent = createAction(
   JOIN_COUNCIL_EVENT,
-  (councilEventPanelId, UserId, status, isAddedByAdmin = false) => ({
+  (
+    councilEventPanelId,
+    UserId,
+    status,
+    isAddedByAdmin = false,
+    isModerator = false,
+    councilEventId
+  ) => ({
     councilEventPanelId,
     UserId,
     status,
     isAddedByAdmin,
+    isModerator,
+    councilEventId,
   })
 );
 export const setJoinCouncilEvent = createAction(
   SET_JOIN_COUNCIL_EVENT,
-  (councilEventPanel) => ({ councilEventPanel })
+  (councilEventPanelist) => ({ councilEventPanelist })
 );
 export const removeCouncilEventPanelist = createAction(
   REMOVE_COUNCIL_EVENT_PANELIST,
@@ -78,6 +89,10 @@ export const upsertCommentCouncilEventPanel = createAction(
   COUNCIL_EVENT_PANEL_COMMENT,
   (councilEventPanelComment) => ({ councilEventPanelComment })
 );
+export const setCouncilEventPanelComment = createAction(
+  SET_COUNCIL_EVENT_COMMENT,
+  (councilEventPanelComment) => ({ councilEventPanelComment })
+);
 
 export const actions = {
   upsertCouncilEvent,
@@ -91,4 +106,5 @@ export const actions = {
   searchUserForCouncilEventPanelist,
   setSearchedUserForCouncilEventPanelist,
   upsertCommentCouncilEventPanel,
+  setCouncilEventPanelComment,
 };
