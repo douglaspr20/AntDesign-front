@@ -80,7 +80,7 @@ const SearchPage = ({
       searchUser({
         search: inputUserSearchValue,
         ...filters,
-        offset: currentPage - 1 * 50,
+        offset: (currentPage - 1) * 50,
       });
     }
   }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
