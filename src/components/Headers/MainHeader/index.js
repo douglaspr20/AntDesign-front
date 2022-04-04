@@ -16,6 +16,7 @@ import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
 import {
   searchUser,
+  setInputSearchValue,
   setSearchedUsers,
   setUserShow,
   setVisibleProfileUser,
@@ -63,7 +64,6 @@ class MainHeader extends React.Component {
       visiblePremiumAlert: false,
       showSearchInput: window.screen.width > 920,
       showSearchResult: false,
-      inputSearchValue: "",
     };
   }
 
@@ -90,14 +90,14 @@ class MainHeader extends React.Component {
   };
 
   handleSearch = (e) => {
-    this.setState({ inputSearchValue: e.target.value });
+    this.props.setInputSearchValue(e.target.value);
     if (e.target.value === "") {
       this.props.setSearchedUsers([]);
       return;
     }
 
     this.timeout = setTimeout(() => {
-      this.props.searchUser(this.state.inputSearchValue);
+      this.props.searchUser(this.props.inputUserSearchValue);
       this.setState({ showSearchResult: true });
       clearTimeout(this.timeout);
     }, 1000);
@@ -330,7 +330,7 @@ class MainHeader extends React.Component {
                 onChange={this.handleSearch}
                 value={inputSearchValue}
                 onBlur={() => {
-                  // this.setState({ showSearchResult: false });
+                  this.setState({ showSearchResult: false });
                   // this.props.setSearchedUsers([]);
                   if (window.screen.width < 920) {
                     this.setState({ showSearchInput: false });
@@ -461,6 +461,7 @@ const mapStateToProps = (state) => ({
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
   skillCohort: skillCohortSelector(state).skillCohort,
+  inputUserSearchValue: homeSelector(state).inputUserSearchValue,
   searchedUsers: homeSelector(state).searchedUsers,
   userShow: homeSelector(state).userShow,
   visibleProfileUser: homeSelector(state).visibleProfileUser,
@@ -469,6 +470,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setCollapsed,
   searchUser,
+  setInputSearchValue,
   setSearchedUsers,
   setUserShow,
   setVisibleProfileUser,

@@ -5,6 +5,7 @@ import {
   searchUser,
   setVisibleProfileUser,
   setUserShow,
+  setSearchedUsers,
 } from "redux/actions/home-actions";
 import { createConversartion } from "redux/actions/conversation-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -52,26 +53,53 @@ const SearchPage = ({
   createConversartion,
   allCategories,
   pagesSearchedUsers,
+  inputUserSearchValue,
+  setSearchedUsers,
 }) => {
-  const [countryFilterValue, setCountryFilterValue] = useState("");
-  const [jobLevelFilterValue, setJobLevelFilterValue] = useState("");
-  const [topicsFilterValue, setTopicFilterValue] = useState("");
-  const [OrgSizeFilterValue, setOrgSizeFilterValue] = useState("");
+  const [filters, setFilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (searchedUsers.length === 0) {
+    if (
+      searchedUsers.length === 0 &&
+      Object.keys(filters).length === 0 &&
+      inputUserSearchValue === ""
+    ) {
       searchUser({
-        city: userProfile.city,
         recentJobLevel: userProfile.recentJobLevel,
         titleProfessions: userProfile.titleProfessions,
         location: userProfile.location,
         topicsOfInterest: userProfile.topicsOfInterest,
+        sizeOfOrganization: userProfile.sizeOfOrganization,
       });
     }
-  }, [searchedUsers, searchUser, userProfile]);
+  }, [searchedUsers, searchUser, userProfile, filters, inputUserSearchValue]);
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0 && searchedUsers.length === 0) {
+      searchUser({
+        search: inputUserSearchValue,
+        ...filters,
+        offset: currentPage - 1 * 50,
+      });
+    }
+  }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
 
   const handleStartConversation = (members) => {
     createConversartion(members);
+  };
+
+  const handleFilters = (field, values) => {
+    const newFilter = {
+      ...filters,
+      [field]: JSON.stringify(values),
+    };
+
+    if (values.length === 0) {
+      delete newFilter[field];
+    }
+    setFilters(newFilter);
+    setSearchedUsers([]);
   };
 
   return (
@@ -101,7 +129,7 @@ const SearchPage = ({
               </span>
             </div>
           }
-          onChange={(value) => setCountryFilterValue(value)}
+          onChange={(value) => handleFilters("location", value)}
         />
         <CustomSelect
           bordered={true}
@@ -127,7 +155,7 @@ const SearchPage = ({
             </div>
           }
           options={PROFILE_SETTINGS.JOB_LEVELS}
-          onChange={(value) => setJobLevelFilterValue(value)}
+          onChange={(value) => handleFilters("recentJobLevel", value)}
         />
         <CustomSelect
           mode="multiple"
@@ -153,7 +181,7 @@ const SearchPage = ({
           }
           bordered={true}
           options={allCategories}
-          onChange={(value) => setTopicFilterValue(value)}
+          onChange={(value) => handleFilters("topicsOfInterest", value)}
         />
 
         <CustomSelect
@@ -180,7 +208,7 @@ const SearchPage = ({
             </div>
           }
           options={PROFILE_SETTINGS.ORG_SIZES}
-          onChange={(value) => setOrgSizeFilterValue(value)}
+          onChange={(value) => handleFilters("sizeOfOrganization", value)}
         />
       </div>
       <div className="search-container">
@@ -235,10 +263,13 @@ const SearchPage = ({
       <div className="search-pagination">
         <Pagination
           defaultPageSize={50}
+          defaultCurrent={1}
+          current={currentPage}
           pageSize={50}
           showSizeChanger={false}
           pageSizeOptions={[]}
           total={pagesSearchedUsers}
+          onChange={(value) => setCurrentPage(value)}
         />
       </div>
     </div>
@@ -250,6 +281,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   pagesSearchedUsers: homeSelector(state).pagesSearchedUsers,
   allCategories: categorySelector(state).categories,
+  inputUserSearchValue: homeSelector(state).inputUserSearchValue,
 });
 
 const mapDispatchToProps = {
@@ -257,6 +289,7 @@ const mapDispatchToProps = {
   setUserShow,
   setVisibleProfileUser,
   createConversartion,
+  setSearchedUsers,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
