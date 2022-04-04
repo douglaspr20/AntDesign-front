@@ -103,6 +103,17 @@ class MainHeader extends React.Component {
     }, 1000);
   };
 
+  handleBlur = (e) => {
+    this.timeout = setTimeout(() => {
+      this.setState({ showSearchResult: false });
+
+      if (window.screen.width < 920) {
+        this.setState({ showSearchInput: false });
+      }
+      clearTimeout(this.timeout);
+    }, 500);
+  };
+
   onDrawerClose = () => {
     this.setState({ visibleProfileUser: false });
   };
@@ -329,13 +340,7 @@ class MainHeader extends React.Component {
                 size="large"
                 onChange={this.handleSearch}
                 value={inputSearchValue}
-                onBlur={() => {
-                  this.setState({ showSearchResult: false });
-                  // this.props.setSearchedUsers([]);
-                  if (window.screen.width < 920) {
-                    this.setState({ showSearchInput: false });
-                  }
-                }}
+                onBlur={this.handleBlur}
               />
 
               <div
