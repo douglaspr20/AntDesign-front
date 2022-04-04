@@ -52,7 +52,7 @@ const SearchPage = ({
   setVisibleProfileUser,
   createConversartion,
   allCategories,
-  pagesSearchedUsers,
+  totalUsers,
   inputUserSearchValue,
   setSearchedUsers,
 }) => {
@@ -268,7 +268,7 @@ const SearchPage = ({
           pageSize={50}
           showSizeChanger={false}
           pageSizeOptions={[]}
-          total={pagesSearchedUsers}
+          total={totalUsers}
           onChange={(value) => setCurrentPage(value)}
         />
       </div>
@@ -279,7 +279,7 @@ const SearchPage = ({
 const mapStateToProps = (state) => ({
   searchedUsers: homeSelector(state).searchedUsers,
   userProfile: homeSelector(state).userProfile,
-  pagesSearchedUsers: homeSelector(state).pagesSearchedUsers,
+  totalUsers: homeSelector(state).totalUsers,
   allCategories: categorySelector(state).categories,
   inputUserSearchValue: homeSelector(state).inputUserSearchValue,
 });
