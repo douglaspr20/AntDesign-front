@@ -84,18 +84,18 @@ const SearchPage = ({
     currentPage,
   ]);
 
-  useEffect(() => {
-    if (
-      (Object.keys(filters).length > 0 || inputUserSearchValue !== "") &&
-      searchedUsers.length === 0
-    ) {
-      searchUser({
-        search: inputUserSearchValue,
-        ...filters,
-        offset: (currentPage - 1) * 50,
-      });
-    }
-  }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
+  // useEffect(() => {
+  //   if (
+  //     (Object.keys(filters).length > 0 || inputUserSearchValue !== "") &&
+  //     searchedUsers.length === 0
+  //   ) {
+  //     searchUser({
+  //       search: inputUserSearchValue,
+  //       ...filters,
+  //       offset: (currentPage - 1) * 50,
+  //     });
+  //   }
+  // }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
 
   const handleStartConversation = (members) => {
     createConversartion(members);
@@ -112,11 +112,21 @@ const SearchPage = ({
     }
     setFilters(newFilter);
     setSearchedUsers([]);
+    searchUser({
+      search: inputUserSearchValue,
+      ...newFilter,
+      offset: (currentPage - 1) * 50,
+    });
   };
 
   const handlePaginate = (value) => {
     setCurrentPage(value);
     setSearchedUsers([]);
+    searchUser({
+      search: inputUserSearchValue,
+      ...filters,
+      offset: (currentPage - 1) * 50,
+    });
   };
 
   return (
@@ -147,6 +157,11 @@ const SearchPage = ({
             </div>
           }
           onChange={(value) => handleFilters("location", value)}
+          showSearch
+          optionFilterProp="location"
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
         />
         <CustomSelect
           bordered={true}
