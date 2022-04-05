@@ -339,7 +339,6 @@ class MainHeader extends React.Component {
                 enterButton
                 className="search-input"
                 size="large"
-                // onChange={this.handleSearch}
                 onKeyUp={this.handleSearch}
                 value={inputSearchValue}
                 onBlur={this.handleBlur}
