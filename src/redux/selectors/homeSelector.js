@@ -10,6 +10,7 @@ const resultSelector = createSelector(homeDataSelector, (payload) => {
     allUsers: payload.get("allUsers"),
     userCount: payload.get("userCount"),
     inputUserSearchValue: payload.get("inputUserSearchValue"),
+    loadingSearchUsers: payload.get("loadingSearchUsers"),
     searchedUsers: payload.get("searchedUsers"),
     totalUsers: payload.get("totalUsers"),
     userShow: payload.get("userShow"),

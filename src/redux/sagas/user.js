@@ -610,6 +610,7 @@ export function* handleOnlineSaga({ payload }) {
 }
 
 export function* searchUserSaga({ payload }) {
+  yield put(homeActions.setLoadingSearchUsers(true));
   try {
     const response = yield call(searchUser, { ...payload });
 
@@ -622,6 +623,7 @@ export function* searchUserSaga({ payload }) {
   } catch (error) {
     console.log(error);
   } finally {
+    yield put(homeActions.setLoadingSearchUsers(false));
   }
 }
 

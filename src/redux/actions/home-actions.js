@@ -32,6 +32,7 @@ const COUNT_ALL_USERS = "COUNT_ALL_USERS";
 const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
 const HANDLE_ONLINE = "HANDLE_ONLINE";
 const SEARCH_USER = "SEARCH_USER";
+const SET_LOADING_SEARCH_USERS = "SET_LOADING_SEARCH_USERS";
 const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
 const SET_USER_SHOW = "SET_USER_SHOW";
 const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
@@ -69,6 +70,7 @@ export const constants = {
   SET_ALL_COUNT_USERS,
   HANDLE_ONLINE,
   SEARCH_USER,
+  SET_LOADING_SEARCH_USERS,
   SET_SEARCHED_USERS,
   SET_USER_SHOW,
   SET_VISIBLE_PROFILE_USER,
@@ -171,6 +173,12 @@ export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({
 }));
 
 export const searchUser = createAction(SEARCH_USER, (search) => ({ search }));
+
+export const setLoadingSearchUsers = createAction(
+  SET_LOADING_SEARCH_USERS,
+  (loading) => ({ loading })
+);
+
 export const setSearchedUsers = createAction(
   SET_SEARCHED_USERS,
   (searchUsers) => ({ searchUsers })
@@ -226,6 +234,7 @@ export const actions = {
   setCountUsers,
   handleOnline,
   searchUser,
+  setLoadingSearchUsers,
   setSearchedUsers,
   setInputSearchValue,
   setUserShow,

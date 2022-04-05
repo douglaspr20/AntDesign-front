@@ -91,8 +91,9 @@ class MainHeader extends React.Component {
 
   handleSearch = (e) => {
     this.props.setInputSearchValue(e.target.value);
+
+    clearTimeout(this.timeout);
     if (e.target.value === "") {
-      this.props.setSearchedUsers([]);
       return;
     }
 
@@ -338,7 +339,8 @@ class MainHeader extends React.Component {
                 enterButton
                 className="search-input"
                 size="large"
-                onChange={this.handleSearch}
+                // onChange={this.handleSearch}
+                onKeyUp={this.handleSearch}
                 value={inputSearchValue}
                 onBlur={this.handleBlur}
               />

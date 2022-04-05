@@ -40,6 +40,11 @@ export const reducers = {
       inputUserSearchValue: payload.value,
     });
   },
+  [homeConstants.SET_LOADING_SEARCH_USERS]: (state, { payload }) => {
+    return state.merge({
+      loadingSearchUsers: payload.loading,
+    });
+  },
   [homeConstants.SET_SEARCHED_USERS]: (state, { payload }) => {
     return state.merge({
       searchedUsers: payload.searchUsers,
@@ -90,6 +95,7 @@ export const initialState = () =>
     allUsers: [],
     userCount: 0,
     inputUserSearchValue: "",
+    loadingSearchUsers: false,
     searchedUsers: [],
     userShow: {},
     visibleProfileUser: false,

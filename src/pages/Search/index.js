@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, List, Pagination, Skeleton } from "antd";
+import { Avatar, Empty, List, Pagination, Skeleton } from "antd";
 import {
   searchUser,
   setVisibleProfileUser,
@@ -55,6 +55,7 @@ const SearchPage = ({
   totalUsers,
   inputUserSearchValue,
   setSearchedUsers,
+  loadingSearchUsers,
 }) => {
   const [filters, setFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,9 +72,17 @@ const SearchPage = ({
         location: userProfile.location,
         topicsOfInterest: userProfile.topicsOfInterest,
         sizeOfOrganization: userProfile.sizeOfOrganization,
+        offset: (currentPage - 1) * 50,
       });
     }
-  }, [searchedUsers, searchUser, userProfile, filters, inputUserSearchValue]);
+  }, [
+    searchedUsers,
+    searchUser,
+    userProfile,
+    filters,
+    inputUserSearchValue,
+    currentPage,
+  ]);
 
   useEffect(() => {
     if (Object.keys(filters).length > 0 && searchedUsers.length === 0) {
@@ -212,52 +221,56 @@ const SearchPage = ({
         />
       </div>
       <div className="search-container">
-        <List
-          itemLayout="horizontal"
-          dataSource={searchedUsers.length === 0 ? data : searchedUsers}
-          renderItem={(user) => (
-            <List.Item key={user.id}>
-              <Skeleton loading={searchedUsers.length === 0} active avatar>
-                <List.Item.Meta
-                  avatar={
-                    user.img ? (
-                      <Avatar
-                        size={30}
-                        src={user.img}
-                        alt={`${user.firstName} ${user.lastName}`}
-                      />
-                    ) : (
-                      <Avatar size={30}>{user.abbrName}</Avatar>
-                    )
-                  }
-                  title={
-                    <h5>
-                      {" "}
-                      {user.firstName} {user.lastName}
-                    </h5>
-                  }
-                  description={user.titleProfessions}
-                  onClick={() => {
-                    setUserShow(user);
-                    setVisibleProfileUser(true);
-                  }}
-                  style={{ cursor: "pointer" }}
-                />
-
-                {userProfile.id !== user.id && (
-                  <CustomButton
-                    type="primary"
-                    size="sm"
-                    text={`Chat`}
-                    onClick={() =>
-                      handleStartConversation([user.id, userProfile.id])
+        {!loadingSearchUsers && searchedUsers.length === 0 ? (
+          <Empty />
+        ) : (
+          <List
+            itemLayout="horizontal"
+            dataSource={searchedUsers.length === 0 ? data : searchedUsers}
+            renderItem={(user) => (
+              <List.Item key={user.id}>
+                <Skeleton loading={loadingSearchUsers} active avatar>
+                  <List.Item.Meta
+                    avatar={
+                      user.img ? (
+                        <Avatar
+                          size={30}
+                          src={user.img}
+                          alt={`${user.firstName} ${user.lastName}`}
+                        />
+                      ) : (
+                        <Avatar size={30}>{user.abbrName}</Avatar>
+                      )
                     }
+                    title={
+                      <h5>
+                        {" "}
+                        {user.firstName} {user.lastName}
+                      </h5>
+                    }
+                    description={user.titleProfessions}
+                    onClick={() => {
+                      setUserShow(user);
+                      setVisibleProfileUser(true);
+                    }}
+                    style={{ cursor: "pointer" }}
                   />
-                )}
-              </Skeleton>
-            </List.Item>
-          )}
-        />
+
+                  {userProfile.id !== user.id && (
+                    <CustomButton
+                      type="primary"
+                      size="sm"
+                      text={`Chat`}
+                      onClick={() =>
+                        handleStartConversation([user.id, userProfile.id])
+                      }
+                    />
+                  )}
+                </Skeleton>
+              </List.Item>
+            )}
+          />
+        )}
       </div>
 
       <div className="search-pagination">
@@ -282,6 +295,7 @@ const mapStateToProps = (state) => ({
   totalUsers: homeSelector(state).totalUsers,
   allCategories: categorySelector(state).categories,
   inputUserSearchValue: homeSelector(state).inputUserSearchValue,
+  loadingSearchUsers: homeSelector(state).loadingSearchUsers,
 });
 
 const mapDispatchToProps = {
