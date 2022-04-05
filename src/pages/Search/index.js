@@ -111,6 +111,11 @@ const SearchPage = ({
     setSearchedUsers([]);
   };
 
+  const handlePaginate = (value) => {
+    setCurrentPage(value);
+    setSearchedUsers([]);
+  };
+
   return (
     <div className="search">
       <div className="search-filters">
@@ -281,8 +286,8 @@ const SearchPage = ({
           pageSize={50}
           showSizeChanger={false}
           pageSizeOptions={[]}
-          total={totalUsers}
-          onChange={(value) => setCurrentPage(value)}
+          total={totalUsers > 0 ? totalUsers : totalUsers + 1}
+          onChange={(value) => handlePaginate(value)}
         />
       </div>
     </div>
