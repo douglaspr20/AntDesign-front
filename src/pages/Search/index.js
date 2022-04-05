@@ -84,19 +84,6 @@ const SearchPage = ({
     currentPage,
   ]);
 
-  // useEffect(() => {
-  //   if (
-  //     (Object.keys(filters).length > 0 || inputUserSearchValue !== "") &&
-  //     searchedUsers.length === 0
-  //   ) {
-  //     searchUser({
-  //       search: inputUserSearchValue,
-  //       ...filters,
-  //       offset: (currentPage - 1) * 50,
-  //     });
-  //   }
-  // }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
-
   const handleStartConversation = (members) => {
     createConversartion(members);
   };
