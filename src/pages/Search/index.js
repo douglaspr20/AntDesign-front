@@ -72,7 +72,7 @@ const SearchPage = ({
         location: userProfile.location,
         topicsOfInterest: userProfile.topicsOfInterest,
         sizeOfOrganization: userProfile.sizeOfOrganization,
-        offset: (currentPage - 1) * 2,
+        offset: (currentPage - 1) * 50,
       });
     }
   }, [
@@ -92,7 +92,7 @@ const SearchPage = ({
       searchUser({
         search: inputUserSearchValue,
         ...filters,
-        offset: (currentPage - 1) * 2,
+        offset: (currentPage - 1) * 50,
       });
     }
   }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
@@ -283,10 +283,10 @@ const SearchPage = ({
 
       <div className="search-pagination">
         <Pagination
-          defaultPageSize={2}
+          defaultPageSize={50}
           defaultCurrent={1}
           current={currentPage}
-          pageSize={2}
+          pageSize={50}
           showSizeChanger={false}
           pageSizeOptions={[]}
           total={totalUsers > 0 ? totalUsers : totalUsers + 1}
