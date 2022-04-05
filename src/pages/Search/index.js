@@ -72,7 +72,7 @@ const SearchPage = ({
         location: userProfile.location,
         topicsOfInterest: userProfile.topicsOfInterest,
         sizeOfOrganization: userProfile.sizeOfOrganization,
-        offset: (currentPage - 1) * 50,
+        offset: (currentPage - 1) * 2,
       });
     }
   }, [
@@ -85,11 +85,14 @@ const SearchPage = ({
   ]);
 
   useEffect(() => {
-    if (Object.keys(filters).length > 0 && searchedUsers.length === 0) {
+    if (
+      (Object.keys(filters).length > 0 || inputUserSearchValue !== "") &&
+      searchedUsers.length === 0
+    ) {
       searchUser({
         search: inputUserSearchValue,
         ...filters,
-        offset: (currentPage - 1) * 50,
+        offset: (currentPage - 1) * 2,
       });
     }
   }, [filters, inputUserSearchValue, searchUser, searchedUsers, currentPage]);
@@ -280,10 +283,10 @@ const SearchPage = ({
 
       <div className="search-pagination">
         <Pagination
-          defaultPageSize={50}
+          defaultPageSize={2}
           defaultCurrent={1}
           current={currentPage}
-          pageSize={50}
+          pageSize={2}
           showSizeChanger={false}
           pageSizeOptions={[]}
           total={totalUsers > 0 ? totalUsers : totalUsers + 1}
