@@ -232,7 +232,7 @@ const SearchPage = ({
       </div>
       <div className="search-container">
         {!loadingSearchUsers && searchedUsers.length === 0 ? (
-          <Empty description="no results found" />
+          <Empty description="No results found" />
         ) : (
           <List
             itemLayout="horizontal"
