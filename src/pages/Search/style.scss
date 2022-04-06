@@ -8,18 +8,19 @@
     &-filters{
         background: $color-white;
         width: 100%;
-        padding: 10px;
+        padding: 10px 80px;
         box-shadow: 0px 2px 3px $color-disabled;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
 
         .custom-select{
-            margin-right: 10px;
             margin-top: 5px;
             min-width: 300px;
             width: 100% !important;
             max-width: 350px !important;
+            margin-right: auto;
+
         }
     }
 

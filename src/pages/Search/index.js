@@ -61,28 +61,15 @@ const SearchPage = ({
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if (
-      searchedUsers.length === 0 &&
-      Object.keys(filters).length === 0 &&
-      inputUserSearchValue === ""
-    ) {
-      searchUser({
-        recentJobLevel: userProfile.recentJobLevel,
-        titleProfessions: userProfile.titleProfessions,
-        location: userProfile.location,
-        topicsOfInterest: userProfile.topicsOfInterest,
-        sizeOfOrganization: userProfile.sizeOfOrganization,
-        offset: (currentPage - 1) * 50,
-      });
-    }
-  }, [
-    searchedUsers,
-    searchUser,
-    userProfile,
-    filters,
-    inputUserSearchValue,
-    currentPage,
-  ]);
+    searchUser({
+      recentJobLevel: userProfile.recentJobLevel,
+      titleProfessions: userProfile.titleProfessions,
+      location: userProfile.location,
+      topicsOfInterest: userProfile.topicsOfInterest,
+      sizeOfOrganization: userProfile.sizeOfOrganization,
+      offset: (currentPage - 1) * 50,
+    });
+  }, [currentPage, searchUser, userProfile]);
 
   const handleStartConversation = (members) => {
     createConversartion(members);
