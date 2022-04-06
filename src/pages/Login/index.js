@@ -8,6 +8,9 @@ import { isEmpty } from "lodash";
 import { EVENT_TYPES } from "enum";
 import { CustomButton } from "components";
 import Emitter from "services/emitter";
+import { loadStripe } from "@stripe/stripe-js";
+
+import { getCheckoutSession } from "api/module/stripe";
 
 import { getUser } from "redux/actions/home-actions";
 import { actions as authActions } from "redux/actions/auth-actions";
@@ -27,6 +30,8 @@ import IconLogo from "images/logo-sidebar.svg";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
 const Login = ({
   isAuthenticated,
@@ -50,6 +55,17 @@ const Login = ({
   const [signupStep, setSignupStep] = useState(0);
   const [prevAreaValues, setPrevAreaVaues] = useState([]);
   const [signupValues, setSignupValues] = useState({});
+
+  const [stripe, setStripe] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    instanceStripe();
+  }, []);
+
+  const instanceStripe = async () => {
+    setStripe(await stripePromise);
+  };
 
   const refForm = React.useRef(null);
 
@@ -147,6 +163,26 @@ const Login = ({
           } else {
             setShowFirewall(true);
           }
+        } else if (updatedEvent.ticket === "fee") {
+          setLoading(true);
+          getCheckoutSession({
+            prices: [
+              {
+                price_data: {
+                  currency: "usd",
+                  product_data: {
+                    name: updatedEvent.title,
+                  },
+                  unit_amount: `${updatedEvent.ticketFee}00`,
+                },
+              },
+            ],
+            isPaidEvent: true,
+            event: updatedEvent,
+            callback_url: window.location.href,
+          }).then((sessionData) =>
+            stripe.redirectToCheckout({ sessionId: sessionData.data.id })
+          );
         } else {
           addToMyEventList(updatedEvent);
           if (onClose) {
@@ -223,6 +259,7 @@ const Login = ({
               text={isLogin ? "Log In" : signupStep === 3 ? "Sign up" : "Next"}
               type="primary"
               size="lg"
+              loading={loading}
             />
             <div className="login-dialog-footer-bottom">
               <Link

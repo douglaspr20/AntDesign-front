@@ -7,7 +7,9 @@ import { Modal, Dropdown, Space, Menu, Carousel } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import GoogleMap from "./GoogleMaps";
+import { loadStripe } from "@stripe/stripe-js";
 
+import { getCheckoutSession } from "api/module/stripe";
 import {
   convertToLocalTime,
   getEventPeriod,
@@ -26,6 +28,8 @@ import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 const PublicEventPage = ({
   match,
   updatedEvent,
@@ -41,8 +45,18 @@ const PublicEventPage = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [editor, setEditor] = useState("froala");
   const [showFirewall, setShowFirewall] = useState(false);
+  const [stripe, setStripe] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const onAttend = () => {
+  useEffect(() => {
+    instanceStripe();
+  }, []);
+
+  const instanceStripe = async () => {
+    setStripe(await stripePromise);
+  };
+
+  const onAttend = async () => {
     if (isAuthenticated) {
       if (updatedEvent.ticket === "premium") {
         if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
@@ -51,6 +65,30 @@ const PublicEventPage = ({
           history.push(INTERNAL_LINKS.EVENTS);
         } else {
           setShowFirewall(true);
+        }
+      } else if (updatedEvent.ticket === "fee") {
+        try {
+          setLoading(true);
+          let sessionData = await getCheckoutSession({
+            prices: [
+              {
+                price_data: {
+                  currency: "usd",
+                  product_data: {
+                    name: updatedEvent.title,
+                  },
+                  unit_amount: `${updatedEvent.ticketFee}00`,
+                },
+              },
+            ],
+            isPaidEvent: true,
+            event: updatedEvent,
+            callback_url: window.location.href,
+          });
+
+          stripe.redirectToCheckout({ sessionId: sessionData.data.id });
+        } catch (error) {
+          console.log(error);
         }
       } else {
         const timezone = moment.tz.guess();
@@ -195,6 +233,10 @@ const PublicEventPage = ({
     </div>
   );
 
+  const displayTicketFee = updatedEvent.ticket === "fee" && (
+    <h3 className="event-cost">{`$ ${updatedEvent.ticketFee}`}</h3>
+  );
+
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -236,7 +278,7 @@ const PublicEventPage = ({
         {!isEmpty(updatedEvent.images) && (
           <Carousel autoplay dots={false}>
             {updatedEvent.images.map((image) => (
-              <img src={image} alt="updatedEvent-img" />
+              <img src={image} alt="updatedEvent-img" key={image} />
             ))}
           </Carousel>
         )}
@@ -282,10 +324,11 @@ const PublicEventPage = ({
               size={isMobile ? "md" : "lg"}
               type="primary"
               onClick={onAttend}
+              loading={loading}
             />
           )}
           {updatedEvent.status === "going" && (
-            <div className="going-label">
+            <div className="going-label" style={{ marginRight: "1rem", color: '#00b574' }}>
               <CheckOutlined />
               <span>I'm going</span>
             </div>
@@ -355,6 +398,7 @@ const PublicEventPage = ({
           ", "
         )} event`}</h3>
         <h3 className="event-cost">{updatedEvent.ticket}</h3>
+        {displayTicketFee}
 
         <h5>Event Type:</h5>
         {updatedEvent.type && updatedEvent.type.length > 0 && (
@@ -383,20 +427,21 @@ const PublicEventPage = ({
           <RichEdit data={updatedEvent.description} />
         )}
         {displayVenueLocation}
-        <div style={{ marginTop: "1rem", display: "flex", justifyContent: 'center' }}>
+        <div
+          style={{
+            marginTop: "1rem",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           {updatedEvent.status === "attend" && (
             <CustomButton
               text="REGISTER HERE"
               size={isMobile ? "md" : "lg"}
               type="primary"
               onClick={onAttend}
+              loading={loading}
             />
-          )}
-          {updatedEvent.status === "going" && (
-            <div className="going-label">
-              <CheckOutlined />
-              <span>I'm going</span>
-            </div>
           )}
         </div>
       </div>

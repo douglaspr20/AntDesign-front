@@ -4,6 +4,9 @@ import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment-timezone";
+import { loadStripe } from "@stripe/stripe-js";
+
+import { getCheckoutSession } from "api/module/stripe";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -19,16 +22,31 @@ import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
 import { isEmpty } from "lodash";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       showFirewall: false,
+      stripe: null,
+      loading: false,
     };
   }
 
-  onAttend = (e) => {
+  componentDidMount() {
+    const instanceStripe = async () => {
+      this.setState({
+        stripe: await stripePromise,
+      });
+    };
+
+    instanceStripe();
+  }
+
+  onAttend = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -38,6 +56,37 @@ class EventCard extends React.Component {
         this.props.onAttend(true);
       } else {
         this.setState({ showFirewall: true });
+      }
+    } else if (this.props.data.ticket === "fee") {
+      this.setState({
+        loading: true,
+      });
+
+      try {
+        const sessionData = await getCheckoutSession({
+          prices: [
+            {
+              price_data: {
+                currency: "usd",
+                product_data: {
+                  name: this.props.data.title,
+                },
+                unit_amount: `${this.props.data.ticketFee}00`,
+              },
+            },
+          ],
+          isPaidEvent: true,
+          event: this.props.data,
+          callback_url: window.location.href,
+        });
+
+        console.log(sessionData, 'bruh')
+
+        this.state.stripe.redirectToCheckout({
+          sessionId: sessionData.data.id,
+        });
+      } catch (error) {
+        console.log(error);
       }
     } else {
       this.props.onAttend(true);
@@ -186,6 +235,7 @@ class EventCard extends React.Component {
         title,
         type,
         ticket,
+        ticketFee,
         location,
         status,
         image2,
@@ -283,6 +333,9 @@ class EventCard extends React.Component {
                 </Space>
               )}
               <h6 className="event-card-cost">{ticket}</h6>
+              {ticket === "fee" && (
+                <h6 className="event-card-cost">{`$${ticketFee}`}</h6>
+              )}
               {type && type.length > 0 && (
                 <div className="event-card-topics">
                   {type.map((ty, index) => (
@@ -309,6 +362,7 @@ class EventCard extends React.Component {
                       size="md"
                       type="primary"
                       onClick={this.onAttend}
+                      loading={this.state.loading}
                     />
                   )}
                   {status === "going" && (
