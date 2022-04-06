@@ -67,8 +67,8 @@ const ChatMobile = ({
     } else {
       setCurrentConversation(conversations[0]);
       if (
-        conversations[0].messages.find(
-          (message) => !message.viewedUser.includes(userProfile.id)
+        conversations[0]?.messages?.find(
+          (message) => !message?.viewedUser?.includes(userProfile.id)
         ) &&
         openChat
       ) {
@@ -76,6 +76,49 @@ const ChatMobile = ({
       }
     }
   }, [conversations, userProfile, readMessages, openChat]);
+
+  useEffect(() => {
+    if (userProfile?.isOnline === false) {
+      SocketIO.emit(SOCKET_EVENT_TYPE.USER_ONLINE, {
+        id: userProfile.id,
+      });
+    }
+  }, [userProfile]);
+
+  useEffect(() => {
+    SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, (newConversation) => {
+      if (conversations.length > 0) {
+        if (
+          !newConversation.members.includes(userProfile.id) &&
+          !newConversation.members.some(
+            (member) => member.id === userProfile.id
+          )
+        )
+          return;
+
+        const conversation = conversations.find(
+          (conversation) => conversation.id === newConversation.id
+        );
+
+        if (!conversation) {
+          setConversations([
+            ...conversations,
+            { ...newConversation, messages: [] },
+          ]);
+
+          return;
+        }
+
+        if (
+          conversation.messages.find(
+            (message) => !message.viewedUser.includes(userProfile.id)
+          )
+        ) {
+          readMessages(userProfile.id, conversation.id);
+        }
+      }
+    });
+  }, [conversations, readMessages, userProfile.id, setConversations]);
 
   const handleConversation = (conversation) => {
     if (
@@ -99,63 +142,6 @@ const ChatMobile = ({
       viewedUser: [userProfile.id],
     });
   };
-
-  useMemo(() => {
-    if (conversations.length > 0) {
-      SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
-        const updateConversation = conversations.find(
-          (conversation) => conversation.id === message.ConversationId
-        );
-
-        if (
-          updateConversation.messages.some(
-            (oldMessage) => oldMessage.id === message.id
-          )
-        ) {
-          return;
-        }
-        updateConversation.messages.push(message);
-
-        const newConversations = conversations.map((conversation) =>
-          conversation.id === updateConversation.id
-            ? updateConversation
-            : conversation
-        );
-
-        setConversations(newConversations);
-      });
-    }
-  }, [conversations, setConversations]);
-
-  useMemo(() => {
-    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
-      if (user.id === userProfile.id && !currentConversation.members) return;
-
-      const newMembers = currentConversation?.members?.map((member) => {
-        if (member.id === user.id) {
-          return {
-            id: user.id,
-            abbrName: user.abbrName,
-            email: user.email,
-            firstName: user.firstName,
-            img: user.img,
-            isOnline: user.isOnline,
-            lastName: user.lastName,
-            timezone: user.timezone,
-          };
-        }
-
-        return {
-          ...member,
-        };
-      });
-
-      setCurrentConversation({
-        ...currentConversation,
-        members: newMembers,
-      });
-    });
-  }, [currentConversation, userProfile]);
 
   const BadgeProps = {
     count: messasgesNotViewed > 0 ? messasgesNotViewed : null,

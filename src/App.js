@@ -264,11 +264,11 @@ class App extends Component {
                 <Chat conversations={this.props.conversations} />
               ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
                 <>
-                  {/* <ChatMobile
-                  conversations={this.props.conversations}
-                  openChat={openChat}
-                  setOpenChat={() => this.setState({ openChat: !openChat })}
-                /> */}
+                  <ChatMobile
+                    conversations={this.props.conversations}
+                    openChat={openChat}
+                    setOpenChat={() => this.setState({ openChat: !openChat })}
+                  />
                 </>
               ) : null}
             </div>
