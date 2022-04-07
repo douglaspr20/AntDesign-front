@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getMoreMessages } from "redux/actions/conversation-actions";
@@ -29,13 +29,10 @@ const ChatMobile = ({
 }) => {
   const [currentConversation, setCurrentConversation] = useState({});
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-  const messagesRef = useRef(null);
+  const refChatMessages = useRef(null);
 
-  const setRef = useCallback((node) => {
-    if (node) {
-      node.scrollIntoView({ smooth: true });
-    }
-  }, []);
+  const setRefFirstMessage = useRef(null);
+  const setRefLastMessage = useRef(null);
 
   let messasgesNotViewed = 0;
 
@@ -47,7 +44,7 @@ const ChatMobile = ({
     }
   }
 
-  useMemo(() => {
+  useEffect(() => {
     const lastConversationId = localStorage.getItem("lastConversationOpen");
 
     const lastConversation = conversations.find(
@@ -84,6 +81,12 @@ const ChatMobile = ({
       });
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    if (setRefLastMessage.current) {
+      setRefLastMessage.current.scrollIntoView();
+    }
+  });
 
   useEffect(() => {
     SocketIO.on(SOCKET_EVENT_TYPE.NEW_CONVERSATION, (newConversation) => {
@@ -147,20 +150,15 @@ const ChatMobile = ({
     count: messasgesNotViewed > 0 ? messasgesNotViewed : null,
   };
 
-  useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.offsetHeight + 400;
-    }
-  });
-
   const handleScroll = () => {
-    if (messagesRef.current) {
-      const { scrollTop } = messagesRef.current;
+    if (refChatMessages.current) {
+      const { scrollTop } = refChatMessages.current;
       if (scrollTop === 0 && currentConversation.messages?.length >= 15) {
         getMoreMessages(
           currentConversation.messages?.length,
           currentConversation.id
         );
+        setRefFirstMessage.current.scrollIntoView();
       }
     }
   };
@@ -254,7 +252,7 @@ const ChatMobile = ({
               </div>
               <div
                 className="chat-mobile-messages"
-                ref={messagesRef}
+                ref={refChatMessages}
                 onScroll={handleScroll}
               >
                 {currentConversation.messages?.length > 0 ? (
@@ -262,12 +260,21 @@ const ChatMobile = ({
                     const user = currentConversation.members.find(
                       (member) => member?.id === message?.sender
                     );
+                    const firstMessage =
+                      currentConversation.messages.indexOf(message) === 0;
+
                     const lastMessage =
                       currentConversation.messages.length - 1 === i;
 
                     return (
                       <div
-                        ref={lastMessage ? setRef : null}
+                        ref={
+                          firstMessage
+                            ? setRefFirstMessage
+                            : lastMessage
+                            ? setRefLastMessage
+                            : null
+                        }
                         style={{
                           textAlign: `${
                             user.id !== userProfile.id ? "left" : "right"
