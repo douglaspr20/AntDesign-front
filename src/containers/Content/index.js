@@ -57,6 +57,7 @@ import BusinessPartnerPage from "pages/BusinessPartner";
 import BusinessPartnerConversationCard from "pages/BusinessPartner/BusinessPartnerConversationCard";
 import TalentMarketplacePage from "pages/TalentMarketplace";
 import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
+import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -200,6 +201,10 @@ class Content extends Component {
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}
+          />
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.EVENT_CERTIFICATE}`}
+            render={(props) => <EventCertificatePage {...props} />}
           />
           <PrivateRoute
             path={`${INTERNAL_LINKS.MICRO_CLASS_CERTIFICATE}/:id`}

@@ -18,6 +18,10 @@ export const signUp = ({
   recentJobLevel,
   recentWorkArea,
   sizeOfOrganization,
+  titleProfessions,
+  company,
+  languages,
+  city,
 }) => {
   return httpClient.post("/public/register", {
     firstName,
@@ -30,6 +34,10 @@ export const signUp = ({
     recentJobLevel,
     recentWorkArea,
     sizeOfOrganization,
+    titleProfessions,
+    company,
+    languages: [languages],
+    city,
   });
 };
 

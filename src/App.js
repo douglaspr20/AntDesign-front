@@ -22,6 +22,9 @@ import PostFormModal from "./containers/PostFormModal";
 import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
+
+import { HelmetMetaData } from "components";
+
 import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 
 import IconLoading from "images/icon-loading.gif";
@@ -37,6 +40,7 @@ import {
   getConversation,
   setMessage,
 } from "redux/actions/conversation-actions";
+import { setJoinCouncilEvent } from "redux/actions/council-events-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { getLive } from "redux/actions/live-actions";
@@ -254,6 +258,7 @@ class App extends Component {
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
+        <HelmetMetaData></HelmetMetaData>
         <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
@@ -342,6 +347,7 @@ const mapDispatchToProps = {
   pushNotification,
   handleOnline,
   setMessage,
+  setJoinCouncilEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -137,7 +137,7 @@ const SkillCohortCard = (props) => {
         </div>
       </div>
       {canDownloadCertificate && (
-        <div className="certificate-page-wrapper" id="certificate-panel" ref={certificateRef}>
+        <div className="skill-cohort-certificate-page-wrapper" id="certificate-panel" ref={certificateRef}>
           <div className="certificate">
             <div className="certificate-top">
               <div className="certificate-logo">

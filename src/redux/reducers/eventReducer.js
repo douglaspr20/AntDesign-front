@@ -11,6 +11,12 @@ export const reducers = {
   [eventConstants.SET_ALL_EVENTS]: (state, { payload }) => {
     return state.merge({ allEvents: cloneDeep(payload.events) });
   },
+  [eventConstants.SET_METADATA]: (state, { payload }) => {
+    return state.merge({ metadata: cloneDeep(payload.metadata) });
+  },
+  [eventConstants.SET_MY_LIVE_EVENTS]: (state, { payload }) => {
+    return state.merge({ allLiveEvents: cloneDeep(payload.myEvents) });
+  },
   [eventConstants.SET_EVENT]: (state, { payload }) => {
     const allEvents = state.get("allEvents");
     let index = allEvents.findIndex((item) => item.id === payload.event.id);
@@ -39,7 +45,11 @@ export const reducers = {
       allEvents: [...allEvents],
       myEvents: [...myEvents],
       updatedEvent: { ...payload.event },
+      liveEvent: { ...payload.event },
     });
+  },
+  [eventConstants.SET_MY_LIVE_EVENT]: (state, { payload }) => {
+    return state.merge({ ...payload.event });
   },
   [eventConstants.SET_ERROR]: (state, { payload }) => {
     return state.merge({ ...payload });
@@ -60,6 +70,8 @@ export const initialState = () =>
     loading: false,
     error: null,
     allEvents: [],
+    liveEvent: [],
+    metadata: "",
     myEvents: [],
     updatedEvent: {},
     channelEvents: [],

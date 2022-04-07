@@ -16,6 +16,7 @@ export default {
   READ_LATER: "/read-later",
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
+  EVENT_CERTIFICATE: '/event-certificate',
   MICRO_CLASS_CERTIFICATE: "/micro-class-certificate",
   JOURNEY: "/journey",
   HEART: "/heart",

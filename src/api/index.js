@@ -29,12 +29,16 @@ import {
   getAllEvents,
   getEvent,
   updateEventStatusFromAPI,
+  updateEventFromAPI,
   createChannelEvent,
   getChannelEvents,
+  getLiveEventFromAPI,
   deleteEvent,
   updateChannelEvent,
+  updateEventUserAssistenceFromAPI,
   claimEventCredit,
   claimEventAttendance,
+  getMetadata,
 } from "./module/event";
 import {
   addLibrary,
@@ -222,6 +226,37 @@ import {
 
 import { getMatchmake, sendMatchEmail } from "./module/matchmaking";
 
+import {
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  searchUserForCouncilEventPanelist,
+  upsertCouncilEventPanelComment,
+} from "./module/council-event";
+
+import {
+  upsertCouncilConversation,
+  getCouncilConversations,
+  deleteCouncilConversation,
+  getCouncilConversation,
+} from "./module/council-conversation";
+
+import {
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+} from "./module/councilConversationComment";
+import {
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+} from "./module/council-conversation-reply";
+
+import {
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+} from "./module/council-conversation-like";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -250,17 +285,20 @@ export {
   removeBusinessPartnerCommentFromAPI,
   getAllUsers,
   changePassword,
+  getMetadata,
   createInvitation,
   acceptInvitationJoin,
   viewRulesConference,
   confirmAccessibilityRequirements,
   upgradePlan,
   getAllEvents,
+  getLiveEventFromAPI,
   getEvent,
   addToMyEventListFromAPI,
   removeFromMyEventListFromAPI,
   getAllMyEventsFromAPI,
   updateEventStatusFromAPI,
+  updateEventUserAssistenceFromAPI,
   addLibrary,
   getLibrary,
   searchLibrary,
@@ -351,6 +389,7 @@ export {
   getResource,
   getAllResources,
   getAllResourceResponses,
+  updateEventFromAPI,
   createResourceResponse,
   getResourceResponse,
   updateResourceResponse,
@@ -393,4 +432,21 @@ export {
   sendMatchEmail,
   getConversation,
   searchUser,
+  upsertCouncilEvent,
+  getCouncilEvents,
+  deleteCouncilEvent,
+  joinCouncilEvent,
+  removeCouncilEventPanelist,
+  upsertCouncilConversation,
+  deleteCouncilConversation,
+  getCouncilConversation,
+  getCouncilConversations,
+  upsertCouncilConversationComment,
+  deleteCouncilConversationComment,
+  upsertCouncilConversationReply,
+  deleteCouncilConversationReply,
+  createCouncilConversationLike,
+  deleteCouncilConversationLike,
+  searchUserForCouncilEventPanelist,
+  upsertCouncilEventPanelComment,
 };

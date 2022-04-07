@@ -1,6 +1,9 @@
 import { createAction } from "redux-actions";
 
 const GET_ALL_EVENTS = "GET_ALL_EVENTS";
+const GET_METADATA = "GET_METADATA";
+const SET_METADATA = "SET_METADATA";
+const GET_LIVE_EVENTS = "GET_LIVE_EVENTS";
 const GET_EVENT = "GET_EVENT";
 const SET_ALL_EVENTS = "SET_ALL_EVENTS";
 const SET_EVENT = "SET_EVENT";
@@ -10,21 +13,30 @@ const ADD_TO_MY_EVENT_LIST = "ADD_TO_MY_EVENT_LIST";
 const REMOVE_FROM_MY_EVENT_LIST = "REMOVE_FROM_MY_EVENT_LIST";
 const GET_MY_EVENTS = "GET_MY_EVENTS";
 const SET_MY_EVENTS = "SET_MY_EVENTS";
+const SET_MY_LIVE_EVENTS = "SET_MY_LIVE_EVENTS";
+const SET_MY_LIVE_EVENT = "SET_MY_LIVE_EVENT";
 const UPDATE_EVENT_STATUS = "UPDATE_EVENT_STATUS";
 const CREATE_CHANNEL_EVENT = "CREATE_CHANNEL_EVENT";
 const GET_CHANNEL_EVENTS = "GET_CHANNEL_EVENTS";
 const SET_CHANNEL_EVENTS = "SET_CHANNEL_EVENTS";
 const DELETE_EVENT = "DELETE_EVENT";
+const UPDATE_EVENT = "UPDATE_EVENT";
+const UPDATE_EVENT_USER_ASSISTENCE = "UPDATE_EVENT_USER_ASSISTENCE";
 const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 const EVENT_CLAIM_CREDIT = "EVENT_CLAIM_CREDIT";
 const EVENT_CLAIM_ATTENDANCE = "EVENT_CLAIM_ATTENDANCE";
 
 export const constants = {
   GET_ALL_EVENTS,
+  GET_LIVE_EVENTS,
   GET_EVENT,
   SET_ALL_EVENTS,
+  GET_METADATA,
+  SET_METADATA,
   SET_EVENT,
   SET_ERROR,
+  SET_MY_LIVE_EVENTS,
+  SET_MY_LIVE_EVENT,
   SET_LOADING,
   ADD_TO_MY_EVENT_LIST,
   REMOVE_FROM_MY_EVENT_LIST,
@@ -36,6 +48,8 @@ export const constants = {
   SET_CHANNEL_EVENTS,
   DELETE_EVENT,
   UPDATE_CHANNEL_EVENT,
+  UPDATE_EVENT,
+  UPDATE_EVENT_USER_ASSISTENCE,
   EVENT_CLAIM_CREDIT,
   EVENT_CLAIM_ATTENDANCE,
 };
@@ -44,6 +58,10 @@ export const constants = {
 // Actions
 // ------------------------------------
 export const getAllEvent = createAction(GET_ALL_EVENTS);
+export const getMetadata = createAction(GET_METADATA, (metadata) => ({
+  metadata,
+}));
+export const getLiveEvents = createAction(GET_LIVE_EVENTS);
 export const getEvent = createAction(GET_EVENT, (id, callback) => ({
   id,
   callback,
@@ -52,6 +70,9 @@ export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
   events,
 }));
 export const setEvent = createAction(SET_EVENT, (event) => ({ event }));
+export const setMetadata = createAction(SET_METADATA, (metadata) => ({
+  metadata,
+}));
 export const setError = createAction(SET_ERROR, (error) => ({ error }));
 export const setLoading = createAction(SET_LOADING, (loading) => ({ loading }));
 export const addToMyEventList = createAction(
@@ -59,7 +80,7 @@ export const addToMyEventList = createAction(
   (event, userTimezone, callback) => ({
     event,
     userTimezone,
-    callback
+    callback,
   })
 );
 export const removeFromMyEventList = createAction(
@@ -70,6 +91,19 @@ export const getMyEvents = createAction(GET_MY_EVENTS);
 export const setMyEvents = createAction(SET_MY_EVENTS, (myEvents) => ({
   myEvents,
 }));
+export const setMyLiveEvents = createAction(SET_MY_LIVE_EVENTS, (myEvents) => ({
+  myEvents,
+}));
+export const setMyLiveEvent = createAction(SET_MY_LIVE_EVENT, (event) => ({
+  event,
+}));
+export const updateEventUserAssistence = createAction(
+  UPDATE_EVENT_USER_ASSISTENCE,
+  (payload) => ({
+    payload,
+  })
+);
+
 export const updateEventStatus = createAction(
   UPDATE_EVENT_STATUS,
   (event, status) => ({
@@ -96,6 +130,10 @@ export const updateChannelEvent = createAction(
   UPDATE_CHANNEL_EVENT,
   (event, callback) => ({ event, callback })
 );
+export const updateEvent = createAction(UPDATE_EVENT, (id, callback) => ({
+  id,
+  callback,
+}));
 export const claimEventCredit = createAction(
   EVENT_CLAIM_CREDIT,
   (id, pdf, callback) => ({ id, pdf, callback })
@@ -107,9 +145,15 @@ export const claimEventAttendance = createAction(
 
 export const actions = {
   getAllEvent,
+  getLiveEvents,
   getEvent,
   setAllEvents,
+  getMetadata,
+  setMetadata,
   setEvent,
+  setMyLiveEvents,
+  updateEventUserAssistence,
+  setMyLiveEvent,
   setError,
   setLoading,
   addToMyEventList,
@@ -117,6 +161,7 @@ export const actions = {
   getMyEvents,
   setMyEvents,
   updateEventStatus,
+  updateEvent,
   createChannelEvent,
   getChannelEvents,
   setChannelEvents,
