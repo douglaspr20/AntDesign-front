@@ -72,9 +72,9 @@ const LibraryItemPage = ({
                 onClick={() =>
                   history.push(
                     query.get("channel")
-                      ? `${INTERNAL_LINKS.CHANNELS}/${query.get(
+                      ? `${INTERNAL_LINKS.PODCAST_SERIES}/${query.get(
                           "channel"
-                        )}?tab=1`
+                        )}`
                       : INTERNAL_LINKS.PODCAST
                   )
                 }
@@ -83,7 +83,11 @@ const LibraryItemPage = ({
                   <div className="skill-cohort-detail-page-header-content-back-img">
                     <img src={IconBack} alt="icon-back" />
                   </div>
-                  <h4>Back to podcasts</h4>
+                  <h4>
+                    {query.get("channel")
+                      ? "Back to podcast series"
+                      : "Back to podcasts"}
+                  </h4>
                 </div>
               </div>
               {podcast != null && (
