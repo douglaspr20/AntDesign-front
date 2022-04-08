@@ -51,7 +51,10 @@ const AdvertisementDrawer = ({
     if (isEdit) {
       form.setFieldsValue({
         ...advertisement,
-        date: [moment(advertisement.startDate), moment(advertisement.endDate)],
+        date: [
+          moment.tz(advertisement.startDate, "America/Los_Angeles"),
+          moment.tz(advertisement.endDate, "America/Los_Angeles"),
+        ],
         image: advertisement.adContentLink,
       });
 
@@ -59,7 +62,7 @@ const AdvertisementDrawer = ({
 
       const dateToday = moment().tz("America/Los_Angeles");
       const hasStarted = dateToday.isAfter(
-        moment(advertisement.startDate).tz("America/Los_Angeles")
+        moment.tz(advertisement.startDate, "America/Los_Angeles")
       );
       setHasAdvertisementStarted(
         hasStarted && advertisement.status === "active"
@@ -70,10 +73,12 @@ const AdvertisementDrawer = ({
       let diff = 0;
 
       if (isEdit) {
-        diff = moment(advertisement.endDate).diff(
-          moment(advertisement.startDate),
-          "days"
-        );
+        diff = moment
+          .tz(advertisement.endDate, "America/Los_Angeles")
+          .diff(
+            moment.tz(advertisement.startDate, "America/Los_Angeles"),
+            "days"
+          );
         diff += 1;
         setTotalDays(diff);
         setTotalPrice(diff * advertisement.adCostPerDay);
@@ -188,7 +193,9 @@ const AdvertisementDrawer = ({
       .format("YYYY-MM-DD");
 
     const isMatch = disabledDates.some((date) => {
-      const transformedDate = moment(date).format("YYYY-MM-DD");
+      const transformedDate = moment
+        .tz(date, "America/Los_Angeles")
+        .format("YYYY-MM-DD");
 
       return transformedDate === current;
     });
@@ -216,6 +223,7 @@ const AdvertisementDrawer = ({
     const endDate = moment
       .tz(values.date[1], "America/Los_Angeles")
       .startOf("day");
+    // .endOf("day");
 
     const diff = endDate.diff(startDate, "days");
     const adDurationByDays = diff + 1;
@@ -235,7 +243,7 @@ const AdvertisementDrawer = ({
       const transformedValues = {
         ...values,
         startDate,
-        endDate,
+        endDate: endDate.endOf("day"),
         adDurationByDays,
         datesBetweenStartDateAndEndDate,
       };

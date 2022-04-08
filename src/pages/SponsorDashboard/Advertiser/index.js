@@ -73,13 +73,13 @@ const Advertiser = ({
       title: "Impressions",
       dataIndex: "impressions",
       key: "impressions",
-      render: (_, data) => <div>{data.AdvertisementImpressions.length}</div>
+      render: (_, data) => <div>{data.AdvertisementImpressions.length}</div>,
     },
     {
       title: "Clicks",
       dataIndex: "clicks",
       key: "clicks",
-      render: (_, data) => <div>{data.AdvertisementClicks.length}</div>
+      render: (_, data) => <div>{data.AdvertisementClicks.length}</div>,
     },
     {
       title: "Ad Link",
@@ -112,7 +112,7 @@ const Advertiser = ({
       dataIndex: "startDate",
       key: "startDate",
       render: (text) => {
-        return moment(text).format("LL");
+        return moment.tz(text, "America/Los_Angeles").format("LL");
       },
     },
     {
@@ -120,7 +120,7 @@ const Advertiser = ({
       dataIndex: "endDate",
       key: "endDate",
       render: (text) => {
-        return moment(text).format("LL");
+        return moment.tz(text, "America/Los_Angeles").format("LL");
       },
     },
     {

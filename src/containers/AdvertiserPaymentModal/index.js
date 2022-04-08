@@ -122,7 +122,7 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
                 isAdvertiser: true,
               })
             }
-            text="Upgrade to Advertiser"
+            text="PAY HERE = $500"
           />
         </>
       )}
