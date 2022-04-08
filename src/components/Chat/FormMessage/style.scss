@@ -59,6 +59,10 @@
         background: $color-primary !important;
         color: #fff !important;
         transition: all ease 300ms !important;
+
+        & .anticon{
+            vertical-align: 0.05em !important
+        }
         
         &:hover,&:focus{
             border-color: $color-primary !important;
