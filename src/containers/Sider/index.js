@@ -153,6 +153,12 @@ class Sider extends Component {
           exact
           render={() => <Sidebar />}
         />
+
+        <PrivateRoute
+          path={INTERNAL_LINKS.SEARCH}
+          exact
+          render={() => <Sidebar />}
+        />
       </Switch>
     );
   }

@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { Input, Button, Avatar } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import {
   SIDEBAR_MENU_LIST,
   EVENT_TYPES,
@@ -12,6 +14,13 @@ import CustomButton from "../../Button";
 import ProfilePopupMenu from "../../ProfilePopupMenu";
 import PremiumAlert from "../../PremiumAlert";
 import Emitter from "services/emitter";
+import {
+  searchUser,
+  setInputSearchValue,
+  setSearchedUsers,
+  setUserShow,
+  setVisibleProfileUser,
+} from "redux/actions/home-actions";
 import { setCollapsed } from "redux/actions/env-actions";
 import Notification from "containers/Notification";
 
@@ -22,8 +31,8 @@ import IconNotification from "images/icon-notification-header.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
-import IconBriefcaseOutline from 'images/icon-briefcase-outline.svg'
-import IconHome from 'images/icon-home.svg'
+import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
+import IconHome from "images/icon-home.svg";
 
 import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -36,6 +45,10 @@ import { skillCohortSelector } from "redux/selectors/skillCohortSelector";
 
 import "./style.scss";
 import { sessionSelector } from "redux/selectors/sessionSelector";
+import CustomDrawer from "components/Drawer";
+import ProfileViewPanel from "containers/ProfileDrawer/ProfileViewPanel";
+
+const { Search } = Input;
 
 const MenuList = [
   ...SIDEBAR_MENU_LIST.TOP_MENUS,
@@ -49,8 +62,12 @@ class MainHeader extends React.Component {
 
     this.state = {
       visiblePremiumAlert: false,
+      showSearchInput: window.screen.width > 920,
+      showSearchResult: false,
     };
   }
+
+  timeout;
 
   planUpgrade = () => {
     Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
@@ -72,11 +89,80 @@ class MainHeader extends React.Component {
     this.setState({ visiblePremiumAlert: true });
   };
 
+  handleSearch = (e) => {
+    this.props.setInputSearchValue(e.target.value);
+
+    clearTimeout(this.timeout);
+    if (e.target.value === "") {
+      return;
+    }
+
+    this.timeout = setTimeout(() => {
+      this.props.searchUser(this.props.inputUserSearchValue);
+      this.setState({ showSearchResult: true });
+      clearTimeout(this.timeout);
+    }, 1000);
+  };
+
+  handleBlur = (e) => {
+    this.timeout = setTimeout(() => {
+      this.setState({ showSearchResult: false });
+
+      if (window.screen.width < 920) {
+        this.setState({ showSearchInput: false });
+      }
+      clearTimeout(this.timeout);
+    }, 500);
+  };
+
+  onDrawerClose = () => {
+    this.setState({ visibleProfileUser: false });
+  };
+
   render() {
-    const { userProfile: user } = this.props;
-    const { visiblePremiumAlert } = this.state;
+    const {
+      userProfile: user,
+      userShow,
+      visibleProfileUser,
+      setUserShow,
+      setVisibleProfileUser,
+    } = this.props;
+    const {
+      visiblePremiumAlert,
+      showSearchInput,
+      showSearchResult,
+      inputSearchValue,
+    } = this.state;
     const { pathname } = this.props.history.location || {};
     let pathInfo = MenuList.find((item) => item.url.includes(pathname));
+    const users = this.props.searchedUsers?.map((searchedUser) => (
+      <div className="search-result" key={searchedUser.id}>
+        <div
+          className="search-result-container"
+          onClick={() => {
+            setUserShow(searchedUser);
+            setVisibleProfileUser(true);
+          }}
+        >
+          {searchedUser.img ? (
+            <Avatar
+              size={30}
+              src={searchedUser.img}
+              alt={`${searchedUser.firstName} ${searchedUser.lastName}`}
+            />
+          ) : (
+            <Avatar>{searchedUser.abbrName}</Avatar>
+          )}
+          <div className="search-result-info-container">
+            <h5>
+              {" "}
+              {searchedUser.firstName} {searchedUser.lastName}
+            </h5>
+            <span>{searchedUser.titleProfessions}</span>
+          </div>
+        </div>
+      </div>
+    ));
 
     if (pathname === INTERNAL_LINKS.NOTIFICATIONS) {
       pathInfo = {
@@ -181,7 +267,10 @@ class MainHeader extends React.Component {
       };
     }
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.TALENT_MARKETPLACE}`)) {
+    if (
+      !pathInfo &&
+      pathname.includes(`${INTERNAL_LINKS.TALENT_MARKETPLACE}`)
+    ) {
       pathInfo = {
         icon: IconBriefcaseOutline,
         label: "Talent Marketplace",
@@ -195,7 +284,10 @@ class MainHeader extends React.Component {
       };
     }
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}`)) {
+    if (
+      !pathInfo &&
+      pathname.includes(`${INTERNAL_LINKS.AD_CONFERENCE_LIBRARY_PREVIEW}`)
+    ) {
       pathInfo = {
         icon: IconHome,
         label: "Advertisement Preview",
@@ -209,7 +301,10 @@ class MainHeader extends React.Component {
       };
     }
 
-    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}`)) {
+    if (
+      !pathInfo &&
+      pathname.includes(`${INTERNAL_LINKS.AD_PROJECT_X_PREVIEW}`)
+    ) {
       pathInfo = {
         icon: IconFlaskOutline,
         label: "Advertisement Preview",
@@ -224,7 +319,7 @@ class MainHeader extends React.Component {
               <i className="fal fa-bars" />
             </div>
           )}
-          {pathInfo ? (
+          {pathInfo && (
             <>
               <div className="page-icon">
                 {pathInfo.icon ? (
@@ -239,18 +334,60 @@ class MainHeader extends React.Component {
                   : pathInfo.label}
               </span>
             </>
-          ) : (
-            <>
-              {/* <div className="page-icon">
-                <img src={IconReader} alt="page-icon" />
+          )}
+
+          {showSearchInput ? (
+            <div className="search-results-container">
+              <Search
+                placeholder="Search Users"
+                onSearch={() => {
+                  this.props.history.push("/search");
+                }}
+                enterButton
+                className="search-input"
+                size="large"
+                onKeyUp={this.handleSearch}
+                value={inputSearchValue}
+                onBlur={this.handleBlur}
+              />
+
+              <div
+                className={`dropdown-custom ${
+                  users.length === 0 || !showSearchResult ? "not-visible" : ""
+                }`}
+              >
+                {showSearchResult &&
+                  users.length > 0 &&
+                  users.slice(0, 10).map((user) => user)}
+
+                {showSearchResult && users.length > 5 && (
+                  <div className="view-more-results">
+                    <Link to="/search">
+                      <h4>View More Results</h4>
+                    </Link>
+                  </div>
+                )}
               </div>
-              <span className="page-label">
-                Hacking HR 2022 Global Online Conference
-              </span> */}
-            </>
+            </div>
+          ) : (
+            <Button
+              icon={<SearchOutlined />}
+              size="large"
+              type="primary"
+              className="button-search"
+              onClick={() => this.setState({ showSearchInput: true })}
+            />
           )}
         </div>
-        <div className="main-header-right">
+
+        <div
+          className="main-header-right"
+          style={
+            showSearchInput && window.screen.width < 920
+              ? { display: "none" }
+              : {}
+          }
+        >
           {this.props.live?.live === true && (
             <div
               className="live-button"
@@ -302,6 +439,15 @@ class MainHeader extends React.Component {
             </div>
           </ProfilePopupMenu>
         </div>
+        <CustomDrawer
+          title=""
+          visible={visibleProfileUser}
+          onClose={() => {
+            setVisibleProfileUser(false);
+          }}
+        >
+          <ProfileViewPanel user={userShow} />
+        </CustomDrawer>
         <PremiumAlert
           visible={visiblePremiumAlert}
           onCancel={() => this.onHideAlert()}
@@ -328,10 +474,19 @@ const mapStateToProps = (state) => ({
   live: liveSelector(state).live,
   podcastSeries: podcastSelector(state).podcastSeries,
   skillCohort: skillCohortSelector(state).skillCohort,
+  inputUserSearchValue: homeSelector(state).inputUserSearchValue,
+  searchedUsers: homeSelector(state).searchedUsers,
+  userShow: homeSelector(state).userShow,
+  visibleProfileUser: homeSelector(state).visibleProfileUser,
 });
 
 const mapDispatchToProps = {
   setCollapsed,
+  searchUser,
+  setInputSearchValue,
+  setSearchedUsers,
+  setUserShow,
+  setVisibleProfileUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);

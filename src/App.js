@@ -9,6 +9,8 @@ import TopHeader from "containers/TopHeader";
 import Sider from "containers/Sider";
 import ProfileDrawer from "containers/ProfileDrawer";
 import LibraryShareDrawer from "containers/LibraryShareDrawer";
+import Chat from "components/Chat";
+import ChatMobile from "components/ChatMobile";
 import Emitter from "services/emitter";
 import SocketIO from "services/socket";
 
@@ -28,8 +30,17 @@ import { EVENT_TYPES, SOCKET_EVENT_TYPE } from "enum";
 import IconLoading from "images/icon-loading.gif";
 
 import { actions as envActions } from "redux/actions/env-actions";
+import {
+  upgradePlan,
+  inviteFriend,
+  handleOnline,
+} from "redux/actions/home-actions";
+import {
+  getConversations,
+  getConversation,
+  setMessage,
+} from "redux/actions/conversation-actions";
 import { setJoinCouncilEvent } from "redux/actions/council-events-actions";
-import { upgradePlan, inviteFriend } from "redux/actions/home-actions";
 import { getCategories } from "redux/actions/category-actions";
 import { getCategories as getChannelCategories } from "redux/actions/channel-category-actions";
 import { getLive } from "redux/actions/live-actions";
@@ -37,6 +48,7 @@ import { getLive } from "redux/actions/live-actions";
 import { pushNotification } from "redux/actions/notification-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { conversationsSelector } from "redux/selectors/conversationSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
 import "./styles/main.scss";
@@ -57,6 +69,7 @@ class App extends Component {
       openInviteFriendPanel: false,
       openPostFormModal: false,
       openPostFormPanel: false,
+      openChat: false,
     };
   }
 
@@ -110,6 +123,22 @@ class App extends Component {
       }
     });
 
+    SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
+      const conversationToUpdate = this.props.conversations.find(
+        (conversation) => conversation.id === message.ConversationId
+      );
+
+      if (
+        conversationToUpdate &&
+        message &&
+        !conversationToUpdate.messages.some(
+          (oldMessage) => oldMessage.id === message.id
+        )
+      ) {
+        this.props.setMessage(message);
+      }
+    });
+
     SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
       this.props.getLive();
     });
@@ -126,6 +155,46 @@ class App extends Component {
     if (isEmpty(prevUser) && !isEmpty(curUser)) {
       this.props.getLive();
     }
+
+    if (
+      !isEmpty(curUser) &&
+      curUser.id &&
+      this.props.conversations.length <= 0
+    ) {
+      this.props.getConversations(curUser.id);
+    }
+
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
+      if (user?.id === this.props?.userProfile?.id) {
+        this.props.handleOnline(user);
+      } else if (
+        user?.id !== this.props?.userProfile?.id &&
+        this.props.conversations.length > 0
+      ) {
+        const conversationToUpdate = this.props.conversations.find(
+          (conversation) =>
+            conversation.members.some((member) => member.id === user.id)
+        );
+
+        this.props.getConversation(conversationToUpdate.id);
+      }
+    });
+
+    SocketIO.on(SOCKET_EVENT_TYPE.USER_OFFLINE, (user) => {
+      if (user?.id === this.props?.userProfile?.id) {
+        this.props.handleOnline(user);
+      } else if (
+        user?.id !== this.props?.userProfile?.id &&
+        this.props.conversations.length > 0
+      ) {
+        const conversationToUpdate = this.props.conversations.find(
+          (conversation) =>
+            conversation.members.some((member) => member.id === user.id)
+        );
+
+        this.props.getConversation(conversationToUpdate.id);
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -184,20 +253,35 @@ class App extends Component {
       openInviteFriendPanel,
       openPostFormModal,
       openPostFormPanel,
+      openChat,
     } = this.state;
 
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
-         <HelmetMetaData></HelmetMetaData>
+        <HelmetMetaData></HelmetMetaData>
         <Layout style={{ height: "100vh", overflow: "hidden" }}>
           <Sider />
           <Layout>
             <TopHeader />
-            <Content />
+            <div className="content-container">
+              <Content />
+              {window.screen.width > 1000 && this.props.userProfile?.id ? (
+                <Chat conversations={this.props.conversations} />
+              ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
+                <>
+                  <ChatMobile
+                    conversations={this.props.conversations}
+                    openChat={openChat}
+                    setOpenChat={() => this.setState({ openChat: !openChat })}
+                  />
+                </>
+              ) : null}
+            </div>
             <FeedbackBox />
           </Layout>
         </Layout>
         <ProfileDrawer />
+
         <LibraryShareDrawer />
         <AttendanceDisclaimerModal />
         {(this.props.loading || this.props.authLoading) && (
@@ -248,6 +332,7 @@ const mapStateToProps = (state) => ({
   loading: homeSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
   authLoading: authSelector(state).loading,
+  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
@@ -255,10 +340,14 @@ const mapDispatchToProps = {
   upgradePlan,
   inviteFriend,
   getCategories,
+  getConversations,
+  getConversation,
   getChannelCategories,
   getLive,
   pushNotification,
-  setJoinCouncilEvent
+  handleOnline,
+  setMessage,
+  setJoinCouncilEvent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
