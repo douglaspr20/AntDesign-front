@@ -23,6 +23,7 @@ import {
   acceptTermsAndConditions,
   viewRulesConference,
   countAllUsers,
+  searchUser,
 } from "./module/user";
 import {
   getAllEvents,
@@ -207,6 +208,14 @@ import {
 } from "./module/marketplaceProfile";
 
 import {
+  createConversation,
+  getConversations,
+  readMessages,
+  getMoreMessages,
+  getConversation,
+} from "./module/conversation";
+
+import {
   getAdvertisementsByPage,
   getAdvertisementByAdvertiser,
   createAdvertisement,
@@ -224,7 +233,7 @@ import {
   joinCouncilEvent,
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
-  upsertCouncilEventPanelComment
+  upsertCouncilEventPanelComment,
 } from "./module/council-event";
 
 import {
@@ -407,6 +416,10 @@ export {
   getMarketplaceProfile,
   createMarketplaceProfile,
   updateMarketplaceProfile,
+  createConversation,
+  getConversations,
+  readMessages,
+  getMoreMessages,
   acceptTermsAndConditions,
   countAllUsers,
   getAdvertisementsByPage,
@@ -417,6 +430,8 @@ export {
   getMatchmake,
   editAdvertisement,
   sendMatchEmail,
+  getConversation,
+  searchUser,
   upsertCouncilEvent,
   getCouncilEvents,
   deleteCouncilEvent,
@@ -433,5 +448,5 @@ export {
   createCouncilConversationLike,
   deleteCouncilConversationLike,
   searchUserForCouncilEventPanelist,
-  upsertCouncilEventPanelComment
+  upsertCouncilEventPanelComment,
 };

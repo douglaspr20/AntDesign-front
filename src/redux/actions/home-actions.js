@@ -30,6 +30,14 @@ const ACCEPT_TERMS_CONDITIONS_GCONFERENCE =
 const VIEW_RULES_G_CONFERENCE = "VIEW_RULES_G_CONFERENCE";
 const COUNT_ALL_USERS = "COUNT_ALL_USERS";
 const SET_ALL_COUNT_USERS = "SET_ALL_COUNT_USERS";
+const HANDLE_ONLINE = "HANDLE_ONLINE";
+const SEARCH_USER = "SEARCH_USER";
+const SET_LOADING_SEARCH_USERS = "SET_LOADING_SEARCH_USERS";
+const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
+const SET_USER_SHOW = "SET_USER_SHOW";
+const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
+const SET_PAGES_SEARCHED_USERS = "SET_PAGES_SEARCHED_USERS";
+const SET_INPUT_USER_SEARCH_VALUE = "SET_INPUT_USER_SEARCH_VALUE";
 
 export const constants = {
   SET_LOADING,
@@ -60,6 +68,14 @@ export const constants = {
   VIEW_RULES_G_CONFERENCE,
   COUNT_ALL_USERS,
   SET_ALL_COUNT_USERS,
+  HANDLE_ONLINE,
+  SEARCH_USER,
+  SET_LOADING_SEARCH_USERS,
+  SET_SEARCHED_USERS,
+  SET_USER_SHOW,
+  SET_VISIBLE_PROFILE_USER,
+  SET_PAGES_SEARCHED_USERS,
+  SET_INPUT_USER_SEARCH_VALUE,
 };
 
 // ------------------------------------
@@ -156,6 +172,39 @@ export const setCountUsers = createAction(SET_ALL_COUNT_USERS, (userCount) => ({
   userCount,
 }));
 
+export const searchUser = createAction(SEARCH_USER, (search) => ({ search }));
+
+export const setLoadingSearchUsers = createAction(
+  SET_LOADING_SEARCH_USERS,
+  (loading) => ({ loading })
+);
+
+export const setSearchedUsers = createAction(
+  SET_SEARCHED_USERS,
+  (searchUsers) => ({ searchUsers })
+);
+
+export const setUserShow = createAction(SET_USER_SHOW, (userShow) => ({
+  userShow,
+}));
+
+export const setVisibleProfileUser = createAction(
+  SET_VISIBLE_PROFILE_USER,
+  (visibleProfileUser) => ({ visibleProfileUser })
+);
+
+export const setPagesSearchedUsers = createAction(
+  SET_PAGES_SEARCHED_USERS,
+  (count) => ({ count })
+);
+
+export const setInputSearchValue = createAction(
+  SET_INPUT_USER_SEARCH_VALUE,
+  (value) => ({ value })
+);
+
+export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
+
 export const actions = {
   setLoading,
   updateUserInformation,
@@ -183,4 +232,12 @@ export const actions = {
   viewRulesGConference,
   countAllUsers,
   setCountUsers,
+  handleOnline,
+  searchUser,
+  setLoadingSearchUsers,
+  setSearchedUsers,
+  setInputSearchValue,
+  setUserShow,
+  setVisibleProfileUser,
+  setPagesSearchedUsers,
 };

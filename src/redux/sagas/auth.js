@@ -7,6 +7,7 @@ import {
 } from "../actions/auth-actions";
 import { actions as homeActions } from "../actions/home-actions";
 import { actions as eventActions } from "../actions/event-actions";
+import { actions as conversationActions } from "../actions/conversation-actions";
 import { signIn, signUp } from "../../api";
 
 const defaultUserInfo = {
@@ -105,6 +106,8 @@ export function* logout() {
   yield put(homeActions.updateUserInformation({}));
   yield put(eventActions.setMyEvents([]));
   yield put(eventActions.setAllEvents([]));
+  yield put(conversationActions.setConversations([]));
+  yield put(conversationActions.setCurrentConversations([]));
 }
 
 export function* signUpUser({ payload }) {

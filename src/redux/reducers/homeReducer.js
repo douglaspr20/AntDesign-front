@@ -27,14 +27,44 @@ export const reducers = {
   },
   [homeConstants.SET_USERS]: (state, { payload }) => {
     return state.merge({
-      allUsers: cloneDeep([...payload.users])
-    })
+      allUsers: cloneDeep([...payload.users]),
+    });
   },
-  [homeConstants.SET_ALL_COUNT_USERS]: (state, { payload}) => {
+  [homeConstants.SET_ALL_COUNT_USERS]: (state, { payload }) => {
     return state.merge({
-      userCount: payload.userCount
-    })
-  }
+      userCount: payload.userCount,
+    });
+  },
+  [homeConstants.SET_INPUT_USER_SEARCH_VALUE]: (state, { payload }) => {
+    return state.merge({
+      inputUserSearchValue: payload.value,
+    });
+  },
+  [homeConstants.SET_LOADING_SEARCH_USERS]: (state, { payload }) => {
+    return state.merge({
+      loadingSearchUsers: payload.loading,
+    });
+  },
+  [homeConstants.SET_SEARCHED_USERS]: (state, { payload }) => {
+    return state.merge({
+      searchedUsers: payload.searchUsers,
+    });
+  },
+  [homeConstants.SET_USER_SHOW]: (state, { payload }) => {
+    return state.merge({
+      userShow: payload.userShow,
+    });
+  },
+  [homeConstants.SET_VISIBLE_PROFILE_USER]: (state, { payload }) => {
+    return state.merge({
+      visibleProfileUser: payload.visibleProfileUser,
+    });
+  },
+  [homeConstants.SET_PAGES_SEARCHED_USERS]: (state, { payload }) => {
+    return state.merge({
+      totalUsers: payload.count,
+    });
+  },
 };
 
 export const initialState = () =>
@@ -63,7 +93,13 @@ export const initialState = () =>
       },
     },
     allUsers: [],
-    userCount: 0
+    userCount: 0,
+    inputUserSearchValue: "",
+    loadingSearchUsers: false,
+    searchedUsers: [],
+    userShow: {},
+    visibleProfileUser: false,
+    totalUsers: 0,
   });
 
 export default handleActions(reducers, initialState());

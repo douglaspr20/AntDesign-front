@@ -35,6 +35,7 @@ import { sessionClassUserSaga } from "./sessionClassUser";
 import { marketplaceProfileSaga } from "./marketplaceProfile";
 import { councilSaga } from "./council";
 import { councilCommentSaga } from "./councilComments";
+import { conversationSaga } from "./conversation";
 import { businessPartnerSaga } from "./businessPartner";
 import { businessPartnerCommentSaga } from "./businessPartnerComments";
 import { advertisementSaga } from "./advertisement";
@@ -42,8 +43,8 @@ import { matchmakeSaga } from "./matchmaking";
 import { councilEventSaga } from "./councilEvent";
 import { councilConversationSaga } from "./councilConversation";
 import { councilConversationCommentSaga } from "./councilConversationComment";
-import { councilConversationReplySaga } from "./councilConversationReply"
-import { councilConversationLikeSaga } from "./councilConversationLike"
+import { councilConversationReplySaga } from "./councilConversationReply";
+import { councilConversationLikeSaga } from "./councilConversationLike";
 
 export default function* sagas() {
   yield all([
@@ -85,12 +86,13 @@ export default function* sagas() {
     ...jobBoardSaga,
     ...sessionClassUserSaga,
     ...marketplaceProfileSaga,
+    ...conversationSaga,
     ...advertisementSaga,
     ...matchmakeSaga,
     ...councilEventSaga,
     ...councilConversationSaga,
     ...councilConversationCommentSaga,
     ...councilConversationReplySaga,
-    ...councilConversationLikeSaga
+    ...councilConversationLikeSaga,
   ]);
 }
