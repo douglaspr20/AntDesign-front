@@ -157,8 +157,8 @@ class ProfileViewPanel extends React.Component {
           )}
 
           <h5 className="textfield-label">Main language</h5>
-          {user.languages && user.languages.length > 0 ? (
-            user.languages.map((lang, index) => (
+          {user?.languages && user?.languages?.length > 0 ? (
+            user?.languages.map((lang, index) => (
               <h3 key={index} className="textfield-value completed">
                 {this.getLanguage(lang)}
               </h3>
@@ -173,11 +173,12 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">Topics of interest</h5>
           <h3
             className={clsx("textfield-value", {
-              completed: user.topicsOfInterest && user.topicsOfInterest.length,
+              completed:
+                user?.topicsOfInterest && user?.topicsOfInterest?.length,
             })}
           >
             {user.topicsOfInterest
-              .map((item) => {
+              ?.map((item) => {
                 const index = this.props.allCategories.findIndex(
                   (t) => t.value === item
                 );

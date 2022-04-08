@@ -16,6 +16,15 @@ const Conversation = ({
     (message) => !message?.viewedUser?.includes(userProfile.id)
   ).length;
 
+  const transformNames = (name) => {
+    const index = name.indexOf(" ");
+
+    if (index !== -1) {
+      return name.slice(0, index);
+    }
+    return name;
+  };
+
   return (
     <div className="conversation-container">
       <Badge count={messagesNotViewed} offset={[0, 10]}>
@@ -39,8 +48,8 @@ const Conversation = ({
             </div>
           )}
 
-          <p style={{ marginTop: "15px", marginLeft: "5px" }}>
-            {user.firstName} {user.lastName}
+          <p className="user-name">
+            {transformNames(user.firstName)} {transformNames(user.lastName)}
           </p>
         </div>
       </Badge>
