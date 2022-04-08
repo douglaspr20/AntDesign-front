@@ -7,18 +7,19 @@ import "./style.scss";
 
 class CustomSelect extends React.Component {
   render() {
-    const { options, className, bordered, ...rest } = this.props;
+    const { options, className, bordered, mode, ...rest } = this.props;
 
     return (
       <Select
         {...rest}
+        mode={mode ? mode : ""}
         className={clsx("custom-select", className, { border: bordered })}
         suffixIcon={<i className="fal fa-angle-down" />}
         dropdownClassName="custom-select-dropdown"
       >
         {options.map((opt) => (
           <Select.Option key={opt.value} value={opt.value}>
-            {opt.text || opt.label}
+            {opt.text || opt.label || opt.title}
           </Select.Option>
         ))}
       </Select>

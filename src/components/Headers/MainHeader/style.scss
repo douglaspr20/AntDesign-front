@@ -18,9 +18,11 @@
   &-left {
     display: flex;
     align-items: center;
+    max-width: 100%;
+    width: 100%;
 
     .page-icon {
-      width: 2rem;
+      width: 2.5rem;
       height: 2rem;
       margin-right: 0.75rem;
 
@@ -54,6 +56,22 @@
       margin-right: 0.75rem;
       font-size: 24px;
     }
+
+    .button-search{
+      background-color: $color-primary !important;
+      border-color: $color-primary !important;
+      margin-left: 10px;
+    }
+
+    .search-input{
+      margin-left: 10px;
+      max-width: 500px;
+
+      & .ant-btn{
+        background: $color-primary !important;
+        border-color: $color-primary !important;
+      }
+    }
   }
 
   &-right {
@@ -77,8 +95,8 @@
     }
 
     .live-button {
-      max-width: 100%;
-      width: 500px;
+      width: 100%;
+      max-width: 350px;
       margin-right: 2rem;
       margin-left: 2rem;
       display: flex;
@@ -231,5 +249,66 @@
 
   &-notification {
     margin-right: 1.5rem !important;
+  }
+}
+
+
+.search-result{
+  display: flex;
+  border-bottom: 1px solid $color-border;
+  padding: 5px;
+  transition: all ease 300ms;
+
+  &-container{
+    display: flex;
+    width: 100%;
+  }
+
+  &:hover{
+    background: $color-background-dark;
+    cursor: pointer;
+  }
+
+  &-info-container{
+    margin-left: 5px;
+  }
+
+}
+
+
+.search-results-container{
+  position: relative;
+}
+.dropdown-custom {
+  position: absolute;
+  background: $color-white;
+  padding: 5px 0px 0px 0px;
+  width: 100%;
+  min-width: 350px;
+  border-radius: 0px 0px 5px 5px;
+  box-shadow: 0px 0px 2px $color-disabled;
+  height: auto;
+  opacity: 1;
+  transition: all ease-in 300ms;
+
+  &.not-visible{
+  opacity: 0;
+  height: 0px;
+  }
+}
+
+.view-more-results{
+  width: 100%;
+  text-align: center;
+  padding: 8px 0px;
+  transition: all ease 300ms;
+  cursor: pointer;
+
+  &:hover{
+    background: $color-background-dark;
+  }
+
+  & h4{
+    color: $color-primary !important;
   }
 }

@@ -124,3 +124,15 @@ export const viewRulesConference = ({ id }) => {
 export const countAllUsers = async () => {
   return await httpClient.get("private/users/count-all");
 };
+
+export const searchUser = ({ search }) => {
+  if (typeof search === "string") {
+    return httpClient.get(`private/user/search?search=${search}`);
+  }
+
+  return httpClient.get(`private/user/search`, {
+    params: {
+      ...search,
+    },
+  });
+};

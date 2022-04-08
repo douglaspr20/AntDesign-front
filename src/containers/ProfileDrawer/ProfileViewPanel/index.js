@@ -12,7 +12,10 @@ import {
   COUNTRIES,
   PROFILE_SETTINGS,
 } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { createConversartion } from "redux/actions/conversation-actions";
+import { setVisibleProfileUser } from "redux/actions/home-actions";
 import { isEmptyPersonalLinks } from "utils/profile";
 
 import "./style.scss";
@@ -60,6 +63,11 @@ class ProfileViewPanel extends React.Component {
     return language;
   };
 
+  handleStartConversation = (members) => {
+    this.props.createConversartion(members);
+    this.props.setVisibleProfileUser(false);
+  };
+
   render() {
     const { user } = this.state;
     const personalLinksCompleted = !isEmptyPersonalLinks(user.personalLinks);
@@ -79,17 +87,36 @@ class ProfileViewPanel extends React.Component {
             percent={user.percentOfCompletion}
           />
           <h1 className="user-info-name">{`${user.firstName} ${user.lastName}`}</h1>
-          <CustomButton
-            className="profile-complete-btn"
-            text={user.completed ? "Edit Profile" : "Complete profile"}
-            type="primary"
-            size="lg"
-            onClick={this.onEdit}
-          />
+          {}
+          {this.props.userProfile.id === user.id ? (
+            <CustomButton
+              className="profile-complete-btn"
+              text={user.completed ? "Edit Profile" : "Complete profile"}
+              type="primary"
+              size="lg"
+              onClick={this.onEdit}
+            />
+          ) : (
+            <CustomButton
+              type="primary"
+              size="lg"
+              text={`Chat`}
+              onClick={() =>
+                this.handleStartConversation([
+                  user.id,
+                  this.props.userProfile.id,
+                ])
+              }
+            />
+          )}
         </div>
         <div className="profile-view-panel-content">
-          <h5 className="textfield-label">Email</h5>
-          <h3 className="textfield-value completed">{user.email}</h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">Email</h5>
+              <h3 className="textfield-value completed">{user.email}</h3>
+            </>
+          )}
           <h5 className="textfield-label">Title</h5>
           <h3
             className={clsx("textfield-value", {
@@ -116,14 +143,19 @@ class ProfileViewPanel extends React.Component {
           <h3 className={clsx("textfield-value", { completed: !!user.city })}>
             {user.city || "-"}
           </h3>
-          <h5 className="textfield-label">Time zone</h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: !!user.timezone,
-            })}
-          >
-            {timezone || "-"}
-          </h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">Time zone</h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: !!user.timezone,
+                })}
+              >
+                {timezone || "-"}
+              </h3>
+            </>
+          )}
+
           <h5 className="textfield-label">Main language</h5>
           {user.languages && user.languages.length > 0 ? (
             user.languages.map((lang, index) => (
@@ -159,8 +191,8 @@ class ProfileViewPanel extends React.Component {
           <h5 className="textfield-label">Personal links</h5>
           {personalLinksCompleted &&
             Object.keys(user.personalLinks).map((contact) => {
-              if(contact === "linkedin"){
-                return(
+              if (contact === "linkedin") {
+                return (
                   <div className="personal-link" key={contact}>
                     <div className="personal-link-icon">
                       <i className={CONTACT_ICONS[contact]} />
@@ -170,28 +202,34 @@ class ProfileViewPanel extends React.Component {
                     </h3>
                   </div>
                 );
-              }else{
+              } else {
                 return null;
               }
-          })}
-          {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
-          <h5 className="textfield-label">
-            Are open to receiving information/being contacted via email about
-            open job positions?
-          </h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: user.isOpenReceivingEmail !== -1,
             })}
-          >
-            {user.isOpenReceivingEmail === 1
-              ? "Yes"
-              : user.isOpenReceivingEmail === 0
-              ? "No"
-              : "-"}
-          </h3>
+          {!personalLinksCompleted && <h3 className="textfield-value">-</h3>}
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">
+                Are open to receiving information/being contacted via email
+                about open job positions?
+              </h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: user.isOpenReceivingEmail !== -1,
+                })}
+              >
+                {user.isOpenReceivingEmail === 1
+                  ? "Yes"
+                  : user.isOpenReceivingEmail === 0
+                  ? "No"
+                  : "-"}
+              </h3>
+            </>
+          )}
           <h5 className="textfield-label">
-            What best defines your current or most recent job level?
+            {user.id === this.props.userProfile.id
+              ? "What best defines your current or most recent job level?"
+              : "Job Level"}
           </h5>
           <h3
             className={clsx("textfield-value", {
@@ -200,22 +238,29 @@ class ProfileViewPanel extends React.Component {
           >
             {user.recentJobLevel || "-"}
           </h3>
+          {user.id === this.props.userProfile.id && (
+            <>
+              <h5 className="textfield-label">
+                In what area of HR do you currently work or most recently
+                worked?
+              </h5>
+              <h3
+                className={clsx("textfield-value", {
+                  completed: user.recentWorkArea && user.recentWorkArea.length,
+                })}
+              >
+                {user.recentWorkArea.includes("all")
+                  ? WorkAreas.filter((item) => item.value !== "all")
+                      .map((item) => item.label)
+                      .join(", ")
+                  : user.recentWorkArea.join(", ") || "-"}
+              </h3>
+            </>
+          )}
           <h5 className="textfield-label">
-            In what area of HR do you currently work or most recently worked?
-          </h5>
-          <h3
-            className={clsx("textfield-value", {
-              completed: user.recentWorkArea && user.recentWorkArea.length,
-            })}
-          >
-            {user.recentWorkArea.includes("all")
-              ? WorkAreas.filter((item) => item.value !== "all")
-                  .map((item) => item.label)
-                  .join(", ")
-              : user.recentWorkArea.join(", ") || "-"}
-          </h3>
-          <h5 className="textfield-label">
-            What is the size of the organization your work for?
+            {user.id === this.props.userProfile.id
+              ? "What is the size of the organization your work for?"
+              : "Size of the organization"}
           </h5>
           <h3
             className={clsx("textfield-value", {
@@ -242,6 +287,12 @@ ProfileViewPanel.defaultProps = {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
+  userProfile: homeSelector(state).userProfile,
 });
 
-export default connect(mapStateToProps)(ProfileViewPanel);
+const mapDispatchToProps = {
+  createConversartion,
+  setVisibleProfileUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileViewPanel);

@@ -27,6 +27,7 @@ import {
   acceptTermsAndConditions,
   viewRulesConference,
   countAllUsers,
+  searchUser,
 } from "../../api";
 import {
   acceptInvitationApplyBusinnesPartner,
@@ -598,6 +599,34 @@ export function* countAllUsersSaga() {
   }
 }
 
+export function* handleOnlineSaga({ payload }) {
+  try {
+    if (payload) {
+      yield put(homeActions.updateUserInformation(payload.user));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* searchUserSaga({ payload }) {
+  yield put(homeActions.setLoadingSearchUsers(true));
+  try {
+    const response = yield call(searchUser, { ...payload });
+
+    if (response.status === 200) {
+      const { users, count } = response.data;
+
+      yield put(homeActions.setSearchedUsers(users));
+      yield put(homeActions.setPagesSearchedUsers(count));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoadingSearchUsers(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -639,6 +668,8 @@ function* watchLogin() {
     viewRulesGConferenceSaga
   );
   yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
+  yield takeLatest(homeConstants.HANDLE_ONLINE, handleOnlineSaga);
+  yield takeLatest(homeConstants.SEARCH_USER, searchUserSaga);
 }
 
 export const userSaga = [fork(watchLogin)];

@@ -4,6 +4,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   width: 100%;
+  max-width: 1620px;
 
   &-loading-more {
     height: 40px;

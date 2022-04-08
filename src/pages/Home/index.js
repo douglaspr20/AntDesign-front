@@ -256,7 +256,7 @@ const HomePage = ({
             </div>
             {displayAds}
             {displayPreviewAd}
-            {/* {dipslayRentAd} */}
+            {/* {dipslayRentAd}*/}
           </div>
         </div>
       </div>
