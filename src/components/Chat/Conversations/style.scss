@@ -35,4 +35,13 @@
             border: 1px solid $color-border;
         }
     }
+
+    .user-name{
+        margin-top: 15px;
+        margin-left: 5px;
+        max-width: 110px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+    }
 }
