@@ -343,7 +343,6 @@ class MainHeader extends React.Component {
                 onSearch={() => {
                   this.props.history.push("/search");
                 }}
-                enterButton
                 className="search-input"
                 size="large"
                 onKeyUp={this.handleSearch}
