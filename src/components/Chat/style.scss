@@ -10,6 +10,7 @@
     overflow-y: auto;
     position: relative;
     min-width: 200px;
+    max-width: 200px;
 
     &::-webkit-scrollbar {
         width: 5px;
