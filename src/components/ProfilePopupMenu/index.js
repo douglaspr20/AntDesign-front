@@ -323,12 +323,12 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
-      <div
+      {/* <div
         className="profile-popover-content-menu"
         onClick={handlePartnersDashboard}
       >
         Partners Dashboard
-      </div>
+      </div> */}
       <div
         className="profile-popover-content-menu"
         onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
