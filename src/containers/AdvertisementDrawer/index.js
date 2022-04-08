@@ -176,7 +176,7 @@ const AdvertisementDrawer = ({
       setDisabledDates(_transformedDisabledDates);
       form.resetFields(["startDate", "endDate"]);
     }
-  }, [allActiveAdvertisements, page_]);
+  }, [allActiveAdvertisements, page_, advertisement.page]);
 
   const handleOnSave = (url, base64) => {
     setEditImageUrl(url);
@@ -252,7 +252,7 @@ const AdvertisementDrawer = ({
       const transformedValues = {
         ...values,
         startDate,
-        endDate,
+        endDate: endDate.endOf("day"),
         adDurationByDays,
         datesBetweenStartDateAndEndDate,
         page: page || values.page,
