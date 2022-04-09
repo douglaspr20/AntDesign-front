@@ -27,6 +27,7 @@ import {
 import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 } from "redux/actions/advertisment-actions";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -94,9 +95,10 @@ const ConferenceLibrary = ({
           >
             <div
               className="advertisement"
-              onClick={() =>
-                window.open(advertisement.advertisementLink, "_blank")
-              }
+              onClick={() => {
+                createAdvertisementClick(advertisement.id);
+                window.open(advertisement.advertisementLink, "_blank");
+              }}
             >
               <img
                 src={advertisement.adContentLink}
@@ -112,7 +114,12 @@ const ConferenceLibrary = ({
 
   const displayPreviewAd = isAdPreview && (
     <div className="conference-library-advertisement-wrapper-preview">
-      <div className="advertisement">
+      <div
+        className="advertisement"
+        onClick={() =>
+          window.open(advertisementById.advertisementLink, "_blank")
+        }
+      >
         <img
           src={advertisementById.adContentLink}
           alt="advertisement"

@@ -120,10 +120,10 @@ const SponsorDashboard = ({
       title: "General Demographics",
       content: () => content(usersGeneral || generalDemographics),
     },
-    {
-      title: "2022 Conference Demographics",
-      content: () => content(users || conferenceDemographics),
-    },
+    // {
+    //   title: "2022 Conference Demographics",
+    //   content: () => content(users || conferenceDemographics),
+    // },
   ];
 
   return (
