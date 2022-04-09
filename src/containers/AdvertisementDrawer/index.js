@@ -332,7 +332,7 @@ const AdvertisementDrawer = ({
         title="Rent this space"
         width={500}
       >
-        <div>
+        <div style={{ padding: "1rem" }}>
           <Form
             form={form}
             onFinish={handleOnFinish}
