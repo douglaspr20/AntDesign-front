@@ -37,7 +37,13 @@ export const getAllActiveAdvertisements = async () => {
 };
 
 export const editAdvertisement = async (data) => {
-  const { AdvertisementId, payload }  = data;
+  const { AdvertisementId, payload } = data;
 
   return httpClient.put(`private/ad/${AdvertisementId}`, { ...payload });
+};
+
+export const createAdvertisementClick = (data) => {
+  const { advertisementId } = data;
+
+  return httpClient.post(`private/ad/click`, { advertisementId });
 };

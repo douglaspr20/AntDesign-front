@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-template-curly-in-string */
 import React, { useState, useEffect } from "react";
-import { Drawer, Form, DatePicker, Modal } from "antd";
+import { Drawer, Form, DatePicker, Modal, notification } from "antd";
 import { CustomButton, CustomInput, CustomSelect } from "components";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
@@ -33,6 +33,7 @@ const AdvertisementDrawer = ({
   userProfile,
 }) => {
   const [totalDays, setTotalDays] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [disabledDates, setDisabledDates] = useState([]);
   const [page_, setPage_] = useState(null);
   const [form] = Form.useForm();
@@ -65,6 +66,18 @@ const AdvertisementDrawer = ({
       );
       setIsDraft(advertisement.status === "draft");
       setPage_(advertisement.page);
+
+      let diff = 0;
+
+      if (isEdit) {
+        diff = moment(advertisement.endDate).diff(
+          moment(advertisement.startDate),
+          "days"
+        );
+        diff += 1;
+        setTotalDays(diff);
+        setTotalPrice(diff * advertisement.adCostPerDay);
+      }
     }
 
     return () => {
@@ -74,6 +87,49 @@ const AdvertisementDrawer = ({
       setIsPagePopulated(false);
     };
   }, [isEdit, advertisement]);
+
+  useEffect(() => {
+    const date = form.getFieldValue("date");
+
+    if (!isEmpty(date)) {
+      switch (page_) {
+        case "home":
+        case "conference-library":
+          if (totalDays > 0) {
+            let _totalPrice = 0;
+
+            if (totalDays <= 7) {
+              _totalPrice = totalDays * 7;
+            } else if (totalDays >= 8 && totalDays <= 14) {
+              _totalPrice = totalDays * 6;
+            } else {
+              _totalPrice = totalDays * 5;
+            }
+
+            setTotalPrice(_totalPrice);
+          }
+          break;
+        case "events":
+        case "project-x":
+          if (totalDays > 0) {
+            let _totalPrice = 0;
+
+            if (totalDays <= 7) {
+              _totalPrice = totalDays * 5;
+            } else if (totalDays >= 8 && totalDays <= 14) {
+              _totalPrice = totalDays * 4;
+            } else {
+              _totalPrice = totalDays * 3;
+            }
+
+            setTotalPrice(_totalPrice);
+          }
+          break;
+        default:
+          setTotalPrice(0);
+      }
+    }
+  }, [page_, totalDays]);
 
   useEffect(() => {
     if (
@@ -145,6 +201,14 @@ const AdvertisementDrawer = ({
   };
 
   const handleOnFinish = (values) => {
+    const canPurchase = userProfile.advertisementCredits >= totalPrice;
+
+    if (!canPurchase) {
+      return notification.warn({
+        message: "You don't have enough credits.",
+      });
+    }
+
     const startDate = moment
       .tz(values.date[0], "America/Los_Angeles")
       .startOf("day");
@@ -169,9 +233,11 @@ const AdvertisementDrawer = ({
 
     if (isEdit) {
       const transformedValues = {
-        image: values.image,
-        advertisementLink: values.advertisementLink,
-        status: values.status,
+        ...values,
+        startDate,
+        endDate,
+        adDurationByDays,
+        datesBetweenStartDateAndEndDate,
       };
       editAdvertisement(advertisement.id, transformedValues);
     } else {
@@ -223,7 +289,7 @@ const AdvertisementDrawer = ({
       datesInBetween.includes(date)
     );
 
-    if (isOverlap) {
+    if (isOverlap && !isDraft) {
       return Promise.reject(
         new Error(
           "Start Date and End Date are overlapping with disabled dates."
@@ -296,7 +362,6 @@ const AdvertisementDrawer = ({
                 size="large"
                 disabledDate={handleDisabledDate}
                 disabled={(isEdit || !isPagePopulated) && !isDraft}
-                // disabled={(isEdit || !isPagePopulated) && !isDraft}
               />
             </Form.Item>
             <Form.Item
@@ -310,7 +375,7 @@ const AdvertisementDrawer = ({
               <h3>Total days: {totalDays}</h3>
             </Form.Item>
             <Form.Item>
-              <h3>Total credits: 5 Credits</h3>
+              <h3>Total credits: {totalPrice} Credits</h3>
             </Form.Item>
             <Form.Item name="image" noStyle />
             <div style={{ marginBottom: "1rem" }}>
@@ -334,15 +399,16 @@ const AdvertisementDrawer = ({
             <Form.Item name="status" noStyle />
             <Form.Item>
               <div className="d-flex">
-                {!hasAdvertisementStarted && (
-                  <CustomButton
-                    text="Save as Draft"
-                    type="secondary outline"
-                    block
-                    onClick={() => handleDynamicSubmit("draft")}
-                    style={{ width: "100%", marginRight: "1rem" }}
-                  />
-                )}
+                {!hasAdvertisementStarted &&
+                  advertisement.status !== "active" && (
+                    <CustomButton
+                      text="Save as Draft"
+                      type="secondary outline"
+                      block
+                      onClick={() => handleDynamicSubmit("draft")}
+                      style={{ width: "100%", marginRight: "1rem" }}
+                    />
+                  )}
                 <CustomButton
                   text="Start Campaign"
                   type="primary"

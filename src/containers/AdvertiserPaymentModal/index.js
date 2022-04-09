@@ -42,6 +42,7 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
         sessionData = await getCheckoutSession({
           prices: [STRIPE_PRICES.ADVERTISER_PRICE.priceId],
           isAdvertisement: true,
+          callback_url: `${process.env.REACT_APP_DOMAIN_URL}/sponsor-dashboard`,
         });
       }
 
@@ -51,12 +52,11 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
             (p) => p.credits === credits
           );
 
-          console.log('prices', prices)
-
           sessionData = await getCheckoutSession({
             isBuyingCredits: true,
             credits: credits,
             prices: [prices.priceId],
+            callback_url: `${process.env.REACT_APP_DOMAIN_URL}/sponsor-dashboard`,
           });
         }
       }
@@ -69,26 +69,6 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
     }
   };
 
-  // const displayBuyCredits =
-  //   STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map((credit) => {
-  //     return (
-  //       <CustomButton
-  //         key={credit.credits}
-  //         type="primary"
-  //         loading={loading}
-  //         onClick={() =>
-  //           requestCheckoutSessionTable({
-  //             isBuyingCredits: true,
-  //             credits: credit.credits,
-  //           })
-  //         }
-  //         text={`Buy ${credit.credits} credits`}
-  //         block
-  //         style={{ marginTop: "1rem" }}
-  //       />
-  //     );
-  //   });
-
   const handleOnFinish = (values) => {
     setLoading(true);
     let { advertisementCredits } = values;
@@ -100,7 +80,14 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
   };
 
   return (
-    <CustomModal visible={visible} onCancel={onClose} title="Buy more credits!">
+    <CustomModal
+      visible={visible}
+      onCancel={onClose}
+      title={
+        userProfile.isAdvertiser ? "Buy more credits!" : "Upgrade to Advertiser"
+      }
+      width={350}
+    >
       {userProfile.isAdvertiser ? (
         <>
           <Form layout="vertical" onFinish={handleOnFinish} form={form}>
@@ -112,7 +99,9 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
               <Select style={{ width: "100%" }}>
                 {STRIPE_PRICES.ADVERTISEMENT_CREDITS_STRIPE_PRICES.map(
                   (prices) => (
-                    <Option value={prices.credits}>{prices.credits} credits</Option>
+                    <Option value={prices.credits} key={prices.price}>
+                      {prices.credits} credits = {`$${prices.price}`}
+                    </Option>
                   )
                 )}
               </Select>
@@ -121,26 +110,12 @@ const AdvertisementPaymentModal = ({ visible, onClose, userProfile }) => {
               <CustomButton text="Buy" htmlType="submit" loading={loading} />
             </Form.Item>
           </Form>
-          {/* <CustomButton
-            key={credit.credits}
-            type="primary"
-            loading={loading}
-            onClick={() =>
-              requestCheckoutSessionTable({
-                isBuyingCredits: true,
-                credits: credit.credits,
-              })
-            }
-            text={`Buy ${credit.credits} credits`}
-            block
-            style={{ marginTop: "1rem" }}
-          /> */}
         </>
       ) : (
         <>
-          Advertisement Payment Modal
           <CustomButton
             type="primary"
+            block
             loading={loading}
             onClick={() =>
               requestCheckoutSessionTable({
