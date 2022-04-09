@@ -12,6 +12,7 @@ import { isEmpty } from "lodash";
 import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -42,6 +43,7 @@ const SkillCohort = ({
   advertisementsByPage,
   advertisementById,
   isAdPreview = false,
+  createAdvertisementClick,
 }) => {
   useEffect(() => {
     getAllSkillCohorts([]);
@@ -97,9 +99,10 @@ const SkillCohort = ({
             >
               <div
                 className="advertisement"
-                onClick={() =>
-                  window.open(advertisement.advertisementLink, "_blank")
-                }
+                onClick={() => {
+                  createAdvertisementClick(advertisement.id);
+                  window.open(advertisement.advertisementLink, "_blank");
+                }}
               >
                 <img
                   src={advertisement.adContentLink}
@@ -116,7 +119,12 @@ const SkillCohort = ({
   const displayPreviewAd = (currentTab === undefined || currentTab === "0") &&
     isAdPreview && (
       <div className="project-x-advertisement-wrapper-preview">
-        <div className="advertisement">
+        <div
+          className="advertisement"
+          onClick={() =>
+            window.open(advertisementById.advertisementLink, "_blank")
+          }
+        >
           <img
             src={advertisementById.adContentLink}
             alt="advertisement"
@@ -309,6 +317,7 @@ const mapDispatchToProps = {
   ...skillCohortParticipantActions,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkillCohort);

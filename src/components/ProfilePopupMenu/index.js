@@ -202,10 +202,9 @@ const ProfilePopupMenu = (props) => {
   const handlePartnersDashboard = () => {
     if (user.isAdvertiser) {
       history.push(INTERNAL_LINKS.SPONSOR_DASHBOARD);
+    } else {
+      setIsAdvertisementModalVisible(true);
     }
-    // else {
-    //   setIsAdvertisementModalVisible(true);
-    // }
     setVisible(false);
   };
 
@@ -324,12 +323,12 @@ const ProfilePopupMenu = (props) => {
           </div>
         </div>
       )}
-      <div
+      {/* <div
         className="profile-popover-content-menu"
         onClick={handlePartnersDashboard}
       >
         Partners Dashboard
-      </div>
+      </div> */}
       <div
         className="profile-popover-content-menu"
         onClick={() => history.push(INTERNAL_LINKS.MY_LEARNINGS)}
@@ -519,6 +518,7 @@ const ProfilePopupMenu = (props) => {
       <AdvertisementPaymentModal
         visible={isAdvertisementModalVisible}
         onClose={handleAdvertisementPaymentModalClose}
+        userProfile={userProfile}
       />
     </div>
   );

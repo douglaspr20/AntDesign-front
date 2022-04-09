@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-template-curly-in-string */
 import React, { useState, useEffect } from "react";
-import { Drawer, Form, DatePicker, Modal } from "antd";
+import { Drawer, Form, DatePicker, Modal, notification } from "antd";
 import { CustomButton, CustomInput, CustomSelect } from "components";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
@@ -14,6 +14,7 @@ import {
   editAdvertisement,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const { RangePicker } = DatePicker;
 
@@ -29,8 +30,10 @@ const AdvertisementDrawer = ({
   advertisement = {},
   clearEditAndAdvertisement,
   editAdvertisement,
+  userProfile,
 }) => {
   const [totalDays, setTotalDays] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [disabledDates, setDisabledDates] = useState([]);
   const [page_, setPage_] = useState(null);
   const [form] = Form.useForm();
@@ -48,7 +51,10 @@ const AdvertisementDrawer = ({
     if (isEdit) {
       form.setFieldsValue({
         ...advertisement,
-        date: [moment(advertisement.startDate), moment(advertisement.endDate)],
+        date: [
+          moment.tz(advertisement.startDate, "America/Los_Angeles"),
+          moment.tz(advertisement.endDate, "America/Los_Angeles"),
+        ],
         image: advertisement.adContentLink,
       });
 
@@ -56,13 +62,27 @@ const AdvertisementDrawer = ({
 
       const dateToday = moment().tz("America/Los_Angeles");
       const hasStarted = dateToday.isAfter(
-        moment(advertisement.startDate).tz("America/Los_Angeles")
+        moment.tz(advertisement.startDate, "America/Los_Angeles")
       );
       setHasAdvertisementStarted(
         hasStarted && advertisement.status === "active"
       );
       setIsDraft(advertisement.status === "draft");
       setPage_(advertisement.page);
+
+      let diff = 0;
+
+      if (isEdit) {
+        diff = moment
+          .tz(advertisement.endDate, "America/Los_Angeles")
+          .diff(
+            moment.tz(advertisement.startDate, "America/Los_Angeles"),
+            "days"
+          );
+        diff += 1;
+        setTotalDays(diff);
+        setTotalPrice(diff * advertisement.adCostPerDay);
+      }
     }
 
     return () => {
@@ -72,6 +92,49 @@ const AdvertisementDrawer = ({
       setIsPagePopulated(false);
     };
   }, [isEdit, advertisement]);
+
+  useEffect(() => {
+    const date = form.getFieldValue("date");
+
+    if (!isEmpty(date)) {
+      switch (page_) {
+        case "home":
+        case "conference-library":
+          if (totalDays > 0) {
+            let _totalPrice = 0;
+
+            if (totalDays <= 7) {
+              _totalPrice = totalDays * 7;
+            } else if (totalDays >= 8 && totalDays <= 14) {
+              _totalPrice = totalDays * 6;
+            } else {
+              _totalPrice = totalDays * 5;
+            }
+
+            setTotalPrice(_totalPrice);
+          }
+          break;
+        case "events":
+        case "project-x":
+          if (totalDays > 0) {
+            let _totalPrice = 0;
+
+            if (totalDays <= 7) {
+              _totalPrice = totalDays * 5;
+            } else if (totalDays >= 8 && totalDays <= 14) {
+              _totalPrice = totalDays * 4;
+            } else {
+              _totalPrice = totalDays * 3;
+            }
+
+            setTotalPrice(_totalPrice);
+          }
+          break;
+        default:
+          setTotalPrice(0);
+      }
+    }
+  }, [page_, totalDays]);
 
   useEffect(() => {
     if (
@@ -113,7 +176,7 @@ const AdvertisementDrawer = ({
       setDisabledDates(_transformedDisabledDates);
       form.resetFields(["startDate", "endDate"]);
     }
-  }, [allActiveAdvertisements, page_]);
+  }, [allActiveAdvertisements, page_, advertisement.page]);
 
   const handleOnSave = (url, base64) => {
     setEditImageUrl(url);
@@ -130,7 +193,9 @@ const AdvertisementDrawer = ({
       .format("YYYY-MM-DD");
 
     const isMatch = disabledDates.some((date) => {
-      const transformedDate = moment(date).format("YYYY-MM-DD");
+      const transformedDate = moment
+        .tz(date, "America/Los_Angeles")
+        .format("YYYY-MM-DD");
 
       return transformedDate === current;
     });
@@ -143,6 +208,14 @@ const AdvertisementDrawer = ({
   };
 
   const handleOnFinish = (values) => {
+    const canPurchase = userProfile.advertisementCredits >= totalPrice;
+
+    if (!canPurchase) {
+      return notification.warn({
+        message: "You don't have enough credits.",
+      });
+    }
+
     const startDate = moment
       .tz(values.date[0], "America/Los_Angeles")
       .startOf("day");
@@ -150,6 +223,7 @@ const AdvertisementDrawer = ({
     const endDate = moment
       .tz(values.date[1], "America/Los_Angeles")
       .startOf("day");
+    // .endOf("day");
 
     const diff = endDate.diff(startDate, "days");
     const adDurationByDays = diff + 1;
@@ -167,16 +241,18 @@ const AdvertisementDrawer = ({
 
     if (isEdit) {
       const transformedValues = {
-        image: values.image,
-        advertisementLink: values.advertisementLink,
-        status: values.status,
+        ...values,
+        startDate,
+        endDate: endDate.endOf("day"),
+        adDurationByDays,
+        datesBetweenStartDateAndEndDate,
       };
       editAdvertisement(advertisement.id, transformedValues);
     } else {
       const transformedValues = {
         ...values,
         startDate,
-        endDate,
+        endDate: endDate.endOf("day"),
         adDurationByDays,
         datesBetweenStartDateAndEndDate,
         page: page || values.page,
@@ -221,7 +297,7 @@ const AdvertisementDrawer = ({
       datesInBetween.includes(date)
     );
 
-    if (isOverlap) {
+    if (isOverlap && !isDraft) {
       return Promise.reject(
         new Error(
           "Start Date and End Date are overlapping with disabled dates."
@@ -256,7 +332,7 @@ const AdvertisementDrawer = ({
         title="Rent this space"
         width={500}
       >
-        <div>
+        <div style={{ padding: "1rem" }}>
           <Form
             form={form}
             onFinish={handleOnFinish}
@@ -264,7 +340,9 @@ const AdvertisementDrawer = ({
             validateMessages={{ required: "'${label}' is required!" }}
           >
             <Form.Item>
-              <h3>Available credits: 999</h3>
+              <h3>{`Available credits: ${
+                userProfile.advertisementCredits || 0
+              }`}</h3>
             </Form.Item>
             {onDashboard && (
               <Form.Item label="Page" name="page" rules={[{ required: true }]}>
@@ -292,7 +370,6 @@ const AdvertisementDrawer = ({
                 size="large"
                 disabledDate={handleDisabledDate}
                 disabled={(isEdit || !isPagePopulated) && !isDraft}
-                // disabled={(isEdit || !isPagePopulated) && !isDraft}
               />
             </Form.Item>
             <Form.Item
@@ -306,7 +383,7 @@ const AdvertisementDrawer = ({
               <h3>Total days: {totalDays}</h3>
             </Form.Item>
             <Form.Item>
-              <h3>Total credits: 5 Credits</h3>
+              <h3>Total credits: {totalPrice} Credits</h3>
             </Form.Item>
             <Form.Item name="image" noStyle />
             <div style={{ marginBottom: "1rem" }}>
@@ -330,17 +407,18 @@ const AdvertisementDrawer = ({
             <Form.Item name="status" noStyle />
             <Form.Item>
               <div className="d-flex">
-                {!hasAdvertisementStarted && (
-                  <CustomButton
-                    text="Save as Draft"
-                    type="secondary outline"
-                    block
-                    onClick={() => handleDynamicSubmit("draft")}
-                    style={{ width: "100%", marginRight: "1rem" }}
-                  />
-                )}
+                {!hasAdvertisementStarted &&
+                  advertisement.status !== "active" && (
+                    <CustomButton
+                      text="Save as Draft"
+                      type="secondary outline"
+                      block
+                      onClick={() => handleDynamicSubmit("draft")}
+                      style={{ width: "100%", marginRight: "1rem" }}
+                    />
+                  )}
                 <CustomButton
-                  text='Start Campaign'
+                  text="Start Campaign"
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
@@ -370,6 +448,7 @@ const AdvertisementDrawer = ({
 
 const mapStateToProps = (state) => ({
   ...advertisementSelector(state),
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

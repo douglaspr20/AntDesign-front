@@ -257,6 +257,8 @@ import {
   deleteCouncilConversationLike,
 } from "./module/council-conversation-like";
 
+import { createAdvertisementClick } from "./module/advertisement";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -449,4 +451,5 @@ export {
   deleteCouncilConversationLike,
   searchUserForCouncilEventPanelist,
   upsertCouncilEventPanelComment,
+  createAdvertisementClick
 };
