@@ -24,6 +24,7 @@ import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 } from "redux/actions/advertisment-actions";
 
 import Emitter from "services/emitter";
@@ -46,6 +47,7 @@ const HomePage = ({
   getAdvertisementById,
   advertisementById,
   isAdPreview = false,
+  createAdvertisementClick,
 }) => {
   const [filters, setFilters] = useState({});
   const [text, setText] = useState("");
@@ -122,9 +124,10 @@ const HomePage = ({
             >
               <div
                 className="advertisement"
-                onClick={() =>
-                  window.open(advertisement.advertisementLink, "_blank")
-                }
+                onClick={() => {
+                  createAdvertisementClick(advertisement.id);
+                  window.open(advertisement.advertisementLink, "_blank");
+                }}
               >
                 <img
                   src={advertisement.adContentLink}
@@ -140,7 +143,12 @@ const HomePage = ({
 
   const displayPreviewAd = isAdPreview && (
     <div className="home-page-container--posts-central-panel-content-preview">
-      <div className="advertisement">
+      <div
+        className="advertisement"
+        onClick={() =>
+          window.open(advertisementById.advertisementLink, "_blank")
+        }
+      >
         <img
           src={advertisementById.adContentLink}
           alt="advertisement"
@@ -149,14 +157,6 @@ const HomePage = ({
       </div>
     </div>
   );
-
-  // const dipslayRentAd = !isAdPreview && hasAdvertisementData === false && (
-  //   <div className="home-page-container--posts-central-panel-content-preview">
-  //     <div className="advertisement" onClick={() => setVisible(true)}>
-  //       <h1>Advertise Here</h1>
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div className="home-page-container">
@@ -282,6 +282,7 @@ const mapDispatchToProps = {
   getAllPost,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

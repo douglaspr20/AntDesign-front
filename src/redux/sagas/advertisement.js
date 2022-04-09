@@ -13,6 +13,7 @@ import {
   getAdvertisementById,
   getAllActiveAdvertisements,
   editAdvertisement,
+  createAdvertisementClick,
 } from "../../api";
 
 import { actions as homeActions } from "redux/actions/home-actions";
@@ -90,13 +91,19 @@ function* createAdvertisementSaga({ payload }) {
         )
       );
 
+      yield put(homeActions.updateUserInformation(response.data.user));
+
       notification.success({
         message: "Successfully rented advertisement.",
+      });
+    } else if (response.status === 202) {
+      notification.warn({
+        message: response.data.msg,
       });
     }
   } catch (error) {
     notification.error({
-      message: "Failed to rent advertisement.",
+      message: "Something went wrong.",
     });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -130,11 +137,29 @@ function* editAdvertisementSaga({ payload }) {
       yield put(
         advertisementActions.setEditAdvertisement(response.data.affectedRows)
       );
+
+      yield put(homeActions.updateUserInformation(response.data.user));
+
+      notification.success({
+        message: "Success",
+      });
+    } else if (response.status === 202) {
+      notification.warn({
+        message: response.data.msg,
+      });
     }
   } catch (error) {
     console.log(error);
   } finally {
     yield put(homeActions.setLoading(false));
+  }
+}
+
+function* createAdvertisementClickSaga({ payload }) {
+  try {
+    yield call(createAdvertisementClick, { ...payload });
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -162,6 +187,10 @@ function* watchAdvertisementSaga() {
   yield takeLatest(
     advertisementConstants.EDIT_ADVERTISEMENT_BY_ADVERTISER,
     editAdvertisementSaga
+  );
+  yield takeLatest(
+    advertisementConstants.CREATE_ADVERTISEMENT_CLICK,
+    createAdvertisementClickSaga
   );
 }
 

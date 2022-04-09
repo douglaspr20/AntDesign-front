@@ -30,6 +30,7 @@ import {
 import {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 } from "redux/actions/advertisment-actions";
 import { advertisementSelector } from "redux/selectors/advertisementsSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
@@ -63,6 +64,7 @@ const EventsPage = ({
   advertisementsByPage,
   advertisementById,
   isAdPreview = false,
+  createAdvertisementClick,
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -96,9 +98,10 @@ const EventsPage = ({
           >
             <div
               className="advertisement"
-              onClick={() =>
-                window.open(advertisement.advertisementLink, "_blank")
-              }
+              onClick={() => {
+                createAdvertisementClick(advertisement.id);
+                window.open(advertisement.advertisementLink, "_blank");
+              }}
             >
               <img
                 src={advertisement.adContentLink}
@@ -114,7 +117,12 @@ const EventsPage = ({
 
   const displayPreviewAd = isAdPreview && (
     <div className="events-advertisement-wrapper-preview">
-      <div className="advertisement">
+      <div
+        className="advertisement"
+        onClick={() =>
+          window.open(advertisementById.advertisementLink, "_blank")
+        }
+      >
         <img
           src={advertisementById.adContentLink}
           alt="advertisement"
@@ -512,6 +520,7 @@ const mapDispatchToProps = {
   setLoading,
   getAdvertisementsTodayByPage,
   getAdvertisementById,
+  createAdvertisementClick,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
