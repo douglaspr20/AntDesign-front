@@ -4,6 +4,7 @@ import { Form } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
+import moment from "moment-timezone";
 
 import { EVENT_TYPES } from "enum";
 import { CustomButton } from "components";
@@ -165,6 +166,9 @@ const Login = ({
           }
         } else if (updatedEvent.ticket === "fee") {
           setLoading(true);
+
+          const userTimezone = moment.tz.guess();
+
           getCheckoutSession({
             prices: [
               {
@@ -178,7 +182,7 @@ const Login = ({
               },
             ],
             isPaidEvent: true,
-            event: updatedEvent,
+            event: { ...updatedEvent, userTimezone },
             callback_url: window.location.href,
           }).then((sessionData) =>
             stripe.redirectToCheckout({ sessionId: sessionData.data.id })

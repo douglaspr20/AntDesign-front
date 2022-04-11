@@ -67,6 +67,8 @@ const PublicEventPage = ({
           setShowFirewall(true);
         }
       } else if (updatedEvent.ticket === "fee") {
+        const userTimezone = moment.tz.guess();
+
         try {
           setLoading(true);
           let sessionData = await getCheckoutSession({
@@ -82,7 +84,10 @@ const PublicEventPage = ({
               },
             ],
             isPaidEvent: true,
-            event: updatedEvent,
+            event: {
+              ...updatedEvent,
+              userTimezone,
+            },
             callback_url: window.location.href,
           });
 
@@ -328,7 +333,10 @@ const PublicEventPage = ({
             />
           )}
           {updatedEvent.status === "going" && (
-            <div className="going-label" style={{ marginRight: "1rem", color: '#00b574' }}>
+            <div
+              className="going-label"
+              style={{ marginRight: "1rem", color: "#00b574" }}
+            >
               <CheckOutlined />
               <span>I'm going</span>
             </div>

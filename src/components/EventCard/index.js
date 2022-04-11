@@ -62,6 +62,8 @@ class EventCard extends React.Component {
         loading: true,
       });
 
+      const userTimezone = moment.tz.guess();
+
       try {
         const sessionData = await getCheckoutSession({
           prices: [
@@ -76,11 +78,9 @@ class EventCard extends React.Component {
             },
           ],
           isPaidEvent: true,
-          event: this.props.data,
+          event: { ...this.props.data, userTimezone },
           callback_url: window.location.href,
         });
-
-        console.log(sessionData, 'bruh')
 
         this.state.stripe.redirectToCheckout({
           sessionId: sessionData.data.id,
