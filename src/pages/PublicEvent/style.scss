@@ -83,7 +83,7 @@
           margin-left: 0.5rem;
         }
 
-        @media (max-width: 575.98px) {
+        @media (max-width: 640px) {
           height: 36px;
 
           .anticon.anticon-check {
@@ -92,7 +92,7 @@
         }
       }
 
-      @media (max-width: 977.98px) {
+      @media (max-width: 1024px) {
         width: 100%;
 
         .date-avatar,
@@ -101,7 +101,7 @@
         }
       }
 
-      @media (max-width: 575.98px) {
+      @media (max-width: 640px) {
         .date-avatar {
           margin-bottom: 0rem !important;
           width: 60px !important;
@@ -116,7 +116,7 @@
         }
       }
 
-      @media (max-width: 575.98px) {
+      @media (max-width: 640px) {
         .event-title {
           @include app-font(24px, 48px, bold);
         }
@@ -190,18 +190,88 @@
       color: $color-text-secondary !important;
     }
 
-    @media (max-width: 977.98px) {
+    @media (max-width: 1024px) {
       width: calc(100% - 4rem);
       margin: 0 2rem;
     }
 
-    @media (max-width: 977.98px) {
+    @media (max-width: 1024px) {
       width: 100%;
       margin: 0;
     }
   }
 
-  @media (max-width: 977.98px) {
+  &-instructors {
+    width: 772px;
+    margin: 0 auto;
+    background-color: $color-white;
+    box-shadow: 4px 0px 14px #37215714;
+    border-color: $color-border;
+    border-radius: 8px;
+    border: 1px solid $color-border;
+    padding: 60px 2rem 120px;
+    margin-top: 1rem;
+
+    .event-people {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+
+      .event-instructor {
+
+        &-name {
+          text-align: center;
+        }
+      }
+    }
+
+    .event-title {
+      @include app-font(32px, 48px, bold);
+      margin-bottom: 40px !important;
+      text-align: center;
+      text-shadow: 0 0 $color-text-primary;
+    }
+
+    @media (min-width: 640px) {
+      .event-title {
+        margin-bottom: 1rem !important;
+        @include app-font(32px, 48px, bold);
+      }
+
+      .event-people {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+
+    @media(min-width: 768px) {
+      .event-people {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      // width: 100%;
+      .event-title {
+        margin-bottom: 24px !important;
+      }
+
+      .event-people {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .event-people {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
     padding-bottom: 0;
   }
 }
@@ -226,7 +296,7 @@
     }
   }
 
-  @media (max-width: 977.98px) {
+  @media (max-width: 1024px) {
     width: 100% !important;
     padding: 0 !important;
 

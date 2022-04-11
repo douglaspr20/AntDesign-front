@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import Helmet from "react-helmet";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
-import { Modal, Dropdown, Space, Menu, Carousel } from "antd";
+import { Modal, Dropdown, Space, Menu, Carousel, Avatar, Tooltip } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import GoogleMap from "./GoogleMaps";
@@ -51,6 +51,8 @@ const PublicEventPage = ({
   useEffect(() => {
     instanceStripe();
   }, []);
+
+  console.log(updatedEvent, "two people");
 
   const instanceStripe = async () => {
     setStripe(await stripePromise);
@@ -230,16 +232,63 @@ const PublicEventPage = ({
 
   const displayVenueLocation = !isEmpty(updatedEvent.venueAddress) && (
     <div>
-      <h5>Venue Address: {updatedEvent.venueAddress.formatted_address}</h5>
+      <h5>
+        Venue Address:{" "}
+        <a
+          href={`http://maps.google.com/maps?q=${encodeURI(
+            updatedEvent.venueAddress.formatted_address
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {updatedEvent.venueAddress.formatted_address}
+        </a>
+      </h5>
       <GoogleMap
         lat={updatedEvent.venueAddress.lat}
         lng={updatedEvent.venueAddress.lng}
       />
     </div>
   );
+  const displayTicket = (
+    <h3 className="event-cost">
+      {updatedEvent.ticket === "fee"
+        ? `Registration Fee: $${updatedEvent.ticketFee}`
+        : updatedEvent.ticket}
+    </h3>
+  );
 
-  const displayTicketFee = updatedEvent.ticket === "fee" && (
-    <h3 className="event-cost">{`$ ${updatedEvent.ticketFee}`}</h3>
+  const displayTransformedEventLocation = (updatedEvent.location || [])
+    .map((location) => {
+      if (location === "online") {
+        return "Online";
+      } else {
+        return "In Person";
+      }
+    })
+    .join("/");
+
+  const displayEventInstructors = (updatedEvent.EventInstructors || []).map(
+    (eventInstructor) => {
+      const instructor = eventInstructor.Instructor;
+
+      return (
+        <div className="event-instructor">
+          <Avatar
+            src={instructor.image}
+            alt="instructor-image"
+            size={128}
+            style={{ marginLeft: "auto", marginRight: "auto", display: "flex" }}
+          />
+          <div className="event-instructor-name">{instructor.name}</div>
+          <Tooltip title={instructor.description}>
+            <div className="event-instructor-name truncate">
+              {instructor.description}
+            </div>
+          </Tooltip>
+        </div>
+      );
+    }
   );
 
   return (
@@ -281,7 +330,7 @@ const PublicEventPage = ({
       </Helmet>
       <div className="public-event-page-header">
         {!isEmpty(updatedEvent.images) && (
-          <Carousel autoplay dots={false}>
+          <Carousel autoplay dots>
             {updatedEvent.images.map((image) => (
               <img src={image} alt="updatedEvent-img" key={image} />
             ))}
@@ -402,11 +451,8 @@ const PublicEventPage = ({
             updatedEvent.timezone
           )}
         </h3>
-        <h3 className="event-type">{`${(updatedEvent.location || []).join(
-          ", "
-        )} event`}</h3>
-        <h3 className="event-cost">{updatedEvent.ticket}</h3>
-        {displayTicketFee}
+        <h3 className="event-type">{displayTransformedEventLocation} Event</h3>
+        {displayTicket}
 
         <h5>Event Type:</h5>
         {updatedEvent.type && updatedEvent.type.length > 0 && (
@@ -452,6 +498,10 @@ const PublicEventPage = ({
             />
           )}
         </div>
+      </div>
+      <div className="public-event-page-instructors">
+        <h1 className="event-title">People</h1>
+        <div className="event-people">{displayEventInstructors}</div>
       </div>
     </div>
   );

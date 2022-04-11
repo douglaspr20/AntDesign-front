@@ -4,8 +4,8 @@ import GoogleMapReact from "google-map-react";
 const AnyReactComponent = () => (
   <div
     style={{
-      height: "10px",
-      width: "10px",
+      height: "20px",
+      width: "20px",
       borderRadius: "999px",
       background: "red",
     }}
