@@ -156,13 +156,13 @@ class App extends Component {
       this.props.getLive();
     }
 
-    if (
-      !isEmpty(curUser) &&
-      curUser.id &&
-      this.props.conversations.length <= 0
-    ) {
-      this.props.getConversations(curUser.id);
-    }
+    // if (
+    //   !isEmpty(curUser) &&
+    //   curUser.id &&
+    //   this.props.conversations.length === 0
+    // ) {
+    //   this.props.getConversations(curUser.id);
+    // }
 
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
       if (user?.id === this.props?.userProfile?.id) {
@@ -266,11 +266,13 @@ class App extends Component {
             <div className="content-container">
               <Content />
               {window.screen.width > 1000 && this.props.userProfile?.id ? (
-                <Chat conversations={this.props.conversations} />
+                <Chat
+                // conversations={this.props.conversations}
+                />
               ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
                 <>
                   <ChatMobile
-                    conversations={this.props.conversations}
+                    // conversations={this.props.conversations}
                     openChat={openChat}
                     setOpenChat={() => this.setState({ openChat: !openChat })}
                   />

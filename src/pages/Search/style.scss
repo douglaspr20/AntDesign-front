@@ -18,8 +18,15 @@
             margin-top: 5px;
             min-width: 300px;
             width: 100% !important;
-            max-width: 350px !important;
+            max-width: 300px ;
             margin-right: auto;
+
+            @media (max-width: 750px) {
+              &{
+                max-width: 1000px;
+              }
+            }
+            
 
         }
     }

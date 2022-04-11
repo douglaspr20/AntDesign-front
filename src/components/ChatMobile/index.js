@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { getMoreMessages } from "redux/actions/conversation-actions";
+import {
+  getMoreMessages,
+  getConversations,
+} from "redux/actions/conversation-actions";
 import {
   setConversations,
   readMessages,
@@ -17,6 +20,7 @@ import FormMessage from "./FormMessage";
 import "./style.scss";
 import { CustomDrawer } from "components";
 import { useRef } from "react";
+import { conversationsSelector } from "redux/selectors/conversationSelector";
 
 const ChatMobile = ({
   conversations,
@@ -26,6 +30,7 @@ const ChatMobile = ({
   setConversations,
   readMessages,
   getMoreMessages,
+  getConversations,
 }) => {
   const [currentConversation, setCurrentConversation] = useState({});
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -43,6 +48,12 @@ const ChatMobile = ({
       ).length;
     }
   }
+
+  useEffect(() => {
+    if (userProfile && userProfile.id && conversations.length === 0) {
+      getConversations(userProfile.id);
+    }
+  }, [conversations, getConversations, userProfile]);
 
   useEffect(() => {
     const lastConversationId = localStorage.getItem("lastConversationOpen");
@@ -372,12 +383,14 @@ const ChatMobile = ({
 
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
+  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
   setConversations,
   readMessages,
   getMoreMessages,
+  getConversations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatMobile);

@@ -6,6 +6,7 @@ import {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversations,
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
@@ -22,8 +23,15 @@ const Chat = ({
   readMessages,
   currentConversations,
   setCurrentConversations,
+  getConversations,
 }) => {
   // const notificationSound = new Audio(BubbleNotification);
+
+  useEffect(() => {
+    if (userProfile && userProfile.id && conversations.length === 0) {
+      getConversations(userProfile.id);
+    }
+  }, [conversations, getConversations, userProfile]);
 
   useEffect(() => {
     if (userProfile?.isOnline === false) {
@@ -293,12 +301,14 @@ const Chat = ({
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   currentConversations: conversationsSelector(state).currentConversations,
+  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Chat));
