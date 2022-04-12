@@ -5,6 +5,9 @@ import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
+import { loadStripe } from "@stripe/stripe-js";
+
+import { getCheckoutSession } from "api/module/stripe";
 
 import {
   DateAvatar,
@@ -28,6 +31,8 @@ import { convertToLocalTime, convertToCertainTime } from "utils/format";
 import "./style.scss";
 import { channelSelector } from "redux/selectors/channelSelector";
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 const EventDrawer = ({
   addToMyEventList,
   removeFromMyEventList,
@@ -43,6 +48,8 @@ const EventDrawer = ({
 }) => {
   const [editor, setEditor] = useState("froala");
   const [showFirewall, setShowFirewall] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [stripe, setStripe] = useState(null);
   const DataFormat = "YYYY.MM.DD hh:mm A";
 
   const onDrawerClose = () => {
@@ -50,21 +57,53 @@ const EventDrawer = ({
     onClose();
   };
 
-  const onAttend = (e) => {
+  useEffect(() => {
+    instanceStripe();
+  }, []);
+
+  const instanceStripe = async () => {
+    setStripe(await stripePromise);
+  };
+
+  const onAttend = async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    const timezone = moment.tz.guess();
+    const userTimezone = moment.tz.guess();
 
     if (event.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
-        addToMyEventList(event, timezone, () => {
+        addToMyEventList(event, userTimezone, () => {
           getChannelEvents({ ...filter, channel: channel.id });
         });
       } else {
         setShowFirewall(true);
       }
+    } else if (event.ticket === "fee") {
+      setLoading(true);
+
+      let sessionData = await getCheckoutSession({
+        prices: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: event.title,
+              },
+              unit_amount: `${event.ticketFee}00`,
+            },
+          },
+        ],
+        isPaidEvent: true,
+        event: {
+          ...event,
+          userTimezone,
+        },
+        callback_url: window.location.href,
+      });
+
+      stripe.redirectToCheckout({ sessionId: sessionData.data.id });
     } else {
-      addToMyEventList(event, timezone, () => {
+      addToMyEventList(event, userTimezone, () => {
         getChannelEvents({ ...filter, channel: channel.id });
       });
     }
@@ -99,7 +138,7 @@ const EventDrawer = ({
   };
 
   const onClickDownloadCalendar = (day) => {
-    const userTimezone = moment.tz.guess()
+    const userTimezone = moment.tz.guess();
 
     window.open(
       `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${event.id}?day=${day}&userTimezone=${userTimezone}`,
@@ -226,8 +265,13 @@ const EventDrawer = ({
           </div>
         )}
         <div className="event-details-header">
-          {event.image2 && <img src={event.image2} alt="event-img" />}
-          {!event.image2 && event.image && (
+          {!isEmpty(event.images) && (
+            <img src={event.images[0]} alt="event-img" />
+          )}
+          {isEmpty(event.images) && event.image2 && (
+            <img src={event.image2} alt="event-img" />
+          )}
+          {isEmpty(event.images) && !event.image2 && event.image && (
             <img src={event.image} alt="event-img" />
           )}
         </div>
@@ -279,6 +323,7 @@ const EventDrawer = ({
                 size="lg"
                 type="primary"
                 onClick={onAttend}
+                loading={loading}
               />
             )}
             {event.status === "going" && (
@@ -334,8 +379,8 @@ const EventDrawer = ({
                         >
                           {event.startAndEndTimes.length > 1
                             ? `Download Calendar Day ${index + 1}: ${moment(
-                              startTime
-                            ).format("MMM DD")} `
+                                startTime
+                              ).format("MMM DD")} `
                             : "Download Calendar"}
                           <DownOutlined />
                         </a>
@@ -354,6 +399,7 @@ const EventDrawer = ({
           </div>
           <h3 className="event-type">{`${event.location} event`}</h3>
           <h3 className="event-cost">{event.ticket}</h3>
+          <h3 className="event-cost">{`$${event.ticketFee}`}</h3>
           {event.type && event.type.length > 0 && (
             <div className="event-topics">
               {event.type.map((tp, index) => (

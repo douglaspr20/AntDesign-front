@@ -4,6 +4,9 @@ import { Dropdown, Menu, Space } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment-timezone";
+import { loadStripe } from "@stripe/stripe-js";
+
+import { getCheckoutSession } from "api/module/stripe";
 
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -18,16 +21,32 @@ import { convertToCertainTime, convertToLocalTime } from "utils/format";
 import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
+import { isEmpty } from "lodash";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       showFirewall: false,
+      stripe: null,
+      loading: false,
     };
   }
 
-  onAttend = (e) => {
+  componentDidMount() {
+    const instanceStripe = async () => {
+      this.setState({
+        stripe: await stripePromise,
+      });
+    };
+
+    instanceStripe();
+  }
+
+  onAttend = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -37,6 +56,37 @@ class EventCard extends React.Component {
         this.props.onAttend(true);
       } else {
         this.setState({ showFirewall: true });
+      }
+    } else if (this.props.data.ticket === "fee") {
+      this.setState({
+        loading: true,
+      });
+
+      const userTimezone = moment.tz.guess();
+
+      try {
+        const sessionData = await getCheckoutSession({
+          prices: [
+            {
+              price_data: {
+                currency: "usd",
+                product_data: {
+                  name: this.props.data.title,
+                },
+                unit_amount: `${this.props.data.ticketFee}00`,
+              },
+            },
+          ],
+          isPaidEvent: true,
+          event: { ...this.props.data, userTimezone },
+          callback_url: window.location.href,
+        });
+
+        this.state.stripe.redirectToCheckout({
+          sessionId: sessionData.data.id,
+        });
+      } catch (error) {
+        console.log(error);
       }
     } else {
       this.props.onAttend(true);
@@ -185,9 +235,11 @@ class EventCard extends React.Component {
         title,
         type,
         ticket,
+        ticketFee,
         location,
         status,
         image2,
+        images,
         period,
         showClaim,
         startAndEndTimes,
@@ -198,6 +250,25 @@ class EventCard extends React.Component {
       type: cardType,
       onMenuClick,
     } = this.props;
+
+    const displayTransformedEventLocation = (location || [])
+      .map((location) => {
+        if (location === "online") {
+          return "Online";
+        } else {
+          return "In Person";
+        }
+      })
+      .join("/");
+
+    const displayTicket = (
+      <div
+        style={{ marginBottom: "1rem", color: "grey" }}
+        className="event-card-cost"
+      >
+        {ticket === "fee" ? `Registration Fee: $${ticketFee}` : ticket}
+      </div>
+    );
 
     return (
       <div
@@ -227,15 +298,19 @@ class EventCard extends React.Component {
         ) : (
           <div>
             <div className="event-card-img">
-              {image2 && <img src={image2} alt="card-img" />}
+              {!isEmpty(images) && (
+                <img src={images[0]} alt="card-img" style={{ width: "100%" }} />
+              )}
+              {isEmpty(images) && image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
               <h5>{period}</h5>
-              <h5>{`${location ? location.join(",") : ""} event`}</h5>
+              <h5>{displayTransformedEventLocation} Event</h5>
+              {displayTicket}
               {status !== "past" && status !== "confirmed" && (
-                <Space direction="vertical">
-                  {startAndEndTimes?.map((time, index) => {
+                <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+                  {startAndEndTimes.map((time, index) => {
                     const startTime = convertToCertainTime(
                       time?.startTime,
                       timezone
@@ -277,7 +352,6 @@ class EventCard extends React.Component {
                   })}
                 </Space>
               )}
-              <h6 className="event-card-cost">{ticket}</h6>
               {type && type.length > 0 && (
                 <div className="event-card-topics">
                   {type.map((ty, index) => (
@@ -304,6 +378,7 @@ class EventCard extends React.Component {
                       size="md"
                       type="primary"
                       onClick={this.onAttend}
+                      loading={this.state.loading}
                     />
                   )}
                   {status === "going" && (

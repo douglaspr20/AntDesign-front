@@ -16,10 +16,17 @@
 
         .custom-select{
             margin-top: 5px;
-            min-width: 300px;
+            min-width: 250px;
             width: 100% !important;
-            max-width: 350px !important;
+            max-width: 250px ;
             margin-right: auto;
+
+            @media (max-width: 750px) {
+              &{
+                max-width: 1000px;
+              }
+            }
+            
 
         }
     }
@@ -40,5 +47,20 @@
     &-pagination{
         display: flex;
         justify-content: center;
+    }
+
+    .avatar-container{
+        position: relative;
+        &::after{
+            content: "";
+            width: 12px;
+            height: 12px;
+            bottom: 0;
+            right: 0;
+            border-radius: 50%;
+            position: absolute;
+            background: $color-success;
+            border: 1px solid $color-border;
+        }
     }
 }

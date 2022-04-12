@@ -6,12 +6,12 @@ import {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversations,
 } from "redux/actions/conversation-actions";
 import SocketIO from "services/socket";
 import { SOCKET_EVENT_TYPE } from "enum";
 import Conversation from "./Conversations";
 import InternalChat from "./Chat";
-// import BubbleNotification from "../../sound/bubble.mp3";
 
 import "./style.scss";
 
@@ -22,8 +22,12 @@ const Chat = ({
   readMessages,
   currentConversations,
   setCurrentConversations,
+  getConversations,
 }) => {
-  // const notificationSound = new Audio(BubbleNotification);
+
+  useEffect(() => {
+    getConversations(userProfile.id);
+  }, [getConversations, userProfile]);
 
   useEffect(() => {
     if (userProfile?.isOnline === false) {
@@ -69,13 +73,6 @@ const Chat = ({
 
     setCurrentConversations(newConversations);
   };
-
-  // SocketIO.on(SOCKET_EVENT_TYPE.MESSAGE, (message) => {
-  //   // if (message.sender !== userProfile.id) {
-  //   //   notificationSound.play();
-  //   // }
-  //   getConversation(message.ConversationId, message);
-  // });
 
   useEffect(() => {
     if (conversations.length > 0 && currentConversations.length > 0) {
@@ -258,33 +255,23 @@ const Chat = ({
           />
         ))}
 
-      <div
-        className={`conversations ${
-          userProfile.memberShip === "free" ? "conversations-not-available" : ""
-        }`}
-      >
-        {userProfile.memberShip === "free" ? (
-          <>
-            <h2>Update your account to start chatting with other members</h2>
-          </>
-        ) : (
-          <>
-            {conversations.map((conversation) => {
-              const otherMember = conversation.members.find(
-                (member) => member.id !== userProfile.id
-              );
+      <div className={`conversations`}>
+        <>
+          {conversations.map((conversation) => {
+            const otherMember = conversation.members.find(
+              (member) => member.id !== userProfile.id
+            );
 
-              return (
-                <Conversation
-                  key={conversation.id}
-                  user={otherMember}
-                  conversation={conversation}
-                  handleConversation={handleConversation}
-                />
-              );
-            })}
-          </>
-        )}
+            return (
+              <Conversation
+                key={conversation.id}
+                user={otherMember}
+                conversation={conversation}
+                handleConversation={handleConversation}
+              />
+            );
+          })}
+        </>
       </div>
     </>
   );
@@ -293,12 +280,14 @@ const Chat = ({
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   currentConversations: conversationsSelector(state).currentConversations,
+  conversations: conversationsSelector(state).conversations,
 });
 
 const mapDispatchToProps = {
   setConversations,
   readMessages,
   setCurrentConversations,
+  getConversations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Chat));

@@ -76,9 +76,10 @@ const SearchPage = ({
   };
 
   const handleFilters = (field, values) => {
+
     const newFilter = {
       ...filters,
-      [field]: JSON.stringify(values),
+      [field]: typeof values !== 'string' ?  JSON.stringify(values) : values,
     };
 
     if (values.length === 0) {
@@ -216,6 +217,42 @@ const SearchPage = ({
           options={PROFILE_SETTINGS.ORG_SIZES}
           onChange={(value) => handleFilters("sizeOfOrganization", value)}
         />
+
+        <CustomSelect
+          bordered={true}
+          placeholder={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 8
+              }}
+            >
+              <span
+                className="ant-select-selection-item"
+                style={{ background: "none", border: "none" }}
+              >
+                Type User
+              </span>
+
+              <span className="ant-select-arrow">
+                <i className="fal fa-angle-down" />
+              </span>
+            </div>
+          }
+          options={[
+            {
+              label: "Online",
+              value: "online",
+            },
+            {
+              label: "All",
+              value: "all",
+            },
+          ]}
+          onChange={(value) => handleFilters("typeUser", value)}
+        />
       </div>
       <div className="search-container">
         {!loadingSearchUsers && searchedUsers.length === 0 ? (
@@ -230,13 +267,21 @@ const SearchPage = ({
                   <List.Item.Meta
                     avatar={
                       user.img ? (
+                        <div
+                        className={`${user.isOnline === true ? "avatar-container" : ""}`}
+                      >
                         <Avatar
                           size={30}
                           src={user.img}
                           alt={`${user.firstName} ${user.lastName}`}
                         />
+                        </div>
                       ) : (
+                        <div
+                        className={`${user.isOnline === true ? "avatar-container" : ""}`}
+                      >
                         <Avatar size={30}>{user.abbrName}</Avatar>
+                        </div>
                       )
                     }
                     title={

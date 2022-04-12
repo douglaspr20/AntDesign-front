@@ -3,10 +3,13 @@ import { connect } from "react-redux";
 import clsx from "clsx";
 import Helmet from "react-helmet";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
-import { Modal, Dropdown, Space, Menu } from "antd";
+import { Modal, Dropdown, Space, Menu, Carousel, Avatar, Tooltip } from "antd";
 import moment from "moment";
 import { isEmpty } from "lodash";
+import GoogleMap from "./GoogleMaps";
+import { loadStripe } from "@stripe/stripe-js";
 
+import { getCheckoutSession } from "api/module/stripe";
 import {
   convertToLocalTime,
   getEventPeriod,
@@ -25,6 +28,8 @@ import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
 
 import "./style.scss";
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
+
 const PublicEventPage = ({
   match,
   updatedEvent,
@@ -40,8 +45,20 @@ const PublicEventPage = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [editor, setEditor] = useState("froala");
   const [showFirewall, setShowFirewall] = useState(false);
+  const [stripe, setStripe] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const onAttend = () => {
+  useEffect(() => {
+    instanceStripe();
+  }, []);
+
+  console.log(updatedEvent, "two people");
+
+  const instanceStripe = async () => {
+    setStripe(await stripePromise);
+  };
+
+  const onAttend = async () => {
     if (isAuthenticated) {
       if (updatedEvent.ticket === "premium") {
         if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
@@ -50,6 +67,35 @@ const PublicEventPage = ({
           history.push(INTERNAL_LINKS.EVENTS);
         } else {
           setShowFirewall(true);
+        }
+      } else if (updatedEvent.ticket === "fee") {
+        const userTimezone = moment.tz.guess();
+
+        try {
+          setLoading(true);
+          let sessionData = await getCheckoutSession({
+            prices: [
+              {
+                price_data: {
+                  currency: "usd",
+                  product_data: {
+                    name: updatedEvent.title,
+                  },
+                  unit_amount: `${updatedEvent.ticketFee}00`,
+                },
+              },
+            ],
+            isPaidEvent: true,
+            event: {
+              ...updatedEvent,
+              userTimezone,
+            },
+            callback_url: window.location.href,
+          });
+
+          stripe.redirectToCheckout({ sessionId: sessionData.data.id });
+        } catch (error) {
+          console.log(error);
         }
       } else {
         const timezone = moment.tz.guess();
@@ -184,6 +230,67 @@ const PublicEventPage = ({
     );
   };
 
+  const displayVenueLocation = !isEmpty(updatedEvent.venueAddress) && (
+    <div>
+      <h5>
+        Venue Address:{" "}
+        <a
+          href={`http://maps.google.com/maps?q=${encodeURI(
+            updatedEvent.venueAddress.formatted_address
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {updatedEvent.venueAddress.formatted_address}
+        </a>
+      </h5>
+      <GoogleMap
+        lat={updatedEvent.venueAddress.lat}
+        lng={updatedEvent.venueAddress.lng}
+      />
+    </div>
+  );
+  const displayTicket = (
+    <h3 className="event-cost">
+      {updatedEvent.ticket === "fee"
+        ? `Registration Fee: $${updatedEvent.ticketFee}`
+        : updatedEvent.ticket}
+    </h3>
+  );
+
+  const displayTransformedEventLocation = (updatedEvent.location || [])
+    .map((location) => {
+      if (location === "online") {
+        return "Online";
+      } else {
+        return "In Person";
+      }
+    })
+    .join("/");
+
+  const displayEventInstructors = (updatedEvent.EventInstructors || []).map(
+    (eventInstructor) => {
+      const instructor = eventInstructor.Instructor;
+
+      return (
+        <div className="event-instructor">
+          <Avatar
+            src={instructor.image}
+            alt="instructor-image"
+            size={128}
+            style={{ marginLeft: "auto", marginRight: "auto", display: "flex" }}
+          />
+          <div className="event-instructor-name">{instructor.name}</div>
+          <Tooltip title={instructor.description}>
+            <div className="event-instructor-name truncate">
+              {instructor.description}
+            </div>
+          </Tooltip>
+        </div>
+      );
+    }
+  );
+
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -222,15 +329,28 @@ const PublicEventPage = ({
         />
       </Helmet>
       <div className="public-event-page-header">
-        {updatedEvent.image2 && (
-          <img src={updatedEvent.image2} alt="updatedEvent-img" />
+        {!isEmpty(updatedEvent.images) && (
+          <Carousel autoplay dots>
+            {updatedEvent.images.map((image) => (
+              <img src={image} alt="updatedEvent-img" key={image} />
+            ))}
+          </Carousel>
         )}
-        {!updatedEvent.image2 && updatedEvent.image && (
-          <img src={updatedEvent.image} alt="event-img" />
-        )}
-        {!updatedEvent.image2 && !updatedEvent.image && (
-          <div className="public-event-page-header-defaultimg" />
-        )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image2 &&
+          updatedEvent.image && (
+            <img src={updatedEvent.image} alt="updatedEvent-img" />
+          )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image &&
+          updatedEvent.image2 && (
+            <img src={updatedEvent.image2} alt="updatedEvent-img" />
+          )}
+        {isEmpty(updatedEvent.images) &&
+          !updatedEvent.image &&
+          !updatedEvent.image2 && (
+            <div className="public-event-page-header-defaultimg" />
+          )}
         <div className="public-event-page-header-title">
           <Modal
             visible={modalVisible}
@@ -248,24 +368,28 @@ const PublicEventPage = ({
               onClose={onCancelModal}
             />
           </Modal>
+        </div>
+      </div>
+      <div className="public-event-page-content">
+        <div className="public-event-page-content-calendar">
           {updatedEvent.status === "attend" && (
             <CustomButton
               text="REGISTER HERE"
               size={isMobile ? "md" : "lg"}
               type="primary"
               onClick={onAttend}
+              loading={loading}
             />
           )}
           {updatedEvent.status === "going" && (
-            <div className="going-label">
+            <div
+              className="going-label"
+              style={{ marginRight: "1rem", color: "#00b574" }}
+            >
               <CheckOutlined />
               <span>I'm going</span>
             </div>
           )}
-        </div>
-      </div>
-      <div className="public-event-page-content">
-        <div className="public-event-page-content-calendar">
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes?.map((time, index) => {
@@ -327,10 +451,8 @@ const PublicEventPage = ({
             updatedEvent.timezone
           )}
         </h3>
-        <h3 className="event-type">{`${(updatedEvent.location || []).join(
-          ", "
-        )} event`}</h3>
-        <h3 className="event-cost">{updatedEvent.ticket}</h3>
+        <h3 className="event-type">{displayTransformedEventLocation} Event</h3>
+        {displayTicket}
 
         <h5>Event Type:</h5>
         {updatedEvent.type && updatedEvent.type.length > 0 && (
@@ -358,6 +480,28 @@ const PublicEventPage = ({
         ) : (
           <RichEdit data={updatedEvent.description} />
         )}
+        {displayVenueLocation}
+        <div
+          style={{
+            marginTop: "1rem",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {updatedEvent.status === "attend" && (
+            <CustomButton
+              text="REGISTER HERE"
+              size={isMobile ? "md" : "lg"}
+              type="primary"
+              onClick={onAttend}
+              loading={loading}
+            />
+          )}
+        </div>
+      </div>
+      <div className="public-event-page-instructors">
+        <h1 className="event-title">SPEAKERS</h1>
+        <div className="event-people">{displayEventInstructors}</div>
       </div>
     </div>
   );

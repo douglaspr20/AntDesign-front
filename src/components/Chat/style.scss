@@ -50,6 +50,10 @@
         flex-direction: column;
         justify-content: center;
         height: 20px;
+
+        p{
+            margin-top: 0px !important;
+        }
     }
 
     .avatar-container{
