@@ -26,17 +26,6 @@ import {
   setCurrentConversations,
 } from "redux/actions/conversation-actions";
 
-// const ProfileMenus = [
-//   {
-//     label: "Read Later",
-//     link: INTERNAL_LINKS.READ_LATER,
-//   },
-//   {
-//     label: "Favorites",
-//     link: INTERNAL_LINKS.FAVORITES,
-//   },
-// ];
-
 const ProfileMenus = [];
 
 const confirmPasswordRules = [
