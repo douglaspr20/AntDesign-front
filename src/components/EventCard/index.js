@@ -251,6 +251,25 @@ class EventCard extends React.Component {
       onMenuClick,
     } = this.props;
 
+    const displayTransformedEventLocation = (location || [])
+      .map((location) => {
+        if (location === "online") {
+          return "Online";
+        } else {
+          return "In Person";
+        }
+      })
+      .join("/");
+
+    const displayTicket = (
+      <div
+        style={{ marginBottom: "1rem", color: "grey" }}
+        className="event-card-cost"
+      >
+        {ticket === "fee" ? `Registration Fee: $${ticketFee}` : ticket}
+      </div>
+    );
+
     return (
       <div
         className={clsx("event-card", className)}
@@ -287,7 +306,8 @@ class EventCard extends React.Component {
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
               <h5>{period}</h5>
-              <h5>{`${location ? location.join(",") : ""} event`}</h5>
+              <h5>{displayTransformedEventLocation} Event</h5>
+              {displayTicket}
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical">
                   {startAndEndTimes?.map((time, index) => {
@@ -301,7 +321,11 @@ class EventCard extends React.Component {
                     );
 
                     return (
-                      <div className="d-flex" key={index}>
+                      <div
+                        className="d-flex"
+                        key={index}
+                        style={{ marginBottom: "1rem" }}
+                      >
                         <Space size="middle">
                           <Dropdown
                             overlay={this.downloadDropdownOptions(
@@ -331,10 +355,6 @@ class EventCard extends React.Component {
                     );
                   })}
                 </Space>
-              )}
-              <h6 className="event-card-cost">{ticket}</h6>
-              {ticket === "fee" && (
-                <h6 className="event-card-cost">{`$${ticketFee}`}</h6>
               )}
               {type && type.length > 0 && (
                 <div className="event-card-topics">

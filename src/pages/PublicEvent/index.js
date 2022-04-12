@@ -500,7 +500,7 @@ const PublicEventPage = ({
         </div>
       </div>
       <div className="public-event-page-instructors">
-        <h1 className="event-title">People</h1>
+        <h1 className="event-title">SPEAKERS</h1>
         <div className="event-people">{displayEventInstructors}</div>
       </div>
     </div>
