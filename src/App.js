@@ -51,6 +51,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { conversationsSelector } from "redux/selectors/conversationSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
+import JuntosNotification from "./sound/juntos.mp3";
 import "./styles/main.scss";
 import "./App.scss";
 
@@ -72,6 +73,9 @@ class App extends Component {
       openChat: false,
     };
   }
+
+  notificationSound = new Audio(JuntosNotification);
+
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
@@ -136,6 +140,10 @@ class App extends Component {
         )
       ) {
         this.props.setMessage(message);
+      }
+
+      if (message.sender !== this.props.userProfile.id) {
+            this.notificationSound.play();
       }
     });
 
