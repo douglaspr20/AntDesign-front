@@ -309,8 +309,8 @@ class EventCard extends React.Component {
               <h5>{displayTransformedEventLocation} Event</h5>
               {displayTicket}
               {status !== "past" && status !== "confirmed" && (
-                <Space direction="vertical">
-                  {startAndEndTimes?.map((time, index) => {
+                <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+                  {startAndEndTimes.map((time, index) => {
                     const startTime = convertToCertainTime(
                       time?.startTime,
                       timezone
@@ -321,11 +321,7 @@ class EventCard extends React.Component {
                     );
 
                     return (
-                      <div
-                        className="d-flex"
-                        key={index}
-                        style={{ marginBottom: "1rem" }}
-                      >
+                      <div className="d-flex" key={index}>
                         <Space size="middle">
                           <Dropdown
                             overlay={this.downloadDropdownOptions(
