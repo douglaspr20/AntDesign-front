@@ -51,6 +51,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { conversationsSelector } from "redux/selectors/conversationSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
+import JuntosNotification from "./sound/juntos.mp3";
 import "./styles/main.scss";
 import "./App.scss";
 
@@ -72,6 +73,9 @@ class App extends Component {
       openChat: false,
     };
   }
+
+  notificationSound = new Audio(JuntosNotification);
+
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
@@ -137,6 +141,10 @@ class App extends Component {
       ) {
         this.props.setMessage(message);
       }
+
+      if (message.sender !== this.props.userProfile.id) {
+            this.notificationSound.play();
+      }
     });
 
     SocketIO.on(SOCKET_EVENT_TYPE.LIVE_CHANGE, () => {
@@ -156,13 +164,13 @@ class App extends Component {
       this.props.getLive();
     }
 
-    if (
-      !isEmpty(curUser) &&
-      curUser.id &&
-      this.props.conversations.length <= 0
-    ) {
-      this.props.getConversations(curUser.id);
-    }
+    // if (
+    //   !isEmpty(curUser) &&
+    //   curUser.id &&
+    //   this.props.conversations.length === 0
+    // ) {
+    //   this.props.getConversations(curUser.id);
+    // }
 
     SocketIO.on(SOCKET_EVENT_TYPE.USER_ONLINE, (user) => {
       if (user?.id === this.props?.userProfile?.id) {
@@ -266,11 +274,13 @@ class App extends Component {
             <div className="content-container">
               <Content />
               {window.screen.width > 1000 && this.props.userProfile?.id ? (
-                <Chat conversations={this.props.conversations} />
+                <Chat
+                // conversations={this.props.conversations}
+                />
               ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
                 <>
                   <ChatMobile
-                    conversations={this.props.conversations}
+                    // conversations={this.props.conversations}
                     openChat={openChat}
                     setOpenChat={() => this.setState({ openChat: !openChat })}
                   />
