@@ -60,6 +60,11 @@ const Advertiser = ({
       },
     },
     {
+      title: "Campaign Name",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",
