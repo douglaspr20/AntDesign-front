@@ -60,7 +60,7 @@ const Advertiser = ({
       },
     },
     {
-      title: "Title",
+      title: "Campaign Name",
       dataIndex: "title",
       key: "title",
     },
