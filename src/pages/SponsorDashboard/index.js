@@ -128,7 +128,7 @@ const SponsorDashboard = ({
 
   return (
     <div className="sponsor-dashboard-page">
-      {userProfile.isSponsor ? (
+      {userProfile.isAdvertiser ? (
         <div className="sponsor-dashboard-container">
           <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
         </div>
