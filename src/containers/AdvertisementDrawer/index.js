@@ -344,6 +344,9 @@ const AdvertisementDrawer = ({
                 userProfile.advertisementCredits || 0
               }`}</h3>
             </Form.Item>
+            <Form.Item label="Campaign Name" name="title" rules={[{ required: true }]}>
+              <CustomInput bordered />
+            </Form.Item>
             {onDashboard && (
               <Form.Item label="Page" name="page" rules={[{ required: true }]}>
                 <CustomSelect
