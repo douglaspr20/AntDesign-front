@@ -1,12 +1,12 @@
+import { CloseOutlined, FilePdfOutlined } from "@ant-design/icons";
+import { Avatar, Button, Tooltip } from "antd";
+import { SOCKET_EVENT_TYPE } from "enum";
+import moment from "moment";
 import React, { useCallback, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Tooltip } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import moment from "moment";
-import { homeSelector } from "redux/selectors/homeSelector";
 import { getMoreMessages } from "redux/actions/conversation-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 import SocketIO from "services/socket";
-import { SOCKET_EVENT_TYPE } from "enum";
 import FormMessage from "../FormMessage";
 
 const Chat = React.memo(
@@ -29,12 +29,22 @@ const Chat = React.memo(
     }, []);
 
     const handleSendMessage = (message) => {
-      SocketIO.emit(SOCKET_EVENT_TYPE.SEND_MESSAGE, {
+      const { files } = message;
+
+      let data = {
         ConversationId: currentConversation.id,
         sender: userProfile.id,
         text: message.message,
         viewedUser: [userProfile.id],
-      });
+      };
+      if (files) {
+        data = {
+          ...data,
+          files,
+        };
+      }
+
+      SocketIO.emit(SOCKET_EVENT_TYPE.SEND_MESSAGE, data);
     };
 
     const handleScroll = () => {
@@ -118,6 +128,7 @@ const Chat = React.memo(
                 currentConversation.messages.indexOf(message) === 0;
 
               const lastMessage = currentConversation.messages.length - 1 === i;
+
               return (
                 <div
                   ref={
@@ -145,20 +156,60 @@ const Chat = React.memo(
                     title={
                       <p className="date-messages">
                         {moment(message.messageDate).format(
-                          "MMM DD YYYY hh:mm"
+                          "MMM DD YYYY hh:mm A"
                         )}
                       </p>
                     }
                   >
-                    <div
-                      className={`chat-message ${
-                        user?.id !== userProfile?.id
-                          ? "chat-message-contact"
-                          : "chat-message-user"
-                      }`}
-                    >
-                      <p>{message.text}</p>
-                    </div>
+                    {message.type === "image" ? (
+                      <div
+                        className={`chat-message ${
+                          user?.id !== userProfile?.id
+                            ? "chat-message-contact-image"
+                            : "chat-message-user-image"
+                        }`}
+                      >
+                        <img src={message.documentFileUrl} alt="Hacking hr" />
+                      </div>
+                    ) : message.type === "document" ? (
+                      <div
+                        className={`chat-message ${
+                          user?.id !== userProfile?.id
+                            ? "chat-message-contact"
+                            : "chat-message-user"
+                        }`}
+                      >
+                        <a
+                          href={message.documentFileUrl}
+                          className="link-document-container"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Button
+                            shape="circle"
+                            icon={<FilePdfOutlined />}
+                            className="pdf-icon"
+                          />
+
+                         <p>
+                         {message.documentFileUrl.replace(
+                            "https://upload-files-lab.s3.amazonaws.com/",
+                            ""
+                          )}
+                         </p>
+                        </a>
+                      </div>
+                    ) : (
+                      <div
+                        className={`chat-message ${
+                          user?.id !== userProfile?.id
+                            ? "chat-message-contact"
+                            : "chat-message-user"
+                        }`}
+                      >
+                        <p>{message.text}</p>
+                      </div>
+                    )}
                   </Tooltip>
                   {currentConversation?.messages[i + 1]?.sender !==
                   message?.sender ? (
