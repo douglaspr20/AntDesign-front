@@ -177,6 +177,15 @@ const getPublicationTime = (publicationDate) => {
   }
 };
 
+const transformNames = (name) => {
+  const index = name.indexOf(" ");
+
+  if (index !== -1) {
+    return name.slice(0, index);
+  }
+  return name;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -190,4 +199,5 @@ export {
   convertBlobToBase64,
   getValidDescription,
   getPublicationTime,
+  transformNames,
 };

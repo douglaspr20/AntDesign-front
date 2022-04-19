@@ -34,7 +34,7 @@ export function* getConversationsSaga({ payload }) {
       const conversationSort = response.data.conversations.sort((a, b) => {
         if (a?.messages[0]?.messageDate > b?.messages[0]?.messageDate) {
           return 1;
-        } else if (b?.messagedate > a?.messagedate) {
+        } else if (b?.messages[0]?.messagedate > a?.messages[0]?.messagedate) {
           return -1;
         }
         return 0;

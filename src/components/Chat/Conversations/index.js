@@ -5,6 +5,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { Avatar, Badge } from "antd";
 
 import "./style.scss";
+import { transformNames } from "utils/format";
 
 const Conversation = ({
   user,
@@ -15,15 +16,6 @@ const Conversation = ({
   const messagesNotViewed = conversation.messages.filter(
     (message) => !message?.viewedUser?.includes(userProfile.id)
   ).length;
-
-  const transformNames = (name) => {
-    const index = name.indexOf(" ");
-
-    if (index !== -1) {
-      return name.slice(0, index);
-    }
-    return name;
-  };
 
   return (
     <div className="conversation-container">
