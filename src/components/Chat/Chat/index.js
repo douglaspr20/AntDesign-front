@@ -187,16 +187,20 @@ const Chat = React.memo(
                         >
                           <Button
                             shape="circle"
-                            icon={<FilePdfOutlined />}
+                            icon={
+                              <FilePdfOutlined
+                                style={{ marginBottom: "0px" }}
+                              />
+                            }
                             className="pdf-icon"
                           />
 
-                         <p>
-                         {message.documentFileUrl.replace(
-                            "https://upload-files-lab.s3.amazonaws.com/",
-                            ""
-                          )}
-                         </p>
+                          <p>
+                            {message.documentFileUrl.replace(
+                              "https://upload-files-lab.s3.amazonaws.com/",
+                              ""
+                            )}
+                          </p>
                         </a>
                       </div>
                     ) : (

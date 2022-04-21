@@ -9,7 +9,7 @@ import {
   setConversations,
   readMessages,
 } from "redux/actions/conversation-actions";
-import { MessageOutlined } from "@ant-design/icons";
+import { FilePdfOutlined, MessageOutlined } from "@ant-design/icons";
 import { Affix, Avatar, Badge, Button, Tooltip } from "antd";
 import moment from "moment";
 import SocketIO from "services/socket";
@@ -308,15 +308,62 @@ const ChatMobile = ({
                             </p>
                           }
                         >
-                          <div
-                            className={`chat-message ${
-                              user.id !== userProfile.id
-                                ? "chat-message-contact"
-                                : "chat-message-user"
-                            }`}
-                          >
-                            <p>{message.text}</p>
-                          </div>
+                          {message.type === "image" ? (
+                            <div
+                              className={`chat-message ${
+                                user?.id !== userProfile?.id
+                                  ? "chat-message-contact-image"
+                                  : "chat-message-user-image"
+                              }`}
+                            >
+                              <img
+                                src={message.documentFileUrl}
+                                alt="Hacking hr"
+                              />
+                            </div>
+                          ) : message.type === "document" ? (
+                            <div
+                              className={`chat-message ${
+                                user?.id !== userProfile?.id
+                                  ? "chat-message-contact"
+                                  : "chat-message-user"
+                              }`}
+                            >
+                              <a
+                                href={message.documentFileUrl}
+                                className="link-document-container"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Button
+                                  shape="circle"
+                                  icon={
+                                    <FilePdfOutlined
+                                      style={{ marginBottom: "0px" }}
+                                    />
+                                  }
+                                  className="pdf-icon"
+                                />
+
+                                <p>
+                                  {message.documentFileUrl.replace(
+                                    "https://upload-files-lab.s3.amazonaws.com/",
+                                    ""
+                                  )}
+                                </p>
+                              </a>
+                            </div>
+                          ) : (
+                            <div
+                              className={`chat-message ${
+                                user?.id !== userProfile?.id
+                                  ? "chat-message-contact"
+                                  : "chat-message-user"
+                              }`}
+                            >
+                              <p>{message.text}</p>
+                            </div>
+                          )}
                         </Tooltip>
                         {currentConversation?.messages[i + 1]?.sender !==
                         message?.sender ? (
