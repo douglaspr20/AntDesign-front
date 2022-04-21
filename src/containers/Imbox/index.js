@@ -90,6 +90,10 @@ const Imbox = ({
           const user = conversation.members.find(
             (member) => member.id !== userProfile.id
           );
+
+          const lastMessage =
+            conversation.messages[conversation?.messages?.length - 1];
+
           return (
             <div
               key={conversation.id}
@@ -141,8 +145,7 @@ const Imbox = ({
                   {transformNames(user.lastName)}
                 </span>
                 <div>
-                  {conversation.messages[conversation?.messages?.length - 1]
-                    .type === "image" ? (
+                  {lastMessage.type === "image" ? (
                     <>
                       <FileImageOutlined
                         style={{
@@ -151,10 +154,11 @@ const Imbox = ({
                           position: "absolute",
                         }}
                       />
-                      <span style={{ marginLeft: "20px" }}>Image</span>
+                      <span style={{ marginLeft: "20px" }}>
+                        Image {lastMessage.sender === userProfile.id && ". You"}
+                      </span>
                     </>
-                  ) : conversation.messages[conversation?.messages?.length - 1]
-                      .type === "document" ? (
+                  ) : lastMessage.type === "document" ? (
                     <>
                       <FilePdfOutlined
                         style={{
@@ -163,15 +167,14 @@ const Imbox = ({
                           position: "absolute",
                         }}
                       />
-                      <span style={{ marginLeft: "20px" }}>File</span>
+                      <span style={{ marginLeft: "20px" }}>
+                        File {lastMessage.sender === userProfile.id && ". You"}
+                      </span>
                     </>
                   ) : (
                     <span className="conversation-text">
-                      {
-                        conversation.messages[
-                          conversation?.messages?.length - 1
-                        ].text
-                      }
+                      {lastMessage.text}{" "}
+                      {lastMessage.sender === userProfile.id && ". You"}
                     </span>
                   )}{" "}
                 </div>
