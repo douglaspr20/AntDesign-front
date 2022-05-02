@@ -50,10 +50,8 @@ const ChatMobile = ({
   }
 
   useEffect(() => {
-    if (userProfile && userProfile.id && conversations.length === 0) {
-      getConversations(userProfile.id);
-    }
-  }, [conversations, getConversations, userProfile]);
+    getConversations(userProfile.id);
+  }, [getConversations, userProfile]);
 
   useEffect(() => {
     const lastConversationId = localStorage.getItem("lastConversationOpen");
