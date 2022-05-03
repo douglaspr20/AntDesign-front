@@ -145,7 +145,7 @@ const Imbox = ({
                   {transformNames(user.lastName)}
                 </span>
                 <div>
-                  {lastMessage.type === "image" ? (
+                  {lastMessage?.type === "image" ? (
                     <>
                       <FileImageOutlined
                         style={{
@@ -158,7 +158,7 @@ const Imbox = ({
                         Image {lastMessage.sender === userProfile.id && ". You"}
                       </span>
                     </>
-                  ) : lastMessage.type === "document" ? (
+                  ) : lastMessage?.type === "document" ? (
                     <>
                       <FilePdfOutlined
                         style={{
