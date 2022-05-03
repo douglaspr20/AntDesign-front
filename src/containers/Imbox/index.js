@@ -115,7 +115,7 @@ const Imbox = ({
                   }`}
                 >
                   <Avatar
-                    size={40}
+                    size={45}
                     src={user.img}
                     style={{ marginRight: ".5rem" }}
                   />
@@ -127,7 +127,7 @@ const Imbox = ({
                   }`}
                 >
                   <Avatar
-                    size={40}
+                    size={45}
                     style={{ fontSize: "1.5rem", marginRight: ".5rem" }}
                   >
                     {user.abbrName}
