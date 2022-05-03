@@ -34,20 +34,22 @@ const Imbox = ({
   }
 
   const conversationsSort = useMemo(() => {
-    return conversations.sort((a, b) => {
-      if (
-        a?.messages[a.messages.length - 1]?.messageDate >
-        b?.messages[b.messages.length - 1]?.messageDate
-      ) {
-        return 1;
-      } else if (
-        b?.messages[b.messages.length - 1]?.messagedate >
-        a?.messages[a.messages.length - 1]?.messagedate
-      ) {
-        return -1;
-      }
-      return 0;
-    });
+    return conversations
+      .sort((a, b) => {
+        if (
+          a?.messages[a.messages.length - 1]?.messageDate >
+          b?.messages[b.messages.length - 1]?.messageDate
+        ) {
+          return 1;
+        } else if (
+          b?.messages[b.messages.length - 1]?.messagedate >
+          a?.messages[a.messages.length - 1]?.messagedate
+        ) {
+          return -1;
+        }
+        return 0;
+      })
+      .filter((conversation) => conversation?.messages?.length > 0);
   }, [conversations]);
 
   const BadgeProps = {
