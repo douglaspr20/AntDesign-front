@@ -173,8 +173,8 @@ const Imbox = ({
                     </>
                   ) : (
                     <span className="conversation-text">
-                      {lastMessage.text}{" "}
-                      {lastMessage.sender === userProfile.id && ". You"}
+                      {lastMessage?.text}{" "}
+                      {lastMessage?.sender === userProfile.id && ". You"}
                     </span>
                   )}{" "}
                 </div>
