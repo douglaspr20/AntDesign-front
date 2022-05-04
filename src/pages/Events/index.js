@@ -245,7 +245,6 @@ const EventsPage = ({
       prev = allEvents.filter((item) => {
         let flag = true;
         flag = dateFilter(flag, params, item);
-        console.log(flag)
         if (new Date(item.startDate) < new Date() || !item.isOverEmailSent) {
           flag = false;
         }
