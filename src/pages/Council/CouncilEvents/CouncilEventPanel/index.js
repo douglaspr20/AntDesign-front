@@ -157,7 +157,7 @@ const CouncilEventPanel = ({
   const handleSearchUser = (values) => {
     const runDebounce = debounce(() => {
       searchUserForCouncilEventPanelist(values);
-    }, 1500);
+    }, 500);
 
     runDebounce();
   };
