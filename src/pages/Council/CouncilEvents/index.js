@@ -343,7 +343,10 @@ const CouncilEvents = ({
         {userProfile.isExpertCouncilAdmin && (
           <div
             className="council-event-card"
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={() => {
+              setIsDrawerOpen(true); 
+              form.resetFields();
+            }}
           >
             <PlusOutlined style={{ fontSize: "2rem" }} />
           </div>

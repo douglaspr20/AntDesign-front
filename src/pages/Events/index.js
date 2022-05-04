@@ -245,7 +245,7 @@ const EventsPage = ({
       prev = allEvents.filter((item) => {
         let flag = true;
         flag = dateFilter(flag, params, item);
-
+        console.log(flag)
         if (new Date(item.startDate) < new Date() || !item.isOverEmailSent) {
           flag = false;
         }
@@ -318,9 +318,10 @@ const EventsPage = ({
     }
 
     if (isEmpty(params)) {
-      const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+      const eventDate = moment(item.date2, "YYYY.MM.DD h:mm a");
       flag = eventDate.isAfter(moment());
     }
+
     return flag;
   };
 

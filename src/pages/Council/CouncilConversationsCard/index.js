@@ -116,9 +116,13 @@ const CouncilConversationsCard = ({
               />
               <div className="d-flex">
                 {councilConversation?.topics?.map((topic) => {
-                  const category = allCategories.find(
+                  let category = allCategories.find(
                     (cat) => cat.value === topic
                   );
+
+                  if(category !== undefined){
+                    category = ''
+                  }
 
                   return (
                     <div
