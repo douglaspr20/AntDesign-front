@@ -151,7 +151,7 @@
 .channel-page__list-wrap {
   padding-top: 1rem;
   overflow: auto;
-  // height: calc(100vh - 200px);
+  height: calc(100vh - 200px);
 
   &::-webkit-scrollbar {
     display: none;
