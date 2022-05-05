@@ -25,3 +25,7 @@ export const getMoreMessages = ({ offset, ConversationId }) => {
     },
   });
 };
+
+export const hideConversation = ({ conversationId }) => {
+  return httpClient.put(`private/conversation/${conversationId}`);
+};

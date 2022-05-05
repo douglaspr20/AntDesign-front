@@ -12,6 +12,7 @@ import {
   readMessages,
   getMoreMessages,
   getConversation,
+  hideConversation,
 } from "../../api";
 
 export function* createConversationSaga({ payload }) {
@@ -237,6 +238,37 @@ export function* getMoreMessagesSaga({ payload }) {
   }
 }
 
+export function* hideConversationSaga({ payload }) {
+  try {
+    const response = yield call(hideConversation, { ...payload });
+    if (response.status === 200) {
+      const selectAllState = (state) => state;
+      const allState = yield select(selectAllState);
+      const conversations = allState.conversation.get("conversations");
+      const conversationsData = conversations.map((conversation) => {
+        if (conversation.id === response.data.conversation.id) {
+          return {
+            ...response.data.conversation,
+            messages: [...conversation.messages],
+            members: [...conversation.members],
+          };
+        }
+        return {
+          ...conversation,
+        };
+      });
+
+      yield put(conversationActions.setConversations(conversationsData));
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchSession() {
   yield takeLatest(
     conversationConstants.CREATE_CONVERSATION,
@@ -251,6 +283,10 @@ function* watchSession() {
   yield takeLatest(
     conversationConstants.GET_MORE_MESSAGES,
     getMoreMessagesSaga
+  );
+  yield takeLatest(
+    conversationConstants.HIDE_CONVERSATION,
+    hideConversationSaga
   );
 }
 
