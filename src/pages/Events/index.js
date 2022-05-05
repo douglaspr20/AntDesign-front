@@ -317,7 +317,7 @@ const EventsPage = ({
     }
 
     if (isEmpty(params)) {
-      const eventDate = moment(item.date2, "YYYY.MM.DD h:mm a");
+      const eventDate = moment(item.startAndEndTimes[(item.startAndEndTimes.length -1)].endTime, "YYYY.MM.DD h:mm a");
       flag = eventDate.isAfter(moment());
     }
 
