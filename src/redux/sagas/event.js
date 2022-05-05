@@ -89,7 +89,7 @@ export function* getAllEventsSaga() {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else {
-      const { msg } = error.response.data || {};
+      const { msg } = error?.response.data || {};
       yield put(eventActions.setError(msg));
       notification.error({
         message: "Cannot read all the events.",
