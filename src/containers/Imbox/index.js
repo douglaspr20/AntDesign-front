@@ -6,6 +6,7 @@ import { Avatar, Badge, Popover } from "antd";
 import { FileImageOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import {
+  createConversartion,
   readMessages,
   setCurrentConversations,
 } from "redux/actions/conversation-actions";
@@ -20,6 +21,7 @@ const Imbox = ({
   conversations,
   currentConversations,
   userProfile,
+  createConversartion,
   readMessages,
   setCurrentConversations,
 }) => {
@@ -63,6 +65,11 @@ const Imbox = ({
       )
     ) {
       readMessages(userProfile.id, conversation.id);
+    }
+
+    if (!conversation.showConversation) {
+      const membersId = conversation.members.map((member) => member.id);
+      return createConversartion(membersId);
     }
 
     if (
@@ -223,6 +230,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  createConversartion,
   readMessages,
   setCurrentConversations,
 };
