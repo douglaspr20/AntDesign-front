@@ -206,6 +206,9 @@ class App extends Component {
   }
 
   componentWillUnmount() {
+    SocketIO.emit(SOCKET_EVENT_TYPE.USER_OFFLINE, {
+      id: this.props.userProfile.id,
+    });
     SocketIO.off();
   }
 

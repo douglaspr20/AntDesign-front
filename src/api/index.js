@@ -213,6 +213,7 @@ import {
   readMessages,
   getMoreMessages,
   getConversation,
+  hideConversation,
 } from "./module/conversation";
 
 import {
@@ -451,5 +452,6 @@ export {
   deleteCouncilConversationLike,
   searchUserForCouncilEventPanelist,
   upsertCouncilEventPanelComment,
-  createAdvertisementClick
+  createAdvertisementClick,
+  hideConversation,
 };

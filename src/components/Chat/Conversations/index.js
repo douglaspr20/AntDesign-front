@@ -1,29 +1,23 @@
 import React from "react";
+import { Avatar, Badge } from "antd";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-
-import { Avatar, Badge } from "antd";
+import { hideConversation } from "redux/actions/conversation-actions";
 
 import "./style.scss";
+import { transformNames } from "utils/format";
+import { CloseOutlined } from "@ant-design/icons";
 
 const Conversation = ({
   user,
   conversation,
   handleConversation,
   userProfile,
+  hideConversation,
 }) => {
   const messagesNotViewed = conversation.messages.filter(
     (message) => !message?.viewedUser?.includes(userProfile.id)
   ).length;
-
-  const transformNames = (name) => {
-    const index = name.indexOf(" ");
-
-    if (index !== -1) {
-      return name.slice(0, index);
-    }
-    return name;
-  };
 
   return (
     <div className="conversation-container">
@@ -53,6 +47,15 @@ const Conversation = ({
           </p>
         </div>
       </Badge>
+
+      <CloseOutlined
+        style={{
+          position: "absolute",
+          right: "20px",
+          top: "5px",
+        }}
+        onClick={() => hideConversation(conversation.id)}
+      />
     </div>
   );
 };
@@ -60,5 +63,8 @@ const Conversation = ({
 const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
 });
+const mapDispatchToProps = {
+  hideConversation,
+};
 
-export default connect(mapStateToProps)(Conversation);
+export default connect(mapStateToProps, mapDispatchToProps)(Conversation);

@@ -24,7 +24,6 @@ const Chat = ({
   setCurrentConversations,
   getConversations,
 }) => {
-
   useEffect(() => {
     getConversations(userProfile.id);
   }, [getConversations, userProfile]);
@@ -193,6 +192,29 @@ const Chat = ({
           (conversation) => conversation.id === newConversation.id
         );
 
+        if (conversation && newConversation.showConversation === true) {
+          setConversations(
+            conversations.map((conversation) => {
+              if (conversation.id === newConversation.id) {
+                return {
+                  ...conversation,
+                  showConversation: newConversation.showConversation,
+                };
+              }
+              return {
+                ...conversation,
+              };
+            })
+          );
+          return setCurrentConversations([
+            ...currentConversations,
+            {
+              ...conversation,
+              showConversation: newConversation.showConversation,
+            },
+          ]);
+        }
+
         if (!conversation) {
           setConversations([
             ...conversations,
@@ -257,20 +279,22 @@ const Chat = ({
 
       <div className={`conversations`}>
         <>
-          {conversations.map((conversation) => {
-            const otherMember = conversation.members.find(
-              (member) => member.id !== userProfile.id
-            );
+          {conversations
+            .filter((conversation) => conversation.showConversation === true)
+            .map((conversation) => {
+              const otherMember = conversation.members.find(
+                (member) => member.id !== userProfile.id
+              );
 
-            return (
-              <Conversation
-                key={conversation.id}
-                user={otherMember}
-                conversation={conversation}
-                handleConversation={handleConversation}
-              />
-            );
-          })}
+              return (
+                <Conversation
+                  key={conversation.id}
+                  user={otherMember}
+                  conversation={conversation}
+                  handleConversation={handleConversation}
+                />
+              );
+            })}
         </>
       </div>
     </>

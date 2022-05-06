@@ -22,6 +22,7 @@ import {
   setVisibleProfileUser,
 } from "redux/actions/home-actions";
 import { setCollapsed } from "redux/actions/env-actions";
+import Imbox from "containers/Imbox";
 import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
@@ -421,6 +422,7 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
+          <Imbox className="main-header-imbox"/>
           <Notification className="main-header-notification" />
           <ProfilePopupMenu showPremiumAlert={this.showPremiumAlert}>
             <div className="user-avatar">
