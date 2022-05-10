@@ -157,10 +157,10 @@ const CouncilEvents = ({
       panelName: values.panelName,
       startDate: values.panelStartAndEndDate[0]
         .utcOffset(timezone.offset, true)
-        .set({ second: 0, millisecond: 0 }),
+        .startOf('hour'),
       endDate: values.panelStartAndEndDate[1]
         .utcOffset(timezone.offset, true)
-        .set({ second: 0, millisecond: 0 }),
+        .startOf('hour'),
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
@@ -172,10 +172,10 @@ const CouncilEvents = ({
         ...panel,
         startDate: panel.panelStartAndEndDate[0]
           .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
+          .startOf('hour'),
         endDate: panel.panelStartAndEndDate[1]
           .utcOffset(timezone.offset, true)
-          .set({ second: 0, millisecond: 0 }),
+          .startOf('hour')
       };
     });
     panels = [panel, ...panels];
@@ -378,7 +378,7 @@ const CouncilEvents = ({
             <RangePicker
               style={{ width: "100%" }}
               size="large"
-              disabledDate={disableDate}
+              //disabledDate={disableDate}
             />
           </Form.Item>
           <Form.Item
@@ -442,7 +442,7 @@ const CouncilEvents = ({
             rules={[{ required: true }]}
           >
             <RangePicker
-              disabledDate={(date) => disableDate(date, true)}
+              //disabledDate={(date) => disableDate(date, true)}
               style={{ width: "100%" }}
               size="large"
               format="YYYY-MM-DD HH:mm"
