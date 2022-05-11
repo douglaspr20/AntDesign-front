@@ -59,3 +59,4 @@ export { default as UploadResumeModal } from "./UploadResumeModal";
 export { default as Chat } from "./Chat";
 export { default as BusinessDocumentsCard } from "./BusinessDocumentsCards";
 export { default as HelmetMetaData } from "./Seo";
+export { default as BlogCard } from "./BlogCard";

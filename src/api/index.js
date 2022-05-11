@@ -260,6 +260,14 @@ import {
 
 import { createAdvertisementClick } from "./module/advertisement";
 
+import {
+  createBlogPost,
+  getAllBlogPost,
+  getBlogPostByChannelId,
+  updateBlogPost,
+  deleteBlogPost,
+} from "./module/blogPost";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -454,4 +462,9 @@ export {
   upsertCouncilEventPanelComment,
   createAdvertisementClick,
   hideConversation,
+  createBlogPost,
+  getAllBlogPost,
+  getBlogPostByChannelId,
+  updateBlogPost,
+  deleteBlogPost,
 };

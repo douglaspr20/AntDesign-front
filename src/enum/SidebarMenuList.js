@@ -5,7 +5,7 @@ import IconLibrary from "images/icon-library.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
 // import IconMedal from "images/icon-medal.svg";
-// import IconReader from "images/icon-reader.svg";
+import IconReader from "images/icon-reader.svg";
 import IconStar from "images/icon-star.svg";
 // import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
@@ -40,6 +40,11 @@ export default {
       label: "Channels",
       icon: IconTvOutline,
       url: INTERNAL_LINKS.CHANNELS,
+    },
+    {
+      label: "Blogs",
+      icon: IconReader,
+      url: INTERNAL_LINKS.BLOGS,
     },
     {
       label: "ProjectX",

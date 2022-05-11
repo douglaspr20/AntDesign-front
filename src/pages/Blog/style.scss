@@ -1,0 +1,6 @@
+@import "../../styles/main.scss";
+
+.blog-page{
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+}

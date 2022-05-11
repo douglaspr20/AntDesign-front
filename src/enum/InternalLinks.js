@@ -16,7 +16,7 @@ export default {
   READ_LATER: "/read-later",
   ARTICLE: "/article",
   CERTIFICATE: "/certificate",
-  EVENT_CERTIFICATE: '/event-certificate',
+  EVENT_CERTIFICATE: "/event-certificate",
   MICRO_CLASS_CERTIFICATE: "/micro-class-certificate",
   JOURNEY: "/journey",
   HEART: "/heart",
@@ -57,4 +57,5 @@ export default {
   AD_EVENTS_PREVIEW: "/ad/events/preview",
   AD_CONFERENCE_LIBRARY_PREVIEW: "/ad/conference-library/preview",
   SEARCH: "/search",
+  BLOGS: "/blogs",
 };
