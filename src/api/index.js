@@ -264,6 +264,7 @@ import {
   createBlogPost,
   getAllBlogPost,
   getBlogPostByChannelId,
+  getBlogPost,
   updateBlogPost,
   deleteBlogPost,
 } from "./module/blogPost";
@@ -465,6 +466,7 @@ export {
   createBlogPost,
   getAllBlogPost,
   getBlogPostByChannelId,
+  getBlogPost,
   updateBlogPost,
   deleteBlogPost,
 };

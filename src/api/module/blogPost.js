@@ -11,6 +11,10 @@ export const getBlogPostByChannelId = ({ ChannelId }) => {
   return httpClient.get(`private/blogpost/${ChannelId}`);
 };
 
+export const getBlogPost = (blogPostId) => {
+  return httpClient.get(`private/blogpost/blog/${blogPostId}`);
+};
+
 export const updateBlogPost = ({ blogPostId, data }) => {
   return httpClient.put(`private/blogpost/${blogPostId}`, {
     ...data,

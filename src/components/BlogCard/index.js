@@ -98,7 +98,7 @@ BlogCard.propTypes = {
   categories: PropTypes.array,
   type: PropTypes.string,
   onAdd: PropTypes.func,
-  date: PropTypes.func,
+  date: PropTypes.string,
   isOwner: PropTypes.bool,
   onMenuClick: PropTypes.func,
 };
@@ -110,7 +110,7 @@ BlogCard.defaultProps = {
   onAdd: () => {},
   categories: [],
   isOwner: false,
-  date: `${moment()}`,
+  date: `${moment().format("MM/YY/YYYY")}`,
   onMenuClick: () => {},
 };
 

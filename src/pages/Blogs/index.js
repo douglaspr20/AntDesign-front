@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Col, Row } from "antd";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
@@ -8,15 +8,15 @@ import BlogsFilterPanel from "./BlogsFilterPanel";
 import FilterDrawer from "./FilterDrawer";
 import BlogCard from "components/BlogCard";
 
-import { numberWithCommas } from "utils/format";
+// import { numberWithCommas } from "utils/format";
 
 import "./style.scss";
 
 const Blogs = ({ allBlogsPost, getAllBlogPosts }) => {
-  const [filters, setFilters] = useState({});
+  // const [filters, setFilters] = useState({});
 
   const onFilterChange = (filter) => {
-    setFilters(filter);
+    // setFilters(filter);
     // getFirstChannelList({ filter });
   };
 
