@@ -126,7 +126,7 @@ const CouncilConversationsCard = ({
 
                   return (
                     <div
-                      key={category.title}
+                      key={category ? category?.title : ""}
                       style={{ marginRight: "1rem", color: "dodgerblue" }}
                     >
                       #{category.title}
