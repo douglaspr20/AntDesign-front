@@ -16,7 +16,7 @@ const CouncilEventPanelCommentForm = ({
 }) => {
   const [form] = Form.useForm();
 
-  const comments = councilEventPanelComments.map((comment) => {
+  const comments = councilEventPanelComments?.map((comment) => {
     const user = comment.CouncilEventPanelist.User;
     return {
       author: `${user.firstName} ${user.lastName}`,
@@ -64,11 +64,17 @@ const CouncilEventPanelCommentForm = ({
 
   return (
     <>
-      <div>{comments.length > 0 && commentList}</div>
-      <Comment
-        avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
-        content={commentForm}
-      />
+      {comments?.length > 0 && commentList ? 
+        <div>
+          <div>{comments?.length > 0 && commentList}</div>
+          <Comment
+            avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
+            content={commentForm}
+          />
+        </div> : <Comment
+            avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
+            content={commentForm}
+          />}
     </>
   );
 };

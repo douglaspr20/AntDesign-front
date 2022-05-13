@@ -24,9 +24,7 @@ export function* upsertCouncilEventSaga({ payload }) {
     const isEdit = payload.councilEvent.id;
 
     if (response.status === 200) {
-      notification.success({
-        message: "Success",
-      });
+
 
       yield put(
         councilEventActions.setUpsertCouncilEvent(
@@ -34,6 +32,14 @@ export function* upsertCouncilEventSaga({ payload }) {
           isEdit
         )
       );
+      notification.success({
+        message: "Success",
+      });
+      
+      if (payload.callback) {
+   
+        payload.callback();
+      }
     }
   } catch (err) {
     console.log(err.msg);

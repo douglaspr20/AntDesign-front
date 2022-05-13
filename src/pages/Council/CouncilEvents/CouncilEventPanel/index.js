@@ -233,14 +233,14 @@ const CouncilEventPanel = ({
 
   return (
     <div style={{ marginTop: "1rem", background: "#f2f2f2", padding: "1rem" }}>
-      <div className="d-flex justify-between" key={panel.panelName}>
+      <div className="d-flex justify-between" key={panel?.panelName}>
         <div>
           <div>
-            <b>Panel</b>: {panel.panelName}
+            <b>Panel</b>: {panel?.panelName}
           </div>
           <div>
             <b>Panel Date</b>:
-            {` ${moment.tz(panel.startDate, timezone.utc[0]).format("LL")} ${
+            {` ${moment.tz(panel?.startDate, timezone.utc[0]).format("LL")} ${
               timezone.abbr
             }`}
           </div>

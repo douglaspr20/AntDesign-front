@@ -16,6 +16,7 @@ import {
   Space,
   Popconfirm,
   Tooltip,
+  notification
 } from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
@@ -53,6 +54,7 @@ const CouncilEvents = ({
   const [numOfPanels, setNumOfPanels] = useState(1);
   const [status, setStatus] = useState(null);
   const [event, setEvent] = useState({});
+  const [edit, setEdit] = useState(false)
 
   const [form] = Form.useForm();
 
@@ -84,7 +86,7 @@ const CouncilEvents = ({
   }, [allCouncilEvents]);
 
   useEffect(() => {
-    if (!isEmpty(event)) {
+    if (!isEmpty(event) && event.CouncilEventPanels !== undefined) {
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
 
@@ -132,11 +134,10 @@ const CouncilEvents = ({
 
   const disableDate = (date, isPanel = false) => {
     const startAndEndDate = isPanel && form.getFieldValue(["startAndEndDate"]);
-
+    
     return (
       moment(date).isBefore(moment()) ||
-      (isPanel &&
-        moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
+      (isPanel && moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
     );
   };
 
@@ -153,6 +154,7 @@ const CouncilEvents = ({
 
   const handleOnFinish = (values) => {
     const timezone = TimezoneList.find((tz) => tz.value === values.timezone);
+
     const panel = {
       panelName: values.panelName,
       startDate: values.panelStartAndEndDate[0]
@@ -164,7 +166,7 @@ const CouncilEvents = ({
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
-      councilEventId: event.id || null,
+      councilEventId: event ? event.id : null,
     };
     let panels = values.panels || [];
     panels = panels.map((panel) => {
@@ -182,7 +184,7 @@ const CouncilEvents = ({
 
     const transformedValues = {
       ...values,
-      id: event.id || null,
+      id: event ? event.id : null,
       startDate: values.startAndEndDate[0]
         .startOf("day")
         .utcOffset(timezone.offset, true)
@@ -193,12 +195,24 @@ const CouncilEvents = ({
         .set({ second: 0, millisecond: 0 }),
       panels,
       status,
+      isEdit: edit,
+      idEvent: event?.id
     };
 
-    upsertCouncilEvent(transformedValues);
-    form.resetFields();
-    setEvent({});
-    setIsDrawerOpen(false);
+    upsertCouncilEvent(transformedValues, (error) => {
+      if (error) {
+        notification.error({
+          message: "Error",
+          description: "Event was not deleted.",
+        });
+      } else {
+        form.resetFields();
+        setEvent({});
+        setIsDrawerOpen(false);
+        setEdit(false)
+        getCouncilEvents();
+      }
+    });
   };
 
   const handleSubmit = (status) => {
@@ -207,6 +221,8 @@ const CouncilEvents = ({
   };
 
   const handleEdit = (eve) => {
+    console.log(eve)
+    setEdit(true)
     setEvent(eve);
     setLimit(event.numberOfPanels);
     setNumOfPanels(event.numberOfPanels);
@@ -224,7 +240,7 @@ const CouncilEvents = ({
     deleteCouncilEvent(id);
   };
 
-  const displayPanels = event.CouncilEventPanels?.map((panel) => {
+  const displayPanels = event?.CouncilEventPanels?.map((panel) => {
     return (
       <CouncilEventPanel
         key={panel.id}
@@ -346,6 +362,7 @@ const CouncilEvents = ({
             onClick={() => {
               setIsDrawerOpen(true); 
               form.resetFields();
+              setEdit(false)
             }}
           >
             <PlusOutlined style={{ fontSize: "2rem" }} />
@@ -358,6 +375,7 @@ const CouncilEvents = ({
           setEvent({});
           setIsDrawerOpen(false);
           form.resetFields();
+          setEdit(false)
         }}
         visible={isDrawerOpen}
         width={520}
@@ -378,7 +396,7 @@ const CouncilEvents = ({
             <RangePicker
               style={{ width: "100%" }}
               size="large"
-              //disabledDate={disableDate}
+              disabledDate={disableDate}
             />
           </Form.Item>
           <Form.Item
@@ -406,7 +424,12 @@ const CouncilEvents = ({
             name="maxNumberOfPanelsUsersCanJoin"
             rules={[{ required: true }]}
           >
-            <CustomInput style={{ width: "100%" }} />
+            <InputNumber 
+              size="large"
+              min="1"
+              style={{ width: "100%" }}
+              onChange={limitOnChange}
+             />
           </Form.Item>
           <Form.Item
             label="Timezone"
@@ -442,7 +465,7 @@ const CouncilEvents = ({
             rules={[{ required: true }]}
           >
             <RangePicker
-              //disabledDate={(date) => disableDate(date, true)}
+              disabledDate={(date) => disableDate(date, true)}
               style={{ width: "100%" }}
               size="large"
               format="YYYY-MM-DD HH:mm"
@@ -564,19 +587,19 @@ const CouncilEvents = ({
       >
         <div style={{ padding: "1rem" }}>
           <Space direction="vertical">
-            <h2>Event Name: {event.eventName}</h2>
+            <h2>Event Name: {event?.eventName}</h2>
             <h4>
               Date:{" "}
               {moment
-                .tz(event.startDate, !isEmpty(timezone) && timezone?.utc[0])
+                .tz(event?.startDate, !isEmpty(timezone) && timezone?.utc[0])
                 .format("LL")}{" "}
               -{" "}
               {moment
-                .tz(event.endDate, !isEmpty(timezone) && timezone?.utc[0])
+                .tz(event?.endDate, !isEmpty(timezone) && timezone?.utc[0])
                 .format("LL")}{" "}
               ({timezone.abbr})
             </h4>
-            <h4>Description: {event.description}</h4>
+            <h4>Description: {event?.description}</h4>
           </Space>
         </div>
         <div>
