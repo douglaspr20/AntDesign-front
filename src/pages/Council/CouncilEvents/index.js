@@ -221,7 +221,6 @@ const CouncilEvents = ({
   };
 
   const handleEdit = (eve) => {
-    console.log(eve)
     setEdit(true)
     setEvent(eve);
     setLimit(event.numberOfPanels);
