@@ -53,6 +53,8 @@ const Channel = ({
     }
   };
 
+  console.log(isChannelOwner);
+
   const TabData = [
     {
       title: "Resources",
