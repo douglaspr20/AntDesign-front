@@ -60,8 +60,6 @@ const Blogs = ({
           <div className="blogs-list">
             {blogsPosts?.map((blogPost) => (
               <BlogCard
-                // onMenuClick={handleEditOrDelete}
-                // isOwner={isOwner}
                 key={blogPost.id}
                 id={blogPost.id}
                 image={blogPost.imageUrl}
