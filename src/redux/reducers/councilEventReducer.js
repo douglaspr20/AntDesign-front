@@ -89,15 +89,21 @@ export const reducers = {
         (panel) =>
           panel.id === payload.councilEventPanelComment.CouncilEventPanelId
       );
-
       if (panelIndex >= 0) {
-        newAllCouncilEvents[eventIndex].CouncilEventPanels[
-          panelIndex
-        ].CouncilEventPanelComments = [
-          ...newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex]
-            .CouncilEventPanelComments,
-          payload.councilEventPanelComment,
-        ];
+        if(newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex].CouncilEventPanelComments !== undefined){
+          newAllCouncilEvents[eventIndex].CouncilEventPanels[
+            panelIndex
+          ].CouncilEventPanelComments = [
+            ...newAllCouncilEvents[eventIndex].CouncilEventPanels[panelIndex].CouncilEventPanelComments,
+            payload.councilEventPanelComment,
+          ];
+        }else{
+          newAllCouncilEvents[eventIndex].CouncilEventPanels[
+            panelIndex
+          ].CouncilEventPanelComments = [
+            payload.councilEventPanelComment,
+          ];
+        }
       }
     }
 

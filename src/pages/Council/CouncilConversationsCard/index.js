@@ -125,11 +125,11 @@ const CouncilConversationsCard = ({
                   }
 
                   return (
-                    <div
-                      key={category.title}
+                    <div 
+                      key={category ? category?.title : ""}
                       style={{ marginRight: "1rem", color: "dodgerblue" }}
                     >
-                      #{category.title}
+                      #{category ? category?.title : ""}
                     </div>
                   );
                 })}
