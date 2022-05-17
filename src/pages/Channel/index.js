@@ -53,7 +53,9 @@ const Channel = ({
     }
   };
 
-  console.log(isChannelOwner);
+  console.log(userProfile.role === USER_ROLES.CHANNEL_ADMIN);
+  console.log(!!userProfile.channel);
+  console.log(userProfile.channel === selectedChannel.id);
 
   const TabData = [
     {
