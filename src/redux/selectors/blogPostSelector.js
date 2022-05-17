@@ -5,11 +5,11 @@ const blogPostDataSelector = (state) => state.blogPost;
 const resultSelector = createSelector(blogPostDataSelector, (payload) => {
   return {
     loading: payload.get("loading"),
-    allBlogsPost: payload.get("allBlogsPost"),
+    blogsPosts: payload.get("blogsPosts"),
     blogsPostByChannel: payload.get("blogsPostByChannel"),
     error: payload.get("error"),
-    countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    totalBlogPosts: payload.get("totalBlogPosts"),
   };
 });
 

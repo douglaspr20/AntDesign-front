@@ -11,7 +11,7 @@ import { logout } from "../actions/auth-actions";
 import {
   createBlogPost,
   getBlogPostByChannelId,
-  getAllBlogPost,
+  searchBlogPost,
   updateBlogPost,
   deleteBlogPost,
 } from "../../api";
@@ -39,14 +39,19 @@ export function* createBlogPostSaga({ payload }) {
   }
 }
 
-export function* getAllBlogPostSaga({ payload }) {
+export function* searchBlogPostsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(getAllBlogPost, { ...payload });
+    const response = yield call(searchBlogPost, { ...payload });
 
     if (response.status === 200) {
-      yield put(blogPostAction.setAllBlogPosts(response.data.allBlogsPost));
+      yield put(
+        blogPostAction.setBlogPosts(
+          response.data.blogsPosts,
+          response.data.count
+        )
+      );
     }
   } catch (error) {
     console.log(error);
@@ -147,7 +152,7 @@ export function* deleteBlogPostSaga({ payload }) {
 
 function* watchChannel() {
   yield takeLatest(blogPostConstants.CREATE_BLOG_POST, createBlogPostSaga);
-  yield takeLatest(blogPostConstants.GET_ALL_BLOG_POSTS, getAllBlogPostSaga);
+  yield takeLatest(blogPostConstants.SEARCH_BLOG_POSTS, searchBlogPostsSaga);
   yield takeLatest(
     blogPostConstants.GET_BLOGS_POSTS_BY_CHANNEL,
     getBlogPostByChannelIdSaga

@@ -262,7 +262,7 @@ import { createAdvertisementClick } from "./module/advertisement";
 
 import {
   createBlogPost,
-  getAllBlogPost,
+  searchBlogPost,
   getBlogPostByChannelId,
   getBlogPost,
   updateBlogPost,
@@ -464,7 +464,7 @@ export {
   createAdvertisementClick,
   hideConversation,
   createBlogPost,
-  getAllBlogPost,
+  searchBlogPost,
   getBlogPostByChannelId,
   getBlogPost,
   updateBlogPost,

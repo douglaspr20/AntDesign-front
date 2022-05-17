@@ -3,8 +3,17 @@ export const createBlogPost = ({ blogpost }) => {
   return httpClient.post(`private/blogpost`, { ...blogpost });
 };
 
-export const getAllBlogPost = () => {
-  return httpClient.get(`private/blogpost`);
+export const searchBlogPost = ({ filters = {}, page }) => {
+  let params = {
+    ...filters,
+    page: page || 1,
+  };
+
+  const parsedFilter = Object.keys(params)
+    .map((item) => `${item}=${params[item]}`)
+    .join("&");
+
+  return httpClient.get(`private/blogpost?${parsedFilter}`);
 };
 
 export const getBlogPostByChannelId = ({ ChannelId }) => {

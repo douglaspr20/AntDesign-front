@@ -9,9 +9,15 @@ export const reducers = {
       blogsPostByChannel: payload.blogsPostByChannel,
     });
   },
-  [blogPostConstants.SET_ALL_BLOG_POSTS]: (state, { payload }) => {
+  [blogPostConstants.SET_BLOG_POSTS]: (state, { payload }) => {
     return state.merge({
-      allBlogsPost: payload.allBlogsPost,
+      blogsPosts: payload.blogsPosts,
+      totalBlogPosts: payload.count,
+    });
+  },
+  [blogPostConstants.SET_CURRENT_PAGE]: (state, { payload }) => {
+    return state.merge({
+      currentPage: payload.currentPage,
     });
   },
 };
@@ -20,10 +26,10 @@ export const initialState = () =>
   Map({
     loading: false,
     error: null,
-    allBlogsPost: [],
+    blogsPosts: [],
     blogsPostByChannel: [],
-    countOfResults: 0,
     currentPage: 1,
+    totalBlogPosts: 0,
   });
 
 export default handleActions(reducers, initialState());

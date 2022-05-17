@@ -1,28 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Col, Row } from "antd";
+import { Col, Pagination, Row } from "antd";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
-import { getAllBlogPosts } from "redux/actions/blog-post-action";
+import {
+  searchBlogPosts,
+  setCurrentPage,
+} from "redux/actions/blog-post-action";
 import BlogsFilterPanel from "./BlogsFilterPanel";
 import FilterDrawer from "./FilterDrawer";
+import Emitter from "services/emitter";
 import BlogCard from "components/BlogCard";
 
-// import { numberWithCommas } from "utils/format";
-
 import "./style.scss";
+import { EVENT_TYPES } from "enum";
 
-const Blogs = ({ allBlogsPost, getAllBlogPosts }) => {
-  // const [filters, setFilters] = useState({});
+const Blogs = ({
+  blogsPosts,
+  searchBlogPosts,
+  currentPage,
+  setCurrentPage,
+  totalBlogPosts,
+}) => {
+  const [filters, setFilters] = useState({});
 
   const onFilterChange = (filter) => {
-    // setFilters(filter);
-    // getFirstChannelList({ filter });
+    setFilters(filter);
+  };
+
+  const handlePaginate = (value) => {
+    setCurrentPage(value);
+  };
+
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_BLOGS_POST_FILTER_PANEL);
   };
 
   useEffect(() => {
-    getAllBlogPosts();
-  }, [getAllBlogPosts]);
+    searchBlogPosts(filters, currentPage);
+  }, [searchBlogPosts, filters, currentPage]);
 
   return (
     <div className="blogs-page">
@@ -34,32 +50,15 @@ const Blogs = ({ allBlogsPost, getAllBlogPosts }) => {
           <Row>
             <Col span={24}>
               <div className="search-results-container-mobile-header">
-                <h3
-                  className="filters-btn"
-                  // onClick={() => showFilterPanel()}
-                >
+                <h3 className="filters-btn" onClick={() => showFilterPanel()}>
                   Filters
                 </h3>
-                <h3>
-                  {/* {allblogs.length} result
-                {allblogs.length > 1 ? "s" : ""} */}
-                </h3>
               </div>
             </Col>
           </Row>
-          <Row>
-            <Col span={24}>
-              <div className="search-results-container-header d-flex justify-between items-center">
-                <h3>
-                  {/* {`${numberWithCommas(countOfResults)} result${
-                countOfResults > 1 ? "s" : ""
-              }`} */}
-                </h3>
-              </div>
-            </Col>
-          </Row>
+
           <div className="blogs-list">
-            {allBlogsPost.map((blogPost) => (
+            {blogsPosts?.map((blogPost) => (
               <BlogCard
                 // onMenuClick={handleEditOrDelete}
                 // isOwner={isOwner}
@@ -73,23 +72,19 @@ const Blogs = ({ allBlogsPost, getAllBlogPosts }) => {
               />
             ))}
           </div>
-          {/* {currentPage * SETTINGS.MAX_SEARCH_ROW_NUM < countOfResults && (
-          <div className="search-results-container-footer d-flex justify-center items-center">
-            {loading && (
-              <div className="blogs-page-loading-more">
-                <img src={IconLoadingMore} alt="loading-more-img" />
-              </div>
-            )}
-            {!loading && (
-              <CustomButton
-                text="Show more"
-                type="primary outlined"
-                size="lg"
-                onClick={onShowMore}
-              />
-            )}
+
+          <div className="blogs-pagination">
+            <Pagination
+              defaultPageSize={20}
+              defaultCurrent={1}
+              current={currentPage}
+              pageSize={20}
+              showSizeChanger={false}
+              pageSizeOptions={[]}
+              total={totalBlogPosts > 0 ? totalBlogPosts : totalBlogPosts + 1}
+              onChange={(value) => handlePaginate(value)}
+            />
           </div>
-        )} */}
         </div>
       </div>
     </div>
@@ -98,11 +93,14 @@ const Blogs = ({ allBlogsPost, getAllBlogPosts }) => {
 
 const mapStateToProps = (state) => ({
   allCategories: categorySelector(state).categories,
-  allBlogsPost: blogPostSelector(state).allBlogsPost,
+  currentPage: blogPostSelector(state).currentPage,
+  blogsPosts: blogPostSelector(state).blogsPosts,
+  totalBlogPosts: blogPostSelector(state).totalBlogPosts,
 });
 
 const mapDispatchToProps = {
-  getAllBlogPosts,
+  searchBlogPosts,
+  setCurrentPage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blogs);

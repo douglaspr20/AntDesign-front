@@ -1,17 +1,19 @@
 import { createAction } from "redux-actions";
 
 const CREATE_BLOG_POST = "CREATE_BLOG_POST";
-const GET_ALL_BLOG_POSTS = "GET_ALL_BLOG_POSTS";
-const SET_ALL_BLOG_POSTS = "SET_ALL_BLOG_POSTS";
+const SEARCH_BLOG_POSTS = "SEARCH_BLOG_POSTS";
+const SET_BLOG_POSTS = "SET_BLOG_POSTS";
 const GET_BLOGS_POSTS_BY_CHANNEL = "GET_BLOGS_POSTS_BY_CHANNEL";
 const SET_BLOGS_POSTS_BY_CHANNEL = "SET_BLOGS_POSTS_BY_CHANNEL";
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const UPDATE_BLOG_POST = "UPDATE_BLOG_POST";
 const DELETE_BLOG_POST = "DELETE_BLOG_POST";
 
 export const constants = {
   CREATE_BLOG_POST,
-  GET_ALL_BLOG_POSTS,
-  SET_ALL_BLOG_POSTS,
+  SEARCH_BLOG_POSTS,
+  SET_BLOG_POSTS,
+  SET_CURRENT_PAGE,
   GET_BLOGS_POSTS_BY_CHANNEL,
   SET_BLOGS_POSTS_BY_CHANNEL,
   UPDATE_BLOG_POST,
@@ -28,12 +30,22 @@ export const createBlogPost = createAction(
   })
 );
 
-export const getAllBlogPosts = createAction(GET_ALL_BLOG_POSTS);
-
-export const setAllBlogPosts = createAction(
-  SET_ALL_BLOG_POSTS,
-  (allBlogsPost) => ({ allBlogsPost })
+export const searchBlogPosts = createAction(
+  SEARCH_BLOG_POSTS,
+  (filters, page) => ({ filters, page })
 );
+
+export const setBlogPosts = createAction(
+  SET_BLOG_POSTS,
+  (blogsPosts, count) => ({
+    blogsPosts,
+    count,
+  })
+);
+
+export const setCurrentPage = createAction(SET_CURRENT_PAGE, (currentPage) => ({
+  currentPage,
+}));
 
 export const getBlogsPostsByChannel = createAction(
   GET_BLOGS_POSTS_BY_CHANNEL,
@@ -60,8 +72,9 @@ export const deleteBlogPost = createAction(
 
 export const actions = {
   createBlogPost,
-  getAllBlogPosts,
-  setAllBlogPosts,
+  searchBlogPosts,
+  setBlogPosts,
+  setCurrentPage,
   getBlogsPostsByChannel,
   setBlogsPostsByChannel,
   updateBlogPost,

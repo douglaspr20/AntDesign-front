@@ -21,9 +21,9 @@ const BlogsFilterPanel = ({ title = "Filters", allCategories, onChange }) => {
   };
 
   return (
-    <div className="channels-filter-panel">
+    <div className="blogs-filter-panel">
       <h2 className="font-regular">{title}</h2>
-      <div className="channels-filter-panel-content">
+      <div className="blogs-filter-panel-content">
         <div className="search-filter">
           <h5 className="search-filter-title font-bold">Categories</h5>
           <Checkbox.Group

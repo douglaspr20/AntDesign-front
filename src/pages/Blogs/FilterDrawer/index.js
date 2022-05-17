@@ -39,18 +39,18 @@ const FilterDrawer = ({ allCategories, onChange }) => {
   };
 
   useEffect(() => {
-    Emitter.on(EVENT_TYPES.OPEN_CHANNELS_FILTER_PANEL, () => {
+    Emitter.on(EVENT_TYPES.OPEN_BLOGS_POST_FILTER_PANEL, () => {
       setVisible(true);
     });
 
     return () => {
-      Emitter.off(EVENT_TYPES.OPEN_CHANNELS_FILTER_PANEL);
+      Emitter.off(EVENT_TYPES.OPEN_BLOGS_POST_FILTER_PANEL);
     };
   }, []);
 
   return (
     <CustomDrawer
-      className="channel-filter-drawer"
+      className="blog-filter-drawer"
       title=""
       width={450}
       visible={visible}
@@ -58,14 +58,14 @@ const FilterDrawer = ({ allCategories, onChange }) => {
       onClose={onDrawerClose}
       destroyOnClose={true}
     >
-      <div className="channel-filter-drawer-container">
-        <div className="channel-filter-drawer-header">
+      <div className="blog-filter-drawer-container">
+        <div className="blog-filter-drawer-header">
           <h2>Filters</h2>
           <h2 className="done" onClick={onClickDone}>
             Done
           </h2>
         </div>
-        <div className="channel-filter-drawer-content">
+        <div className="blog-filter-drawer-content">
           <div className="search-filter">
             <h4 className="search-filter-title font-bold">Topics</h4>
             <Checkbox.Group
