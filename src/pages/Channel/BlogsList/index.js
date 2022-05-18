@@ -40,6 +40,8 @@ const BlogList = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
   const [editOrDeleteBlogPost, setEditOrDeleteBlogPost] = useState({});
+  const [summary, setSummary] = useState("");
+
   const { id } = useParams();
   const [blogForm] = Form.useForm();
 
@@ -124,7 +126,9 @@ const BlogList = ({
     getBlogsPostsByChannel(id);
   }, [getBlogsPostsByChannel, id]);
 
-  console.log(blogsPostByChannel);
+  const handleSummary = (value) => {
+    setSummary(value.slice(0, 200));
+  };
 
   return (
     <div className="channel-page__list-wrap">
@@ -162,8 +166,12 @@ const BlogList = ({
               },
             ]}
           >
-            <CustomInput multiple />
+            <CustomInput multiple onChange={handleSummary} />
           </Form.Item>
+
+          <div className="counter">
+            <span>{200 - summary.length} / 200</span>
+          </div>
 
           <Form.Item
             label={<label className="labelFroala">Body</label>}
@@ -185,13 +193,7 @@ const BlogList = ({
           <Form.Item
             name="categories"
             label="Categories"
-            rules={[
-              { required: true, message: "Categories is required." },
-              {
-                max: 5,
-                message: "You can only have a maximum of 5 categories.",
-              },
-            ]}
+            rules={[{ required: true, message: "Categories is required." }]}
           >
             <Checkbox.Group className="d-flex flex-column event-addedit-form-topics">
               {allCategories.map((topic, index) => (
