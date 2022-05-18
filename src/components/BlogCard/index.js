@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
+
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { SpecialtyItem } from "components";
@@ -19,7 +21,7 @@ const BlogCard = ({
   title,
   type,
   onAdd,
-  description,
+  summary,
   image,
   allCategories,
   categories,
@@ -27,10 +29,18 @@ const BlogCard = ({
   isOwner,
   onMenuClick,
 }) => {
+  const location = useLocation();
+
   return (
     <Link
       className={clsx("blog-card", { add: type === CARD_TYPE.ADD })}
-      to={type === CARD_TYPE.ADD ? "#" : `${INTERNAL_LINKS.BLOGS}/${id}`}
+      to={
+        type === CARD_TYPE.ADD
+          ? "#"
+          : location.pathname.includes("channels")
+          ? `${location.pathname}${INTERNAL_LINKS.BLOGS}/${id}`
+          : `${INTERNAL_LINKS.BLOGS}/${id}`
+      }
       onClick={onAdd ? () => onAdd() : () => {}}
     >
       {type === CARD_TYPE.ADD ? (
@@ -49,10 +59,7 @@ const BlogCard = ({
           <div className="blog-card-content">
             <h3 className="blog-card-title">{title}</h3>
             <div className="d-flex items-center">
-              <div
-                className="blog-card-content-description"
-                dangerouslySetInnerHTML={{ __html: description.html }}
-              />
+              <p style={{ color: "#000" }}>{summary}</p>
             </div>
             <div className="blog-card-content-categories">
               {(categories || []).map((item, index) => {
@@ -93,7 +100,7 @@ const BlogCard = ({
 BlogCard.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string,
-  description: PropTypes.object,
+  summary: PropTypes.string,
   image: PropTypes.string,
   categories: PropTypes.array,
   type: PropTypes.string,
@@ -105,7 +112,7 @@ BlogCard.propTypes = {
 
 BlogCard.defaultProps = {
   title: "",
-  description: {},
+  summary: "",
   type: CARD_TYPE.VIEW,
   onAdd: () => {},
   categories: [],

@@ -124,6 +124,8 @@ const BlogList = ({
     getBlogsPostsByChannel(id);
   }, [getBlogsPostsByChannel, id]);
 
+  console.log(blogsPostByChannel);
+
   return (
     <div className="channel-page__list-wrap">
       <CustomModal
@@ -150,6 +152,20 @@ const BlogList = ({
           </Form.Item>
 
           <Form.Item
+            label="Summary"
+            name="summary"
+            rules={[
+              { required: true, message: "Summary is required." },
+              {
+                max: 200,
+                message: "The summary cannot be longer than 200 characters",
+              },
+            ]}
+          >
+            <CustomInput multiple />
+          </Form.Item>
+
+          <Form.Item
             label={<label className="labelFroala">Body</label>}
             name="description"
             rules={[
@@ -169,7 +185,13 @@ const BlogList = ({
           <Form.Item
             name="categories"
             label="Categories"
-            rules={[{ required: true, message: "Categories is required." }]}
+            rules={[
+              { required: true, message: "Categories is required." },
+              {
+                max: 5,
+                message: "You can only have a maximum of 5 categories.",
+              },
+            ]}
           >
             <Checkbox.Group className="d-flex flex-column event-addedit-form-topics">
               {allCategories.map((topic, index) => (
@@ -251,7 +273,7 @@ const BlogList = ({
                 image={blogPost.imageUrl}
                 date={blogPost.createdAt}
                 title={blogPost.title}
-                description={blogPost.description}
+                summary={blogPost.summary}
                 categories={blogPost.categories}
               />
             ))}

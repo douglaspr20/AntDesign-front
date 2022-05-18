@@ -174,6 +174,7 @@ class Content extends Component {
           />
           <PrivateRoute
             path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+            exact
             render={(props) => <ChannelPage {...props} />}
           />
           <PrivateRoute
@@ -414,6 +415,12 @@ class Content extends Component {
             path={INTERNAL_LINKS.BLOGS}
             exact
             render={(props) => <BlogsPage {...props} />}
+          />
+
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.CHANNELS}/:id${INTERNAL_LINKS.BLOGS}/:id`}
+            exact
+            render={(props) => <BlogPage {...props} />}
           />
 
           <PrivateRoute

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Avatar } from "antd";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 import { setLoading } from "redux/actions/home-actions";
 import { SpecialtyItem } from "components";
 import { getBlogPost } from "api";
@@ -15,6 +15,7 @@ import moment from "moment";
 const Blog = ({ setLoading }) => {
   const history = useHistory();
   const { id } = useParams();
+  const location = useLocation();
   const [blog, setBlog] = useState({});
 
   useEffect(() => {
@@ -42,7 +43,17 @@ const Blog = ({ setLoading }) => {
 
   return (
     <div className="blog-page">
-      <div onClick={() => history.goBack()}>
+      <div
+        onClick={() => {
+          if (location.pathname.includes("channels")) {
+            return history.replace({
+              pathname: location.pathname.slice(0, 11),
+              search: `?tab=blogs`,
+            });
+          }
+          history.push("/blogs");
+        }}
+      >
         <div className="blog-page-link">
           <div className="blog-page-link-back">
             <img src={IconBack} alt="icon-back" />
@@ -58,12 +69,7 @@ const Blog = ({ setLoading }) => {
 
           {blog.imageUrl && (
             <div className="blog-page-image">
-              <img
-                src={
-                  "https://cdn.pixabay.com/photo/2022/04/13/01/40/plum-blossoms-7129214_960_720.jpg"
-                }
-                alt={"cover"}
-              />
+              <img src={blog.imageUrl} alt={"cover"} />
             </div>
           )}
 

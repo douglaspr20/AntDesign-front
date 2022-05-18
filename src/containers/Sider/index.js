@@ -36,6 +36,13 @@ class Sider extends Component {
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.CHANNELS}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+          exact
           render={() => <Sidebar />}
         />
         <PrivateRoute
@@ -151,6 +158,12 @@ class Sider extends Component {
         />
         <PrivateRoute
           path={INTERNAL_LINKS.SEARCH}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CHANNELS}/:id${INTERNAL_LINKS.BLOGS}/:id`}
           exact
           render={() => <Sidebar />}
         />

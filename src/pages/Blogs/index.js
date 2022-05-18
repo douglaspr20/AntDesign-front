@@ -65,7 +65,7 @@ const Blogs = ({
                 image={blogPost.imageUrl}
                 date={blogPost.createdAt}
                 title={blogPost.title}
-                description={blogPost.description}
+                summary={blogPost.summary}
                 categories={blogPost.categories}
               />
             ))}

@@ -33,13 +33,23 @@ const Channel = ({
   setFollowChannel,
   unsetFollowChannel,
 }) => {
-  const { search } = useLocation();
+  const { search, pathname } = useLocation();
   const query = new URLSearchParams(search);
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
   const [filter, setFilter] = useState({});
   const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    if (query.get("tab") === "blogs") {
+      setCurrentTab("4");
+      history.replace({
+        pathname: pathname,
+        search: "",
+      });
+    }
+  }, [query, history, pathname]);
 
   const onFilterChange = (values) => {
     setFilter(values);
