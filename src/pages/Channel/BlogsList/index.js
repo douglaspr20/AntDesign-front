@@ -183,7 +183,23 @@ const BlogList = ({
               },
             ]}
           >
-            <FroalaEdit s3Hash={s3Hash} />
+            <FroalaEdit
+              s3Hash={s3Hash}
+              additionalConfig={{
+                placeholderText: "Add a blog...",
+                toolbarButtons: [
+                  "bold",
+                  "italic",
+                  "strikeThrough",
+                  "paragraphFormat",
+                  "align",
+                  "formatOL",
+                  "formatUL",
+                  "indent",
+                  "outdent",
+                ],
+              }}
+            />
           </Form.Item>
 
           <Form.Item name="imageUrl" label="Image">
