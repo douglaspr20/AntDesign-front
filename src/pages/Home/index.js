@@ -113,6 +113,9 @@ const HomePage = ({
     });
   };
 
+  console.log(isAdPreview)
+
+
   const displayAds = hasAdvertisementData &&
     !isEmpty(advertisementsByPage.home) && (
       <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">

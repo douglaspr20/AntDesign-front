@@ -55,6 +55,8 @@ const Advertiser = ({
       title: "ID",
       dataIndex: "id",
       key: "id",
+      align: "center",
+      width:100,
       render: (_, __, index) => {
         return <div>{index + 1}</div>;
       },
@@ -63,33 +65,45 @@ const Advertiser = ({
       title: "Campaign Name",
       dataIndex: "title",
       key: "title",
+      align: "center",
+      width:250,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
+      width:150,
     },
     {
       title: "Page",
       dataIndex: "page",
       key: "page",
+      align: "center",
+      width:150,
     },
     {
       title: "Impressions",
       dataIndex: "impressions",
       key: "impressions",
+      width:150,
+      align: "center",
       render: (_, data) => <div>{data.AdvertisementImpressions.length}</div>,
     },
     {
       title: "Clicks",
       dataIndex: "clicks",
       key: "clicks",
+      width:150,
+      align: "center",
       render: (_, data) => <div>{data.AdvertisementClicks.length}</div>,
     },
     {
       title: "Ad Link",
       dataIndex: "advertisementLink",
       key: "advertisementLink",
+      width:200,
+      align: "center",
       ellipsis: true,
       render: (text) => {
         return (
@@ -103,7 +117,9 @@ const Advertiser = ({
       title: "Ad Content Link",
       dataIndex: "adContentLink",
       key: "adContentLink",
+      width:250,
       ellipsis: true,
+      align: "center",
       render: (text) => {
         return (
           <a href={text} target="_blank" rel="noopener noreferrer">
@@ -116,6 +132,8 @@ const Advertiser = ({
       title: "Start Date",
       dataIndex: "startDate",
       key: "startDate",
+      width:200,
+      align: "center",
       render: (text) => {
         return moment.tz(text, "America/Los_Angeles").format("LL");
       },
@@ -124,27 +142,36 @@ const Advertiser = ({
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
+      width:200,
+      align: "center",
       render: (text) => {
         return moment.tz(text, "America/Los_Angeles").format("LL");
       },
     },
     {
-      title: "Ad Cost Per Day",
+      title: "Total credits",
       dataIndex: "adCostPerDay",
       key: "adCostPerDay",
-      align: "right",
+      align: "center",
+      width:200,
+      render: (text, record) => {
+        return (Number(text) * Number(record.adDurationByDays));
+      },
     },
     {
       title: "Ad Campaign Days",
       dataIndex: "adDurationByDays",
       key: "adDurationByDays",
-      align: "right",
+      align: "center",
+      width:150,
     },
     {
       title: "Ad Preview Link",
       dataIndex: "adPreviewLink",
       key: "adPreviewLink",
+      align:"center",
       ellipsis: true,
+      width:300,
       render: (_, record) => {
         const url = `${process.env.REACT_APP_DOMAIN_URL}/ad/${record.page}/preview/${record.id}`;
         return (
@@ -163,7 +190,25 @@ const Advertiser = ({
       align: "center",
       render: (_, data) => {
         if (moment().isAfter(moment(data.startDate))) {
-          return <div></div>;
+          return (
+          <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Tooltip title="Edit">
+                <CustomButton
+                  style={{ marginRight: "0.5rem", padding: "0 8px" }}
+                  type="primary outlined"
+                  size="xs"
+                  icon={<EditOutlined />}
+                  onClick={() => handleEdit(data.id)}
+                  disabled={true}
+                />
+              </Tooltip>
+            </div>);
         } else {
           return (
             <div
@@ -308,6 +353,8 @@ const Advertiser = ({
         columns={columns}
         rowKey="id"
         pagination={{ pageSize: 20 }}
+        scroll={{ y: 500, x: "100vw" }}
+        style={{testAlign:"center"}}
       />
       <AdvertisementDrawer
         visible={visible}
