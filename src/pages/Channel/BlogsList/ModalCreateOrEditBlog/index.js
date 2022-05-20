@@ -1,0 +1,172 @@
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Checkbox, Form, notification } from "antd";
+import { categorySelector } from "redux/selectors/categorySelector";
+import { envSelector } from "redux/selectors/envSelector";
+import {
+  CustomButton,
+  CustomCheckbox,
+  CustomInput,
+  CustomModal,
+  FroalaEdit,
+  ImageUpload,
+} from "components";
+
+const ModalCreateOrEdit = ({
+  onCancelModal,
+  handleCreateOrEditBlog,
+  editOrDeleteBlogPost,
+  allCategories,
+  s3Hash,
+}) => {
+  const [blogForm] = Form.useForm();
+  const [categories, setCategories] = useState([]);
+  const [summary, setSummary] = useState("");
+
+  const handleSummary = (value) => {
+    setSummary(value.slice(0, 100));
+  };
+
+  const handleCategories = (categories) => {
+    if (categories.length === 5) {
+      notification.warning({
+        message: "You can only have a maximum of 5 categories in each blog",
+      });
+    }
+
+    setCategories(categories);
+  };
+
+  return (
+    <CustomModal
+      visible={true}
+      title="Create Blog"
+      width={800}
+      onCancel={() => onCancelModal()}
+    >
+      <Form
+        form={blogForm}
+        layout="vertical"
+        onFinish={(data) => {
+          handleCreateOrEditBlog(data);
+        }}
+        initialValues={editOrDeleteBlogPost}
+        style={{ maxHeight: "calc(100vh - 300px)", overflow: "auto" }}
+      >
+        <Form.Item
+          label="Title"
+          name="title"
+          rules={[{ required: true, message: "Title is required." }]}
+        >
+          <CustomInput />
+        </Form.Item>
+
+        <Form.Item
+          label="Summary"
+          name="summary"
+          rules={[
+            { required: true, message: "Summary is required." },
+            {
+              max: 100,
+              message: "The summary cannot be longer than 100 characters",
+            },
+          ]}
+        >
+          <CustomInput multiple onChange={handleSummary} />
+        </Form.Item>
+
+        <div className="counter">
+          <span>{100 - summary.length} / 100</span>
+        </div>
+
+        <Form.Item
+          label={<label className="labelFroala">Body</label>}
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: "Body is required.",
+            },
+          ]}
+        >
+          <FroalaEdit
+            s3Hash={s3Hash}
+            additionalConfig={{
+              placeholderText: "Add a blog...",
+              toolbarButtons: [
+                "bold",
+                "italic",
+                "strikeThrough",
+                "paragraphFormat",
+                "align",
+                "formatOL",
+                "formatUL",
+                "indent",
+                "outdent",
+              ],
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item name="imageUrl" label="Image">
+          <ImageUpload className="event-pic-2" aspect={755 / 305} />
+        </Form.Item>
+
+        <Form.Item
+          name="categories"
+          label="Categories"
+          rules={[{ required: true, message: "Categories is required." }]}
+        >
+          <Checkbox.Group
+            className="d-flex flex-column event-addedit-form-topics"
+            value={categories}
+            onChange={handleCategories}
+          >
+            {allCategories.map((topic, index) => (
+              <CustomCheckbox
+                key={index}
+                value={topic.value}
+                disabled={
+                  categories.length === 5 && !categories.includes(topic.value)
+                }
+              >
+                {topic.title}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+        </Form.Item>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <CustomButton
+            text="Cancel"
+            type="third outlined"
+            size="lg"
+            onClick={() => onCancelModal()}
+          />
+          <CustomButton
+            htmlType="submit"
+            text="Submit"
+            type="secondary"
+            size="lg"
+            style={{ marginLeft: "10px" }}
+          />
+        </div>
+      </Form>
+    </CustomModal>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  allCategories: categorySelector(state).categories,
+  s3Hash: envSelector(state).s3Hash,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalCreateOrEdit);
