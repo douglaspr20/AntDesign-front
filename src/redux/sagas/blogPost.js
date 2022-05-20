@@ -26,13 +26,17 @@ export function* createBlogPostSaga({ payload }) {
       payload.callback();
     }
   } catch (error) {
-    console.log(error);
-
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      const { msg } = error.response.data || {};
-      payload.callback(msg || "Something went wrong, please try again.");
+      if (error.message === "Network Error") {
+        return payload.callback(
+          "Error internet connection, Please check your intenert connection and try again."
+        );
+      } else {
+        const { msg } = error?.response?.data || {};
+        payload.callback(msg || "Something went wrong, please try again.");
+      }
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -59,7 +63,7 @@ export function* searchBlogPostsSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      const { msg } = error.response.data || {};
+      const { msg } = error?.response?.data || {};
       payload.callback(msg || "Something went wrong, please try again.");
     }
   } finally {
@@ -84,7 +88,7 @@ export function* getBlogPostByChannelIdSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      const { msg } = error.response.data || {};
+      const { msg } = error?.response?.data || {};
       payload.callback(msg || "Something went wrong, please try again.");
     }
   } finally {

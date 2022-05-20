@@ -67,6 +67,10 @@ const Blog = ({ setLoading }) => {
             <h1>{blog.title}</h1>
           </div>
 
+          <div className="blog-page-date">
+            {moment(blog.createdAt).format("MMMM DD, YYYY")}
+          </div>
+
           {blog.imageUrl && (
             <div className="blog-page-image">
               <img src={blog.imageUrl} alt={"cover"} />
@@ -85,23 +89,19 @@ const Blog = ({ setLoading }) => {
                   {transformNames(blog.User?.firstName)}{" "}
                   {transformNames(blog.User?.lastName)}
                 </span>
-
-                <div className="blog-page-date">
-                  {moment(blog.createdAt).format("MMMM DD, YYYY")}
-                </div>
               </div>
-            </div>
-
-            <div className="blog-page-categories">
-              {blog.categories.map((category) => (
-                <SpecialtyItem key={category} title={category} active={false} />
-              ))}
             </div>
           </div>
         </div>
 
         <div className="blog-page-content">
           <div dangerouslySetInnerHTML={{ __html: blog.description?.html }} />
+        </div>
+
+        <div className="blog-page-categories">
+          {blog.categories.map((category) => (
+            <SpecialtyItem key={category} title={category} active={false} />
+          ))}
         </div>
       </div>
     </div>

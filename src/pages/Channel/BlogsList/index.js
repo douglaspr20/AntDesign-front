@@ -41,6 +41,7 @@ const BlogList = ({
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
   const [editOrDeleteBlogPost, setEditOrDeleteBlogPost] = useState({});
   const [summary, setSummary] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const { id } = useParams();
   const [blogForm] = Form.useForm();
@@ -121,14 +122,23 @@ const BlogList = ({
     setVisibleDeleteModal(false);
     setEditOrDeleteBlogPost({});
   };
+  const handleSummary = (value) => {
+    setSummary(value.slice(0, 100));
+  };
+
+  const handleCategories = (categories) => {
+    if (categories.length === 5) {
+      return notification.warning({
+        message: "You can only have a maximum of 5 categories in each blog",
+      });
+    }
+
+    setCategories(categories);
+  };
 
   useEffect(() => {
     getBlogsPostsByChannel(id);
   }, [getBlogsPostsByChannel, id]);
-
-  const handleSummary = (value) => {
-    setSummary(value.slice(0, 200));
-  };
 
   return (
     <div className="channel-page__list-wrap">
@@ -170,7 +180,7 @@ const BlogList = ({
           </Form.Item>
 
           <div className="counter">
-            <span>{200 - summary.length} / 200</span>
+            <span>{100 - summary.length} / 100</span>
           </div>
 
           <Form.Item
@@ -211,9 +221,19 @@ const BlogList = ({
             label="Categories"
             rules={[{ required: true, message: "Categories is required." }]}
           >
-            <Checkbox.Group className="d-flex flex-column event-addedit-form-topics">
+            <Checkbox.Group
+              className="d-flex flex-column event-addedit-form-topics"
+              value={categories}
+              onChange={handleCategories}
+            >
               {allCategories.map((topic, index) => (
-                <CustomCheckbox key={index} value={topic.value}>
+                <CustomCheckbox
+                  key={index}
+                  value={topic.value}
+                  disabled={
+                    categories.length === 5 && !categories.includes(topic.value)
+                  }
+                >
                   {topic.title}
                 </CustomCheckbox>
               ))}
