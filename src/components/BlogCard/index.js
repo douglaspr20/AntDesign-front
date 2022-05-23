@@ -117,7 +117,7 @@ BlogCard.defaultProps = {
   onAdd: () => {},
   categories: [],
   isOwner: false,
-  date: `${moment().format("MM/YY/YYYY")}`,
+  date: `${moment().format("MM/DD/YYYY")}`,
   onMenuClick: () => {},
 };
 
