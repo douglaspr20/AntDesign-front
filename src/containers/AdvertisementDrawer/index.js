@@ -30,7 +30,7 @@ const AdvertisementDrawer = ({
   advertisement = {},
   clearEditAndAdvertisement,
   editAdvertisement,
-  userProfile,
+  userProfile
 }) => {
   const [totalDays, setTotalDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -266,6 +266,7 @@ const AdvertisementDrawer = ({
 
     clearEditAndAdvertisement();
     setVisible(false);
+    setIsDraft(true)
     form.resetFields();
   };
 
@@ -352,7 +353,6 @@ const AdvertisementDrawer = ({
             <Form.Item label="Campaign Name" name="title" rules={[{ required: true }]}>
               <CustomInput 
                 bordered 
-                disabled={(isEdit || !isPagePopulated) && !isDraft} 
               />
             </Form.Item>
             {onDashboard && (
@@ -430,7 +430,7 @@ const AdvertisementDrawer = ({
                     />
                   )}
                 <CustomButton
-                  text="Start Campaign"
+                  text={(!isDraft && isEdit) ? "Save Campaign" : "Start Campaign"}
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
