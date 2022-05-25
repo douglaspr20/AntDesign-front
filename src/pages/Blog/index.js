@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Avatar } from "antd";
+import moment from "moment";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { setLoading } from "redux/actions/home-actions";
-import { SpecialtyItem } from "components";
-import { getBlogPost } from "api";
+import {
+  setFollowChannel,
+  unsetFollowChannel,
+} from "redux/actions/channel-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { CustomButton, SpecialtyItem } from "components";
+import { getBlogPost, getChannel } from "api";
 import { transformNames } from "utils/format";
 
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
-import moment from "moment";
 
-const Blog = ({ setLoading }) => {
+const Blog = ({
+  setLoading,
+  userProfile,
+  setFollowChannel,
+  unsetFollowChannel,
+}) => {
   const history = useHistory();
   const { id } = useParams();
   const location = useLocation();
   const [blog, setBlog] = useState({});
+  const [channel, setChannel] = useState({});
 
   useEffect(() => {
     const getBlog = async () => {
@@ -37,9 +48,31 @@ const Blog = ({ setLoading }) => {
     setLoading(false);
   }, [id, history, setLoading]);
 
+  useEffect(() => {
+    const getChannelApi = async () => {
+      const { data, status } = await getChannel({ id: blog.ChannelId });
+
+      if (status === 200) {
+        return setChannel(data.channel);
+      }
+    };
+
+    if (blog?.id && !channel.id) {
+      getChannelApi();
+    }
+  }, [blog, channel]);
+
   if (!blog.id) {
     return <></>;
   }
+
+  const followChannel = () => {
+    if (channel?.followedUsers?.includes(userProfile.id)) {
+      unsetFollowChannel(channel);
+    } else {
+      setFollowChannel(channel);
+    }
+  };
 
   return (
     <div className="blog-page">
@@ -97,21 +130,44 @@ const Blog = ({ setLoading }) => {
         <div className="blog-page-content">
           <div dangerouslySetInnerHTML={{ __html: blog.description?.html }} />
         </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <CustomButton
+            htmlType="button"
+            text={
+              channel?.followedUsers?.includes(userProfile.id)
+                ? "Unfollow Channel"
+                : "Follow Channel"
+            }
+            type={
+              channel?.followedUsers?.includes(userProfile.id)
+                ? "secondary"
+                : "primary"
+            }
+            size="sm"
+            loading={false}
+            onClick={followChannel}
+            style={{ marginLeft: "10px" }}
+          />
 
-        <div className="blog-page-categories">
-          {blog.categories.map((category) => (
-            <SpecialtyItem key={category} title={category} active={false} />
-          ))}
+          <div className="blog-page-categories">
+            {blog.categories.map((category) => (
+              <SpecialtyItem key={category} title={category} active={false} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state, props) => ({});
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
 
 const mapDispatchToProps = {
   setLoading,
+  setFollowChannel,
+  unsetFollowChannel,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);
