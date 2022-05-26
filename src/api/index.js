@@ -269,6 +269,11 @@ import {
   deleteBlogPost,
 } from "./module/blogPost";
 
+import {
+  post as addBlogPostLike,
+  remove as removeBlogPostLike,
+} from "./module/blogPostLike";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -469,4 +474,6 @@ export {
   getBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  addBlogPostLike,
+  removeBlogPostLike,
 };

@@ -37,6 +37,19 @@ const ModalCreateOrEdit = ({
     setCategories(categories);
   };
 
+  const handleSaveDraftBlogPost = (type) => {
+    let values = blogForm.getFieldsValue();
+
+    for (const key in values) {
+      if (!values[key] && key !== "imageUrl") {
+        blogForm.submit();
+        return;
+      }
+    }
+    handleCreateOrEditBlog({ ...values, status: type });
+    onCancelModal();
+  };
+
   return (
     <CustomModal
       visible={true}
@@ -150,8 +163,18 @@ const ModalCreateOrEdit = ({
             onClick={() => onCancelModal()}
           />
           <CustomButton
+            text="Save As Draft"
+            type="primary"
+            size="lg"
+            onClick={() => {
+              handleSaveDraftBlogPost("draft");
+            }}
+            style={{ marginLeft: "10px" }}
+          />
+
+          <CustomButton
             htmlType="submit"
-            text="Submit"
+            text="Post"
             type="secondary"
             size="lg"
             style={{ marginLeft: "10px" }}

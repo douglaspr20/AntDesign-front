@@ -58,17 +58,19 @@ const Blogs = ({
           </Row>
 
           <div className="blogs-list">
-            {blogsPosts?.map((blogPost) => (
-              <BlogCard
-                key={blogPost.id}
-                id={blogPost.id}
-                image={blogPost.imageUrl}
-                date={blogPost.createdAt}
-                title={blogPost.title}
-                summary={blogPost.summary}
-                categories={blogPost.categories}
-              />
-            ))}
+            {blogsPosts
+              ?.filter((blogPost) => blogPost.status === "published")
+              .map((blogPost) => (
+                <BlogCard
+                  key={blogPost.id}
+                  id={blogPost.id}
+                  image={blogPost.imageUrl}
+                  date={blogPost.createdAt}
+                  title={blogPost.title}
+                  summary={blogPost.summary}
+                  categories={blogPost.categories}
+                />
+              ))}
           </div>
 
           <div className="blogs-pagination">

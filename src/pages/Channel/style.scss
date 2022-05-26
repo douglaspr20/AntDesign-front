@@ -186,3 +186,12 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.ant-form-item-control-input-content{
+  .fr-box {
+    position: relative;
+  }
+  .fr-element.fr-view{
+    max-height: 400px;
+  }
+}

@@ -8,6 +8,8 @@ const SET_BLOGS_POSTS_BY_CHANNEL = "SET_BLOGS_POSTS_BY_CHANNEL";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const UPDATE_BLOG_POST = "UPDATE_BLOG_POST";
 const DELETE_BLOG_POST = "DELETE_BLOG_POST";
+const SET_BLOG_POST_LIKE = "SET_BLOG_POST_LIKE";
+const DELETE_BLOG_POST_LIKE = "DELETE_BLOG_POST_LIKE";
 
 export const constants = {
   CREATE_BLOG_POST,
@@ -18,6 +20,8 @@ export const constants = {
   SET_BLOGS_POSTS_BY_CHANNEL,
   UPDATE_BLOG_POST,
   DELETE_BLOG_POST,
+  SET_BLOG_POST_LIKE,
+  DELETE_BLOG_POST_LIKE,
 };
 // ------------------------------------
 // Actions
@@ -70,6 +74,18 @@ export const deleteBlogPost = createAction(
   })
 );
 
+export const setBlogPostLike = createAction(
+  SET_BLOG_POST_LIKE,
+  (data, callback) => ({
+    data,
+    callback,
+  })
+);
+export const deleteBlogPostLike = createAction(
+  DELETE_BLOG_POST_LIKE,
+  (id, callback) => ({ id, callback })
+);
+
 export const actions = {
   createBlogPost,
   searchBlogPosts,
@@ -79,4 +95,6 @@ export const actions = {
   setBlogsPostsByChannel,
   updateBlogPost,
   deleteBlogPost,
+  setBlogPostLike,
+  deleteBlogPostLike,
 };

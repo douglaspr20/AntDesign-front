@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar } from "antd";
+import { Avatar, Button, Tooltip } from "antd";
 import moment from "moment";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { setLoading } from "redux/actions/home-actions";
@@ -8,6 +8,10 @@ import {
   setFollowChannel,
   unsetFollowChannel,
 } from "redux/actions/channel-actions";
+import {
+  setBlogPostLike,
+  deleteBlogPostLike,
+} from "redux/actions/blog-post-action";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { CustomButton, SpecialtyItem } from "components";
 import { getBlogPost, getChannel } from "api";
@@ -16,12 +20,15 @@ import { transformNames } from "utils/format";
 import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+import { HeartOutlined } from "@ant-design/icons";
 
 const Blog = ({
   setLoading,
   userProfile,
   setFollowChannel,
   unsetFollowChannel,
+  setBlogPostLike,
+  deleteBlogPostLike,
 }) => {
   const history = useHistory();
   const { id } = useParams();
@@ -62,17 +69,60 @@ const Blog = ({
     }
   }, [blog, channel]);
 
+  const followChannel = () => {
+    if (channel?.followedUsers?.includes(userProfile.id)) {
+      unsetFollowChannel(channel, () => {
+        setChannel({
+          ...channel,
+          followedUsers: channel.followedUsers.filter(
+            (userId) => userId !== userProfile.id
+          ),
+        });
+      });
+    } else {
+      setFollowChannel(channel, () => {
+        setChannel({
+          ...channel,
+          followedUsers: [...channel.followedUsers, userProfile.id],
+        });
+      });
+    }
+  };
+
+  const handleLike = () => {
+    if (!blog.BlogPostLikes.some((like) => like.UserId === userProfile.id)) {
+      setBlogPostLike(
+        {
+          BlogPostId: blog.id,
+          blogPostOwnerUserId: blog.UserId,
+        },
+        (like) => {
+          setBlog({
+            ...blog,
+            BlogPostLikes: [...blog.BlogPostLikes, like],
+          });
+        }
+      );
+    } else {
+      deleteBlogPostLike(blog.id, () => {
+        setBlog({
+          ...blog,
+          BlogPostLikes: blog.BlogPostLikes.filter(
+            (likes) => likes.UserId !== userProfile.id
+          ),
+        });
+      });
+    }
+  };
+
   if (!blog.id) {
     return <></>;
   }
 
-  const followChannel = () => {
-    if (channel?.followedUsers?.includes(userProfile.id)) {
-      unsetFollowChannel(channel);
-    } else {
-      setFollowChannel(channel);
-    }
-  };
+  if (blog.status === "draft") {
+    history.goBack();
+    return <></>;
+  }
 
   return (
     <div className="blog-page">
@@ -131,24 +181,40 @@ const Blog = ({
           <div dangerouslySetInnerHTML={{ __html: blog.description?.html }} />
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <CustomButton
-            htmlType="button"
-            text={
-              channel?.followedUsers?.includes(userProfile.id)
-                ? "Unfollow Channel"
-                : "Follow Channel"
-            }
-            type={
-              channel?.followedUsers?.includes(userProfile.id)
-                ? "secondary"
-                : "primary"
-            }
-            size="sm"
-            loading={false}
-            onClick={followChannel}
-            style={{ marginLeft: "10px" }}
-          />
+          <div>
+            <CustomButton
+              htmlType="button"
+              text={
+                channel?.followedUsers?.includes(userProfile.id)
+                  ? "Unfollow Channel"
+                  : "Follow Channel"
+              }
+              type={
+                channel?.followedUsers?.includes(userProfile.id)
+                  ? "secondary"
+                  : "primary"
+              }
+              size="sm"
+              loading={false}
+              onClick={followChannel}
+              style={{ marginLeft: "10px" }}
+            />
 
+            <Tooltip title="Like">
+              <Button
+                shape="circle"
+                className={`like-btn ${
+                  blog?.BlogPostLikes?.some(
+                    (like) => like.UserId === userProfile.id
+                  ) && "liked"
+                }`}
+                onClick={() => handleLike()}
+                icon={<HeartOutlined style={{ marginTop: "-30px" }} />}
+              />
+            </Tooltip>
+
+            <span className="likes-counter">{blog?.BlogPostLikes?.length}</span>
+          </div>
           <div className="blog-page-categories">
             {blog.categories.map((category) => (
               <SpecialtyItem key={category} title={category} active={false} />
@@ -168,6 +234,8 @@ const mapDispatchToProps = {
   setLoading,
   setFollowChannel,
   unsetFollowChannel,
+  setBlogPostLike,
+  deleteBlogPostLike,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);

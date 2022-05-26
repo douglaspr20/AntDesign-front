@@ -27,6 +27,7 @@ const BlogCard = ({
   categories,
   date,
   isOwner,
+  isDraft,
   onMenuClick,
 }) => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const BlogCard = ({
           </div>
           <div className="blog-card-content">
             <h3 className="blog-card-title">{title}</h3>
+            {isDraft && <span>Saved as a draft</span>}
             <div className="d-flex items-center">
               <p style={{ color: "#000" }}>{summary}</p>
             </div>
@@ -75,11 +77,9 @@ const BlogCard = ({
                 );
               })}
             </div>
-
             <div className="blog-card-content-date">
               <span>{moment(date).format("MM/DD/YYYY")}</span>
             </div>
-
             {isOwner && (
               <CardMenu
                 menus={CARD_MENUS.slice(0, 2)}
@@ -107,6 +107,7 @@ BlogCard.propTypes = {
   onAdd: PropTypes.func,
   date: PropTypes.string,
   isOwner: PropTypes.bool,
+  isDraft: PropTypes.bool,
   onMenuClick: PropTypes.func,
 };
 
@@ -117,6 +118,7 @@ BlogCard.defaultProps = {
   onAdd: () => {},
   categories: [],
   isOwner: false,
+  isDraft: false,
   date: `${moment().format("MM/DD/YYYY")}`,
   onMenuClick: () => {},
 };

@@ -107,4 +107,34 @@
         padding: 1rem 2.5rem;
         text-align: justify;
     }
+
+    .like-btn{
+        margin-left: 5px;
+        &:hover, &:active, &:focus{
+            border: 1px solid $color-primary;
+            color: $color-primary
+
+        }
+        & .anticon{
+           vertical-align: 0rem;
+        }
+
+        &.liked{
+            background: $color-primary;
+            color: $color-white
+        }
+    }
+
+    .likes-counter{
+        margin-left: 5px;
+        font-size: 1rem;
+        color: $color-text-secondary;
+        font-weight: 400;
+    }
+
+    .svg-fill-color {
+        path {
+          fill: $color-text-secondary;
+        }
+      }
 }

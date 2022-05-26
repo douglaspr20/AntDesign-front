@@ -14,6 +14,8 @@ import {
   searchBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  addBlogPostLike,
+  removeBlogPostLike,
 } from "../../api";
 
 export function* createBlogPostSaga({ payload }) {
@@ -154,6 +156,42 @@ export function* deleteBlogPostSaga({ payload }) {
   }
 }
 
+export function* setBlogPostLikeSaga({ payload }) {
+  try {
+    const response = yield call(addBlogPostLike, payload.data);
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback(response.data.blogPostLike);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
+export function* deleteBlogPostLikeSaga({ payload }) {
+  try {
+    const response = yield call(removeBlogPostLike, payload.id);
+
+    if (response.status === 200) {
+      if (payload.callback) {
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  }
+}
+
 function* watchChannel() {
   yield takeLatest(blogPostConstants.CREATE_BLOG_POST, createBlogPostSaga);
   yield takeLatest(blogPostConstants.SEARCH_BLOG_POSTS, searchBlogPostsSaga);
@@ -165,6 +203,12 @@ function* watchChannel() {
   yield takeLatest(blogPostConstants.UPDATE_BLOG_POST, updateBlogPostSaga);
 
   yield takeLatest(blogPostConstants.DELETE_BLOG_POST, deleteBlogPostSaga);
+
+  yield takeLatest(blogPostConstants.SET_BLOG_POST_LIKE, setBlogPostLikeSaga);
+  yield takeLatest(
+    blogPostConstants.DELETE_BLOG_POST_LIKE,
+    deleteBlogPostLikeSaga
+  );
 }
 
 export const blogPostSaga = [fork(watchChannel)];

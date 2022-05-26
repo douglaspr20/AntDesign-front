@@ -52,7 +52,7 @@ const BlogList = ({
         getBlogsPostsByChannel(id);
 
         return notification.success({
-          message: "Blog Created Successfully",
+          message: "Blog Updated Successfully",
         });
       });
     } else {
@@ -67,7 +67,7 @@ const BlogList = ({
           getBlogsPostsByChannel(id);
 
           return notification.success({
-            message: "Blog Created Successfully",
+            message: "Blog Posted Successfully",
           });
         }
       );
@@ -160,19 +160,32 @@ const BlogList = ({
               <BlogCard type={CARD_TYPE.ADD} onAdd={onShowBlogPosstModal} />
             )}
 
-            {blogsPostByChannel.map((blogPost) => (
-              <BlogCard
-                onMenuClick={handleEditOrDelete}
-                isOwner={isOwner}
-                key={blogPost.id}
-                id={blogPost.id}
-                image={blogPost.imageUrl}
-                date={blogPost.createdAt}
-                title={blogPost.title}
-                summary={blogPost.summary}
-                categories={blogPost.categories}
-              />
-            ))}
+            {blogsPostByChannel
+              .filter((blogPost) => {
+                if (
+                  (blogPost.UserId === userProfile.id &&
+                    blogPost.status === "draft") ||
+                  blogPost.status === "published"
+                ) {
+                  return blogPost;
+                }
+
+                return null;
+              })
+              .map((blogPost) => (
+                <BlogCard
+                  onMenuClick={handleEditOrDelete}
+                  isOwner={isOwner}
+                  key={blogPost.id}
+                  id={blogPost.id}
+                  image={blogPost.imageUrl}
+                  date={blogPost.createdAt}
+                  title={blogPost.title}
+                  summary={blogPost.summary}
+                  isDraft={blogPost.status === "draft"}
+                  categories={blogPost.categories}
+                />
+              ))}
           </div>
         </>
       )}
