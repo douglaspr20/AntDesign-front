@@ -83,28 +83,29 @@ const EventsPage = ({
       getAdvertisementById(id);
     } else {
       getAdvertisementsTodayByPage("events");
+
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const displayAds = !isEmpty(advertisementsByPage.events) && (
+  const displayAds = (
     <div className="events-advertisement-wrapper">
-      {advertisementsByPage.events.map((advertisement) => {
+      {advertisementsByPage?.events?.map((advertisement) => {
         return (
           <div
             className="events-advertisement-wrapper-content"
-            key={advertisement.id}
+            key={advertisement?.id}
           >
             <div
               className="advertisement"
               onClick={() => {
-                createAdvertisementClick(advertisement.id);
-                window.open(advertisement.advertisementLink, "_blank");
+                createAdvertisementClick(advertisement?.id);
+                window.open(advertisement?.advertisementLink, "_blank");
               }}
             >
               <img
-                src={advertisement.adContentLink}
+                src={advertisement?.adContentLink}
                 alt="advertisement"
                 className="advertisement-img"
               />
@@ -120,11 +121,11 @@ const EventsPage = ({
       <div
         className="advertisement"
         onClick={() =>
-          window.open(advertisementById.advertisementLink, "_blank")
+          window.open(advertisementById?.advertisementLink, "_blank")
         }
       >
         <img
-          src={advertisementById.adContentLink}
+          src={advertisementById?.adContentLink}
           alt="advertisement"
           className="advertisement-img"
         />

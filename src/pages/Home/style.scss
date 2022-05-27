@@ -60,6 +60,19 @@
       margin-bottom: 1rem !important;
     }
   }
+  &--advertsiment-wrapper {
+    display: block;
+    button {
+      width: 100%;
+      height: 36px;
+      background: $color-accent;
+      @include app-font(16px, 16px, bold);
+      color: $color-white;
+      border-radius: 5px;
+      margin-top: 1rem !important;
+      margin-bottom: 1rem !important;
+    }
+  }
   &--posts {
     display: flex;
     flex-direction: row;
@@ -78,6 +91,7 @@
       flex-direction: column;
       width: 100%;
       padding-bottom: 1em;
+      padding-left:20px;
       @media (max-width: 1023.98px) {
         padding: 0px 1em 1em 1em;
       }
@@ -256,3 +270,52 @@
       //   }
       // }
 }
+
+ .home-advertisement-wrapper {
+    // margin-left: auto;
+    // margin-right: auto;
+
+   &-preview {
+     margin-top: 1.5rem;
+     position: relative;
+     display: flex;
+     justify-content: center;
+     position: relative;
+
+     .advertisement {
+       width: 275px;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background-color: lightgray;
+       height: 275px;
+       cursor: pointer;
+
+       &-img {
+         width: 275px;
+         height: 275px;
+         object-fit: cover;
+       }
+     }
+   }
+  
+   &-content {
+     margin-top: 10px;
+    
+     .advertisement {
+       width: 275px;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background-color: lightgray;
+       height: 275px;
+       cursor: pointer;
+
+       &-img {
+         width: 275px;
+         height: 275px;
+         object-fit: cover;
+       }
+     }
+   }
+ }

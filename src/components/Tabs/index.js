@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import { Tabs } from "antd";
 import clsx from "clsx";
@@ -18,8 +18,24 @@ const TabData = [
   },
 ];
 
-const CustomTabs = ({ current, className, data, onChange, ...rest }) => {
+const CustomTabs = ({ current, className, data, onChange, functionClass, ...rest }) => {
+
+  const [classCouncilTap, setClassCouncilTap] = useState("")
+
   const onTabChange = (tab) => {
+
+    if(tab === "2" && data[2].title === "Council Members"){
+      if(functionClass !== undefined){
+        functionClass("search-results-container-members");
+      }
+      setClassCouncilTap("custom-tabs-tabpane")
+    }else{
+      if(functionClass !== undefined){
+        functionClass("search-results-container");
+      }
+      setClassCouncilTap("")
+    }
+
     onChange(tab);
   };
 
@@ -32,7 +48,7 @@ const CustomTabs = ({ current, className, data, onChange, ...rest }) => {
     >
       {data.map((tab, index) => (
         <TabPane
-          className="custom-tabs-tabpane"
+          className={classCouncilTap}
           tab={tab.title}
           key={index.toString()}
           // style={{ minHeight: "100vh", background: "red" }}
