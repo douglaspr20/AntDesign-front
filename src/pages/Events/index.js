@@ -83,7 +83,7 @@ const EventsPage = ({
       getAdvertisementById(id);
     } else {
       getAdvertisementsTodayByPage("events");
-      console.log(advertisementsByPage)
+
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
