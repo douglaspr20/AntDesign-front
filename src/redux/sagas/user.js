@@ -489,8 +489,6 @@ export function* sendActiveOrDenyAuthorizationEndPointSaga({ payload }) {
       typeAuthorization
     });
 
-    console.log(response)
-
     if (response.status === 200) {
       yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
       yield put(homeActions.setLoading(false));
