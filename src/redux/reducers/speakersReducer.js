@@ -7,12 +7,12 @@ import { Map } from "immutable";
 export const reducers = {
     [speakerConstans.UPDATE_PANEL_SPEAKERS]: (state, { payload }) => {
         return state.merge({
-          allPanelSpeakers: payload.payload,
+          allPanelSpeakers: payload.panelsSpeakers,
         });
       },
     [speakerConstans.UPDATE_USERS_SPEAKERS]: (state, { payload }) => {
       return state.merge({
-        allUserSpeakers: payload.payload,
+        allUserSpeakers: payload.userSpeakers,
       })
     }
   };

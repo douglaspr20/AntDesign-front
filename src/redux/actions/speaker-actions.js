@@ -34,7 +34,7 @@ export const addUserSpeakerToPanel = createAction(
 
 export const updatePanelSpeakers = createAction(
     UPDATE_PANEL_SPEAKERS,
-    (payload) => ({ payload })
+    (panelsSpeakers) => ({ panelsSpeakers })
 );
 
 export const getAllPanelSpeakers = createAction(
@@ -49,7 +49,7 @@ export const getAllUserSpeaker = createAction(
 
 export const updateAllUserSpeakers = createAction(
   UPDATE_USERS_SPEAKERS,
-  (payload) => ({ payload })
+  (userSpeakers) => ({ userSpeakers })
 );
 
 export const removeUserSpeakerToPanel = createAction(

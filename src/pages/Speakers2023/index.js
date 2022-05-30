@@ -52,7 +52,7 @@ const Speaker2023 = ({
   useEffect( () => {
     if(id !== null){
       if(accepted === "true" || accepted === "false"){
-        activeOrDenyAuthorization({userId: id , type: accepted})
+        activeOrDenyAuthorization({userId: id , typeAuthorization: (accepted === "true") ? "accepted" : "reject"})
       }
     }
   },[id,accepted,activeOrDenyAuthorization])

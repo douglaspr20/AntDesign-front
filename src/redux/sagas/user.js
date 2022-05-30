@@ -479,14 +479,14 @@ export function* sendEmailAuthorizationSpeakersSaga({ payload }) {
 }
 
 export function* sendActiveOrDenyAuthorizationEndPointSaga({ payload }) {
-  const {userId , type} = payload.payload
+  const {userId , typeAuthorization} = payload.payload
 
   yield put(homeActions.setLoading(true));
 
   try {
     const response = yield call(sendActiveOrDenyAuthorizationEndPoint, {
       userId,
-      type
+      typeAuthorization
     });
 
     console.log(response)
