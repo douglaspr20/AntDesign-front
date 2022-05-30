@@ -267,6 +267,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPEAKER_2023}`)) {
+      pathInfo = {
+        // icon: ,
+        label: "Speaker 2023"
+      };
+    }
+
     if (
       !pathInfo &&
       pathname.includes(`${INTERNAL_LINKS.TALENT_MARKETPLACE}`)

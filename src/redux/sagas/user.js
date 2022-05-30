@@ -22,12 +22,14 @@ import {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  sendEmailAuthorizationSpeakersEndPoint,
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
   viewRulesConference,
   countAllUsers,
   searchUser,
+  sendActiveOrDenyAuthorizationEndPoint
 } from "../../api";
 import {
   acceptInvitationApplyBusinnesPartner,
@@ -442,6 +444,73 @@ export function* acceptInvitationApplySaga({ payload }) {
   }
 }
 
+export function* sendEmailAuthorizationSpeakersSaga({ payload }) {
+  const {userId} = payload.payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(sendEmailAuthorizationSpeakersEndPoint, {
+      userId,
+    });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+      yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
+      yield put(homeActions.setLoading(false));
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* sendActiveOrDenyAuthorizationEndPointSaga({ payload }) {
+  const {userId , type} = payload.payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(sendActiveOrDenyAuthorizationEndPoint, {
+      userId,
+      type
+    });
+
+    console.log(response)
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
+      yield put(homeActions.setLoading(false));
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* confirmAccessibilityRequirementsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
@@ -649,6 +718,14 @@ function* watchLogin() {
   yield takeLatest(
     homeConstants.ACCEPT_INVITATION_APPLY,
     acceptInvitationApplySaga
+  );
+  yield takeLatest(
+    homeConstants.SEND_EMAIL_AUTHORIZATION_SPEAKERS,
+    sendEmailAuthorizationSpeakersSaga
+  );
+  yield takeLatest(
+    homeConstants.ACTIVE_DENY_AUTHORZATION,
+    sendActiveOrDenyAuthorizationEndPointSaga
   );
   yield takeLatest(
     homeConstants.CONFIRM_INVITATION_APPLY,

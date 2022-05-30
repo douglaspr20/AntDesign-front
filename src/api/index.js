@@ -1,5 +1,7 @@
 import { signIn, signUp } from "./module/auth";
 import {
+  sendEmailAuthorizationSpeakersEndPoint,
+  sendActiveOrDenyAuthorizationEndPoint,
   getUserFromId,
   updateUser,
   upgradePlan,
@@ -261,7 +263,22 @@ import { createAdvertisementClick } from "./module/advertisement";
 
 import { getEditorSignature } from "./module/env";
 
+import {  
+  addPanelSpeakersEndPoint, 
+  allPanelSpeakersEndPonit,
+  getAllUserSpeakerEndPoint,
+  removeUserSpeakerToPanelEndPoint,
+  addUserSpeakerToPanelEndPoint
+} from "./module/speakers"
+
 export {
+  sendEmailAuthorizationSpeakersEndPoint,
+  sendActiveOrDenyAuthorizationEndPoint,
+  addPanelSpeakersEndPoint,
+  allPanelSpeakersEndPonit,
+  getAllUserSpeakerEndPoint,
+  removeUserSpeakerToPanelEndPoint,
+  addUserSpeakerToPanelEndPoint,
   signIn,
   signUp,
   getUserFromId,

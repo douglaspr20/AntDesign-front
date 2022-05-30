@@ -57,4 +57,5 @@ export default {
   AD_EVENTS_PREVIEW: "/ad/events/preview",
   AD_CONFERENCE_LIBRARY_PREVIEW: "/ad/conference-library/preview",
   SEARCH: "/search",
+  SPEAKER_2023: "/speakers2023"
 };

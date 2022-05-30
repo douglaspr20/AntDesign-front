@@ -112,6 +112,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.PODCAST_SERIES}
           render={() => <Sidebar />}
         />
+        <PrivateRoute
+          path={INTERNAL_LINKS.SPEAKER_2023}
+          render={() => <Sidebar />}
+        />
         <PrivateRoute path={INTERNAL_LINKS.POST} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.LIBRARY_ITEM}

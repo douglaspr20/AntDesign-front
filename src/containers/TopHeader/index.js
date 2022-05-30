@@ -255,6 +255,11 @@ class TopHeader extends Component {
           exact
           render={(props) => <MainHeader {...props} />}
         />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.SPEAKER_2023}`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
 
         <PrivateRoute
           path={INTERNAL_LINKS.SEARCH}

@@ -43,8 +43,10 @@ import advertisementReducer from "./advertisementsReducer";
 import matchmakingReducer from "./matchmakingReducer";
 import councilEventReducer from "./councilEventReducer";
 import councilConversationReducer from "./councilConversationReducer";
+import speakersReducer from "./speakersReducer";
 
 export default combineReducers({
+  speakers: speakersReducer,
   home: homeReducer,
   council: councilReducer,
   councilComment: councilCommentsReducer,

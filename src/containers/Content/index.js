@@ -7,6 +7,7 @@ import ReactGA from "react-ga";
 // Pages
 import HomePage from "pages/Home";
 import CouncilPage from "pages/Council";
+import Speakers2023 from "pages/Speakers2023";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import PasswordRecoveryPage from "pages/PasswordRecovery";
@@ -149,6 +150,11 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.COUNCIL}
             render={(props) => <CouncilPage {...props} />}
+          />
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.SPEAKER_2023}
+            render={(props) => <Speakers2023 {...props} />}
           />
           <PrivateRoute
             exact
