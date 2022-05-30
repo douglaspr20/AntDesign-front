@@ -68,6 +68,7 @@ const Collapse = ({
             <div 
                 className={`${visibleConfirmApply ? "collapseContaintTrue" : "collapseContaintFalse"}`} 
                 ref={memberRef}
+                style={{opacity: `${visibleConfirmApply ? "100%" : "0%"}`}}
             >
                 {(members.props.children.length > 0) ? members : 
                     <NoItemsMessageCard
