@@ -44,6 +44,8 @@ import matchmakingReducer from "./matchmakingReducer";
 import councilEventReducer from "./councilEventReducer";
 import councilConversationReducer from "./councilConversationReducer";
 
+import blogPostReducer from "./blogPostReducer";
+
 export default combineReducers({
   home: homeReducer,
   council: councilReducer,
@@ -89,4 +91,5 @@ export default combineReducers({
   matchmaking: matchmakingReducer,
   councilEvent: councilEventReducer,
   councilConversation: councilConversationReducer,
+  blogPost: blogPostReducer,
 });

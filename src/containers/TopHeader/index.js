@@ -61,6 +61,7 @@ class TopHeader extends Component {
         />
         <PrivateRoute
           path={INTERNAL_LINKS.CHANNELS}
+          exact
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
@@ -258,6 +259,24 @@ class TopHeader extends Component {
 
         <PrivateRoute
           path={INTERNAL_LINKS.SEARCH}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CHANNELS}/:id${INTERNAL_LINKS.BLOGS}/:id`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          path={INTERNAL_LINKS.BLOGS}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.BLOGS}/:id`}
           exact
           render={(props) => <MainHeader {...props} />}
         />
