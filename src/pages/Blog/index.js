@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Avatar, Button, Tooltip } from "antd";
+import { Avatar } from "antd";
 import moment from "moment";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { setLoading } from "redux/actions/home-actions";
@@ -18,9 +18,8 @@ import { getBlogPost, getChannel } from "api";
 import { transformNames } from "utils/format";
 
 import IconBack from "images/icon-back.svg";
-
+import { ReactComponent as IconHeartOutline } from "images/icon-heart-outline.svg";
 import "./style.scss";
-import { HeartOutlined } from "@ant-design/icons";
 
 const Blog = ({
   setLoading,
@@ -123,7 +122,6 @@ const Blog = ({
     history.goBack();
     return <></>;
   }
-
   return (
     <div className="blog-page">
       <div
@@ -180,8 +178,28 @@ const Blog = ({
         <div className="blog-page-content">
           <div dangerouslySetInnerHTML={{ __html: blog.description?.html }} />
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+        <div className="likes-container">
+          <div className="likes">
+            <IconHeartOutline />
+          </div>
+
+          <span>{blog.BlogPostLikes.length}</span>
+        </div>
+
+        <div className="btn-like-container">
           <div>
+            <span onClick={() => handleLike()} className="btn-like">
+              <IconHeartOutline
+                className={`icon-like ${
+                  blog?.BlogPostLikes?.some(
+                    (like) => like.UserId === userProfile.id
+                  ) && "svg-fill-color"
+                } `}
+              />
+              Like
+            </span>
+
             <CustomButton
               htmlType="button"
               text={
@@ -199,21 +217,6 @@ const Blog = ({
               onClick={followChannel}
               style={{ marginLeft: "10px" }}
             />
-
-            <Tooltip title="Like">
-              <Button
-                shape="circle"
-                className={`like-btn ${
-                  blog?.BlogPostLikes?.some(
-                    (like) => like.UserId === userProfile.id
-                  ) && "liked"
-                }`}
-                onClick={() => handleLike()}
-                icon={<HeartOutlined style={{ marginTop: "-30px" }} />}
-              />
-            </Tooltip>
-
-            <span className="likes-counter">{blog?.BlogPostLikes?.length}</span>
           </div>
           <div className="blog-page-categories">
             {blog.categories.map((category) => (

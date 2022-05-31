@@ -101,6 +101,10 @@
             margin-left: 5px;
         }
 
+        @media  (max-width: 809px){
+            margin-top: 5px;
+         }
+
     }
 
     &-content{
@@ -108,22 +112,63 @@
         text-align: justify;
     }
 
-    .like-btn{
-        margin-left: 5px;
-        &:hover, &:active, &:focus{
-            border: 1px solid $color-primary;
-            color: $color-primary
+    .likes-container{
+        display: flex;
+        margin-left: 2rem;
+        color: $color-text-secondary;
+        border-bottom: 1px solid $color-border;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
 
-        }
-        & .anticon{
-           vertical-align: 0rem;
-        }
+    .likes{
+        width: 20px;
+        height: 20px;
+        background-color: $color-error;
+        border-radius: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 5px;
 
-        &.liked{
-            background: $color-primary;
+        svg{
+            width: 15px;
+            height: 15px;
+            path {
+                fill: $color-white
+              }
             color: $color-white
         }
     }
+
+    .btn-like-container{
+        display: flex;
+        justify-content: space-between;
+
+          @media  (max-width: 809px){
+           flex-direction: column;
+           justify-content: space-around;
+           align-items: center;
+        }
+
+    }
+
+    .btn-like{
+        margin-left: 2rem;
+        color: $color-text-secondary;
+    }
+
+    .icon-like{
+        width: 22px;
+        height: 22px;
+        margin-right: 5px;
+    }
+
+    .svg-fill-color {
+        path {
+          fill: $color-text-secondary;
+        }
+      }
 
     .likes-counter{
         margin-left: 5px;
@@ -132,9 +177,5 @@
         font-weight: 400;
     }
 
-    .svg-fill-color {
-        path {
-          fill: $color-text-secondary;
-        }
-      }
+  
 }
