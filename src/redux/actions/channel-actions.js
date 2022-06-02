@@ -72,14 +72,19 @@ export const setChannelLoading = createAction(
   SET_CHANNEL_LOADING,
   (loading) => ({ loading })
 );
-export const setFollowChannel = createAction(SET_FOLLOW_CHANNEL, (channel) => ({
-  channel,
-}));
+export const setFollowChannel = createAction(
+  SET_FOLLOW_CHANNEL,
+  (channel, callback) => ({
+    channel,
+    callback,
+  })
+);
 
 export const unsetFollowChannel = createAction(
   UNSET_FOLLOW_CHANNEL,
-  (channel) => ({
+  (channel, callback) => ({
     channel,
+    callback,
   })
 );
 

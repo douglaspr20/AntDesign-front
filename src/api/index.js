@@ -215,6 +215,7 @@ import {
   readMessages,
   getMoreMessages,
   getConversation,
+  hideConversation,
 } from "./module/conversation";
 
 import {
@@ -260,6 +261,20 @@ import {
 } from "./module/council-conversation-like";
 
 import { createAdvertisementClick } from "./module/advertisement";
+
+import {
+  createBlogPost,
+  searchBlogPost,
+  getBlogPostByChannelId,
+  getBlogPost,
+  updateBlogPost,
+  deleteBlogPost,
+} from "./module/blogPost";
+
+import {
+  post as addBlogPostLike,
+  remove as removeBlogPostLike,
+} from "./module/blogPostLike";
 
 import { getEditorSignature } from "./module/env";
 
@@ -470,5 +485,14 @@ export {
   deleteCouncilConversationLike,
   searchUserForCouncilEventPanelist,
   upsertCouncilEventPanelComment,
-  createAdvertisementClick
+  createAdvertisementClick,
+  hideConversation,
+  createBlogPost,
+  searchBlogPost,
+  getBlogPostByChannelId,
+  getBlogPost,
+  updateBlogPost,
+  deleteBlogPost,
+  addBlogPostLike,
+  removeBlogPostLike,
 };

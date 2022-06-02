@@ -94,18 +94,17 @@
   z-index: -1;
 }
 
-.events-advertisement-wrapper {
-  margin-left: auto;
-  margin-right: auto;
 
-  @media (max-width: 1600px) {
-    display: none;
-  }
+.events-advertisement-wrapper {
+  margin-top: 0px;
+  margin-left:15px;
 
   &-preview {
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 1.5rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    position: relative;
 
     .advertisement {
       width: 275px;
@@ -126,6 +125,11 @@
   
   &-content {
     margin-top: 10px;
+    display: block;
+
+    @media (max-width: 1200px) {
+      display: none;
+    }
     
     .advertisement {
       width: 275px;

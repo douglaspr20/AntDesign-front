@@ -16,19 +16,18 @@ const CouncilEventPanelCommentForm = ({
 }) => {
   const [form] = Form.useForm();
 
-  const comments = councilEventPanelComments.map((comment) => {
+  const comments = councilEventPanelComments?.map((comment) => {
     const user = comment.CouncilEventPanelist.User;
-
     return {
       author: `${user.firstName} ${user.lastName}`,
       avatar: user.img,
       content: <p>{comment.comment}</p>,
       datetime: moment(comment.createdAt).fromNow(),
+      abbrName: user.abbrName,
     };
   });
 
   const handleOnFinish = (values) => {
-    console.log("val", values);
     upsertCommentCouncilEventPanel({
       CouncilEventPanelId,
       CouncilEventPanelistId,
@@ -53,17 +52,29 @@ const CouncilEventPanelCommentForm = ({
     <List
       dataSource={comments}
       itemLayout="horizontal"
-      renderItem={(props) => <Comment {...props} />}
+      renderItem={(props) => {
+      return <Comment 
+          author={props.author}
+          content={props.content}
+          datetime={props.datetime}
+          avatar={props.avatar ? <Avatar src={props.avatar} /> : <Avatar size={50}>{props.abbrName}</Avatar>}
+        />}}
     />
   );
 
   return (
     <>
-      <div>{comments.length > 0 && commentList}</div>
-      <Comment
-        avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
-        content={commentForm}
-      />
+      {comments?.length > 0 && commentList ? 
+        <div>
+          <div>{comments?.length > 0 && commentList}</div>
+          <Comment
+            avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
+            content={commentForm}
+          />
+        </div> : <Comment
+            avatar={<Avatar src={userProfile.img} alt="profile-picture" />}
+            content={commentForm}
+          />}
     </>
   );
 };

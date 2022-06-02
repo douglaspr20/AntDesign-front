@@ -1,5 +1,12 @@
 @import "styles/main.scss";
 
+.custom-tabs-tabpane{
+  overflow: scroll;
+  height: calc(100vh - 220px);
+  padding-right: 5%;
+  padding-top:20px ;
+}
+
 .custom-tabs {
 
   .ant-tabs-tab {

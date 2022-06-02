@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import { isEmpty } from "lodash";
 import { useParams } from "react-router-dom";
 import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
@@ -81,8 +80,12 @@ const HomePage = ({
   }, [id]);
 
   useEffect(() => {
-    if (!isEmpty(advertisementsByPage) && !isEmpty(advertisementsByPage.home)) {
-      setHasAdvertisementData(true);
+    if (advertisementsByPage !== undefined && advertisementsByPage.home !== undefined) {
+      if(advertisementsByPage?.home[0] !== undefined){
+        setHasAdvertisementData(true);
+      }else{
+        setHasAdvertisementData(false);
+      }
     } else {
       setHasAdvertisementData(false);
     }
@@ -113,24 +116,23 @@ const HomePage = ({
     });
   };
 
-  const displayAds = hasAdvertisementData &&
-    !isEmpty(advertisementsByPage.home) && (
-      <div className="home-page-container--posts-central-panel-content-advertisement-wrapper">
-        {advertisementsByPage.home.map((advertisement) => {
+  const displayAds = hasAdvertisementData && (
+      <div className="home-advertisement-wrapper">
+        {advertisementsByPage?.home?.map((advertisement) => {
           return (
             <div
-              className="home-page-container--posts-central-panel-content-advertisement-wrapper-content"
-              key={advertisement.id}
+              className="home-advertisement-wrapper-content"
+              key={advertisement?.id}
             >
               <div
                 className="advertisement"
                 onClick={() => {
-                  createAdvertisementClick(advertisement.id);
-                  window.open(advertisement.advertisementLink, "_blank");
+                  createAdvertisementClick(advertisement?.id);
+                  window.open(advertisement?.advertisementLink, "_blank");
                 }}
               >
                 <img
-                  src={advertisement.adContentLink}
+                  src={advertisement?.adContentLink}
                   alt="advertisement"
                   className="advertisement-img"
                 />
@@ -142,15 +144,15 @@ const HomePage = ({
     );
 
   const displayPreviewAd = isAdPreview && (
-    <div className="home-page-container--posts-central-panel-content-preview">
+    <div className="home-advertisement-wrapper-preview">
       <div
         className="advertisement"
         onClick={() =>
-          window.open(advertisementById.advertisementLink, "_blank")
+          window.open(advertisementById?.advertisementLink, "_blank")
         }
       >
         <img
-          src={advertisementById.adContentLink}
+          src={advertisementById?.adContentLink}
           alt="advertisement"
           className="advertisement-img"
         />
@@ -212,18 +214,19 @@ const HomePage = ({
         </div>
       </div>
       <div className="home-page-container--posts">
+        {hasAdvertisementData ? <div></div> :
         <PostsFilterPanel
           title="Stories filter"
           onChange={onFilterChange}
           onSearch={onSearch}
-        />
+        />}
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
               <ProfileStatusBar user={userProfile} />
             </div>
           )}
-          <div className="home-page-container--mobile-options">
+          <div className={`home-page-container${hasAdvertisementData ? "--advertsiment-wrapper" : "--mobile-options"}`}>
             <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
             <Button
               onClick={() => {

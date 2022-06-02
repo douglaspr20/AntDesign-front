@@ -125,19 +125,90 @@
         color: $color-text-secondary;
         margin-left: 5px;
 
-     
+        &-image{
+            background: none;
+            margin-left: 5px;
+        }
+
+      
+        .link-document-container{
+            color: $color-text-secondary !important;
+            text-decoration: none;
+            display: flex;  
+            align-items: center;   
+            max-width: 220px !important;
+
+            p{
+                overflow-wrap: break-word;
+                width: 95%;
+               
+            }
+          
+            .pdf-icon{
+                background: $color-background-dark;
+                margin-right: 5px;
+
+                span{
+                    margin-bottom: 10px !important;
+                }
+
+                &:hover{
+                    border-color: none !important;
+                }
+            }
+         
+        }
     }
 
     &-message-user{
         background: $color-primary;
         color: $color-white;
         margin-left: auto;
-        margin-right: 10px;
+        margin-right: 10px;       
 
         & p{
             text-align: left;
         }
+
+        &-image{
+            background: none;
+            margin-left: auto;
+            margin-right: 10px;
+
+            & img{
+                text-align: left;
+            }
+        }
+
+        .link-document-container{
+            color: $color-white !important;
+            text-decoration: none;
+            display: flex;  
+            align-items: center;   
+            max-width: 220px !important;
+
+            p{
+                overflow-wrap: break-word;
+                width: 95%;
+               
+            }
+          
+            .pdf-icon{
+                background: $color-background-dark;
+                margin-right: 5px;
+
+                span{
+                    margin-bottom: 10px !important;
+                }
+
+                &:hover{
+                    border-color: none !important;
+                }
+            }
+         
+        }
     }
+    
 
     .ant-form-item{
         margin-bottom: 0 !important;

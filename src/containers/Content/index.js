@@ -60,6 +60,9 @@ import BusinessPartnerConversationCard from "pages/BusinessPartner/BusinessPartn
 import TalentMarketplacePage from "pages/TalentMarketplace";
 import JobPostDetailsPage from "pages/TalentMarketplace/JobBoard/JobPostDetails";
 import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
+import SearchPage from "pages/Search";
+import BlogsPage from "pages/Blogs";
+import BlogPage from "pages/Blog";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -69,7 +72,6 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
-import SearchPage from "pages/Search";
 
 class Content extends Component {
   componentDidMount() {
@@ -182,6 +184,7 @@ class Content extends Component {
           />
           <PrivateRoute
             path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+            exact
             render={(props) => <ChannelPage {...props} />}
           />
           <PrivateRoute
@@ -416,6 +419,24 @@ class Content extends Component {
             path={INTERNAL_LINKS.SEARCH}
             exact
             render={(props) => <SearchPage {...props} />}
+          />
+
+          <PrivateRoute
+            path={INTERNAL_LINKS.BLOGS}
+            exact
+            render={(props) => <BlogsPage {...props} />}
+          />
+
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.CHANNELS}/:id${INTERNAL_LINKS.BLOGS}/:id`}
+            exact
+            render={(props) => <BlogPage {...props} />}
+          />
+
+          <PrivateRoute
+            path={`${INTERNAL_LINKS.BLOGS}/:id`}
+            exact
+            render={(props) => <BlogPage {...props} />}
           />
           <Route
             exact

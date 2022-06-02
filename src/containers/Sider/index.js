@@ -36,6 +36,13 @@ class Sider extends Component {
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.CHANNELS}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CHANNELS}/:id`}
+          exact
           render={() => <Sidebar />}
         />
         <PrivateRoute
@@ -91,22 +98,18 @@ class Sider extends Component {
           path={INTERNAL_LINKS.GLOBAL_CONFERENCE}
           render={() => <Sidebar />}
         /> */}
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.MICRO_CONFERENCE}/:id`}
           render={(props) => <Sidebar {...props} />}
         />
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.SPEAKERS}`}
           render={() => <Sidebar />}
         />
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.PARTICIPANTS}/:idConference`}
           render={() => <Sidebar />}
         />
-
         <PrivateRoute path={INTERNAL_LINKS.LIVE} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.PODCAST_SERIES}
@@ -157,9 +160,26 @@ class Sider extends Component {
           exact
           render={() => <Sidebar />}
         />
-
         <PrivateRoute
           path={INTERNAL_LINKS.SEARCH}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.CHANNELS}/:id${INTERNAL_LINKS.BLOGS}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={INTERNAL_LINKS.BLOGS}
+          exact
+          render={() => <Sidebar />}
+        />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.BLOGS}/:id`}
           exact
           render={() => <Sidebar />}
         />

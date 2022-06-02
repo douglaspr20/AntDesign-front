@@ -3,21 +3,22 @@ import EmojiPicker from "emoji-picker-react";
 import {
   CloseOutlined,
   LoadingOutlined,
+  PaperClipOutlined,
   SendOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Spin } from "antd";
+import { Button, Form, Input, notification, Spin, Upload } from "antd";
 
 import "./style.scss";
 
-// function getBase64(file) {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => resolve(reader.result);
-//     reader.onerror = (error) => reject(error);
-//   });
-// }
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
 
 const FormMessage = ({
   handleSendMessage,
@@ -33,7 +34,13 @@ const FormMessage = ({
   }, [focusMessage]);
 
   const handleSubmit = (values) => {
-    handleSendMessage(values);
+    handleSendMessage({...values, files: fileList.map(file => (
+      {
+        name: file.name,
+        thumbUrl: file.thumbUrl,
+        type: file.type
+      }
+    ))});
     message.resetFields();
     setFileList([]);
   };
@@ -49,40 +56,41 @@ const FormMessage = ({
     });
   };
 
-  // const filesUpload = async ({ file, onSuccess }) => {
-  //   setTimeout(() => {
-  //     onSuccess("ok");
-  //   }, 3000);
-  // };
+  const filesUpload = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 3000);
+  };
 
-  // const handlePreview = async (file) => {
-  //   if (!file.url && !file.preview) {
-  //     file.preview = await getBase64(file.originFileObj);
-  //   }
-  // };
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+      }
+  };
 
-  // const handleChange = async ({ fileList }) => {
-  //   for (let file of fileList) {
-  //     if (file.size > 1050000) {
-  //       return notification.error({
-  //         message: "Error",
-  //         description: `You can't upload files larger than 10mb`,
-  //       });
-  //     }
-  //   }
-  //   const newFileList = await Promise.all(
-  //     fileList.map(async (file) => {
-  //       const thumbUrl = await getBase64(file.originFileObj);
+  const handleChange = async ({ fileList }) => {
+    for (let file of fileList) {
+      if (file.size > 10500000) {
+        return notification.error({
+          message: "Error",
+          description: `You can't upload files larger than 10mb`,
+        });
+      }
+    }
+    const newFileList = await Promise.all(
+      fileList.map(async (file) => {
+        const thumbUrl = await getBase64(file.originFileObj);
 
-  //       return {
-  //         ...file,
-  //         thumbUrl,
-  //       };
-  //     })
-  //   );
 
-  //   setFileList(newFileList);
-  // };
+        return {
+          ...file,
+          thumbUrl,
+        };
+      })
+    );
+
+    setFileList(newFileList);
+  };
 
   const handleDeleteFile = (id) => {
     const newfiles = fileList.filter((file) => file.uid !== id);
@@ -118,7 +126,7 @@ const FormMessage = ({
                   <img
                     src={file.thumbUrl}
                     alt={file.name}
-                    style={{ width: "60px" }}
+                    style={{ width: "60px", maxHeight: '60px' }}
                   />
                 ) : file.type.includes("video") ? (
                   <video
@@ -165,7 +173,7 @@ const FormMessage = ({
             autoFocus
           />
         </Form.Item>
-        {/* 
+        
         <Form.Item name="files">
           <Upload
             customRequest={filesUpload}
@@ -179,10 +187,10 @@ const FormMessage = ({
             accept="image/*,application/pdf"
           >
             <PaperClipOutlined
-              style={{ fontSize: "1.2rem", cursor: "pointer" }}
+              style={{ fontSize: "1.3rem", cursor: "pointer", marginBottom: '3px' }}
             />
           </Upload>
-        </Form.Item> */}
+        </Form.Item>
         {openEmojiPicker && (
           <EmojiPicker
             onEmojiClick={onEmojiClick}
@@ -205,7 +213,7 @@ const FormMessage = ({
             htmlType="submit"
             className="button-send-message"
             shape="circle"
-            icon={<SendOutlined />}
+            icon={<SendOutlined  />}
           />
         </Form.Item>
       </Form>

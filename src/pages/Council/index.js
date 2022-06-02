@@ -34,7 +34,9 @@ const CouncilPage = ({
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [filter, setFilter] = useState([]);
+  const [classCouncilContainer, setClassCouncilContainer] = useState("search-results-container")
   const location = useLocation();
+  
 
   const parsed = qs.parse(location.search);
 
@@ -104,7 +106,7 @@ const CouncilPage = ({
           <div className="council-filter-panel">
             <FilterDrawer onChange={onFilterChange} />
           </div>
-          <div className="search-results-container">
+          <div className={classCouncilContainer}> 
             {/* <Row>
               <Col span={24}>
                 <div className="search-results-container-mobile-header">
@@ -133,6 +135,7 @@ const CouncilPage = ({
                       data={TabData}
                       current={currentTab}
                       onChange={setCurrentTab}
+                      functionClass={setClassCouncilContainer}
                     />
                   </div>
                 </div>
