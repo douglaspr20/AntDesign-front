@@ -58,4 +58,5 @@ export default {
   AD_CONFERENCE_LIBRARY_PREVIEW: "/ad/conference-library/preview",
   SEARCH: "/search",
   BLOGS: "/blogs",
+  SIMULATION_SPRINTS: "/simulation-sprints",
 };

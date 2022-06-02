@@ -61,6 +61,7 @@ import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
 import SearchPage from "pages/Search";
 import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
+import SimulationSprintsPage from "pages/SimulationSprints";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -428,11 +429,18 @@ class Content extends Component {
             exact
             render={(props) => <BlogPage {...props} />}
           />
+
+          <Route
+            exact
+            path={INTERNAL_LINKS.SIMULATION_SPRINTS}
+            render={(props) => <SimulationSprintsPage {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
             render={(props) => <PublicEventPage {...props} />}
           />
+
           <Route component={NoPageFound} />
         </Switch>
       </Layout.Content>

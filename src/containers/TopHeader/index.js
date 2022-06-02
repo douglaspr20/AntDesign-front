@@ -280,6 +280,13 @@ class TopHeader extends Component {
           exact
           render={(props) => <MainHeader {...props} />}
         />
+
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}`}
+          render={(props) => <MainHeader {...props} />}
+        />
+
         <Route
           exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
