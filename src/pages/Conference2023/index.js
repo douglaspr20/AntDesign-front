@@ -18,6 +18,7 @@ const Conference2023 = ({
 
   const [bulCompleteProfile,setBulCompleteProfile] = useState(false)
   const [bulMessageOut, setBulMessageOut] = useState(true)
+  const [animation, setAnimation] = useState({opacity:"0%"})
 
   useEffect(() => {
     if(isAuthenticated !== false){
@@ -49,6 +50,10 @@ const Conference2023 = ({
   }, [])
 
   const quitMessage = () => {
+    setAnimation({opacity:"100%"})
+    setTimeout(() => {
+      setAnimation({opacity:"0%"})
+    }, 1760);
     setTimeout(() => {
       setBulMessageOut(false)
       localStorage.setItem("register", false)
@@ -74,7 +79,7 @@ const Conference2023 = ({
             </Modal>
           }
           {(bulCompleteProfile === false && bulMessageOut && localStorage.getItem("register") === "true") && 
-            <div className="container-message">
+            <div className="container-message" style={animation}>
               <p className="text-message">You are now registered</p>
             </div>
           }

@@ -21,29 +21,9 @@
 }
 
 .container-message{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 150px;
-    background: white;
-    z-index: 10000;
-    transform: translateX(-50%) translateY(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    animation: hiddenKey 2s ease-in-out;
-    opacity: 0%;
 
-    .text-message{
-        margin: 0px;
-        padding: 0px;
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center;
-    }
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
 }
 
 .container-conference{
@@ -74,18 +54,6 @@
         background-position: center;
     }
 }
-
-@keyframes hiddenKey {
-    0% {
-        opacity: 100%;
-    }
-    80% {
-        opacity: 100%;
-    }
-    100% {
-        opacity: 0%;
-    }
-  }
 
 @media (max-width: 650px) {
     .ModalContainer {
