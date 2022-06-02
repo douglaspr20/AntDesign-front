@@ -1,32 +1,15 @@
 .modal-container-complete-profile {
-    width: 100% ;
-    height: 50vh ;
-    top: 0px ;
-    padding: 0px;
-    margin: 0px;
-  
-    .ant-modal-content {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-  
-      .ant-modal-close {
-        display: none;
-      }
-  
-      .login-page {
-        background: transparent;
-      }
-    }
-  
-    @media (max-width: 1024px) {
-      width: 100% ;
-      padding: 0 ;
-  
-      .ant-modal-body {
-        padding: 0 ;
-      }
-    }
+  width: 100% ;
+  height: 100vh ;
+  top: 0px ;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 800;
 }
 
 .container-message{

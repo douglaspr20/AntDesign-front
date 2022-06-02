@@ -64,11 +64,8 @@ const Conference2023 = ({
     <>
       {isAuthenticated && 
         <>
-          {((userProfile.firstName !== undefined && userProfile.firstName !== '')) && 
-            <Modal 
-              visible={bulCompleteProfile}
-              footer={null}
-              width={400}
+          {((userProfile.firstName !== undefined && userProfile.firstName !== '' && bulCompleteProfile)) && 
+            <div
               bodyStyle={{overflow: "none", padding: "20px"}}
               className="modal-container-complete-profile"
             >
@@ -76,7 +73,7 @@ const Conference2023 = ({
                 userProfile={userProfile}
                 get={getUser}
               />
-            </Modal>
+            </div>
           }
           {(bulCompleteProfile === false && bulMessageOut && localStorage.getItem("register") === "true") && 
             <div className="container-message" style={animation}>
