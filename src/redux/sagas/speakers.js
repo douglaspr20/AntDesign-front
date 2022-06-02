@@ -170,7 +170,6 @@ export function* addUserSpeakerToSaga({ payload }) {
 export function* sendEmailRegisterConference2023EndPointSaga() {
 
   try {
-    console.log("hola")
     yield call(sendEmailRegisterConference2023EndPoint);
 
   } catch (error) {
