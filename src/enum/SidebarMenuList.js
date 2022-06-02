@@ -41,6 +41,11 @@ export default {
       icon: IconTvOutline,
       url: INTERNAL_LINKS.CHANNELS,
     },
+    // {
+    //   label: "Blogs",
+    //   icon: IconReader,
+    //   url: INTERNAL_LINKS.BLOGS,
+    // },
     {
       label: "ProjectX",
       icon: IconFlask,

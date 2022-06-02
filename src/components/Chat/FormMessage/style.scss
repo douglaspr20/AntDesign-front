@@ -16,7 +16,7 @@
 
         .file-not-image{
             display: flex;
-            width: 80px;
+            padding: 0px 10px;
             justify-content: center;
             overflow: hidden;
             align-items: center;
@@ -27,15 +27,14 @@
             .file-image{
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                width: 90%;
                 overflow: hidden;
                 margin-top: 20px;
             }
         }
 
         .file-name{
-            max-width: 80px;
             max-height: 50px;
+            white-space: pre-line;
             text-overflow: ellipsis;
         }
     }
@@ -61,7 +60,7 @@
         transition: all ease 300ms !important;
 
         & .anticon{
-            vertical-align: 0.05em !important
+            vertical-align: 0.1em !important
         }
         
         &:hover,&:focus{

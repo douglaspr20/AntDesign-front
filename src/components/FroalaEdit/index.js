@@ -20,7 +20,14 @@ import "froala-editor/js/plugins/video.min.js";
 
 import "./style.scss";
 
-const FroalaEdit = ({ s3Hash, value, onChange, additionalConfig, ...rest }) => {
+const FroalaEdit = ({
+  s3Hash,
+  value,
+  onChange,
+  additionalConfig,
+  className,
+  ...rest
+}) => {
   const [editorConfig, setEditorConfig] = useState({});
   const [htmlNote, setHtmlNote] = useState("");
 
@@ -45,7 +52,7 @@ const FroalaEdit = ({ s3Hash, value, onChange, additionalConfig, ...rest }) => {
   return editorConfig.imageUploadToS3 && editorConfig.imageUploadToS3.bucket ? (
     <FroalaEditor
       className="froala-editor"
-      config={{...editorConfig, ...additionalConfig}}
+      config={{ ...editorConfig, ...additionalConfig }}
       tag="textarea"
       model={htmlNote}
       onModelChange={handleChange}

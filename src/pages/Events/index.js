@@ -83,28 +83,29 @@ const EventsPage = ({
       getAdvertisementById(id);
     } else {
       getAdvertisementsTodayByPage("events");
+
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const displayAds = !isEmpty(advertisementsByPage.events) && (
+  const displayAds = (
     <div className="events-advertisement-wrapper">
-      {advertisementsByPage.events.map((advertisement) => {
+      {advertisementsByPage?.events?.map((advertisement) => {
         return (
           <div
             className="events-advertisement-wrapper-content"
-            key={advertisement.id}
+            key={advertisement?.id}
           >
             <div
               className="advertisement"
               onClick={() => {
-                createAdvertisementClick(advertisement.id);
-                window.open(advertisement.advertisementLink, "_blank");
+                createAdvertisementClick(advertisement?.id);
+                window.open(advertisement?.advertisementLink, "_blank");
               }}
             >
               <img
-                src={advertisement.adContentLink}
+                src={advertisement?.adContentLink}
                 alt="advertisement"
                 className="advertisement-img"
               />
@@ -120,11 +121,11 @@ const EventsPage = ({
       <div
         className="advertisement"
         onClick={() =>
-          window.open(advertisementById.advertisementLink, "_blank")
+          window.open(advertisementById?.advertisementLink, "_blank")
         }
       >
         <img
-          src={advertisementById.adContentLink}
+          src={advertisementById?.adContentLink}
           alt="advertisement"
           className="advertisement-img"
         />
@@ -245,7 +246,6 @@ const EventsPage = ({
       prev = allEvents.filter((item) => {
         let flag = true;
         flag = dateFilter(flag, params, item);
-
         if (new Date(item.startDate) < new Date() || !item.isOverEmailSent) {
           flag = false;
         }
@@ -318,9 +318,10 @@ const EventsPage = ({
     }
 
     if (isEmpty(params)) {
-      const eventDate = moment(item.date, "YYYY.MM.DD h:mm a");
+      const eventDate = moment(item?.startAndEndTimes[(item?.startAndEndTimes.length -1)]?.endTime, "YYYY.MM.DD h:mm a");
       flag = eventDate.isAfter(moment());
     }
+
     return flag;
   };
 

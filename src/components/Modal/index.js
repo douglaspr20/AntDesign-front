@@ -28,7 +28,7 @@ const CustomModal = ({
         <div className="custom-panel-header-logo">
           <img src={IconLogo} alt="payment-logo" />
         </div>
-        <h3>{title}</h3>
+        <h3 style={{ whiteSpace: "pre-line" }}>{title}</h3>
         <h5>{subTitle}</h5>
       </div>
       <div className="custom-panel-close" onClick={onCancel}>

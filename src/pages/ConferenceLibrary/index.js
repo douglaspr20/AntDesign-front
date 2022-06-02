@@ -65,6 +65,7 @@ const ConferenceLibrary = ({
   const [meta, setMeta] = useState("");
   const [listOfYears, setListOfYears] = useState([2020]);
   const [modalVisibleCertificate, setModalVisibleCertificate] = useState(false);
+  const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
   const { id } = useParams();
   const history = useHistory();
 
@@ -79,11 +80,24 @@ const ConferenceLibrary = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
   useEffect(() => {
     if (userProfile?.sessionsJoined?.length > 0) {
       getSessionsUserJoined(userProfile.sessionsJoined);
     }
   }, [getSessionsUserJoined, userProfile]);
+
+  useEffect(() => {
+    if (advertisementsByPage !== undefined && advertisementsByPage["conference-library"] !== undefined) {
+      if(advertisementsByPage?.["conference-library"][0] !== undefined){
+        setHasAdvertisementData(true);
+      }else{
+        setHasAdvertisementData(false);
+      }
+    } else {
+      setHasAdvertisementData(false);
+    }
+  }, [advertisementsByPage]);
 
   const displayAds = !isEmpty(advertisementsByPage["conference-library"]) && (
     <div className="conference-library-advertisement-wrapper">
@@ -385,10 +399,11 @@ const ConferenceLibrary = ({
 
   return (
     <div className="conference-library-page">
+      {hasAdvertisementData ? <div></div> : 
       <ConferenceLibraryFilterPanel
         onChange={onFilterChange}
         onSearch={onSearch}
-      />
+      />}
       <ConferenceLibraryFilterDrawer
         visible={visible}
         onClose={() => setVisible(false)}
@@ -398,8 +413,8 @@ const ConferenceLibrary = ({
       <div className="search-results-container">
         <Row>
           <Col span={24}>
-            <div className="search-results-container-mobile-header">
-              <h3 className="filters-btn" onClick={() => setVisible(true)}>
+            <div className={`search-results-container${hasAdvertisementData ? "-advertsiment-wrapper" : "-mobile-header"}`} onClick={() => setVisible(true)}>
+              <h3 className="filters-btn">
                 Filters
               </h3>
             </div>

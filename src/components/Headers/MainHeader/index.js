@@ -22,6 +22,7 @@ import {
   setVisibleProfileUser,
 } from "redux/actions/home-actions";
 import { setCollapsed } from "redux/actions/env-actions";
+import Imbox from "containers/Imbox";
 import Notification from "containers/Notification";
 
 import IconChevronDown from "images/icon-chevron-down.svg";
@@ -32,6 +33,7 @@ import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconLibrary from "images/icon-library.svg";
 import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
+import IconReader from "images/icon-reader.svg";
 import IconHome from "images/icon-home.svg";
 
 import IconGlobal from "images/icon-global.svg";
@@ -318,6 +320,12 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.BLOGS}`)) {
+      pathInfo = {
+        icon: IconReader,
+        label: "Blog",
+      };
+    }
     return (
       <div className="main-header">
         <div className="main-header-left">
@@ -428,6 +436,7 @@ class MainHeader extends React.Component {
               onClick={this.planUpgrade}
             />
           )}
+          <Imbox className="main-header-imbox" />
           <Notification className="main-header-notification" />
           <ProfilePopupMenu showPremiumAlert={this.showPremiumAlert}>
             <div className="user-avatar">

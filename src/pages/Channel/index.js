@@ -9,6 +9,7 @@ import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
 import EventsList from "./EventsList";
+import BlogList from "./BlogsList";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -32,13 +33,23 @@ const Channel = ({
   setFollowChannel,
   unsetFollowChannel,
 }) => {
-  const { search } = useLocation();
-  const query = new URLSearchParams(search)
+  const { search, pathname } = useLocation();
+  const query = new URLSearchParams(search);
 
-  const [currentTab, setCurrentTab] = useState(query.get('tab') || '0');
+  const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
   const [filter, setFilter] = useState({});
   const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    if (query.get("tab") === "blogs") {
+      setCurrentTab("4");
+      history.replace({
+        pathname: pathname,
+        search: "",
+      });
+    }
+  }, [query, history, pathname]);
 
   const onFilterChange = (values) => {
     setFilter(values);
@@ -82,6 +93,10 @@ const Channel = ({
     {
       title: "Events",
       content: () => <EventsList isOwner={isChannelOwner} filter={filter} />,
+    },
+    {
+      title: "Blogs",
+      content: () => <BlogList isOwner={isChannelOwner} />,
     },
   ];
 
@@ -179,7 +194,7 @@ const mapStateToProps = (state, props) => ({
   selectedChannel: channelSelector(state).selectedChannel,
   channelLoading: channelSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
-  updateEvent: channelSelector(state).selectedChannel
+  updateEvent: channelSelector(state).selectedChannel,
 });
 
 const mapDispatchToProps = {

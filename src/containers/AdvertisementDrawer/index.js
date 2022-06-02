@@ -30,7 +30,7 @@ const AdvertisementDrawer = ({
   advertisement = {},
   clearEditAndAdvertisement,
   editAdvertisement,
-  userProfile,
+  userProfile
 }) => {
   const [totalDays, setTotalDays] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -41,13 +41,14 @@ const AdvertisementDrawer = ({
   const [editImageUrl, setEditImageUrl] = useState(null);
   const [visibleModal, setVisibleModal] = useState(false);
   const [hasAdvertisementStarted, setHasAdvertisementStarted] = useState(false);
-  const [isDraft, setIsDraft] = useState(false);
+  const [isDraft, setIsDraft] = useState(true);
 
   useEffect(() => {
     getAllActiveAdvertisements();
   }, []);
 
   useEffect(() => {
+
     if (isEdit) {
       form.setFieldsValue({
         ...advertisement,
@@ -83,14 +84,16 @@ const AdvertisementDrawer = ({
         setTotalDays(diff);
         setTotalPrice(diff * advertisement.adCostPerDay);
       }
+    }else{
+      return () => {
+        setHasAdvertisementStarted(false);
+        setEditImageUrl(null);
+        setIsDraft(false);
+        setIsPagePopulated(false);
+      };
     }
 
-    return () => {
-      setHasAdvertisementStarted(false);
-      setEditImageUrl(null);
-      setIsDraft(false);
-      setIsPagePopulated(false);
-    };
+    
   }, [isEdit, advertisement]);
 
   useEffect(() => {
@@ -263,6 +266,7 @@ const AdvertisementDrawer = ({
 
     clearEditAndAdvertisement();
     setVisible(false);
+    setIsDraft(true)
     form.resetFields();
   };
 
@@ -311,8 +315,10 @@ const AdvertisementDrawer = ({
   const handleOnClose = () => {
     if (isEdit) {
       clearEditAndAdvertisement();
+      setIsDraft(true)
       form.resetFields();
     }
+    
     setVisible(false);
   };
 
@@ -339,13 +345,15 @@ const AdvertisementDrawer = ({
             layout="vertical"
             validateMessages={{ required: "'${label}' is required!" }}
           >
-            <Form.Item>
+            <div>
               <h3>{`Available credits: ${
                 userProfile.advertisementCredits || 0
               }`}</h3>
-            </Form.Item>
+            </div>
             <Form.Item label="Campaign Name" name="title" rules={[{ required: true }]}>
-              <CustomInput bordered />
+              <CustomInput 
+                bordered 
+              />
             </Form.Item>
             {onDashboard && (
               <Form.Item label="Page" name="page" rules={[{ required: true }]}>
@@ -358,7 +366,8 @@ const AdvertisementDrawer = ({
                   ]}
                   bordered
                   onSelect={handleOnSelect}
-                  disabled={isEdit}
+                  disabled={(isEdit || !isPagePopulated) && !isDraft}
+                  style={((isEdit || !isPagePopulated) && !isDraft) ? {background:"#f5f5f5", borderRadius:"5px"} : {background:"white"}}
                 />
               </Form.Item>
             )}
@@ -382,12 +391,12 @@ const AdvertisementDrawer = ({
             >
               <CustomInput bordered />
             </Form.Item>
-            <Form.Item>
+            <div>
               <h3>Total days: {totalDays}</h3>
-            </Form.Item>
-            <Form.Item>
+            </div>
+            <div>
               <h3>Total credits: {totalPrice} Credits</h3>
-            </Form.Item>
+            </div>
             <Form.Item name="image" noStyle />
             <div style={{ marginBottom: "1rem" }}>
               Image (Aspect Ratio: 1 / 1)
@@ -408,7 +417,7 @@ const AdvertisementDrawer = ({
               />
             </div>
             <Form.Item name="status" noStyle />
-            <Form.Item>
+            <div>
               <div className="d-flex">
                 {!hasAdvertisementStarted &&
                   advertisement.status !== "active" && (
@@ -421,14 +430,14 @@ const AdvertisementDrawer = ({
                     />
                   )}
                 <CustomButton
-                  text="Start Campaign"
+                  text={(!isDraft && isEdit) ? "Save Campaign" : "Start Campaign"}
                   type="primary"
                   block
                   onClick={() => handleDynamicSubmit("active")}
                   style={{ width: "100%" }}
                 />
               </div>
-            </Form.Item>
+            </div>
           </Form>
         </div>
       </Drawer>
