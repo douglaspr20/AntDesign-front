@@ -29,3 +29,7 @@ export const removeUserSpeakerToPanelEndPoint = (payload) => {
     ...payload,
   })
 }
+
+export const sendEmailRegisterConference2023EndPoint = () => {
+  return httpClient.post("private/speakers/send-email-register-conference")
+}

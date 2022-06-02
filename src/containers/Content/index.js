@@ -6,6 +6,7 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
+import Conference2023 from "pages/Conference2023"
 import CouncilPage from "pages/Council";
 import Speakers2023 from "pages/Speakers2023";
 import LoginPage from "pages/Login";
@@ -106,7 +107,10 @@ class Content extends Component {
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
-
+          <Route 
+            path={INTERNAL_LINKS.CONFERENCE_2023}
+            render={(props) => <Conference2023 {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.INVITATION}/:hostUserId/:email`}

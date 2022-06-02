@@ -8,6 +8,8 @@ const GET_USERS_SPEAKERS = "GET_USERS_SPEAKERS";
 const REMOVE_USERS_PANEL = "REMOVE_USERS_PANEL";
 const UPDATE_USERS_SPEAKERS = "UPDATE_USERS_SPEAKERS";
 const ADD_SPEAKER_TO_PANEL = "ADD_SPEAKER_TO_PANEL";
+const UPDATE_ADD_PANEL_SPEAKERS = "UPDATE_ADD_PANEL_SPEAKERS";
+const SEND_EMAIL_REGISTER_CONFERENCE = "SEND_EMAIL_REGISTER_CONFERENCE";
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -16,7 +18,9 @@ export const constants = {
   GET_USERS_SPEAKERS,
   REMOVE_USERS_PANEL,
   UPDATE_USERS_SPEAKERS,
-  ADD_SPEAKER_TO_PANEL
+  ADD_SPEAKER_TO_PANEL,
+  UPDATE_ADD_PANEL_SPEAKERS,
+  SEND_EMAIL_REGISTER_CONFERENCE
 };
 
 // ------------------------------------
@@ -35,6 +39,11 @@ export const addUserSpeakerToPanel = createAction(
 export const updatePanelSpeakers = createAction(
     UPDATE_PANEL_SPEAKERS,
     (panelsSpeakers) => ({ panelsSpeakers })
+);
+
+export const updateAddPanelSpeakers = createAction(
+  UPDATE_ADD_PANEL_SPEAKERS,
+  (panelsSpeakers) => ({ panelsSpeakers })
 );
 
 export const getAllPanelSpeakers = createAction(
@@ -57,6 +66,11 @@ export const removeUserSpeakerToPanel = createAction(
   (UserId, callback) => ({ UserId, callback})
 )
 
+export const sendEmailRegisterConference2023 = createAction(
+  SEND_EMAIL_REGISTER_CONFERENCE,
+  () => ({})
+)
+
 export const actions = {
     addPanelSpeakers,
     updatePanelSpeakers,
@@ -64,5 +78,7 @@ export const actions = {
     getAllUserSpeaker,
     removeUserSpeakerToPanel,
     updateAllUserSpeakers,
-    addUserSpeakerToPanel
+    addUserSpeakerToPanel,
+    updateAddPanelSpeakers,
+    sendEmailRegisterConference2023
 };

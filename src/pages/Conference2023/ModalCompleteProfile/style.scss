@@ -1,0 +1,113 @@
+.ModalContainer {
+    width: 600px;
+    height: 600px;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    padding-top: 20px;
+    margin-top: -50px;
+    margin-left: -120px;
+    flex-direction: column;
+    overflow: hidden scroll;
+    border-radius: 5px;
+    scrollbar-color: #d9d9d9;
+    scrollbar-width: thin;
+
+    .title-complete-profile{
+        padding-bottom: 25px;
+        text-align: center;
+    }
+}
+
+.container-message{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 150px;
+    background: white;
+    z-index: 10000;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    animation: hiddenKey 2s ease-in-out;
+    opacity: 0%;
+
+    .text-message{
+        margin: 0px;
+        padding: 0px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
+.container-conference{
+    overflow: hidden scroll;
+    height: calc(100vh - 10px);
+
+    .containers-home, .containers-speakers, .containers-sponsors, .containers-agenda{
+        width: 80%;
+        margin-left: 10%;
+        background: white;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        height: 800px;
+        margin-bottom: 30px;
+
+        .title-containers{
+            padding-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    .imagen-conference{
+        width: 100%;
+        height: calc(100vh - 90px);
+        margin-top: 90px;
+        background-image: url("https://lab-user-images.s3.us-east-2.amazonaws.com/event/1646926140476.jpeg");
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+@keyframes hiddenKey {
+    0% {
+        opacity: 100%;
+    }
+    80% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
+  }
+
+@media (max-width: 650px) {
+    .ModalContainer {
+      width: 400px;
+      margin-left: -20px;
+    }
+}
+
+.ModalContainer::-webkit-scrollbar {
+    width: 8px;              
+}
+  
+.ModalContainer::-webkit-scrollbar-track {
+    background: transparent; 
+    border-radius: 5px;       
+}
+  
+.ModalContainer::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;  
+    border-radius: 20px;     
+}
+
+.ModalContainer::-webkit-scrollbar-corner {
+    background: transparent;
+}

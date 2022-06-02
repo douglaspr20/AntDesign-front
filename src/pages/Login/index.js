@@ -29,6 +29,7 @@ import AuthAlert from "containers/AuthAlert";
 
 import IconLogo from "images/logo-sidebar.svg";
 import IconBack from "images/icon-back.svg";
+import IconPlus from "images/icon-plus.svg";
 
 import "./style.scss";
 
@@ -49,6 +50,7 @@ const Login = ({
   onClose,
   live,
   userProfile,
+  modal
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showFirewall, setShowFirewall] = useState(false);
@@ -74,6 +76,7 @@ const Login = ({
     if (isLogin) {
       const { email, password } = values;
       login(email, password);
+      localStorage.setItem("register", true)
     } else {
       let newSignupValues = {
         ...signupValues,
@@ -146,52 +149,60 @@ const Login = ({
   }, [history, logout]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (history != null) {
-        if (live && live.live === true) {
-          history.push(INTERNAL_LINKS.LIVE);
+    if(window.location.pathname !== INTERNAL_LINKS.CONFERENCE_2023){
+      if (isAuthenticated) {
+        if (history != null) {
+          if (live && live.live === true) {
+            history.push(INTERNAL_LINKS.LIVE);
+          } else {
+            history.push(INTERNAL_LINKS.HOME);
+          }
         } else {
-          history.push(INTERNAL_LINKS.HOME);
-        }
-      } else {
-        if (updatedEvent.ticket === "premium") {
-          if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
-            setShowFirewall(false);
+          if (updatedEvent.ticket === "premium") {
+            if (!isEmpty(userProfile) && userProfile.memberShip === "premium") {
+              setShowFirewall(false);
+              addToMyEventList(updatedEvent);
+              if (onClose) {
+                onClose();
+              }
+            } else {
+              setShowFirewall(true);
+            }
+          } else if (updatedEvent.ticket === "fee") {
+            setLoading(true);
+
+            const userTimezone = moment.tz.guess();
+
+            getCheckoutSession({
+              prices: [
+                {
+                  price_data: {
+                    currency: "usd",
+                    product_data: {
+                      name: updatedEvent.title,
+                    },
+                    unit_amount: `${updatedEvent.ticketFee}00`,
+                  },
+                },
+              ],
+              isPaidEvent: true,
+              event: { ...updatedEvent, userTimezone },
+              callback_url: window.location.href,
+            }).then((sessionData) =>
+              stripe.redirectToCheckout({ sessionId: sessionData.data.id })
+            );
+          } else {
             addToMyEventList(updatedEvent);
             if (onClose) {
               onClose();
             }
-          } else {
-            setShowFirewall(true);
           }
-        } else if (updatedEvent.ticket === "fee") {
-          setLoading(true);
-
-          const userTimezone = moment.tz.guess();
-
-          getCheckoutSession({
-            prices: [
-              {
-                price_data: {
-                  currency: "usd",
-                  product_data: {
-                    name: updatedEvent.title,
-                  },
-                  unit_amount: `${updatedEvent.ticketFee}00`,
-                },
-              },
-            ],
-            isPaidEvent: true,
-            event: { ...updatedEvent, userTimezone },
-            callback_url: window.location.href,
-          }).then((sessionData) =>
-            stripe.redirectToCheckout({ sessionId: sessionData.data.id })
-          );
-        } else {
-          addToMyEventList(updatedEvent);
-          if (onClose) {
-            onClose();
-          }
+        }
+      }
+    }else{
+      if (isAuthenticated) {
+        if (onClose) {
+          onClose();
         }
       }
     }
@@ -213,6 +224,9 @@ const Login = ({
 
   return (
     <div className="login-page">
+      <div className="container-icon-close" style={isLogin ? {clipPath: "polygon(0% 0, 100% 0, 100% 30%, 0% 30%)"} : {clipPath: "polygon(0% 0, 100% 0, 100% 20%, 0% 20%)"}}>
+        <img className="icon-close" onClick={() => {modal(false)}} src={IconPlus} alt="icon-close" style={isLogin ? {marginBottom: "360px"} : {marginBottom:"550px"}} />
+      </div>
       {showFirewall && (
         <div className="event-card-firewall" onClick={closeFirewall}>
           <div className="upgrade-notification-panel" onClick={planUpgrade}>
@@ -295,10 +309,12 @@ const Login = ({
 
 Login.propTypes = {
   onClose: PropTypes.func,
+  modal: PropTypes.func
 };
 
 Login.defaultProps = {
   onClose: () => {},
+  modal: () => {},
 };
 
 const mapStateToProps = (state) => ({

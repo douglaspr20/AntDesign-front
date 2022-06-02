@@ -49,7 +49,7 @@ const PanelSpeakers = ({
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     //const [status, setStatus] = useState(null);
     const [openSearchUser, setOpenSearchUser] = useState(false)
-    const [idPanel, setIdPanel] = useState()
+    const [Panel, setPanel] = useState({})
 
     const { Option } = Select;
 
@@ -101,8 +101,8 @@ const PanelSpeakers = ({
     const addUser = (data) => {
       const bulModerator = (data.isModerator === undefined) ? false : data.isModerator
       const {usersNames} = data.users
-      addUserSpeakerToPanel({usersNames,bul: bulModerator, idPanel: idPanel}, () => {
-        setIdPanel()
+      addUserSpeakerToPanel({usersNames,bul: bulModerator, panel: Panel}, () => {
+        setPanel({})
         speakersUserForm.resetFields();
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
@@ -111,7 +111,7 @@ const PanelSpeakers = ({
 
     const joinUser = (id) => {
       const usersNames = [userProfile.id]
-      addUserSpeakerToPanel({usersNames, bul: false, idPanel: id}, () => {
+      addUserSpeakerToPanel({usersNames, bul: false, Panel: id}, () => {
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
       })
@@ -138,7 +138,7 @@ const PanelSpeakers = ({
                 panels={panels} 
                 searchUser={setOpenSearchUser}
                 isAdmin={(role === "admin") ? true : false}
-                setId={setIdPanel}
+                setId={setPanel}
                 joinUser={joinUser}
                 members={(
                   <div className="ajust-contain">
@@ -161,7 +161,7 @@ const PanelSpeakers = ({
               onCancel={() => {
                 setOpenSearchUser(false)
                 speakersUserForm.resetFields();
-                setIdPanel()
+                setPanel({})
               }}
               onOk={() => {
                 setOpenSearchUser(false)
@@ -191,7 +191,7 @@ const PanelSpeakers = ({
                       }`}
                     >
                       {allUserSpeaker?.userSpeakers !== undefined ? allUserSpeaker?.userSpeakers.map((users) => (
-                        <Option key={users.id} value={users.id}>
+                        <Option key={users.id} value={[users.id,users.firstName,users.email]}>
                           {`${users.firstName} / ${users.email}`}
                         </Option>
                       )): <div></div>}

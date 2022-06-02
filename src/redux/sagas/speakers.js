@@ -10,7 +10,8 @@ import {
     allPanelSpeakersEndPonit,
     getAllUserSpeakerEndPoint,
     removeUserSpeakerToPanelEndPoint,
-    addUserSpeakerToPanelEndPoint
+    addUserSpeakerToPanelEndPoint,
+    sendEmailRegisterConference2023EndPoint
 } from "../../api";
 
 export function* addPanelSpeakerSaga({ payload }) {
@@ -25,7 +26,7 @@ export function* addPanelSpeakerSaga({ payload }) {
         const { panelsSpeakers } = response.data;
 
         yield put(
-          speakerActions.updatePanelSpeakers({
+          speakerActions.updateAddPanelSpeakers({
             panelsSpeakers
           })
         );
@@ -166,6 +167,22 @@ export function* addUserSpeakerToSaga({ payload }) {
   }
 }
 
+export function* sendEmailRegisterConference2023EndPointSaga() {
+
+  try {
+    console.log("hola")
+    yield call(sendEmailRegisterConference2023EndPoint);
+
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "there are a error",
+        description: error.response.data.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
 
 function* watchLogin() {
     yield takeLatest(speakerConstans.ADD_PANEL_SPEAKERS, addPanelSpeakerSaga);
@@ -173,6 +190,7 @@ function* watchLogin() {
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
     yield takeLatest(speakerConstans.REMOVE_USERS_PANEL, removeUserSpeakerToPanelSaga);
     yield takeLatest(speakerConstans.ADD_SPEAKER_TO_PANEL, addUserSpeakerToSaga);
+    yield takeLatest(speakerConstans.SEND_EMAIL_REGISTER_CONFERENCE ,sendEmailRegisterConference2023EndPointSaga);
 }
   
 export const speakerSaga = [fork(watchLogin)];

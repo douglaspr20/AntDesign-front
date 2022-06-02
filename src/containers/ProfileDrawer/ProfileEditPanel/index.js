@@ -10,6 +10,7 @@ import {
   CustomSelect,
   CustomRadio,
 } from "components";
+import { INTERNAL_LINKS } from "enum";
 import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES, PROFILE_SETTINGS } from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
 import { isValidEmail } from "utils/format";
@@ -124,10 +125,9 @@ class ProfileEditPanel extends React.Component {
 
   render() {
     const { user, visibleModal, editImageUrl } = this.state;
-
     return (
-      <div className="profile-edit-panel">
-        <div className="profile-edit-panel-container">
+      <div className="profile-edit-panel" style={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? {margin:"0px", marginTop: "20px"} : {margin:"-24px"}}>
+        <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "profile-edit-panel-container2" : "profile-edit-panel-container"} >
           <div className="profile-edit-panel-header">
             <div className="profile-user-img">
               <div className="profile-user-img-container">
@@ -279,8 +279,9 @@ class ProfileEditPanel extends React.Component {
                   <CustomInput
                     addonBefore="https://"
                     defaultValue={
-                      user.personalLinks[contact]
-                        ? user.personalLinks[contact].replace("https://", "")
+                      (user?.personalLinks !== undefined) &&
+                      user?.personalLinks[contact]
+                        ? user?.personalLinks[contact].replace("https://", "")
                         : ""
                     }
                     onChange={(value) =>
@@ -355,12 +356,12 @@ class ProfileEditPanel extends React.Component {
           </div>
         </div>
         <div className="profile-edit-panel-footer">
-          <CustomButton
+          {(window.location.pathname !== INTERNAL_LINKS.CONFERENCE_2023) && <CustomButton
             text="Cancel"
             type="third outlined"
             size="lg"
             onClick={this.onCancel}
-          />
+          />}
           <CustomButton
             text="Save"
             type="secondary"

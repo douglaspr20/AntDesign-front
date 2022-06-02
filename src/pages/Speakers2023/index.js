@@ -5,15 +5,10 @@ import Modal from "antd/lib/modal/Modal";
 
 import { homeSelector } from "redux/selectors/homeSelector";
 import { actions as homeActions } from "redux/actions/home-actions";
-// import { councilSelector } from "redux/selectors/councilSelector";
 
-//import FilterDrawer from "./CouncilPanel";
 import { Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import PanelSpeakers from "./Panels";
-// import CouncilList from "./CouncilList.js";
-// import CouncilEvents from "./CouncilEvents";
-// import CouncilConversationsCard from "./CouncilConversationsCard";
 
 import "./style.scss";
 
@@ -24,7 +19,6 @@ const Speaker2023 = ({
 }) => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  //const [filter, setFilter] = useState([]);
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [visibleConfirmApply, setVisibleConfirmApply] = useState(true);

@@ -44,7 +44,12 @@ const Collapse = ({
                     size="md"
                     type="secondary"
                     onClick={() => {
-                        joinUser(id)
+                        joinUser({
+                            id:id,
+                            startDate: startDate,
+                            endDate: endDate, 
+                            panelName: panelName
+                        })
                     }}
                 />  
                 {isAdmin && <CustomButton
@@ -53,7 +58,12 @@ const Collapse = ({
                     size="md"
                     type="primary"
                     onClick={() => {
-                        setId(id)
+                        setId({
+                            id:id,
+                            startDate: startDate,
+                            endDate: endDate, 
+                            panelName: panelName
+                        })
                         searchUser(true) 
                     }}
                 /> }
