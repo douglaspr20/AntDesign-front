@@ -1,19 +1,16 @@
 @import "../../styles/main.scss";
 
 .simulation-sprints{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: calc(100vh - 100px);
-    overflow-y: auto;
-    padding: 1rem 2.5rem;
 
-    &-container{
-        background: $color-background;
-        border: 1px solid $color-border;
-        max-width: 1500px;
-        margin-top: 300px;
-    }
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    background: $color-background;
+    margin-top: 20px;
+    margin-left: 60px;
+    margin-right: 50px;
+    border: 1px solid $color-border;
+    max-width: 1500px;
+    width: 100%;
 
     &-information{
         margin-top: 15px;
