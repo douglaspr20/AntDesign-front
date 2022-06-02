@@ -67,7 +67,7 @@ const Conference2023 = ({
           {((userProfile.firstName !== undefined && userProfile.firstName !== '' && bulCompleteProfile)) && 
             <div
               bodyStyle={{overflow: "none", padding: "20px"}}
-              className="modal-container-complete-profile"
+              className="complete-profile"
             >
               <ModalCompleteProfile
                 userProfile={userProfile}
