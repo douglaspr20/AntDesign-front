@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import ModalCompleteProfile from "./ModalCompleteProfile";
-import { Modal } from "antd";
+import SpeakersContainer from "./SpeakersContainer";
+import Agenda from "./Agenda";
 import { authSelector } from "redux/selectors/authSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getUser } from "redux/actions/home-actions";
-import { sendEmailRegisterConference2023 } from "redux/actions/speaker-actions"
+import { registerUserIfNotAreRegisterConference2023 } from "redux/actions/speaker-actions"
 
 import "./style.scss";
 
@@ -13,7 +14,7 @@ const Conference2023 = ({
   isAuthenticated,
   userProfile,
   getUser,
-  sendEmailRegisterConference2023
+  registerUserIfNotAreRegisterConference2023
 }) => {
 
   const [bulCompleteProfile,setBulCompleteProfile] = useState(false)
@@ -24,10 +25,10 @@ const Conference2023 = ({
     if(isAuthenticated !== false){
         getUser();   
         if(localStorage.getItem("register") === "true"){
-          sendEmailRegisterConference2023()
+          registerUserIfNotAreRegisterConference2023()
         }
     }
-  }, [isAuthenticated, getUser,sendEmailRegisterConference2023]);
+  }, [isAuthenticated, getUser,registerUserIfNotAreRegisterConference2023]);
 
   useEffect(() => {
     if(userProfile.percentOfCompletion !== undefined){
@@ -88,13 +89,17 @@ const Conference2023 = ({
           <h1 className="title-containers">Title home</h1>
         </div>
         <div className="containers-speakers" id="speakers">
-          <h1 className="title-containers">Title speakers</h1>  
+          <h1 className="title-containers">SPEAKERS</h1>  
+          <SpeakersContainer
+            isAuthenticated={isAuthenticated}
+          />
         </div>
         <div className="containers-sponsors" id="sponsors">
           <h1 className="title-containers">Title sponsors</h1>  
         </div>
         <div className="containers-agenda" id="agenda">
           <h1 className="title-containers">Title agenda</h1>  
+          <Agenda />
         </div>
       </div>
     </>
@@ -108,7 +113,7 @@ const Conference2023 = ({
   
   const mapDispatchToProps = {
     getUser,
-    sendEmailRegisterConference2023
+    registerUserIfNotAreRegisterConference2023
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(Conference2023);

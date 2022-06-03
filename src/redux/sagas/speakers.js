@@ -11,7 +11,8 @@ import {
     getAllUserSpeakerEndPoint,
     removeUserSpeakerToPanelEndPoint,
     addUserSpeakerToPanelEndPoint,
-    sendEmailRegisterConference2023EndPoint
+    registerUserIfNotAreRegisterConference2023EndPoint,
+    getAllPanelsOfOneUserEndPoint
 } from "../../api";
 
 export function* addPanelSpeakerSaga({ payload }) {
@@ -167,10 +168,10 @@ export function* addUserSpeakerToSaga({ payload }) {
   }
 }
 
-export function* sendEmailRegisterConference2023EndPointSaga() {
+export function* registerUserIfNotAreRegisterConference2023() {
 
   try {
-    yield call(sendEmailRegisterConference2023EndPoint);
+    yield call(registerUserIfNotAreRegisterConference2023EndPoint);
 
   } catch (error) {
     console.log(error)
@@ -183,13 +184,46 @@ export function* sendEmailRegisterConference2023EndPointSaga() {
   }
 }
 
+export function* getAllPanelsOfOneUserSagas({payload}) {
+
+  const {UserId} = payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllPanelsOfOneUserEndPoint, { UserId });
+
+    if (response.status === 200) {
+      const { userSpeakers } = response.data;
+      if(payload.callback){
+        payload.callback();
+      }
+
+      yield put(
+        speakerActions.updateAllPanelsOfOneUser(
+          userSpeakers
+        )
+      );
+    }
+  } catch (error) {
+      notification.error({
+        message: "there are a error",
+        description: error.response.data.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+
+}
+
 function* watchLogin() {
     yield takeLatest(speakerConstans.ADD_PANEL_SPEAKERS, addPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
     yield takeLatest(speakerConstans.REMOVE_USERS_PANEL, removeUserSpeakerToPanelSaga);
     yield takeLatest(speakerConstans.ADD_SPEAKER_TO_PANEL, addUserSpeakerToSaga);
-    yield takeLatest(speakerConstans.SEND_EMAIL_REGISTER_CONFERENCE ,sendEmailRegisterConference2023EndPointSaga);
+    yield takeLatest(speakerConstans.REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023 , registerUserIfNotAreRegisterConference2023);
+    yield takeLatest(speakerConstans.GET_ALL_PANELS_OF_ONE_USER, getAllPanelsOfOneUserSagas);
 }
   
 export const speakerSaga = [fork(watchLogin)];

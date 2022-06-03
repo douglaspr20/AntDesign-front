@@ -284,12 +284,14 @@ import {
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,
   addUserSpeakerToPanelEndPoint,
-  sendEmailRegisterConference2023EndPoint
+  registerUserIfNotAreRegisterConference2023EndPoint,
+  getAllPanelsOfOneUserEndPoint
 } from "./module/speakers"
 
 export {
   sendEmailAuthorizationSpeakersEndPoint,
-  sendEmailRegisterConference2023EndPoint,
+  registerUserIfNotAreRegisterConference2023EndPoint,
+  getAllPanelsOfOneUserEndPoint,
   sendActiveOrDenyAuthorizationEndPoint,
   addPanelSpeakersEndPoint,
   allPanelSpeakersEndPonit,

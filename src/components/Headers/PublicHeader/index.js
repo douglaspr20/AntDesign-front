@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
@@ -15,9 +15,17 @@ import "./style.scss";
 const PublicHeader = () => {
 
   const [modalRegister, setModalRegister] = useState(false)
+  const [widthResponsive, setWidthResponsive] = useState(false)
+
+  useEffect(() => {
+    if(localStorage.getItem("register") === "true"){
+      setWidthResponsive(true)
+      localStorage.setItem("header", true);
+    }
+  }, [modalRegister])
 
   return (
-    <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-conference" : "public-header"}>
+    <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-conference" : "public-header"} style={(widthResponsive || localStorage.getItem("header") === "true") ? {width:"calc(100% - 217px)"} : {width:"100%"}}>
       <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-left-conference" : "public-header-left"}>
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />

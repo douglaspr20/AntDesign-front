@@ -158,7 +158,18 @@ const SignupForm = ({ step }) => {
               size="sm"
             />
           </Form.Item>
-          
+          {/* <Form.Item
+            name="recaptcha"
+            rules={[
+              {
+                required: true,
+                message: "Please resolve the reCAPTCHA!",
+              },
+            ]}
+            className="form-recaptcha"
+          >
+            <ReCAPTCHA sitekey={SecretKey} />
+          </Form.Item> */}
         </React.Fragment>
       )}
       {step === 1 && (

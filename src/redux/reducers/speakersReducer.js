@@ -26,7 +26,14 @@ export const reducers = {
       return state.merge({
         allUserSpeakers: userSpeakers,
       })
-    }
+    },
+    [speakerConstans.UPDATE_ALL_PANELS_OF_ONE_USER]: (state, {payload}) => {
+      const {userSpeakers} = payload
+      
+      return state.merge({
+        allPanelsOfOneUser: userSpeakers
+      })
+    }  
   };
   
   export const initialState = () =>

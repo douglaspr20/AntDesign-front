@@ -5,7 +5,8 @@ const speakerSelector = (state) => state.speakers;
 const resultSelector = createSelector(speakerSelector, (payload) => {
   return {
     allPanelSpeakers: payload.get("allPanelSpeakers"),
-    allUserSpeakers: payload.get("allUserSpeakers")
+    allUserSpeakers: payload.get("allUserSpeakers"),
+    allPanelsOfOneUser: payload.get("allPanelsOfOneUser"),
   };
 });
 
