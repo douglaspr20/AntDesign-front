@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
-import SprintsCard from "../SprintsCard";
+import PricesCard from "../PricesCard";
 
 const GeneralInformation = ({ userProfile }) => {
   return (
@@ -76,17 +76,17 @@ const GeneralInformation = ({ userProfile }) => {
       </div>
 
       <div className="simulation-sprints-prices">
-        <SprintsCard
+        <PricesCard
           title="One Cohort"
           description="Lorem ipsum"
           prices="29.99"
         />
-        <SprintsCard
+        <PricesCard
           title="Five Cohort"
           description="Lorem ipsum"
           prices="69.99"
         />
-        <SprintsCard
+        <PricesCard
           title="Eight Cohort"
           description="Lorem ipsum"
           prices="79.99"

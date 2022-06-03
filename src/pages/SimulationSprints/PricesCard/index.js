@@ -3,13 +3,13 @@ import { Button, Card } from "antd";
 
 import "./style.scss";
 
-const SprintsCard = ({ title, description, prices }) => {
+const PricesCard = ({ title, description, prices }) => {
   return (
-    <Card className="simulation-sprints-card">
+    <Card className="sprints-prices-card">
       <h1>{title}</h1>
       <p>{description}</p>
 
-      <div className="simulation-sprints-card-price-container">
+      <div className="sprints-prices-card-price-container">
         <h2>{prices}$</h2>
       </div>
 
@@ -20,4 +20,4 @@ const SprintsCard = ({ title, description, prices }) => {
   );
 };
 
-export default SprintsCard;
+export default PricesCard;
