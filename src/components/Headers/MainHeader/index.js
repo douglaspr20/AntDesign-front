@@ -35,7 +35,7 @@ import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
 import IconReader from "images/icon-reader.svg";
 import IconHome from "images/icon-home.svg";
-
+import iconSchool from "images/icon-school.svg";
 import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -317,6 +317,16 @@ class MainHeader extends React.Component {
       pathInfo = {
         icon: IconReader,
         label: "Blog",
+      };
+    }
+
+    if (
+      !pathInfo &&
+      pathname.includes(`${INTERNAL_LINKS.SIMULATION_SPRINTS}`)
+    ) {
+      pathInfo = {
+        icon: iconSchool,
+        label: "Simulation Sprints",
       };
     }
     return (

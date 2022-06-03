@@ -62,6 +62,7 @@ import SearchPage from "pages/Search";
 import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
 import SimulationSprintsPage from "pages/SimulationSprints";
+import SimulationSprintPage from "pages/SimulationSprint";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -434,6 +435,12 @@ class Content extends Component {
             exact
             path={INTERNAL_LINKS.SIMULATION_SPRINTS}
             render={(props) => <SimulationSprintsPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
+            render={(props) => <SimulationSprintPage {...props} />}
           />
           <Route
             exact

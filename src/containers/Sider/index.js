@@ -185,6 +185,12 @@ class Sider extends Component {
           exact
           render={() => <Sidebar />}
         />
+
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
+          exact
+          render={() => <Sidebar />}
+        />
       </Switch>
     );
   }

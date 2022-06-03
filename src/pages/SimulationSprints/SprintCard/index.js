@@ -1,17 +1,20 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import { CustomButton } from "components";
-
+import { INTERNAL_LINKS } from "enum";
 import "./style.scss";
 
 const HARDCODED_COVER_PLACEHOLDER =
-  "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png";
+  "https://lab-user-images.s3.us-east-2.amazonaws.com/skill-cohort/1638463551319.jpeg";
 
 const description = {
   html: `<p>Test sprints card</p>`,
 };
 
 const SprintCard = () => {
+  const history = useHistory();
+
   return (
     <div className="sprint-card">
       <div className="sprint-card-header">
@@ -32,7 +35,9 @@ const SprintCard = () => {
         <div className="sprint-card-join-btn">
           <CustomButton
             text="More"
-            onClick={() => {}}
+            onClick={() =>
+              history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/1`)
+            }
             type="primary"
             size="md"
             block={true}
