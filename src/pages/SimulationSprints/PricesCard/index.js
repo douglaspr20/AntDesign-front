@@ -3,7 +3,7 @@ import { Button, Card } from "antd";
 
 import "./style.scss";
 
-const PricesCard = ({ title, description, prices }) => {
+const PricesCard = ({ title, description, prices, handleBuySimulation }) => {
   return (
     <Card className="sprints-prices-card">
       <h1>{title}</h1>
@@ -14,7 +14,9 @@ const PricesCard = ({ title, description, prices }) => {
       </div>
 
       <div className="pay-button-container">
-        <Button className="pay-buttton">Buy</Button>
+        <Button className="pay-buttton" onClick={() => handleBuySimulation()}>
+          Buy
+        </Button>
       </div>
     </Card>
   );

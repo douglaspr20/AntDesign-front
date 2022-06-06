@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import Emitter from "services/emitter";
+import { EVENT_TYPES } from "enum";
 import PricesCard from "../PricesCard";
 
 const GeneralInformation = ({ userProfile }) => {
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
+
+  const handleBuySimulation = () => {
+    if (!userProfile.completed || userProfile.percentOfCompletion < 100) {
+      return setShowProfileCompletionFirewall(true);
+    }
+  };
+
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
   return (
     <>
       <div className="simulation-sprints-information">
@@ -77,21 +92,38 @@ const GeneralInformation = ({ userProfile }) => {
 
       <div className="simulation-sprints-prices">
         <PricesCard
-          title="One Cohort"
+          title="One Simulation"
           description="Lorem ipsum"
           prices="29.99"
+          handleBuySimulation={handleBuySimulation}
         />
         <PricesCard
-          title="Five Cohort"
+          title="Five Simulation"
           description="Lorem ipsum"
           prices="69.99"
+          handleBuySimulation={handleBuySimulation}
         />
         <PricesCard
-          title="Eight Cohort"
+          title="Eight Simulation"
           description="Lorem ipsum"
           prices="79.99"
+          handleBuySimulation={handleBuySimulation}
         />
       </div>
+
+      {showProfileCompletionFirewall && (
+        <div
+          className="simulation-sprint-firewall"
+          onClick={() => setShowProfileCompletionFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={completeProfile}>
+            <h3>
+              You must fully complete your profile before you can purchase any
+              of the simulation sprint packages.
+            </h3>
+          </div>
+        </div>
+      )}
     </>
   );
 };
