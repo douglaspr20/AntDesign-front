@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import SprintCard from "../SprintCard";
+
+import { getAllSimulationSprints } from "redux/actions/simulationSprint-actions";
+import { simulationSprintSelector } from "redux/selectors/simulationSprintSelector";
 
 import "./style.scss";
 
-const UpcomingSprints = () => {
-  const sprints = [...Array(8)];
+const UpcomingSprints = ({ getAllSimulationSprints, allSimulationSprints }) => {
+  useEffect(() => {
+    getAllSimulationSprints();
+  }, [getAllSimulationSprints]);
 
   return (
     <div className="upcoming-sprints">
-      {sprints.map((sprint, i) => (
-        <SprintCard key={i} />
+      {allSimulationSprints.map((sprint, i) => (
+        <SprintCard key={i} sprint={sprint} />
       ))}
     </div>
   );
 };
 
-export default UpcomingSprints;
+const mapStateToProps = (state) => ({
+  allSimulationSprints: simulationSprintSelector(state).allSimulationSprints,
+});
+
+const mapDispatchToProps = {
+  getAllSimulationSprints,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpcomingSprints);

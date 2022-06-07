@@ -274,6 +274,11 @@ import {
   remove as removeBlogPostLike,
 } from "./module/blogPostLike";
 
+import {
+  getAllSimulationSprints,
+  getSimulationSprint,
+} from "./module/simulationSprints";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -476,4 +481,6 @@ export {
   deleteBlogPost,
   addBlogPostLike,
   removeBlogPostLike,
+  getAllSimulationSprints,
+  getSimulationSprint,
 };

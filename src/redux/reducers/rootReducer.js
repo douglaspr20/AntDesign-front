@@ -43,8 +43,8 @@ import advertisementReducer from "./advertisementsReducer";
 import matchmakingReducer from "./matchmakingReducer";
 import councilEventReducer from "./councilEventReducer";
 import councilConversationReducer from "./councilConversationReducer";
-
 import blogPostReducer from "./blogPostReducer";
+import simulationSprintReducer from "./simulationSprintReducer";
 
 export default combineReducers({
   home: homeReducer,
@@ -92,4 +92,5 @@ export default combineReducers({
   councilEvent: councilEventReducer,
   councilConversation: councilConversationReducer,
   blogPost: blogPostReducer,
+  simulationSprint: simulationSprintReducer,
 });

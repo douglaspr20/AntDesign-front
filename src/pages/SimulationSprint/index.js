@@ -1,17 +1,112 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Space } from "antd";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { Dropdown, Menu, Space } from "antd";
 import moment from "moment-timezone";
 import { CustomButton, CustomModal } from "components";
 import { INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 
-import "./style.scss";
+import { getSimulationSprint } from "redux/actions/simulationSprint-actions";
+import { simulationSprintSelector } from "redux/selectors/simulationSprintSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
-const SimulationSprint = () => {
+import "./style.scss";
+import { convertToLocalTime } from "utils/format";
+import { DownOutlined } from "@ant-design/icons";
+
+const SimulationSprint = ({
+  getSimulationSprint,
+  simulationSprint,
+  userProfile,
+}) => {
   const [confirmJoinModal, setConfirmJoinModal] = useState(false);
 
   const history = useHistory();
+  const { id } = useParams();
+
+  const convertedStartTime = moment(simulationSprint.startDate)
+    .tz("America/Los_Angeles")
+    .utcOffset(-7, true);
+
+  const convertedEndTime = moment(simulationSprint.endDate)
+    .tz("America/Los_Angeles")
+    .utcOffset(-7, true);
+
+  const onClickDownloadCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/public/simulation-sprints/ics/${simulationSprint.id}?userTimezone=${userProfile.timezone}`,
+      "_blank"
+    );
+  };
+
+  const onClickAddGoogleCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
+      simulationSprint.title
+    }&dates=${convertToLocalTime(convertedStartTime).format(
+      "YYYYMMDDTHHmmSSS"
+    )}/${convertToLocalTime(convertedEndTime).format(
+      "YYYYMMDDTHHmmSSS"
+    )}&details=${
+      simulationSprint.description
+    }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    window.open(googleCalendarUrl, "_blank");
+  };
+
+  const onClickAddYahooCalendar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
+      convertedStartTime
+    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
+      "YYYYMMDDTHHmm"
+    )}&title=${simulationSprint.title}&desc=${
+      simulationSprint.description
+    }&in_loc=https://www.hackinghrlab.io/global-conference`;
+
+    window.open(yahooCalendarUrl, "_blank");
+  };
+
+  const downloadDropdownOptions = () => (
+    <Menu style={{ position: "relative", bottom: "70px" }}>
+      <Menu.Item key="1">
+        <a href="/#" onClick={(e) => onClickDownloadCalendar(e)}>
+          Download ICS File
+        </a>
+      </Menu.Item>
+      <Menu.Item key="2">
+        <a href="/#" onClick={(e) => onClickAddGoogleCalendar(e)}>
+          Add to Google Calendar
+        </a>
+      </Menu.Item>
+      <Menu.Item key="3">
+        <a href="/#" onClick={(e) => onClickAddYahooCalendar(e)}>
+          Add to Yahoo Calendar
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
+  useEffect(() => {
+    getSimulationSprint(id, (error) => {
+      if (error) {
+        history.push(
+          `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
+        );
+      }
+    });
+  }, [getSimulationSprint, id, history]);
+
+  if (!simulationSprint.id) {
+    return <></>;
+  }
+
   return (
     <div className="sprints-detail-page">
       <div className="sprints-detail-page-header">
@@ -33,7 +128,7 @@ const SimulationSprint = () => {
               </div>
             </div>
             <div className="title">
-              <h2>Driving Change and Innovation</h2>
+              <h2>{simulationSprint.title}</h2>
             </div>
           </div>
         </div>
@@ -50,57 +145,37 @@ const SimulationSprint = () => {
         <div className="sprints-detail-page-body-content">
           <Space direction="vertical" size="large">
             <Space direction="vertical" size="large">
-              <h3>How ProjectX Works</h3>
-              {/* <div
-              className="details"
-              dangerouslySetInnerHTML={{
-                __html: (skillCohort.howProjectXWorks || {}).html || "",
-              }}
-            /> */}
-
-              <div className="details">
-                <p>
-                  <strong>Driving Change and Innovation</strong> ProjectX Cohort
-                  is a 66-day program that is 100% virtual focusing on learning
-                  the skill of Driving Change and Innovation. There are daily
-                  and weekly activities that you are required to complete. You
-                  will receive a daily learning resource for 66 consecutive
-                  days. The learning resource is either reading material, audio,
-                  or video to help you master the skill. Daily, you will reflect
-                  on what they learned and how you plan to apply what you
-                  learned. In addition, there is a weekly activity where you
-                  will interact and collaborate with peers worldwide. Finally,
-                  you will work on a study case to demonstrate what you have
-                  learned during the program.
-                </p>
-              </div>
-            </Space>
-            <Space direction="vertical" size="large">
               <h3>Description </h3>
-              {/* <div
+              <div
                 className="details"
                 dangerouslySetInnerHTML={{
-                  __html: (skillCohort.description || {}).html || "",
+                  __html: (simulationSprint.description || {}).html || "",
                 }}
-              /> */}
-
-              <div className="details">
-                <p>
-                  <strong>Driving Change and Innovation</strong> is the path to
-                  developing innovation from an aspirational concept to the
-                  driving force of a company starts with understanding the
-                  origin reasons of our resistance to change.
-                </p>
-              </div>
+              />
             </Space>
 
             <Space direction="vertical" size="large">
               <h3>Schedule</h3>
-              <div className="details">Starting on {moment().format("LL")}</div>
               <div className="details">
-                Finishing on {moment().format("LL")}
+                Starting on {moment(simulationSprint.startDate).format("LL")}
+              </div>
+              <div className="details">
+                Finishing on {moment(simulationSprint.endDate).format("LL")}
               </div>
             </Space>
+
+            <Dropdown overlay={downloadDropdownOptions}>
+              <a
+                href="/#"
+                className="ant-dropdown-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+              >
+                Download calendar <DownOutlined />
+              </a>
+            </Dropdown>
           </Space>
         </div>
       </div>
@@ -130,4 +205,13 @@ const SimulationSprint = () => {
   );
 };
 
-export default SimulationSprint;
+const mapStateToProps = (state) => ({
+  simulationSprint: simulationSprintSelector(state).simulationSprint,
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {
+  getSimulationSprint,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SimulationSprint);

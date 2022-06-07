@@ -46,6 +46,7 @@ import { councilConversationCommentSaga } from "./councilConversationComment";
 import { councilConversationReplySaga } from "./councilConversationReply";
 import { councilConversationLikeSaga } from "./councilConversationLike";
 import { blogPostSaga } from "./blogPost";
+import { simulationSprintsSaga } from "./simulationSprint";
 
 export default function* sagas() {
   yield all([
@@ -96,5 +97,6 @@ export default function* sagas() {
     ...councilConversationReplySaga,
     ...councilConversationLikeSaga,
     ...blogPostSaga,
+    ...simulationSprintsSaga,
   ]);
 }
