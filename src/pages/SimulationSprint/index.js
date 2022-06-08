@@ -154,12 +154,22 @@ const SimulationSprint = ({
           </div>
         </div>
         <div className="sprints-btn">
-          <CustomButton
-            text="Join"
-            htmlType="button"
-            onClick={() => setConfirmJoinModal(true)}
-            disabled={false}
-          />
+          {simulationSprint?.SimulationSprintParticipants.some(
+            (participant) => participant.UserId === userProfile.id
+          ) ? (
+            <CustomButton
+              text="You have already joined this Simulation Sprint"
+              htmlType="button"
+              onClick={() => setConfirmJoinModal(true)}
+              disabled={true}
+            />
+          ) : (
+            <CustomButton
+              text="Join"
+              htmlType="button"
+              onClick={() => setConfirmJoinModal(true)}
+            />
+          )}
         </div>
       </div>
       <div className="sprints-detail-page-body">

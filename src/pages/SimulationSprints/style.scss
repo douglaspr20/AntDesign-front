@@ -1,7 +1,6 @@
 @import "../../styles/main.scss";
 
 .simulation-sprints{
-
     max-height: calc(100vh - 120px);
     overflow: auto;
     background: $color-background;
@@ -10,7 +9,10 @@
     margin-right: 50px;
     border: 1px solid $color-border;
     max-width: 1500px;
-    width: 100%;
+
+    &-container{
+        height: 100vh;
+    }
 
     &-information{
         margin-top: 15px;
