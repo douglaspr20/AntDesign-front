@@ -52,8 +52,6 @@ const PublicEventPage = ({
     instanceStripe();
   }, []);
 
-  console.log(updatedEvent, "two people");
-
   const instanceStripe = async () => {
     setStripe(await stripePromise);
   };
