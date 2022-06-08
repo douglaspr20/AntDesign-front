@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import moment from "moment-timezone";
 import SprintCard from "../SprintCard";
 
 import { getAllSimulationSprints } from "redux/actions/simulationSprint-actions";
@@ -9,7 +10,9 @@ import "./style.scss";
 
 const UpcomingSprints = ({ getAllSimulationSprints, allSimulationSprints }) => {
   useEffect(() => {
-    getAllSimulationSprints();
+    getAllSimulationSprints({
+      date: moment().tz("America/Los_Angeles").format(),
+    });
   }, [getAllSimulationSprints]);
 
   return (

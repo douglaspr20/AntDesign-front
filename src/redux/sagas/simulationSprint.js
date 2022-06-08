@@ -8,10 +8,10 @@ import { actions as homeActions } from "../actions/home-actions";
 
 import { getAllSimulationSprints, getSimulationSprint } from "../../api";
 
-export function* getAllSimulationSprintsSaga() {
+export function* getAllSimulationSprintsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
-    const response = yield call(getAllSimulationSprints);
+    const response = yield call(getAllSimulationSprints, { ...payload });
 
     if (response.status === 200) {
       yield put(

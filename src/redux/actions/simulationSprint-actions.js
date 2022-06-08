@@ -12,7 +12,10 @@ export const constants = {
   SET_SIMULATION_SPRINT,
 };
 
-export const getAllSimulationSprints = createAction(GET_ALL_SIMULATION_SPRINTS);
+export const getAllSimulationSprints = createAction(
+  GET_ALL_SIMULATION_SPRINTS,
+  (filters) => ({ filters })
+);
 export const setAllSimulationSprints = createAction(
   SET_ALL_SIMULATION_SPRINTS,
   (allSimulationSprints) => ({ allSimulationSprints })
