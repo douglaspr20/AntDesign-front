@@ -11,7 +11,7 @@ import "./style.scss";
 const UpcomingSprints = ({ getAllSimulationSprints, allSimulationSprints }) => {
   useEffect(() => {
     getAllSimulationSprints({
-      date: moment().tz("America/Los_Angeles").format(),
+      date: moment().format(),
     });
   }, [getAllSimulationSprints]);
 
