@@ -279,6 +279,8 @@ import {
   getSimulationSprint,
 } from "./module/simulationSprints";
 
+import { createSimulationSprintParticipant } from "./module/simulationSprintParticipant";
+
 import { getEditorSignature } from "./module/env";
 
 export {
@@ -483,4 +485,5 @@ export {
   removeBlogPostLike,
   getAllSimulationSprints,
   getSimulationSprint,
+  createSimulationSprintParticipant,
 };

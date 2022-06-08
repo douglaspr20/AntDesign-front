@@ -8,6 +8,8 @@ import { INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 
 import { getSimulationSprint } from "redux/actions/simulationSprint-actions";
+import { createSimulationSprintParticipant } from "redux/actions/simulationSprintParticipant-action";
+
 import { simulationSprintSelector } from "redux/selectors/simulationSprintSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -15,8 +17,11 @@ import "./style.scss";
 import { convertToLocalTime } from "utils/format";
 import { DownOutlined } from "@ant-design/icons";
 
+const regex = /<[^>]+>/g;
+
 const SimulationSprint = ({
   getSimulationSprint,
+  createSimulationSprintParticipant,
   simulationSprint,
   userProfile,
 }) => {
@@ -37,7 +42,7 @@ const SimulationSprint = ({
     e.preventDefault();
     e.stopPropagation();
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/simulation-sprints/ics/${simulationSprint.id}?userTimezone=${userProfile.timezone}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/simulation-sprint/ics/${simulationSprint.id}`,
       "_blank"
     );
   };
@@ -52,9 +57,12 @@ const SimulationSprint = ({
       "YYYYMMDDTHHmmSSS"
     )}/${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmmSSS"
-    )}&details=${
-      simulationSprint.description
-    }&location=${"https://www.hackinghrlab.io/global-conference"}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    )}&details=${simulationSprint?.description?.html.replace(
+      regex,
+      ""
+    )}&location=https://www.hackinghrlab.io/simulation-sprints/${
+      simulationSprint.id
+    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -66,9 +74,14 @@ const SimulationSprint = ({
       convertedStartTime
     ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(convertedEndTime).format(
       "YYYYMMDDTHHmm"
-    )}&title=${simulationSprint.title}&desc=${
-      simulationSprint.description
-    }&in_loc=https://www.hackinghrlab.io/global-conference`;
+    )}&title=${
+      simulationSprint.title
+    }&desc=${simulationSprint?.description?.html.replace(
+      regex,
+      ""
+    )}&in_loc=https://www.hackinghrlab.io/simulation-sprints/${
+      simulationSprint.id
+    }`;
 
     window.open(yahooCalendarUrl, "_blank");
   };
@@ -106,6 +119,14 @@ const SimulationSprint = ({
   if (!simulationSprint.id) {
     return <></>;
   }
+
+  const handleJoinSimulationSprint = () => {
+    setConfirmJoinModal(false);
+    createSimulationSprintParticipant({
+      SimulationSprintId: simulationSprint.id,
+      UserId: userProfile.id,
+    });
+  };
 
   return (
     <div className="sprints-detail-page">
@@ -197,7 +218,7 @@ const SimulationSprint = ({
             text="Confirm"
             type="primary"
             htmlType="button"
-            onClick={() => setConfirmJoinModal(false)}
+            onClick={() => handleJoinSimulationSprint()}
           />
         </div>
       </CustomModal>
@@ -212,6 +233,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getSimulationSprint,
+  createSimulationSprintParticipant,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SimulationSprint);

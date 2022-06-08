@@ -11,8 +11,6 @@ const HARDCODED_COVER_PLACEHOLDER =
 const SprintCard = ({ sprint }) => {
   const history = useHistory();
 
-  console.log(sprint);
-
   return (
     <div className="sprint-card">
       <div className="sprint-card-header">
