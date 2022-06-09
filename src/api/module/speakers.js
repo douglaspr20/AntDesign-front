@@ -13,13 +13,13 @@ export const addUserSpeakerToPanelEndPoint = (payload) => {
 }
 
 export const allPanelSpeakersEndPonit = (payload) => {
-  return httpClient.get("private/speakers/all-panel", {
+  return httpClient.get("public/speakers/all-panel", {
     ...payload,
   })
 }
 
 export const getAllUserSpeakerEndPoint = (payload) => {
-  return httpClient.get("private/speakers/all-users-speakers", {
+  return httpClient.get("public/speakers/all-users-speakers", {
     ...payload,
   })
 }
@@ -31,9 +31,9 @@ export const removeUserSpeakerToPanelEndPoint = (payload) => {
 }
 
 export const registerUserIfNotAreRegisterConference2023EndPoint = () => {
-  return httpClient.get("private/speakers/send-email-register-conference")
+  return httpClient.post("private/speakers/send-email-register-conference")
 }
 
 export const getAllPanelsOfOneUserEndPoint = (UserId) => {
-  return httpClient.get(`private/speakers/all-panel-of-user/${UserId.UserId}`)
+  return httpClient.get(`public/speakers/all-panel-of-user/${UserId.UserId}`)
 }

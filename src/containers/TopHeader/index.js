@@ -290,6 +290,16 @@ class TopHeader extends Component {
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
           render={(props) => <PublicHeader {...props} />}
         />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
+          render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
+          render={(props) => <PublicHeader {...props} />}
+        />
       </Switch>
     );
   }

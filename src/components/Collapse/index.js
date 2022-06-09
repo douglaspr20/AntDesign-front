@@ -33,7 +33,7 @@ const Collapse = ({
     return (
       <>
         <div className="container-panel-speaker" key={id}>
-            <p className="container-panel-speaker-parraf">Titulo: <span className="not-bold">{panelName}</span></p>
+            <p className="container-panel-speaker-parraf">Title: <span className="not-bold">{panelName}</span></p>
             <p className="container-panel-speaker-parraf">Description: <span className="not-bold">{description}</span></p>
             <p className="container-panel-speaker-parraf">Start Date: <span className="not-bold">{moment(startDate).format("MM-DD-YYYY hh:mm a")}</span></p>
             <p className="container-panel-speaker-parraf">End Date: <span className="not-bold">{moment(endDate).format("MM-DD-YYYY hh:mm a")}</span></p>

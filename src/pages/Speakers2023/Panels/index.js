@@ -109,9 +109,9 @@ const PanelSpeakers = ({
       })
     }
 
-    const joinUser = (id) => {
-      const usersNames = [userProfile.id]
-      addUserSpeakerToPanel({usersNames, bul: false, Panel: id}, () => {
+    const joinUser = (data) => {
+      const usersNames = [[ userProfile.id , userProfile.firstName , userProfile.email ]]
+      addUserSpeakerToPanel({usersNames, bul: false, panel: data}, () => {
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
       })

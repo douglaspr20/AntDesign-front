@@ -356,14 +356,16 @@ class ProfileEditPanel extends React.Component {
           </div>
         </div>
         <div className="profile-edit-panel-footer">
-          {(window.location.pathname !== INTERNAL_LINKS.CONFERENCE_2023) && <CustomButton
-            text="Cancel"
-            type="third outlined"
-            size="lg"
-            onClick={this.onCancel}
-          />}
+          {(window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) && 
+            <CustomButton
+              text="Cancel"
+              type="third outlined"
+              size="lg"
+              onClick={this.onCancel}
+            />
+          }
           <CustomButton
-            text="Save"
+            text={(window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? "Save" : "Save and register"}
             type="secondary"
             size="lg"
             onClick={this.onSave}

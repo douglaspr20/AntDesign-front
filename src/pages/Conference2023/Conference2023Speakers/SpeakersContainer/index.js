@@ -12,7 +12,6 @@ import "./style.scss";
 const ModalCompleteProfile = ({
     allUserSpeaker,
     getAllUserSpeaker,
-    isAuthenticated,
     getAllPanelsOfOneUser,
     allPanelsOfOneUser
 }) => {
@@ -22,7 +21,7 @@ const ModalCompleteProfile = ({
 
     useEffect(() => {
         getAllUserSpeaker()
-    },[ getAllUserSpeaker,isAuthenticated ])
+    },[ getAllUserSpeaker ])
 
     const loadDataForPopUpSpeaker = (id) => {
         getAllPanelsOfOneUser(id, (error) => {

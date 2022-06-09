@@ -13,7 +13,6 @@ const ModalCompleteProfile = ({
 }) => {
 
     const onSave = (userInfo) => {
-        localStorage.setItem("register", true)
         updateUser(userInfo);
         get()
     };

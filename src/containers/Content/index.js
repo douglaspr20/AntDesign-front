@@ -110,7 +110,11 @@ class Content extends Component {
             render={(props) => <SignupPage {...props} />}
           />
           <Route 
-            path={INTERNAL_LINKS.CONFERENCE_2023}
+            path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
+            render={(props) => <Conference2023 {...props} />}
+          />
+          <Route 
+            path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
             render={(props) => <Conference2023 {...props} />}
           />
           <Route

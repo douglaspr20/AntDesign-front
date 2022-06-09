@@ -22,6 +22,7 @@ import PostFormModal from "./containers/PostFormModal";
 import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
+import { INTERNAL_LINKS } from "enum";
 
 import { HelmetMetaData } from "components";
 
@@ -276,7 +277,7 @@ class App extends Component {
             <TopHeader />
             <div className="content-container">
               <Content />
-              {window.screen.width > 1000 && this.props.userProfile?.id ? (
+              {(window.screen.width > 1000 && this.props.userProfile?.id && window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
                 <Chat
                 // conversations={this.props.conversations}
                 />

@@ -12,7 +12,7 @@ import {
     removeUserSpeakerToPanelEndPoint,
     addUserSpeakerToPanelEndPoint,
     registerUserIfNotAreRegisterConference2023EndPoint,
-    getAllPanelsOfOneUserEndPoint
+    getAllPanelsOfOneUserEndPoint,
 } from "../../api";
 
 export function* addPanelSpeakerSaga({ payload }) {
@@ -168,10 +168,15 @@ export function* addUserSpeakerToSaga({ payload }) {
   }
 }
 
-export function* registerUserIfNotAreRegisterConference2023() {
+export function* registerUserIfNotAreRegisterConference2023({payload}) {
 
   try {
-    yield call(registerUserIfNotAreRegisterConference2023EndPoint);
+    const response = yield call(registerUserIfNotAreRegisterConference2023EndPoint);
+    if(response.status === 200){
+      if(payload.callback && response.data === "funciona"){
+        payload.callback()
+      }
+    }
 
   } catch (error) {
     console.log(error)

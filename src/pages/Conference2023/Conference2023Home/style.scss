@@ -1,0 +1,28 @@
+.container-conference{
+  overflow: hidden scroll;
+  height: calc(100vh - 10px);
+
+  .containers-home{
+      width: 80%;
+      margin-left: 10%;
+      background: white;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      height: 800px;
+      margin-bottom: 30px;
+
+      .title-containers{
+          padding-top: 60px;
+          padding-bottom: 20px;
+          width: 100%;
+          text-align: center;
+      }
+  }
+
+  .imagen-conference{
+      width: 100%;
+      height: calc(100vh - 90px);
+      background-image: url("https://lab-user-images.s3.us-east-2.amazonaws.com/event/1646926140476.jpeg");
+      background-size: cover;
+      background-position: center;
+  }
+}

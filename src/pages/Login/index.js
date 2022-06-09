@@ -10,6 +10,7 @@ import { EVENT_TYPES } from "enum";
 import { CustomButton } from "components";
 import Emitter from "services/emitter";
 import { loadStripe } from "@stripe/stripe-js";
+import { setBulRegister } from "redux/actions/speaker-actions"
 
 import { getCheckoutSession } from "api/module/stripe";
 
@@ -50,7 +51,8 @@ const Login = ({
   onClose,
   live,
   userProfile,
-  modal
+  modal,
+  setBulRegister
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showFirewall, setShowFirewall] = useState(false);
@@ -75,8 +77,11 @@ const Login = ({
   const onFinish = (values) => {
     if (isLogin) {
       const { email, password } = values;
-      login(email, password);
-      localStorage.setItem("register", true)
+      login(email, password, (suc, err) => {
+        if(!err){
+          setBulRegister(true)
+        }
+      });
     } else {
       let newSignupValues = {
         ...signupValues,
@@ -149,7 +154,7 @@ const Login = ({
   }, [history, logout]);
 
   useEffect(() => {
-    if(window.location.pathname !== INTERNAL_LINKS.CONFERENCE_2023){
+    if(window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023){
       if (isAuthenticated) {
         if (history != null) {
           if (live && live.live === true) {
@@ -331,6 +336,7 @@ const mapDispatchToProps = {
   addToMyEventList,
   getUser,
   acceptInvitation,
+  setBulRegister
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

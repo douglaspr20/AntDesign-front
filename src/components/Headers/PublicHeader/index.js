@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 import IconMenu from "images/icon-menu-outline.svg";
 import Login from "pages/Login";
 import { Modal } from "antd";
+import { Link } from "react-router-dom";
+import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 
 import LogoSidebar from "images/logo-sidebar.svg";
 // import { PublicMenuPopup } from "components";
@@ -12,25 +15,29 @@ import LogoSidebar from "images/logo-sidebar.svg";
 
 import "./style.scss";
 
-const PublicHeader = () => {
+const PublicHeader = ({
+  bulRegister
+}) => {
 
   const [modalRegister, setModalRegister] = useState(false)
-  const [widthResponsive, setWidthResponsive] = useState(false)
+  const [butonState, setButonState] = useState(false)
 
   useEffect(() => {
-    if(localStorage.getItem("register") === "true"){
-      setWidthResponsive(true)
-      localStorage.setItem("header", true);
+    if(bulRegister){
+      setButonState(true)
     }
-  }, [modalRegister])
+  }, [bulRegister])
 
   return (
-    <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-conference" : "public-header"} style={(widthResponsive || localStorage.getItem("header") === "true") ? {width:"calc(100% - 217px)"} : {width:"100%"}}>
-      <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-left-conference" : "public-header-left"}>
+    <div className={(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-conference" : "public-header"} style={{width:"calc( 100% - 17px )"}}>
+      <Link to={INTERNAL_LINKS.HOME} className={(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-left-conference" : "public-header-left"}>
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />
         </div>
-      </div>
+        <div className="back-boton">
+          <p>Back to hackinghrlab</p>
+        </div>
+      </Link>
       {/* {PUBLIC_HEADER_MENUS.map((menu, index) => (
         <Link key={index} to={menu.url}>
           <span className="public-header-menu">{menu.text}</span>
@@ -41,7 +48,7 @@ const PublicHeader = () => {
           <i className="fal fa-bars" />
         </div>
       </PublicMenuPopup> */}
-      {(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) && 
+      {(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) && 
         <>
           <input id="checkbox" className="checkboxHiden" type="checkbox" style={{zIndex: "100"}} />
           <label htmlFor="checkbox" className="conteiner-icon-menu">
@@ -49,39 +56,37 @@ const PublicHeader = () => {
           </label>
           <div className="public-header-right">
             <div className="public-conference-links">
-              <a style={{textDecoration: "none"}} href="#home">
+              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023}>
                   <p>Home</p>
-              </a>
+              </Link>
             </div>
             <div className="public-conference-links">
-              <a style={{textDecoration: "none"}} href="#speakers">
+              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
                   <p>Speakers</p>
-              </a>
+              </Link>
             </div>
             <div className="public-conference-links">
-              <a style={{textDecoration: "none"}} href="#sponsors">
+              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/sponsors"}>
                   <p>Sponsors</p>
-              </a>
+              </Link>
             </div>
             <div className="public-conference-links">
-              <a style={{textDecoration: "none"}} href="#agenda">
+              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}>
                   <p>Agenda</p>
-              </a>
+              </Link>
             </div>
             <div className="public-conference-links">
-              <a style={{textDecoration: "none"}} href="#agenda">
+              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + '/agenda'}>
                   <p style={{width: "200px"}} >In-Person Experience</p>
-              </a>
+              </Link>
             </div>
-            {(JSON.parse(localStorage.getItem("community")) === null) && 
               <CustomButton
                 className="button-speaker"
-                text="REGISTER HERE"
+                text={butonState ? "YOU ARE NOW REGISTER" : "REGISTER HERE"}
                 size="md"
-                type="primary"
-                onClick={() => {setModalRegister(true)}}
+                type={butonState ? "secondary" : "primary"}
+                onClick={butonState ? () => {} : () => {setModalRegister(true)}}
               />
-            }
           </div> 
           <Modal
             visible={modalRegister}
@@ -114,4 +119,12 @@ PublicHeader.defaultProps = {
   title: "",
 };
 
-export default PublicHeader;
+const mapStateToProps = (state, props) => ({
+  bulRegister: speakerAllPanelSpeakerSelector(state).bulRegister
+});
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PublicHeader);

@@ -86,6 +86,10 @@ export function* putUser({ payload }) {
     if (response.status === 200) {
       const { affectedRows: user } = response.data;
 
+      if(payload.callback){
+        payload.callback()
+      }
+
       yield put(
         homeActions.updateUserInformation({
           ...defaultUserInfo,

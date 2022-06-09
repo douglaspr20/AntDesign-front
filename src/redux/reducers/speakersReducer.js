@@ -33,13 +33,21 @@ export const reducers = {
       return state.merge({
         allPanelsOfOneUser: userSpeakers
       })
+    },
+    [speakerConstans.SET_BUL_REGISTER]: (state, {payload}) => {
+      const {bul} = payload
+      
+      return state.merge({
+        bulRegister: bul
+      })
     }  
   };
   
   export const initialState = () =>
     Map({
         allPanelSpeakers: [],
-        allUserSpeakers: []
+        allUserSpeakers: [],
+        bulRegister: false
     }
   );
 

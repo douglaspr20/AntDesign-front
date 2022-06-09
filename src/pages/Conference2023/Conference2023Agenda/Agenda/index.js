@@ -10,14 +10,13 @@ import "./style.scss";
 const ModalCompleteProfile = ({
     allPanelSpeakers,
     getAllPanelSpeakers,
-    isAuthenticated
 }) => {
 
     const [tabButton, setTabButton] = useState(true)
 
     useEffect(() => {
         getAllPanelSpeakers()
-    }, [getAllPanelSpeakers,isAuthenticated])
+    }, [getAllPanelSpeakers])
 
     return (
         <div className="container-agenda">

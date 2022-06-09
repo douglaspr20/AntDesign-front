@@ -12,6 +12,7 @@ const UPDATE_ADD_PANEL_SPEAKERS = "UPDATE_ADD_PANEL_SPEAKERS";
 const REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023 = "REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023";
 const GET_ALL_PANELS_OF_ONE_USER = "GET_ALL_PANELS_OF_ONE_USER";
 const UPDATE_ALL_PANELS_OF_ONE_USER = "UPDATE_ALL_PANELS_OF_ONE_USER";
+const SET_BUL_REGISTER = "SET_BUL_REGISTER";
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -24,7 +25,8 @@ export const constants = {
   UPDATE_ADD_PANEL_SPEAKERS,
   REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023,
   GET_ALL_PANELS_OF_ONE_USER,
-  UPDATE_ALL_PANELS_OF_ONE_USER
+  UPDATE_ALL_PANELS_OF_ONE_USER,
+  SET_BUL_REGISTER
 };
 
 // ------------------------------------
@@ -72,7 +74,7 @@ export const removeUserSpeakerToPanel = createAction(
 
 export const registerUserIfNotAreRegisterConference2023 = createAction(
   REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023,
-  () => ({})
+  (callback) => ({callback})
 )
 
 export const getAllPanelsOfOneUser = createAction(
@@ -85,6 +87,11 @@ export const updateAllPanelsOfOneUser = createAction(
   (userSpeakers) => ({ userSpeakers })
 );
 
+export const setBulRegister = createAction(
+  SET_BUL_REGISTER,
+  (bul) => ({bul})
+)
+
 export const actions = {
     addPanelSpeakers,
     updatePanelSpeakers,
@@ -96,5 +103,5 @@ export const actions = {
     updateAddPanelSpeakers,
     registerUserIfNotAreRegisterConference2023,
     getAllPanelsOfOneUser,
-    updateAllPanelsOfOneUser
+    updateAllPanelsOfOneUser,
 };

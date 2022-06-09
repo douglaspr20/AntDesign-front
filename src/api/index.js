@@ -285,7 +285,7 @@ import {
   removeUserSpeakerToPanelEndPoint,
   addUserSpeakerToPanelEndPoint,
   registerUserIfNotAreRegisterConference2023EndPoint,
-  getAllPanelsOfOneUserEndPoint
+  getAllPanelsOfOneUserEndPoint,
 } from "./module/speakers"
 
 export {
