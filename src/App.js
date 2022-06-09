@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { Spin, Layout } from "antd";
 import isEmpty from "lodash/isEmpty";
@@ -77,7 +78,6 @@ class App extends Component {
 
   notificationSound = new Audio(JuntosNotification);
 
-
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
 
@@ -144,7 +144,7 @@ class App extends Component {
       }
 
       if (message.sender !== this.props.userProfile.id) {
-            this.notificationSound.play();
+        this.notificationSound.play();
       }
     });
 
@@ -268,6 +268,10 @@ class App extends Component {
       openChat,
     } = this.state;
 
+    const isPublicEventId = parseInt(
+      this.props.location.pathname.slice(1, this.props.location.pathname.length)
+    );
+
     return (
       <div className="App" style={{ minHeight: "100vh" }}>
         <HelmetMetaData></HelmetMetaData>
@@ -277,14 +281,17 @@ class App extends Component {
             <TopHeader />
             <div className="content-container">
               <Content />
-              {(window.screen.width > 1000 && this.props.userProfile?.id && window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
-                <Chat
-                // conversations={this.props.conversations}
-                />
-              ) : window.screen.width < 1000 && this.props.userProfile?.id ? (
+              {window.screen.width > 1000 &&
+              this.props.userProfile?.id &&
+              isNaN(isPublicEventId) &&
+              (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
+                <Chat />
+              ) : window.screen.width < 1000 &&
+                this.props.userProfile?.id &&
+                isNaN(isPublicEventId) &&
+                (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
                 <>
                   <ChatMobile
-                    // conversations={this.props.conversations}
                     openChat={openChat}
                     setOpenChat={() => this.setState({ openChat: !openChat })}
                   />
@@ -364,4 +371,4 @@ const mapDispatchToProps = {
   setJoinCouncilEvent,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
