@@ -9,8 +9,9 @@ export const constants = {
 
 export const createSimulationSprintParticipant = createAction(
   CREATE_SIMULATION_SPRINT_PARTICIPANT,
-  (data) => ({
+  (data, callback) => ({
     data,
+    callback,
   })
 );
 

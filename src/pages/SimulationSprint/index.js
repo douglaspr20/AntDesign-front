@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { Dropdown, Menu, Space } from "antd";
+import { Dropdown, Menu, notification, Space } from "antd";
 import moment from "moment-timezone";
 import { CustomButton, CustomModal } from "components";
 import { INTERNAL_LINKS } from "enum";
@@ -122,10 +122,31 @@ const SimulationSprint = ({
 
   const handleJoinSimulationSprint = () => {
     setConfirmJoinModal(false);
-    createSimulationSprintParticipant({
-      SimulationSprintId: simulationSprint.id,
-      UserId: userProfile.id,
-    });
+    createSimulationSprintParticipant(
+      {
+        SimulationSprintId: simulationSprint.id,
+        UserId: userProfile.id,
+      },
+      (error) => {
+        if (error) {
+          return notification.error({
+            message: error,
+          });
+        }
+
+        notification.success({
+          message: "You have successfully joined ",
+        });
+
+        getSimulationSprint(id, (error) => {
+          if (error) {
+            history.push(
+              `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
+            );
+          }
+        });
+      }
+    );
   };
 
   return (
@@ -195,18 +216,22 @@ const SimulationSprint = ({
               </div>
             </Space>
 
-            <Dropdown overlay={downloadDropdownOptions}>
-              <a
-                href="/#"
-                className="ant-dropdown-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                Download calendar <DownOutlined />
-              </a>
-            </Dropdown>
+            {simulationSprint?.SimulationSprintParticipants.some(
+              (participant) => participant.UserId === userProfile.id
+            ) && (
+              <Dropdown overlay={downloadDropdownOptions}>
+                <a
+                  href="/#"
+                  className="ant-dropdown-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  Download calendar <DownOutlined />
+                </a>
+              </Dropdown>
+            )}
           </Space>
         </div>
       </div>

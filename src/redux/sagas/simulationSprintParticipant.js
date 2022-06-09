@@ -3,6 +3,7 @@ import { put, fork, call, takeLatest } from "redux-saga/effects";
 import { createSimulationSprintParticipant } from "../../api";
 
 import { constants as simulationSprintParticipantsConstants } from "redux/actions/simulationSprintParticipant-action";
+import { actions as authActions } from "../actions/auth-actions";
 
 import { actions as homeActions } from "redux/actions/home-actions";
 
@@ -14,10 +15,17 @@ export function* createSimulationSprintParticipantSaga({ payload }) {
       ...payload,
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 && payload.callback) {
+      payload.callback();
     }
   } catch (error) {
     console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    } else if (payload.callback) {
+      payload.callback(error.message || error.response.msg);
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
