@@ -1,7 +1,6 @@
 import { createAction } from "redux-actions";
 
 // Action Types
-const ADD_PANEL_SPEAKERS = "ADD_PANEL_SPEAKERS";
 const UPDATE_PANEL_SPEAKERS = "UPDATE_PANEL_SPEAKERS"
 const GET_PANEL_SPEAKERS = "GET_PANEL_SPEAKERS";
 const GET_USERS_SPEAKERS = "GET_USERS_SPEAKERS";
@@ -16,7 +15,6 @@ const SET_BUL_REGISTER = "SET_BUL_REGISTER";
 
 export const constants = {
   GET_PANEL_SPEAKERS,
-  ADD_PANEL_SPEAKERS,
   UPDATE_PANEL_SPEAKERS,
   GET_USERS_SPEAKERS,
   REMOVE_USERS_PANEL,
@@ -32,10 +30,6 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const addPanelSpeakers = createAction(
-  ADD_PANEL_SPEAKERS,
-  (panels, callback) => ({ panels, callback })
-);
 
 export const addUserSpeakerToPanel = createAction(
   ADD_SPEAKER_TO_PANEL,
@@ -93,7 +87,6 @@ export const setBulRegister = createAction(
 )
 
 export const actions = {
-    addPanelSpeakers,
     updatePanelSpeakers,
     getAllPanelSpeakers,
     getAllUserSpeaker,

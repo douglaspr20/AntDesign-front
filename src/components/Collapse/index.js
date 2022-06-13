@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { CustomButton } from "components";
-import moment from "moment";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 
 import "./style.scss";
@@ -35,8 +34,7 @@ const Collapse = ({
         <div className="container-panel-speaker" key={id}>
             <p className="container-panel-speaker-parraf">Title: <span className="not-bold">{panelName}</span></p>
             <p className="container-panel-speaker-parraf">Description: <span className="not-bold">{description}</span></p>
-            <p className="container-panel-speaker-parraf">Start Date: <span className="not-bold">{moment(startDate).format("MM-DD-YYYY hh:mm a")}</span></p>
-            <p className="container-panel-speaker-parraf">End Date: <span className="not-bold">{moment(endDate).format("MM-DD-YYYY hh:mm a")}</span></p>
+            <div style={{width:"100%", height:"50px"}}></div>
             <div className="container-button">
                 <CustomButton
                     className="button-speaker"

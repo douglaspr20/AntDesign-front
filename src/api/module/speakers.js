@@ -1,11 +1,5 @@
 import httpClient from "./httpClient";
 
-export const addPanelSpeakersEndPoint = (payload) => {
-    return httpClient.post("private/speakers/add-new-panel", {
-      ...payload,
-    });
-}
-
 export const addUserSpeakerToPanelEndPoint = (payload) => {
   return httpClient.post("private/speakers/add-speaker-to-panel", {
     ...payload,

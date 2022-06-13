@@ -278,8 +278,7 @@ import {
 
 import { getEditorSignature } from "./module/env";
 
-import {  
-  addPanelSpeakersEndPoint, 
+import {   
   allPanelSpeakersEndPonit,
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,
@@ -293,7 +292,6 @@ export {
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   sendActiveOrDenyAuthorizationEndPoint,
-  addPanelSpeakersEndPoint,
   allPanelSpeakersEndPonit,
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,

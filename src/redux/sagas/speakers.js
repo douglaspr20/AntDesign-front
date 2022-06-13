@@ -6,7 +6,6 @@ import {
     actions as homeActions,
   } from "../actions/home-actions";
 import {
-    addPanelSpeakersEndPoint,
     allPanelSpeakersEndPonit,
     getAllUserSpeakerEndPoint,
     removeUserSpeakerToPanelEndPoint,
@@ -14,41 +13,6 @@ import {
     registerUserIfNotAreRegisterConference2023EndPoint,
     getAllPanelsOfOneUserEndPoint,
 } from "../../api";
-
-export function* addPanelSpeakerSaga({ payload }) {
-
-    const {panels} = payload
-    yield put(homeActions.setLoading(true));
-  
-    try {
-      const response = yield call(addPanelSpeakersEndPoint, { panels });
-      
-      if (response.status === 200) {
-        const { panelsSpeakers } = response.data;
-
-        yield put(
-          speakerActions.updateAddPanelSpeakers({
-            panelsSpeakers
-          })
-        );
-
-        if (payload.callback) {
-          payload.callback();
-        }
-
-        notification.success({
-          message: "Panel add successflly",
-        });
-      }
-    } catch (error) {
-        notification.error({
-          message: "there are a error",
-          description: error.response.data.msg,
-        });
-    } finally {
-      yield put(homeActions.setLoading(false));
-    }
-}
 
 export function* getPanelSpeakerSaga({ payload }) {
   const {UserId} = payload
@@ -222,7 +186,6 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
 }
 
 function* watchLogin() {
-    yield takeLatest(speakerConstans.ADD_PANEL_SPEAKERS, addPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
     yield takeLatest(speakerConstans.REMOVE_USERS_PANEL, removeUserSpeakerToPanelSaga);
