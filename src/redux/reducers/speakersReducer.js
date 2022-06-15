@@ -12,14 +12,6 @@ export const reducers = {
         allPanelSpeakers: panelsSpeakers,
       });
     },
-    [speakerConstans.UPDATE_ADD_PANEL_SPEAKERS]: (state, { payload }) => {
-      const {panelsSpeakers} = payload
-      const speakers = state.get("allPanelSpeakers");
-
-      return state.merge({
-        allPanelSpeakers: [speakers, panelsSpeakers],
-      });
-    },
     [speakerConstans.UPDATE_USERS_SPEAKERS]: (state, { payload }) => {
       const {userSpeakers} = payload
       

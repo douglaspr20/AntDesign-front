@@ -43,7 +43,7 @@ const PanelSpeakers = ({
     const addUser = (data) => {
       const bulModerator = (data.isModerator === undefined) ? false : data.isModerator
       const {usersNames} = data.users
-      addUserSpeakerToPanel({usersNames,bul: bulModerator, panel: Panel}, () => {
+      addUserSpeakerToPanel({usersNames,bul: bulModerator, panel: Panel, type: "addUserAdmin"}, () => {
         setPanel({})
         speakersUserForm.resetFields();
         getAllPanelSpeakers(userProfile.id)
@@ -52,8 +52,12 @@ const PanelSpeakers = ({
     }
 
     const joinUser = (data) => {
-      const usersNames = [[ userProfile.id , userProfile.firstName , userProfile.email ]]
-      addUserSpeakerToPanel({usersNames, bul: false, panel: data}, () => {
+      const usersNames = [{ 
+        userId: userProfile.id, 
+        userName: userProfile.firstName, 
+        userEmail: userProfile.email,
+      }]
+      addUserSpeakerToPanel({usersNames, bul: false, panel: data, type: "joinUser"}, () => {
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
       })
@@ -128,7 +132,7 @@ const PanelSpeakers = ({
                       }`}
                     >
                       {allUserSpeaker?.userSpeakers !== undefined ? allUserSpeaker?.userSpeakers.map((users) => (
-                        <Option key={users.id} value={[users.id,users.firstName,users.email]}>
+                        <Option key={users.id} value={JSON.stringify({userId:users.id, userName:users.firstName, userEmail:users.email})}>
                           {`${users.firstName} / ${users.email}`}
                         </Option>
                       )): <div></div>}

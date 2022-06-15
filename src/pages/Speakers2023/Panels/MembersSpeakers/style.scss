@@ -10,7 +10,10 @@
     .p-users{
         margin: 0px;
         padding: 0px;
-        width: 100%;
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         text-align: center;
     }
 
