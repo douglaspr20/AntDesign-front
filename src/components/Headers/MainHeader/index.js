@@ -35,6 +35,7 @@ import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
 import IconReader from "images/icon-reader.svg";
 import IconHome from "images/icon-home.svg";
+import IconMentoring from "images/icon-mentoring.svg";
 
 import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -319,6 +320,14 @@ class MainHeader extends React.Component {
         label: "Blog",
       };
     }
+
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.COMMUNITIES}`)) {
+      pathInfo = {
+        icon: IconMentoring,
+        label: pathname.slice(13),
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">

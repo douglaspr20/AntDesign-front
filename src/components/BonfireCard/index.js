@@ -119,7 +119,7 @@ const BonfireCard = ({
             />
 
             <CustomButton
-              type="primary outlined"
+              type="third outlined"
               size="md"
               text="Delete"
               onClick={deleteBonfire}

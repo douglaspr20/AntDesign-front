@@ -36,7 +36,7 @@ import MicroConferencePage from "pages/MicroConference";
 import GlobalConferenceSpeakersPage from "pages/GlobalConference/Speakers";
 import GlobalConferenceParticipantsPage from "pages/GlobalConference/Participants";
 import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
-import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
+import GlobalConferenceBonfiressPage from "pages/Bonfires";
 import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
 import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
 import SpeakersPage from "pages/Speakers";
@@ -61,6 +61,8 @@ import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
 import SearchPage from "pages/Search";
 import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
+import CommunititesPage from "pages/Communities";
+import BonfiresPage from "pages/Bonfires";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -197,10 +199,25 @@ class Content extends Component {
             path={INTERNAL_LINKS.PODCAST}
             render={(props) => <PodcastPage {...props} />}
           />
+
           <PrivateRoute
-            path={INTERNAL_LINKS.MENTORING}
+            exact
+            path={`${INTERNAL_LINKS.COMMUNITIES}/mentoring`}
             render={(props) => <MentoringPage {...props} />}
           />
+
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COMMUNITIES}/bonfires`}
+            render={(props) => <BonfiresPage {...props} />}
+          />
+
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.COMMUNITIES}
+            render={(props) => <CommunititesPage {...props} />}
+          />
+
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}

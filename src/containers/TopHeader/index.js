@@ -73,7 +73,7 @@ class TopHeader extends Component {
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
-          path={INTERNAL_LINKS.MENTORING}
+          path={INTERNAL_LINKS.COMMUNITIES}
           render={(props) => <MainHeader {...props} />}
         />
         <PrivateRoute
@@ -280,6 +280,7 @@ class TopHeader extends Component {
           exact
           render={(props) => <MainHeader {...props} />}
         />
+
         <Route
           exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}

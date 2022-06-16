@@ -1,31 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Modal, Form, notification } from "antd";
-import moment from "moment";
-import { createBonfire } from "redux/actions/bonfire-actions";
-import { categorySelector } from "redux/selectors/categorySelector";
-import { homeSelector } from "redux/selectors/homeSelector";
-import { TIMEZONE_LIST } from "enum";
+import { Form, notification } from "antd";
+import Modal from "components/Modal";
 import {
   CategoriesSelect,
-  CustomCheckbox,
+  CustomButton,
   CustomInput,
   CustomSelect,
 } from "components";
+import { TIMEZONE_LIST } from "enum";
+import {
+  createBonfire,
+  getBonfires,
+  updateBonfire,
+  deleteBonfire,
+} from "redux/actions/bonfire-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
+import { bonfireSelector } from "redux/selectors/bonfireSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
+
+import moment from "moment";
 
 const CreateBonfireModal = ({
   visible,
   onCancel,
   userProfile,
+  bonfireToEdit,
   allCategories,
   createBonfire,
+  updateBonfire,
 }) => {
   const [bonfireForm] = Form.useForm();
-  const [isConsultantOrHRTech, setIsConsultantOrHRTech] = useState(false);
-
-  const handleChecked = (e) => {
-    setIsConsultantOrHRTech(e.target.checked);
-  };
 
   const handleBonfire = (data) => {
     const timezone = TIMEZONE_LIST.find(
@@ -56,42 +61,57 @@ const CreateBonfireModal = ({
       link: data.link,
       startTime: convertedStartTime,
       endTime: convertedEndTime,
-      isConsultantOrHRTech,
       categories: data.categories,
       bonfireCreator: userProfile.id,
       timezone: data.timezone,
     };
+    if (bonfireToEdit) {
+      updateBonfire(bonfireToEdit.id, bonfireInfo, (error) => {
+        if (error) {
+          notification.error({
+            message: error || "Something went wrong. Please try again.",
+          });
+        } else {
+          onCancel();
+          notification.success({
+            message: "Bonfire updated succesfully",
+          });
+        }
+      });
+    } else {
+      createBonfire(bonfireInfo, (error) => {
+        if (error) {
+          notification.error({
+            message: error || "Something went wrong. Please try again.",
+          });
+        } else {
+          notification.success({
+            message: "Bonfire created succesfully",
+          });
 
-    onCancel();
-
-    createBonfire(bonfireInfo, (error) => {
-      if (error) {
-        notification.error({
-          message: error || "Something went wrong. Please try again.",
-        });
-      }
-    });
-
-    bonfireForm.resetFields();
+          onCancel();
+        }
+      });
+    }
   };
 
   return (
     <Modal
       visible={visible}
-      onCancel={() => {
-        onCancel();
-        bonfireForm.resetFields();
-      }}
+      onCancel={onCancel}
       onOk={() => {
         bonfireForm.submit();
       }}
+      width={800}
     >
       <Form
         form={bonfireForm}
         layout="vertical"
+        initialValues={bonfireToEdit}
         onFinish={(data) => {
           handleBonfire(data);
         }}
+        style={{ maxHeight: "calc(100vh - 300px)", overflow: "auto" }}
       >
         <Form.Item
           label="Title"
@@ -114,7 +134,7 @@ const CreateBonfireModal = ({
           label="Start time"
           rules={[{ required: true, message: "Time is required." }]}
         >
-          <CustomInput type="time" />
+          <CustomInput type="time" value={bonfireToEdit?.time} />
         </Form.Item>
 
         <Form.Item
@@ -138,7 +158,7 @@ const CreateBonfireModal = ({
           label="Categories"
           rules={[{ required: true, message: "Categories is required." }]}
         >
-          <CategoriesSelect options={allCategories} />
+          <CategoriesSelect options={allCategories} maxValues={2} />
         </Form.Item>
 
         <Form.Item
@@ -149,36 +169,45 @@ const CreateBonfireModal = ({
           <CustomInput />
         </Form.Item>
 
-        <Form.Item name="isConsultantOrHRTech">
-          <CustomCheckbox
-            onChange={handleChecked}
-            checked={isConsultantOrHRTech}
-          >
-            Are you a consultant or HR tech/service vendor?
-          </CustomCheckbox>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <CustomButton
+            text="Cancel"
+            type="third outlined"
+            size="lg"
+            onClick={() => onCancel()}
+          />
 
-          {isConsultantOrHRTech && (
-            <p style={{ color: "#e61e47" }}>
-              Please note: you should not use the bonfire feature to sell
-              services or products. These are networking conversations. This is
-              a mandatory requirement. Bonfires are not the venues for selling
-              and you will be banned from using this feature if you use it for a
-              purpose other than networking
-            </p>
-          )}
-        </Form.Item>
+          <CustomButton
+            htmlType="submit"
+            text="Post"
+            type="primary"
+            size="lg"
+            style={{ marginLeft: "10px" }}
+          />
+        </div>
       </Form>
     </Modal>
   );
 };
 
 const mapStateToProps = (state) => ({
-  allCategories: categorySelector(state).categories,
+  ...bonfireSelector(state),
   userProfile: homeSelector(state).userProfile,
+  bonfires: bonfireSelector(state).bonfires,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {
   createBonfire,
+  getBonfires,
+  updateBonfire,
+  deleteBonfire,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateBonfireModal);

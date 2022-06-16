@@ -45,7 +45,7 @@ class NavBar extends Component {
     const { isMobile } = this.props.env || {};
 
     if (
-      url === INTERNAL_LINKS.MENTORING &&
+      url === INTERNAL_LINKS.COMMUNITIES &&
       this.props.userProfile.percentOfCompletion !== 100
     ) {
       e.preventDefault();
@@ -153,14 +153,13 @@ class NavBar extends Component {
 
                 {this.state.module === "story" && (
                   <>
-                    You must upgrade to premium and complete your full profile to add stories.
+                    You must upgrade to premium and complete your full profile
+                    to add stories.
                   </>
                 )}
 
                 {this.state.module === "comment" && (
-                  <>
-                    You must fully complete your profile before add comments.
-                  </>
+                  <>You must fully complete your profile before add comments.</>
                 )}
 
                 {this.state.module === "conference-library" && (
@@ -169,7 +168,7 @@ class NavBar extends Component {
                     conference library feature.
                   </>
                 )}
-      
+
                 {this.state.module === "live" && (
                   <>
                     You must fully complete your profile before joining the live

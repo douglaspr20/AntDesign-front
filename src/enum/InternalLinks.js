@@ -7,7 +7,7 @@ export default {
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",
   LEARNING_LIBRARY: "/learning-library",
-  MENTORING: "/mentoring",
+  COMMUNITIES: "/communities",
   EVENTS: "/events",
   CERTIFICATIONS: "/certifications",
   CONFIRM_APPLY_EMAIL: "/user/confirm-apply-business/:id",

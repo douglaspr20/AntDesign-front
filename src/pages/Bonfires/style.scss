@@ -1,8 +1,17 @@
-@import "../../../styles/main.scss";
+@import "styles/main.scss";
 
-.bonfire-list {
-    margin-top: 12rem;
+.bonfires-page{
+  width: 100%;
+  display: flex;
+
+  &-container{
     width: 100%;
+    padding: 1rem;
+  }
+  .bonfire-list {
+    width: 100%;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
   
     @media (max-width: 1100px) {
       margin-top: 18rem;
@@ -41,3 +50,6 @@
     }
   }
   
+
+}
+

@@ -23,7 +23,9 @@ export const createBonfire = createAction(
   CREATE_BONFIRE,
   (bonfire, callback) => ({ bonfire, callback })
 );
-export const getBonfires = createAction(GET_BONFIRES);
+export const getBonfires = createAction(GET_BONFIRES, (filters) => ({
+  filters,
+}));
 export const setBonfires = createAction(SET_BONFIRES, (bonfires) => ({
   bonfires,
 }));
