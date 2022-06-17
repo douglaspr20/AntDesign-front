@@ -12,11 +12,12 @@ const MemberSpeakers = ({
     remove
 }) => {
 
-  const { id, isModerator} = usersPanel
-  const { firstName, img, titleProfessions, lastName, abbrName} = usersPanel.User
+    const { id, isModerator, UserId} = usersPanel
+    const { firstName, img, titleProfessions, lastName, abbrName} = usersPanel.User
+
     return (
       <>
-        <div className="container-users" key={id}>
+        <div className="container-users" key={id} id={UserId}>
           {img ? (
             <Avatar size={150} src={img} />
           ) : (
@@ -50,13 +51,13 @@ const MemberSpeakers = ({
   MemberSpeakers.propTypes = {
     usersPanel: PropTypes.object,
     isAdmin: PropTypes.bool,
-    remove: PropTypes.func
+    remove: PropTypes.func,
   };
   
   MemberSpeakers.defaultProps = {
     usersPanel: {},
     isAdmin: false,
-    remove: () => {}
+    remove: () => {},
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(MemberSpeakers);

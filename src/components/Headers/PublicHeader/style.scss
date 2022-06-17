@@ -129,6 +129,22 @@
     transition: all 0.5s ease-in-out;
     background: white;
 
+    .div-you-are-now-register{
+      background: #00b574;
+      width: auto;
+      height: auto;
+      margin: 0px;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: normal;
+      font-weight: bold;
+      color: white;
+      border-radius: 5px;
+      margin-left: 20px;
+    }
+
     .button-speaker{
       width: auto;
       margin-left: 20px;
@@ -137,6 +153,9 @@
     .public-conference-links{
       text-align: center;
       padding: 0px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transition: all ease 300ms;
       cursor: pointer;
     
@@ -207,6 +226,7 @@
       .public-conference-links{
         padding:5px 20px;
       }
+
     }
 
     .public-header-left-conference{

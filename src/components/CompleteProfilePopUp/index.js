@@ -10,6 +10,7 @@ const ModalCompleteProfile = ({
   updateUser,
   userProfile,
   get,
+  onCancel
 }) => {
 
     const onSave = (userInfo) => {
@@ -23,12 +24,14 @@ const ModalCompleteProfile = ({
             <CircularProgressbar
                 percent={userProfile ? userProfile.percentOfCompletion : 0}
                 color="#fe5621"
-                style={{width:"100%"}}
+                style={{width:"100%", marginBottom: "50px"}}
             />
             <div className="contenedor-profile-edit">
                 <ProfileEditPanel
                     user={userProfile}
                     onSave={(userInfo) => {onSave(userInfo)}}
+                    bulModal={true}
+                    onCancel={() => onCancel(false)}
                 />
             </div>
         </div>

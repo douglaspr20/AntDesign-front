@@ -12,13 +12,20 @@ const Collapse = ({
     isAdmin,
     searchUser,
     setId,
-    joinUser
+    joinUser,
+    UserProfile,
+    removeUserFunction,
+    setBulCompleteProfile
 }) => {
 
     const {panelName, startDate, endDate, description, id} = panels
     
     const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
+    const [withdrow, setWithdrow] = useState(false)
+    const [idWithdrow, setIdWithdrow] = useState(-1)
+    const [bulJoinOrWithdraw, setBulJoinOrWithdraw] = useState(false)
     const memberRef = useRef();
+
 
     const collapseFunction = () => {
         if(visibleConfirmApply !== true){
@@ -29,26 +36,49 @@ const Collapse = ({
         }
     }
 
+    members.props.children.forEach((data) => {
+        if(withdrow !== true && bulJoinOrWithdraw !== true){
+            if(UserProfile.id === data.props.usersPanel.User.id){
+                setWithdrow(true)
+                setIdWithdrow(data.props.usersPanel.id)
+            }
+        }
+    })
+
+    const takeActionWithdrawOrJoinUser = () => {
+        if(withdrow){
+            setBulJoinOrWithdraw(true)
+            removeUserFunction(idWithdrow)
+            setWithdrow(false)
+            setIdWithdrow(-1)
+        }else{
+            if(UserProfile.percentOfCompletion === 100){
+                setBulJoinOrWithdraw(false)
+                joinUser({
+                    id:id,
+                    startDate: startDate,
+                    endDate: endDate, 
+                    panelName: panelName
+                })
+            }else{
+                setBulCompleteProfile(true)
+            }
+        }
+    }
+
     return (
       <>
         <div className="container-panel-speaker" key={id}>
-            <p className="container-panel-speaker-parraf">Title: <span className="not-bold">{panelName}</span></p>
+            <p className="container-panel-speaker-parraf" style={{fontSize: "16px"}}>Title: <span className="not-bold">{panelName}</span></p>
             <p className="container-panel-speaker-parraf">Description: <span className="not-bold">{description}</span></p>
             <div style={{width:"100%", height:"50px"}}></div>
             <div className="container-button">
                 <CustomButton
                     className="button-speaker"
-                    text="Join"
+                    text={(withdrow) ? "Withdrow" : "Join"}
                     size="md"
-                    type="secondary"
-                    onClick={() => {
-                        joinUser({
-                            id:id,
-                            startDate: startDate,
-                            endDate: endDate, 
-                            panelName: panelName
-                        })
-                    }}
+                    type={(withdrow) ? "third" : "secondary"}
+                    onClick={() => takeActionWithdrawOrJoinUser()}
                 />  
                 {isAdmin && <CustomButton
                     className="button-speaker"
@@ -67,7 +97,7 @@ const Collapse = ({
                 /> }
                 <CustomButton
                     className="button-speaker"
-                    text={`${visibleConfirmApply ? "Few" : "More" } information`}
+                    text={`${visibleConfirmApply ? "Less" : "More" } information`}
                     size="md"
                     type="information"
                     onClick={() => {collapseFunction()}}
@@ -78,10 +108,13 @@ const Collapse = ({
                 ref={memberRef}
                 style={{opacity: `${visibleConfirmApply ? "100%" : "0%"}`}}
             >
-                {(members.props.children.length > 0) ? members : 
-                    <NoItemsMessageCard
-                        message={`There aren't members in this panel.`}
-                    />
+                {(members.props.children.length > 0) ? (
+                    members
+                    ) : (
+                        <NoItemsMessageCard
+                            message={`There aren't members in this panel.`}
+                        />
+                    )
                 }
             </div>
         </div>
@@ -103,7 +136,10 @@ const Collapse = ({
     isAdmin: PropTypes.bool,
     searchUser: PropTypes.func,
     setId: PropTypes.func,
-    joinUser: PropTypes.func
+    joinUser: PropTypes.func,
+    UserProfile: PropTypes.object,
+    removeUserFunction: PropTypes.func,
+    setBulCompleteProfile: PropTypes.func,
   };
   
   Collapse.defaultProps = {
@@ -112,7 +148,10 @@ const Collapse = ({
     isAdmin: false,
     searchUser: () => {},
     setId: () => {},
-    joinUser: () => {}
+    joinUser: () => {},
+    UserProfile: {},
+    removeUserFunction: () => {},
+    setBulCompleteProfile: () => {},
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(Collapse);

@@ -1,4 +1,5 @@
 export { default as Sidebar } from "./Sidebar";
+export { default as ModalCompleteYourProfile } from "./CompleteProfilePopUp"
 export { default as CustomButton } from "./Button";
 export { default as MainHeader } from "./Headers/MainHeader";
 export { default as ArticleHeader } from "./Headers/ArticleHeader";

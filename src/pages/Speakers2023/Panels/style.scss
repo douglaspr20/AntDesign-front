@@ -1,5 +1,21 @@
 @import "../../../styles/main.scss";
 
+.container-modal-complete-profile {
+    width:100%;
+    left: 0px;
+    height: 100vh ;
+    top: 0px ;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.45);
+    position: fixed;
+    z-index: 1000;
+    transition: 0.2s all ease-in-out ;
+  }
+
 .speaker2023-page {
     width: 100%;
     overflow: scroll ;

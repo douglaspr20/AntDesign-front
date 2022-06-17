@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from "react";
 import { connect } from "react-redux";
-import ModalCompleteProfile from "./ModalCompleteProfile";
+import { ModalCompleteYourProfile } from "components";
 import { authSelector } from "redux/selectors/authSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { getUser } from "redux/actions/home-actions";
@@ -71,7 +71,7 @@ const MessagesGeneral = ({
         <>
           {((userProfile.firstName !== undefined && userProfile.firstName !== '' && bulCompleteProfile)) && 
             <div className="complete-profile">
-              <ModalCompleteProfile
+              <ModalCompleteYourProfile
                 userProfile={userProfile}
                 get={getUser}
               />

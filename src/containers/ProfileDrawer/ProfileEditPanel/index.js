@@ -39,6 +39,7 @@ class ProfileEditPanel extends React.Component {
         : { languages: [""] },
       visibleModal: false,
       editImageUrl: props.user ? props.user.img : "",
+      bulModal: props.bulModal || false,
     };
   }
 
@@ -124,10 +125,11 @@ class ProfileEditPanel extends React.Component {
   };
 
   render() {
-    const { user, visibleModal, editImageUrl } = this.state;
+    const { user, visibleModal, editImageUrl, bulModal } = this.state;
+
     return (
-      <div className="profile-edit-panel" style={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? {margin:"0px", marginTop: "20px"} : {margin:"-24px"}}>
-        <div className={(window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? "profile-edit-panel-container2" : "profile-edit-panel-container"} >
+      <div className="profile-edit-panel" style={bulModal ? {margin:"0px", marginTop: "20px"} : {margin:"-24px"}}>
+        <div className={bulModal ? "profile-edit-panel-container2" : "profile-edit-panel-container"} >
           <div className="profile-edit-panel-header">
             <div className="profile-user-img">
               <div className="profile-user-img-container">

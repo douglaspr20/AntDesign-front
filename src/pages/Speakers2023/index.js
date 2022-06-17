@@ -30,12 +30,6 @@ const Speaker2023 = ({
       title: "Panels",
       key: 1,
       content: () => (<PanelSpeakers role={userProfile.role} />)
-    },
-    {
-      title: "Prueba algo mas",
-      key: 2,
-      content: () =>
-        <div>Funciona</div>
     }
   ];
 
@@ -61,7 +55,7 @@ const Speaker2023 = ({
     (userProfile.speakersAuthorization === "pending") ? (
       <div className="council-page__list-wrap">
           <NoItemsMessageCard
-            message={`Do you go to be a answer before of 24 hours.`}
+            message={`Your application is pending for approval`}
           />
         </div>
     ) : (
@@ -76,7 +70,7 @@ const Speaker2023 = ({
         }}
         okText="Yes"
       >
-        Do you want to aply to speakers2023?.
+        Thank you for applying to be a speaker in Hacking HR's "FORWARD 2023". Your application has been sent and will be approved very soon. You will receive a confirmation email once the application is approved. After that you will be able to select the panels you want to join. Thank you!
       </Modal>
     )
   )

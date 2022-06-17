@@ -80,13 +80,17 @@ const PublicHeader = ({
                   <p style={{width: "200px"}} >In-Person Experience</p>
               </Link>
             </div>
-              <CustomButton
-                className="button-speaker"
-                text={butonState ? "YOU ARE NOW REGISTER" : "REGISTER HERE"}
-                size="md"
-                type={butonState ? "secondary" : "primary"}
-                onClick={butonState ? () => {} : () => {setModalRegister(true)}}
-              />
+              {butonState ? (
+                <div className="div-you-are-now-register">YOU ARE NOW REGISTER</div>
+              ) : (
+                <CustomButton
+                  className="button-speaker"
+                  text={"REGISTER HERE"}
+                  size="md"
+                  type={"primary"}
+                  onClick={() => {setModalRegister(true)}}
+                />
+              )}
           </div> 
           <Modal
             visible={modalRegister}
