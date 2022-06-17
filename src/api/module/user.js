@@ -136,3 +136,11 @@ export const searchUser = ({ search }) => {
     },
   });
 };
+
+export const handleReceiveCommunityNotification = ({
+  receiveCommunityNotification,
+}) => {
+  return httpClient.put(`private/users/handle-receive-community-notification`, {
+    receiveCommunityNotification,
+  });
+};

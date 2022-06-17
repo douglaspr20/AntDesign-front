@@ -186,6 +186,13 @@ const transformNames = (name) => {
   return name;
 };
 
+const capitalizeWord = (word) => {
+  const firstCharacter = word.charAt(0);
+  const transformWord = firstCharacter.toUpperCase() + word.slice(1);
+
+  return transformWord;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -200,4 +207,5 @@ export {
   getValidDescription,
   getPublicationTime,
   transformNames,
+  capitalizeWord,
 };

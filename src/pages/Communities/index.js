@@ -1,15 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
 import { CustomSwitch } from "components";
 import CommunityOption from "./Option";
 import { INTERNAL_LINKS } from "enum";
+import { updateReciveCommunityNotification } from "redux/actions/home-actions";
 import WaterCoolerImage from "../../images/water-cooler.png";
 import MentoringImage from "../../images/two-way-communication.png";
 import BonfireImage from "../../images/bonfire.png";
 import CoachingImage from "../../images/coaching.png";
 
 import "./style.scss";
+import { homeSelector } from "redux/selectors/homeSelector";
 
-const CommunititesPage = () => {
+const CommunititesPage = ({
+  userProfile,
+  updateReciveCommunityNotification,
+}) => {
+  const handleReciveNotification = () => {
+    updateReciveCommunityNotification(
+      !userProfile.receiveCommunityNotification
+    );
+  };
   return (
     <div className="communities-page">
       <div className="communities-page-container">
@@ -46,11 +57,24 @@ const CommunititesPage = () => {
           posted?
         </span>
         <div className="switch-container">
-          <span>No</span> <CustomSwitch /> <span>Yes</span>
+          <span>No</span>{" "}
+          <CustomSwitch
+            checked={userProfile.receiveCommunityNotification}
+            onChange={handleReciveNotification}
+          />{" "}
+          <span>Yes</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default CommunititesPage;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {
+  updateReciveCommunityNotification,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommunititesPage);

@@ -38,6 +38,8 @@ const SET_USER_SHOW = "SET_USER_SHOW";
 const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
 const SET_PAGES_SEARCHED_USERS = "SET_PAGES_SEARCHED_USERS";
 const SET_INPUT_USER_SEARCH_VALUE = "SET_INPUT_USER_SEARCH_VALUE";
+const UPDATE_RECIVE_COMMUNITY_NOTIFICATION =
+  "UPDATE_RECIVE_COMMUNITY_NOTIFICATION";
 
 export const constants = {
   SET_LOADING,
@@ -76,6 +78,7 @@ export const constants = {
   SET_VISIBLE_PROFILE_USER,
   SET_PAGES_SEARCHED_USERS,
   SET_INPUT_USER_SEARCH_VALUE,
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
 };
 
 // ------------------------------------
@@ -205,6 +208,11 @@ export const setInputSearchValue = createAction(
 
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
+export const updateReciveCommunityNotification = createAction(
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
+  (receiveCommunityNotification) => ({ receiveCommunityNotification })
+);
+
 export const actions = {
   setLoading,
   updateUserInformation,
@@ -240,4 +248,5 @@ export const actions = {
   setUserShow,
   setVisibleProfileUser,
   setPagesSearchedUsers,
+  updateReciveCommunityNotification,
 };

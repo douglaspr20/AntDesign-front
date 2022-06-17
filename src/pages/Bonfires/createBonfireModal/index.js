@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, notification } from "antd";
+import { Form } from "antd";
 import Modal from "components/Modal";
 import {
   CategoriesSelect,
@@ -9,98 +9,23 @@ import {
   CustomSelect,
 } from "components";
 import { TIMEZONE_LIST } from "enum";
-import {
-  createBonfire,
-  getBonfires,
-  updateBonfire,
-  deleteBonfire,
-} from "redux/actions/bonfire-actions";
-import { homeSelector } from "redux/selectors/homeSelector";
-import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
-
-import moment from "moment";
 
 const CreateBonfireModal = ({
   visible,
   onCancel,
-  userProfile,
   bonfireToEdit,
   allCategories,
-  createBonfire,
-  updateBonfire,
+  handleBonfire,
 }) => {
   const [bonfireForm] = Form.useForm();
-
-  const handleBonfire = (data) => {
-    const timezone = TIMEZONE_LIST.find(
-      (timezone) => timezone.value === data.timezone
-    );
-    const convertedStartTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
-      .format();
-
-    const convertedEndTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
-      .add("hour", 1)
-      .format();
-
-    const bonfireInfo = {
-      title: data.title,
-      description: data.description,
-      link: data.link,
-      startTime: convertedStartTime,
-      endTime: convertedEndTime,
-      categories: data.categories,
-      bonfireCreator: userProfile.id,
-      timezone: data.timezone,
-    };
-    if (bonfireToEdit) {
-      updateBonfire(bonfireToEdit.id, bonfireInfo, (error) => {
-        if (error) {
-          notification.error({
-            message: error || "Something went wrong. Please try again.",
-          });
-        } else {
-          onCancel();
-          notification.success({
-            message: "Bonfire updated succesfully",
-          });
-        }
-      });
-    } else {
-      createBonfire(bonfireInfo, (error) => {
-        if (error) {
-          notification.error({
-            message: error || "Something went wrong. Please try again.",
-          });
-        } else {
-          notification.success({
-            message: "Bonfire created succesfully",
-          });
-
-          onCancel();
-        }
-      });
-    }
-  };
 
   return (
     <Modal
       visible={visible}
       onCancel={onCancel}
-      onOk={() => {
-        bonfireForm.submit();
+      onOk={(data) => {
+        handleBonfire(data);
       }}
       width={800}
     >
@@ -185,7 +110,7 @@ const CreateBonfireModal = ({
 
           <CustomButton
             htmlType="submit"
-            text="Post"
+            text={bonfireToEdit ? "Save" : "Post"}
             type="primary"
             size="lg"
             style={{ marginLeft: "10px" }}
@@ -197,17 +122,9 @@ const CreateBonfireModal = ({
 };
 
 const mapStateToProps = (state) => ({
-  ...bonfireSelector(state),
-  userProfile: homeSelector(state).userProfile,
-  bonfires: bonfireSelector(state).bonfires,
   allCategories: categorySelector(state).categories,
 });
 
-const mapDispatchToProps = {
-  createBonfire,
-  getBonfires,
-  updateBonfire,
-  deleteBonfire,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateBonfireModal);

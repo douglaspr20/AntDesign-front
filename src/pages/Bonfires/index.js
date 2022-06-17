@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { notification } from "antd";
 import moment from "moment";
 import { bonfireSelector } from "redux/selectors/bonfireSelector";
@@ -8,15 +9,17 @@ import { categorySelector } from "redux/selectors/categorySelector";
 import {
   getBonfires,
   updateBonfire,
+  createBonfire,
   deleteBonfire,
 } from "redux/actions/bonfire-actions";
 import { addBonfire, removeBonfire } from "redux/actions/home-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { BonfireCard, CustomButton } from "components";
-import { TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 import { convertToCertainTime } from "utils/format";
 import CreateBonfireModal from "./createBonfireModal";
 import BonfiresFilterPanel from "./BonfiresFilterPanel";
+import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
 
@@ -25,6 +28,8 @@ const BonfiresPage = ({
   addBonfire,
   removeBonfire,
   deleteBonfire,
+  createBonfire,
+  updateBonfire,
   bonfires,
   userProfile,
 }) => {
@@ -56,6 +61,71 @@ const BonfiresPage = ({
   const onCancelModalForm = () => {
     setModalFormVisible(false);
     setBonfireToEdit(null);
+  };
+
+  const handleBonfire = (data) => {
+    const timezone = TIMEZONE_LIST.find(
+      (timezone) => timezone.value === data.timezone
+    );
+    const convertedStartTime = moment
+      .tz(
+        data.time.format("YYYY-MM-DD h:mm a"),
+        "YYYY-MM-DD h:mm a",
+        timezone.utc[0]
+      )
+      .utc()
+      .format();
+
+    const convertedEndTime = moment
+      .tz(
+        data.time.format("YYYY-MM-DD h:mm a"),
+        "YYYY-MM-DD h:mm a",
+        timezone.utc[0]
+      )
+      .utc()
+      .add("hour", 1)
+      .format();
+
+    const bonfireInfo = {
+      title: data.title,
+      description: data.description,
+      link: data.link,
+      startTime: convertedStartTime,
+      endTime: convertedEndTime,
+      categories: data.categories,
+      bonfireCreator: userProfile.id,
+      timezone: data.timezone,
+    };
+    if (bonfireToEdit) {
+      updateBonfire(bonfireToEdit.id, bonfireInfo, (error) => {
+        if (error) {
+          notification.error({
+            message: error || "Something went wrong. Please try again.",
+          });
+        } else {
+          notification.success({
+            message: "Bonfire updated succesfully",
+          });
+          onCancelModalForm();
+          getBonfires(filters);
+        }
+      });
+    } else {
+      createBonfire(bonfireInfo, (error) => {
+        if (error) {
+          notification.error({
+            message: error || "Something went wrong. Please try again.",
+          });
+        } else {
+          notification.success({
+            message: "Bonfire created succesfully",
+          });
+
+          onCancelModalForm();
+          getBonfires(filters);
+        }
+      });
+    }
   };
 
   const onDeleteBonfire = (id) => {
@@ -150,6 +220,16 @@ const BonfiresPage = ({
       <BonfiresFilterPanel onChange={onFilterChange} />
 
       <div className="bonfires-page-container">
+        <div className="back-link-container">
+          <Link to={INTERNAL_LINKS.COMMUNITIES}>
+            <div className="council-page__content-top">
+              <div className="council-page__content-top-back">
+                <img src={IconBack} alt="icon-back" />
+              </div>
+              <h4>Back to Communities</h4>
+            </div>
+          </Link>
+        </div>
         <CustomButton
           type="primary"
           size="md"
@@ -184,6 +264,7 @@ const BonfiresPage = ({
           <CreateBonfireModal
             visible={modalFormVisible}
             bonfireToEdit={bonfireToEdit}
+            handleBonfire={handleBonfire}
             onCancel={onCancelModalForm}
           />
         )}
@@ -205,6 +286,7 @@ const mapDispatchToProps = {
   addBonfire,
   removeBonfire,
   updateBonfire,
+  createBonfire,
   deleteBonfire,
 };
 

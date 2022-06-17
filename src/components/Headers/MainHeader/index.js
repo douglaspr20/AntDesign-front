@@ -50,6 +50,7 @@ import "./style.scss";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import CustomDrawer from "components/Drawer";
 import ProfileViewPanel from "containers/ProfileDrawer/ProfileViewPanel";
+import { capitalizeWord } from "utils/format";
 
 const { Search } = Input;
 
@@ -322,9 +323,10 @@ class MainHeader extends React.Component {
     }
 
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.COMMUNITIES}`)) {
+      const title = capitalizeWord(pathname.slice(13));
       pathInfo = {
         icon: IconMentoring,
-        label: pathname.slice(13),
+        label: title,
       };
     }
 

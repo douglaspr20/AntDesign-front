@@ -8,11 +8,18 @@
     justify-content: center;
     align-items: center;
 
+    @media  (max-width: 750px){
+        flex-direction: column-reverse;
+      }
+
     &-container{
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
-        width: 800px;
+        max-width: 800px;
+        width: 100%;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
         
     }
 
@@ -20,13 +27,14 @@
     border: 3px solid $color-dark-purple;
     border-radius: 3px;
     padding: 2rem;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     width: 350px;
     height: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    
 
     h1{
         font-size: 15px !important;
@@ -43,9 +51,16 @@
 }
 
 .turn-notification{
-    margin-top: 9rem;
+    margin-top: 7rem;
     align-self: flex-start;
     max-width: 250px;
+
+    @media  (max-width: 750px){
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+        align-self: center;
+      }
+
 
     .switch-container{
         margin-top: 1rem;

@@ -39,7 +39,6 @@ export function* createBonfireSaga({ payload }) {
       payload.callback(error);
     }
   } finally {
-    yield getAllBonfiresSaga();
     yield put(homeActions.setLoading(false));
   }
 }
@@ -97,7 +96,6 @@ export function* updateBonfireSaga({ payload }) {
       payload.callback(error);
     }
   } finally {
-    yield getAllBonfiresSaga();
     yield put(homeActions.setLoading(false));
   }
 }
