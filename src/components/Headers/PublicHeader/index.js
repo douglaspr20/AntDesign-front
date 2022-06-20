@@ -81,7 +81,11 @@ const PublicHeader = ({
               </Link>
             </div>
               {butonState ? (
-                <div className="div-you-are-now-register">YOU ARE NOW REGISTER</div>
+                <div className="container-you-are-now-register">
+                  <div className="div-you-are-now-register">
+                    <p>YOU ARE NOW REGISTER</p>
+                  </div>
+                </div>
               ) : (
                 <CustomButton
                   className="button-speaker"

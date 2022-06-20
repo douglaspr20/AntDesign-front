@@ -12,6 +12,7 @@ import {
     addUserSpeakerToPanelEndPoint,
     registerUserIfNotAreRegisterConference2023EndPoint,
     getAllPanelsOfOneUserEndPoint,
+    addedToPersonalAgendaEndPoint,
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
@@ -185,6 +186,31 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
 
 }
 
+export function* addedToPersonalAgendaSagas({payload}) {
+  const {data} = payload
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addedToPersonalAgendaEndPoint,  {data} );
+
+    if (response.status === 200) {
+
+      if (payload.callback) {
+        payload.callback();
+      }
+
+    }
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "there are a error",
+        description: error.response.data.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
@@ -192,6 +218,7 @@ function* watchLogin() {
     yield takeLatest(speakerConstans.ADD_SPEAKER_TO_PANEL, addUserSpeakerToSaga);
     yield takeLatest(speakerConstans.REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023 , registerUserIfNotAreRegisterConference2023);
     yield takeLatest(speakerConstans.GET_ALL_PANELS_OF_ONE_USER, getAllPanelsOfOneUserSagas);
+    yield takeLatest(speakerConstans.ADDED_TO_MY_PERSONAL_AGENDA, addedToPersonalAgendaSagas);
 }
   
 export const speakerSaga = [fork(watchLogin)];

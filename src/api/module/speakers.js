@@ -31,3 +31,9 @@ export const registerUserIfNotAreRegisterConference2023EndPoint = () => {
 export const getAllPanelsOfOneUserEndPoint = (UserId) => {
   return httpClient.get(`public/speakers/all-panel-of-user/${UserId.UserId}`)
 }
+
+export const addedToPersonalAgendaEndPoint = (payload) => {
+  return httpClient.post("private/speakers/added-to-agenda", {
+    ...payload,
+  })
+}

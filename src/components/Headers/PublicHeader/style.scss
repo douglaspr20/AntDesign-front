@@ -129,20 +129,31 @@
     transition: all 0.5s ease-in-out;
     background: white;
 
-    .div-you-are-now-register{
-      background: #00b574;
-      width: auto;
-      height: auto;
-      margin: 0px;
-      padding: 10px 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: normal;
-      font-weight: bold;
-      color: white;
-      border-radius: 5px;
-      margin-left: 20px;
+    .container-you-are-now-register{
+
+      .div-you-are-now-register{
+        background: #00b574;
+        width: 300px;
+        height: auto;
+        margin: 0px;
+        padding: 10px 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: normal;
+        font-weight: bold;
+        color: white;
+        border-radius: 5px;
+        margin-left: 20px;
+
+        p {
+          display: inline-block;
+          margin: 0px;
+          padding: 0px;
+        }
+
+      }
+      
     }
 
     .button-speaker{

@@ -9,7 +9,7 @@ const Conference2023Agenda = () => {
     <>
       <div className="container-conference">
         <div className="containers-agenda" id="agenda">
-          <h1 className="title-containers">Title agenda</h1>  
+          <h1 className="title-containers">Conference schedule</h1>  
             <Agenda/>
         </div>
       </div>

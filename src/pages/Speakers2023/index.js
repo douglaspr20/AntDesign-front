@@ -79,13 +79,11 @@ const Speaker2023 = ({
     <>
       {userProfile.speakersAuthorization === "accepted" ? (
         <div className="speaker2023-page">
-          <div>
-            <Tabs
-              data={TabData}
-              current={currentTab}
-              onChange={setCurrentTab}
-            />
-          </div>
+          <Tabs
+            data={TabData}
+            current={currentTab}
+            onChange={setCurrentTab}
+          />
         </div>
       ) : (
         <div>

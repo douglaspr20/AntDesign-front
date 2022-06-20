@@ -11,6 +11,7 @@ const REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023 = "REGISTER_USER_IF_NOT_REGI
 const GET_ALL_PANELS_OF_ONE_USER = "GET_ALL_PANELS_OF_ONE_USER";
 const UPDATE_ALL_PANELS_OF_ONE_USER = "UPDATE_ALL_PANELS_OF_ONE_USER";
 const SET_BUL_REGISTER = "SET_BUL_REGISTER";
+const ADDED_TO_MY_PERSONAL_AGENDA = "ADDED_TO_MY_PERSONAL_AGENDA"
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -22,7 +23,8 @@ export const constants = {
   REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023,
   GET_ALL_PANELS_OF_ONE_USER,
   UPDATE_ALL_PANELS_OF_ONE_USER,
-  SET_BUL_REGISTER
+  SET_BUL_REGISTER,
+  ADDED_TO_MY_PERSONAL_AGENDA
 };
 
 // ------------------------------------
@@ -79,7 +81,13 @@ export const setBulRegister = createAction(
   (bul) => ({bul})
 )
 
+export const addedToPersonalAgenda = createAction(
+  ADDED_TO_MY_PERSONAL_AGENDA,
+  (data) => ({data})
+)
+
 export const actions = {
+    addedToPersonalAgenda,
     updatePanelSpeakers,
     getAllPanelSpeakers,
     getAllUserSpeaker,
