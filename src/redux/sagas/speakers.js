@@ -85,7 +85,7 @@ export function* removeUserSpeakerToPanelSaga({ payload }) {
       }
 
       notification.success({
-        message: "User withdrow successflly",
+        message: "User withdraw successflly",
       });
     }
   } catch (error) {

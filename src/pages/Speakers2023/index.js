@@ -29,7 +29,7 @@ const Speaker2023 = ({
     {
       title: "Panels",
       key: 1,
-      content: () => (<PanelSpeakers role={userProfile.role} />)
+      content: () => (<PanelSpeakers />)
     }
   ];
 

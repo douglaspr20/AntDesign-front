@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import MemberSpeakers from "./MembersSpeakers";
 
 import PropTypes from "prop-types";
-import { Collapse, CustomButton, ModalCompleteYourProfile } from "components";
-import MemberSpeakers from "./MembersSpeakers";
+import { CustomButton, ModalCompleteYourProfile, CollapseComponent } from "components";
+import ButtonsSpeakers from "./ButtonsSpeakers";
 import Modal from "antd/lib/modal/Modal";
 import {
   Form,
@@ -20,7 +21,6 @@ import { getUser } from "redux/actions/home-actions";
 import "./style.scss";
 
 const PanelSpeakers = ({
-    role,
     addUserSpeakerToPanel,
     allPanelSpeakers,
     getAllPanelSpeakers,
@@ -35,6 +35,7 @@ const PanelSpeakers = ({
     const [openSearchUser, setOpenSearchUser] = useState(false)
     const [popUpGoCompleteYourProfile, setPopUpGoCompleteYourProfile] = useState(false)
     const [popUpCompleteYourProfile, setPopUpCompleteYourProfile] = useState(false)
+    const [removeMembersSpeakers, setRemoveMembersSpeakers] = useState(false)
     const [Panel, setPanel] = useState({})
 
     const { Option } = Select;
@@ -62,8 +63,8 @@ const PanelSpeakers = ({
         userEmail: userProfile.email,
       }
       addUserSpeakerToPanel({usersNames, bul: false, panel: data, type: "joinUser"}, () => {
-        getAllPanelSpeakers(userProfile.id)
-        getAllUserSpeaker(userProfile.id)
+          getAllPanelSpeakers(userProfile.id)
+          getAllUserSpeaker(userProfile.id)
       })
     }
 
@@ -81,34 +82,47 @@ const PanelSpeakers = ({
       </>
     )
 
+    const remove = (id,user) => {
+      removeUserFunction(id)
+      if(userProfile.id === user){
+        setRemoveMembersSpeakers(true)
+      }
+    }
+
+    const dataIterated = (panels) => (
+      <div className="ajust-contain">
+          { panels?.SpeakerMemberPanels?.map((user) => (
+                  <MemberSpeakers 
+                    key={user?.id}
+                    usersPanel={user}
+                    isAdmin={(userProfile.role === "admin") ? true : false}
+                    remove={remove}
+                  />
+            ))}
+      </div>
+    )
+
     return (
       <>
         {allPanelSpeakers?.panelsSpeakers?.map((panels) => ( 
-          <Collapse 
+          <CollapseComponent 
             key={panels?.id}
-            panels={panels} 
-            searchUser={setOpenSearchUser}
-            isAdmin={(role === "admin") ? true : false}
-            setId={setPanel}
-            joinUser={joinUser}
-            UserProfile={userProfile}
-            removeUserFunction={removeUserFunction}
-            setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-            contentText={content(panels)}
-            bulJoin={true}
-            typeCard={"container-panel-speaker"}
-            members={(
-              <div className="ajust-contain">
-                { panels?.SpeakerMemberPanels?.map((user) => (
-                    <MemberSpeakers 
-                      key={user?.id}
-                      usersPanel={user}
-                      isAdmin={(role === "admin") ? true : false}
-                      remove={removeUserFunction}
-                    />
-                  ))}
-              </div>
-            )} 
+            informationCollapse={content(panels)}
+            className={"container-panel-speaker"}
+            dataIterated={dataIterated(panels)}
+            buttons={
+              <ButtonsSpeakers 
+                panels={panels} 
+                removeUserFunction={removeUserFunction}
+                joinUser={joinUser}
+                setPanel={setPanel}
+                setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                role={userProfile.role}
+                setOpenSearchUser={setOpenSearchUser}
+                setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                removeMembersSpeakers={removeMembersSpeakers}
+              />
+            }
           />
         ))}
         <Modal
@@ -207,7 +221,6 @@ const PanelSpeakers = ({
   });
   
   const mapDispatchToProps = {
-    addPanelSpeakers: speaker.addPanelSpeakers,
     getAllPanelSpeakers: speaker.getAllPanelSpeakers,
     getAllUserSpeaker: speaker.getAllUserSpeaker,
     removeUserSpeakerToPanel: speaker.removeUserSpeakerToPanel,
@@ -215,11 +228,11 @@ const PanelSpeakers = ({
     getUser
   };
 
-  MemberSpeakers.propTypes = {
+  PanelSpeakers.propTypes = {
     role: PropTypes.string
   };
   
-  MemberSpeakers.defaultProps = {
+  PanelSpeakers.defaultProps = {
     role: ""
   };
   

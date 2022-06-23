@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import MemberSpeakers from "./MembersSpeakers";
+import ButtonsAgenda from "./ButtonsAgenda";
 import { actions as speaker } from "redux/actions/speaker-actions";
-import {Collapse} from "components";
-import { homeSelector } from "redux/selectors/homeSelector";
+import {CollapseComponent} from "components";
 import moment from 'moment'
 
 import "./style.scss";
@@ -12,11 +12,10 @@ import "./style.scss";
 const ModalCompleteProfile = ({
     allPanelSpeakers,
     getAllPanelSpeakers,
-    addedToPersonalAgenda,
-    userProfile,
 }) => {
 
-    const [idToAddedToMyPersonalAgenda,setIdToAddedToMyPersonalAgenda ] = useState(-1)
+    let titlesDateReady
+    let bul = true
 
     useEffect(() => {
         getAllPanelSpeakers()
@@ -30,22 +29,22 @@ const ModalCompleteProfile = ({
         </div>
     )
 
-    const functionAddedToMyAgenda = () => {
+    const dataIterated = (panels) => (
+        <div className="ajust-contain">
+            { panels?.SpeakerMemberPanels?.map((user) => (
+                <MemberSpeakers 
+                key={user?.id}
+                usersPanel={user}
+                />
+            ))}
+        </div>
+    )
 
-        const data = {
-            PanelId: idToAddedToMyPersonalAgenda,
-            type: "Added",
-        }
-
-        addedToPersonalAgenda(data)
-    }
-
-    const functionRemoveToMyAgenda = (data) => {
-        addedToPersonalAgenda(data)
-    }
-
-    let titlesDateReady
-    let bul = true
+    const dataStatic = (panels) => (
+        <p className="container-panel-speaker-parraf" style={{marginBottom: "40px"}}>
+            Description: <span className="not-bold">{panels.description}</span>
+        </p>
+    )
 
     const panelsAgenda = allPanelSpeakers?.panelsSpeakers?.map((panels) => {
 
@@ -63,28 +62,13 @@ const ModalCompleteProfile = ({
                         {moment(panels.startDate).format("dddd, MMMM DD")}<sup>{moment(panels.startDate).format("Do").slice(-2)}</sup>
                     </p>
                 }
-                <Collapse 
-                    key={panels?.id}
-                    panels={panels} 
-                    contentText={content(panels)}
-                    bulJoin={false}
-                    typeCard={"container-panel-conference"}
-                    bulDescription={true}
-                    bulPersonalAgenda={true}
-                    setDataForAdded={setIdToAddedToMyPersonalAgenda}
-                    UserProfile={userProfile}
-                    functionRemoveToMyAgenda={functionRemoveToMyAgenda}
-                    functionAddedToMyAgenda={functionAddedToMyAgenda}
-                    members={(
-                    <div className="ajust-contain">
-                        { panels?.SpeakerMemberPanels?.map((user) => (
-                            <MemberSpeakers 
-                            key={user?.id}
-                            usersPanel={user}
-                            />
-                        ))}
-                    </div>
-                    )} 
+                <CollapseComponent
+                    index={panels?.id}
+                    informationCollapse={content(panels)}
+                    buttons={<ButtonsAgenda panels={panels} />}
+                    className={"container-panel-conference"}
+                    dataIterated={dataIterated(panels)} 
+                    dataStatic={dataStatic(panels)}
                 />
             </div>
         )
@@ -99,12 +83,10 @@ const ModalCompleteProfile = ({
   
   const mapStateToProps = (state, props) => ({
     allPanelSpeakers: speakerAllPanelSpeakerSelector(state).allPanelSpeakers,
-    userProfile: homeSelector(state).userProfile,
   });
   
   const mapDispatchToProps = {
     getAllPanelSpeakers: speaker.getAllPanelSpeakers,
-    addedToPersonalAgenda: speaker.addedToPersonalAgenda
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(ModalCompleteProfile);

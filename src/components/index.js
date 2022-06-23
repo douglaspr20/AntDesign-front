@@ -13,6 +13,7 @@ export { default as ProfilePopupMenu } from "./ProfilePopupMenu";
 export { default as CustomDrawer } from "./Drawer";
 export { default as ProfileAvatar } from "./ProfileAvatar";
 export { default as Collapse } from "./Collapse";
+export { default as CollapseComponent } from "./CollapseComponent";
 export { default as CustomInput } from "./Input";
 export { default as CustomCheckbox } from "./Checkbox";
 export { default as CustomRadio } from "./Radio";

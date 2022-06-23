@@ -29,8 +29,8 @@ const Collapse = ({
     const {panelName, startDate, endDate, id, description, usersAddedToThisAgenda} = panels
     
     const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
-    const [withdrow, setWithdrow] = useState(false)
-    const [idWithdrow, setIdWithdrow] = useState(-1)
+    const [withdraw, setWithdraw] = useState(false)
+    const [idWithdraw, setIdWithdraw] = useState(-1)
     const [bulJoinOrWithdraw, setBulJoinOrWithdraw] = useState(false)
     const memberRef = useRef();
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
@@ -47,20 +47,20 @@ const Collapse = ({
     }
 
     members.props.children.forEach((data) => {
-        if(withdrow !== true && bulJoinOrWithdraw !== true){
+        if(withdraw !== true && bulJoinOrWithdraw !== true){
             if(UserProfile.id === data.props.usersPanel.User.id){
-                setWithdrow(true)
-                setIdWithdrow(data.props.usersPanel.id)
+                setWithdraw(true)
+                setIdWithdraw(data.props.usersPanel.id)
             }
         }
     })
 
     const takeActionWithdrawOrJoinUser = () => {
-        if(withdrow){
+        if(withdraw){
             setBulJoinOrWithdraw(true)
-            removeUserFunction(idWithdrow)
-            setWithdrow(false)
-            setIdWithdrow(-1)
+            removeUserFunction(idWithdraw)
+            setWithdraw(false)
+            setIdWithdraw(-1)
         }else{
             if(UserProfile.percentOfCompletion === 100){
                 setBulJoinOrWithdraw(false)
@@ -95,9 +95,9 @@ const Collapse = ({
                 {bulJoin &&
                     <CustomButton
                         className="button-speaker"
-                        text={(withdrow) ? "Withdrow" : "Join"}
+                        text={(withdraw) ? "Withdraw" : "Join"}
                         size="md"
-                        type={(withdrow) ? "third" : "secondary"}
+                        type={(withdraw) ? "third" : "secondary"}
                         onClick={() => takeActionWithdrawOrJoinUser()}
                     />  
                 }

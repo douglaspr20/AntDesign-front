@@ -83,7 +83,7 @@ const PublicHeader = ({
               {butonState ? (
                 <div className="container-you-are-now-register">
                   <div className="div-you-are-now-register">
-                    <p>YOU ARE NOW REGISTER</p>
+                    <p>YOU ARE NOW REGISTERED</p>
                   </div>
                 </div>
               ) : (

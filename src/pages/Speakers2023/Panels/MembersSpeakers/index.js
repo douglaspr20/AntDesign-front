@@ -33,7 +33,7 @@ const MemberSpeakers = ({
               text="Remove"
               size="md"
               type="third"
-              onClick={() => {remove(id)}}
+              onClick={() => {remove(id,UserId)}}
             />}
         </div>
       </>
