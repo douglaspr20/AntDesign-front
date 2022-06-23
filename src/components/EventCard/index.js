@@ -18,7 +18,6 @@ import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
 import { convertToCertainTime, convertToLocalTime } from "utils/format";
-import { TIMEZONE_LIST } from "../../enum";
 
 import "./style.scss";
 import { isEmpty } from "lodash";
@@ -160,23 +159,13 @@ class EventCard extends React.Component {
   };
 
   onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      this.props.data.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      this.props.data.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${this.props.data.title}&dates=${startDate}/${endDate}&location=${this.props.data.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
-      startDate
-    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(endDate).format(
-      "YYYYMMDDTHHmm"
-    )}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -186,16 +175,14 @@ class EventCard extends React.Component {
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === this.props.data.timezone
-    );
-    const offset = timezone.offset;
+    const { timezone } = this.props.data;
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
+    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
+
+    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
 
     switch (key) {
@@ -209,7 +196,6 @@ class EventCard extends React.Component {
         this.onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
-      //
     }
   };
 

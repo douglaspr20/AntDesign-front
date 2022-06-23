@@ -83,7 +83,6 @@ const EventsPage = ({
       getAdvertisementById(id);
     } else {
       getAdvertisementsTodayByPage("events");
-
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -264,7 +263,7 @@ const EventsPage = ({
         let flag = true;
         flag = dateFilter(flag, params, item);
 
-        const last = item.startAndEndTimes[item.startAndEndTimes - 1];
+        const last = item.startAndEndTimes[item.startAndEndTimes.length - 1];
 
         if (!isEmpty(last) && moment().isBefore(last.endTime)) {
           flag = true;
@@ -318,7 +317,10 @@ const EventsPage = ({
     }
 
     if (isEmpty(params)) {
-      const eventDate = moment(item?.startAndEndTimes[(item?.startAndEndTimes.length -1)]?.endTime, "YYYY.MM.DD h:mm a");
+      const eventDate = moment(
+        item?.startAndEndTimes[item?.startAndEndTimes.length - 1]?.endTime,
+        "YYYY.MM.DD h:mm a"
+      );
       flag = eventDate.isAfter(moment());
     }
 
@@ -404,6 +406,7 @@ const EventsPage = ({
     onFilterChange({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="events-page">
       <EventFilterDrawer
