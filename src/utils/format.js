@@ -81,8 +81,8 @@ function convertToCertainTime(date, tz) {
 
 function getEventPeriod(date, date2, timezone) {
   let res = "";
-  const startDate = convertToLocalTime(date, timezone);
-  const endDate = convertToLocalTime(date2, timezone);
+  const startDate = moment(date).utc();
+  const endDate = moment(date2).utc();
 
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
   if (tz) {

@@ -63,12 +63,8 @@ export function* getAllEventsSaga() {
             .map((item) => ({
               ...item,
               key: item.id,
-              date: convertToCertainTime(item.startDate, item.timezone).format(
-                "YYYY.MM.DD h:mm a"
-              ),
-              date2: convertToCertainTime(item.endDate, item.timezone).format(
-                "YYYY.MM.DD h:mm a"
-              ),
+              date: moment(item.startDate).utc().format("YYYY.MM.DD h:mm a"),
+              date2: moment(item.endDate).utc().format("YYYY.MM.DD h:mm a"),
               period: getEventPeriod(
                 item.startDate,
                 item.endDate,
