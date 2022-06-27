@@ -17,11 +17,21 @@ class CustomSelect extends React.Component {
         suffixIcon={<i className="fal fa-angle-down" />}
         dropdownClassName="custom-select-dropdown"
       >
-        {options.map((opt) => (
-          <Select.Option key={opt.value} value={opt.value}>
-            {opt.text || opt.label || opt.title}
-          </Select.Option>
-        ))}
+        {options.map((opt) => {
+          if (opt.name) {
+            return (
+              <Select.Option key={opt.name} value={opt.timezoneId}>
+                {opt.name}, {opt.country}
+              </Select.Option>
+            );
+          } else {
+            return (
+              <Select.Option key={opt.key || opt.value} value={opt.value}>
+                {opt.text}
+              </Select.Option>
+            );
+          }
+        })}
       </Select>
     );
   }

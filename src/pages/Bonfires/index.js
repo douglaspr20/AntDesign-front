@@ -16,7 +16,7 @@ import { addBonfire, removeBonfire } from "redux/actions/home-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { BonfireCard, CustomButton } from "components";
 import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
-import { convertToCertainTime } from "utils/format";
+import { convertToLocalTime } from "utils/format";
 import CreateBonfireModal from "./createBonfireModal";
 import BonfiresFilterPanel from "./BonfiresFilterPanel";
 import IconBack from "images/icon-back.svg";
@@ -64,26 +64,13 @@ const BonfiresPage = ({
   };
 
   const handleBonfire = (data) => {
-    const timezone = TIMEZONE_LIST.find(
-      (timezone) => timezone.value === data.timezone
-    );
     const convertedStartTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
+      .utc(data.time.format("YYYY-MM-DD HH:mm"))
       .format();
 
     const convertedEndTime = moment
-      .tz(
-        data.time.format("YYYY-MM-DD h:mm a"),
-        "YYYY-MM-DD h:mm a",
-        timezone.utc[0]
-      )
-      .utc()
-      .add("hour", 1)
+      .utc(data.time.format("YYYY-MM-DD HH:mm"))
+      .add(1, "hour")
       .format();
 
     const bonfireInfo = {
@@ -95,6 +82,7 @@ const BonfiresPage = ({
       categories: data.categories,
       bonfireCreator: userProfile.id,
       timezone: data.timezone,
+      userTimezone: moment.tz.guess(),
     };
     if (bonfireToEdit) {
       updateBonfire(bonfireToEdit.id, bonfireInfo, (error) => {
@@ -156,8 +144,8 @@ const BonfiresPage = ({
     if (bonfires) {
       const sData = (bonfires || [])
         .map((item) => {
-          const sTime = convertToCertainTime(item.startTime, item.timezone);
-          const eTime = convertToCertainTime(item.endTime, item.timezone);
+          const sTime = convertToLocalTime(item.startTime, item.timezone);
+          const eTime = convertToLocalTime(item.endTime, item.timezone);
           let tz = TIMEZONE_LIST.find((t) => t.value === item.timezone);
           if (tz) {
             if (tz.offset > 0) {

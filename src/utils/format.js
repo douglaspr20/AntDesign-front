@@ -143,6 +143,7 @@ function convertToLocalTime(date, timezone) {
   const localTimezone = moment.tz.guess();
 
   const dateWithCurrentTimezone = moment.tz(dateFormatUtc, currentTimezone);
+
   const dateWithLocalTimezone = dateWithCurrentTimezone
     .clone()
     .tz(localTimezone);

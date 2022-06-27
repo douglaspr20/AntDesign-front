@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Form } from "antd";
 import Modal from "components/Modal";
@@ -8,8 +8,8 @@ import {
   CustomInput,
   CustomSelect,
 } from "components";
-import { TIMEZONE_LIST } from "enum";
 import { categorySelector } from "redux/selectors/categorySelector";
+import { useSearchCity } from "hooks";
 
 const CreateBonfireModal = ({
   visible,
@@ -18,7 +18,39 @@ const CreateBonfireModal = ({
   allCategories,
   handleBonfire,
 }) => {
+  const [searchCity, setSearchCity] = useState("");
+  const cities = useSearchCity(searchCity);
+
   const [bonfireForm] = Form.useForm();
+
+  useEffect(() => {
+    if (bonfireToEdit && bonfireToEdit.timezone) {
+      let indexSlice = bonfireToEdit.timezone.indexOf("/");
+
+      let city = bonfireToEdit.timezone.slice(indexSlice + 1);
+
+      while (indexSlice !== -1) {
+        indexSlice = city.indexOf("/");
+
+        city = city.slice(indexSlice + 1);
+      }
+
+      setSearchCity(city);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bonfireToEdit]);
+
+  const handleSearchCity = (value) => {
+    if (value === "") {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      setSearchCity(value);
+      clearTimeout(timer);
+    }, 1000);
+  };
 
   return (
     <Modal
@@ -64,16 +96,14 @@ const CreateBonfireModal = ({
 
         <Form.Item
           name={"timezone"}
-          label="Timezone"
-          rules={[{ required: true, message: "Timezone is required." }]}
+          label="City"
+          rules={[{ required: true, message: "City is required." }]}
         >
           <CustomSelect
             showSearch
-            options={TIMEZONE_LIST}
+            options={cities}
             optionFilterProp="children"
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
+            onSearch={(value) => handleSearchCity(value)}
             className="border"
           />
         </Form.Item>
