@@ -81,8 +81,9 @@ function convertToCertainTime(date, tz) {
 
 function getEventPeriod(date, date2, timezone) {
   let res = "";
-  const startDate = convertToCertainTime(date, timezone);
-  const endDate = convertToCertainTime(date2, timezone);
+  const startDate = moment(date).utc();
+  const endDate = moment(date2).utc();
+
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
   if (tz) {
     if (tz.offset > 0) {
@@ -128,10 +129,25 @@ function convertToUTCTime(date, tz) {
   return res;
 }
 
-function convertToLocalTime(date) {
+function convertToLocalTime(date, timezone) {
+  let currentTimezone = TIMEZONE_LIST.find((item) => item.value === timezone);
+
+  if (currentTimezone) {
+    currentTimezone = currentTimezone.utc[0];
+  } else {
+    currentTimezone = timezone;
+  }
+
+  const dateFormatUtc = moment(date).utc().format("YYYY-MM-DD HH:mm");
+
   const localTimezone = moment.tz.guess();
 
-  return moment.utc(date).tz(localTimezone).local();
+  const dateWithCurrentTimezone = moment.tz(dateFormatUtc, currentTimezone);
+  const dateWithLocalTimezone = dateWithCurrentTimezone
+    .clone()
+    .tz(localTimezone);
+
+  return dateWithLocalTimezone;
 }
 
 const convertBlobToBase64 = (blob) => {
