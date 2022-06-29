@@ -24,7 +24,7 @@ import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -151,31 +151,19 @@ const PublicEventPage = ({
     const userTimezone = moment.tz.guess();
 
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}&userTimezone=${userTimezone}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };
 
   const onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      updatedEvent?.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      updatedEvent?.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${updatedEvent.title}&dates=${startDate}/${endDate}&location=${updatedEvent.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   const onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      updatedEvent?.title
-    }&st=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-      updatedEvent?.location
-    }`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${updatedEvent.title}&in_loc=${updatedEvent.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -185,16 +173,14 @@ const PublicEventPage = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === updatedEvent.timezone
-    );
-    const offset = timezone.offset;
+    const { timezone } = this.props.data;
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
+    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
+
+    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
 
     switch (key) {
@@ -208,7 +194,6 @@ const PublicEventPage = ({
         onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
-      //
     }
   };
 
