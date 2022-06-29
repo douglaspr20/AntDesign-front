@@ -20,7 +20,10 @@ class CustomSelect extends React.Component {
         {options.map((opt) => {
           if (opt.name) {
             return (
-              <Select.Option key={opt.name} value={opt.timezoneId}>
+              <Select.Option
+                key={opt.name}
+                value={`${opt.name}/${opt.timezoneId}`}
+              >
                 {opt.name}, {opt.country}
               </Select.Option>
             );

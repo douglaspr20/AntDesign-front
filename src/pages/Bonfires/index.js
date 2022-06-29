@@ -73,6 +73,8 @@ const BonfiresPage = ({
       .add(1, "hour")
       .format();
 
+    const timezoneFirstSliceIndex = data.timezone.indexOf("/");
+
     const bonfireInfo = {
       title: data.title,
       description: data.description,
@@ -81,7 +83,10 @@ const BonfiresPage = ({
       endTime: convertedEndTime,
       categories: data.categories,
       bonfireCreator: userProfile.id,
-      timezone: data.timezone,
+      timezone: data.timezone.slice(
+        timezoneFirstSliceIndex + 1,
+        data.timezone.length
+      ),
       userTimezone: moment.tz.guess(),
     };
     if (bonfireToEdit) {

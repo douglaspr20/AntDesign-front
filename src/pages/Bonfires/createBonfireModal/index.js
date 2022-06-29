@@ -36,6 +36,10 @@ const CreateBonfireModal = ({
       }
 
       setSearchCity(city);
+
+      bonfireForm.setFieldsValue({
+        timezone: `${city}/${bonfireToEdit.timezone}`,
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
