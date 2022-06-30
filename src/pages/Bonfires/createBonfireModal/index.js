@@ -35,6 +35,10 @@ const CreateBonfireModal = ({
         city = city.slice(indexSlice + 1);
       }
 
+      if (city.includes("_")) {
+        city = city.split("_").join(" ");
+      }
+
       setSearchCity(city);
 
       bonfireForm.setFieldsValue({
