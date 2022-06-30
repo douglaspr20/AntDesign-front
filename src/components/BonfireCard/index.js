@@ -31,8 +31,9 @@ const BonfireCard = ({
     bonfire.timezone
   ).format("YYYYMMDDTHHmmss");
 
+  const userTimezone = moment.tz.guess();
+
   const onClickDownloadCalendar = (e) => {
-    const userTimezone = moment.tz.guess();
     e.preventDefault();
     e.stopPropagation();
     window.open(
@@ -154,7 +155,7 @@ const BonfireCard = ({
             {moment(bonfire.startTime).format("MMM, D, YYYY")}
           </div>
           <div className="acc-session-time">
-            {bonfire.hours} {bonfire.tz}
+            {bonfire.hours} ({userTimezone})
           </div>
         </div>
         {added && (

@@ -10,6 +10,7 @@ import {
 } from "components";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { useSearchCity } from "hooks";
+import { getNameOfCityWithTimezone } from "utils/format";
 
 const CreateBonfireModal = ({
   visible,
@@ -25,25 +26,15 @@ const CreateBonfireModal = ({
 
   useEffect(() => {
     if (bonfireToEdit && bonfireToEdit.timezone) {
-      let indexSlice = bonfireToEdit.timezone.indexOf("/");
+      const city = getNameOfCityWithTimezone(bonfireToEdit.timezone);
 
-      let city = bonfireToEdit.timezone.slice(indexSlice + 1);
+      if (city) {
+        setSearchCity(city);
 
-      while (indexSlice !== -1) {
-        indexSlice = city.indexOf("/");
-
-        city = city.slice(indexSlice + 1);
+        bonfireForm.setFieldsValue({
+          timezone: `${city}/${bonfireToEdit.timezone}`,
+        });
       }
-
-      if (city.includes("_")) {
-        city = city.split("_").join(" ");
-      }
-
-      setSearchCity(city);
-
-      bonfireForm.setFieldsValue({
-        timezone: `${city}/${bonfireToEdit.timezone}`,
-      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

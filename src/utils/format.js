@@ -203,6 +203,24 @@ const transformNames = (name) => {
   return name;
 };
 
+const getNameOfCityWithTimezone = (timezone) => {
+  let indexSlice = timezone.indexOf("/");
+
+  let city = timezone.slice(indexSlice + 1);
+
+  while (indexSlice !== -1) {
+    indexSlice = city.indexOf("/");
+
+    city = city.slice(indexSlice + 1);
+  }
+
+  if (city.includes("_")) {
+    city = city.split("_").join(" ");
+  }
+
+  return city;
+};
+
 const capitalizeWord = (word) => {
   const firstCharacter = word.charAt(0);
   const transformWord = firstCharacter.toUpperCase() + word.slice(1);
@@ -225,4 +243,5 @@ export {
   getPublicationTime,
   transformNames,
   capitalizeWord,
+  getNameOfCityWithTimezone,
 };
