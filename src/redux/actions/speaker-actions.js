@@ -12,6 +12,8 @@ const GET_ALL_PANELS_OF_ONE_USER = "GET_ALL_PANELS_OF_ONE_USER";
 const UPDATE_ALL_PANELS_OF_ONE_USER = "UPDATE_ALL_PANELS_OF_ONE_USER";
 const SET_BUL_REGISTER = "SET_BUL_REGISTER";
 const ADDED_TO_MY_PERSONAL_AGENDA = "ADDED_TO_MY_PERSONAL_AGENDA"
+const GET_ALL_SPONSORS = "GET_ALL_SPONSORS";
+const UPDATE_ALL_SPONSOR_2023 = "UPDATE_ALL_SPONSOR_2023";
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -24,7 +26,9 @@ export const constants = {
   GET_ALL_PANELS_OF_ONE_USER,
   UPDATE_ALL_PANELS_OF_ONE_USER,
   SET_BUL_REGISTER,
-  ADDED_TO_MY_PERSONAL_AGENDA
+  ADDED_TO_MY_PERSONAL_AGENDA,
+  GET_ALL_SPONSORS,
+  UPDATE_ALL_SPONSOR_2023
 };
 
 // ------------------------------------
@@ -86,6 +90,16 @@ export const addedToPersonalAgenda = createAction(
   (data) => ({data})
 )
 
+export const getAllSponsors = createAction(
+  GET_ALL_SPONSORS,
+  () => ({})
+)
+
+export const updateAllSponsors2023 = createAction(
+  UPDATE_ALL_SPONSOR_2023,
+  (sponsor) => ({sponsor})
+)
+
 export const actions = {
     addedToPersonalAgenda,
     updatePanelSpeakers,
@@ -97,4 +111,6 @@ export const actions = {
     registerUserIfNotAreRegisterConference2023,
     getAllPanelsOfOneUser,
     updateAllPanelsOfOneUser,
+    getAllSponsors,
+    updateAllSponsors2023
 };

@@ -32,14 +32,22 @@ export const reducers = {
       return state.merge({
         bulRegister: bul
       })
-    }  
+    },
+    [speakerConstans.UPDATE_ALL_SPONSOR_2023]: (state, {payload}) => {
+      const {sponsor} = payload
+
+      return state.merge({
+        allSponsors: sponsor,
+      })
+    }, 
   };
   
   export const initialState = () =>
     Map({
         allPanelSpeakers: [],
         allUserSpeakers: [],
-        bulRegister: false
+        bulRegister: false,
+        allSponsors: [],
     }
   );
 

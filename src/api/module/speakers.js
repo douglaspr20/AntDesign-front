@@ -32,6 +32,10 @@ export const getAllPanelsOfOneUserEndPoint = (UserId) => {
   return httpClient.get(`public/speakers/all-panel-of-user/${UserId.UserId}`)
 }
 
+export const getAllSponsors2023EndPoint = () => {
+  return httpClient.get(`public/speakers/get-all-sponsor`)  
+}
+
 export const addedToPersonalAgendaEndPoint = (payload) => {
   return httpClient.post("private/speakers/added-to-agenda", {
     ...payload,

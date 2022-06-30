@@ -13,6 +13,7 @@ import {
     registerUserIfNotAreRegisterConference2023EndPoint,
     getAllPanelsOfOneUserEndPoint,
     addedToPersonalAgendaEndPoint,
+    getAllSponsors2023EndPoint
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
@@ -211,6 +212,30 @@ export function* addedToPersonalAgendaSagas({payload}) {
   }
 }
 
+export function* getAllSponsors2023Sagas() {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllSponsors2023EndPoint);
+    if (response.status === 200) {
+      const { sponsor } = response.data;
+
+      yield put(
+        speakerActions.updateAllSponsors2023(
+          sponsor
+        )
+      );
+    }
+  } catch (error) {
+      notification.error({
+        message: "there are a error",
+        description: error.response.data.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
@@ -219,6 +244,7 @@ function* watchLogin() {
     yield takeLatest(speakerConstans.REGISTER_USER_IF_NOT_REGISTER_CONFERENCE_2023 , registerUserIfNotAreRegisterConference2023);
     yield takeLatest(speakerConstans.GET_ALL_PANELS_OF_ONE_USER, getAllPanelsOfOneUserSagas);
     yield takeLatest(speakerConstans.ADDED_TO_MY_PERSONAL_AGENDA, addedToPersonalAgendaSagas);
+    yield takeLatest(speakerConstans.GET_ALL_SPONSORS, getAllSponsors2023Sagas);
 }
   
 export const speakerSaga = [fork(watchLogin)];

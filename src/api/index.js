@@ -286,11 +286,13 @@ import {
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   addedToPersonalAgendaEndPoint,
+  getAllSponsors2023EndPoint
 } from "./module/speakers"
 
 export {
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
+  getAllSponsors2023EndPoint,
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   sendActiveOrDenyAuthorizationEndPoint,
