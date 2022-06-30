@@ -16,7 +16,7 @@ import {
   SpecialtyItem,
   RichEdit,
 } from "components";
-import { EVENT_TYPES, MONTH_NAMES, TIMEZONE_LIST } from "enum";
+import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
 import {
   actions as eventActions,
@@ -147,25 +147,13 @@ const EventDrawer = ({
   };
 
   const onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      event.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      event.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${event.title}&dates=${startDate}/${endDate}&location=${event.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   const onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      event.title
-    }&st=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-      event.location
-    }`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${event.title}&in_loc=${event.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -175,16 +163,14 @@ const EventDrawer = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === event.timezone
-    );
-    const offset = timezone.offset;
+    const { timezone } = event;
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
+    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
+
+    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
 
     switch (key) {
