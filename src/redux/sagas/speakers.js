@@ -36,7 +36,7 @@ export function* getPanelSpeakerSaga({ payload }) {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -64,7 +64,7 @@ export function* getAllUserSpeakerSaga({payload}) {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -92,7 +92,7 @@ export function* removeUserSpeakerToPanelSaga({ payload }) {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -127,7 +127,7 @@ export function* addUserSpeakerToSaga({ payload }) {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -148,7 +148,7 @@ export function* registerUserIfNotAreRegisterConference2023({payload}) {
     console.log(error)
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -179,7 +179,7 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -205,7 +205,7 @@ export function* addedToPersonalAgendaSagas({payload}) {
     console.log(error)
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
@@ -229,7 +229,7 @@ export function* getAllSponsors2023Sagas() {
   } catch (error) {
       notification.error({
         message: "there are a error",
-        description: error.response.data.msg,
+        description: error?.response?.data?.msg,
       });
   } finally {
     yield put(homeActions.setLoading(false));
