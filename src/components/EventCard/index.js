@@ -17,7 +17,7 @@ import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
-import { convertToCertainTime, convertToLocalTime } from "utils/format";
+import { convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 import { isEmpty } from "lodash";
@@ -237,6 +237,12 @@ class EventCard extends React.Component {
       onMenuClick,
     } = this.props;
 
+    let userTimezone = moment.tz.guess();
+
+    if (userTimezone.includes("_")) {
+      userTimezone = userTimezone.split("_").join(" ");
+    }
+
     const displayTransformedEventLocation = (location || [])
       .map((location) => {
         if (location === "online") {
@@ -297,18 +303,26 @@ class EventCard extends React.Component {
               {status !== "past" && status !== "confirmed" && (
                 <Space direction="vertical" style={{ marginBottom: "1rem" }}>
                   {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(
+                    const startTime = convertToLocalTime(
                       time?.startTime,
                       timezone
                     );
-                    const endTime = convertToCertainTime(
-                      time?.endTime,
-                      timezone
-                    );
-
+                    const endTime = convertToLocalTime(time?.endTime, timezone);
                     return (
                       <div className="d-flex" key={index}>
-                        <Space size="middle">
+                        <Space
+                          size="middle"
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          {`${startTime.format(
+                            "MMMM DD"
+                          )} From ${startTime.format(
+                            "HH:mm a"
+                          )} to ${endTime.format("HH:mm a")} (${userTimezone})`}
                           <Dropdown
                             overlay={this.downloadDropdownOptions(
                               startTime,

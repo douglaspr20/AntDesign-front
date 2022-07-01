@@ -10,11 +10,7 @@ import GoogleMap from "./GoogleMaps";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { getCheckoutSession } from "api/module/stripe";
-import {
-  convertToLocalTime,
-  getEventPeriod,
-  convertToCertainTime,
-} from "utils/format";
+import { convertToLocalTime, getEventPeriod } from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
@@ -48,6 +44,12 @@ const PublicEventPage = ({
   const [stripe, setStripe] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  let userTimezone = moment.tz.guess();
+
+  if (userTimezone.includes("_")) {
+    userTimezone = userTimezone.split("_").join(" ");
+  }
+
   useEffect(() => {
     instanceStripe();
   }, []);
@@ -67,8 +69,6 @@ const PublicEventPage = ({
           setShowFirewall(true);
         }
       } else if (updatedEvent.ticket === "fee") {
-        const userTimezone = moment.tz.guess();
-
         try {
           setLoading(true);
           let sessionData = await getCheckoutSession({
@@ -251,29 +251,6 @@ const PublicEventPage = ({
     })
     .join("/");
 
-  const displayEventInstructors = (updatedEvent.EventInstructors || []).map(
-    (eventInstructor) => {
-      const instructor = eventInstructor.Instructor;
-
-      return (
-        <div className="event-instructor">
-          <Avatar
-            src={instructor.image}
-            alt="instructor-image"
-            size={128}
-            style={{ marginLeft: "auto", marginRight: "auto", display: "flex" }}
-          />
-          <div className="event-instructor-name">{instructor.name}</div>
-          <Tooltip title={instructor.description}>
-            <div className="event-instructor-name truncate">
-              {instructor.description}
-            </div>
-          </Tooltip>
-        </div>
-      );
-    }
-  );
-
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -376,18 +353,28 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes?.map((time, index) => {
-                const startTime = convertToCertainTime(
+                const startTime = convertToLocalTime(
                   time.startTime,
                   updatedEvent.timezone
                 );
-                const endTime = convertToCertainTime(
+                const endTime = convertToLocalTime(
                   time?.endTime,
                   updatedEvent.timezone
                 );
 
                 return (
                   <div className="d-flex calendar" key={index}>
-                    <Space size="middle">
+                    <Space
+                      size="middle"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {`${startTime.format("MMMM DD")} From ${startTime.format(
+                        "HH:mm a"
+                      )} to ${endTime.format("HH:mm a")} (${userTimezone})`}
                       <Dropdown
                         overlay={downloadDropdownOptions(
                           startTime,
@@ -482,10 +469,37 @@ const PublicEventPage = ({
           )}
         </div>
       </div>
-      <div className="public-event-page-instructors">
-        <h1 className="event-title">SPEAKERS</h1>
-        <div className="event-people">{displayEventInstructors}</div>
-      </div>
+      {updatedEvent.EventInstructors?.length > 0 && (
+        <div className="public-event-page-instructors">
+          <h1 className="event-title">SPEAKERS</h1>
+          <div className="event-people">
+            {updatedEvent.EventInstructors.map((eventInstructor) => {
+              const instructor = eventInstructor.Instructor;
+
+              return (
+                <div className="event-instructor">
+                  <Avatar
+                    src={instructor.image}
+                    alt="instructor-image"
+                    size={128}
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      display: "flex",
+                    }}
+                  />
+                  <div className="event-instructor-name">{instructor.name}</div>
+                  <Tooltip title={instructor.description}>
+                    <div className="event-instructor-name truncate">
+                      {instructor.description}
+                    </div>
+                  </Tooltip>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
