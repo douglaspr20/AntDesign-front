@@ -28,6 +28,7 @@ import {
   viewRulesConference,
   countAllUsers,
   searchUser,
+  handleReceiveCommunityNotification,
 } from "../../api";
 import {
   acceptInvitationApplyBusinnesPartner,
@@ -627,6 +628,23 @@ export function* searchUserSaga({ payload }) {
   }
 }
 
+export function* handleReceiveCommunityNotificationSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(handleReceiveCommunityNotification, {
+      ...payload,
+    });
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -670,6 +688,10 @@ function* watchLogin() {
   yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
   yield takeLatest(homeConstants.HANDLE_ONLINE, handleOnlineSaga);
   yield takeLatest(homeConstants.SEARCH_USER, searchUserSaga);
+  yield takeLatest(
+    homeConstants.UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
+    handleReceiveCommunityNotificationSaga
+  );
 }
 
 export const userSaga = [fork(watchLogin)];

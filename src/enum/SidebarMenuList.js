@@ -62,9 +62,9 @@ export default {
       url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
     {
-      label: "Mentoring",
+      label: "Communities",
       icon: IconMentoring,
-      url: INTERNAL_LINKS.MENTORING,
+      url: INTERNAL_LINKS.COMMUNITIES,
     },
     {
       label: "Events",

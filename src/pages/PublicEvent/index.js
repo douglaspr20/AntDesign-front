@@ -11,9 +11,9 @@ import { loadStripe } from "@stripe/stripe-js";
 
 import { getCheckoutSession } from "api/module/stripe";
 import {
+  capitalizeWord,
   convertToLocalTime,
   getEventPeriod,
-  convertToCertainTime,
 } from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
@@ -24,7 +24,7 @@ import { eventSelector } from "redux/selectors/eventSelector";
 import { authSelector } from "redux/selectors/authSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { INTERNAL_LINKS, EVENT_TYPES, TIMEZONE_LIST } from "enum";
+import { INTERNAL_LINKS, EVENT_TYPES } from "enum";
 
 import "./style.scss";
 
@@ -48,6 +48,12 @@ const PublicEventPage = ({
   const [stripe, setStripe] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  let userTimezone = moment.tz.guess();
+
+  if (userTimezone.includes("_")) {
+    userTimezone = userTimezone.split("_").join(" ");
+  }
+
   useEffect(() => {
     instanceStripe();
   }, []);
@@ -67,8 +73,6 @@ const PublicEventPage = ({
           setShowFirewall(true);
         }
       } else if (updatedEvent.ticket === "fee") {
-        const userTimezone = moment.tz.guess();
-
         try {
           setLoading(true);
           let sessionData = await getCheckoutSession({
@@ -151,31 +155,19 @@ const PublicEventPage = ({
     const userTimezone = moment.tz.guess();
 
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent?.id}?day=${day}&userTimezone=${userTimezone}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/event/ics/${updatedEvent.id}?day=${day}&userTimezone=${userTimezone}`,
       "_blank"
     );
   };
 
   const onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      updatedEvent?.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      updatedEvent?.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${updatedEvent.title}&dates=${startDate}/${endDate}&location=${updatedEvent.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   const onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      updatedEvent?.title
-    }&st=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-      updatedEvent?.location
-    }`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${updatedEvent.title}&in_loc=${updatedEvent.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -185,17 +177,9 @@ const PublicEventPage = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === updatedEvent.timezone
-    );
-    const offset = timezone.offset;
+    const convertedStartTime = startTime.format("YYYYMMDDTHHmmss");
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
-    );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
-    );
+    const convertedEndTime = endTime.format("YYYYMMDDTHHmmss");
 
     switch (key) {
       case "1":
@@ -208,7 +192,6 @@ const PublicEventPage = ({
         onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
-      //
     }
   };
 
@@ -248,13 +231,6 @@ const PublicEventPage = ({
       />
     </div>
   );
-  const displayTicket = (
-    <h3 className="event-cost">
-      {updatedEvent.ticket === "fee"
-        ? `Registration Fee: $${updatedEvent.ticketFee}`
-        : updatedEvent.ticket}
-    </h3>
-  );
 
   const displayTransformedEventLocation = (updatedEvent.location || [])
     .map((location) => {
@@ -265,29 +241,6 @@ const PublicEventPage = ({
       }
     })
     .join("/");
-
-  const displayEventInstructors = (updatedEvent.EventInstructors || []).map(
-    (eventInstructor) => {
-      const instructor = eventInstructor.Instructor;
-
-      return (
-        <div className="event-instructor">
-          <Avatar
-            src={instructor.image}
-            alt="instructor-image"
-            size={128}
-            style={{ marginLeft: "auto", marginRight: "auto", display: "flex" }}
-          />
-          <div className="event-instructor-name">{instructor.name}</div>
-          <Tooltip title={instructor.description}>
-            <div className="event-instructor-name truncate">
-              {instructor.description}
-            </div>
-          </Tooltip>
-        </div>
-      );
-    }
-  );
 
   return (
     <div className="public-event-page">
@@ -391,18 +344,28 @@ const PublicEventPage = ({
           {updatedEvent.status === "going" && isAuthenticated && (
             <Space direction="vertical">
               {updatedEvent?.startAndEndTimes?.map((time, index) => {
-                const startTime = convertToCertainTime(
+                const startTime = convertToLocalTime(
                   time.startTime,
                   updatedEvent.timezone
                 );
-                const endTime = convertToCertainTime(
+                const endTime = convertToLocalTime(
                   time?.endTime,
                   updatedEvent.timezone
                 );
 
                 return (
                   <div className="d-flex calendar" key={index}>
-                    <Space size="middle">
+                    <Space
+                      size="middle"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {`${startTime.format("MMMM DD")} From ${startTime.format(
+                        "HH:mm a"
+                      )} to ${endTime.format("HH:mm a")} (${userTimezone})`}
                       <Dropdown
                         overlay={downloadDropdownOptions(
                           startTime,
@@ -450,16 +413,29 @@ const PublicEventPage = ({
           )}
         </h3>
         <h3 className="event-type">{displayTransformedEventLocation} Event</h3>
-        {displayTicket}
-
-        <h5>Event Type:</h5>
-        {updatedEvent.type && updatedEvent.type.length > 0 && (
-          <div className="event-topics">
-            {updatedEvent.type.map((tp, index) => (
-              <SpecialtyItem key={index} title={tp} active={false} />
-            ))}
-          </div>
+        {updatedEvent.ticket && (
+          <h5 className="event-cost">
+            Event tickets:
+            <span>
+              {updatedEvent.ticket === "fee"
+                ? `$${updatedEvent.ticketFee} Registration fee`
+                : updatedEvent.ticket === "premium"
+                ? "Only PREMIUM members"
+                : capitalizeWord(updatedEvent.ticket)}
+            </span>
+          </h5>
         )}
+
+        <div className="event-types-container">
+          <h5>Event Type:</h5>
+          {updatedEvent.type &&
+            updatedEvent.type.map((tp, index) => (
+              <h5 className="event-types-title" key={index}>
+                {capitalizeWord(tp)} {updatedEvent.type[index + 1] && `|`}
+              </h5>
+            ))}
+        </div>
+
         <h5>Event Topics:</h5>
         {updatedEvent.categories && updatedEvent.categories.length > 0 && (
           <div className="event-topics">
@@ -467,16 +443,6 @@ const PublicEventPage = ({
               <SpecialtyItem key={index} title={tp} active={false} />
             ))}
           </div>
-        )}
-        {editor === "froala" ? (
-          <div
-            className="event-description"
-            dangerouslySetInnerHTML={{
-              __html: (updatedEvent.description || {}).html || "",
-            }}
-          />
-        ) : (
-          <RichEdit data={updatedEvent.description} />
         )}
         {displayVenueLocation}
         <div
@@ -497,10 +463,54 @@ const PublicEventPage = ({
           )}
         </div>
       </div>
-      <div className="public-event-page-instructors">
-        <h1 className="event-title">SPEAKERS</h1>
-        <div className="event-people">{displayEventInstructors}</div>
-      </div>
+
+      {updatedEvent.description && (
+        <div className="public-event-page-description">
+          <h1 className="event-title">Description</h1>
+          {editor === "froala" ? (
+            <div
+              className="event-description"
+              dangerouslySetInnerHTML={{
+                __html: (updatedEvent.description || {}).html || "",
+              }}
+            />
+          ) : (
+            <RichEdit data={updatedEvent.description} />
+          )}
+        </div>
+      )}
+
+      {updatedEvent.EventInstructors?.length > 0 && (
+        <div className="public-event-page-instructors">
+          <h1 className="event-title">SPEAKERS</h1>
+          <div className="event-people">
+            {updatedEvent.EventInstructors.map((eventInstructor) => {
+              const instructor = eventInstructor.Instructor;
+
+              return (
+                <div className="event-instructor">
+                  <Avatar
+                    src={instructor.image}
+                    alt="instructor-image"
+                    size={128}
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      display: "flex",
+                    }}
+                  />
+                  <div className="event-instructor-name">{instructor.name}</div>
+                  <Tooltip title={instructor.description}>
+                    <div className="event-instructor-name truncate">
+                      {instructor.description}
+                    </div>
+                  </Tooltip>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

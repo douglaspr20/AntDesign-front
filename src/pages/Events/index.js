@@ -83,7 +83,6 @@ const EventsPage = ({
       getAdvertisementById(id);
     } else {
       getAdvertisementsTodayByPage("events");
-
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,7 +138,12 @@ const EventsPage = ({
     const timezone = moment.tz.guess();
 
     if (event.going) {
-      addToMyEventList(event, timezone);
+      addToMyEventList(event, timezone, () =>
+        notification.success({
+          message: "Event successfully added",
+          description: "An email has been sent to you with more information.",
+        })
+      );
       if (event.isAnnualConference === 1) {
         attendToGlobalConference();
       }
@@ -264,7 +268,7 @@ const EventsPage = ({
         let flag = true;
         flag = dateFilter(flag, params, item);
 
-        const last = item.startAndEndTimes[item.startAndEndTimes - 1];
+        const last = item.startAndEndTimes[item.startAndEndTimes.length - 1];
 
         if (!isEmpty(last) && moment().isBefore(last.endTime)) {
           flag = true;
@@ -279,15 +283,24 @@ const EventsPage = ({
   const pastFilter = (params) => {
     setPastFilterData((prev) => {
       prev = allEvents.filter((item) => {
-        let flag = true;
+        // let flag = true;
 
-        flag = dateFilter(flag, params, item);
+        // flag = dateFilter(flag, params, item);
 
-        if (new Date(item.endDate) > new Date() || !item.status === "attend") {
-          flag = false;
+        // if (new Date(item.endDate) > moment.utc() || !item.status === "attend") {
+        //   flag = false;
+        // }
+
+        // return flag;
+
+        if (
+          moment(item.endDate).utc() > moment.utc() ||
+          !item.users?.includes(userProfile.id)
+        ) {
+          return null;
         }
 
-        return flag;
+        return item;
       });
       return [...prev];
     });
@@ -318,7 +331,10 @@ const EventsPage = ({
     }
 
     if (isEmpty(params)) {
-      const eventDate = moment(item?.startAndEndTimes[(item?.startAndEndTimes.length -1)]?.endTime, "YYYY.MM.DD h:mm a");
+      const eventDate = moment(
+        item?.startAndEndTimes[item?.startAndEndTimes.length - 1]?.endTime,
+        "YYYY.MM.DD h:mm a"
+      );
       flag = eventDate.isAfter(moment());
     }
 
@@ -404,6 +420,7 @@ const EventsPage = ({
     onFilterChange({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="events-page">
       <EventFilterDrawer

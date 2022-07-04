@@ -39,16 +39,15 @@ export function* createBonfireSaga({ payload }) {
       payload.callback(error);
     }
   } finally {
-    yield getAllBonfiresSaga();
     yield put(homeActions.setLoading(false));
   }
 }
 
-export function* getAllBonfiresSaga() {
+export function* getAllBonfiresSaga({ payload }) {
   yield put(homeActions.setLoading(true));
 
   try {
-    let response = yield call(getAllBonfires);
+    let response = yield call(getAllBonfires, { ...payload });
     if (response.status === 200) {
       const bonfiresData = response.data.bonfires.map((bonfire) => {
         return {
