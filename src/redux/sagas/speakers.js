@@ -34,6 +34,7 @@ export function* getPanelSpeakerSaga({ payload }) {
       );
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
@@ -62,6 +63,7 @@ export function* getAllUserSpeakerSaga({payload}) {
       yield put(homeActions.setLoading(false));
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
@@ -90,6 +92,7 @@ export function* removeUserSpeakerToPanelSaga({ payload }) {
       });
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
@@ -125,6 +128,7 @@ export function* addUserSpeakerToSaga({ payload }) {
       });
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
@@ -177,6 +181,7 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
       );
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
@@ -227,6 +232,7 @@ export function* getAllSponsors2023Sagas() {
       );
     }
   } catch (error) {
+    console.log(error)
       notification.error({
         message: "there are a error",
         description: error?.response?.data?.msg,
