@@ -175,15 +175,9 @@ class EventCard extends React.Component {
 
     const [startTime, endTime, day] = item.props.value;
 
-    const { timezone } = this.props.data;
+    const convertedStartTime = startTime.format("YYYYMMDDTHHmmss");
 
-    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
-      "YYYYMMDDTHHmmss"
-    );
-
-    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
-      "YYYYMMDDTHHmmss"
-    );
+    const convertedEndTime = endTime.format("YYYYMMDDTHHmmss");
 
     switch (key) {
       case "1":
@@ -300,13 +294,14 @@ class EventCard extends React.Component {
               <h5>{period}</h5>
               <h5>{displayTransformedEventLocation} Event</h5>
               {displayTicket}
-              {status === "going" && (
+              {status && (
                 <Space direction="vertical" style={{ marginBottom: "1rem" }}>
                   {startAndEndTimes.map((time, index) => {
                     const startTime = convertToLocalTime(
                       time?.startTime,
                       timezone
                     );
+
                     const endTime = convertToLocalTime(time?.endTime, timezone);
                     return (
                       <div className="d-flex" key={index}>

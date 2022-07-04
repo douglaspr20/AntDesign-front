@@ -177,18 +177,9 @@ const PublicEventPage = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const { timezone } = updatedEvent;
+    const convertedStartTime = startTime.format("YYYYMMDDTHHmmss");
 
-    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
-      "YYYYMMDDTHHmmss"
-    );
-
-    console.log(startTime);
-    console.log(convertedStartTime);
-
-    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
-      "YYYYMMDDTHHmmss"
-    );
+    const convertedEndTime = endTime.format("YYYYMMDDTHHmmss");
 
     switch (key) {
       case "1":
