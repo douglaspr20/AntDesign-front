@@ -183,6 +183,9 @@ const PublicEventPage = ({
       "YYYYMMDDTHHmmss"
     );
 
+    console.log(startTime);
+    console.log(convertedStartTime);
+
     const convertedEndTime = convertToLocalTime(endTime, timezone).format(
       "YYYYMMDDTHHmmss"
     );

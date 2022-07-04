@@ -22,8 +22,8 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
 
   const getEventData = (value) => {
     let listData = events.map((event) => {
-      return event.startAndEndTimes.filter((time) => {
-        const eventDate = moment(time.startTime, "YYYY.MM.DD. h:mm:a");
+      return event.startAndEndTimes?.filter((time) => {
+        const eventDate = moment(time?.startTime, "YYYY.MM.DD. h:mm:a");
         if (
           eventDate.date() === value.date() &&
           eventDate.year() === value.year() &&
@@ -73,7 +73,6 @@ const CustomCalendar = ({ events, value, disabled, onChange }) => {
 
   const dateCellRender = (date) => {
     const listData = getEventData(date);
-
 
     return listData && listData.length > 0 ? SVG_ICONS.ICON_CIRCLE : null;
   };
