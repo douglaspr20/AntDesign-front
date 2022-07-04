@@ -10,7 +10,11 @@ import GoogleMap from "./GoogleMaps";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { getCheckoutSession } from "api/module/stripe";
-import { convertToLocalTime, getEventPeriod } from "utils/format";
+import {
+  capitalizeWord,
+  convertToLocalTime,
+  getEventPeriod,
+} from "utils/format";
 import Emitter from "services/emitter";
 import { CustomButton, SpecialtyItem, RichEdit } from "components";
 import Login from "pages/Login";
@@ -233,13 +237,6 @@ const PublicEventPage = ({
       />
     </div>
   );
-  const displayTicket = (
-    <h3 className="event-cost">
-      {updatedEvent.ticket === "fee"
-        ? `Registration Fee: $${updatedEvent.ticketFee}`
-        : updatedEvent.ticket}
-    </h3>
-  );
 
   const displayTransformedEventLocation = (updatedEvent.location || [])
     .map((location) => {
@@ -422,16 +419,29 @@ const PublicEventPage = ({
           )}
         </h3>
         <h3 className="event-type">{displayTransformedEventLocation} Event</h3>
-        {displayTicket}
-
-        <h5>Event Type:</h5>
-        {updatedEvent.type && updatedEvent.type.length > 0 && (
-          <div className="event-topics">
-            {updatedEvent.type.map((tp, index) => (
-              <SpecialtyItem key={index} title={tp} active={false} />
-            ))}
-          </div>
+        {updatedEvent.ticket && (
+          <h5 className="event-cost">
+            Event tickets:
+            <span>
+              {updatedEvent.ticket === "fee"
+                ? `$${updatedEvent.ticketFee} Registration fee`
+                : updatedEvent.ticket === "premium"
+                ? "Only PREMIUM members"
+                : capitalizeWord(updatedEvent.ticket)}
+            </span>
+          </h5>
         )}
+
+        <div className="event-types-container">
+          <h5>Event Type:</h5>
+          {updatedEvent.type &&
+            updatedEvent.type.map((tp, index) => (
+              <h5 className="event-types-title" key={index}>
+                {capitalizeWord(tp)} {updatedEvent.type[index + 1] && `|`}
+              </h5>
+            ))}
+        </div>
+
         <h5>Event Topics:</h5>
         {updatedEvent.categories && updatedEvent.categories.length > 0 && (
           <div className="event-topics">
@@ -439,16 +449,6 @@ const PublicEventPage = ({
               <SpecialtyItem key={index} title={tp} active={false} />
             ))}
           </div>
-        )}
-        {editor === "froala" ? (
-          <div
-            className="event-description"
-            dangerouslySetInnerHTML={{
-              __html: (updatedEvent.description || {}).html || "",
-            }}
-          />
-        ) : (
-          <RichEdit data={updatedEvent.description} />
         )}
         {displayVenueLocation}
         <div
@@ -469,6 +469,23 @@ const PublicEventPage = ({
           )}
         </div>
       </div>
+
+      {updatedEvent.description && (
+        <div className="public-event-page-description">
+          <h1 className="event-title">Description</h1>
+          {editor === "froala" ? (
+            <div
+              className="event-description"
+              dangerouslySetInnerHTML={{
+                __html: (updatedEvent.description || {}).html || "",
+              }}
+            />
+          ) : (
+            <RichEdit data={updatedEvent.description} />
+          )}
+        </div>
+      )}
+
       {updatedEvent.EventInstructors?.length > 0 && (
         <div className="public-event-page-instructors">
           <h1 className="event-title">SPEAKERS</h1>

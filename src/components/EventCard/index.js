@@ -300,7 +300,7 @@ class EventCard extends React.Component {
               <h5>{period}</h5>
               <h5>{displayTransformedEventLocation} Event</h5>
               {displayTicket}
-              {status !== "past" && status !== "confirmed" && (
+              {status === "going" && (
                 <Space direction="vertical" style={{ marginBottom: "1rem" }}>
                   {startAndEndTimes.map((time, index) => {
                     const startTime = convertToLocalTime(
@@ -381,6 +381,7 @@ class EventCard extends React.Component {
                       loading={this.state.loading}
                     />
                   )}
+
                   {status === "going" && (
                     <div className="going-group-part">
                       <div className="going-label">

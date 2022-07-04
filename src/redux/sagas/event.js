@@ -153,12 +153,8 @@ export function* getLiveEventSaga() {
             .map((item) => ({
               ...item,
               key: item.id,
-              date: convertToCertainTime(item.startDate, item.timezone).format(
-                "YYYY.MM.DD h:mm a"
-              ),
-              date2: convertToCertainTime(item.endDate, item.timezone).format(
-                "YYYY.MM.DD h:mm a"
-              ),
+              date: moment(item.startDate).utc().format("YYYY.MM.DD h:mm a"),
+              date2: moment(item.endDate).utc().format("YYYY.MM.DD h:mm a"),
               period: getEventPeriod(
                 item.startDate,
                 item.endDate,
@@ -197,12 +193,8 @@ export function* addToMyEventList({ payload }) {
       yield put(
         eventActions.setEvent({
           ...data,
-          date: convertToCertainTime(data.startDate, data.timezone).format(
-            "YYYY.MM.DD h:mm a"
-          ),
-          date2: convertToCertainTime(data.endDate, data.timezone).format(
-            "YYYY.MM.DD h:mm a"
-          ),
+          date: moment(data.startDate).utc().format("YYYY.MM.DD h:mm a"),
+          date2: moment(data.endDate).utc().format("YYYY.MM.DD h:mm a"),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
