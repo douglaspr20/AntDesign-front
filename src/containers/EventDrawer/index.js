@@ -202,6 +202,16 @@ const EventDrawer = ({
     );
   };
 
+  const displayTransformedEventLocation = (event.location || [])
+    .map((location) => {
+      if (location === "online") {
+        return "Online";
+      } else {
+        return "In Person";
+      }
+    })
+    .join("/");
+
   const planUpgrade = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -376,7 +386,7 @@ const EventDrawer = ({
             )}
           </div>
           <h3 className="event-type">
-            {event.location && event.location} Event
+            {displayTransformedEventLocation} Event
           </h3>
           {event.ticket && (
             <h5 className="event-cost">

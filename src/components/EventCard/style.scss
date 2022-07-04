@@ -204,6 +204,26 @@
 				}
 			}
 		}
+
+		.event-cost{
+			span{ 
+				margin-left: 5px !important;
+				font-weight: 500 !important;
+			}
+		}
+
+		.event-topics-container{
+			display: flex;
+			flex-wrap: wrap;
+
+			h5{
+				margin-right: 5px !important;
+			}
+
+			.event-types-title{
+				font-weight: 500 !important;
+			}
+		}
 	}
 
 	&-menu {
