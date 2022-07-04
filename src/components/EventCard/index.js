@@ -294,14 +294,13 @@ class EventCard extends React.Component {
               <h5>{period}</h5>
               <h5>{displayTransformedEventLocation} Event</h5>
               {displayTicket}
-              {status && (
+              {status === "going" && (
                 <Space direction="vertical" style={{ marginBottom: "1rem" }}>
                   {startAndEndTimes.map((time, index) => {
                     const startTime = convertToLocalTime(
                       time?.startTime,
                       timezone
                     );
-
                     const endTime = convertToLocalTime(time?.endTime, timezone);
                     return (
                       <div className="d-flex" key={index}>
