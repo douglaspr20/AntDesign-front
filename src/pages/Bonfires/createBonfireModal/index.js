@@ -11,6 +11,7 @@ import {
 import { categorySelector } from "redux/selectors/categorySelector";
 import { useSearchCity } from "hooks";
 import { getNameOfCityWithTimezone } from "utils/format";
+import moment from "moment";
 
 const CreateBonfireModal = ({
   visible,
@@ -63,7 +64,10 @@ const CreateBonfireModal = ({
       <Form
         form={bonfireForm}
         layout="vertical"
-        initialValues={bonfireToEdit}
+        initialValues={{
+          ...bonfireToEdit,
+          time: moment(bonfireToEdit?.startTime).utc(),
+        }}
         onFinish={(data) => {
           handleBonfire(data);
         }}
@@ -90,7 +94,7 @@ const CreateBonfireModal = ({
           label="Start time"
           rules={[{ required: true, message: "Time is required." }]}
         >
-          <CustomInput type="time" value={bonfireToEdit?.time} />
+          <CustomInput type="time" />
         </Form.Item>
 
         <Form.Item
