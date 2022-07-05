@@ -202,16 +202,6 @@ const EventDrawer = ({
     );
   };
 
-  const displayTransformedEventLocation = (event.location || [])
-    .map((location) => {
-      if (location === "online") {
-        return "Online";
-      } else {
-        return "In Person";
-      }
-    })
-    .join("/");
-
   const planUpgrade = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -385,9 +375,26 @@ const EventDrawer = ({
               </Space>
             )}
           </div>
-          <h3 className="event-type">
-            {displayTransformedEventLocation} Event
-          </h3>
+          {event.location && (
+            <>
+              <h5 className="event-cost">
+                Event Type:{" "}
+                <span>
+                  {event.location.map((loc, index) => {
+                    if (loc === "online") {
+                      return (
+                        <>Online {event.location[index + 1] ? "and " : ""}</>
+                      );
+                    }
+
+                    return (
+                      <>In Person {event.location[index + 1] ? "and " : ""}</>
+                    );
+                  })}
+                </span>
+              </h5>
+            </>
+          )}
           {event.ticket && (
             <h5 className="event-cost">
               Event tickets:
@@ -402,7 +409,7 @@ const EventDrawer = ({
           )}
 
           <div className="event-topics-container">
-            <h5>Event Type:</h5>
+            <h5>Content delivery format:</h5>
             {event.type &&
               event.type.map((tp, index) => (
                 <h5 className="event-topic" key={index}>
