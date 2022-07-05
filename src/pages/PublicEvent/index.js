@@ -232,16 +232,6 @@ const PublicEventPage = ({
     </div>
   );
 
-  const displayTransformedEventLocation = (updatedEvent.location || [])
-    .map((location) => {
-      if (location === "online") {
-        return "Online";
-      } else {
-        return "In Person";
-      }
-    })
-    .join("/");
-
   return (
     <div className="public-event-page">
       {showFirewall && (
@@ -412,7 +402,30 @@ const PublicEventPage = ({
             updatedEvent.timezone
           )}
         </h3>
-        <h3 className="event-type">{displayTransformedEventLocation} Event</h3>
+        {updatedEvent.location && (
+          <>
+            <h5 className="event-cost">
+              Event Type:{" "}
+              <span>
+                {updatedEvent.location.map((loc, index) => {
+                  if (loc === "online") {
+                    return (
+                      <>
+                        Online {updatedEvent.location[index + 1] ? "and " : ""}
+                      </>
+                    );
+                  }
+
+                  return (
+                    <>
+                      In Person {updatedEvent.location[index + 1] ? "and " : ""}
+                    </>
+                  );
+                })}
+              </span>
+            </h5>
+          </>
+        )}
         {updatedEvent.ticket && (
           <h5 className="event-cost">
             Event tickets:
@@ -427,7 +440,7 @@ const PublicEventPage = ({
         )}
 
         <div className="event-types-container">
-          <h5>Event Type:</h5>
+          <h5>Content delivery format:</h5>
           {updatedEvent.type &&
             updatedEvent.type.map((tp, index) => (
               <h5 className="event-types-title" key={index}>

@@ -237,16 +237,6 @@ class EventCard extends React.Component {
       userTimezone = userTimezone.split("_").join(" ");
     }
 
-    const displayTransformedEventLocation = (location || [])
-      .map((location) => {
-        if (location === "online") {
-          return "Online";
-        } else {
-          return "In Person";
-        }
-      })
-      .join("/");
-
     return (
       <div
         className={clsx("event-card", className)}
@@ -283,7 +273,28 @@ class EventCard extends React.Component {
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
               <h5>{period}</h5>
-              <h5>{displayTransformedEventLocation} Event</h5>
+
+              {location && (
+                <>
+                  <h5 className="event-cost">
+                    Event Type:{" "}
+                    <span>
+                      {location.map((loc, index) => {
+                        if (loc === "online") {
+                          return (
+                            <>Online {location[index + 1] ? "and " : ""}</>
+                          );
+                        }
+
+                        return (
+                          <>In Person {location[index + 1] ? "and " : ""}</>
+                        );
+                      })}
+                    </span>
+                  </h5>
+                </>
+              )}
+
               {ticket && (
                 <h5 className="event-cost">
                   Event tickets:
@@ -298,7 +309,7 @@ class EventCard extends React.Component {
               )}
 
               <div className="event-topics-container">
-                <h5>Event Type:</h5>
+                <h5>Content delivery format:</h5>
                 {type &&
                   type.map((tp, index) => (
                     <h5 className="event-topic" key={index}>

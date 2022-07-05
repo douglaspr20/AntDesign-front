@@ -250,7 +250,14 @@ const EventsPage = ({
       prev = allEvents.filter((item) => {
         let flag = true;
         flag = dateFilter(flag, params, item);
-        if (new Date(item.startDate) < new Date() || !item.isOverEmailSent) {
+
+        const lastDayOfEvent =
+          item.startAndEndTimes[item.startAndEndTimes.length - 1].endTime;
+
+        if (
+          moment(lastDayOfEvent).utc() < moment.utc() ||
+          !item.users?.includes(userProfile.id)
+        ) {
           flag = false;
         }
         return flag;
@@ -293,8 +300,11 @@ const EventsPage = ({
 
         // return flag;
 
+        const lastDayOfEvent =
+          item.startAndEndTimes[item.startAndEndTimes.length - 1].endTime;
+
         if (
-          moment(item.endDate).utc() > moment.utc() ||
+          moment(lastDayOfEvent).utc() > moment.utc() ||
           !item.users?.includes(userProfile.id)
         ) {
           return null;
