@@ -252,7 +252,7 @@ const EventsPage = ({
         flag = dateFilter(flag, params, item);
 
         const lastDayOfEvent =
-          item.startAndEndTimes[item.startAndEndTimes.length - 1].endTime;
+          item.startAndEndTimes[item.startAndEndTimes.length - 1]?.endTime;
 
         if (
           moment(lastDayOfEvent).utc() < moment.utc() ||
@@ -301,7 +301,7 @@ const EventsPage = ({
         // return flag;
 
         const lastDayOfEvent =
-          item.startAndEndTimes[item.startAndEndTimes.length - 1].endTime;
+          item.startAndEndTimes[item.startAndEndTimes.length - 1]?.endTime;
 
         if (
           moment(lastDayOfEvent).utc() > moment.utc() ||
