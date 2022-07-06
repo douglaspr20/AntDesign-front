@@ -24,9 +24,11 @@ import {
   getMoreMenteeList,
   setMatch,
 } from "redux/actions/mentoring-actions";
-import { EVENT_TYPES, SETTINGS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS, SETTINGS } from "enum";
+import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const Mentoring = ({
   isMentor,
@@ -222,6 +224,16 @@ const Mentoring = ({
 
   return (
     <div className="mentoring-page">
+      <div className="back-link-container">
+        <Link to={INTERNAL_LINKS.COMMUNITIES}>
+          <div className="council-page__content-top">
+            <div className="council-page__content-top-back">
+              <img src={IconBack} alt="icon-back" />
+            </div>
+            <h4>Back to Communities</h4>
+          </div>
+        </Link>
+      </div>
       <div className="mentoring-page-container">
         {!openSetting && (
           <Tabs

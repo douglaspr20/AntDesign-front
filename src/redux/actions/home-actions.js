@@ -40,6 +40,8 @@ const SET_PAGES_SEARCHED_USERS = "SET_PAGES_SEARCHED_USERS";
 const SET_INPUT_USER_SEARCH_VALUE = "SET_INPUT_USER_SEARCH_VALUE";
 const SEND_EMAIL_AUTHORIZATION_SPEAKERS = "SEND_EMAIL_AUTHORIZATION_SPEAKERS";
 const ACTIVE_DENY_AUTHORZATION ="ACTIVE_DENY_AUTHORZATION";
+const UPDATE_RECIVE_COMMUNITY_NOTIFICATION =
+  "UPDATE_RECIVE_COMMUNITY_NOTIFICATION";
 
 export const constants = {
   ACTIVE_DENY_AUTHORZATION,
@@ -80,6 +82,7 @@ export const constants = {
   SET_VISIBLE_PROFILE_USER,
   SET_PAGES_SEARCHED_USERS,
   SET_INPUT_USER_SEARCH_VALUE,
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
 };
 
 // ------------------------------------
@@ -219,6 +222,11 @@ export const setInputSearchValue = createAction(
 
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
+export const updateReciveCommunityNotification = createAction(
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
+  (receiveCommunityNotification) => ({ receiveCommunityNotification })
+);
+
 export const actions = {
   sendEmailAuthorizationSpeakers,
   setLoading,
@@ -255,5 +263,6 @@ export const actions = {
   setUserShow,
   setVisibleProfileUser,
   setPagesSearchedUsers,
-  activeOrDenyAuthorization
+  activeOrDenyAuthorization,
+  updateReciveCommunityNotification,
 };

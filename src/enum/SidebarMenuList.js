@@ -2,7 +2,7 @@ import INTERNAL_LINKS from "./InternalLinks";
 
 import IconHome from "images/icon-home.svg";
 import IconLibrary from "images/icon-library.svg";
-import IconMentoring from "images/icon-mentoring.svg";
+// import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
 // import IconMedal from "images/icon-medal.svg";
 // import IconReader from "images/icon-reader.svg";
@@ -61,11 +61,11 @@ export default {
       icon: IconConferenceVideo,
       url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
-    {
-      label: "Mentoring",
-      icon: IconMentoring,
-      url: INTERNAL_LINKS.MENTORING,
-    },
+    // {
+    //   label: "Communities",
+    //   icon: IconMentoring,
+    //   url: INTERNAL_LINKS.COMMUNITIES,
+    // },
     {
       label: "Events",
       icon: IconCalendar,

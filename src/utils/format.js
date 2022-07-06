@@ -81,8 +81,9 @@ function convertToCertainTime(date, tz) {
 
 function getEventPeriod(date, date2, timezone) {
   let res = "";
-  const startDate = convertToCertainTime(date, timezone);
-  const endDate = convertToCertainTime(date2, timezone);
+  const startDate = moment(date).utc();
+  const endDate = moment(date2).utc();
+
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
   if (tz) {
     if (tz.offset > 0) {
@@ -101,9 +102,7 @@ function getEventPeriod(date, date2, timezone) {
     startDate.month() === endDate.month() &&
     startDate.date() === endDate.date()
   ) {
-    res = `${startDate.format("MMMM DD, yyyy")} - ${endDate.format(
-      "MMMM DD"
-    )} ${tz}`;
+    res = `${startDate.format("MMMM DD, yyyy")} ${tz}`;
   } else {
     res = `${startDate.format("MMMM DD, yyyy")} - ${endDate.format(
       "MMMM DD, yyyy"
@@ -218,6 +217,13 @@ const getNameOfCityWithTimezone = (timezone) => {
   return city;
 };
 
+const capitalizeWord = (word) => {
+  const firstCharacter = word.charAt(0);
+  const transformWord = firstCharacter.toUpperCase() + word.slice(1);
+
+  return transformWord;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -232,5 +238,6 @@ export {
   getValidDescription,
   getPublicationTime,
   transformNames,
+  capitalizeWord,
   getNameOfCityWithTimezone,
 };

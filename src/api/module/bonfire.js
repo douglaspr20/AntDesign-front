@@ -1,7 +1,11 @@
 import httpClient from "./httpClient";
 
-export const getAllBonfires = () => {
-  return httpClient.get(`private/bonfire`);
+export const getAllBonfires = ({ filters }) => {
+  return httpClient.get(`private/bonfire`, {
+    params: {
+      ...filters,
+    },
+  });
 };
 
 export const createBonfire = (data) => {

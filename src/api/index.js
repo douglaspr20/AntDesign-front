@@ -26,6 +26,7 @@ import {
   viewRulesConference,
   countAllUsers,
   searchUser,
+  handleReceiveCommunityNotification,
 } from "./module/user";
 import {
   getAllEvents,
@@ -499,4 +500,5 @@ export {
   deleteBlogPost,
   addBlogPostLike,
   removeBlogPostLike,
+  handleReceiveCommunityNotification,
 };
