@@ -142,7 +142,7 @@ const ButtonsAgenda = ({
                     <Dropdown overlay={downloadDropdownOptions}>
                         <a
                             href="/#"
-                            style={{position:"absolute", width: "100%" , marginTop: "15px" , left: "0px", opacity: "0%", height: "35px"}}
+                            style={{position:"absolute", width: "100%" , top: "0px" , left: "0px", opacity: "0%", height: "35px", zIndex:"1000"}}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
