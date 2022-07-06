@@ -88,7 +88,7 @@ export function* removeUserSpeakerToPanelSaga({ payload }) {
       }
 
       notification.success({
-        message: "User withdraw successflly",
+        message: "Withdrawn successfully",
       });
     }
   } catch (error) {
@@ -124,7 +124,7 @@ export function* addUserSpeakerToSaga({ payload }) {
       }
 
       notification.success({
-        message: "User add successflly",
+        message: "Thank you for joining this panel",
       });
     }
   } catch (error) {

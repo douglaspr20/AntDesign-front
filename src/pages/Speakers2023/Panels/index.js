@@ -47,8 +47,7 @@ const PanelSpeakers = ({
 
     const addUser = (data) => {
       const bulModerator = (data.isModerator === undefined) ? false : data.isModerator
-      const {usersNames} = data.users
-      addUserSpeakerToPanel({usersNames,bul: bulModerator, panel: Panel, type: "addUserAdmin"}, () => {
+      addUserSpeakerToPanel({usersNames: data.users,bul: bulModerator, panel: Panel, type: "addUserAdmin"}, () => {
         setPanel({})
         speakersUserForm.resetFields();
         getAllPanelSpeakers(userProfile.id)
@@ -68,10 +67,13 @@ const PanelSpeakers = ({
       })
     }
 
-    const removeUserFunction = (id) => {
+    const removeUserFunction = (id, user) => {
       removeUserSpeakerToPanel(id, () => {
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
+        if(userProfile.id === user){
+          setRemoveMembersSpeakers(true)
+        }
       })
     }
 
@@ -82,13 +84,6 @@ const PanelSpeakers = ({
       </>
     )
 
-    const remove = (id,user) => {
-      removeUserFunction(id)
-      if(userProfile.id === user){
-        setRemoveMembersSpeakers(true)
-      }
-    }
-
     const dataIterated = (panels) => (
       <div className="ajust-contain">
           { panels?.SpeakerMemberPanels?.map((user) => (
@@ -96,7 +91,7 @@ const PanelSpeakers = ({
                     key={user?.id}
                     usersPanel={user}
                     isAdmin={(userProfile.role === "admin") ? true : false}
-                    remove={remove}
+                    remove={removeUserFunction}
                   />
             ))}
       </div>
@@ -149,17 +144,16 @@ const PanelSpeakers = ({
           >
             <Form.Item
               label="Users"
-              name={["users", "usersNames"]}
+              name="users"
               size="large"
               rules={[{ required: true, message: "Users is necesary" }]}
             >
               <Select 
                   style={{ width: "100%" }} 
                   mode="multiple" 
+                  allowClear
+                  placeholder="Select users"
                   optionFilterProp="children"
-                  filtersort={`${(optionA, optionB) => {
-                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())}
-                  }`}
                 >
                   {allUserSpeaker?.userSpeakers !== undefined ? allUserSpeaker?.userSpeakers.map((users) => (
                     <Option key={users.id} value={JSON.stringify({userId:users.id, userName:users.firstName, userEmail:users.email})}>

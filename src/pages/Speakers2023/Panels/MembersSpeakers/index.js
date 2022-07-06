@@ -26,7 +26,7 @@ const MemberSpeakers = ({
             </Avatar>
           )}
           <p className="p-users">{firstName} {lastName}</p>
-          <p className="p-users" style={{color:"black", fontSize: "12px", fontWeight: "bold"}}>{titleProfessions}{isModerator ? " / Moderador" : ""}</p>
+          <p className="p-users" style={{color:"black", fontSize: "12px", fontWeight: "bold"}}>{titleProfessions}{isModerator ? " / Moderator" : ""}</p>
           {isAdmin &&
             <CustomButton
               className="button-speaker"

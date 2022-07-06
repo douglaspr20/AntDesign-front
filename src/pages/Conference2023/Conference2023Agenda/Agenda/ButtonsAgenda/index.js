@@ -4,6 +4,10 @@ import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector"
 import { actions as speaker } from "redux/actions/speaker-actions";
 import {CustomModal, CustomButton} from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { Dropdown, Menu, Space } from "antd"
+import { DownOutlined } from "@ant-design/icons";
+import { convertToLocalTime } from "utils/format";
+import moment from "moment";
 
 import "./style.scss";
 
@@ -13,7 +17,7 @@ const ButtonsAgenda = ({
     panels
 }) => {
 
-    const {usersAddedToThisAgenda, id} = panels
+    const {usersAddedToThisAgenda, id, panelName, description, startTime, endTime, timezone} = panels
 
     const [idToAddedToMyPersonalAgenda,setIdToAddedToMyPersonalAgenda ] = useState(-1)
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
@@ -32,6 +36,69 @@ const ButtonsAgenda = ({
     const functionRemoveToMyAgenda = (data) => {
         addedToPersonalAgenda(data)
     }
+
+    const downloadDropdownOptions = () => (
+        <Menu style={{ position: "relative", bottom: "70px" }}>
+          <Menu.Item key="1">
+            <a href="/#" onClick={(e) => onClickDownloadCalendar(e)}>
+              Download ICS File
+            </a>
+          </Menu.Item>
+          <Menu.Item key="2">
+            <a href="/#" onClick={(e) => onClickAddGoogleCalendar(e)}>
+              Add to Google Calendar
+            </a>
+          </Menu.Item>
+          <Menu.Item key="3">
+            <a href="/#" onClick={(e) => onClickAddYahooCalendar(e)}>
+              Add to Yahoo Calendar
+            </a>
+          </Menu.Item>
+        </Menu>
+    );
+
+    const convertedStartTime = convertToLocalTime(
+        startTime,
+        timezone
+    ).format("YYYYMMDDTHHmmss");
+    
+    const convertedEndTime = convertToLocalTime(
+        endTime,
+        timezone
+    ).format("YYYYMMDDTHHmmss");
+    
+    const userTimezone = moment.tz.guess();
+
+    const onClickDownloadCalendar = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(
+          `${process.env.REACT_APP_API_ENDPOINT}/public/speakers/ics/${id}?userTimezone=${userTimezone}`,
+          "_blank"
+        );
+    };
+
+    const onClickAddGoogleCalendar = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
+            panelName
+        )}&dates=${convertedStartTime}/${convertedEndTime}&details=${encodeURIComponent(
+            description
+        )}&location=https://www.hackinghrlab.io/global-conference&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+        window.open(googleCalendarUrl, "_blank");
+    };
+
+    const onClickAddYahooCalendar = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTime}&et=${convertedEndTime}&title=${encodeURIComponent(
+            panelName
+        )}&desc=${encodeURIComponent(
+            description
+        )}&in_loc=https://www.hackinghrlab.io/global-conference`;
+        window.open(yahooCalendarUrl, "_blank");
+    };
 
     useEffect(() => {
         if(userProfile.id !== undefined){
@@ -64,13 +131,29 @@ const ButtonsAgenda = ({
                 }}
             /> 
             {bulAddedToMyAgenda &&
-                <CustomButton
-                    className="button-speaker"
-                    text={`DOWNLOAD CALENDAR REMINDER`}
-                    size="md"
-                    type="primary"
-                    onClick={() => {}}
-                /> 
+                <div style={{position: 'relative'}}>
+                    <CustomButton
+                        className="button-speaker"
+                        text={`DOWNLOAD CALENDAR REMINDER`}
+                        size="md"
+                        type="primary"
+                        onClick={(e) => {e.preventDefault()}}
+                    /> 
+                    <Dropdown overlay={downloadDropdownOptions}>
+                        <a
+                            href="/#"
+                            style={{position:"absolute", width: "100%" , marginTop: "15px" , left: "0px", opacity: "0%", height: "35px"}}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }}
+                        >
+                            <Space>
+                                <DownOutlined />
+                            </Space>
+                        </a>
+                    </Dropdown>
+                </div>
             }
             <CustomModal
                 title="Are you sure?"

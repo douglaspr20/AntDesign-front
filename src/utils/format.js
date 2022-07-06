@@ -128,10 +128,24 @@ function convertToUTCTime(date, tz) {
   return res;
 }
 
-function convertToLocalTime(date) {
+function convertToLocalTime(date, timezone) {
+  let currentTimezone = TIMEZONE_LIST.find((item) => item.value === timezone);
+
+  if (currentTimezone) {
+    currentTimezone = currentTimezone.utc[0];
+  } else {
+    currentTimezone = timezone;
+  }
+
+  const dateFormatUtc = moment(date).utc().format("YYYY-MM-DD HH:mm");
+
   const localTimezone = moment.tz.guess();
 
-  return moment.utc(date).tz(localTimezone).local();
+  const dateWithCurrentTimezone = moment.tz(dateFormatUtc, currentTimezone);
+
+  const dateWithLocalTimezone = dateWithCurrentTimezone.clone().tz(localTimezone);
+
+  return dateWithLocalTimezone;
 }
 
 const convertBlobToBase64 = (blob) => {
@@ -186,6 +200,24 @@ const transformNames = (name) => {
   return name;
 };
 
+const getNameOfCityWithTimezone = (timezone) => {
+  let indexSlice = timezone.indexOf("/");
+
+  let city = timezone.slice(indexSlice + 1);
+
+  while (indexSlice !== -1) {
+    indexSlice = city.indexOf("/");
+
+    city = city.slice(indexSlice + 1);
+  }
+
+  if (city.includes("_")) {
+    city = city.split("_").join(" ");
+  }
+
+  return city;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -200,4 +232,5 @@ export {
   getValidDescription,
   getPublicationTime,
   transformNames,
+  getNameOfCityWithTimezone,
 };
