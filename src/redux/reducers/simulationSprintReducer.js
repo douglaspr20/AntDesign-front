@@ -8,16 +8,25 @@ export const reducers = {
     state,
     { payload }
   ) => {
-    return state.merge({ ...payload });
+    return state.merge({ allSimulationSprints: payload.allSimulationSprints });
   },
   [simulationSprintsConstants.SET_SIMULATION_SPRINT]: (state, { payload }) => {
     return state.merge({ ...payload });
+  },
+  [simulationSprintsConstants.SET_ALL_MY_SIMULATION_SPRINTS]: (
+    state,
+    { payload }
+  ) => {
+    return state.merge({
+      mySimulationsSprints: payload.simulationSprintOfUser,
+    });
   },
 };
 
 export const initialState = () => {
   return Map({
     allSimulationSprints: [],
+    mySimulationsSprints: [],
     simulationSprint: {},
   });
 };

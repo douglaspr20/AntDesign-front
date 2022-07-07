@@ -277,6 +277,7 @@ import {
 import {
   getAllSimulationSprints,
   getSimulationSprint,
+  getAllSimulationSprintOfUser,
 } from "./module/simulationSprints";
 
 import { createSimulationSprintParticipant } from "./module/simulationSprintParticipant";
@@ -486,4 +487,5 @@ export {
   getAllSimulationSprints,
   getSimulationSprint,
   createSimulationSprintParticipant,
+  getAllSimulationSprintOfUser,
 };

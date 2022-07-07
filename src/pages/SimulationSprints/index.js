@@ -7,6 +7,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import { INTERNAL_LINKS } from "enum";
 import GeneralInformation from "./GeneralInformation";
 import UpcomingSprints from "./UpcomingSprints";
+import MySprints from "./MySprints";
 
 import "./style.scss";
 
@@ -68,7 +69,7 @@ const SimulationSprintsPage = ({ userProfile }) => {
         ) : selectedKeys === "upcoming-sprints" ? (
           <UpcomingSprints />
         ) : (
-          <></>
+          <MySprints />
         )}
       </div>
     </div>

@@ -6,7 +6,11 @@ import {
 } from "../actions/simulationSprint-actions";
 import { actions as homeActions } from "../actions/home-actions";
 
-import { getAllSimulationSprints, getSimulationSprint } from "../../api";
+import {
+  getAllSimulationSprints,
+  getSimulationSprint,
+  getAllSimulationSprintOfUser,
+} from "../../api";
 
 export function* getAllSimulationSprintsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
@@ -54,6 +58,24 @@ export function* getSimulationSprintsSaga({ payload }) {
   }
 }
 
+export function* getAllMySimulationSprintsSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+  try {
+    const response = yield call(getAllSimulationSprintOfUser, { ...payload });
+    if (response.status === 200) {
+      yield put(
+        simulationSprintsActions.setAllMySimulationSprints(
+          response.data.simulationSprintofUser
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchSimulationSprints() {
   yield takeLatest(
     simulationSprintsConstants.GET_ALL_SIMULATION_SPRINTS,
@@ -63,6 +85,11 @@ function* watchSimulationSprints() {
   yield takeLatest(
     simulationSprintsConstants.GET_SIMULATION_SPRINT,
     getSimulationSprintsSaga
+  );
+
+  yield takeLatest(
+    simulationSprintsConstants.GET_ALL_MY_SIMULATION_SPRINTS,
+    getAllMySimulationSprintsSaga
   );
 }
 

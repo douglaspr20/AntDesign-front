@@ -8,6 +8,7 @@ const resultSelector = createSelector(
     return {
       allSimulationSprints: payload.get("allSimulationSprints"),
       simulationSprint: payload.get("simulationSprint"),
+      mySimulationsSprints: payload.get("mySimulationsSprints"),
     };
   }
 );

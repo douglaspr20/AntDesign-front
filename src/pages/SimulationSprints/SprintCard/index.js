@@ -11,6 +11,30 @@ const HARDCODED_COVER_PLACEHOLDER =
 const SprintCard = ({ sprint }) => {
   const history = useHistory();
 
+  let displayBtn;
+
+  if (
+    sprint.userParticipated &&
+    moment.utc().isAfter(sprint.startDate) &&
+    moment.utc().isBefore(sprint.endDate)
+  ) {
+    displayBtn = "Enter Dashboard";
+  } else if (sprint.userParticipated && moment.utc().isAfter(sprint.endDate)) {
+    displayBtn = "Completed";
+  } else {
+    displayBtn = "More";
+  }
+
+  const handleClick = () => {
+    if (sprint.userParticipated && moment.utc().isAfter(sprint.startDate)) {
+      history.push(
+        `${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}/resources?key=1`
+      );
+    } else {
+      history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}`);
+    }
+  };
+
   return (
     <div className="sprint-card">
       <div className="sprint-card-header">
@@ -37,13 +61,19 @@ const SprintCard = ({ sprint }) => {
         </h5>
         <div className="sprint-card-join-btn">
           <CustomButton
-            text="More"
-            onClick={() =>
-              history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}`)
+            text={displayBtn}
+            onClick={handleClick}
+            type={
+              sprint.userParticipated &&
+              moment().isAfter(moment(sprint.endDate))
+                ? "secondary"
+                : "primary"
             }
-            type="primary"
             size="md"
             block={true}
+            disabled={
+              moment.utc().isAfter(sprint.startDate) && !sprint.userParticipated
+            }
           />
         </div>
       </div>
