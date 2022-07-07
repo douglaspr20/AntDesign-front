@@ -24,7 +24,7 @@ export function* createSimulationSprintParticipantSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(authActions.logout());
     } else if (payload.callback) {
-      payload.callback(error.message || error.response.msg);
+      payload.callback(error.response.data.msg || error.message);
     }
   } finally {
     yield put(homeActions.setLoading(false));

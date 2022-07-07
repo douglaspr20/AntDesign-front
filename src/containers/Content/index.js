@@ -72,6 +72,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import SimulationSprintResourcePage from "pages/SimulationSprintResource";
 
 class Content extends Component {
   componentDidMount() {
@@ -441,6 +442,12 @@ class Content extends Component {
             exact
             path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
             render={(props) => <SimulationSprintPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/resources`}
+            render={(props) => <SimulationSprintResourcePage {...props} />}
           />
           <Route
             exact

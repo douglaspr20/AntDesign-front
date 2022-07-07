@@ -38,6 +38,8 @@ const SimulationSprint = ({
     .tz("America/Los_Angeles")
     .utcOffset(-7, true);
 
+  const currentTime = moment().tz("America/Los_Angeles").utcOffset(-7, true);
+
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -84,6 +86,63 @@ const SimulationSprint = ({
     }`;
 
     window.open(yahooCalendarUrl, "_blank");
+  };
+
+  let displayBtn;
+  let disabled = false;
+  let typeButton = "primary";
+
+  if (convertedEndTime.isBefore(currentTime)) {
+    displayBtn = "This simulation ended";
+    disabled = true;
+  } else if (
+    convertedStartTime.isBefore(currentTime) &&
+    !simulationSprint.SimulationSprintParticipants?.some(
+      (participant) => participant.UserId === userProfile.id
+    )
+  ) {
+    displayBtn = "This simulation has already started";
+    disabled = true;
+  } else if (
+    convertedStartTime.isBefore(currentTime) &&
+    simulationSprint.SimulationSprintParticipants?.some(
+      (participant) => participant.UserId === userProfile.id
+    )
+  ) {
+    displayBtn = "Enter the Dashboard";
+    typeButton = "secondary";
+  } else if (
+    convertedStartTime.isAfter(currentTime) &&
+    !simulationSprint.SimulationSprintParticipants?.some(
+      (participant) => participant.UserId === userProfile.id
+    )
+  ) {
+    displayBtn = "Join";
+  } else if (
+    convertedStartTime.isAfter(currentTime) &&
+    simulationSprint.SimulationSprintParticipants?.some(
+      (participant) => participant.UserId === userProfile.id
+    )
+  ) {
+    const duration = moment.duration(convertedStartTime.diff(currentTime));
+    const days = Math.floor(duration.asDays().toFixed(2));
+    const hours = Math.floor(duration.asHours().toFixed(2));
+    const minutes = duration.minutes().toFixed(2);
+    displayBtn = `This simulation will start in ${
+      days >= 1
+        ? `${days} days`
+        : hours >= 1
+        ? `${hours} hours`
+        : `${minutes} minutes`
+    }`;
+    disabled = true;
+  }
+
+  const handleClick = () => {
+    if (typeButton === "primary") {
+      return setConfirmJoinModal(true);
+    }
+    history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${id}/resources`);
   };
 
   const downloadDropdownOptions = () => (
@@ -175,22 +234,13 @@ const SimulationSprint = ({
           </div>
         </div>
         <div className="sprints-btn">
-          {simulationSprint?.SimulationSprintParticipants.some(
-            (participant) => participant.UserId === userProfile.id
-          ) ? (
-            <CustomButton
-              text="You have already joined this Simulation Sprint"
-              htmlType="button"
-              onClick={() => setConfirmJoinModal(true)}
-              disabled={true}
-            />
-          ) : (
-            <CustomButton
-              text="Join"
-              htmlType="button"
-              onClick={() => setConfirmJoinModal(true)}
-            />
-          )}
+          <CustomButton
+            text={displayBtn}
+            type={typeButton}
+            htmlType="button"
+            onClick={handleClick}
+            disabled={disabled}
+          />
         </div>
       </div>
       <div className="sprints-detail-page-body">

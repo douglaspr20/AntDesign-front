@@ -1,22 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { getCheckoutSession } from "api/module/stripe";
 import Emitter from "services/emitter";
 import { EVENT_TYPES } from "enum";
 import PricesCard from "../PricesCard";
+import { STRIPE_PRICES } from "enum";
+import { Alert } from "antd";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
 const GeneralInformation = ({ userProfile }) => {
+  const [loading, setLoading] = useState(false);
   const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
     useState(false);
+  const [stripe, setStripe] = useState(null);
+  const [checkoutSessionError, setCheckoutSessionError] = useState(false);
+  const [checkoutSessionErrorMsg, setCheckoutSessionErrorMsg] = useState("");
 
-  const handleBuySimulation = () => {
+  useEffect(() => {
+    instanceStripe();
+  }, []);
+
+  const instanceStripe = async () => {
+    setStripe(await stripePromise);
+  };
+
+  const handleBuySimulation = async (simulations = "0") => {
+    setLoading(true);
     if (!userProfile.completed || userProfile.percentOfCompletion < 100) {
       return setShowProfileCompletionFirewall(true);
+    }
+
+    const prices = STRIPE_PRICES.SIMULATION_SPRINT_PRICES.find(
+      (p) => p.simulations === simulations
+    );
+
+    try {
+      let sessionData = await getCheckoutSession({
+        isBuyingSimulations: true,
+        simulations,
+        prices: [prices.priceId],
+        callback_url: `${process.env.REACT_APP_DOMAIN_URL}/simulation-sprints`,
+      });
+      return stripe.redirectToCheckout({ sessionId: sessionData.data.id });
+    } catch (err) {
+      setLoading(false);
+      setCheckoutSessionError(true);
+      setCheckoutSessionErrorMsg(err.response.data.msg);
     }
   };
 
   const completeProfile = () => {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+
+  const prices = (number) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "USD",
+      currencyDisplay: "narrowSymbol",
+    }).format(number);
   };
 
   return (
@@ -94,20 +139,23 @@ const GeneralInformation = ({ userProfile }) => {
         <PricesCard
           title="One Simulation"
           description="Lorem ipsum"
-          prices="29.99"
-          handleBuySimulation={handleBuySimulation}
+          prices={prices(700)}
+          handleBuySimulation={() => handleBuySimulation("1")}
+          loading={loading}
         />
         <PricesCard
-          title="Five Simulation"
+          title="Four Simulations"
           description="Lorem ipsum"
-          prices="69.99"
-          handleBuySimulation={handleBuySimulation}
+          prices={prices(2500)}
+          handleBuySimulation={() => handleBuySimulation("4")}
+          loading={loading}
         />
         <PricesCard
-          title="Eight Simulation"
+          title="Eight Simulations"
           description="Lorem ipsum"
-          prices="79.99"
-          handleBuySimulation={handleBuySimulation}
+          prices={prices(4000)}
+          handleBuySimulation={() => handleBuySimulation("8")}
+          loading={loading}
         />
       </div>
 
@@ -123,6 +171,15 @@ const GeneralInformation = ({ userProfile }) => {
             </h3>
           </div>
         </div>
+      )}
+
+      {checkoutSessionError && (
+        <Alert
+          message="Error"
+          description={checkoutSessionErrorMsg}
+          type="error"
+          showIcon
+        />
       )}
     </>
   );
