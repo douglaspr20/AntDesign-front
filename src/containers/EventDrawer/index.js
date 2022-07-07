@@ -329,9 +329,13 @@ const EventDrawer = ({
           </div>
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
-            <div className="d-flex items-center">
+            <h5 className="event-card-topic-title">
+              {`Event date${event.startDate !== event.endDate ? "s" : ""}:`}
+              <span>{event.period}</span>
+            </h5>
+            {/* <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
-            </div>
+            </div> */}
             {event.status === "going" && (
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
@@ -377,7 +381,7 @@ const EventDrawer = ({
           </div>
           {event.location && (
             <>
-              <h5 className="event-cost">
+              <h5 className="event-card-topic-title">
                 Event Type:{" "}
                 <span>
                   {event.location.map((loc, index) => {
@@ -396,7 +400,7 @@ const EventDrawer = ({
             </>
           )}
           {event.ticket && (
-            <h5 className="event-cost">
+            <h5 className="event-card-topic-title">
               Event tickets:
               <span>
                 {event.ticket === "fee"
@@ -408,15 +412,27 @@ const EventDrawer = ({
             </h5>
           )}
 
-          <div className="event-topics-container">
-            <h5>Content delivery format:</h5>
-            {event.type &&
-              event.type.map((tp, index) => (
-                <h5 className="event-topic" key={index}>
+          {event.type && (
+            <h5 className="event-card-topic-title">
+              Content delivery format:
+              {event.type.map((tp, index) => (
+                <span>
                   {capitalizeWord(tp)} {event.type[index + 1] && `|`}
-                </h5>
+                </span>
               ))}
-          </div>
+            </h5>
+          )}
+
+          {event.categories && event.categories.length > 0 && (
+            <h5 className="event-card-topic-title">
+              Event topics:
+              {event.categories.map((tp, index) => (
+                <span>
+                  {capitalizeWord(tp)} {event.categories[index + 1] && `|`}
+                </span>
+              ))}
+            </h5>
+          )}
         </div>
 
         {event.description && (
@@ -437,7 +453,7 @@ const EventDrawer = ({
 
         {event.EventInstructors?.length > 0 && (
           <div className="event-details-instructors">
-            <h1 className="event-title">SPEAKERS</h1>
+            <h1 className="event-title">Speakers</h1>
             <div className="event-people">
               {event.EventInstructors.map((eventInstructor) => {
                 const instructor = eventInstructor.Instructor;
