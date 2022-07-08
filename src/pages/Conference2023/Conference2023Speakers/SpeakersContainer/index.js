@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { actions as speaker } from "redux/actions/speaker-actions";
-import { Avatar } from "antd";
 import moment from "moment";
+import { Avatar } from "antd";
 
 import IconPlus from "images/icon-plus.svg";
 
@@ -13,7 +13,9 @@ const ModalCompleteProfile = ({
     allUserSpeaker,
     getAllUserSpeaker,
     getAllPanelsOfOneUser,
-    allPanelsOfOneUser
+    allPanelsOfOneUser,
+    maxLength,
+    type
 }) => {
 
     const [windowPopUpForSpeaker, setWindowPopUpForSpeaker] = useState(false)
@@ -34,7 +36,49 @@ const ModalCompleteProfile = ({
     return (
         <>
             <div className="container-speakers">
-                {allUserSpeaker?.userSpeakers?.map((user) => (
+                {allUserSpeaker?.userSpeakers?.map((user, index) => {
+                
+                if(maxLength !== undefined){
+                    if(maxLength < index+1){
+                        return (<></>)
+                    }
+                }
+
+                let userImg;
+
+                if(type === "speakers"){
+                    if(user?.img){
+                        userImg = (
+                            <div className="container-img-people">
+                                <img className="img-people" src={user.img} alt="img-people"/>
+                            </div>
+                        ) 
+                    }else{
+                        userImg = (
+                            <div>
+                                {user?.abbrName}
+                            </div>
+                        )
+                    }
+                }else{
+                    if(user?.img){
+                        userImg = (
+                            <div className="container-avatar">
+                                <Avatar src={user.img} style={{position: "absolute", background: "rgba(255, 255, 255, 0.15)", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}} />
+                            </div>
+                        ) 
+                     }else{
+                         userImg = (
+                            <div className="container-avatar">
+                                <Avatar style={{fontSize:"40px", position: "absolute", background: "rgba(255, 255, 255, 0.15)",  width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}> 
+                                    {user?.abbrName}
+                                </Avatar>
+                            </div>
+                         )
+                     }
+                }
+
+                return (
                     <div 
                         className="container-users" 
                         key={user?.id} 
@@ -43,17 +87,19 @@ const ModalCompleteProfile = ({
                             setSpeakerSelect({name: user?.firstName,lastName:user?.lastName, link: user?.personalLinks?.contact, biografia: user?.biografia})
                         }}
                     >
-                        {user?.img ? (
-                            <Avatar size={200} src={user?.img} />
-                            ) : (
-                            <Avatar size={200} style={{ fontSize: "2rem" }}>
-                                {user?.abbrName}
-                            </Avatar>
-                        )}
-                        <p className="p-users">{user?.firstName} {user?.lastName}</p>
-                        <p className="p-users" style={{color:"black", fontSize: "12px", fontWeight: "bold"}}>{user?.titleProfessions}</p>
+                        <div className="container-text">
+                            <p className="p-users-speakers">Speaker</p>
+                            <p className="p-users-name">{user?.firstName} {user?.lastName}</p>
+                            <p className="p-users-profession">{user?.titleProfessions}</p>
+                            <p className="p-users-biografi">with learning, community and collaboration. We are a community of business and HR leaders</p>
+                        </div>
+                        <div className="container-picture" style={(type === "speakers") ? {background: "#3e4960", overflow: "hidden"} : {background: "none", overflow: "visible"}}>
+                            {userImg}
+                        </div>
                     </div>
-                ))}
+                )
+
+                })}
             </div>
             {windowPopUpForSpeaker && 
                 <div className="window-user">

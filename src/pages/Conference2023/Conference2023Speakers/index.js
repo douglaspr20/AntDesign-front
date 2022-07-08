@@ -9,10 +9,12 @@ const Conference2023Speakers = () => {
 
   return (
     <>
-      <div className="container-conference">
-        <div className="containers-speakers" id="speakers">
-          <h1 className="title-containers">SPEAKERS</h1>  
-          <SpeakersContainer/>
+      <div className="container-conference" style={{ marginTop: "90px"}}>
+        <div className="contenedor-title-speakers">
+          <p className="title-containers">{"Special Guests & Speakers"}</p> 
+        </div>
+        <div className="containers-speakers" id="speakers"> 
+          <SpeakersContainer type={"speakers"}/>
         </div>
       </div>
     </>

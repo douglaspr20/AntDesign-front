@@ -34,11 +34,6 @@ const PublicHeader = ({
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />
         </div>
-        {(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) &&
-          <div className="back-boton">
-            <p>Back to hackinghrlab</p>
-          </div>
-        }
       </Link>
       {/* {PUBLIC_HEADER_MENUS.map((menu, index) => (
         <Link key={index} to={menu.url}>

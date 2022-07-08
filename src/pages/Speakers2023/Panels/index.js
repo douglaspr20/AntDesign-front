@@ -12,6 +12,8 @@ import {
   Switch
 } from "antd";
 
+import moment from "moment";
+
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -78,10 +80,23 @@ const PanelSpeakers = ({
     }
 
     const content = (panels) => (
-      <>
-        <p className="container-panel-speaker-parraf" style={{fontSize: "16px"}}>Title: <span className="not-bold">{panels.panelName}</span></p>
-        <p className="container-panel-speaker-parraf">Description: <span className="not-bold">{panels.description}</span></p>
-      </>
+      <div className="content-collapse" key={panels.id}>
+          <p className="title-collapse">{panels.panelName}</p>
+          <div className="content-information">
+              <div className="content-first-information">
+                  <p className="p-content">Start Time: 
+                      <span className="date"> {moment(panels.startDate).format("MM-DD-YYYY hh:mm a")}</span>
+                  </p>
+                  <p className="p-content">End Time: 
+                      <span className="date"> {moment(panels.endDate).format("MM-DD-YYYY hh:mm a")}</span>
+                  </p>
+              </div>
+              <div className="content-second-information">
+                  <p className="p-location">Location:</p> 
+                  <p className="p-location-data">{panels.timeZone}</p>
+              </div>
+          </div>
+      </div>
     )
 
     const dataIterated = (panels) => (
@@ -99,27 +114,29 @@ const PanelSpeakers = ({
 
     return (
       <>
-        {allPanelSpeakers?.panelsSpeakers?.map((panels) => ( 
-          <CollapseComponent 
-            key={panels?.id}
-            informationCollapse={content(panels)}
-            className={"container-panel-speaker"}
-            dataIterated={dataIterated(panels)}
-            buttons={
-              <ButtonsSpeakers 
-                panels={panels} 
-                removeUserFunction={removeUserFunction}
-                joinUser={joinUser}
-                setPanel={setPanel}
-                setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                role={userProfile.role}
-                setOpenSearchUser={setOpenSearchUser}
-                setRemoveMembersSpeakers={setRemoveMembersSpeakers}
-                removeMembersSpeakers={removeMembersSpeakers}
-              />
-            }
-          />
-        ))}
+        <div className="container-collapse">
+          {allPanelSpeakers?.panelsSpeakers?.map((panels) => ( 
+            <CollapseComponent 
+              key={panels?.id}
+              informationCollapse={content(panels)}
+              className={"container-panel"}
+              dataIterated={dataIterated(panels)}
+              buttons={
+                <ButtonsSpeakers 
+                  panels={panels} 
+                  removeUserFunction={removeUserFunction}
+                  joinUser={joinUser}
+                  setPanel={setPanel}
+                  setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                  role={userProfile.role}
+                  setOpenSearchUser={setOpenSearchUser}
+                  setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                  removeMembersSpeakers={removeMembersSpeakers}
+                />
+              }
+            />
+          ))}
+        </div>
         <Modal
           visible={openSearchUser}
           title="Searh a speaker."

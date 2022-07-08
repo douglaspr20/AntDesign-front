@@ -112,12 +112,10 @@ const ButtonsAgenda = ({
     
     return (
         <>
-            <CustomButton
-                className="button-speaker"
-                text={bulAddedToMyAgenda ? "ADDED TO MY PERSONAL AGENDA" : "ADD TO MY PERSONAL AGENDA"}
-                size="md"
-                type={bulAddedToMyAgenda ? "secondary" : "primary"}
-                onClick={() => {
+            <button
+                className={bulAddedToMyAgenda ? "button-added" : "button-add"}
+                onClick={(e) => {
+                    e.preventDefault()
                     if(bulAddedToMyAgenda){
                         functionRemoveToMyAgenda({
                             PanelId: id,
@@ -129,20 +127,22 @@ const ButtonsAgenda = ({
                         setIdToAddedToMyPersonalAgenda(id) 
                     }
                 }}
-            /> 
+            >
+                {bulAddedToMyAgenda ? `ADDED TO MY PERSONAL AGENDA` : `ADD TO MY PERSONAL AGENDA`}
+            </button>
             {bulAddedToMyAgenda &&
                 <div style={{position: 'relative'}}>
-                    <CustomButton
-                        className="button-speaker"
-                        text={`DOWNLOAD CALENDAR REMINDER`}
-                        size="md"
-                        type="primary"
+                    <button
+                        className="button-add"
+                        style={{marginTop:'10px'}}
                         onClick={(e) => {e.preventDefault()}}
-                    /> 
+                    >
+                        DOWNLOAD CALENDAR REMINDER
+                    </button>
                     <Dropdown overlay={downloadDropdownOptions}>
                         <a
                             href="/#"
-                            style={{position:"absolute", width: "100%" , top: "0px" , left: "0px", opacity: "0%", height: "35px", zIndex:"1000"}}
+                            style={{position:"absolute", width: "100%" , top: "10px" , left: "0px", opacity: "0%", height: "35px", zIndex:"1000"}}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();

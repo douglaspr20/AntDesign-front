@@ -1,5 +1,87 @@
 @import "../../../styles/main.scss";
 
+.container-collapse{
+    position: relative;
+    left: 40px;
+    width: calc(100% - 40px);
+    height: auto;
+
+    .content-collapse{
+        .title-collapse{
+            color: #404040;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 42px;
+            margin: 0px;
+            margin-bottom: 15px;
+        }
+
+        .content-information{
+            display: flex;
+            width: auto;
+            height: auto;
+            flex-direction: row;
+
+            .content-first-information{
+                width: 265px;
+                position: relative;
+                margin-bottom: 25px;
+                border-right: 2px solid rgba(254, 86, 33, 0.29);
+                height: 57px;
+    
+                .p-content{
+                    font-style: normal;
+                    font-weight: 450;
+                    font-size: 16px;
+                    line-height: 26px;
+                    color: #999999;
+                    margin: 0px;
+                    margin-bottom: 5px;
+    
+                    .date{
+                        position: absolute;
+                        right: 25px;
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: 26px;
+                        color: #404040;
+                    }
+                } 
+            }
+    
+            .content-second-information {
+                width: 220px;
+                height: 57px;
+                display: flex;
+                flex-direction: column;
+                padding-left: 25px;
+
+                .p-location{
+                    margin: 0px;
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 15px;
+                    color: #404040;
+                    margin-bottom: 5px;
+                }
+
+                .p-location-data{
+                    margin: 0px;
+                    font-weight: 600;
+                    font-size: 19px;
+                    line-height: 31px;
+                    color: #404040;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}
+
 .container-modal-complete-profile {
     width:100%;
     left: 0px;

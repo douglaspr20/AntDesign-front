@@ -36,7 +36,7 @@ export function* getPanelSpeakerSaga({ payload }) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -65,7 +65,7 @@ export function* getAllUserSpeakerSaga({payload}) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -94,7 +94,7 @@ export function* removeUserSpeakerToPanelSaga({ payload }) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -130,7 +130,7 @@ export function* addUserSpeakerToSaga({ payload }) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -151,7 +151,7 @@ export function* registerUserIfNotAreRegisterConference2023({payload}) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -183,7 +183,7 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -209,7 +209,7 @@ export function* addedToPersonalAgendaSagas({payload}) {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {
@@ -234,7 +234,7 @@ export function* getAllSponsors2023Sagas() {
   } catch (error) {
     console.log(error)
       notification.error({
-        message: "there are a error",
+        message: "ERROR:",
         description: error?.response?.data?.msg,
       });
   } finally {

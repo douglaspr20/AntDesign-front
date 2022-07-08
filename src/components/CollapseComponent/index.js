@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { CustomButton} from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
+import Arrow from "../../images/arrow-conference.svg"
 
 import "./style.scss";
 
@@ -31,18 +31,15 @@ const CollapseComponent = ({
     return (
       <>
         <div className={className} key={index}>
+            <img className="arrow" src={Arrow} alt="arrow"/>
+            <div className="detail-border"></div>
             {informationCollapse}
-            <div style={{width:"100%", height:"50px"}}></div>
             <div className="container-button">
                 {buttons} 
-                <CustomButton
-                    className="button-speaker"
-                    text={`${visibleConfirmApply ? "Less" : "More" } information`}
-                    size="md"
-                    type="information"
-                    onClick={() => {collapseFunction()}}
-                /> 
             </div>
+            <p className="button-more-information" onClick={() => {collapseFunction()}}>
+                {`${visibleConfirmApply ? "Less" : "More" } information`}
+            </p>
             <div 
                 className={`${visibleConfirmApply ? "collapseContaintTrue" : "collapseContaintFalse"}`} 
                 ref={memberRef}

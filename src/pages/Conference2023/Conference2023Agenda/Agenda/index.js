@@ -12,6 +12,7 @@ import "./style.scss";
 const ModalCompleteProfile = ({
     allPanelSpeakers,
     getAllPanelSpeakers,
+    maxLength
 }) => {
 
     let titlesDateReady
@@ -22,21 +23,35 @@ const ModalCompleteProfile = ({
     }, [getAllPanelSpeakers])
 
     const content = (panels) => (
-        <div className="container-sessions-speakers" key={panels.id}>
-            <h3>{panels.panelName}</h3>
-            <p>- {moment(panels.startDate).format("MM-DD-YYYY hh:mm a")}</p>
-            <p>- {moment(panels.endDate).format("MM-DD-YYYY hh:mm a")}</p>
+        <div className="content-collapse" key={panels.id}>
+            <p className="title-collapse">{panels.panelName}</p>
+            <div className="content-information">
+                <div className="content-first-information">
+                    <p className="p-content">Start Time: 
+                        <span className="date"> {moment(panels.startDate).format("MM-DD-YYYY hh:mm a")}</span>
+                    </p>
+                    <p className="p-content">End Time: 
+                        <span className="date"> {moment(panels.endDate).format("MM-DD-YYYY hh:mm a")}</span>
+                    </p>
+                </div>
+                <div className="content-second-information">
+                    <p className="p-location">Location:</p> 
+                    <p className="p-location-data">{panels.timeZone}</p>
+                </div>
+            </div>
         </div>
     )
 
     const dataIterated = (panels) => (
         <div className="ajust-contain">
-            { panels?.SpeakerMemberPanels?.map((user) => (
-                <MemberSpeakers 
-                key={user?.id}
-                usersPanel={user}
-                />
-            ))}
+            { panels?.SpeakerMemberPanels?.map((user) => {
+                return (
+                    <MemberSpeakers 
+                        key={user?.id}
+                        usersPanel={user}
+                    />
+                )    
+            })}
         </div>
     )
 
@@ -46,7 +61,13 @@ const ModalCompleteProfile = ({
         </p>
     )
 
-    const panelsAgenda = allPanelSpeakers?.panelsSpeakers?.map((panels) => {
+    const panelsAgenda = allPanelSpeakers?.panelsSpeakers?.map((panels, index) => {
+
+        if(maxLength !== undefined){
+            if(maxLength < index+1){
+                return (<></>)
+            }
+        }
 
         if((titlesDateReady !== moment(panels.startDate).format("dddd, MMMM Do"))){
             bul = true
@@ -66,7 +87,7 @@ const ModalCompleteProfile = ({
                     index={panels?.id}
                     informationCollapse={content(panels)}
                     buttons={<ButtonsAgenda panels={panels} />}
-                    className={"container-panel-conference"}
+                    className={"container-panel"}
                     dataIterated={dataIterated(panels)} 
                     dataStatic={dataStatic(panels)}
                 />

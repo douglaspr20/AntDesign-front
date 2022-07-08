@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import PropTypes from "prop-types";
-import { CustomButton } from "components";
 
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
 import { actions as speaker } from "redux/actions/speaker-actions";
 import { getUser } from "redux/actions/home-actions";
+
+import "./style.scss";
 
 const ButtonsSpeakers = ({
     role,
@@ -71,29 +72,27 @@ const ButtonsSpeakers = ({
 
     return (
       <>
-        <CustomButton
-            className="button-speaker"
-            text={(withdraw) ? "Withdraw" : "Join"}
-            size="md"
-            type={(withdraw) ? "third" : "secondary"}
-            onClick={() => takeActionWithdrawOrJoinUser()}
-        />  
-        {(role === "admin") && 
-            <CustomButton
-                className="button-speaker"
-                text="Add user"
-                size="md"
-                type="primary"
-                onClick={() => {
+        <button
+          className={(withdraw) ? "button-withdraw" : "button-join"}
+          onClick={() => takeActionWithdrawOrJoinUser()}
+        >
+          {(withdraw) ? "Withdraw" : "Join"}
+        </button>
+        {(role === "admin") &&  
+            <button
+              className="button-admin"
+              onClick={() => {
                 setPanel({
-                        id:id,
-                        startDate: startDate,
-                        endDate: endDate, 
-                        panelName: panelName
-                    })
-                    setOpenSearchUser(true) 
-                }}
-            /> 
+                    id:id,
+                    startDate: startDate,
+                    endDate: endDate, 
+                    panelName: panelName
+                })
+                setOpenSearchUser(true) 
+              }}
+            >
+              Add user
+            </button>
         }
     </>
     );

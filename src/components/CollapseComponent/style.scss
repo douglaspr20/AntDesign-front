@@ -1,13 +1,31 @@
 @import "styles/main.scss";
 
-.container-panel-speaker {
+.container-panel {
     width: 96%;
-    padding: 20px;
+    padding: 20px 30px;
     background: white;
     margin-top: 20px;
     margin-left: 2%;
     position: relative;
-    transition: 1s all ease-in-out;
+    transition: 0.5s all ease-in-out;
+    border-radius: 20px;
+
+    .arrow{
+        width: 22px;
+        height: 34px;
+        position: absolute;
+        top: 20px;
+        left: -38px;
+    }
+
+    .detail-border{
+        top: 58px;
+        left: -27px;
+        position: absolute;
+        width: 10px;
+        height: calc(100% - 20px);
+        border-left: 2px dashed #FE5621;
+    }
 
     &-parraf{
         padding: 0px;
@@ -27,6 +45,33 @@
         right: 20px;
         width: 200px;
         top: 0px;
+        height: 185px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+
+    @media (max-width: 1050px) {
+        .container-button{
+            position: relative;
+            height: auto;
+            justify-content: center;
+            align-items: center;
+            right: auto;
+            left: 20px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .button-more-information {
+        font-weight: normal; 
+        font-size: 15px; 
+        color: #FE5621;
+        text-decoration-line: underline;
+        font-weight: 500;
+        margin: 0px;
+        cursor: pointer;
     }
 
     .button-speaker{
@@ -69,6 +114,10 @@
         border: 3px solid white;  
     }
 
+}
+
+.container-panel:hover {
+    background:#F8EAE6 ;
 }
 
 .container-panel-conference { 
@@ -115,6 +164,7 @@
         width: 340px;
         height: 30px;
         margin-top: 16px;
+        
     }
 
     .collapseContaintTrue{

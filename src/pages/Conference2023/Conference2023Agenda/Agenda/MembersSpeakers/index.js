@@ -18,15 +18,19 @@ const MemberSpeakers = ({
     return (
       <>
         <div className="container-users" key={id} id={UserId}>
-          {img ? (
-            <Avatar size={150} src={img} />
-          ) : (
-            <Avatar size={150} style={{ fontSize: "2rem" }}>
-              {abbrName}
-            </Avatar>
-          )}
-          <p className="p-users">{firstName} {lastName}</p>
-          <p className="p-users" style={{color:"black", fontSize: "12px", fontWeight: "bold"}}>{titleProfessions}{isModerator ? " / Moderator" : ""}</p>
+          <div className="container-data-member">
+            {img ? (
+              <Avatar size={50} src={img} />
+            ) : (
+              <Avatar size={50} style={{ fontSize: "1rem" }}>
+                {abbrName}
+              </Avatar>
+            )}
+            <div className="container-p">
+              <p className="p-title">{firstName} {lastName}</p>
+              <p className="p-profession">{titleProfessions}{isModerator ? " / Moderator" : ""}</p>
+            </div>
+          </div>
           {isAdmin &&
             <CustomButton
               className="button-speaker"

@@ -9,6 +9,7 @@ import "./style.scss";
 const Sponsors = ({
     allSponsors,
     getAllSponsors,
+    maxLength
 }) => {
 
     useEffect(() => {
@@ -17,17 +18,26 @@ const Sponsors = ({
 
     return (
         <>
-            <div className="container-sponsor">
-                {allSponsors?.map((sponsor) => (
-                    <div 
-                        className="container-users" 
-                        key={sponsor?.id} 
-                    >
-                        <a href={(sponsor?.link.substring(0,7) !== "http://" || sponsor?.link.substring(0,8) !== "https://") ? `https://${sponsor?.link}` : sponsor?.link} target="_blank" rel="noopener noreferrer">
-                            <Avatar size={200} src={sponsor?.logo} />
-                        </a>
-                    </div>
-                ))}
+            <div className="container-sponsor" style={(maxLength !== undefined) ? {justifyContent: "center", display: "flex"} : {justifyContent: "space-around", display: "flex"}}>
+                {allSponsors?.map((sponsor, index) => {
+
+                    if(maxLength !== undefined){
+                        if(maxLength < index+1){
+                            return (<></>)
+                        }
+                    }
+                
+                    return (
+                        <div 
+                            className="container-users" 
+                            key={sponsor?.id} 
+                        >
+                            <a href={(sponsor?.link.substring(0,7) !== "http://" || sponsor?.link.substring(0,8) !== "https://") ? `https://${sponsor?.link}` : sponsor?.link} target="_blank" rel="noopener noreferrer">
+                                <Avatar size={200} src={sponsor?.logo} />
+                            </a>
+                        </div>
+                    )
+                })}
             </div>
         </>
     );
