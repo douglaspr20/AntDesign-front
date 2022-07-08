@@ -150,10 +150,13 @@ export function* registerUserIfNotAreRegisterConference2023({payload}) {
 
   } catch (error) {
     console.log(error)
+    if(error?.response?.data?.msg){
       notification.error({
         message: "ERROR:",
         description: error?.response?.data?.msg,
+      
       });
+    }
   } finally {
     yield put(homeActions.setLoading(false));
   }
