@@ -16,6 +16,33 @@
 		@media (max-width: 576px) {
 			padding: 1rem;
 		}
+
+    &-menu {
+      background: transparent !important;
+
+      &-item{
+        font-size: 1.2rem !important;
+        @media (max-width: 760px ) and  (min-width: 750px ){
+          font-size: 1.3rem !important;
+        }
+         
+
+          &:hover, &:active{
+            border-bottom: 2px solid $color-primary !important;
+            color: $color-primary !important;
+          }
+
+          &.ant-menu-item-selected{
+          border-bottom: 2px solid $color-primary !important;
+          color: $color-primary !important;
+          background: transparent !important;
+          }
+      }
+      & .ant-menu-submenu-selected{
+        border-bottom: 2px solid $color-primary !important;
+          color: $color-primary !important;
+      }
+    }
 	}
 
 	&__filters--button {
