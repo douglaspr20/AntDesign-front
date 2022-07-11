@@ -47,7 +47,7 @@ const SkillCohortCard = (props) => {
 
   const handleClickMore = () => {
     if (hasAccess && hasCohortStarted) {
-      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=1`);
+      history.push(`${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=resources`);
     } else {
       history.push(`${INTERNAL_LINKS.PROJECTX}/${id}`);
     }
@@ -55,15 +55,15 @@ const SkillCohortCard = (props) => {
 
   const downloadPdf = async () => {
     setLoading(true);
-    const domElement = certificateRef.current
+    const domElement = certificateRef.current;
     const canvas = await html2canvas(domElement, {
       scale: 4,
     });
 
-    let a = document.createElement('a')
+    let a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
-    a.download = `${title} - ${userProfile.firstName} ${userProfile.lastName} Certificate.png`
-    a.click()
+    a.download = `${title} - ${userProfile.firstName} ${userProfile.lastName} Certificate.png`;
+    a.click();
     setLoading(false);
   };
 
@@ -137,7 +137,11 @@ const SkillCohortCard = (props) => {
         </div>
       </div>
       {canDownloadCertificate && (
-        <div className="skill-cohort-certificate-page-wrapper" id="certificate-panel" ref={certificateRef}>
+        <div
+          className="skill-cohort-certificate-page-wrapper"
+          id="certificate-panel"
+          ref={certificateRef}
+        >
           <div className="certificate">
             <div className="certificate-top">
               <div className="certificate-logo">

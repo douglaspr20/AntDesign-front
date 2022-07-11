@@ -1,9 +1,9 @@
-import { Row, Col, Spin } from "antd";
+import { Row, Col, Spin, Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { CustomButton, Tabs } from "components";
+import { CustomButton } from "components";
 import { SETTINGS, INTERNAL_LINKS } from "enum";
 import IconLoadingMore from "images/icon-loading-more.gif";
 import { isEmpty } from "lodash";
@@ -47,7 +47,8 @@ const SkillCohortResources = ({
 }) => {
   const dateToday = moment().tz("America/Los_Angeles");
   const { id } = useParams();
-  const [currentTab, setCurrentTab] = useState("1");
+
+  const [selectedKeys, setSelectedKeys] = useState("resources");
   const history = useHistory();
   const location = useLocation();
 
@@ -59,6 +60,7 @@ const SkillCohortResources = ({
     getAllSkillCohortResources(id, {
       date: dateToday.format("YYYY-MM-DD HH:mm:ssZ"),
     });
+
     getEntireResources(id, dateToday.format("YYYY-MM-DD HH:mm:ssZ"));
 
     // eslint-disable-next-line
@@ -109,9 +111,9 @@ const SkillCohortResources = ({
   }, [allSkillCohortResources, id]);
 
   useEffect(() => {
-    setCurrentTab(parsed.key);
+    setSelectedKeys(parsed.key);
 
-    if (parsed.key === "2") {
+    if (parsed.key === "conversations") {
       getSkillCohortResource(+parsed.id);
     }
 
@@ -119,28 +121,28 @@ const SkillCohortResources = ({
   }, [parsed.id]);
 
   useEffect(() => {
-    if (currentTab !== "2") {
+    if (selectedKeys !== "conversations") {
       window.history.replaceState(
         null,
         "Page",
-        `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=${currentTab}`
+        `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=${selectedKeys}`
       );
     } else {
       if (!isEmpty(skillCohortResource)) {
         window.history.replaceState(
           null,
           "Page",
-          `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=2&id=${skillCohortResource.id}`
+          `${INTERNAL_LINKS.PROJECTX}/${id}/resources?key=conversations&id=${skillCohortResource.id}`
         );
       }
     }
 
-    if (currentTab === "0") {
-      history.push(`${INTERNAL_LINKS.PROJECTX}?key=2`);
+    if (selectedKeys === "back-to-cohorts") {
+      history.push(`${INTERNAL_LINKS.PROJECTX}?key=my-cohorts`);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, skillCohortResource]);
+  }, [selectedKeys, skillCohortResource]);
 
   const showMore = () => {
     getMoreSkillCohortResources(id, {
@@ -150,7 +152,7 @@ const SkillCohortResources = ({
   };
 
   const switchToConversationtab = () => {
-    setCurrentTab("2");
+    setSelectedKeys("conversations");
   };
 
   const displayTodaysResource = !isEmpty(allSkillCohortResources[0]) && (
@@ -305,40 +307,54 @@ const SkillCohortResources = ({
     </div>
   );
 
-  const TabData = [
-    {
-      title: "Back to Cohorts",
-      content: () => <div></div>,
-    },
-    {
-      title: "Resources",
-      content: () => {
-        return <div className="wrapper-2">{displayResources}</div>;
-      },
-    },
-    {
-      title: "Conversations",
-      content: () => displayConversation,
-    },
-    // {
-    //   title: "Participants",
-    //   content: () => (
-    //     <div className="display-participants">{displayParticipants}</div>
-    //   ),
-    // },
-  ];
-
   return (
     <div className="skill-cohort-resources-page">
       <div className="skill-cohort-resources-page-container">
-        {currentTab === "2" && <SkillCohortPanel />}
+        {selectedKeys === "conversations" && <SkillCohortPanel />}
         <div className="wrapper">
-          <Tabs
+          <Menu
+            mode="horizontal"
+            className="skill-cohort-page-container-menu"
+            selectedKeys={selectedKeys}
+          >
+            <Menu.Item
+              key="back-to-cohorts"
+              className="skill-cohort-page-container-menu-item"
+              onClick={() => setSelectedKeys("back-to-cohorts")}
+            >
+              Back to Cohorts
+            </Menu.Item>
+
+            <Menu.Item
+              key="resources"
+              className="skill-cohort-page-container-menu-item"
+              onClick={() => setSelectedKeys("resources")}
+            >
+              Resources
+            </Menu.Item>
+            <Menu.Item
+              key="conversations"
+              className="skill-cohort-page-container-menu-item"
+              onClick={() => setSelectedKeys("conversations")}
+            >
+              Conversations
+            </Menu.Item>
+          </Menu>
+
+          {selectedKeys === "resources" ? (
+            <div className="wrapper-2">{displayResources}</div>
+          ) : selectedKeys === "conversations" ? (
+            displayConversation
+          ) : (
+            <></>
+          )}
+
+          {/* <Tabs
             data={TabData}
             current={currentTab}
             onChange={setCurrentTab}
             centered
-          />
+          /> */}
         </div>
       </div>
     </div>
