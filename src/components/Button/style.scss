@@ -39,6 +39,17 @@
     }
   }
 
+  &.information:not([disabled]) {
+    background: $color-accent;
+    border: 1px solid $color-accent !important;
+    color: $color-white;
+
+    &:hover {
+      background: $color-white;
+      color: $color-accent;
+    }
+  }
+
   &.primary.outlined:not([disabled]) {
     background: $color-white !important;
     border: 1px solid $color-primary !important;
@@ -74,6 +85,17 @@
     &:hover {
       background: $color-error !important;
       color: $color-white !important;
+    }
+  }
+
+  &.information.outlined:not([disabled]) {
+    background: $color-white !important;
+    border: 1px solid $color-white !important;
+    color: $color-accent !important;
+
+    &:hover {
+      background: $color-accent;
+      color: $color-white;
     }
   }
 

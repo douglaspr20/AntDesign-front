@@ -256,6 +256,11 @@ class TopHeader extends Component {
           exact
           render={(props) => <MainHeader {...props} />}
         />
+        <PrivateRoute
+          path={`${INTERNAL_LINKS.SPEAKER_2023}`}
+          exact
+          render={(props) => <MainHeader {...props} />}
+        />
 
         <PrivateRoute
           path={INTERNAL_LINKS.SEARCH}
@@ -284,6 +289,16 @@ class TopHeader extends Component {
         <Route
           exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
+          render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
+          render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          exact
+          path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
           render={(props) => <PublicHeader {...props} />}
         />
       </Switch>

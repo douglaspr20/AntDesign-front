@@ -1,4 +1,5 @@
 export { default as Sidebar } from "./Sidebar";
+export { default as ModalCompleteYourProfile } from "./CompleteProfilePopUp"
 export { default as CustomButton } from "./Button";
 export { default as MainHeader } from "./Headers/MainHeader";
 export { default as ArticleHeader } from "./Headers/ArticleHeader";
@@ -11,6 +12,8 @@ export { default as SvgIcon } from "./Icon";
 export { default as ProfilePopupMenu } from "./ProfilePopupMenu";
 export { default as CustomDrawer } from "./Drawer";
 export { default as ProfileAvatar } from "./ProfileAvatar";
+export { default as Collapse } from "./Collapse";
+export { default as CollapseComponent } from "./CollapseComponent";
 export { default as CustomInput } from "./Input";
 export { default as CustomCheckbox } from "./Checkbox";
 export { default as CustomRadio } from "./Radio";

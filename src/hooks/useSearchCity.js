@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 const useSearchCity = (search) => {
   const [cities, setCitites] = useState([]);
-
   useEffect(() => {
     const handleSearch = async () => {
       const options = {
@@ -15,22 +14,16 @@ const useSearchCity = (search) => {
           "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
         },
       };
-
       const { data } = await axios.request(options);
-
       const citiesInfo = data.map(({ name, timezoneId, country }) => ({
         name,
         timezoneId,
         country: country.name,
       }));
-
       setCitites(citiesInfo);
     };
-
     handleSearch();
   }, [search]);
-
   return cities;
 };
-
 export default useSearchCity;

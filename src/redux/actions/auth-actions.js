@@ -15,9 +15,10 @@ export const constants = {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const login = createAction(LOGIN, (email, password) => ({
+export const login = createAction(LOGIN, (email, password, callback) => ({
   email,
   password,
+  callback
 }));
 export const logout = createAction(LOGOUT, () => ({}));
 export const setAuth = createAction(SET_AUTH);
