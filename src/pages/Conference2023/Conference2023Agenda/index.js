@@ -8,9 +8,12 @@ const Conference2023Agenda = () => {
   return (
     <>
       <div className="container-conference">
-        <div className="containers-agenda" id="agenda">
+        <div className="imagen-agenda"></div>
+        <div className="container-content-picture-agenda">
           <p className="title-containers">Conference schedule</p>  
-            <Agenda/>
+        </div>
+        <div className="containers-agenda" id="agenda">
+          <Agenda/>
         </div>
       </div>
     </>

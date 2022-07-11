@@ -158,7 +158,7 @@ const SignupForm = ({ step }) => {
               size="sm"
             />
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
             name="recaptcha"
             rules={[
               {
@@ -169,7 +169,7 @@ const SignupForm = ({ step }) => {
             className="form-recaptcha"
           >
             <ReCAPTCHA sitekey={SecretKey} />
-          </Form.Item> */}
+          </Form.Item>
         </React.Fragment>
       )}
       {step === 1 && (
