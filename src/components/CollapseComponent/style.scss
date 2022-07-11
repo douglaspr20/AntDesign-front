@@ -41,27 +41,17 @@
     }
 
     .container-button{
-        position: absolute;
-        right: 20px;
         width: 200px;
         top: 0px;
-        height: 185px;
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
         flex-direction: column;
-    }
-
-    @media (max-width: 1050px) {
-        .container-button{
-            position: relative;
-            height: auto;
-            justify-content: center;
-            align-items: center;
-            right: auto;
-            left: 20px;
-            margin-bottom: 10px;
-        }
+        position: relative;
+        height: auto;
+        justify-content: center;
+        align-items: flex-start;
+        right: auto;
+        left: 0px;
+        margin-bottom: 10px;
     }
 
     .button-more-information {

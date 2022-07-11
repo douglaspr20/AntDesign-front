@@ -6,7 +6,7 @@
     justify-content: center;
 }
 
-.button-add, .button-added{
+.button-add, .button-added, .button-download{
     border: none;
     border-radius: 5px;
     background: #FE5621;
@@ -27,7 +27,11 @@
     background: #00b574;
 }
 
-.button-add:hover {
+.button-add, .button-added {
+    margin-top: 25px;
+}
+
+.button-add:hover, .button-download:hover {
     border: 2px solid #FE5621;
     padding: 4px 14px;
     background: none;

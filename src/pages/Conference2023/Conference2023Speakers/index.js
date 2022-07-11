@@ -10,11 +10,13 @@ const Conference2023Speakers = () => {
   return (
     <>
       <div className="container-conference" style={{ marginTop: "90px"}}>
-        <div className="contenedor-title-speakers">
+        <div className="imagen-speakers">
+        </div>
+        <div className="container-content-picture-speakers">
           <p className="title-containers">{"Special Guests & Speakers"}</p> 
         </div>
         <div className="containers-speakers" id="speakers"> 
-          <SpeakersContainer type={"speakers"}/>
+          <SpeakersContainer/>
         </div>
       </div>
     </>

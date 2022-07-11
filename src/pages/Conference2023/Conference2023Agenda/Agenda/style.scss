@@ -49,10 +49,9 @@
             flex-direction: row;
 
             .content-first-information{
-                width: 265px;
+                width: 300px;
                 position: relative;
                 margin-bottom: 25px;
-                border-right: 2px solid rgba(254, 86, 33, 0.29);
                 height: 57px;
     
                 .p-content{
@@ -64,7 +63,7 @@
                     margin: 0px;
                     margin-bottom: 5px;
     
-                    .date{
+                    .date, .date2{
                         position: absolute;
                         right: 25px;
                         font-style: normal;
@@ -73,35 +72,15 @@
                         line-height: 26px;
                         color: #404040;
                     }
+
+                    .date2{
+                        width: 180px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        text-align: end;
+                    }
                 } 
-            }
-    
-            .content-second-information {
-                width: 220px;
-                height: 57px;
-                display: flex;
-                flex-direction: column;
-                padding-left: 25px;
-
-                .p-location{
-                    margin: 0px;
-                    font-style: normal;
-                    font-weight: 400;
-                    font-size: 15px;
-                    color: #404040;
-                    margin-bottom: 5px;
-                }
-
-                .p-location-data{
-                    margin: 0px;
-                    font-weight: 600;
-                    font-size: 19px;
-                    line-height: 31px;
-                    color: #404040;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
-                }
             }
         }
     }

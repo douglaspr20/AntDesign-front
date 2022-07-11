@@ -20,15 +20,15 @@ const MemberSpeakers = ({
         <div className="container-users" key={id} id={UserId}>
           <div className="container-data-member">
             {img ? (
-              <Avatar size={50} src={img} />
+              <Avatar size={55} src={img} />
             ) : (
-              <Avatar size={50} style={{ fontSize: "1rem" }}>
+              <Avatar size={55} style={{ fontSize: "1rem" }}>
                 {abbrName}
               </Avatar>
             )}
             <div className="container-p">
-              <p className="p-title">{firstName} {lastName}</p>
-              <p className="p-profession">{titleProfessions}{isModerator ? " / Moderator" : ""}</p>
+              <p className="p-title-conference">{firstName} {lastName}</p>
+              <p className="p-profession-conference">{titleProfessions}{isModerator ? " / Moderator" : ""}</p>
             </div>
           </div>
           {isAdmin &&

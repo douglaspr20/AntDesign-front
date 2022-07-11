@@ -5,7 +5,6 @@ import SpeakersContainer from "../Conference2023Speakers/SpeakersContainer/index
 import Agenda from "../Conference2023Agenda/Agenda/index.js";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
-import SponsorsContainer from "../Conference2023Sponsors/SponsorsContainer";
 
 import "./style.scss";
 
@@ -24,7 +23,7 @@ const Conference2023Home = () => {
         </div>
         <div className="container-speaker-home">
           <p className="p-speakers">{'Special Guests & Speakers'}</p>
-          <SpeakersContainer maxLength={4} type={'home'}/>
+          <SpeakersContainer maxLength={4}/>
           <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
             <button className="button-speakers-home">
               View All Speakers
@@ -57,15 +56,6 @@ const Conference2023Home = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="container-sponsors">
-          <p className="p-sponsors">Sponsored <span>by</span></p>
-          <SponsorsContainer maxLength={4} />
-          <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/sponsors"}>
-            <button className="button-sponsor-home">
-              See all of the sponsors
-            </button>
-          </Link>
         </div>
         <div className="footer-home">
           <div className="logo-footer"></div>

@@ -20,9 +20,9 @@ const MemberSpeakers = ({
         <div className="container-users" key={id} id={UserId}>
           <div className="container-data-member">
             {img ? (
-              <Avatar size={50} src={img} />
+              <Avatar size={55} src={img} />
             ) : (
-              <Avatar size={50} style={{ fontSize: "1rem" }}>
+              <Avatar size={55} style={{ fontSize: "1rem" }}>
                 {abbrName}
               </Avatar>
             )}

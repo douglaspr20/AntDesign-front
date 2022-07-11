@@ -17,7 +17,7 @@ const ButtonsAgenda = ({
     panels
 }) => {
 
-    const {usersAddedToThisAgenda, id, panelName, description, startTime, endTime, timezone} = panels
+    const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timezone} = panels
 
     const [idToAddedToMyPersonalAgenda,setIdToAddedToMyPersonalAgenda ] = useState(-1)
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
@@ -58,12 +58,12 @@ const ButtonsAgenda = ({
     );
 
     const convertedStartTime = convertToLocalTime(
-        startTime,
+        startDate,
         timezone
     ).format("YYYYMMDDTHHmmss");
     
     const convertedEndTime = convertToLocalTime(
-        endTime,
+        endDate,
         timezone
     ).format("YYYYMMDDTHHmmss");
     
@@ -133,7 +133,7 @@ const ButtonsAgenda = ({
             {bulAddedToMyAgenda &&
                 <div style={{position: 'relative'}}>
                     <button
-                        className="button-add"
+                        className="button-download"
                         style={{marginTop:'10px'}}
                         onClick={(e) => {e.preventDefault()}}
                     >
@@ -155,6 +155,7 @@ const ButtonsAgenda = ({
                     </Dropdown>
                 </div>
             }
+            <div style={{height: "10px", width: "200px"}}></div>
             <CustomModal
                 title="Are you sure?"
                 visible={toMyPersonalAgenda}

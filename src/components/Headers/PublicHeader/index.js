@@ -29,8 +29,20 @@ const PublicHeader = ({
   }, [bulRegister])
 
   return (
-    <div className={(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-conference" : "public-header"} style={{width:"calc( 100% - 17px )"}}>
-      <Link to={INTERNAL_LINKS.HOME} className={(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? "public-header-left-conference" : "public-header-left"}>
+    <div 
+      className={
+        (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
+        "public-header-conference" : "public-header"
+      } 
+      style={{width:"calc( 100% - 17px )"}}
+    >
+      <Link 
+        to={INTERNAL_LINKS.HOME} 
+        className={
+          (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
+          "public-header-left-conference" : "public-header-left"
+        }
+      >
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />
         </div>
@@ -53,28 +65,36 @@ const PublicHeader = ({
           </label>
           <div className="public-header-right">
             <div className="public-conference-links">
-              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023}>
+              <Link 
+                style={
+                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? 
+                  {textDecoration: "underline black"} : {textDecoration: "none"}
+                } 
+                to={INTERNAL_LINKS.CONFERENCE_2023}
+              >
                   <p>Home</p>
               </Link>
             </div>
             <div className="public-conference-links">
-              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
+              <Link 
+                style={
+                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/speakers") ? 
+                  {textDecoration: "underline black"} : {textDecoration: "none"}
+                } 
+                to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}
+              >
                   <p>Speakers</p>
               </Link>
             </div>
             <div className="public-conference-links">
-              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/sponsors"}>
-                  <p>Sponsors</p>
-              </Link>
-            </div>
-            <div className="public-conference-links">
-              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}>
+              <Link 
+                style={
+                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/agenda") ? 
+                  {textDecoration: "underline black"} : {textDecoration: "none"}
+                } 
+                to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}
+              >
                   <p>Agenda</p>
-              </Link>
-            </div>
-            <div className="public-conference-links">
-              <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + '/agenda'}>
-                  <p style={{width: "200px"}} >In-Person Experience</p>
               </Link>
             </div>
               {butonState ? (

@@ -12,8 +12,6 @@ import {
   Switch
 } from "antd";
 
-import moment from "moment";
-
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
@@ -74,7 +72,9 @@ const PanelSpeakers = ({
         getAllPanelSpeakers(userProfile.id)
         getAllUserSpeaker(userProfile.id)
         if(userProfile.id === user){
-          setRemoveMembersSpeakers(true)
+          setTimeout(() => {
+            setRemoveMembersSpeakers(true)
+          }, 100);
         }
       })
     }
@@ -82,20 +82,6 @@ const PanelSpeakers = ({
     const content = (panels) => (
       <div className="content-collapse" key={panels.id}>
           <p className="title-collapse">{panels.panelName}</p>
-          <div className="content-information">
-              <div className="content-first-information">
-                  <p className="p-content">Start Time: 
-                      <span className="date"> {moment(panels.startDate).format("MM-DD-YYYY hh:mm a")}</span>
-                  </p>
-                  <p className="p-content">End Time: 
-                      <span className="date"> {moment(panels.endDate).format("MM-DD-YYYY hh:mm a")}</span>
-                  </p>
-              </div>
-              <div className="content-second-information">
-                  <p className="p-location">Location:</p> 
-                  <p className="p-location-data">{panels.timeZone}</p>
-              </div>
-          </div>
       </div>
     )
 
@@ -112,6 +98,12 @@ const PanelSpeakers = ({
       </div>
     )
 
+    const dataStatic = (panels) => (
+      <p className="container-panel-speaker-parraf" style={{marginBottom: "40px", fontSize: "18px"}}>
+          Description: <span className="not-bold">{panels.description}</span>
+      </p>
+    )
+
     return (
       <>
         <div className="container-collapse">
@@ -121,6 +113,7 @@ const PanelSpeakers = ({
               informationCollapse={content(panels)}
               className={"container-panel"}
               dataIterated={dataIterated(panels)}
+              dataStatic={dataStatic(panels)}
               buttons={
                 <ButtonsSpeakers 
                   panels={panels} 

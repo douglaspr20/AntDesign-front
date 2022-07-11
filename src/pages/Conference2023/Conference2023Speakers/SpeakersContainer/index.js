@@ -14,8 +14,7 @@ const ModalCompleteProfile = ({
     getAllUserSpeaker,
     getAllPanelsOfOneUser,
     allPanelsOfOneUser,
-    maxLength,
-    type
+    maxLength
 }) => {
 
     const [windowPopUpForSpeaker, setWindowPopUpForSpeaker] = useState(false)
@@ -46,36 +45,20 @@ const ModalCompleteProfile = ({
 
                 let userImg;
 
-                if(type === "speakers"){
-                    if(user?.img){
-                        userImg = (
-                            <div className="container-img-people">
-                                <img className="img-people" src={user.img} alt="img-people"/>
-                            </div>
-                        ) 
-                    }else{
-                        userImg = (
-                            <div>
-                                {user?.abbrName}
-                            </div>
-                        )
-                    }
+                if(user?.img){
+                    userImg = (
+                        <div className="container-avatar">
+                            <Avatar src={user.img} style={{position: "absolute", background: "rgba(255, 255, 255, 0.15)", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}} />
+                        </div>
+                    ) 
                 }else{
-                    if(user?.img){
-                        userImg = (
-                            <div className="container-avatar">
-                                <Avatar src={user.img} style={{position: "absolute", background: "rgba(255, 255, 255, 0.15)", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}} />
-                            </div>
-                        ) 
-                     }else{
-                         userImg = (
-                            <div className="container-avatar">
-                                <Avatar style={{fontSize:"40px", position: "absolute", background: "rgba(255, 255, 255, 0.15)",  width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}> 
-                                    {user?.abbrName}
-                                </Avatar>
-                            </div>
-                         )
-                     }
+                    userImg = (
+                        <div className="container-avatar">
+                            <Avatar style={{fontSize:"40px", position: "absolute", background: "rgba(255, 255, 255, 0.15)",  width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}> 
+                                {user?.abbrName}
+                            </Avatar>
+                        </div>
+                    )
                 }
 
                 return (
@@ -88,12 +71,11 @@ const ModalCompleteProfile = ({
                         }}
                     >
                         <div className="container-text">
-                            <p className="p-users-speakers">Speaker</p>
                             <p className="p-users-name">{user?.firstName} {user?.lastName}</p>
                             <p className="p-users-profession">{user?.titleProfessions}</p>
                             <p className="p-users-biografi">with learning, community and collaboration. We are a community of business and HR leaders</p>
                         </div>
-                        <div className="container-picture" style={(type === "speakers") ? {background: "#3e4960", overflow: "hidden"} : {background: "none", overflow: "visible"}}>
+                        <div className="container-picture" style={{background: "none", overflow: "visible"}}>
                             {userImg}
                         </div>
                     </div>
