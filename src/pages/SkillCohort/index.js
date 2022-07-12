@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment-timezone";
 import qs from "query-string";
-import { Tabs } from "components";
 import { useLocation } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
-import { Space } from "antd";
+import { Menu, Space } from "antd";
 import { useParams } from "react-router-dom";
 import { isEmpty } from "lodash";
 
@@ -49,7 +48,7 @@ const SkillCohort = ({
     getAllSkillCohorts([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [currentTab, setCurrentTab] = useState("0");
+  const [selectedKeys, setSelectedKeys] = useState("general-information");
   const { id } = useParams();
 
   const location = useLocation();
@@ -75,7 +74,7 @@ const SkillCohort = ({
   }, [id]);
 
   useEffect(() => {
-    setCurrentTab(parsed.key || "0");
+    setSelectedKeys(parsed.key || "general-information");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -84,11 +83,12 @@ const SkillCohort = ({
     window.history.replaceState(
       null,
       "Page",
-      `${INTERNAL_LINKS.PROJECTX}?key=${currentTab}`
+      `${INTERNAL_LINKS.PROJECTX}?key=${selectedKeys}`
     );
-  }, [currentTab]);
+  }, [selectedKeys]);
 
-  const displayAds = (currentTab === undefined || currentTab === "0") &&
+  const displayAds = (selectedKeys === undefined ||
+    selectedKeys === "general-information") &&
     !isEmpty(advertisementsByPage["project-x"]) && (
       <div className="project-x-advertisement-wrapper">
         {advertisementsByPage["project-x"].map((advertisement) => {
@@ -116,7 +116,8 @@ const SkillCohort = ({
       </div>
     );
 
-  const displayPreviewAd = (currentTab === undefined || currentTab === "0") &&
+  const displayPreviewAd = (selectedKeys === undefined ||
+    selectedKeys === "0") &&
     isAdPreview && (
       <div className="project-x-advertisement-wrapper-preview">
         <div
@@ -270,36 +271,56 @@ const SkillCohort = ({
     );
   };
 
-  const TabData = [
-    {
-      title: "General Information",
-      content: displayGeneralInformation,
-    },
-    {
-      title: "Upcoming Cohorts",
-      content: () => {
-        return <div className="skill-cohort-list">{displaySkillCohorts}</div>;
-      },
-    },
-    {
-      title: "My Cohorts",
-      content: () => {
-        return <div className="skill-cohort-list">{displayMySkillCohorts}</div>;
-      },
-    },
-    {
-      title: "Activity Status",
-      content: () => {
-        return <ActivityStatus />;
-      },
-    },
-  ];
-
   return (
     <div className="skill-cohort-page">
       <SkillCohortFilterDrawer onChange={handleFilterChange} />
       <div className="skill-cohort-page-container">
-        <Tabs data={TabData} current={currentTab} onChange={setCurrentTab} />
+        <Menu
+          mode="horizontal"
+          className="skill-cohort-page-container-menu"
+          selectedKeys={selectedKeys}
+        >
+          <Menu.Item
+            key="general-information"
+            className="skill-cohort-page-container-menu-item"
+            onClick={() => setSelectedKeys("general-information")}
+          >
+            General Information
+          </Menu.Item>
+
+          <Menu.Item
+            key="upcoming-cohorts"
+            className="skill-cohort-page-container-menu-item"
+            onClick={() => setSelectedKeys("upcoming-cohorts")}
+          >
+            Upcoming Cohorts
+          </Menu.Item>
+          <Menu.Item
+            key="my-cohorts"
+            className="skill-cohort-page-container-menu-item"
+            onClick={() => setSelectedKeys("my-cohorts")}
+          >
+            My Cohorts
+          </Menu.Item>
+
+          <Menu.Item
+            key="activity-status"
+            className="skill-cohort-page-container-menu-item"
+            onClick={() => setSelectedKeys("activity-status")}
+          >
+            Activity Status
+          </Menu.Item>
+        </Menu>
+
+        {selectedKeys === "general-information" ? (
+          displayGeneralInformation()
+        ) : selectedKeys === "upcoming-cohorts" ? (
+          <div className="skill-cohort-list">{displaySkillCohorts}</div>
+        ) : selectedKeys === "my-cohorts" ? (
+          <div className="skill-cohort-list">{displayMySkillCohorts}</div>
+        ) : (
+          <ActivityStatus />
+        )}
       </div>
     </div>
   );
