@@ -69,6 +69,13 @@
         }
     }
 
+    .upcoming-sprints{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
+       padding: 0px 2rem;
+        
+    }
+
     .simulation-sprint-firewall {
         position: fixed;
         top: 0;

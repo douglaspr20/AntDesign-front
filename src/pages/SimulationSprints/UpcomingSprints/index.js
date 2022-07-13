@@ -6,8 +6,6 @@ import SprintCard from "../SprintCard";
 import { getAllSimulationSprints } from "redux/actions/simulationSprint-actions";
 import { simulationSprintSelector } from "redux/selectors/simulationSprintSelector";
 
-import "./style.scss";
-
 const UpcomingSprints = ({ getAllSimulationSprints, allSimulationSprints }) => {
   useEffect(() => {
     getAllSimulationSprints({
