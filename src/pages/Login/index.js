@@ -52,7 +52,8 @@ const Login = ({
   live,
   userProfile,
   modal,
-  setBulRegister
+  setBulRegister,
+  confirm
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showFirewall, setShowFirewall] = useState(false);
@@ -80,6 +81,7 @@ const Login = ({
       login(email, password, (suc, err) => {
         if(!err){
           setBulRegister(true)
+          confirm()
         }
       });
     } else {
@@ -314,12 +316,14 @@ const Login = ({
 
 Login.propTypes = {
   onClose: PropTypes.func,
-  modal: PropTypes.func
+  modal: PropTypes.func,
+  confirm: PropTypes.func
 };
 
 Login.defaultProps = {
   onClose: () => {},
   modal: () => {},
+  confirm: () => {}
 };
 
 const mapStateToProps = (state) => ({

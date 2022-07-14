@@ -41,7 +41,7 @@ const PanelSpeakers = ({
     const { Option } = Select;
 
     useEffect(() => {
-      getAllPanelSpeakers(userProfile.id)
+      getAllPanelSpeakers("Panels")
       getAllUserSpeaker(userProfile.id)
     },[getAllPanelSpeakers, getAllUserSpeaker, userProfile.id])
 
@@ -50,7 +50,7 @@ const PanelSpeakers = ({
       addUserSpeakerToPanel({usersNames: data.users,bul: bulModerator, panel: Panel, type: "addUserAdmin"}, () => {
         setPanel({})
         speakersUserForm.resetFields();
-        getAllPanelSpeakers(userProfile.id)
+        getAllPanelSpeakers("Panels")
         getAllUserSpeaker(userProfile.id)
       })
     }
@@ -62,14 +62,14 @@ const PanelSpeakers = ({
         userEmail: userProfile.email,
       }
       addUserSpeakerToPanel({usersNames, bul: false, panel: data, type: "joinUser"}, () => {
-          getAllPanelSpeakers(userProfile.id)
+          getAllPanelSpeakers("Panels")
           getAllUserSpeaker(userProfile.id)
       })
     }
 
     const removeUserFunction = (id, user) => {
       removeUserSpeakerToPanel(id, () => {
-        getAllPanelSpeakers(userProfile.id)
+        getAllPanelSpeakers("Panels")
         getAllUserSpeaker(userProfile.id)
         if(userProfile.id === user){
           setTimeout(() => {

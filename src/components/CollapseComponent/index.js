@@ -52,9 +52,12 @@ const CollapseComponent = ({
                             {dataIterated}
                         </>
                     ) : (
-                        <NoItemsMessageCard
-                            message={`There aren't members in this panel.`}
-                        />
+                        <>
+                            {dataStatic}
+                            <NoItemsMessageCard
+                                message={`There aren't members in this panel.`}
+                            />
+                        </>
                     )
                 }
             </div>

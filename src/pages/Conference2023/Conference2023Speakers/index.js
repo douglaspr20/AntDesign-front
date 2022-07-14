@@ -16,7 +16,7 @@ const Conference2023Speakers = () => {
           <p className="title-containers">{"Special Guests & Speakers"}</p> 
         </div>
         <div className="containers-speakers" id="speakers"> 
-          <SpeakersContainer/>
+          <SpeakersContainer className={"container-users"} />
         </div>
       </div>
     </>

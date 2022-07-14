@@ -23,7 +23,7 @@ const Conference2023Home = () => {
         </div>
         <div className="container-speaker-home">
           <p className="p-speakers">{'Special Guests & Speakers'}</p>
-          <SpeakersContainer maxLength={4}/>
+          <SpeakersContainer maxLength={4} className={"container-users"} />
           <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
             <button className="button-speakers-home">
               View All Speakers

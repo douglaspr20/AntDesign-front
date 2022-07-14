@@ -17,12 +17,12 @@ import {
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
-  const {UserId} = payload
+  const {type} = payload
 
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(allPanelSpeakersEndPonit, { UserId });
+    const response = yield call(allPanelSpeakersEndPonit, { type });
 
     if (response.status === 200) {
       const { panelsSpeakers } = response.data;
@@ -141,9 +141,11 @@ export function* addUserSpeakerToSaga({ payload }) {
 export function* registerUserIfNotAreRegisterConference2023({payload}) {
 
   try {
+
     const response = yield call(registerUserIfNotAreRegisterConference2023EndPoint);
+
     if(response.status === 200){
-      if(payload.callback && response.data === "funciona"){
+      if(payload.callback){
         payload.callback()
       }
     }
@@ -196,6 +198,7 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
 }
 
 export function* addedToPersonalAgendaSagas({payload}) {
+  
   const {data} = payload
   yield put(homeActions.setLoading(true));
 

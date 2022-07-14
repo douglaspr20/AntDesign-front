@@ -7,9 +7,7 @@ export const addUserSpeakerToPanelEndPoint = (payload) => {
 }
 
 export const allPanelSpeakersEndPonit = (payload) => {
-  return httpClient.get("public/speakers/all-panel", {
-    ...payload,
-  })
+  return httpClient.get(`public/speakers/all-panel/${payload.type}`)
 }
 
 export const getAllUserSpeakerEndPoint = (payload) => {
