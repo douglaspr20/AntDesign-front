@@ -62,6 +62,9 @@ class NavBar extends Component {
     ) {
       e.preventDefault();
       this.setState({ showFirewall: true, module: "global-conference" });
+    } else if (url === INTERNAL_LINKS.SIMULATION_SPRINTS) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "simulations-sprint" });
     } else if (isMobile) {
       this.props.setCollapsed(true);
     }
@@ -153,14 +156,13 @@ class NavBar extends Component {
 
                 {this.state.module === "story" && (
                   <>
-                    You must upgrade to premium and complete your full profile to add stories.
+                    You must upgrade to premium and complete your full profile
+                    to add stories.
                   </>
                 )}
 
                 {this.state.module === "comment" && (
-                  <>
-                    You must fully complete your profile before add comments.
-                  </>
+                  <>You must fully complete your profile before add comments.</>
                 )}
 
                 {this.state.module === "conference-library" && (
@@ -169,7 +171,7 @@ class NavBar extends Component {
                     conference library feature.
                   </>
                 )}
-      
+
                 {this.state.module === "live" && (
                   <>
                     You must fully complete your profile before joining the live
@@ -182,6 +184,10 @@ class NavBar extends Component {
                     You must fully complete your profile before joining the
                     Annual Conference feature.
                   </>
+                )}
+
+                {this.state.module === "simulations-sprint" && (
+                  <>Coming Soon October 2022</>
                 )}
               </h3>
             </div>
