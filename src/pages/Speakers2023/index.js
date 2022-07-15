@@ -9,6 +9,7 @@ import { actions as homeActions } from "redux/actions/home-actions";
 import { Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import PanelSpeakers from "./Panels";
+import Speakers from "pages/Conference2023/Conference2023Speakers/SpeakersContainer";
 
 import "./style.scss";
 
@@ -30,7 +31,12 @@ const Speaker2023 = ({
       title: "Panels",
       key: 1,
       content: () => (<PanelSpeakers />)
-    }
+    },
+    {
+      title: "Speakers",
+      key: 2,
+      content: () => (<Speakers className={"container-users-speakers"} />)
+    },
   ];
 
   const onApplySpeaker = () => {

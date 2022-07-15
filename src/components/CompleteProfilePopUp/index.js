@@ -10,10 +10,12 @@ const ModalCompleteProfile = ({
   updateUser,
   userProfile,
   get,
-  onCancel
+  onCancel,
+  setBulKnowRegister
 }) => {
 
     const onSave = (userInfo) => {
+        setBulKnowRegister(true)
         updateUser(userInfo);
         get()
     };

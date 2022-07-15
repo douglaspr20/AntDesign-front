@@ -10,7 +10,7 @@ import moment from 'moment'
 
 import "./style.scss";
 
-const ModalCompleteProfile = ({
+const AgendaConference2023 = ({
     allPanelSpeakers,
     getAllPanelSpeakers,
     maxLength
@@ -20,7 +20,7 @@ const ModalCompleteProfile = ({
     let bul = true
 
     useEffect(() => {
-        getAllPanelSpeakers()
+        getAllPanelSpeakers("All")
     }, [getAllPanelSpeakers])
 
     const content = (panels) => (
@@ -37,11 +37,15 @@ const ModalCompleteProfile = ({
                     <p className="p-content">Timezone:
                         <span className="date2">{moment.tz.guess()}</span>
                     </p> 
+                    <p className="p-content">Session type:
+                        <span className="date">{panels.type}</span>
+                    </p> 
                 </div>
                 
             </div>
         </div>
     )
+    
 
     const dataIterated = (panels) => (
         <div className="ajust-contain">
@@ -66,7 +70,7 @@ const ModalCompleteProfile = ({
 
         if(maxLength !== undefined){
             if(maxLength < index+1){
-                return (<></>)
+                return (<div key={index}></div>)
             }
         }
 
@@ -78,7 +82,7 @@ const ModalCompleteProfile = ({
         }
 
         return ( 
-            <div key={panels?.id}>
+            <div key={index}>
                 {bul &&
                     <p className="title-date">
                         {moment(panels.startDate).format("dddd, MMMM DD")}<sup>{moment(panels.startDate).format("Do").slice(-2)}</sup>
@@ -111,4 +115,4 @@ const ModalCompleteProfile = ({
     getAllPanelSpeakers: speaker.getAllPanelSpeakers,
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(ModalCompleteProfile);
+  export default connect(mapStateToProps, mapDispatchToProps)(AgendaConference2023);

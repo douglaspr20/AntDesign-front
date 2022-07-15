@@ -14,6 +14,7 @@ const SET_BUL_REGISTER = "SET_BUL_REGISTER";
 const ADDED_TO_MY_PERSONAL_AGENDA = "ADDED_TO_MY_PERSONAL_AGENDA"
 const GET_ALL_SPONSORS = "GET_ALL_SPONSORS";
 const UPDATE_ALL_SPONSOR_2023 = "UPDATE_ALL_SPONSOR_2023";
+const SET_ACTIVE_BUTTON = "SET_ACTIVE_BUTTON"
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -28,7 +29,8 @@ export const constants = {
   SET_BUL_REGISTER,
   ADDED_TO_MY_PERSONAL_AGENDA,
   GET_ALL_SPONSORS,
-  UPDATE_ALL_SPONSOR_2023
+  UPDATE_ALL_SPONSOR_2023,
+  SET_ACTIVE_BUTTON
 };
 
 // ------------------------------------
@@ -47,7 +49,7 @@ export const updatePanelSpeakers = createAction(
 
 export const getAllPanelSpeakers = createAction(
   GET_PANEL_SPEAKERS,
-  (UserId) => ({ UserId })
+  (type) => ({ type })
 );
 
 export const getAllUserSpeaker = createAction(
@@ -85,9 +87,14 @@ export const setBulRegister = createAction(
   (bul) => ({bul})
 )
 
+export const setActiveBoton = createAction(
+  SET_ACTIVE_BUTTON,
+  (bul) => ({bul})
+)
+
 export const addedToPersonalAgenda = createAction(
   ADDED_TO_MY_PERSONAL_AGENDA,
-  (data) => ({data})
+  (data, callback) => ({data, callback})
 )
 
 export const getAllSponsors = createAction(
@@ -101,6 +108,7 @@ export const updateAllSponsors2023 = createAction(
 )
 
 export const actions = {
+    setActiveBoton,
     addedToPersonalAgenda,
     updatePanelSpeakers,
     getAllPanelSpeakers,

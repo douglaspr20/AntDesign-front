@@ -17,20 +17,23 @@ const ButtonsAgenda = ({
     panels
 }) => {
 
-    const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timezone} = panels
+    const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timeZone} = panels
 
-    const [idToAddedToMyPersonalAgenda,setIdToAddedToMyPersonalAgenda ] = useState(-1)
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
     const [toMyPersonalAgenda,setToMyPersonalAgenda] = useState(false)
 
     const functionAddedToMyAgenda = () => {
 
         const data = {
-            PanelId: idToAddedToMyPersonalAgenda,
+            PanelId: id,
+            startTime: startDate,
+            endTime: endDate,
             type: "Added",
         }
 
-        addedToPersonalAgenda(data)
+        addedToPersonalAgenda(data, () => {
+            setBulAddedToMyAgenda(true)
+        })
     }
 
     const functionRemoveToMyAgenda = (data) => {
@@ -59,13 +62,13 @@ const ButtonsAgenda = ({
 
     const convertedStartTime = convertToLocalTime(
         startDate,
-        timezone
-    ).format("YYYYMMDDTHHmmss");
+        timeZone
+    );
     
     const convertedEndTime = convertToLocalTime(
         endDate,
-        timezone
-    ).format("YYYYMMDDTHHmmss");
+        timeZone
+    );
     
     const userTimezone = moment.tz.guess();
 
@@ -83,7 +86,7 @@ const ButtonsAgenda = ({
         e.stopPropagation();
         let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
             panelName
-        )}&dates=${convertedStartTime}/${convertedEndTime}&details=${encodeURIComponent(
+        )}&dates=${convertedStartTime.format("YYYYMMDDTHHmmss")}/${convertedEndTime.format("YYYYMMDDTHHmmss")}&details=${encodeURIComponent(
             description
         )}&location=https://www.hackinghrlab.io/global-conference&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
         window.open(googleCalendarUrl, "_blank");
@@ -92,7 +95,7 @@ const ButtonsAgenda = ({
     const onClickAddYahooCalendar = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTime}&et=${convertedEndTime}&title=${encodeURIComponent(
+        let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertedStartTime.format("YYYYMMDDTHHmmss")}&et=${convertedEndTime.format("YYYYMMDDTHHmmss")}&title=${encodeURIComponent(
             panelName
         )}&desc=${encodeURIComponent(
             description
@@ -102,8 +105,9 @@ const ButtonsAgenda = ({
 
     useEffect(() => {
         if(userProfile.id !== undefined){
+            setBulAddedToMyAgenda(false)
             for(let i = 0 ; i < usersAddedToThisAgenda.length ; i++ ){
-                if(Number(usersAddedToThisAgenda[i]) === Number(userProfile.id)){
+                if(Number(usersAddedToThisAgenda[i]) === Number(userProfile.id)){ 
                     setBulAddedToMyAgenda(true)
                 }
             }
@@ -124,7 +128,6 @@ const ButtonsAgenda = ({
                         setBulAddedToMyAgenda(false)
                     }else{
                         setToMyPersonalAgenda(true)
-                        setIdToAddedToMyPersonalAgenda(id) 
                     }
                 }}
             >
@@ -182,7 +185,6 @@ const ButtonsAgenda = ({
                         onClick={() => {
                             functionAddedToMyAgenda()
                             setToMyPersonalAgenda(false)
-                            setBulAddedToMyAgenda(true)
                         }}
                     />
                 </div>

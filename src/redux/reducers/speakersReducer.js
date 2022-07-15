@@ -33,6 +33,13 @@ export const reducers = {
         bulRegister: bul
       })
     },
+    [speakerConstans.SET_ACTIVE_BUTTON]: (state, {payload}) => {
+      const {bul} = payload
+      
+      return state.merge({
+        activeButton: bul
+      })
+    },
     [speakerConstans.UPDATE_ALL_SPONSOR_2023]: (state, {payload}) => {
       const {sponsor} = payload
 
@@ -48,6 +55,7 @@ export const reducers = {
         allUserSpeakers: [],
         bulRegister: false,
         allSponsors: [],
+        activeButton: false,
     }
   );
 
