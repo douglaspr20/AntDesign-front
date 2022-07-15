@@ -1,6 +1,6 @@
 @import "styles/main.scss";
 
-.skill-cohort-resources-page {
+.simulation-sprint-resources-page {
   width: 100%;
   background: $color-background;
   ::-webkit-scrollbar {
@@ -9,9 +9,8 @@
 
   .wrapper {
     width: 100%;
-    max-width: 1350px;
     margin-left: auto;
-    // margin-right: auto;
+    margin-right: auto;
     overflow: auto;
   }
 
@@ -20,13 +19,9 @@
 		overflow: auto;
 		position: relative;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 20px 50px;
     display: flex;
-
-    @media (max-width: 1024px) {
-			flex-direction: column;
-		}
+    flex-direction: column;
     
 		@media (max-width: 576px) {
 			padding: 1rem;
@@ -43,8 +38,10 @@
 	}
 
 	.todays-resource {
-		padding-bottom: 24px;
+	padding-bottom: 24px;
+    padding-right: 10px;
     margin-top: 4rem;
+    width: 90%;
 
     &-text {
       padding-bottom: 1rem;
@@ -60,9 +57,15 @@
         margin-top: 1.5rem;
       }
 		}
+
+    .todays-resources{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
 	}
 
-	.skill-cohort-resources-list {
+	.simulation-sprint-resources-list {
 		display: grid;
 		grid-template-columns: repeat(1, minmax(0, 1fr));
     row-gap: 1rem;
@@ -256,18 +259,8 @@
   box-shadow: 4px 0px 14px #37215714;
   padding: 44px 0 2rem;
   z-index: 9;
+  position: absolute;
   overflow: auto;
-
-  @media (max-width: 1024px) {
-    width: 90%;
-    margin: auto;
-    overflow: auto;
-    max-height: 300px;
-  }
-
-  @media (max-width: 500px) {
-    display: none ;
-  }
 
   & > .font-regular {
     padding-left: 2rem;

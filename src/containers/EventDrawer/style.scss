@@ -22,7 +22,7 @@
 		padding: 60px 20px 20px;
 
 		.event-title {
-			margin-bottom: 1.5rem !important;
+			margin-bottom: .7rem !important;
 			line-height: 48px !important;
 			font-weight: bold !important;
 		}
@@ -56,14 +56,19 @@
 			padding: 0 8px;
 		}
 
-		.event-cost {
-			margin-top: 15px !important;
-			margin-bottom: 10px !important;
+		.event-card-topic-title {
+			margin-bottom: 0rem !important;
+			font-weight: bold !important;
 			color: $color-text-primary !important;
+			margin-bottom: 2px !important;
 
-			span{ 
-				margin-left: 5px !important;
+			span{
 				font-weight: 500 !important;
+				margin-left: 5px !important;
+			}
+
+			@media (max-width: 575.98px) {
+				@include app-font(16px, 21px);
 			}
 		}
 
@@ -198,25 +203,78 @@
 	}
 
 	
-	&-instructors{
-		padding: 50px 20px;
-
-		.event-people{
-			 display: flex;
-			 width: 100%;
-			 flex-wrap: wrap;
-
-			.event-instructor{
-				border: 1px solid $color-border;
-				border-radius: 5px;
-				text-align: center;
-				padding: 20px;
-				margin: 10px 15px;
-				margin-left: 0px;
+	&-instructors {
+		width: 100%;
+		margin: 0 auto;
+		padding: 60px 2rem 120px;
+		margin-top: 1rem;
+	
+		.event-people {
+		  display: grid;
+		  grid-template-columns: repeat(2, minmax(0, 1fr));
+		  gap: 1rem;
+	
+		  .event-instructor {
+	
+			&-name {
+			  text-align: center;
 			}
+		  }
 		}
-
-	}
+	
+		.event-title {
+		  @include app-font(32px, 48px, bold);
+		  margin-bottom: 40px !important;
+		  text-align: center;
+		  text-shadow: 0 0 $color-text-primary;
+		}
+	
+		@media (min-width: 640px) {
+		  .event-title {
+			margin-bottom: 1rem !important;
+			@include app-font(32px, 48px, bold);
+		  }
+	
+		  .event-people {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		  }
+		}
+	
+		@media (max-width: 768px) {
+		  width: 100%;
+		}
+	
+		@media(min-width: 768px) {
+		  .event-people {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		  }
+		}
+	
+		@media (min-width: 1024px) {
+		  // width: 100%;
+		  .event-title {
+			margin-bottom: 24px !important;
+		  }
+	
+		  .event-people {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		  }
+		}
+	
+		@media (min-width: 1536px) {
+		  .event-people {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		  }
+		}
+	
+		@media (max-width: 1024px) {
+		  width: calc(100% - 4rem);
+		}
+	
+		@media (max-width: 1024px) {
+		  width: 100%;
+		}
+	  }
 
 	&-firewall {
 		position: fixed;

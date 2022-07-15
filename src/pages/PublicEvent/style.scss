@@ -155,14 +155,19 @@
       margin-bottom: 20px !important;
     }
 
-  	.event-cost {
-			margin-top: 15px !important;
-			margin-bottom: 10px !important;
+    .event-card-topic-title {
+			margin-bottom: 0rem !important;
+			font-weight: bold !important;
 			color: $color-text-primary !important;
+			margin-bottom: 2px !important;
 
-			span{ 
-				margin-left: 5px !important;
+			span{
 				font-weight: 500 !important;
+				margin-left: 5px !important;
+			}
+
+			@media (max-width: 575.98px) {
+				@include app-font(16px, 21px);
 			}
 		}
 

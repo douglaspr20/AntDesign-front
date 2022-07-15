@@ -277,9 +277,17 @@ import {
   remove as removeBlogPostLike,
 } from "./module/blogPostLike";
 
+import {
+  getAllSimulationSprints,
+  getSimulationSprint,
+  getAllSimulationSprintOfUser,
+} from "./module/simulationSprints";
+
+import { createSimulationSprintParticipant } from "./module/simulationSprintParticipant";
+
 import { getEditorSignature } from "./module/env";
 
-import {   
+import {
   allPanelSpeakersEndPonit,
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,
@@ -502,5 +510,9 @@ export {
   deleteBlogPost,
   addBlogPostLike,
   removeBlogPostLike,
+  getAllSimulationSprints,
+  getSimulationSprint,
+  createSimulationSprintParticipant,
+  getAllSimulationSprintOfUser,
   handleReceiveCommunityNotification,
 };

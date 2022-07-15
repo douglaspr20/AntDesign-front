@@ -1,9 +1,10 @@
 @import "styles/main.scss";
 
-.skill-cohort-detail-page {
+.sprints-detail-page {
   height: 100%;
   overflow: auto;
   background: $color-white;
+
 
 	&-header {
 		height: 193px;
@@ -41,7 +42,7 @@
 
 	&-body {
 		background: white;
-		min-height: 69vh;
+		height: 100%;
     
     &-content {
       width: 50%;
@@ -59,40 +60,6 @@
 
 }
 
-.skill-cohort-firewall {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #3c475252;
-	z-index: 1000;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-
-	.upgrade-notification-panel {
-		padding: 1rem 3rem;
-		border-radius: 0.5rem;
-		background: $color-primary;
-		text-align: center;
-		width: fit-content;
-
-		h3 {
-			color: $color-white !important;
-		}
-
-		@media (max-width: 575.98px) {
-			padding: 1rem;
-
-			h3 {
-				@include app-font(16px, 21px, 600);
-			}
-		}
-	}
-}
-
 .confirm-modal {
 	display: flex;
 	justify-content: space-between;
@@ -103,7 +70,7 @@
   padding-top: 46px;
 }
 
-.skill-cohort-btn {
+.sprints-btn {
   position: absolute;
   bottom: -1rem;
   left: 50%;

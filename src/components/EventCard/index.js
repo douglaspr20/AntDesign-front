@@ -30,6 +30,7 @@ class EventCard extends React.Component {
 
     this.state = {
       showFirewall: false,
+      firewallText: "",
       stripe: null,
       loading: false,
     };
@@ -50,10 +51,23 @@ class EventCard extends React.Component {
     e.stopPropagation();
 
     const userProfile = this.props.userProfile;
+
+    if (userProfile.percentOfCompletion !== 100) {
+      this.setState({
+        firewallText:
+          "You must complete your profile before registering for this event.",
+      });
+      return this.setState({ showFirewall: true });
+    }
+
     if (this.props.data.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
         this.props.onAttend(true);
       } else {
+        this.setState({
+          firewallText:
+            "Upgrade to a PREMIUM Membership and get unlimited access to the LAB features",
+        });
         this.setState({ showFirewall: true });
       }
     } else if (this.props.data.ticket === "fee") {
@@ -212,6 +226,8 @@ class EventCard extends React.Component {
   render() {
     const {
       data: {
+        startDate,
+        endDate,
         title,
         type,
         ticket,
@@ -251,10 +267,7 @@ class EventCard extends React.Component {
               className="upgrade-notification-panel"
               onClick={this.planUpgrade}
             >
-              <h3>
-                Upgrade to a PREMIUM Membership and get unlimited access to the
-                LAB features
-              </h3>
+              <h3>{this.state.firewallText}</h3>
             </div>
           </div>
         )}
@@ -272,31 +285,28 @@ class EventCard extends React.Component {
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
-              <h5>{period}</h5>
+              <h5 className="event-card-topic-title">
+                {`Event date${startDate !== endDate ? "s" : ""}:`}
+                <span>{period}</span>
+              </h5>
 
               {location && (
-                <>
-                  <h5 className="event-cost">
-                    Event Type:{" "}
-                    <span>
-                      {location.map((loc, index) => {
-                        if (loc === "online") {
-                          return (
-                            <>Online {location[index + 1] ? "and " : ""}</>
-                          );
-                        }
+                <h5 className="event-card-topic-title">
+                  Event type:{" "}
+                  <span>
+                    {location.map((loc, index) => {
+                      if (loc === "online") {
+                        return <>Online {location[index + 1] ? "and " : ""}</>;
+                      }
 
-                        return (
-                          <>In Person {location[index + 1] ? "and " : ""}</>
-                        );
-                      })}
-                    </span>
-                  </h5>
-                </>
+                      return <>In Person {location[index + 1] ? "and " : ""}</>;
+                    })}
+                  </span>
+                </h5>
               )}
 
               {ticket && (
-                <h5 className="event-cost">
+                <h5 className="event-card-topic-title">
                   Event tickets:
                   <span>
                     {ticket === "fee"
@@ -308,66 +318,79 @@ class EventCard extends React.Component {
                 </h5>
               )}
 
-              <div className="event-topics-container">
-                <h5>Content delivery format:</h5>
+              <h5 className="event-card-topic-title">
+                Content delivery format:
                 {type &&
                   type.map((tp, index) => (
-                    <h5 className="event-topic" key={index}>
+                    <span>
                       {capitalizeWord(tp)} {type[index + 1] && `|`}
-                    </h5>
+                    </span>
                   ))}
-              </div>
+              </h5>
+
               {status === "going" && (
-                <Space direction="vertical" style={{ marginBottom: "1rem" }}>
-                  {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToLocalTime(
-                      time?.startTime,
-                      timezone
-                    );
-                    const endTime = convertToLocalTime(time?.endTime, timezone);
-                    return (
-                      <div className="d-flex" key={index}>
-                        <Space
-                          size="middle"
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          {`${startTime.format(
-                            "MMMM DD"
-                          )} From ${startTime.format(
-                            "HH:mm a"
-                          )} to ${endTime.format("HH:mm a")} (${userTimezone})`}
-                          <Dropdown
-                            overlay={this.downloadDropdownOptions(
-                              startTime,
-                              endTime,
-                              index
-                            )}
+                <>
+                  <h5 className="event-card-topic-title">
+                    {startAndEndTimes.length > 1
+                      ? " Calendar downloads:"
+                      : " Calendar download:"}
+                  </h5>
+                  <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+                    {startAndEndTimes.map((time, index) => {
+                      const startTime = convertToLocalTime(
+                        time?.startTime,
+                        timezone
+                      );
+                      const endTime = convertToLocalTime(
+                        time?.endTime,
+                        timezone
+                      );
+                      return (
+                        <div className="d-flex" key={index}>
+                          <Space
+                            size="middle"
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                            }}
                           >
-                            <a
-                              href="/#"
-                              className="ant-dropdown-link"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
+                            {`${startTime.format(
+                              "MMMM DD"
+                            )} From ${startTime.format(
+                              "HH:mm a"
+                            )} to ${endTime.format(
+                              "HH:mm a"
+                            )} (${userTimezone})`}
+                            <Dropdown
+                              overlay={this.downloadDropdownOptions(
+                                startTime,
+                                endTime,
+                                index
+                              )}
                             >
-                              {startAndEndTimes.length > 1
-                                ? `Download Calendar Day ${index + 1}: ${moment(
-                                    startTime
-                                  ).format("MMM DD")} `
-                                : "Download Calendar"}
-                              <DownOutlined />
-                            </a>
-                          </Dropdown>
-                        </Space>
-                      </div>
-                    );
-                  })}
-                </Space>
+                              <a
+                                href="/#"
+                                className="ant-dropdown-link"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                              >
+                                {startAndEndTimes.length > 1
+                                  ? `Download Calendar Day ${
+                                      index + 1
+                                    }: ${moment(startTime).format("MMM DD")} `
+                                  : "Download Calendar"}
+                                <DownOutlined />
+                              </a>
+                            </Dropdown>
+                          </Space>
+                        </div>
+                      );
+                    })}
+                  </Space>
+                </>
               )}
 
               <div className="event-card-content-footer">

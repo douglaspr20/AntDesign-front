@@ -16,7 +16,7 @@ import {
   getEventPeriod,
 } from "utils/format";
 import Emitter from "services/emitter";
-import { CustomButton, SpecialtyItem, RichEdit } from "components";
+import { CustomButton, RichEdit } from "components";
 import Login from "pages/Login";
 import { getEvent, addToMyEventList } from "redux/actions/event-actions";
 import { getUser } from "redux/actions/home-actions";
@@ -395,16 +395,23 @@ const PublicEventPage = ({
         >
           {updatedEvent.title}
         </h1>
-        <h3 className="event-date">
-          {getEventPeriod(
-            updatedEvent.startDate,
-            updatedEvent.endDate,
-            updatedEvent.timezone
-          )}
-        </h3>
+
+        <h5 className="event-card-topic-title">
+          {`Event date${
+            updatedEvent.startDate !== updatedEvent.endDate ? "s" : ""
+          }:`}
+          <span>
+            {" "}
+            {getEventPeriod(
+              updatedEvent.startDate,
+              updatedEvent.endDate,
+              updatedEvent.timezone
+            )}
+          </span>
+        </h5>
         {updatedEvent.location && (
           <>
-            <h5 className="event-cost">
+            <h5 className="event-card-topic-title">
               Event Type:{" "}
               <span>
                 {updatedEvent.location.map((loc, index) => {
@@ -427,7 +434,7 @@ const PublicEventPage = ({
           </>
         )}
         {updatedEvent.ticket && (
-          <h5 className="event-cost">
+          <h5 className="event-card-topic-title">
             Event tickets:
             <span>
               {updatedEvent.ticket === "fee"
@@ -439,23 +446,28 @@ const PublicEventPage = ({
           </h5>
         )}
 
-        <div className="event-types-container">
-          <h5>Content delivery format:</h5>
-          {updatedEvent.type &&
-            updatedEvent.type.map((tp, index) => (
-              <h5 className="event-types-title" key={index}>
-                {capitalizeWord(tp)} {updatedEvent.type[index + 1] && `|`}
-              </h5>
-            ))}
-        </div>
+        {updatedEvent.type && (
+          <>
+            <h5 className="event-card-topic-title">
+              Content delivery format:
+              {updatedEvent.type.map((tp, index) => (
+                <span>
+                  {capitalizeWord(tp)} {updatedEvent.type[index + 1] && `|`}
+                </span>
+              ))}
+            </h5>
+          </>
+        )}
 
-        <h5>Event Topics:</h5>
         {updatedEvent.categories && updatedEvent.categories.length > 0 && (
-          <div className="event-topics">
+          <h5 className="event-card-topic-title">
+            Event topics:
             {updatedEvent.categories.map((tp, index) => (
-              <SpecialtyItem key={index} title={tp} active={false} />
+              <span>
+                {capitalizeWord(tp)} {updatedEvent.categories[index + 1] && `|`}
+              </span>
             ))}
-          </div>
+          </h5>
         )}
         {displayVenueLocation}
         <div
@@ -495,7 +507,7 @@ const PublicEventPage = ({
 
       {updatedEvent.EventInstructors?.length > 0 && (
         <div className="public-event-page-instructors">
-          <h1 className="event-title">SPEAKERS</h1>
+          <h1 className="event-title">Speakers</h1>
           <div className="event-people">
             {updatedEvent.EventInstructors.map((eventInstructor) => {
               const instructor = eventInstructor.Instructor;
