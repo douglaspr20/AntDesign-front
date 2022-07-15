@@ -60,7 +60,7 @@ const SpeakerContainer = ({
                 </div>
             )
         }
-
+        
         return (
             <div 
                 className={className} 
@@ -72,22 +72,22 @@ const SpeakerContainer = ({
                     }
                 }}
             >
-                <div className="container-text">
-                    <p className="p-users-name">{user?.firstName} {user?.lastName}</p>
-                    <p className="p-users-profession">{user?.titleProfessions}</p>
-                    <p className="p-users-biografi">{user?.about}</p>
-                </div>
                 <div className="container-picture" style={{background: "none", overflow: "visible"}}>
                     {userImg}
                 </div>
+                <div className="container-text">
+                    <p className="p-users-name">{user?.firstName} {user?.lastName}</p>
+                    <p className="p-users-profession">{user?.titleProfessions} / {user?.company}</p>
+                </div>
                 <a 
                     className="button-linkedin" 
-                    href={(user?.personalLinks?.linkedin?.substring(0,7) !== "http://" || user?.personalLinks?.linkedin?.substring(0,8) !== "https://") ? `https://${user?.personalLinks?.linkedin}` : user?.personalLinks?.linkedin} 
+                    href={(user?.personalLinks?.linkedin?.substring(0,7) !== "http://" && user?.personalLinks?.linkedin?.substring(0,8) !== "https://") ? `https://${user?.personalLinks?.linkedin}` : user?.personalLinks?.linkedin} 
                     target="_blank" 
                     rel="noopener noreferrer"
                 >
                     <></>
                 </a>
+                {(className === "container-conference-speakers") && <p className="p-users-more">Click to see bio and sessions</p>}
             </div>
         )
 

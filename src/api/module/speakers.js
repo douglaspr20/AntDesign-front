@@ -16,6 +16,10 @@ export const getAllUserSpeakerEndPoint = (payload) => {
   })
 }
 
+export const getAllParrafsEndPoint = (payload) => {
+  return httpClient.get(`public/speakers/get-all-parrafs/${payload.type}`)
+}
+
 export const removeUserSpeakerToPanelEndPoint = (payload) => {
   return httpClient.post("private/speakers/remove-user-panel", {
     ...payload,

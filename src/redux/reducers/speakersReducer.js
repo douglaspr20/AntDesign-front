@@ -47,6 +47,13 @@ export const reducers = {
         allSponsors: sponsor,
       })
     }, 
+    [speakerConstans.UPDATE_PARRAF]: (state, {payload}) => {
+      const {parraf} = payload
+
+      return state.merge({
+        allParrafs: parraf.parraf,
+      })
+    }, 
   };
   
   export const initialState = () =>
@@ -56,6 +63,7 @@ export const reducers = {
         bulRegister: false,
         allSponsors: [],
         activeButton: false,
+        allParrafs: []
     }
   );
 
