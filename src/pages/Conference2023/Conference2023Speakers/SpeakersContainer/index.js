@@ -68,7 +68,7 @@ const SpeakerContainer = ({
                 onClick={(e) => {
                     if(e.target.className !== "button-linkedin"){
                         loadDataForPopUpSpeaker(user?.id)
-                        setSpeakerSelect({name: user?.firstName,lastName:user?.lastName, link: user?.personalLinks?.contact, biografia: user?.biografia})
+                        setSpeakerSelect({name: user?.firstName,lastName:user?.lastName, link: user?.personalLinks?.contact, about: user?.about})
                     }
                 }}
             >
@@ -111,7 +111,7 @@ const SpeakerContainer = ({
                         </p>
                         <p>
                             <span className="bold-subtitle">Biography: </span> 
-                            {(speakerSelect?.biografia !== undefined) ? speakerSelect?.biografia : "Sorry, this user don't have biography for the moment."}
+                            {speakerSelect?.about}
                         </p>
                         <p><span className="bold-subtitle">Sessions: </span></p>
                         {allPanelsOfOneUser?.map((member, index) => (
