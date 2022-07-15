@@ -7,7 +7,7 @@ export default {
   PASSWORD_RECOVERY: "/password-recovery",
   RESET_PASSWORD: "/reset-password/:token",
   LEARNING_LIBRARY: "/learning-library",
-  MENTORING: "/mentoring",
+  COMMUNITIES: "/communities",
   EVENTS: "/events",
   CERTIFICATIONS: "/certifications",
   CONFIRM_APPLY_EMAIL: "/user/confirm-apply-business/:id",
@@ -57,6 +57,8 @@ export default {
   AD_EVENTS_PREVIEW: "/ad/events/preview",
   AD_CONFERENCE_LIBRARY_PREVIEW: "/ad/conference-library/preview",
   SEARCH: "/search",
+  SPEAKER_2023: "/speakers2023",
+  CONFERENCE_2023: "/conference2023",
   BLOGS: "/blogs",
   SIMULATION_SPRINTS: "/simulation-sprints",
 };

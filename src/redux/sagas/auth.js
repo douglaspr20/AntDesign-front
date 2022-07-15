@@ -48,6 +48,10 @@ export function* login({ payload }) {
       const { token, user } = response.data;
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
+      if(payload.callback){
+        payload.callback()
+      }
+
       yield put(
         authActions.setAuth({
           isAuthenticated: true,

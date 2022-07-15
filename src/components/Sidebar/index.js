@@ -45,7 +45,7 @@ class NavBar extends Component {
     const { isMobile } = this.props.env || {};
 
     if (
-      url === INTERNAL_LINKS.MENTORING &&
+      url === INTERNAL_LINKS.COMMUNITIES &&
       this.props.userProfile.percentOfCompletion !== 100
     ) {
       e.preventDefault();

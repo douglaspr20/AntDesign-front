@@ -38,8 +38,14 @@ const SET_USER_SHOW = "SET_USER_SHOW";
 const SET_VISIBLE_PROFILE_USER = "SET_VISIBLE_PROFILE_USER";
 const SET_PAGES_SEARCHED_USERS = "SET_PAGES_SEARCHED_USERS";
 const SET_INPUT_USER_SEARCH_VALUE = "SET_INPUT_USER_SEARCH_VALUE";
+const SEND_EMAIL_AUTHORIZATION_SPEAKERS = "SEND_EMAIL_AUTHORIZATION_SPEAKERS";
+const ACTIVE_DENY_AUTHORZATION ="ACTIVE_DENY_AUTHORZATION";
+const UPDATE_RECIVE_COMMUNITY_NOTIFICATION =
+  "UPDATE_RECIVE_COMMUNITY_NOTIFICATION";
 
 export const constants = {
+  ACTIVE_DENY_AUTHORZATION,
+  SEND_EMAIL_AUTHORIZATION_SPEAKERS,
   SET_LOADING,
   SET_PLAN_UPDATED,
   UPDATE_USER_INFO,
@@ -76,6 +82,7 @@ export const constants = {
   SET_VISIBLE_PROFILE_USER,
   SET_PAGES_SEARCHED_USERS,
   SET_INPUT_USER_SEARCH_VALUE,
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
 };
 
 // ------------------------------------
@@ -92,7 +99,7 @@ export const setSettingCollapsed = createAction(
 );
 
 export const getUser = createAction(GET_USER, (id) => ({ id }));
-export const updateUser = createAction(UPDATE_USER, (user) => ({ user }));
+export const updateUser = createAction(UPDATE_USER, (user, callback) => ({ user, callback }));
 export const upgradePlan = createAction(UPGRADE_PLAN, (data) => ({ data }));
 export const inviteFriend = createAction(INVITE_FRIEND, (email, callback) => ({
   email,
@@ -143,6 +150,16 @@ export const acceptInvitationApply = createAction(
   ACCEPT_INVITATION_APPLY,
   (payload) => ({ ...payload })
 );
+
+export const sendEmailAuthorizationSpeakers = createAction(
+  SEND_EMAIL_AUTHORIZATION_SPEAKERS,
+  (payload) => ({ payload })
+);
+
+export const activeOrDenyAuthorization = createAction(
+  ACTIVE_DENY_AUTHORZATION,
+  (payload) => ({ payload })
+)
 
 export const confirmInvitationApply = createAction(
   CONFIRM_INVITATION_APPLY,
@@ -205,7 +222,13 @@ export const setInputSearchValue = createAction(
 
 export const handleOnline = createAction(HANDLE_ONLINE, (user) => ({ user }));
 
+export const updateReciveCommunityNotification = createAction(
+  UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
+  (receiveCommunityNotification) => ({ receiveCommunityNotification })
+);
+
 export const actions = {
+  sendEmailAuthorizationSpeakers,
   setLoading,
   updateUserInformation,
   setSettingCollapsed,
@@ -240,4 +263,6 @@ export const actions = {
   setUserShow,
   setVisibleProfileUser,
   setPagesSearchedUsers,
+  activeOrDenyAuthorization,
+  updateReciveCommunityNotification,
 };

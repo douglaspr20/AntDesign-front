@@ -132,7 +132,7 @@
     border-color: $color-border;
     border-radius: 0 0 8px 8px;
     border: 1px solid $color-border;
-    padding: 60px 2rem 120px;
+    padding: 60px 2rem 40px;
 
     &-calendar {
       display: flex;
@@ -155,12 +155,34 @@
       margin-bottom: 20px !important;
     }
 
-    .event-cost {
-      @include app-font(20px, 21px);
-      color: $color-text-third !important;
-      margin-bottom: 20px !important;
-      text-transform: capitalize;
-    }
+    .event-card-topic-title {
+			margin-bottom: 0rem !important;
+			font-weight: bold !important;
+			color: $color-text-primary !important;
+			margin-bottom: 2px !important;
+
+			span{
+				font-weight: 500 !important;
+				margin-left: 5px !important;
+			}
+
+			@media (max-width: 575.98px) {
+				@include app-font(16px, 21px);
+			}
+		}
+
+    .event-types-container {
+			display: flex;
+			flex-wrap: wrap;
+
+			h5{
+				margin-right: 5px !important;
+			}
+
+			.event-types-title{
+				font-weight: 500 !important;
+			}
+		}
 
     .event-topics {
       display: flex;
@@ -172,13 +194,7 @@
       }
     }
 
-    .event-description {
-      margin-top: 20px;
-      p {
-        width: 100% !important;
-        text-align: justify !important;
-      }
-    }
+
 
     .event-subtitle {
       @include app-font(20px, 48px, bold);
@@ -198,6 +214,43 @@
     @media (max-width: 1024px) {
       width: 100%;
       margin: 0;
+    }
+  }
+
+  &-description{
+    width: 772px;
+    margin: 0 auto;
+    background-color: $color-white;
+    box-shadow: 4px 0px 14px #37215714;
+    border-color: $color-border;
+    border-radius: 8px;
+    border: 1px solid $color-border;
+    padding: 60px 2rem 120px;
+    margin-top: 1rem;
+
+
+    .event-description {
+      margin-top: 20px;
+      p {
+        width: 100% !important;
+        text-align: justify !important;
+      }
+    }
+
+    .event-title {
+      @include app-font(32px, 48px, bold);
+      margin-bottom: 40px !important;
+      text-align: center;
+      text-shadow: 0 0 $color-text-primary;
+    }
+
+
+    @media (max-width: 1024px) {
+      width: calc(100% - 4rem);
+    }
+
+    @media (max-width: 1024px) {
+      width: 100%;
     }
   }
 
@@ -268,6 +321,14 @@
       .event-people {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
+    }
+
+    @media (max-width: 1024px) {
+      width: calc(100% - 4rem);
+    }
+
+    @media (max-width: 1024px) {
+      width: 100%;
     }
   }
 

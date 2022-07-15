@@ -1,5 +1,6 @@
 import { all } from "redux-saga/effects";
 import { authSaga } from "./auth";
+import { speakerSaga } from "./speakers"
 import { userSaga } from "./user";
 import { eventSaga } from "./event";
 import { librarySaga } from "./library";
@@ -51,6 +52,7 @@ import { simulationSprintParticipantSaga } from "./simulationSprintParticipant";
 
 export default function* sagas() {
   yield all([
+    ...speakerSaga,
     ...authSaga,
     ...userSaga,
     ...councilSaga,

@@ -23,6 +23,7 @@ import PostFormModal from "./containers/PostFormModal";
 import PostForm from "./containers/PostForm";
 import FeedbackBox from "./containers/FeedbackBox";
 import AttendanceDisclaimerModal from "./containers/AttendanceDisclaimerModal";
+import { INTERNAL_LINKS } from "enum";
 
 import { HelmetMetaData } from "components";
 
@@ -282,11 +283,13 @@ class App extends Component {
               <Content />
               {window.screen.width > 1000 &&
               this.props.userProfile?.id &&
-              isNaN(isPublicEventId) ? (
+              isNaN(isPublicEventId) &&
+              (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
                 <Chat />
               ) : window.screen.width < 1000 &&
                 this.props.userProfile?.id &&
-                isNaN(isPublicEventId) ? (
+                isNaN(isPublicEventId) &&
+                (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
                 <>
                   <ChatMobile
                     openChat={openChat}

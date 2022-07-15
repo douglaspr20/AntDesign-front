@@ -1,5 +1,7 @@
 import { signIn, signUp } from "./module/auth";
 import {
+  sendEmailAuthorizationSpeakersEndPoint,
+  sendActiveOrDenyAuthorizationEndPoint,
   getUserFromId,
   updateUser,
   upgradePlan,
@@ -24,6 +26,7 @@ import {
   viewRulesConference,
   countAllUsers,
   searchUser,
+  handleReceiveCommunityNotification,
 } from "./module/user";
 import {
   getAllEvents,
@@ -284,7 +287,28 @@ import { createSimulationSprintParticipant } from "./module/simulationSprintPart
 
 import { getEditorSignature } from "./module/env";
 
+import {
+  allPanelSpeakersEndPonit,
+  getAllUserSpeakerEndPoint,
+  removeUserSpeakerToPanelEndPoint,
+  addUserSpeakerToPanelEndPoint,
+  registerUserIfNotAreRegisterConference2023EndPoint,
+  getAllPanelsOfOneUserEndPoint,
+  addedToPersonalAgendaEndPoint,
+  getAllSponsors2023EndPoint,
+} from "./module/speakers";
+
 export {
+  addedToPersonalAgendaEndPoint,
+  sendEmailAuthorizationSpeakersEndPoint,
+  getAllSponsors2023EndPoint,
+  registerUserIfNotAreRegisterConference2023EndPoint,
+  getAllPanelsOfOneUserEndPoint,
+  sendActiveOrDenyAuthorizationEndPoint,
+  allPanelSpeakersEndPonit,
+  getAllUserSpeakerEndPoint,
+  removeUserSpeakerToPanelEndPoint,
+  addUserSpeakerToPanelEndPoint,
   signIn,
   signUp,
   getUserFromId,
@@ -488,4 +512,5 @@ export {
   getSimulationSprint,
   createSimulationSprintParticipant,
   getAllSimulationSprintOfUser,
+  handleReceiveCommunityNotification,
 };

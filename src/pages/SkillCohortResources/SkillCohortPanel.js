@@ -16,7 +16,6 @@ const SkillCohortPanel = ({
   skillCohortResource,
   getSkillCohortResource,
 }) => {
-
   return (
     <div className="skill-cohort-resource-panel">
       <h2 className="font-regular">Resources</h2>

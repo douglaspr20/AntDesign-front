@@ -95,6 +95,18 @@ export const acceptInvitationApplyBusinnesPartner = (payload) => {
   });
 };
 
+export const sendEmailAuthorizationSpeakersEndPoint = (payload) => {
+  return httpClient.post("private/user/email-authorization-speakers2023", {
+    ...payload,
+  });
+};
+
+export const sendActiveOrDenyAuthorizationEndPoint = (payload) => {
+  return httpClient.post("private/user/email-authorization-action-speakers2023", {
+    ...payload,
+  });
+}
+
 export const confirmInvitationApplyBusiness = ({ userId, accepted }) => {
   return httpClient.post(`private/user/confirm-apply-business/${userId}`, {
     accepted,
@@ -134,5 +146,13 @@ export const searchUser = ({ search }) => {
     params: {
       ...search,
     },
+  });
+};
+
+export const handleReceiveCommunityNotification = ({
+  receiveCommunityNotification,
+}) => {
+  return httpClient.put(`private/users/handle-receive-community-notification`, {
+    receiveCommunityNotification,
   });
 };

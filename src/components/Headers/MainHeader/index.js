@@ -36,6 +36,8 @@ import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
 import IconReader from "images/icon-reader.svg";
 import IconHome from "images/icon-home.svg";
 import iconSchool from "images/icon-school.svg";
+import IconMentoring from "images/icon-mentoring.svg";
+
 import IconGlobal from "images/icon-global.svg";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { envSelector } from "redux/selectors/envSelector";
@@ -49,6 +51,7 @@ import "./style.scss";
 import { sessionSelector } from "redux/selectors/sessionSelector";
 import CustomDrawer from "components/Drawer";
 import ProfileViewPanel from "containers/ProfileDrawer/ProfileViewPanel";
+import { capitalizeWord } from "utils/format";
 
 const { Search } = Input;
 
@@ -269,6 +272,13 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPEAKER_2023}`)) {
+      pathInfo = {
+        // icon: ,
+        label: "Speaker 2023",
+      };
+    }
+
     if (
       !pathInfo &&
       pathname.includes(`${INTERNAL_LINKS.TALENT_MARKETPLACE}`)
@@ -329,6 +339,14 @@ class MainHeader extends React.Component {
         label: "Simulation Sprints",
       };
     }
+    if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.COMMUNITIES}`)) {
+      const title = capitalizeWord(pathname.slice(13));
+      pathInfo = {
+        icon: IconMentoring,
+        label: title,
+      };
+    }
+
     return (
       <div className="main-header">
         <div className="main-header-left">

@@ -6,7 +6,9 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
+import Conference2023 from "pages/Conference2023";
 import CouncilPage from "pages/Council";
+import Speakers2023 from "pages/Speakers2023";
 import LoginPage from "pages/Login";
 import SignupPage from "pages/Signup";
 import PasswordRecoveryPage from "pages/PasswordRecovery";
@@ -17,7 +19,7 @@ import ArticlePage from "pages/Article";
 import FavouritePage from "pages/Favourites";
 import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
-import MentoringPage from "pages/Mentoring";
+// import MentoringPage from "pages/Mentoring";
 import CertificatePage from "pages/Certificate";
 import MicroClassCertificatePage from "pages/MicroClassCertificate";
 import ClassesPage from "pages/Classes";
@@ -36,7 +38,7 @@ import MicroConferencePage from "pages/MicroConference";
 import GlobalConferenceSpeakersPage from "pages/GlobalConference/Speakers";
 import GlobalConferenceParticipantsPage from "pages/GlobalConference/Participants";
 import GlobalConferencePartnersPage from "pages/GlobalConference/Partners";
-import GlobalConferenceBonfiressPage from "pages/GlobalConference/Bonfire";
+import GlobalConferenceBonfiressPage from "pages/Bonfires";
 import GlobalConferencePersonalAgendaPage from "pages/GlobalConference/PersonalAgenda";
 import GlobalConferenceLeaderboardPage from "pages/GlobalConference/ConferenceLeaderboard";
 import SpeakersPage from "pages/Speakers";
@@ -63,6 +65,8 @@ import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
 import SimulationSprintsPage from "pages/SimulationSprints";
 import SimulationSprintPage from "pages/SimulationSprint";
+// import CommunititesPage from "pages/Communities";
+// import BonfiresPage from "pages/Bonfires";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -110,7 +114,14 @@ class Content extends Component {
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
-
+          <Route
+            path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
+            render={(props) => <Conference2023 {...props} />}
+          />
+          <Route
+            path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
+            render={(props) => <Conference2023 {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.INVITATION}/:hostUserId/:email`}
@@ -157,6 +168,11 @@ class Content extends Component {
           />
           <PrivateRoute
             exact
+            path={INTERNAL_LINKS.SPEAKER_2023}
+            render={(props) => <Speakers2023 {...props} />}
+          />
+          <PrivateRoute
+            exact
             path={INTERNAL_LINKS.BUSINESS_PARTNER}
             render={(props) => <BusinessPartnerPage {...props} />}
           />
@@ -200,10 +216,25 @@ class Content extends Component {
             path={INTERNAL_LINKS.PODCAST}
             render={(props) => <PodcastPage {...props} />}
           />
-          <PrivateRoute
-            path={INTERNAL_LINKS.MENTORING}
+
+          {/* <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COMMUNITIES}/mentoring`}
             render={(props) => <MentoringPage {...props} />}
-          />
+          /> */}
+
+          {/* <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.COMMUNITIES}/bonfires`}
+            render={(props) => <BonfiresPage {...props} />}
+          /> */}
+          {/* 
+          <PrivateRoute
+            exact
+            path={INTERNAL_LINKS.COMMUNITIES}
+            render={(props) => <CommunititesPage {...props} />}
+          /> */}
+
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
             render={(props) => <CertificatePage {...props} />}

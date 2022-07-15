@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Dropdown, Menu, Space } from "antd";
+import { Avatar, Dropdown, Menu, Space, Tooltip } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
@@ -9,14 +9,8 @@ import { loadStripe } from "@stripe/stripe-js";
 
 import { getCheckoutSession } from "api/module/stripe";
 
-import {
-  DateAvatar,
-  CustomButton,
-  CustomDrawer,
-  SpecialtyItem,
-  RichEdit,
-} from "components";
-import { EVENT_TYPES, MONTH_NAMES, TIMEZONE_LIST } from "enum";
+import { DateAvatar, CustomButton, CustomDrawer, RichEdit } from "components";
+import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
 import {
   actions as eventActions,
@@ -26,7 +20,11 @@ import {
 import { eventSelector } from "redux/selectors/eventSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 
-import { convertToLocalTime, convertToCertainTime } from "utils/format";
+import {
+  convertToLocalTime,
+  convertToCertainTime,
+  capitalizeWord,
+} from "utils/format";
 
 import "./style.scss";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -147,25 +145,13 @@ const EventDrawer = ({
   };
 
   const onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      event.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      event.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${event.title}&dates=${startDate}/${endDate}&location=${event.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   const onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `http://calendar.yahoo.com/?v=60&type=10&title=${
-      event.title
-    }&st=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}&dur${convertToLocalTime(endDate).format("HHmmss")}&in_loc=${
-      event.location
-    }`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${event.title}&in_loc=${event.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -175,16 +161,14 @@ const EventDrawer = ({
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === event.timezone
-    );
-    const offset = timezone.offset;
+    const { timezone } = event;
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
+    const convertedStartTime = convertToLocalTime(startTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
+
+    const convertedEndTime = convertToLocalTime(endTime, timezone).format(
+      "YYYYMMDDTHHmmss"
     );
 
     switch (key) {
@@ -345,10 +329,14 @@ const EventDrawer = ({
           </div>
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
-            <div className="d-flex items-center">
+            <h5 className="event-card-topic-title">
+              {`Event date${event.startDate !== event.endDate ? "s" : ""}:`}
+              <span>{event.period}</span>
+            </h5>
+            {/* <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
-            </div>
-            {event.status !== "past" && event.status !== "confirmed" && (
+            </div> */}
+            {event.status === "going" && (
               <Space direction="vertical">
                 {!isEmpty(event.startAndEndTimes) &&
                   event.startAndEndTimes?.map((time, index) => {
@@ -363,6 +351,7 @@ const EventDrawer = ({
 
                     return (
                       <Dropdown
+                        key={time.startTime}
                         overlay={downloadDropdownOptions(
                           startTime,
                           endTime,
@@ -389,35 +378,112 @@ const EventDrawer = ({
                   })}
               </Space>
             )}
-            {/* {event.status === "going" && event.status !== "past" && (
-              <Dropdown overlay={menu}>
-                <h3 className="add-to-calendar ant-dropdown-link">
-                  Add to calendar
-                </h3>
-              </Dropdown>
-            )} */}
           </div>
-          <h3 className="event-type">{`${event.location} event`}</h3>
-          <h3 className="event-cost">{event.ticket}</h3>
-          <h3 className="event-cost">{`$${event.ticketFee}`}</h3>
-          {event.type && event.type.length > 0 && (
-            <div className="event-topics">
-              {event.type.map((tp, index) => (
-                <SpecialtyItem key={index} title={tp} active={false} />
-              ))}
-            </div>
+          {event.location && (
+            <>
+              <h5 className="event-card-topic-title">
+                Event Type:{" "}
+                <span>
+                  {event.location.map((loc, index) => {
+                    if (loc === "online") {
+                      return (
+                        <>Online {event.location[index + 1] ? "and " : ""}</>
+                      );
+                    }
+
+                    return (
+                      <>In Person {event.location[index + 1] ? "and " : ""}</>
+                    );
+                  })}
+                </span>
+              </h5>
+            </>
           )}
-          {editor === "froala" ? (
-            <div
-              className="event-description"
-              dangerouslySetInnerHTML={{
-                __html: (event.description || {}).html || "",
-              }}
-            />
-          ) : (
-            <RichEdit data={event.description} />
+          {event.ticket && (
+            <h5 className="event-card-topic-title">
+              Event tickets:
+              <span>
+                {event.ticket === "fee"
+                  ? `$${event.ticketFee} Registration fee`
+                  : event.ticket === "premium"
+                  ? "Only PREMIUM members"
+                  : capitalizeWord(event.ticket)}
+              </span>
+            </h5>
+          )}
+
+          {event.type && (
+            <h5 className="event-card-topic-title">
+              Content delivery format:
+              {event.type.map((tp, index) => (
+                <span>
+                  {capitalizeWord(tp)} {event.type[index + 1] && `|`}
+                </span>
+              ))}
+            </h5>
+          )}
+
+          {event.categories && event.categories.length > 0 && (
+            <h5 className="event-card-topic-title">
+              Event topics:
+              {event.categories.map((tp, index) => (
+                <span>
+                  {capitalizeWord(tp)} {event.categories[index + 1] && `|`}
+                </span>
+              ))}
+            </h5>
           )}
         </div>
+
+        {event.description && (
+          <div className="event-details-description">
+            <h1 className="event-title">Description</h1>
+            {editor === "froala" ? (
+              <div
+                className="event-description"
+                dangerouslySetInnerHTML={{
+                  __html: (event.description || {}).html || "",
+                }}
+              />
+            ) : (
+              <RichEdit data={event.description} />
+            )}
+          </div>
+        )}
+
+        {event.EventInstructors?.length > 0 && (
+          <div className="event-details-instructors">
+            <h1 className="event-title">Speakers</h1>
+            <div className="event-people">
+              {event.EventInstructors.map((eventInstructor) => {
+                const instructor = eventInstructor.Instructor;
+
+                return (
+                  <div className="event-instructor">
+                    <Avatar
+                      src={instructor.image}
+                      alt="instructor-image"
+                      size={128}
+                      style={{
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        display: "flex",
+                      }}
+                    />
+                    <div className="event-instructor-name">
+                      {instructor.name}
+                    </div>
+                    <Tooltip title={instructor.description}>
+                      <div className="event-instructor-name truncate">
+                        {instructor.description}
+                      </div>
+                    </Tooltip>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </CustomDrawer>
   );

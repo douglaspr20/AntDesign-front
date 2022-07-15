@@ -38,7 +38,6 @@ import FilterDrawer from "./FilterDrawer";
 import RecommendedAgendaModal from "./RecommendedAgendaModal";
 import AccessibilityRequirementsModal from "./AccessibilityRequirementsModal";
 import InviteColleaguesFormModal from "./InviteColleaguesFormModal";
-import CreateBonfireModal from "./CreateBonfireModal";
 import "./style.scss";
 import AcceptTermsAndConditions from "./AcceptTermsAndConditions";
 import { CheckOutlined } from "@ant-design/icons";
@@ -73,8 +72,6 @@ const GlobalConference = ({
   const [tabData, setTabData] = useState([]);
   const [filters, setFilters] = useState({});
   const [meta, setMeta] = useState("");
-  const [createBonfireModalVisible, setCreateBonfireModalVisible] =
-    useState(false);
   const [
     modalFormInviteColleaguesVisible,
     setModalFormInviteColleaguesVisible,
@@ -576,10 +573,6 @@ const GlobalConference = ({
           </div>
         )}
       </div>
-      <CreateBonfireModal
-        visible={createBonfireModalVisible}
-        onCancel={() => setCreateBonfireModalVisible(false)}
-      />
       <InviteColleaguesFormModal
         visible={modalFormInviteColleaguesVisible}
         onCancel={() => {
@@ -615,7 +608,6 @@ const GlobalConference = ({
         }}
         sessionsUserJoined={sessionsUserJoined}
       />
-
       <CustomModal
         visible={modalCloseConferenceVisible}
         title="Thank you so much for joining the Hacking HR 2022 Global Online Conference."

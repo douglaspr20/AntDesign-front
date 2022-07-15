@@ -22,12 +22,15 @@ import {
   changePassword,
   createInvitation,
   acceptInvitationJoin,
+  sendEmailAuthorizationSpeakersEndPoint,
   confirmAccessibilityRequirements,
   getAllUsers,
   acceptTermsAndConditions,
   viewRulesConference,
   countAllUsers,
   searchUser,
+  sendActiveOrDenyAuthorizationEndPoint,
+  handleReceiveCommunityNotification,
 } from "../../api";
 import {
   acceptInvitationApplyBusinnesPartner,
@@ -83,6 +86,10 @@ export function* putUser({ payload }) {
 
     if (response.status === 200) {
       const { affectedRows: user } = response.data;
+
+      if(payload.callback){
+        payload.callback()
+      }
 
       yield put(
         homeActions.updateUserInformation({
@@ -442,6 +449,71 @@ export function* acceptInvitationApplySaga({ payload }) {
   }
 }
 
+export function* sendEmailAuthorizationSpeakersSaga({ payload }) {
+  const {userId} = payload.payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(sendEmailAuthorizationSpeakersEndPoint, {
+      userId,
+    });
+
+    if (response.status === 200) {
+      notification.success({
+        title: "Success",
+        description: response.data.msg,
+      });
+      yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
+      yield put(homeActions.setLoading(false));
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* sendActiveOrDenyAuthorizationEndPointSaga({ payload }) {
+  const {userId , typeAuthorization} = payload.payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(sendActiveOrDenyAuthorizationEndPoint, {
+      userId,
+      typeAuthorization
+    });
+
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
+      yield put(homeActions.setLoading(false));
+    }
+  } catch (error) {
+    console.log(error);
+
+    notification.error({
+      title: "Error",
+      description: error.response.data.msg,
+    });
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(authActions.logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 export function* confirmAccessibilityRequirementsSaga({ payload }) {
   yield put(homeActions.setLoading(true));
   try {
@@ -627,6 +699,23 @@ export function* searchUserSaga({ payload }) {
   }
 }
 
+export function* handleReceiveCommunityNotificationSaga({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(handleReceiveCommunityNotification, {
+      ...payload,
+    });
+    if (response.status === 200) {
+      yield put(homeActions.updateUserInformation(response.data.user));
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
   yield takeLatest(homeConstants.GET_USER, getUser);
   yield takeLatest(homeConstants.UPDATE_USER, putUser);
@@ -651,6 +740,14 @@ function* watchLogin() {
     acceptInvitationApplySaga
   );
   yield takeLatest(
+    homeConstants.SEND_EMAIL_AUTHORIZATION_SPEAKERS,
+    sendEmailAuthorizationSpeakersSaga
+  );
+  yield takeLatest(
+    homeConstants.ACTIVE_DENY_AUTHORZATION,
+    sendActiveOrDenyAuthorizationEndPointSaga
+  );
+  yield takeLatest(
     homeConstants.CONFIRM_INVITATION_APPLY,
     confirmInvitationApply
   );
@@ -670,6 +767,10 @@ function* watchLogin() {
   yield takeLatest(homeConstants.COUNT_ALL_USERS, countAllUsersSaga);
   yield takeLatest(homeConstants.HANDLE_ONLINE, handleOnlineSaga);
   yield takeLatest(homeConstants.SEARCH_USER, searchUserSaga);
+  yield takeLatest(
+    homeConstants.UPDATE_RECIVE_COMMUNITY_NOTIFICATION,
+    handleReceiveCommunityNotificationSaga
+  );
 }
 
 export const userSaga = [fork(watchLogin)];

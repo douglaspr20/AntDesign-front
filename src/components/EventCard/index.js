@@ -11,14 +11,13 @@ import { getCheckoutSession } from "api/module/stripe";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
 
-import { CustomButton, SpecialtyItem } from "components";
+import { CustomButton } from "components";
 import { EVENT_TYPES, INTERNAL_LINKS, CARD_TYPE } from "enum";
 import Emitter from "services/emitter";
 import CardMenu from "../CardMenu";
 import { ReactComponent as IconPlus } from "images/icon-plus.svg";
 import IconMenu from "images/icon-menu.svg";
-import { convertToCertainTime, convertToLocalTime } from "utils/format";
-import { TIMEZONE_LIST } from "../../enum";
+import { capitalizeWord, convertToLocalTime } from "utils/format";
 
 import "./style.scss";
 import { isEmpty } from "lodash";
@@ -31,6 +30,7 @@ class EventCard extends React.Component {
 
     this.state = {
       showFirewall: false,
+      firewallText: "",
       stripe: null,
       loading: false,
     };
@@ -51,10 +51,23 @@ class EventCard extends React.Component {
     e.stopPropagation();
 
     const userProfile = this.props.userProfile;
+
+    if (userProfile.percentOfCompletion !== 100) {
+      this.setState({
+        firewallText:
+          "You must complete your profile before registering for this event.",
+      });
+      return this.setState({ showFirewall: true });
+    }
+
     if (this.props.data.ticket === "premium") {
       if (userProfile && userProfile.memberShip === "premium") {
         this.props.onAttend(true);
       } else {
+        this.setState({
+          firewallText:
+            "Upgrade to a PREMIUM Membership and get unlimited access to the LAB features",
+        });
         this.setState({ showFirewall: true });
       }
     } else if (this.props.data.ticket === "fee") {
@@ -160,23 +173,13 @@ class EventCard extends React.Component {
   };
 
   onClickAddGoogleCalendar = (startDate, endDate) => {
-    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${
-      this.props.data.title
-    }&dates=${convertToLocalTime(startDate).format(
-      "YYYYMMDDTHHmm"
-    )}/${convertToLocalTime(endDate).format("YYYYMMDDTHHmmss")}&location=${
-      this.props.data.location
-    }&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
+    let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${this.props.data.title}&dates=${startDate}/${endDate}&location=${this.props.data.location}&trp=false&sprop=https://www.hackinghrlab.io/&sprop=name:`;
 
     window.open(googleCalendarUrl, "_blank");
   };
 
   onClickAddYahooCalendar = (startDate, endDate) => {
-    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${convertToLocalTime(
-      startDate
-    ).format("YYYYMMDDTHHmm")}&et=${convertToLocalTime(endDate).format(
-      "YYYYMMDDTHHmm"
-    )}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startDate}&et=${endDate}&title=${this.props.data.title}&in_loc=${this.props.data.location}`;
     window.open(yahooCalendarUrl, "_blank");
   };
 
@@ -186,17 +189,9 @@ class EventCard extends React.Component {
 
     const [startTime, endTime, day] = item.props.value;
 
-    const timezone = TIMEZONE_LIST.find(
-      (item) => item.value === this.props.data.timezone
-    );
-    const offset = timezone.offset;
+    const convertedStartTime = startTime.format("YYYYMMDDTHHmmss");
 
-    const convertedStartTime = convertToLocalTime(
-      moment(startTime).utcOffset(offset, true)
-    );
-    const convertedEndTime = convertToLocalTime(
-      moment(endTime).utcOffset(offset, true)
-    );
+    const convertedEndTime = endTime.format("YYYYMMDDTHHmmss");
 
     switch (key) {
       case "1":
@@ -209,7 +204,6 @@ class EventCard extends React.Component {
         this.onClickAddYahooCalendar(convertedStartTime, convertedEndTime);
         break;
       default:
-      //
     }
   };
 
@@ -232,6 +226,8 @@ class EventCard extends React.Component {
   render() {
     const {
       data: {
+        startDate,
+        endDate,
         title,
         type,
         ticket,
@@ -251,24 +247,11 @@ class EventCard extends React.Component {
       onMenuClick,
     } = this.props;
 
-    const displayTransformedEventLocation = (location || [])
-      .map((location) => {
-        if (location === "online") {
-          return "Online";
-        } else {
-          return "In Person";
-        }
-      })
-      .join("/");
+    let userTimezone = moment.tz.guess();
 
-    const displayTicket = (
-      <div
-        style={{ marginBottom: "1rem", color: "grey" }}
-        className="event-card-cost"
-      >
-        {ticket === "fee" ? `Registration Fee: $${ticketFee}` : ticket}
-      </div>
-    );
+    if (userTimezone.includes("_")) {
+      userTimezone = userTimezone.split("_").join(" ");
+    }
 
     return (
       <div
@@ -284,10 +267,7 @@ class EventCard extends React.Component {
               className="upgrade-notification-panel"
               onClick={this.planUpgrade}
             >
-              <h3>
-                Upgrade to a PREMIUM Membership and get unlimited access to the
-                LAB features
-              </h3>
+              <h3>{this.state.firewallText}</h3>
             </div>
           </div>
         )}
@@ -305,60 +285,114 @@ class EventCard extends React.Component {
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
               <h3>{title}</h3>
-              <h5>{period}</h5>
-              <h5>{displayTransformedEventLocation} Event</h5>
-              {displayTicket}
-              {status !== "past" && status !== "confirmed" && (
-                <Space direction="vertical" style={{ marginBottom: "1rem" }}>
-                  {startAndEndTimes.map((time, index) => {
-                    const startTime = convertToCertainTime(
-                      time?.startTime,
-                      timezone
-                    );
-                    const endTime = convertToCertainTime(
-                      time?.endTime,
-                      timezone
-                    );
+              <h5 className="event-card-topic-title">
+                {`Event date${startDate !== endDate ? "s" : ""}:`}
+                <span>{period}</span>
+              </h5>
 
-                    return (
-                      <div className="d-flex" key={index}>
-                        <Space size="middle">
-                          <Dropdown
-                            overlay={this.downloadDropdownOptions(
-                              startTime,
-                              endTime,
-                              index
-                            )}
-                          >
-                            <a
-                              href="/#"
-                              className="ant-dropdown-link"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
-                            >
-                              {startAndEndTimes.length > 1
-                                ? `Download Calendar Day ${index + 1}: ${moment(
-                                    startTime
-                                  ).format("MMM DD")} `
-                                : "Download Calendar"}
-                              <DownOutlined />
-                            </a>
-                          </Dropdown>
-                        </Space>
-                      </div>
-                    );
-                  })}
-                </Space>
+              {location && (
+                <h5 className="event-card-topic-title">
+                  Event type:{" "}
+                  <span>
+                    {location.map((loc, index) => {
+                      if (loc === "online") {
+                        return <>Online {location[index + 1] ? "and " : ""}</>;
+                      }
+
+                      return <>In Person {location[index + 1] ? "and " : ""}</>;
+                    })}
+                  </span>
+                </h5>
               )}
-              {type && type.length > 0 && (
-                <div className="event-card-topics">
-                  {type.map((ty, index) => (
-                    <SpecialtyItem key={index} title={ty} active={false} />
+
+              {ticket && (
+                <h5 className="event-card-topic-title">
+                  Event tickets:
+                  <span>
+                    {ticket === "fee"
+                      ? `$${ticketFee} Registration fee`
+                      : ticket === "premium"
+                      ? "Only PREMIUM members"
+                      : capitalizeWord(ticket)}
+                  </span>
+                </h5>
+              )}
+
+              <h5 className="event-card-topic-title">
+                Content delivery format:
+                {type &&
+                  type.map((tp, index) => (
+                    <span>
+                      {capitalizeWord(tp)} {type[index + 1] && `|`}
+                    </span>
                   ))}
-                </div>
+              </h5>
+
+              {status === "going" && (
+                <>
+                  <h5 className="event-card-topic-title">
+                    {startAndEndTimes.length > 1
+                      ? " Calendar downloads:"
+                      : " Calendar download:"}
+                  </h5>
+                  <Space direction="vertical" style={{ marginBottom: "1rem" }}>
+                    {startAndEndTimes.map((time, index) => {
+                      const startTime = convertToLocalTime(
+                        time?.startTime,
+                        timezone
+                      );
+                      const endTime = convertToLocalTime(
+                        time?.endTime,
+                        timezone
+                      );
+                      return (
+                        <div className="d-flex" key={index}>
+                          <Space
+                            size="middle"
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-start",
+                            }}
+                          >
+                            {`${startTime.format(
+                              "MMMM DD"
+                            )} From ${startTime.format(
+                              "HH:mm a"
+                            )} to ${endTime.format(
+                              "HH:mm a"
+                            )} (${userTimezone})`}
+                            <Dropdown
+                              overlay={this.downloadDropdownOptions(
+                                startTime,
+                                endTime,
+                                index
+                              )}
+                            >
+                              <a
+                                href="/#"
+                                className="ant-dropdown-link"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                              >
+                                {startAndEndTimes.length > 1
+                                  ? `Download Calendar Day ${
+                                      index + 1
+                                    }: ${moment(startTime).format("MMM DD")} `
+                                  : "Download Calendar"}
+                                <DownOutlined />
+                              </a>
+                            </Dropdown>
+                          </Space>
+                        </div>
+                      );
+                    })}
+                  </Space>
+                </>
               )}
+
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
                   {!["going", "attend"].includes(status) && showClaim === 1 && (
@@ -381,6 +415,7 @@ class EventCard extends React.Component {
                       loading={this.state.loading}
                     />
                   )}
+
                   {status === "going" && (
                     <div className="going-group-part">
                       <div className="going-label">

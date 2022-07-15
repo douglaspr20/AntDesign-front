@@ -29,10 +29,10 @@ class Sider extends Component {
           path={INTERNAL_LINKS.MICRO_CLASS}
           render={() => <Sidebar />}
         />
-        <PrivateRoute
-          path={INTERNAL_LINKS.MENTORING}
+        {/* <PrivateRoute
+          path={INTERNAL_LINKS.COMMUNITIES}
           render={() => <Sidebar />}
-        />
+        /> */}
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.CHANNELS}
@@ -113,6 +113,10 @@ class Sider extends Component {
         <PrivateRoute path={INTERNAL_LINKS.LIVE} render={() => <Sidebar />} />
         <PrivateRoute
           path={INTERNAL_LINKS.PODCAST_SERIES}
+          render={() => <Sidebar />}
+        />
+        <PrivateRoute
+          path={INTERNAL_LINKS.SPEAKER_2023}
           render={() => <Sidebar />}
         />
         <PrivateRoute path={INTERNAL_LINKS.POST} render={() => <Sidebar />} />

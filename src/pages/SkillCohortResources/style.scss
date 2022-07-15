@@ -9,8 +9,9 @@
 
   .wrapper {
     width: 100%;
+    max-width: 1350px;
     margin-left: auto;
-    margin-right: auto;
+    // margin-right: auto;
     overflow: auto;
   }
 
@@ -22,6 +23,10 @@
     margin-left: auto;
     margin-right: auto;
     display: flex;
+
+    @media (max-width: 1024px) {
+			flex-direction: column;
+		}
     
 		@media (max-width: 576px) {
 			padding: 1rem;
@@ -251,8 +256,18 @@
   box-shadow: 4px 0px 14px #37215714;
   padding: 44px 0 2rem;
   z-index: 9;
-  position: absolute;
   overflow: auto;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+    margin: auto;
+    overflow: auto;
+    max-height: 300px;
+  }
+
+  @media (max-width: 500px) {
+    display: none ;
+  }
 
   & > .font-regular {
     padding-left: 2rem;

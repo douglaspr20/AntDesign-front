@@ -81,8 +81,9 @@ function convertToCertainTime(date, tz) {
 
 function getEventPeriod(date, date2, timezone) {
   let res = "";
-  const startDate = convertToCertainTime(date, timezone);
-  const endDate = convertToCertainTime(date2, timezone);
+  const startDate = moment(date).utc();
+  const endDate = moment(date2).utc();
+
   let tz = TIMEZONE_LIST.find((item) => item.value === timezone);
   if (tz) {
     if (tz.offset > 0) {
@@ -101,9 +102,7 @@ function getEventPeriod(date, date2, timezone) {
     startDate.month() === endDate.month() &&
     startDate.date() === endDate.date()
   ) {
-    res = `${startDate.format("MMMM DD, yyyy")} - ${endDate.format(
-      "MMMM DD"
-    )} ${tz}`;
+    res = `${startDate.format("MMMM DD, yyyy")} ${tz}`;
   } else {
     res = `${startDate.format("MMMM DD, yyyy")} - ${endDate.format(
       "MMMM DD, yyyy"
@@ -128,10 +127,24 @@ function convertToUTCTime(date, tz) {
   return res;
 }
 
-function convertToLocalTime(date) {
+function convertToLocalTime(date, timezone) {
+  let currentTimezone = TIMEZONE_LIST.find((item) => item.value === timezone);
+
+  if (currentTimezone) {
+    currentTimezone = currentTimezone.utc[0];
+  } else {
+    currentTimezone = timezone;
+  }
+
+  const dateFormatUtc = moment(date).utc().format("YYYY-MM-DD HH:mm");
+
   const localTimezone = moment.tz.guess();
 
-  return moment.utc(date).tz(localTimezone).local();
+  const dateWithCurrentTimezone = moment.tz(dateFormatUtc, currentTimezone);
+
+  const dateWithLocalTimezone = dateWithCurrentTimezone.clone().tz(localTimezone);
+
+  return dateWithLocalTimezone;
 }
 
 const convertBlobToBase64 = (blob) => {
@@ -186,6 +199,31 @@ const transformNames = (name) => {
   return name;
 };
 
+const getNameOfCityWithTimezone = (timezone) => {
+  let indexSlice = timezone.indexOf("/");
+
+  let city = timezone.slice(indexSlice + 1);
+
+  while (indexSlice !== -1) {
+    indexSlice = city.indexOf("/");
+
+    city = city.slice(indexSlice + 1);
+  }
+
+  if (city.includes("_")) {
+    city = city.split("_").join(" ");
+  }
+
+  return city;
+};
+
+const capitalizeWord = (word) => {
+  const firstCharacter = word.charAt(0);
+  const transformWord = firstCharacter.toUpperCase() + word.slice(1);
+
+  return transformWord;
+};
+
 export {
   numberWithCommas,
   isValidPassword,
@@ -200,4 +238,6 @@ export {
   getValidDescription,
   getPublicationTime,
   transformNames,
+  capitalizeWord,
+  getNameOfCityWithTimezone,
 };
