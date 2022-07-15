@@ -6,7 +6,7 @@ import ReactGA from "react-ga";
 
 // Pages
 import HomePage from "pages/Home";
-import Conference2023 from "pages/Conference2023"
+import Conference2023 from "pages/Conference2023";
 import CouncilPage from "pages/Council";
 import Speakers2023 from "pages/Speakers2023";
 import LoginPage from "pages/Login";
@@ -63,6 +63,8 @@ import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
 import SearchPage from "pages/Search";
 import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
+import SimulationSprintsPage from "pages/SimulationSprints";
+import SimulationSprintPage from "pages/SimulationSprint";
 // import CommunititesPage from "pages/Communities";
 // import BonfiresPage from "pages/Bonfires";
 
@@ -74,6 +76,7 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
+import SimulationSprintResourcePage from "pages/SimulationSprintResource";
 
 class Content extends Component {
   componentDidMount() {
@@ -111,11 +114,11 @@ class Content extends Component {
             path={INTERNAL_LINKS.SIGNUP}
             render={(props) => <SignupPage {...props} />}
           />
-          <Route 
+          <Route
             path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
             render={(props) => <Conference2023 {...props} />}
           />
-          <Route 
+          <Route
             path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
             render={(props) => <Conference2023 {...props} />}
           />
@@ -459,11 +462,30 @@ class Content extends Component {
             exact
             render={(props) => <BlogPage {...props} />}
           />
+
+          <Route
+            exact
+            path={INTERNAL_LINKS.SIMULATION_SPRINTS}
+            render={(props) => <SimulationSprintsPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
+            render={(props) => <SimulationSprintPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/resources`}
+            render={(props) => <SimulationSprintResourcePage {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
             render={(props) => <PublicEventPage {...props} />}
           />
+
           <Route component={NoPageFound} />
         </Switch>
       </Layout.Content>

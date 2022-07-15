@@ -60,4 +60,5 @@ export default {
   SPEAKER_2023: "/speakers2023",
   CONFERENCE_2023: "/conference2023",
   BLOGS: "/blogs",
+  SIMULATION_SPRINTS: "/simulation-sprints",
 };

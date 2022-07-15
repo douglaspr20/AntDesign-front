@@ -277,9 +277,17 @@ import {
   remove as removeBlogPostLike,
 } from "./module/blogPostLike";
 
+import {
+  getAllSimulationSprints,
+  getSimulationSprint,
+  getAllSimulationSprintOfUser,
+} from "./module/simulationSprints";
+
+import { createSimulationSprintParticipant } from "./module/simulationSprintParticipant";
+
 import { getEditorSignature } from "./module/env";
 
-import {   
+import {
   allPanelSpeakersEndPonit,
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,
@@ -287,8 +295,8 @@ import {
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   addedToPersonalAgendaEndPoint,
-  getAllSponsors2023EndPoint
-} from "./module/speakers"
+  getAllSponsors2023EndPoint,
+} from "./module/speakers";
 
 export {
   addedToPersonalAgendaEndPoint,
@@ -500,5 +508,9 @@ export {
   deleteBlogPost,
   addBlogPostLike,
   removeBlogPostLike,
+  getAllSimulationSprints,
+  getSimulationSprint,
+  createSimulationSprintParticipant,
+  getAllSimulationSprintOfUser,
   handleReceiveCommunityNotification,
 };
