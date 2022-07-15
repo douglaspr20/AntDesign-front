@@ -50,7 +50,9 @@ export const joinedASession = ({ session }) => {
   return httpClient.put(`private/user/session-joined/${session.id}`);
 };
 export const addBonfire = ({ bonfire }) => {
-  return httpClient.put(`private/user/add-bonfire/${bonfire.id}`);
+  return httpClient.put(`private/user/add-bonfire/${bonfire.id}`, {
+    userTimezone: bonfire.userTimezone,
+  });
 };
 
 export const removeBonfire = ({ bonfire }) => {
@@ -102,10 +104,13 @@ export const sendEmailAuthorizationSpeakersEndPoint = (payload) => {
 };
 
 export const sendActiveOrDenyAuthorizationEndPoint = (payload) => {
-  return httpClient.post("private/user/email-authorization-action-speakers2023", {
-    ...payload,
-  });
-}
+  return httpClient.post(
+    "private/user/email-authorization-action-speakers2023",
+    {
+      ...payload,
+    }
+  );
+};
 
 export const confirmInvitationApplyBusiness = ({ userId, accepted }) => {
   return httpClient.post(`private/user/confirm-apply-business/${userId}`, {

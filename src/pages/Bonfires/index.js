@@ -43,7 +43,7 @@ const BonfiresPage = ({
   };
 
   const onAddBonfire = (bonfire) => {
-    addBonfire(bonfire);
+    addBonfire({ ...bonfire, userTimezone: moment.tz.guess() });
   };
 
   const onRemoveBonfire = (bonfire) => {

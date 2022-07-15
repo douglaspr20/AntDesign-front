@@ -91,7 +91,7 @@ const CreateBonfireModal = ({
 
         <Form.Item
           name="time"
-          label="Start time"
+          label="Data and time  (bonfires are designed to be no more than one hour)"
           rules={[{ required: true, message: "Time is required." }]}
         >
           <CustomInput type="time" />
@@ -99,7 +99,7 @@ const CreateBonfireModal = ({
 
         <Form.Item
           name={"timezone"}
-          label="City"
+          label="Select your city (this will determine the time zone of the bonfire. Users who are invited will receive the invitation in their corresponding time zones)"
           rules={[{ required: true, message: "City is required." }]}
         >
           <CustomSelect
@@ -113,15 +113,15 @@ const CreateBonfireModal = ({
 
         <Form.Item
           name="categories"
-          label="Categories"
+          label="Main topics of your Bonfire (you can select up to two topics)"
           rules={[{ required: true, message: "Categories is required." }]}
         >
           <CategoriesSelect options={allCategories} maxValues={2} />
         </Form.Item>
 
         <Form.Item
-          label="Link"
           name="link"
+          label="Link (this is the link that people will use to connect - Zoom, Google Meets, Hangouts, etc. Please do not use a link that forces people to register and enter their emails, otherwise your Bonfire will be deleted)"
           rules={[{ required: true, message: "Link is required." }]}
         >
           <CustomInput />
