@@ -10,6 +10,7 @@ const resultSelector = createSelector(speakerSelector, (payload) => {
     bulRegister: payload.get("bulRegister"),
     allSponsors: payload.get("allSponsors"),
     activeButton: payload.get("activeButton"), 
+    allParrafs: payload.get("allParrafs")
   };
 });
 

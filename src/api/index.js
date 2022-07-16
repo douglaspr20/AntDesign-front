@@ -296,9 +296,11 @@ import {
   getAllPanelsOfOneUserEndPoint,
   addedToPersonalAgendaEndPoint,
   getAllSponsors2023EndPoint,
-} from "./module/speakers";
+  getAllParrafsEndPoint
+} from "./module/speakers"
 
 export {
+  getAllParrafsEndPoint,
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
   getAllSponsors2023EndPoint,

@@ -495,7 +495,6 @@ export function* sendActiveOrDenyAuthorizationEndPointSaga({ payload }) {
     });
 
     if (response.status === 200) {
-      yield put(homeActions.updateUserInformation(response.data.userUpdated[0]));
       yield put(homeActions.setLoading(false));
     }
   } catch (error) {
