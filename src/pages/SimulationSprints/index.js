@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import qs from "query-string";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -15,12 +15,10 @@ const SimulationSprintsPage = ({ userProfile }) => {
   const [selectedKeys, setSelectedKeys] = useState("general-information");
 
   const location = useLocation();
-  const history = useHistory();
 
   const parsed = qs.parse(location.search);
 
   useEffect(() => {
-    history.push("/");
     setSelectedKeys(parsed.key || "general-information");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
