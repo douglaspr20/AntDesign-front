@@ -11,7 +11,13 @@ import {
   CustomRadio,
 } from "components";
 import { INTERNAL_LINKS } from "enum";
-import { CONTACT_ICONS, TIMEZONE_LIST, LANGUAGES, COUNTRIES, PROFILE_SETTINGS } from "enum";
+import {
+  CONTACT_ICONS,
+  TIMEZONE_LIST,
+  LANGUAGES,
+  COUNTRIES,
+  PROFILE_SETTINGS,
+} from "enum";
 import PhotoUploadForm from "../PhotoUploadForm";
 import { isValidEmail } from "utils/format";
 import { categorySelector } from "redux/selectors/categorySelector";
@@ -128,8 +134,17 @@ class ProfileEditPanel extends React.Component {
     const { user, visibleModal, editImageUrl, bulModal } = this.state;
 
     return (
-      <div className="profile-edit-panel" style={bulModal ? {margin:"0px", marginTop: "20px"} : {margin:"-24px"}}>
-        <div className={bulModal ? "profile-edit-panel-container2" : "profile-edit-panel-container"} >
+      <div
+        className="profile-edit-panel"
+        style={bulModal ? { margin: "0px", marginTop: "20px" } : {}}
+      >
+        <div
+          className={
+            bulModal
+              ? "profile-edit-panel-container2"
+              : "profile-edit-panel-container"
+          }
+        >
           <div className="profile-edit-panel-header">
             <div className="profile-user-img">
               <div className="profile-user-img-container">
@@ -281,7 +296,7 @@ class ProfileEditPanel extends React.Component {
                   <CustomInput
                     addonBefore="https://"
                     defaultValue={
-                      (user?.personalLinks !== undefined) &&
+                      user?.personalLinks !== undefined &&
                       user?.personalLinks[contact]
                         ? user?.personalLinks[contact].replace("https://", "")
                         : ""
@@ -358,16 +373,22 @@ class ProfileEditPanel extends React.Component {
           </div>
         </div>
         <div className="profile-edit-panel-footer">
-          {(window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) && 
+          {window.location.pathname.substring(0, 15) !==
+            INTERNAL_LINKS.CONFERENCE_2023 && (
             <CustomButton
               text="Cancel"
               type="third outlined"
               size="lg"
               onClick={this.onCancel}
             />
-          }
+          )}
           <CustomButton
-            text={(window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? "Save" : "Save and register"}
+            text={
+              window.location.pathname.substring(0, 15) !==
+              INTERNAL_LINKS.CONFERENCE_2023
+                ? "Save"
+                : "Save and register"
+            }
             type="secondary"
             size="lg"
             onClick={this.onSave}
