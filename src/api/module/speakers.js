@@ -31,7 +31,12 @@ export const registerUserIfNotAreRegisterConference2023EndPoint = () => {
 }
 
 export const getAllPanelsOfOneUserEndPoint = (UserId) => {
-  return httpClient.get(`public/speakers/all-panel-of-user/${UserId.UserId}`)
+  return httpClient.get(`public/speakers/all-panel-of-user`, {
+    params: {
+      id: UserId.UserId.id,
+      type: UserId.UserId.type
+    }
+  })
 }
 
 export const getAllSponsors2023EndPoint = () => {

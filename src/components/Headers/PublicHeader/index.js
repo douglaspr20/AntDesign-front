@@ -87,6 +87,7 @@ const PublicHeader = ({
           (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
           "public-header-left-conference" : "public-header-left"
         }
+        target="_blank"
       >
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />

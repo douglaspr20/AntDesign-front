@@ -28,7 +28,7 @@ const SpeakerContainer = ({
     },[ getAllUserSpeaker ])
 
     const loadDataForPopUpSpeaker = (id) => {
-        getAllPanelsOfOneUser(id, (error) => {
+        getAllPanelsOfOneUser({id:id}, (error) => {
             if(!error){
                 setWindowPopUpForSpeaker(true)
             }
@@ -87,7 +87,7 @@ const SpeakerContainer = ({
                 >
                     <></>
                 </a>
-                {(className === "container-conference-speakers") && <p className="p-users-more">Click to see bio and sessions</p>}
+                <p className="p-users-more">Click to see bio and sessions</p>
             </div>
         )
 

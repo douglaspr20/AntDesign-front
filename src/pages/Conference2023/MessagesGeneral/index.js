@@ -65,7 +65,7 @@ const MessagesGeneral = ({
       }
     } 
     if(userProfile.percentOfCompletion !== undefined){
-        if(userProfile.percentOfCompletion !== 100 && userProfile.percentOfCompletion !== 0){
+        if(userProfile.percentOfCompletion !== 100 || userProfile.percentOfCompletion !== 0){
           if(porcentCompletion !== userProfile.percentOfCompletion){
             setBulCompleteProfile(true)
             setPorcentCompletion(userProfile.percentOfCompletion)
