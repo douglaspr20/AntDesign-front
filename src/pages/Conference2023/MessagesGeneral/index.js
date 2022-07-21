@@ -54,28 +54,58 @@ const MessagesGeneral = ({
     }
   }, [quitMessage,registerUserIfNotAreRegisterConference2023,setBulMessageOut, setActiveBoton, userProfile.registerConference2023])
 
-  useEffect(() => {
-
+  const functionPorcentProfile = useCallback(() => {
     if(userProfile.percentOfCompletion !== undefined){
       if(userProfile.percentOfCompletion === 100){
-        setBulRegister(true)
-        if(bulKnowRegister){
-          confirm()
-        }
+        return true
+      }else{
+        return false
       }
-    } 
-    if(userProfile.percentOfCompletion !== undefined){
-        if(userProfile.percentOfCompletion !== 100 || userProfile.percentOfCompletion !== 0){
-          if(porcentCompletion !== userProfile.percentOfCompletion){
-            setBulCompleteProfile(true)
-            setPorcentCompletion(userProfile.percentOfCompletion)
-          }
-        }else{
-          setBulCompleteProfile(false)
-        } 
+    }else{
+      return
+    }
+  },[userProfile])
+
+  const functionActive = useCallback(async () => {
+    const bulWait = functionPorcentProfile()
+
+    if(!bulWait){
+      setBulCompleteProfile(true)
+      setPorcentCompletion(userProfile.percentOfCompletion)
+    }
+  },[functionPorcentProfile, setBulCompleteProfile, setPorcentCompletion, userProfile])
+
+  useEffect(() => {
+
+    const bulWait = functionPorcentProfile()
+
+    if(bulWait){
+      setBulCompleteProfile(false)
+      setBulRegister(true)
+      if(bulKnowRegister){
+        confirm()
+      }
     }
 
-  }, [userProfile, setBulCompleteProfile,setBulRegister, bulKnowRegister,confirm, porcentCompletion, setPorcentCompletion])
+    if(userProfile.percentOfCompletion !== undefined){
+        if(userProfile.percentOfCompletion !== 100 && userProfile.percentOfCompletion !== 0){
+          if(porcentCompletion !== userProfile.percentOfCompletion){
+            functionActive()
+          }
+        }
+    }
+
+  }, [
+    userProfile,
+    setBulCompleteProfile,
+    setBulRegister,
+    bulKnowRegister,
+    confirm,
+    porcentCompletion,
+    setPorcentCompletion,
+    functionActive,
+    functionPorcentProfile
+  ])
 
   return (
     <>
@@ -87,6 +117,7 @@ const MessagesGeneral = ({
                 userProfile={userProfile}
                 get={getUser}
                 setBulKnowRegister={setBulKnowRegister}
+                setBulCompleteProfile={setBulCompleteProfile}
               />
             </div>
           }
