@@ -8,6 +8,7 @@ import "./style.scss";
 const Conference2023Agenda = () => {
 
   const [bulSession, setBulSession] = useState(false)
+  const [activeMessages, setActiveMessages] = useState(false)
 
   return (
     <>
@@ -32,9 +33,14 @@ const Conference2023Agenda = () => {
             >My Sessions</p>
           </div>
           {!bulSession
-          ? <Agenda/>  
-          : <Agenda mySessions={true} />}
+          ? <Agenda setActiveMessages={setActiveMessages} />  
+          : <Agenda mySessions={true} setActiveMessages={setActiveMessages} />}
         </div>
+        {activeMessages &&
+          <div className="container-messages-general">
+              <div className="messages">No Authorization was found, please Register.</div>
+          </div>
+        }
         <div className="footer-home">
           <div className="logo-footer"></div>
           <div className="container-link-footer">

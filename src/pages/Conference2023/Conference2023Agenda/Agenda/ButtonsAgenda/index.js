@@ -14,13 +14,24 @@ import "./style.scss";
 const ButtonsAgenda = ({
     addedToPersonalAgenda,
     userProfile,
-    panels
+    panels,
+    setActiveMessages
 }) => {
 
     const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timeZone} = panels
 
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
     const [toMyPersonalAgenda,setToMyPersonalAgenda] = useState(false)
+
+    const convertedStartTime = convertToLocalTime(
+        startDate,
+        timeZone
+    );
+    
+    const convertedEndTime = convertToLocalTime(
+        endDate,
+        timeZone
+    );
 
     const functionAddedToMyAgenda = () => {
 
@@ -31,9 +42,16 @@ const ButtonsAgenda = ({
             type: "Added",
         }
 
-        addedToPersonalAgenda(data, () => {
-            setBulAddedToMyAgenda(true)
-        })
+        if(userProfile.id){
+            addedToPersonalAgenda(data, () => {
+                setBulAddedToMyAgenda(true)
+            })
+        }else{
+            setActiveMessages(true)
+            setTimeout(() => {
+                setActiveMessages(false)
+            }, 2000);
+        }
     }
 
     const functionRemoveToMyAgenda = (data) => {
@@ -58,16 +76,6 @@ const ButtonsAgenda = ({
             </a>
           </Menu.Item>
         </Menu>
-    );
-
-    const convertedStartTime = convertToLocalTime(
-        startDate,
-        timeZone
-    );
-    
-    const convertedEndTime = convertToLocalTime(
-        endDate,
-        timeZone
     );
     
     const userTimezone = moment.tz.guess();

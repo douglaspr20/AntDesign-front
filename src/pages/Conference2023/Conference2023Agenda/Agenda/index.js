@@ -20,7 +20,8 @@ const AgendaConference2023 = ({
     allPanelsOfOneUserFormat,
     userProfile,
     maxLength,
-    mySessions
+    mySessions,
+    setActiveMessages
 }) => {
 
     let clockAnimation
@@ -131,7 +132,7 @@ const AgendaConference2023 = ({
                                 <CollapseComponent
                                     index={panel?.id}
                                     informationCollapse={content(panel)}
-                                    buttons={<ButtonsAgenda panels={panel} />}
+                                    buttons={<ButtonsAgenda setActiveMessages={setActiveMessages} panels={panel} />}
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
@@ -170,7 +171,7 @@ const AgendaConference2023 = ({
                                 <CollapseComponent
                                     index={panel?.id}
                                     informationCollapse={content(panel)}
-                                    buttons={<ButtonsAgenda panels={panel} />}
+                                    buttons={<ButtonsAgenda setActiveMessages={setActiveMessages} panels={panel} />}
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
