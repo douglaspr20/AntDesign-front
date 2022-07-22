@@ -16,15 +16,15 @@
     background-repeat: no-repeat;
 
     .container-content-picture-speakers{
-      position: relative;
+      position: absolute;
       top: 0px;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      width: 92.59%;
-      left: 6.48%;
+      width: 93.5%;
+      right: 0px;
   
       .title-containers{
           width: auto;
