@@ -106,6 +106,36 @@
 
 }
 
+@media (max-width: 550px) {
+    .container-panel{
+        padding: 0px;
+        padding-left: 20px;
+        padding-top:20px ;
+        padding-bottom: 20px;
+
+        .arrow{
+            left: -30px;
+        }
+        .detail-border{
+            left: -20px;
+        }
+    }
+  }
+
+  @media (max-width: 450px) {
+    .container-panel{
+        width: 100%;
+        left: 0%;
+
+        .arrow{
+            display: none;
+        }
+        .detail-border{
+            display: none;
+        }
+    }
+  }
+
 .container-panel:hover {
     background:#F8EAE6 ;
 }

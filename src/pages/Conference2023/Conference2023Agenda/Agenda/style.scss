@@ -44,16 +44,28 @@
         }
     }
 
+    @media (max-width: 550px) {
+        .title-date{
+            transform: translateX(10px) translateY(18px);
+        }
+    }
+
+    @media (max-width: 450px) {
+        .title-date{
+            transform: translateX(50px) translateY(18px);
+        }
+    }
+
     .container-collapse-title{
         height: auto;
-        clip-path: polygon(-15% 0, 100% 0, 115% 100%, 0% 100%);
+        clip-path: polygon(-15% 0%, 115% 0%, 115% 100%, -15% 100%);
         width: 100%;
         transition: all 0.5s ease-in-out;
     }
 
     .container-collapse-title-change{
         height: auto;
-        clip-path: polygon(-15% 0, 100% 0, 115% 0, 0 0);
+        clip-path: polygon(-15% 0%, 115% 0%, 115% 0%, -15% 0%);
         width: 100%;
         transition: all 0.5s ease-in-out;
     }
@@ -129,9 +141,23 @@
                         white-space: nowrap;
                         text-align: end;
                     }
+
+                    @media (max-width: 550px) {
+                        .date, .date2{
+                            right: 20px;
+                        }
+                    }
+
                 } 
             }
         }
     }
 
 }
+
+@media (max-width: 550px) {
+    .container-agenda-data{
+        padding: 0px;
+        padding-left: 0px;
+    }
+  }

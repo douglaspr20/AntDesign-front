@@ -79,7 +79,7 @@ const PublicHeader = ({
         (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
         "public-header-conference" : "public-header"
       } 
-      style={{width:"calc( 100% - 17px )"}}
+      style={{width:"calc( 100% )"}}
     >
       <Link 
         to={INTERNAL_LINKS.HOME} 

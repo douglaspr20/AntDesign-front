@@ -292,6 +292,13 @@
 
     }
 
+    @media (max-width: 600px) {
+        .container-users-speakers{
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+    }
+
     .button-linkedin{
         position: absolute;
         width: 70px;
@@ -319,7 +326,7 @@
 
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 700px) {
     .container-conference-speakers{
         align-items: center;
         flex-direction: column;
@@ -330,7 +337,7 @@
     }
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 600px) {
     .container-conference-speakers{
         .container-users-speakers{
            width: 95%; 
