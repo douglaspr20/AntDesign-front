@@ -13,88 +13,89 @@
       transform: translateX(-7%);
       background-position: center 0%;
       background-repeat: no-repeat;
-  }
+      background-attachment: unset;
 
+      .container-content-picture{
+        position: absolute;
+        top: 0px;
+        width: 93.5%;
+        right: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+    
+        .parrafo-hachinglab-picture{
+          width: 100%;
+          text-align: center;
+          height: 35px;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 22px;
+          line-height: 35px;
+          letter-spacing: -0.01em;
+          color: rgba(255, 255, 255, 0.42);
+        }
+    
+        .title-hachinglab-picture1, .title-hachinglab-picture2{
+          width: 100%;
+          height: 80px;
+          margin: 0px;
+          font-style: normal;
+          text-align: center;
+          font-weight: 600;
+          font-size: 66px;
+          line-height: 80px;
+          letter-spacing: -0.01em;
+          color: #FFFFFF;
+    
+          .span-color{
+            color: #FE5621;
+          }
+        }
+    
+        .title-hachinglab-picture1{
+          font-size: 55px;
+        }
+    
+        .date-picture{
+          width: 100%;
+          text-align: center;
+          height: 35px;
+          margin-top: 30px;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 22px;
+          line-height: 35px;
+          letter-spacing: -0.01em;
+          color: #FFFFFF;
+          text-shadow: 1px 1px 2px black;
+        }
 
-  .container-content-picture{
-    position: relative;
-    top: calc(-50vh - 60px);
-    align-items: center;
-    flex-direction: column;
-    height: 0px;
+        @media (max-width: 600px) {
+          .title-hachinglab-picture2{
+            margin-top: 75px;
+          }
+        }
 
-    .parrafo-hachinglab-picture{
-      width: 100%;
-      text-align: center;
-      height: 35px;
-      margin-top: 100px;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 22px;
-      line-height: 35px;
-      letter-spacing: -0.01em;
-      color: rgba(255, 255, 255, 0.42);
-    }
-
-    .title-hachinglab-picture1, .title-hachinglab-picture2{
-      width: 100%;
-      height: 80px;
-      margin: 0px;
-      font-style: normal;
-      text-align: center;
-      font-weight: 600;
-      font-size: 66px;
-      line-height: 80px;
-      letter-spacing: -0.01em;
-      color: #FFFFFF;
-
-      .span-color{
-        color: #FE5621;
+        @media (max-width: 480px) {
+          .title-hachinglab-picture2, .title-hachinglab-picture1{
+            font-size: 48px;
+          }
+        }
       }
-    }
 
-    .title-hachinglab-picture1{
-      font-size: 55px;
-    }
-
-    .date-picture{
-      width: 100%;
-      text-align: center;
-      height: 35px;
-      margin-top: 30px;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 22px;
-      line-height: 35px;
-      letter-spacing: -0.01em;
-      color: #FFFFFF;
-      text-shadow: 1px 1px 2px black;
-    }
-
-    @media (max-width: 950px) {
-      .date-picture{
-        margin-top: 140px;
+      @media (max-width: 600px) {
+        .container-content-picture{
+          height: 60vh;
+        }
       }
-    }
-
-    @media (max-width: 500px) {
-      .title-hachinglab-picture1{
-        font-size: 60px;
-      }
-      .title-hachinglab-picture2{
-        font-size: 60px;
-        margin-top: 40px;
-      }
-    }
   }
 
   @media (max-width: 950px) {
     .imagen-conference{
       height: 60vh;
-    }
-
-    .container-content-picture{
-      top: calc(-60vh - 70px);
     }
   }
 
@@ -155,8 +156,8 @@
   }
 
   .container-agenda-home{
-    width: 90%;
-    left:5%;
+    width: 100%;
+    padding: 0px 80px;
     background: white;
     height: auto;
     padding-bottom: 100px;
@@ -176,6 +177,7 @@
       line-height: 80px;
       color: black;
       text-align: start;
+      left: 60px;
     }
 
     .button-agenda-home{
@@ -205,6 +207,28 @@
     }
   }
 
+  @media (max-width: 550px) {
+    .container-agenda-home{
+      padding-left: 40px;
+      padding-right: 0px;
+
+      .button-agenda-home{
+        margin-left: -40px;
+      }
+    }
+  }
+
+  @media (max-width: 450px) {
+    .container-agenda-home{
+      padding-left: 0px;
+      padding-right: 20px;
+
+      .button-agenda-home{
+        margin-left: 0px;
+      }
+    }
+  }
+
   .container-publicity{
     width: 100%;
     height: auto;
@@ -216,13 +240,20 @@
     .p-publicity{
       position: absolute;
       top: 20px;
-      width: 100%;
+      width: 95%;
+      left: 2.5%;
       font-style: normal;
       font-weight: 500;
       font-size: 46px;
       line-height: 80px;
       color: #FFFFFF;
       text-align: center;
+    }
+
+    @media (max-width: 400px) {
+      .p-publicity{
+        font-size: 40px;
+      }
     }
     
     .container-data{
@@ -376,11 +407,13 @@
   }
 
   .container-parraf{
-    width: 90%;
-    left:5%;
+    width: 100%;
+    left:0px;
+    top: 0px;
     background: white;
     height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 150px;
+    padding-top: 50px;
     position: relative;
     display: flex;
     flex-direction: column;

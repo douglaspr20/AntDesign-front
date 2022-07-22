@@ -7,7 +7,6 @@ import MessagesGeneral from "./MessagesGeneral";
 import { INTERNAL_LINKS } from "enum";
 import { Redirect, Route } from "react-router-dom";
 
-
 const Conference2023 = ({ match }) => {
   const {url} = match
 

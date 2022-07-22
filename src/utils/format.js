@@ -147,6 +147,26 @@ function convertToLocalTime(date, timezone) {
   return dateWithLocalTimezone;
 }
 
+const convertToLocalTime2 = (date, timezone) => {
+  let currentTimezone = TIMEZONE_LIST.find((item) => item.value === timezone);
+
+  if (currentTimezone) {
+    currentTimezone = currentTimezone.utc[0];
+  } else {
+    currentTimezone = timezone;
+  }
+
+  const dateUTC = moment(date, "YYYY-MM-DD HH:mm")
+
+  const localTimezone = moment.tz.guess();
+
+  const dateWithCurrentTimezone = moment.tz(dateUTC.format(),"YYYY-MM-DD HH:mm", currentTimezone);
+
+  const dateWithLocalTimezone = dateWithCurrentTimezone.clone().tz(localTimezone);
+
+  return dateWithLocalTimezone;
+}
+
 const convertBlobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -240,4 +260,5 @@ export {
   transformNames,
   capitalizeWord,
   getNameOfCityWithTimezone,
+  convertToLocalTime2
 };

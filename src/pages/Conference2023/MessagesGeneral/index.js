@@ -54,28 +54,58 @@ const MessagesGeneral = ({
     }
   }, [quitMessage,registerUserIfNotAreRegisterConference2023,setBulMessageOut, setActiveBoton, userProfile.registerConference2023])
 
-  useEffect(() => {
-
+  const functionPorcentProfile = useCallback(() => {
     if(userProfile.percentOfCompletion !== undefined){
       if(userProfile.percentOfCompletion === 100){
-        setBulRegister(true)
-        if(bulKnowRegister){
-          confirm()
-        }
+        return true
+      }else{
+        return false
       }
-    } 
+    }else{
+      return
+    }
+  },[userProfile])
+
+  const functionActive = useCallback(async () => {
+    const bulWait = functionPorcentProfile()
+
+    if(!bulWait){
+      setBulCompleteProfile(true)
+      setPorcentCompletion(userProfile.percentOfCompletion)
+    }
+  },[functionPorcentProfile, setBulCompleteProfile, setPorcentCompletion, userProfile])
+
+  useEffect(() => {
+
+    const bulWait = functionPorcentProfile()
+
+    if(bulWait){
+      setBulCompleteProfile(false)
+      setBulRegister(true)
+      if(bulKnowRegister){
+        confirm()
+      }
+    }
+
     if(userProfile.percentOfCompletion !== undefined){
         if(userProfile.percentOfCompletion !== 100 && userProfile.percentOfCompletion !== 0){
           if(porcentCompletion !== userProfile.percentOfCompletion){
-            setBulCompleteProfile(true)
-            setPorcentCompletion(userProfile.percentOfCompletion)
+            functionActive()
           }
-        }else{
-          setBulCompleteProfile(false)
-        } 
+        }
     }
 
-  }, [userProfile, setBulCompleteProfile,setBulRegister, bulKnowRegister,confirm, porcentCompletion, setPorcentCompletion])
+  }, [
+    userProfile,
+    setBulCompleteProfile,
+    setBulRegister,
+    bulKnowRegister,
+    confirm,
+    porcentCompletion,
+    setPorcentCompletion,
+    functionActive,
+    functionPorcentProfile
+  ])
 
   return (
     <>
@@ -87,6 +117,7 @@ const MessagesGeneral = ({
                 userProfile={userProfile}
                 get={getUser}
                 setBulKnowRegister={setBulKnowRegister}
+                setBulCompleteProfile={setBulCompleteProfile}
               />
             </div>
           }

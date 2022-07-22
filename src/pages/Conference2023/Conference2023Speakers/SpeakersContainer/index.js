@@ -28,7 +28,7 @@ const SpeakerContainer = ({
     },[ getAllUserSpeaker ])
 
     const loadDataForPopUpSpeaker = (id) => {
-        getAllPanelsOfOneUser(id, (error) => {
+        getAllPanelsOfOneUser({id:id}, (error) => {
             if(!error){
                 setWindowPopUpForSpeaker(true)
             }
@@ -87,7 +87,7 @@ const SpeakerContainer = ({
                 >
                     <></>
                 </a>
-                {(className === "container-conference-speakers") && <p className="p-users-more">Click to see bio and sessions</p>}
+                <p className="p-users-more">Click to see bio and sessions</p>
             </div>
         )
 
@@ -115,15 +115,15 @@ const SpeakerContainer = ({
                         </p>
                         <p><span className="bold-subtitle">Sessions: </span></p>
                         {allPanelsOfOneUser?.map((member, index) => (
-                            <div className="container-sessions-speakers" key={member.SpeakerPanel.id}>
-                                <h3>{member.SpeakerPanel.panelName}</h3>
-                                <p>- {convertToLocalTime(member.SpeakerPanel.startDate, member.SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
-                                <p>- {convertToLocalTime(member.SpeakerPanel.endDate, member.SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                            <div className="container-sessions-speakers" key={member?.SpeakerPanel?.id}>
+                                <h3>{member?.SpeakerPanel?.panelName}</h3>
+                                <p>- {convertToLocalTime(member?.SpeakerPanel?.startDate, member?.SpeakerPanel?.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                                <p>- {convertToLocalTime(member?.SpeakerPanel?.endDate, member?.SpeakerPanel?.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
                                 <SpeakerButtons 
                                     usersAddedToThisAgenda={member?.SpeakerPanel?.usersAddedToThisAgenda} 
                                     id={member?.SpeakerPanel?.id} 
                                     startDate={member?.SpeakerPanel?.startDate}
-                                    endDate={member.SpeakerPanel.endDate}
+                                    endDate={member?.SpeakerPanel?.endDate}
                                     allPanelsOfOneUser={getAllPanelsOfOneUser}
                                 />
                             </div>
