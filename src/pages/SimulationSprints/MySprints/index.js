@@ -19,6 +19,7 @@ const MySprints = ({ getAllMySimulationSprints, mySimulationsSprints }) => {
           image: sprint["SimulationSprint.image"],
           title: sprint["SimulationSprint.title"],
           description: sprint["SimulationSprint.description"],
+          open: sprint["SimulationSprint.open"],
           userParticipated: sprint.UserId ? true : false,
         };
 

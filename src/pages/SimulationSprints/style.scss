@@ -18,7 +18,6 @@
     }
 
     &-container{
-        height: 100vh;
         position: relative;
 
         .available-sprints{
@@ -30,6 +29,11 @@
             right: 10px;
 
         }
+    }
+
+    &-content{
+        max-height: 80vh;
+        overflow: auto;
     }
 
     &-information{

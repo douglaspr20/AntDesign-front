@@ -1,3 +1,4 @@
+import { CustomButton } from "components";
 import React from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -96,6 +97,32 @@ const GeneralInformation = ({ userProfile }) => {
           <strong>Simulation Sprint</strong>, whether you complete it or not.
         </p>
         <p>Thank you! </p>
+      </div>
+
+      <div className="simulation-sprints-information">
+        <h2>Get Funded By Your Organization</h2>
+        <p>
+          Are you looking for your company to fund this learning program with
+          the Learning & Development budget?
+        </p>
+
+        <p>
+          Let us help you! We can prepare a personalized letter for you to
+          download and then share with your supervisor/L&D officer and seek
+          funding approval for Simulation Sprints.
+        </p>
+        <p>Please complete this information to use in the letter </p>
+
+        <div
+          style={{ display: "flex", width: "100%", justifyContent: "center" }}
+        >
+          <CustomButton
+            type="primary"
+            size="md"
+            text={`Create and Donwload Letter`}
+            style={{ marginTop: "5px", maxWidth: "340px" }}
+          />
+        </div>
       </div>
     </>
   );

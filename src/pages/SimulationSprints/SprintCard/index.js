@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import { CustomButton } from "components";
 import { INTERNAL_LINKS } from "enum";
+import { homeSelector } from "redux/selectors/homeSelector";
 import "./style.scss";
 
 const HARDCODED_COVER_PLACEHOLDER =
@@ -13,9 +15,11 @@ const SprintCard = ({ sprint }) => {
 
   let displayBtn;
 
-  if (
+  if (!sprint.open) {
+    displayBtn = "Coming Soon";
+  } else if (
     sprint.userParticipated &&
-    moment.utc().isAfter(sprint.startDate) &&
+    moment.utc().isAfter(moment(sprint.startDate).utc().subtract(1, "days")) &&
     moment.utc().isBefore(sprint.endDate)
   ) {
     displayBtn = "Enter Dashboard";
@@ -26,7 +30,10 @@ const SprintCard = ({ sprint }) => {
   }
 
   const handleClick = () => {
-    if (sprint.userParticipated && moment.utc().isAfter(sprint.startDate)) {
+    if (
+      sprint.userParticipated &&
+      moment.utc().isAfter(moment(sprint.startDate).utc().subtract(1, "days"))
+    ) {
       history.push(
         `${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}/resources?key=1`
       );
@@ -72,7 +79,9 @@ const SprintCard = ({ sprint }) => {
             size="md"
             block={true}
             disabled={
-              moment.utc().isAfter(sprint.startDate) && !sprint.userParticipated
+              (moment.utc().isAfter(sprint.startDate) &&
+                !sprint.userParticipated) ||
+              !sprint.open
             }
           />
         </div>
@@ -81,4 +90,10 @@ const SprintCard = ({ sprint }) => {
   );
 };
 
-export default SprintCard;
+const mapStateToProps = (state) => ({
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SprintCard);

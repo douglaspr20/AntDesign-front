@@ -116,20 +116,22 @@ const SimulationSprintsPage = ({ userProfile }) => {
           Available Sprints: {userProfile.simulationSprintsAvailable}
         </p>
 
-        {selectedKeys === "general-information" ? (
-          <GeneralInformation />
-        ) : selectedKeys === "upcoming-sprints" ? (
-          <UpcomingSprints />
-        ) : (
-          <MySprints />
-        )}
+        <div className="simulation-sprints-content">
+          {selectedKeys === "general-information" ? (
+            <GeneralInformation />
+          ) : selectedKeys === "upcoming-sprints" ? (
+            <UpcomingSprints />
+          ) : (
+            <MySprints />
+          )}
 
-        {selectedKeys !== "my-sprints" && (
-          <PricesContainer
-            handleBuySimulation={handleBuySimulation}
-            loading={loading}
-          />
-        )}
+          {selectedKeys !== "my-sprints" && (
+            <PricesContainer
+              handleBuySimulation={handleBuySimulation}
+              loading={loading}
+            />
+          )}
+        </div>
       </div>
       {showProfileCompletionFirewall && (
         <div
