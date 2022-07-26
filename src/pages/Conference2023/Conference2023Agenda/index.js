@@ -15,7 +15,7 @@ const Conference2023Agenda = () => {
       <div className="container-conference-agenda">
         <div className="imagen-agenda">
           <div className="container-content-picture-agenda">
-            <p className="title-containers">Conference schedule</p>  
+            <p className="title-containers">Conference Schedule</p>  
           </div>
         </div>
         <div className="containers-agenda" id="agenda">

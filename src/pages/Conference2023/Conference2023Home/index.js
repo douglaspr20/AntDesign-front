@@ -54,6 +54,31 @@ const Conference2023Home = ({
             </button>
           </Link>
         </div>
+        <div className="container-why-to-attend">
+          <p className="title-why-to-attend">Why to Attend</p>
+          <div className="container-cards">
+            <div className="cards-attend">
+              <div className="img-attend1"></div>
+              <p className="title-attend">networking</p>
+              <p className="p-attend">We built in the agenda of the conference numerous opportunities for you to connect with HR leaders and professionals from all over the world and expand your network!</p>
+            </div>
+            <div className="cards-attend top-attend">
+              <div className="img-attend2"></div>
+              <p className="title-attend">thought leadership</p>
+              <p className="p-attend">We are bringing the most talented, world-class global leaders to share their ideas, insights, stories, data, experiences with you. We have more than 500 global influencers coming to speak at the conference!</p>
+            </div>
+            <div className="cards-attend top-attend">
+              <div className="img-attend3"></div>
+              <p className="title-attend">Learning</p>
+              <p className="p-attend">You will walk away with information, knowledge and ideas that will be critical for your work in HR. This conference is, after all, a remarkable learning experience with more than 100 sessions!</p>
+            </div>
+            <div className="cards-attend top-attend">
+              <div className="img-attend4"></div>
+              <p className="title-attend">Collaboration</p>
+              <p className="p-attend">This event will provide you opportunities to collaborate with like-minded professionals. There are sessions specifically designed to promote collaboration and cooperation.</p>
+            </div>
+          </div>
+        </div>
         <div className="container-publicity">
           <p className="p-publicity">{'Past Conferences & Resources'}</p>
           <div className="container-data">

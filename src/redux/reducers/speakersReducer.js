@@ -17,10 +17,13 @@ export const reducers = {
 
         const arrayOrderTime = panelsSpeakers.panelsSpeakers.sort((a,b) => {
 
-          let aTime = convertToLocalTime(a.startDate,a.timeZone).format("YYYY.MMDDHHss")
-          let bTime = convertToLocalTime(b.startDate,b.timeZone).format("YYYY.MMDDHHss")
+          let aTime = convertToLocalTime(a.startDate,a.timeZone).format("YYYY")
+          let bTime = convertToLocalTime(b.startDate,b.timeZone).format("YYYY")
 
-          return Number(bTime) - Number(aTime)
+          let aTimeRest = convertToLocalTime(a.startDate,a.timeZone).format("MMDDHHmm")
+          let bTimeRest = convertToLocalTime(b.startDate,b.timeZone).format("MMDDHHmm")
+
+          return Number(bTime - bTimeRest) - Number(aTime - aTimeRest)
 
         })
 
@@ -63,10 +66,13 @@ export const reducers = {
       if(userSpeakers !== undefined){
         const arrayOrderTime = userSpeakers.sort((a,b) => {
 
-          let aTime = convertToLocalTime(a.startDate,a.timeZone).format("YYYY.MMDDHHss")
-          let bTime = convertToLocalTime(b.startDate,b.timeZone).format("YYYY.MMDDHHss")
+          let aTime = convertToLocalTime(a.startDate,a.timeZone).format("YYYY")
+          let bTime = convertToLocalTime(b.startDate,b.timeZone).format("YYYY")
 
-          return Number(bTime) - Number(aTime)
+          let aTimeRest = convertToLocalTime(a.startDate,a.timeZone).format("MMDDHHmm")
+          let bTimeRest = convertToLocalTime(b.startDate,b.timeZone).format("MMDDHHmm")
+
+          return Number(bTime - bTimeRest) - Number(aTime - aTimeRest)
 
         })
 

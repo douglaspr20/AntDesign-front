@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { actions as speaker } from "redux/actions/speaker-actions";
-import {CustomModal, CustomButton} from "components";
+import { CustomButton} from "components";
+import { CloseCircleFilled } from "@ant-design/icons";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { Dropdown, Menu, Space } from "antd"
+import { Dropdown, Menu, Space, Modal } from "antd"
 import { DownOutlined } from "@ant-design/icons";
 import { convertToLocalTime } from "utils/format";
+import IconLogo from "images/logo-sidebar.svg";
 import moment from "moment";
 
 import "./style.scss";
@@ -42,10 +44,10 @@ const ButtonsAgenda = ({
             type: "Added",
         }
 
-        if(userProfile.id){
+        if(userProfile.registerConference2023){
             addedToPersonalAgenda(data, () => {
                 setBulAddedToMyAgenda(true)
-            })
+            }) 
         }else{
             setActiveMessages(true)
             setTimeout(() => {
@@ -167,11 +169,24 @@ const ButtonsAgenda = ({
                 </div>
             }
             <div style={{height: "10px", width: "200px"}}></div>
-            <CustomModal
-                title="Are you sure?"
-                visible={toMyPersonalAgenda}
-                centered
+            <Modal
                 onCancel={() => setToMyPersonalAgenda(false)}
+                className="custom-modal"
+                wrapClassName="custom-modal-wrap"
+                title={
+                    <div className="custom-modal-title">
+                    <h3>Are you sure?</h3>
+                    <div className="custom-modal-logo">
+                        <img src={IconLogo} alt="custom-logo" />
+                    </div>
+                    </div>
+                }
+                centered
+                visible={toMyPersonalAgenda}
+                closable={true}
+                footer={[]}
+                width={"300px"}
+                closeIcon={<CloseCircleFilled className="custom-modal-close" />}
             >
                 <div className="container-buttons">
                     <CustomButton
@@ -182,7 +197,7 @@ const ButtonsAgenda = ({
                         className="button-modal"
                         style={{padding: "0px 10px"}}
                         onClick={() => setToMyPersonalAgenda(false)}
-                    />,
+                    />
                     <CustomButton
                         key="Confirm"
                         text="Confirm"
@@ -196,7 +211,7 @@ const ButtonsAgenda = ({
                         }}
                     />
                 </div>
-            </CustomModal>
+            </Modal>
         </>
     );
   };

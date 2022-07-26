@@ -29,7 +29,7 @@ const AgendaConference2023 = ({
 
     useEffect(() => {
         if(userProfile.id !== undefined){
-            getAllPanelsOfOneUser({id: userProfile.id, type: "mySessions"})
+            getAllPanelsOfOneUser({id: userProfile.id})
         }
         getAllPanelSpeakers("All")
     }, [getAllPanelSpeakers, userProfile, getAllPanelsOfOneUser, mySessions])
