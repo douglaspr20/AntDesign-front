@@ -6,7 +6,7 @@
       position: relative;
       width: 108%;
       height: 50vh;
-      background-image: url("https://upload-files-lab.s3.amazonaws.com/fabio-oyXis2kALVg-unsplash+1.png");
+      background-image: url("https://upload-files-lab.s3.amazonaws.com/Home.jpg");
       background-size: 100% 100%;
       background-blend-mode: soft-light;
       background-color: rgba(0, 0, 0, 0.19);
@@ -31,18 +31,20 @@
           text-align: center;
           height: 35px;
           font-style: normal;
+          font-family: 'Segoe UI';
           font-weight: 400;
           font-size: 22px;
           line-height: 35px;
           letter-spacing: -0.01em;
-          color: rgba(255, 255, 255, 0.42);
+          color: rgba(255, 255, 255, 0.72);
         }
-    
+
         .title-hachinglab-picture1, .title-hachinglab-picture2{
           width: 100%;
           height: 80px;
           margin: 0px;
           font-style: normal;
+          font-family: 'Segoe UI';
           text-align: center;
           font-weight: 600;
           font-size: 66px;
@@ -57,6 +59,7 @@
     
         .title-hachinglab-picture1{
           font-size: 55px;
+          font-family: 'Segoe UI';
         }
     
         .date-picture{
@@ -69,6 +72,7 @@
           font-size: 22px;
           line-height: 35px;
           letter-spacing: -0.01em;
+          font-family: 'Segoe UI';
           color: #FFFFFF;
           text-shadow: 1px 1px 2px black;
         }
@@ -190,6 +194,7 @@
       font-size: 16px;
       padding: 10px 5px;
       line-height: 21px;
+      overflow: hidden;
       color: #FFFFFF;
       order: 0;
       flex-grow: 0;
@@ -229,6 +234,108 @@
     }
   }
 
+  .container-why-to-attend{
+    width: 100%;
+    height: auto;
+    background: #fe5621;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0% 12.5%;
+    padding-top: 30px;
+    padding-bottom: 90px;
+
+    .title-why-to-attend{
+      font-family: Barlow;
+      font-style: normal;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: white;
+      font-size: 60px;
+    }
+
+    .container-cards{
+      margin-top: 15px;
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      flex-direction: row;
+
+      .cards-attend{
+        width: 22.5%;
+        height: auto;
+
+        .img-attend1,.img-attend2,.img-attend3,.img-attend4{
+          background-image: url(../../../images/algorithm.png);
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          width: 80px;
+          height: 80px;
+        }
+
+        .img-attend2{
+          background-image: url(../../../images/knowledge.png);
+        }
+
+        .img-attend3{
+          background-image: url(../../../images/idea.png);
+        }
+
+        .img-attend4{
+          background-image: url(../../../images/collaboration.png);
+        }
+
+        .title-attend{
+          color: white;
+          text-transform: uppercase;
+          font-family: BarlowN;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 30px;
+          margin: 0px;
+          margin-top: 20px;
+        }
+
+        .p-attend{
+          color: white;
+          font-weight: 400;
+          text-align: left;
+          font-family: BarlowP;
+          font-weight: 100;
+          font-size: 16px;
+          line-height: 1.75;
+          margin: 0px;
+        }
+      }
+
+      .top-attend{
+        margin-top: 0px;   
+      }
+
+      @media (max-width: 1100px) {
+        .cards-attend{
+          width: 45%;
+          margin-top: 65px;
+        }
+      }
+      @media (max-width: 1100px) {
+        .cards-attend{
+          width: 100%;
+          margin-top: 0px;
+        }
+
+        .top-attend{
+          margin-top: 65px;
+        }
+      }
+    }
+
+  }
+
   .container-publicity{
     width: 100%;
     height: auto;
@@ -243,10 +350,10 @@
       width: 95%;
       left: 2.5%;
       font-style: normal;
-      font-weight: 500;
       font-size: 46px;
       line-height: 80px;
       color: #FFFFFF;
+      font-weight: bold;
       text-align: center;
     }
 
@@ -267,7 +374,7 @@
       .picture-video{
         width: 100%;
         height: 500px;
-        background-image: url(../../../images/Rectangle36.jpg);
+        background-image: url("https://upload-files-lab.s3.amazonaws.com/Rectangle36.jpg");
         background-repeat: no-repeat;
         background-size:100% 100% ;
         border-radius: 10px;
@@ -307,67 +414,7 @@
           line-height: 63px;
           color: #FFFFFF;
           z-index: 51;
-        }
-      }
-
-      .container-information{
-        width: 30%;
-        height: 500px;
-        display: flex;
-        flex-direction: column;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(100px);
-        border-radius: 12px;
-        overflow: hidden;
-
-        .picture-information{
-          width: 100%;
-          height: 40%;
-          background-image: url(../../../images/Rectangle39.jpg);
-          background-repeat: no-repeat;
-          background-size:100% 100% ;
-        }
-        .container-text-information{
-          width: 80%;
-          margin-left: 10%;
-          height: 55%;
-          margin-top: 5%;
-
-          .title-information{
-            font-style: normal;
-            font-weight: 500;
-            font-size: 24px;
-            line-height: 31px;
-            color: #FFFFFF;
-          }
-
-          .description-information{
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 27px;
-            letter-spacing: -0.01em;
-            color: rgba(255, 255, 255, 0.35);
-          }
-
-          @media (max-width: 1300px) {
-            .title-information{
-              font-size: 19px;
-            }
-            .description-information{
-                font-size: 14px;
-            }
-          }
-
-          .link-information{
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 27px;
-            letter-spacing: -0.01em;
-            color: #FE5621;
-            cursor: pointer;
-          }
+          
         }
       }
 
@@ -418,9 +465,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
 
     em{
       color:  black;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .container-publicity{
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .container-publicity{
+      padding-left: 2.5%;
+      padding-right: 2.5%;
     }
   }
 
