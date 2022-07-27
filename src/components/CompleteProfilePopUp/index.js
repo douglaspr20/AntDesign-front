@@ -4,7 +4,7 @@ import { CircularProgressbar } from "components";
 import { Alert } from "antd";
 import { updateUser } from "redux/actions/home-actions";
 import ProfileEditPanel from "containers/ProfileDrawer/ProfileEditPanel";
-import { TIMEZONE_LIST, COUNTRIES } from "enum";
+import { TIMEZONE_LIST, COUNTRIES, INTERNAL_LINKS } from "enum";
 
 import "./style.scss";
 
@@ -25,7 +25,9 @@ const ModalCompleteProfile = ({
       ).text;
 
     const onSave = (userInfo) => {
-        setBulKnowRegister(true)
+        if(window.location.pathname.substring(0,13) !== INTERNAL_LINKS.SPEAKER_2023){
+            setBulKnowRegister(true)
+        }
         updateUser(userInfo);
         get()
         setBulCompleteProfile(false)

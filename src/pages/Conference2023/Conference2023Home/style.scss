@@ -170,6 +170,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 
     .p-agenda{
       position: absolute;
@@ -247,10 +248,9 @@
     padding-bottom: 90px;
 
     .title-why-to-attend{
-      font-family: Barlow;
+      font-family: 'Segoe UI';
       font-style: normal;
-      font-weight: 700;
-      text-transform: uppercase;
+      font-weight: bold;
       color: white;
       font-size: 60px;
     }
@@ -292,22 +292,21 @@
         .title-attend{
           color: white;
           text-transform: uppercase;
-          font-family: BarlowN;
+          font-family: 'Segoe UI';
           font-style: normal;
           font-weight: 400;
-          font-size: 30px;
+          font-size: 26px;
           margin: 0px;
           margin-top: 20px;
         }
 
         .p-attend{
           color: white;
-          font-weight: 400;
+          font-weight: bold;
           text-align: left;
-          font-family: BarlowP;
+          font-family: 'Segoe UI';
           font-weight: 100;
           font-size: 16px;
-          line-height: 1.75;
           margin: 0px;
         }
       }

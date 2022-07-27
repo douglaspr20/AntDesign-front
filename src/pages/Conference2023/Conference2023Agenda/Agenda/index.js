@@ -115,7 +115,7 @@ const AgendaConference2023 = ({
             }
         }
 
-        let startTime = convertToLocalTime(panels[0].startDate, panels[0].timeZone).format("MM-DD-YYYY hh:mm a")
+        let startTime = convertToLocalTime(panels[0].startDate, panels[0].timeZone)
 
         return (
             <div key={index} id={index}>
@@ -123,7 +123,7 @@ const AgendaConference2023 = ({
                     <div className="container-arrow-title">
                         <img src={Arrow} className="arrow-title" alt="arrow-title" onClick={(e) => activeCollapse(e)} />
                     </div>
-                    {moment(startTime).format("dddd, MMMM DD")}<sup>{moment(startTime).format("Do").slice(-2)}</sup>
+                    {startTime.format("dddd, MMMM DD")}<sup>{startTime.format("Do").slice(-2)}</sup>
                 </p>
                 <div className="data-height" style={{height: "0px"}}>
                     <div className="container-collapse-title-change" style={{position: "absolute"}}>
