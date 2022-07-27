@@ -17,6 +17,8 @@ const UPDATE_ALL_SPONSOR_2023 = "UPDATE_ALL_SPONSOR_2023";
 const SET_ACTIVE_BUTTON = "SET_ACTIVE_BUTTON"
 const GET_ALL_PARRAF_CONFERENCE = "GET_ALL_PARRAF_CONFERENCE"
 const UPDATE_PARRAF = "UPDATE_PARRAF"
+const GET_SPEAKER_MEMBER = "GET_SPEAKER_MEMBER"
+const SET_SPEAKER_MEMBER = "SET_SPEAKER_MEMBER"
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -34,7 +36,9 @@ export const constants = {
   UPDATE_ALL_SPONSOR_2023,
   SET_ACTIVE_BUTTON,
   GET_ALL_PARRAF_CONFERENCE,
-  UPDATE_PARRAF
+  UPDATE_PARRAF,
+  GET_SPEAKER_MEMBER,
+  SET_SPEAKER_MEMBER
 };
 
 // ------------------------------------
@@ -121,6 +125,16 @@ export const updateParraf = createAction(
   (parraf) => ({parraf})
 )
 
+export const getAllMemberSpeakerPanel = createAction(
+  GET_SPEAKER_MEMBER,
+  () => ({})
+)
+
+export const setAllMemberSpeakerPanel = createAction(
+  SET_SPEAKER_MEMBER,
+  (member) => ({member})
+)
+
 export const actions = {
     setActiveBoton,
     addedToPersonalAgenda,
@@ -133,6 +147,8 @@ export const actions = {
     registerUserIfNotAreRegisterConference2023,
     getAllPanelsOfOneUser,
     updateAllPanelsOfOneUser,
+    setAllMemberSpeakerPanel,
+    getAllMemberSpeakerPanel,
     getAllSponsors,
     updateAllSponsors2023,
     getAllParafs,

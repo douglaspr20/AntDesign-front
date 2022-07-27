@@ -14,7 +14,8 @@ import {
     getAllPanelsOfOneUserEndPoint,
     addedToPersonalAgendaEndPoint,
     getAllSponsors2023EndPoint,
-    getAllParrafsEndPoint
+    getAllParrafsEndPoint,
+    getAllMemberSpeakerPanelEndPoint
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
@@ -278,6 +279,33 @@ export function* getAllParrafsSagas({payload}) {
   }
 }
 
+export function* getAllMemberSpeakerPanelSagas({payload}) {
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllMemberSpeakerPanelEndPoint);
+
+    if (response.status === 200) {
+      const { member } = response.data;
+
+      yield put(
+        speakerActions.setAllMemberSpeakerPanel({
+          member
+        })
+      );
+    }
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "ERROR:",
+        description: error?.response?.data?.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
@@ -287,7 +315,8 @@ function* watchLogin() {
     yield takeLatest(speakerConstans.GET_ALL_PANELS_OF_ONE_USER, getAllPanelsOfOneUserSagas);
     yield takeLatest(speakerConstans.ADDED_TO_MY_PERSONAL_AGENDA, addedToPersonalAgendaSagas);
     yield takeLatest(speakerConstans.GET_ALL_SPONSORS, getAllSponsors2023Sagas);
-    yield takeLatest(speakerConstans.GET_ALL_PARRAF_CONFERENCE , getAllParrafsSagas)
+    yield takeLatest(speakerConstans.GET_ALL_PARRAF_CONFERENCE , getAllParrafsSagas);
+    yield takeLatest(speakerConstans.GET_SPEAKER_MEMBER , getAllMemberSpeakerPanelSagas);
 }
   
 export const speakerSaga = [fork(watchLogin)];

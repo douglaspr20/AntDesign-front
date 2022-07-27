@@ -123,6 +123,13 @@ export const reducers = {
         allParrafs: parraf.parraf,
       })
     }, 
+    [speakerConstans.SET_SPEAKER_MEMBER]: (state, {payload}) => {
+      const {member} = payload
+
+      return state.merge({
+        allMember: member.member,
+      })
+    },
   };
   
   export const initialState = () =>
@@ -134,7 +141,8 @@ export const reducers = {
         activeButton: false,
         allParrafs: [],
         allPanelsOfOneUserFormat: [],
-        allPanelSpeakersFormat: []
+        allPanelSpeakersFormat: [],
+        allMember: []
     }
   );
 

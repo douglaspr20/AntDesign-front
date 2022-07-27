@@ -296,7 +296,8 @@ import {
   getAllPanelsOfOneUserEndPoint,
   addedToPersonalAgendaEndPoint,
   getAllSponsors2023EndPoint,
-  getAllParrafsEndPoint
+  getAllParrafsEndPoint,
+  getAllMemberSpeakerPanelEndPoint,
 } from "./module/speakers"
 
 export {
@@ -304,6 +305,7 @@ export {
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
   getAllSponsors2023EndPoint,
+  getAllMemberSpeakerPanelEndPoint,
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   sendActiveOrDenyAuthorizationEndPoint,

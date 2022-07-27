@@ -22,6 +22,7 @@ const ButtonsSpeakers = ({
     removeUserFunction,
     setRemoveMembersSpeakers,
     removeMembersSpeakers,
+    index
   }) => {
 
     const {id, startDate, endDate, panelName} = panels
@@ -39,7 +40,7 @@ const ButtonsSpeakers = ({
         }
     })
 
-    const takeActionWithdrawOrJoinUser = () => {
+    const takeActionWithdrawOrJoinUser = (index) => {
         if(withdraw){
             setBulJoinOrWithdraw(true)
             removeUserFunction(idWithdraw)
@@ -53,7 +54,7 @@ const ButtonsSpeakers = ({
                     startDate: startDate,
                     endDate: endDate, 
                     panelName: panelName
-                })
+                },index)
             }else{
                 setBulCompleteProfile(true)
             }
@@ -74,7 +75,7 @@ const ButtonsSpeakers = ({
       <>
         <button
           className={(withdraw) ? "button-withdraw" : "button-join"}
-          onClick={() => takeActionWithdrawOrJoinUser()}
+          onClick={() => takeActionWithdrawOrJoinUser(index)}
         >
           {(withdraw) ? "Withdraw" : "Join"}
         </button>

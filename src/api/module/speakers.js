@@ -39,6 +39,10 @@ export const getAllPanelsOfOneUserEndPoint = (UserId) => {
   })
 }
 
+export const getAllMemberSpeakerPanelEndPoint = () => {
+  return httpClient.get(`private/speakers/get-member-speakers-of-one-user`)
+}
+
 export const getAllSponsors2023EndPoint = () => {
   return httpClient.get(`public/speakers/get-all-sponsor`)  
 }
