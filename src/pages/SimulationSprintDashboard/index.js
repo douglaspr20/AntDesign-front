@@ -84,7 +84,7 @@ const SimulationSprintDashboardPage = ({
               </div>
             </div>
             <div className="title">
-              <h2>Test title yuyuyuyuyuyu</h2>
+              <h2>{simulationSprint?.title}</h2>
             </div>
           </div>
 
