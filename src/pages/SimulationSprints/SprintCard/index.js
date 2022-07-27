@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import { CustomButton } from "components";
 import { INTERNAL_LINKS } from "enum";
-import { homeSelector } from "redux/selectors/homeSelector";
 import "./style.scss";
 
 const HARDCODED_COVER_PLACEHOLDER =
@@ -35,7 +34,7 @@ const SprintCard = ({ sprint }) => {
       moment.utc().isAfter(moment(sprint.startDate).utc().subtract(1, "days"))
     ) {
       history.push(
-        `${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}/resources?key=1`
+        `${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}/dashboard`
       );
     } else {
       history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${sprint.id}`);
@@ -90,9 +89,7 @@ const SprintCard = ({ sprint }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  userProfile: homeSelector(state).userProfile,
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 

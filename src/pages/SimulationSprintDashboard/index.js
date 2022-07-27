@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import qs from "query-string";
 import { INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 import { Menu } from "antd";
 
-import "./style.scss";
+import { getSimulationSprint } from "redux/actions/simulationSprint-actions";
+import { simulationSprintSelector } from "redux/selectors/simulationSprintSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
+import CalendarActivities from "./CalendarActivities";
 
-const SimulationSprintDashboardPage = () => {
+import "./style.scss";
+import Deliverables from "./Deliverables";
+import MyTeam from "./MyTeam";
+import FullCohort from "./FullCohort";
+
+const SimulationSprintDashboardPage = ({
+  simulationSprint,
+  userProfile,
+  getSimulationSprint,
+}) => {
   const history = useHistory();
   const location = useLocation();
   const { id } = useParams();
@@ -28,6 +41,16 @@ const SimulationSprintDashboardPage = () => {
       `${INTERNAL_LINKS.SIMULATION_SPRINTS}/${id}/dashboard?key=${selectedKeys}`
     );
   }, [selectedKeys, id]);
+
+  useEffect(() => {
+    getSimulationSprint(id, (error) => {
+      if (error) {
+        history.push(
+          `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
+        );
+      }
+    });
+  }, [getSimulationSprint, id, history]);
 
   return (
     <div className="simulation-sprint-dashboard-page">
@@ -100,8 +123,46 @@ const SimulationSprintDashboardPage = () => {
           </Menu>
         </div>
       </div>
+      <div className="simulation-sprint-dashboard-page-body">
+        {selectedKeys === "the-basics" && (
+          <div
+            className="the-basics"
+            dangerouslySetInnerHTML={{
+              __html: (simulationSprint.description || {}).html || "",
+            }}
+          />
+        )}
+
+        {selectedKeys === "calendar" && (
+          <CalendarActivities
+            activitites={simulationSprint.SimulationSprintActivities}
+          />
+        )}
+
+        {selectedKeys === "deliverables" && (
+          <Deliverables
+            deliverables={simulationSprint.SimulationSprintDeliverables}
+          />
+        )}
+
+        {selectedKeys === "team" && <MyTeam />}
+
+        {selectedKeys === "full-cohort" && <FullCohort />}
+      </div>
     </div>
   );
 };
 
-export default SimulationSprintDashboardPage;
+const mapStateToProps = (state) => ({
+  simulationSprint: simulationSprintSelector(state).simulationSprint,
+  userProfile: homeSelector(state).userProfile,
+});
+
+const mapDispatchToProps = {
+  getSimulationSprint,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SimulationSprintDashboardPage);
