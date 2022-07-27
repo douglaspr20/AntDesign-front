@@ -14,7 +14,7 @@ const CalendarCard = ({ activity }) => {
     e.preventDefault();
     e.stopPropagation();
     window.open(
-      `${process.env.REACT_APP_API_ENDPOINT}/public/bonfire/ics/${activity.id}?userTimezone=${userTimezone}`,
+      `${process.env.REACT_APP_API_ENDPOINT}/public/simulation-sprint-activity/ics/${activity.id}?userTimezone=${userTimezone}`,
       "_blank"
     );
   };

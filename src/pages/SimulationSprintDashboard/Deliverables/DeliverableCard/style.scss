@@ -114,6 +114,9 @@
         margin-top: 1rem;
         max-height: 0vh;
         overflow: hidden;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
         transition: 500ms all ease;
 
         &.show{

@@ -28,6 +28,12 @@ const SimulationSprintDashboardPage = ({
 
   const parsed = qs.parse(location.search);
 
+  const myTeam = simulationSprint?.SimulationSprintGroups?.find((group) =>
+    group?.SimulationSprintParticipants?.some(
+      (participant) => participant.UserId === userProfile.id
+    )
+  );
+
   useEffect(() => {
     setSelectedKeys(parsed.key || "the-basics");
 
@@ -51,6 +57,11 @@ const SimulationSprintDashboardPage = ({
       }
     });
   }, [getSimulationSprint, id, history]);
+
+  (myTeam || {}).SimulationSprintParticipants =
+    simulationSprint?.SimulationSprintParticipants?.filter(
+      (participant) => participant?.SimulationSprintGroupId === myTeam?.id
+    );
 
   return (
     <div className="simulation-sprint-dashboard-page">
@@ -145,9 +156,13 @@ const SimulationSprintDashboardPage = ({
           />
         )}
 
-        {selectedKeys === "team" && <MyTeam />}
+        {selectedKeys === "team" && <MyTeam myTeam={myTeam} />}
 
-        {selectedKeys === "full-cohort" && <FullCohort />}
+        {selectedKeys === "full-cohort" && (
+          <FullCohort
+            participants={simulationSprint.SimulationSprintParticipants}
+          />
+        )}
       </div>
     </div>
   );
