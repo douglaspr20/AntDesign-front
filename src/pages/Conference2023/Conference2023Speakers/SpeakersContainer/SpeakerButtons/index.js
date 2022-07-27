@@ -40,9 +40,11 @@ const SpeakerButtons = ({
     useEffect(() => {
         if(userProfile.id !== undefined){
             setBulAddedToMyAgenda(false)
-            for(let i = 0 ; i < usersAddedToThisAgenda.length ; i++ ){
-                if(Number(usersAddedToThisAgenda[i]) === Number(userProfile.id)){
-                    setBulAddedToMyAgenda(true)
+            if(usersAddedToThisAgenda?.length !== undefined){
+                for(let i = 0 ; i < usersAddedToThisAgenda?.length ; i++ ){
+                    if(Number(usersAddedToThisAgenda[i]) === Number(userProfile.id)){
+                        setBulAddedToMyAgenda(true)
+                    }
                 }
             }
         }

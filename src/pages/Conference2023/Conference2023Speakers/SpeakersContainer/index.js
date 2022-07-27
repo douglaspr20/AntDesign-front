@@ -28,7 +28,7 @@ const SpeakerContainer = ({
     },[ getAllUserSpeaker ])
 
     const loadDataForPopUpSpeaker = (id) => {
-        getAllPanelsOfOneUser({id:id}, (error) => {
+        getAllPanelsOfOneUser({id:id, type: "speakers"}, (error) => {
             if(!error){
                 setWindowPopUpForSpeaker(true)
             }
@@ -115,20 +115,43 @@ const SpeakerContainer = ({
                         </p>
                         <p><span className="bold-subtitle">Sessions: </span></p>
                         {allPanelsOfOneUser?.map((SpeakerPanel, index) => {
-                            return (
-                                <div className="container-sessions-speakers" key={SpeakerPanel.id}>
-                                    <h3>{SpeakerPanel.panelName}</h3>
-                                    <p>- {convertToLocalTime(SpeakerPanel.startDate, SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
-                                    <p>- {convertToLocalTime(SpeakerPanel.endDate, SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
-                                    <SpeakerButtons 
-                                        usersAddedToThisAgenda={SpeakerPanel.usersAddedToThisAgenda} 
-                                        id={SpeakerPanel.id} 
-                                        startDate={SpeakerPanel.startDate}
-                                        endDate={SpeakerPanel.endDate}
-                                        allPanelsOfOneUser={getAllPanelsOfOneUser}
-                                    />
-                                </div>
-                            )
+
+                            if(SpeakerPanel.SpeakerPanel !== undefined){
+                                
+                                return (
+                                    <div className="container-sessions-speakers" key={SpeakerPanel.SpeakerPanel.id}>
+                                        <h3>{SpeakerPanel.SpeakerPanel.panelName}</h3>
+                                        <p>- {convertToLocalTime(SpeakerPanel.SpeakerPanel.startDate, SpeakerPanel.SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                                        <p>- {convertToLocalTime(SpeakerPanel.SpeakerPanel.endDate, SpeakerPanel.SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                                        <SpeakerButtons 
+                                            usersAddedToThisAgenda={SpeakerPanel.SpeakerPanel.usersAddedToThisAgenda} 
+                                            id={SpeakerPanel.SpeakerPanel.id} 
+                                            startDate={SpeakerPanel.SpeakerPanel.startDate}
+                                            endDate={SpeakerPanel.SpeakerPanel.endDate}
+                                            allPanelsOfOneUser={getAllPanelsOfOneUser}
+                                        />
+                                    </div>
+                                )
+
+                            }else{
+
+                                return (
+                                    <div className="container-sessions-speakers" key={SpeakerPanel.id}>
+                                        <h3>{SpeakerPanel.panelName}</h3>
+                                        <p>- {convertToLocalTime(SpeakerPanel.startDate, SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                                        <p>- {convertToLocalTime(SpeakerPanel.endDate, SpeakerPanel.timeZone).format("MM-DD-YYYY hh:mm a")}</p>
+                                        <SpeakerButtons 
+                                            usersAddedToThisAgenda={SpeakerPanel.usersAddedToThisAgenda} 
+                                            id={SpeakerPanel.id} 
+                                            startDate={SpeakerPanel.startDate}
+                                            endDate={SpeakerPanel.endDate}
+                                            allPanelsOfOneUser={getAllPanelsOfOneUser}
+                                        />
+                                    </div>
+                                )
+
+                            }
+                
                         })}
                     </div>
                 </div>

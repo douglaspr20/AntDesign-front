@@ -123,12 +123,6 @@ const PanelSpeakers = ({
   return (
     <>
       <div className="container-collapse">
-        <div className="alert">
-          <h1>
-            Panels are not ready yet. This tab is empty for now. Panels will be
-            ready in two weeks. Enrique will notify you via email
-          </h1>
-        </div>
         {allPanelSpeakers?.panelsSpeakers?.map((panels) => (
           <CollapseComponent
             key={panels?.id}
