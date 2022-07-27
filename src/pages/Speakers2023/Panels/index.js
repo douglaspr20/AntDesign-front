@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import MemberSpeakers from "./MembersSpeakers";
+import { notification } from "antd";
 
 import PropTypes from "prop-types";
 import {
@@ -29,6 +30,8 @@ const PanelSpeakers = ({
   removeUserSpeakerToPanel,
   userProfile,
   getUser,
+  getAllMemberSpeakerPanel,
+  allMember
 }) => {
   const [speakersUserForm] = Form.useForm();
   const [openSearchUser, setOpenSearchUser] = useState(false);
@@ -43,8 +46,9 @@ const PanelSpeakers = ({
 
   useEffect(() => {
     getAllPanelSpeakers("Panels");
+    getAllMemberSpeakerPanel()
     getAllUserSpeaker(userProfile.id);
-  }, [getAllPanelSpeakers, getAllUserSpeaker, userProfile.id]);
+  }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id]);
 
   const addUser = (data) => {
     const bulModerator =
@@ -65,25 +69,54 @@ const PanelSpeakers = ({
     );
   };
 
-  const joinUser = (data) => {
+  const joinUser = (data,index) => {
     const usersNames = {
       userId: userProfile.id,
       userName: userProfile.firstName,
       userEmail: userProfile.email,
     };
-    addUserSpeakerToPanel(
-      { usersNames, bul: false, panel: data, type: "joinUser" },
-      () => {
-        getAllPanelSpeakers("Panels");
-        getAllUserSpeaker(userProfile.id);
+
+    if(allMember.length < 2 && userProfile.role === 'user' && allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.length < 5){
+      addUserSpeakerToPanel(
+        { usersNames, bul: false, panel: data, type: "joinUser" },
+        () => {
+          getAllPanelSpeakers("Panels");
+          getAllUserSpeaker(userProfile.id);
+          getAllMemberSpeakerPanel()
+        }
+      );
+    }else{
+      if(allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.length === 5){
+        notification.error({
+        message: "ERROR:",
+        description: "This panel is full.",
+      });
       }
-    );
+      if(allMember.length === 2){
+        notification.error({
+          message: "ERROR:",
+          description: "You can't join more than two panels.",
+        });
+      }
+      
+    }
+    if(userProfile.role === 'admin'){
+      addUserSpeakerToPanel(
+        { usersNames, bul: false, panel: data, type: "joinUser" },
+        () => {
+          getAllPanelSpeakers("Panels");
+          getAllUserSpeaker(userProfile.id);
+          getAllMemberSpeakerPanel()
+        }
+      );
+    }
   };
 
   const removeUserFunction = (id, user) => {
     removeUserSpeakerToPanel(id, () => {
       getAllPanelSpeakers("Panels");
       getAllUserSpeaker(userProfile.id);
+      getAllMemberSpeakerPanel()
       if (userProfile.id === user) {
         setTimeout(() => {
           setRemoveMembersSpeakers(true);
@@ -123,7 +156,7 @@ const PanelSpeakers = ({
   return (
     <>
       <div className="container-collapse">
-        {allPanelSpeakers?.panelsSpeakers?.map((panels) => (
+        {allPanelSpeakers?.panelsSpeakers?.map((panels, index) => (
           <CollapseComponent
             key={panels?.id}
             informationCollapse={content(panels)}
@@ -132,6 +165,7 @@ const PanelSpeakers = ({
             dataStatic={dataStatic(panels)}
             buttons={
               <ButtonsSpeakers
+                index={index}
                 panels={panels}
                 removeUserFunction={removeUserFunction}
                 joinUser={joinUser}
@@ -255,6 +289,7 @@ const PanelSpeakers = ({
 const mapStateToProps = (state, props) => ({
   allPanelSpeakers: speakerAllPanelSpeakerSelector(state).allPanelSpeakers,
   allUserSpeaker: speakerAllPanelSpeakerSelector(state).allUserSpeakers,
+  allMember: speakerAllPanelSpeakerSelector(state).allMember,
   userProfile: homeSelector(state).userProfile,
 });
 
@@ -263,6 +298,7 @@ const mapDispatchToProps = {
   getAllUserSpeaker: speaker.getAllUserSpeaker,
   removeUserSpeakerToPanel: speaker.removeUserSpeakerToPanel,
   addUserSpeakerToPanel: speaker.addUserSpeakerToPanel,
+  getAllMemberSpeakerPanel: speaker.getAllMemberSpeakerPanel,
   getUser,
 };
 
