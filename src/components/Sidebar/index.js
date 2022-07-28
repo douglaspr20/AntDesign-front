@@ -62,12 +62,10 @@ class NavBar extends Component {
     ) {
       e.preventDefault();
       this.setState({ showFirewall: true, module: "global-conference" });
-    }
-    // else if (url === INTERNAL_LINKS.SIMULATION_SPRINTS) {
-    //   e.preventDefault();
-    //   this.setState({ showFirewall: true, module: "simulations-sprint" });
-    // }
-    else if (isMobile) {
+    } else if (url === INTERNAL_LINKS.SIMULATION_SPRINTS) {
+      e.preventDefault();
+      this.setState({ showFirewall: true, module: "simulations-sprint" });
+    } else if (isMobile) {
       this.props.setCollapsed(true);
     }
   };
