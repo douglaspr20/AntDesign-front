@@ -65,6 +65,7 @@ import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
 import SimulationSprintsPage from "pages/SimulationSprints";
 import SimulationSprintPage from "pages/SimulationSprint";
+import SimulationSprintDashboardPage from "pages/SimulationSprintDashboard";
 // import CommunititesPage from "pages/Communities";
 // import BonfiresPage from "pages/Bonfires";
 
@@ -76,7 +77,6 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
-import SimulationSprintResourcePage from "pages/SimulationSprintResource";
 
 class Content extends Component {
   componentDidMount() {
@@ -477,8 +477,8 @@ class Content extends Component {
 
           <Route
             exact
-            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/resources`}
-            render={(props) => <SimulationSprintResourcePage {...props} />}
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/dashboard`}
+            render={(props) => <SimulationSprintDashboardPage {...props} />}
           />
           <Route
             exact
