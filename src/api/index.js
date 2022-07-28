@@ -298,12 +298,14 @@ import {
   getAllSponsors2023EndPoint,
   getAllParrafsEndPoint,
   getAllMemberSpeakerPanelEndPoint,
+  getAllMyPanels,
 } from "./module/speakers"
 
 export {
   getAllParrafsEndPoint,
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
+  getAllMyPanels,
   getAllSponsors2023EndPoint,
   getAllMemberSpeakerPanelEndPoint,
   registerUserIfNotAreRegisterConference2023EndPoint,

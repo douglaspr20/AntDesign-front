@@ -14,11 +14,13 @@ const SET_BUL_REGISTER = "SET_BUL_REGISTER";
 const ADDED_TO_MY_PERSONAL_AGENDA = "ADDED_TO_MY_PERSONAL_AGENDA"
 const GET_ALL_SPONSORS = "GET_ALL_SPONSORS";
 const UPDATE_ALL_SPONSOR_2023 = "UPDATE_ALL_SPONSOR_2023";
-const SET_ACTIVE_BUTTON = "SET_ACTIVE_BUTTON"
-const GET_ALL_PARRAF_CONFERENCE = "GET_ALL_PARRAF_CONFERENCE"
-const UPDATE_PARRAF = "UPDATE_PARRAF"
-const GET_SPEAKER_MEMBER = "GET_SPEAKER_MEMBER"
-const SET_SPEAKER_MEMBER = "SET_SPEAKER_MEMBER"
+const SET_ACTIVE_BUTTON = "SET_ACTIVE_BUTTON";
+const GET_ALL_PARRAF_CONFERENCE = "GET_ALL_PARRAF_CONFERENCE";
+const UPDATE_PARRAF = "UPDATE_PARRAF";
+const GET_SPEAKER_MEMBER = "GET_SPEAKER_MEMBER";
+const SET_SPEAKER_MEMBER = "SET_SPEAKER_MEMBER";
+const MY_PANELS_USER = "MY_PANELS_USER";
+const MY_PANELS_USER_UPDATE = "MY_PANELS_USER_UPDATE"
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -38,7 +40,9 @@ export const constants = {
   GET_ALL_PARRAF_CONFERENCE,
   UPDATE_PARRAF,
   GET_SPEAKER_MEMBER,
-  SET_SPEAKER_MEMBER
+  SET_SPEAKER_MEMBER,
+  MY_PANELS_USER,
+  MY_PANELS_USER_UPDATE
 };
 
 // ------------------------------------
@@ -54,6 +58,16 @@ export const updatePanelSpeakers = createAction(
     UPDATE_PANEL_SPEAKERS,
     (panelsSpeakers) => ({ panelsSpeakers })
 );
+
+export const getAllPanelsOfOneUserSpeakers = createAction(
+  MY_PANELS_USER,
+  (callback) => ({callback})
+)
+
+export const updateAllPanelsOfOneUserSpeakers = createAction(
+  MY_PANELS_USER_UPDATE,
+  (userSpeakers) => ({ userSpeakers })
+)
 
 export const getAllPanelSpeakers = createAction(
   GET_PANEL_SPEAKERS,
@@ -152,5 +166,7 @@ export const actions = {
     getAllSponsors,
     updateAllSponsors2023,
     getAllParafs,
-    updateParraf
+    updateParraf,
+    getAllPanelsOfOneUserSpeakers,
+    updateAllPanelsOfOneUserSpeakers
 };

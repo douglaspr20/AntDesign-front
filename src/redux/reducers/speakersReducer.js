@@ -95,6 +95,13 @@ export const reducers = {
         allPanelsOfOneUserFormat: arrayFixed
       })
     },
+    [speakerConstans.MY_PANELS_USER_UPDATE]: (state, {payload}) => {
+      const {userSpeakers} = payload
+    
+      return state.merge({
+        allMyPanels: userSpeakers,
+      })
+    },
     [speakerConstans.SET_BUL_REGISTER]: (state, {payload}) => {
       const {bul} = payload
       
@@ -141,8 +148,10 @@ export const reducers = {
         activeButton: false,
         allParrafs: [],
         allPanelsOfOneUserFormat: [],
+        allPanelsOfOneUser: [],
         allPanelSpeakersFormat: [],
-        allMember: []
+        allMember: [],
+        allMyPanels: [],
     }
   );
 

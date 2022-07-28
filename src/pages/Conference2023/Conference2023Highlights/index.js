@@ -15,7 +15,7 @@ const Conference2023Home = ({
 }) => {
 
   useEffect(() => {
-    getAllParafs("Home")
+    getAllParafs("Highlights")
   }, [getAllParafs])
 
   return (
@@ -35,24 +35,6 @@ const Conference2023Home = ({
               <div dangerouslySetInnerHTML={{ __html: parraf.text }} ></div>
             )
           })}
-        </div>
-        <div className="container-speaker-home">
-          <p className="p-speakers">Speakers</p>
-          <SpeakersContainer maxLength={4} className={"container-users"} />
-          <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
-            <button className="button-speakers-home">
-              View All Speakers
-            </button>
-          </Link>
-        </div>
-        <div className="container-agenda-home">
-          <p className="p-agenda">Agenda</p>
-          <Agenda maxLength={4} type={"double-collapse"} />
-          <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}>
-            <button className="button-agenda-home">
-              View All Conference schedule
-            </button>
-          </Link>
         </div>
         <div className="container-why-to-attend">
           <p className="title-why-to-attend">Why to Attend</p>

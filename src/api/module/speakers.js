@@ -39,6 +39,10 @@ export const getAllPanelsOfOneUserEndPoint = (UserId) => {
   })
 }
 
+export const getAllMyPanels = () => {
+  return httpClient.get(`private/speakers/all-my-panel-of-user`)
+}
+
 export const getAllMemberSpeakerPanelEndPoint = () => {
   return httpClient.get(`private/speakers/get-member-speakers-of-one-user`)
 }

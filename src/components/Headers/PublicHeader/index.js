@@ -124,6 +124,17 @@ const PublicHeader = ({
             <div className="public-conference-links">
               <Link 
                 style={
+                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/highlights") ? 
+                  {textDecoration: "underline black"} : {textDecoration: "none"}
+                } 
+                to={INTERNAL_LINKS.CONFERENCE_2023 + "/highlights"}
+              >
+                  <p>Conference Highlights</p>
+              </Link>
+            </div>
+            <div className="public-conference-links">
+              <Link 
+                style={
                   (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/speakers") ? 
                   {textDecoration: "underline black"} : {textDecoration: "none"}
                 } 
