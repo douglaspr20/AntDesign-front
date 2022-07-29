@@ -13,7 +13,8 @@ const resultSelector = createSelector(speakerSelector, (payload) => {
     allSponsors: payload.get("allSponsors"),
     activeButton: payload.get("activeButton"), 
     allParrafs: payload.get("allParrafs"),
-    allMember: payload.get("allMember")
+    allMember: payload.get("allMember"),
+    allMyPanels: payload.get("allMyPanels")
   };
 });
 

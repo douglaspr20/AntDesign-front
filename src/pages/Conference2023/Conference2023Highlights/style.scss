@@ -3,101 +3,101 @@
   height: calc(100vh - 10px);
 
   .imagen-conference{
-      position: relative;
-      width: 108%;
-      height: 50vh;
-      background-image: url("https://upload-files-lab.s3.amazonaws.com/Home.jpg");
-      background-size: 100% 100%;
-      background-blend-mode: soft-light;
-      background-color: rgba(0, 0, 0, 0.19);
-      transform: translateX(-7%);
-      background-position: center 0%;
-      background-repeat: no-repeat;
-      background-attachment: unset;
+    position: relative;
+    width: 108%;
+    height: 50vh;
+    background-image: url("https://upload-files-lab.s3.amazonaws.com/Home.jpg");
+    background-size: 100% 100%;
+    background-blend-mode: soft-light;
+    background-color: rgba(0, 0, 0, 0.19);
+    transform: translateX(-7%);
+    background-position: center 0%;
+    background-repeat: no-repeat;
+    background-attachment: unset;
 
-      .container-content-picture{
-        position: absolute;
-        top: 0px;
-        width: 93.5%;
-        right: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100%;
-    
-        .parrafo-hachinglab-picture{
-          width: 100%;
-          text-align: center;
-          height: 35px;
-          font-style: normal;
-          font-family: 'Segoe UI';
-          font-weight: 400;
-          font-size: 26px;
-          line-height: 35px;
-          letter-spacing: -0.01em;
-          color: rgba(255, 255, 255, 0.72);
-        }
-
-        .title-hachinglab-picture1, .title-hachinglab-picture2{
-          width: 100%;
-          height: 80px;
-          margin: 0px;
-          font-style: normal;
-          font-family: 'Segoe UI';
-          text-align: center;
-          font-weight: bold;
-          font-size: 90px;
-          line-height: 80px;
-          letter-spacing: -0.01em;
-          color: #FFFFFF;
-          margin-top: 5px;
-    
-          .span-color{
-            color: #FE5621;
-          }
-        }
-    
-        .title-hachinglab-picture1{
-          font-size: 65px;
-          font-family: 'Segoe UI';
-        }
-    
-        .date-picture{
-          width: 100%;
-          text-align: center;
-          height: 35px;
-          margin-top: 30px;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 22px;
-          line-height: 35px;
-          letter-spacing: -0.01em;
-          font-family: 'Segoe UI';
-          color: #FFFFFF;
-          text-shadow: 1px 1px 2px black;
-        }
-
-        @media (max-width: 750px) {
-          .title-hachinglab-picture2{
-            margin-top: 75px;
-            font-size: 70px;
-          }
-        }
+    .container-content-picture{
+      position: absolute;
+      top: 0px;
+      width: 93.5%;
+      right: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
   
-        @media (max-width: 520px) {
-          .title-hachinglab-picture2, .title-hachinglab-picture1{
-            font-size: 48px;
-          }
+      .parrafo-hachinglab-picture{
+        width: 100%;
+        text-align: center;
+        height: 35px;
+        font-style: normal;
+        font-family: 'Segoe UI';
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 35px;
+        letter-spacing: -0.01em;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .title-hachinglab-picture1, .title-hachinglab-picture2{
+        width: 100%;
+        height: 80px;
+        margin: 0px;
+        font-style: normal;
+        font-family: 'Segoe UI';
+        text-align: center;
+        font-weight: bold;
+        font-size: 90px;
+        line-height: 80px;
+        letter-spacing: -0.01em;
+        color: #FFFFFF;
+        margin-top: 5px;
+  
+        .span-color{
+          color: #FE5621;
+        }
+      }
+  
+      .title-hachinglab-picture1{
+        font-size: 65px;
+        font-family: 'Segoe UI';
+      }
+  
+      .date-picture{
+        width: 100%;
+        text-align: center;
+        height: 35px;
+        margin-top: 30px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 22px;
+        line-height: 35px;
+        letter-spacing: -0.01em;
+        font-family: 'Segoe UI';
+        color: #FFFFFF;
+        text-shadow: 1px 1px 2px black;
+      }
+
+      @media (max-width: 750px) {
+        .title-hachinglab-picture2{
+          margin-top: 75px;
+          font-size: 70px;
         }
       }
 
-      @media (max-width: 600px) {
-        .container-content-picture{
-          height: 60vh;
+      @media (max-width: 520px) {
+        .title-hachinglab-picture2, .title-hachinglab-picture1{
+          font-size: 48px;
         }
       }
-  }
+    }
+
+    @media (max-width: 600px) {
+      .container-content-picture{
+        height: 60vh;
+      }
+    }
+  } 
 
   @media (max-width: 950px) {
     .imagen-conference{

@@ -1,4 +1,4 @@
-.button-join, .button-withdraw, .button-admin{
+.button-join, .button-withdraw, .button-admin, .button-full{
     border: none;
     border-radius: 5px;
     background: #00b574;
@@ -13,6 +13,14 @@
     flex-grow: 0;
     transition: all ease-in-out 0.25s;
     cursor: pointer;
+}
+
+.button-full{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+    background: #e61e47;
 }
 
 .button-withdraw{

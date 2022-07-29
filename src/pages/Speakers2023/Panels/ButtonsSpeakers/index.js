@@ -22,23 +22,43 @@ const ButtonsSpeakers = ({
     removeUserFunction,
     setRemoveMembersSpeakers,
     removeMembersSpeakers,
-    index
+    index,
+    allMyPanels
   }) => {
 
-    const {id, startDate, endDate, panelName} = panels
+    const {id, startDate, endDate, panelName, SpeakerMemberPanels} = panels
   
     const [bulJoinOrWithdraw, setBulJoinOrWithdraw] = useState(false)
     const [idWithdraw, setIdWithdraw] = useState(-1)
     const [withdraw, setWithdraw] = useState(false)
+    const [full, setFul] = useState(false)
 
-    panels.SpeakerMemberPanels.forEach((data) => {
+    useEffect(() => {
+      setWithdraw(false)
+    }, [allMyPanels, setWithdraw])
+
+    useEffect(() => {
+      let arraySpeakersNotAdmin = SpeakerMemberPanels.filter((member) => {
+        return member.isModerator === false
+      })
+      
+      if(arraySpeakersNotAdmin.length > 4){
+        setFul(true)
+      }else{
+        setFul(false)
+      }
+    },[SpeakerMemberPanels])
+
+    useEffect(() => {
+      allMyPanels.forEach((data) => {
         if(withdraw !== true && bulJoinOrWithdraw !== true){
-          if(userProfile.id === data.User.id){
+          if(id === data?.SpeakerPanel.id){
               setWithdraw(true)
               setIdWithdraw(data.id)
           }
         }
-    })
+      })
+    }, [panels, withdraw, bulJoinOrWithdraw, userProfile, setWithdraw, setIdWithdraw, allMyPanels])
 
     const takeActionWithdrawOrJoinUser = (index) => {
         if(withdraw){
@@ -70,15 +90,28 @@ const ButtonsSpeakers = ({
         }, 100)
       }
     },[removeMembersSpeakers,setRemoveMembersSpeakers,setWithdraw, setIdWithdraw ])
-
+  
     return (
       <>
-        <button
-          className={(withdraw) ? "button-withdraw" : "button-join"}
-          onClick={() => takeActionWithdrawOrJoinUser(index)}
-        >
-          {(withdraw) ? "Withdraw" : "Join"}
-        </button>
+        {(!full) &&
+          <button
+            className={(withdraw) ? "button-withdraw" : "button-join"}
+            onClick={() => takeActionWithdrawOrJoinUser(index)}
+          >
+            {(withdraw) ? "Withdraw" : "Join"}
+          </button>
+        }
+        {(full && withdraw) &&
+            <button
+              className={(withdraw) ? "button-withdraw" : "button-join"}
+              onClick={() => takeActionWithdrawOrJoinUser(index)}
+            >
+              {(withdraw) ? "Withdraw" : "Join"}
+            </button>
+        }
+        {(full === true && withdraw === false) && 
+          <div className="button-full">This panel is FULL</div>
+        }
         {(role === "admin") &&  
             <button
               className="button-admin"

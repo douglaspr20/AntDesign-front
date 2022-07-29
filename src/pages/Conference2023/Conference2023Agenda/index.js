@@ -47,6 +47,9 @@ const Conference2023Agenda = () => {
             <Link to={INTERNAL_LINKS.CONFERENCE_2023}>
               <p className="p-link-footer" style={{marginRight: "50px"}}>Home</p>
             </Link>
+            <Link to={INTERNAL_LINKS.CONFERENCE_2023 + "/highlights"}>
+              <p className="p-link-footer" style={{marginRight: "50px"}}>Conference Highlights</p>
+            </Link>
             <Link to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
               <p className="p-link-footer" style={{marginRight: "50px"}}>Speakers</p>
             </Link>

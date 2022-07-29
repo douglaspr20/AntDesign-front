@@ -31,7 +31,11 @@ const PanelSpeakers = ({
   userProfile,
   getUser,
   getAllMemberSpeakerPanel,
-  allMember
+  allMember,
+  getAllPanelsOfOneUserSpeakers,
+  allMyPanels,
+  type,
+  changeTab
 }) => {
   const [speakersUserForm] = Form.useForm();
   const [openSearchUser, setOpenSearchUser] = useState(false);
@@ -41,14 +45,20 @@ const PanelSpeakers = ({
     useState(false);
   const [removeMembersSpeakers, setRemoveMembersSpeakers] = useState(false);
   const [Panel, setPanel] = useState({});
+  const [change, setChange] = useState()
+
+  useEffect(() => {
+    setChange(changeTab)
+  }, [changeTab])
 
   const { Option } = Select;
 
   useEffect(() => {
     getAllPanelSpeakers("Panels");
+    getAllPanelsOfOneUserSpeakers();
     getAllMemberSpeakerPanel()
     getAllUserSpeaker(userProfile.id);
-  }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id]);
+  }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id, change]);
 
   const addUser = (data) => {
     const bulModerator =
@@ -64,6 +74,7 @@ const PanelSpeakers = ({
         setPanel({});
         speakersUserForm.resetFields();
         getAllPanelSpeakers("Panels");
+        getAllPanelsOfOneUserSpeakers();
         getAllUserSpeaker(userProfile.id);
       }
     );
@@ -76,35 +87,42 @@ const PanelSpeakers = ({
       userEmail: userProfile.email,
     };
 
-    if(allMember.length < 2 && userProfile.role === 'user' && allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.length < 5){
+    let arrayMemberNotModerator = allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.filter((member) => {
+      return member.isModerator === false
+    })
+
+    if(allMember.length < 2 && userProfile.role === 'user' && arrayMemberNotModerator.length < 5){
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
           getAllPanelSpeakers("Panels");
+          getAllPanelsOfOneUserSpeakers();
           getAllUserSpeaker(userProfile.id);
           getAllMemberSpeakerPanel()
         }
       );
     }else{
-      if(allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.length === 5){
-        notification.error({
-        message: "ERROR:",
-        description: "This panel is full.",
-      });
-      }
-      if(allMember.length === 2){
-        notification.error({
+      if(userProfile.role !== "admin"){
+        if(arrayMemberNotModerator.length === 5){
+          notification.error({
           message: "ERROR:",
-          description: "You can't join more than two panels.",
+          description: "This panel is full.",
         });
+        }
+        if(allMember.length === 2){
+          notification.error({
+            message: "ERROR:",
+            description: "You can't join more than two panels.",
+          });
+        }
       }
-      
     }
     if(userProfile.role === 'admin'){
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
           getAllPanelSpeakers("Panels");
+          getAllPanelsOfOneUserSpeakers();
           getAllUserSpeaker(userProfile.id);
           getAllMemberSpeakerPanel()
         }
@@ -115,6 +133,7 @@ const PanelSpeakers = ({
   const removeUserFunction = (id, user) => {
     removeUserSpeakerToPanel(id, () => {
       getAllPanelSpeakers("Panels");
+      getAllPanelsOfOneUserSpeakers();
       getAllUserSpeaker(userProfile.id);
       getAllMemberSpeakerPanel()
       if (userProfile.id === user) {
@@ -155,31 +174,62 @@ const PanelSpeakers = ({
 
   return (
     <>
-      <div className="container-collapse">
-        {allPanelSpeakers?.panelsSpeakers?.map((panels, index) => (
-          <CollapseComponent
-            key={panels?.id}
-            informationCollapse={content(panels)}
-            className={"container-panel"}
-            dataIterated={dataIterated(panels)}
-            dataStatic={dataStatic(panels)}
-            buttons={
-              <ButtonsSpeakers
-                index={index}
-                panels={panels}
-                removeUserFunction={removeUserFunction}
-                joinUser={joinUser}
-                setPanel={setPanel}
-                setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                role={userProfile.role}
-                setOpenSearchUser={setOpenSearchUser}
-                setRemoveMembersSpeakers={setRemoveMembersSpeakers}
-                removeMembersSpeakers={removeMembersSpeakers}
-              />
-            }
-          />
-        ))}
-      </div>
+      {type === "panels" && 
+        <div className="container-collapse">
+          {allPanelSpeakers?.panelsSpeakers?.map((panels, index) => (
+            <CollapseComponent
+              key={panels?.id}
+              informationCollapse={content(panels)}
+              className={"container-panel"}
+              dataIterated={dataIterated(panels)}
+              dataStatic={dataStatic(panels)}
+              buttons={
+                <ButtonsSpeakers
+                  index={index}
+                  panels={panels}
+                  removeUserFunction={removeUserFunction}
+                  joinUser={joinUser}
+                  setPanel={setPanel}
+                  setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                  role={userProfile.role}
+                  setOpenSearchUser={setOpenSearchUser}
+                  setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                  removeMembersSpeakers={removeMembersSpeakers}
+                  allMyPanels={allMyPanels}
+                />
+              }
+            />
+          ))}
+        </div>
+      }
+      {type === "myPanels" && 
+        <div className="container-collapse">
+          {allMyPanels?.map((panels, index) => (
+            <CollapseComponent
+              key={panels?.SpeakerPanel?.id}
+              informationCollapse={content(panels?.SpeakerPanel)}
+              className={"container-panel"}
+              dataIterated={dataIterated(panels?.SpeakerPanel)}
+              dataStatic={dataStatic(panels?.SpeakerPanel)}
+              buttons={
+                <ButtonsSpeakers
+                  index={index}
+                  panels={panels?.SpeakerPanel}
+                  removeUserFunction={removeUserFunction}
+                  joinUser={joinUser}
+                  setPanel={setPanel}
+                  setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                  role={userProfile.role}
+                  setOpenSearchUser={setOpenSearchUser}
+                  setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                  removeMembersSpeakers={removeMembersSpeakers}
+                  allMyPanels={allMyPanels}
+                />
+              }
+            />
+          ))}
+        </div>
+      }
       <Modal
         visible={openSearchUser}
         title="Searh a speaker."
@@ -287,6 +337,7 @@ const PanelSpeakers = ({
 };
 
 const mapStateToProps = (state, props) => ({
+  allMyPanels: speakerAllPanelSpeakerSelector(state).allMyPanels,
   allPanelSpeakers: speakerAllPanelSpeakerSelector(state).allPanelSpeakers,
   allUserSpeaker: speakerAllPanelSpeakerSelector(state).allUserSpeakers,
   allMember: speakerAllPanelSpeakerSelector(state).allMember,
@@ -294,6 +345,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = {
+  getAllPanelsOfOneUserSpeakers: speaker.getAllPanelsOfOneUserSpeakers,
   getAllPanelSpeakers: speaker.getAllPanelSpeakers,
   getAllUserSpeaker: speaker.getAllUserSpeaker,
   removeUserSpeakerToPanel: speaker.removeUserSpeakerToPanel,

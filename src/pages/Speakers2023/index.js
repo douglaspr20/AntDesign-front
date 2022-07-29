@@ -30,11 +30,16 @@ const Speaker2023 = ({
     {
       title: "Panels",
       key: 1,
-      content: () => (<PanelSpeakers />)
+      content: () => (<PanelSpeakers type={'panels'} />)
+    },
+    {
+      title: "My panels",
+      key: 2,
+      content: () => (<PanelSpeakers type={'myPanels'} />)
     },
     {
       title: "Speakers",
-      key: 2,
+      key: 3,
       content: () => (<Speakers className={"container-users-speakers"} />)
     },
   ];
