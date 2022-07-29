@@ -41,6 +41,20 @@ const SimulationSprintDashboardPage = ({
   }, []);
 
   useEffect(() => {
+    if (simulationSprint.id) {
+      if (
+        !simulationSprint?.SimulationSprintParticipants?.some(
+          (participant) => participant?.UserId === userProfile.id
+        )
+      ) {
+        // history.push(
+        //   `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
+        // );
+      }
+    }
+  }, [history, simulationSprint, userProfile]);
+
+  useEffect(() => {
     window.history.replaceState(
       null,
       "Page",
@@ -80,7 +94,7 @@ const SimulationSprintDashboardPage = ({
                 <div className="sprints-detail-page-header-content-back-img">
                   <img src={IconBack} alt="icon-back" />
                 </div>
-                <h4>Back to Simulatrions Sprints</h4>
+                <h4>Back to simulations sprints</h4>
               </div>
             </div>
             <div className="title">

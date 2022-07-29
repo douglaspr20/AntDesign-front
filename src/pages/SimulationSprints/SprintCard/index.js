@@ -28,8 +28,10 @@ const SprintCard = ({ sprint }) => {
     displayBtn = "More";
   }
 
-  const handleClick = () => {
-    if (
+  const handleClick = (e) => {
+    if (sprint.userParticipated && moment.utc().isAfter(sprint.endDate)) {
+      e.preventDefault();
+    } else if (
       sprint.userParticipated &&
       moment.utc().isAfter(moment(sprint.startDate).utc().subtract(1, "days"))
     ) {

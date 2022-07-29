@@ -11,6 +11,14 @@ const Deliverables = ({ deliverables }) => {
           index={i}
         />
       ))}
+
+      {deliverables?.map((deliverable, i) => (
+        <DeliverableCard
+          key={deliverable.id}
+          deliverable={deliverable}
+          index={i}
+        />
+      ))}
     </>
   );
 };

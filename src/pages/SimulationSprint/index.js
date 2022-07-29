@@ -30,15 +30,17 @@ const SimulationSprint = ({
   const history = useHistory();
   const { id } = useParams();
 
-  const convertedStartTime = moment(simulationSprint.startDate)
-    .tz("America/Los_Angeles")
-    .utcOffset(-7, true);
+  const convertedStartTime = moment(simulationSprint.startDate).tz(
+    "America/Los_Angeles"
+  );
 
-  const convertedEndTime = moment(simulationSprint.endDate)
-    .tz("America/Los_Angeles")
-    .utcOffset(-7, true);
+  const convertedEndTime = moment(simulationSprint.endDate).tz(
+    "America/Los_Angeles"
+  );
 
-  const currentTime = moment().tz("America/Los_Angeles").utcOffset(-7, true);
+  const dateToCloseJoinSimulation = convertedStartTime
+    .subtract(1, "days")
+    .tz("America/Los_Angeles");
 
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
@@ -92,39 +94,31 @@ const SimulationSprint = ({
   let disabled = false;
   let typeButton = "primary";
 
-  if (convertedEndTime.isBefore(currentTime)) {
-    displayBtn = "This simulation ended";
-    disabled = true;
-  } else if (
-    convertedStartTime.isBefore(currentTime) &&
+  if (
+    dateToCloseJoinSimulation.isBefore(moment()) &&
     !simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
     )
   ) {
-    displayBtn = "This simulation has already started";
+    displayBtn = "This simulation is closed";
     disabled = true;
   } else if (
-    convertedStartTime.isBefore(currentTime) &&
     simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
-    )
+    ) &&
+    convertedStartTime.isAfter(moment()) &&
+    convertedEndTime.isBefore(moment())
   ) {
     displayBtn = "Enter the Dashboard";
-    typeButton = "secondary";
   } else if (
-    convertedStartTime.isAfter(currentTime) &&
+    dateToCloseJoinSimulation.isAfter(moment()) &&
     !simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
     )
   ) {
     displayBtn = "Join";
-  } else if (
-    convertedStartTime.isAfter(currentTime) &&
-    simulationSprint.SimulationSprintParticipants?.some(
-      (participant) => participant.UserId === userProfile.id
-    )
-  ) {
-    const duration = moment.duration(convertedStartTime.diff(currentTime));
+  } else {
+    const duration = moment.duration(convertedStartTime.diff(moment()));
     const days = Math.floor(duration.asDays().toFixed(2));
     const hours = Math.floor(duration.asHours().toFixed(2));
     const minutes = duration.minutes().toFixed(2);

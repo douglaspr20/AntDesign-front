@@ -14,21 +14,18 @@ const PricesContainer = ({ handleBuySimulation, loading }) => {
     <div className="simulation-sprints-prices">
       <PricesCard
         title="One Simulation"
-        description="Lorem ipsum"
         prices={prices(700)}
         handleBuySimulation={() => handleBuySimulation("1")}
         loading={loading}
       />
       <PricesCard
         title="Four Simulations"
-        description="Lorem ipsum"
         prices={prices(2500)}
         handleBuySimulation={() => handleBuySimulation("4")}
         loading={loading}
       />
       <PricesCard
         title="Eight Simulations"
-        description="Lorem ipsum"
         prices={prices(4000)}
         handleBuySimulation={() => handleBuySimulation("8")}
         loading={loading}

@@ -119,7 +119,7 @@ const GeneralInformation = ({ userProfile }) => {
           <CustomButton
             type="primary"
             size="md"
-            text={`Create and Donwload Letter`}
+            text={`Create and Download Letter`}
             style={{ marginTop: "5px", maxWidth: "340px" }}
           />
         </div>
