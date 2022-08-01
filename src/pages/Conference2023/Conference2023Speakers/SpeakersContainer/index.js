@@ -18,6 +18,7 @@ const SpeakerContainer = ({
     allPanelsOfOneUser,
     maxLength,
     className,
+    setActiveMessages
 }) => {
 
     const [windowPopUpForSpeaker, setWindowPopUpForSpeaker] = useState(false)
@@ -128,7 +129,9 @@ const SpeakerContainer = ({
                                             id={SpeakerPanel.SpeakerPanel.id} 
                                             startDate={SpeakerPanel.SpeakerPanel.startDate}
                                             endDate={SpeakerPanel.SpeakerPanel.endDate}
+                                            type={SpeakerPanel.SpeakerPanel.type}
                                             allPanelsOfOneUser={getAllPanelsOfOneUser}
+                                            setActiveMessages={setActiveMessages}
                                         />
                                     </div>
                                 )
@@ -145,7 +148,9 @@ const SpeakerContainer = ({
                                             id={SpeakerPanel.id} 
                                             startDate={SpeakerPanel.startDate}
                                             endDate={SpeakerPanel.endDate}
+                                            type={SpeakerPanel.type}
                                             allPanelsOfOneUser={getAllPanelsOfOneUser}
+                                            setActiveMessages={setActiveMessages}
                                         />
                                     </div>
                                 )

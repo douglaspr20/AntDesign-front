@@ -58,7 +58,7 @@ const ButtonsSpeakers = ({
           }
         }
       })
-    }, [panels, withdraw, bulJoinOrWithdraw, userProfile, setWithdraw, setIdWithdraw, allMyPanels])
+    }, [panels, withdraw, bulJoinOrWithdraw, userProfile, setWithdraw, setIdWithdraw, allMyPanels, id])
 
     const takeActionWithdrawOrJoinUser = (index) => {
         if(withdraw){

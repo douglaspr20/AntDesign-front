@@ -58,7 +58,7 @@ const PanelSpeakers = ({
     getAllPanelsOfOneUserSpeakers();
     getAllMemberSpeakerPanel()
     getAllUserSpeaker(userProfile.id);
-  }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id, change]);
+  }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id, change, getAllPanelsOfOneUserSpeakers]);
 
   const addUser = (data) => {
     const bulModerator =

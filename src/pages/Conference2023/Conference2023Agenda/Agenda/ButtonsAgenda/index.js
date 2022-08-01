@@ -5,7 +5,7 @@ import { actions as speaker } from "redux/actions/speaker-actions";
 import { CustomButton} from "components";
 import { CloseCircleFilled } from "@ant-design/icons";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { Dropdown, Menu, Space, Modal } from "antd"
+import { Dropdown, Menu, Space, Modal,notification } from "antd"
 import { DownOutlined } from "@ant-design/icons";
 import { convertToLocalTime } from "utils/format";
 import IconLogo from "images/logo-sidebar.svg";
@@ -17,10 +17,12 @@ const ButtonsAgenda = ({
     addedToPersonalAgenda,
     userProfile,
     panels,
-    setActiveMessages
+    setActiveMessages,
+    allMySessions,
+    updateData
 }) => {
 
-    const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timeZone} = panels
+    const {usersAddedToThisAgenda, id, panelName, description, startDate, endDate, timeZone, type} = panels
 
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
     const [toMyPersonalAgenda,setToMyPersonalAgenda] = useState(false)
@@ -41,13 +43,71 @@ const ButtonsAgenda = ({
             PanelId: id,
             startTime: startDate,
             endTime: endDate,
+            panelType: type,
             type: "Added",
         }
 
         if(userProfile.registerConference2023){
-            addedToPersonalAgenda(data, () => {
-                setBulAddedToMyAgenda(true)
-            }) 
+
+            if(type === "Panels"){
+                addedToPersonalAgenda(data, () => {
+                    setBulAddedToMyAgenda(true)
+                    updateData()
+                }) 
+            }else{
+
+                let arrayVerificacionSessions = []
+
+                for(let i = 0; i < allMySessions.length ; i++){
+
+                    if(allMySessions[i].type !== "Panels"){
+
+                        const startDateCompare = convertToLocalTime(
+                            allMySessions[i].startDate,
+                            allMySessions[i].timeZone
+                        )
+
+                        const endDateCompare = convertToLocalTime(
+                            allMySessions[i].endDate,
+                            allMySessions[i].timeZone
+                        )
+
+                        if(moment(startDateCompare,'YYYY-MM-DD hh:mm a').isBefore(moment(convertedStartTime,'YYYY-MM-DD hh:mm a'), 'minute') === true && moment(endDateCompare,'YYYY-MM-DD hh:mm a').isAfter(moment(convertedStartTime,'YYYY-MM-DD hh:mm a'), 'minute') === true){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                        if(moment(startDateCompare,'YYYY-MM-DD hh:mm a').isBefore(moment(convertedEndTime,'YYYY-MM-DD hh:mm a'), 'minute') === true && moment(endDateCompare,'YYYY-MM-DD hh:mm a').isAfter(moment(convertedEndTime,'YYYY-MM-DD hh:mm a'), 'minute') === true){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                        if(moment(convertedStartTime,'YYYY-MM-DD hh:mm a').isBefore(moment(startDateCompare,'YYYY-MM-DD hh:mm a'), 'minute') === true && moment(convertedEndTime,'YYYY-MM-DD hh:mm a').isAfter(moment(startDateCompare,'YYYY-MM-DD hh:mm a'), 'minute') === true){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                        if(moment(convertedStartTime,'YYYY-MM-DD hh:mm a').isBefore(moment(endDateCompare,'YYYY-MM-DD hh:mm a'), 'minute') === true && moment(convertedEndTime,'YYYY-MM-DD hh:mm a').isAfter(moment(endDateCompare,'YYYY-MM-DD hh:mm a'), 'minute') === true){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                        if(moment(startDateCompare,'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD hh:mm a') === moment(convertedStartTime,'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD hh:mm a')){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                        if(moment(endDateCompare,'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD hh:mm a') === moment(convertedEndTime,'YYYY-MM-DD hh:mm a').format('YYYY-MM-DD hh:mm a')){
+                            arrayVerificacionSessions.push(allMySessions[i])
+                        }
+                    }
+                }
+
+                if(arrayVerificacionSessions.length === 0){
+                    addedToPersonalAgenda(data, () => {
+                        updateData()
+                        setBulAddedToMyAgenda(true)
+                    })
+                }else{
+                    notification.error({
+                        message: "ERROR:",
+                        description: "You already registered for a session on this same date and same time, You can't register for two sessions on the same date and same time.",
+                    });
+                }
+                
+            }
+
+            
         }else{
             setActiveMessages(true)
             setTimeout(() => {
@@ -57,7 +117,9 @@ const ButtonsAgenda = ({
     }
 
     const functionRemoveToMyAgenda = (data) => {
-        addedToPersonalAgenda(data)
+        addedToPersonalAgenda(data, () => {
+            updateData()
+        })
     }
 
     const downloadDropdownOptions = () => (
