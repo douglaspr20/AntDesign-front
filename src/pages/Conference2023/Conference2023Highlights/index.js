@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import SpeakersContainer from "../Conference2023Speakers/SpeakersContainer/index.js";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
-import Agenda from "../Conference2023Agenda/Agenda/index.js";
 import { Link } from "react-router-dom";
 import { INTERNAL_LINKS } from "enum";
 import { getAllParafs } from "redux/actions/speaker-actions";
@@ -26,7 +24,7 @@ const Conference2023Home = ({
             <p className="parrafo-hachinglab-picture">Hacking HR Presents</p>
             <p className="title-hachinglab-picture1">2023 Global Conference</p>
             <p className="title-hachinglab-picture2"><span className="span-color">FORWARD2023</span></p>
-            <p className="date-picture">March 6-9, 2022 | Virtual</p>
+            <p className="date-picture">March 6-9, 2023 | Virtual</p>
           </div>
         </div>
         <div className="container-parraf">

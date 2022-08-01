@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import SpeakersContainer from "./SpeakersContainer";
 import { authSelector } from "redux/selectors/authSelector";
@@ -9,6 +9,8 @@ import "./style.scss";
 
 const Conference2023Speakers = () => {
 
+  const [activeMessages, setActiveMessages] = useState(false)
+
   return (
     <>
       <div className="container-conference" style={{ marginTop: "90px"}}>
@@ -18,8 +20,13 @@ const Conference2023Speakers = () => {
           </div>
         </div>
         <div className="containers-speakers" id="speakers"> 
-          <SpeakersContainer className={"container-users"} />
+          <SpeakersContainer className={"container-users"} setActiveMessages={setActiveMessages} />
         </div>
+        {activeMessages &&
+          <div className="container-messages-general">
+              <div className="messages">No Authorization was found, please Register.</div>
+          </div>
+        }
         <div className="footer-home">
           <div className="logo-footer"></div>
           <div className="container-link-footer">

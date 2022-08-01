@@ -11,8 +11,10 @@ const SpeakerButtons = ({
     id, 
     startDate,
     endDate,
+    type,
     usersAddedToThisAgenda,
-    getAllPanelSpeakers
+    getAllPanelSpeakers,
+    setActiveMessages
 }) => {
 
     const [bulAddedToMyAgenda, setBulAddedToMyAgenda] = useState(false)
@@ -24,12 +26,20 @@ const SpeakerButtons = ({
             PanelId: id,
             startTime: startDate,
             endTime: endDate,
+            panelType: type,
             type: "Added",
         }
 
-        addedToPersonalAgenda(data, () => {
-            setBulAddedToMyAgenda(true)
-        })
+        if(userProfile.registerConference2023){
+            addedToPersonalAgenda(data, () => {
+                setBulAddedToMyAgenda(true)
+            })
+        }else{
+            setActiveMessages(true)
+            setTimeout(() => {
+                setActiveMessages(false)
+            }, 2000);
+        }
     }
 
     const functionRemoveToMyAgenda = (data) => {

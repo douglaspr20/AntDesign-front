@@ -18,6 +18,7 @@ const AgendaConference2023 = ({
     getAllPanelsOfOneUser,
     allPanelSpeakersFormat,
     allPanelsOfOneUserFormat,
+    allPanelsOfOneUser,
     userProfile,
     maxLength,
     mySessions,
@@ -33,6 +34,12 @@ const AgendaConference2023 = ({
         }
         getAllPanelSpeakers("All")
     }, [getAllPanelSpeakers, userProfile, getAllPanelsOfOneUser, mySessions])
+
+    const updateData = () => {
+        if(userProfile.id !== undefined){
+            getAllPanelsOfOneUser({id: userProfile.id, type: "mySessions"})
+        }
+    }
 
     const content = (panels) => {
 
@@ -132,7 +139,14 @@ const AgendaConference2023 = ({
                                 <CollapseComponent
                                     index={panel?.id}
                                     informationCollapse={content(panel)}
-                                    buttons={<ButtonsAgenda setActiveMessages={setActiveMessages} panels={panel} />}
+                                    buttons={
+                                        <ButtonsAgenda 
+                                            setActiveMessages={setActiveMessages} 
+                                            panels={panel} 
+                                            allMySessions={allPanelsOfOneUser} 
+                                            updateData={updateData}
+                                        />
+                                    }
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
@@ -171,7 +185,14 @@ const AgendaConference2023 = ({
                                 <CollapseComponent
                                     index={panel?.id}
                                     informationCollapse={content(panel)}
-                                    buttons={<ButtonsAgenda setActiveMessages={setActiveMessages} panels={panel} />}
+                                    buttons={
+                                        <ButtonsAgenda 
+                                            setActiveMessages={setActiveMessages} 
+                                            panels={panel} 
+                                            allMySessions={allPanelsOfOneUser}
+                                            updateData={updateData} 
+                                        />
+                                    }
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
