@@ -111,7 +111,7 @@ const GeneralInformation = ({ userProfile }) => {
           download and then share with your supervisor/L&D officer and seek
           funding approval for Simulation Sprints.
         </p>
-        <p>Please complete this information to use in the letter </p>
+        <p>Please complete this information to use in the letter: </p>
 
         <div
           style={{ display: "flex", width: "100%", justifyContent: "center" }}

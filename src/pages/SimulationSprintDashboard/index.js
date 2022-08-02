@@ -47,9 +47,9 @@ const SimulationSprintDashboardPage = ({
           (participant) => participant?.UserId === userProfile.id
         )
       ) {
-        // history.push(
-        //   `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
-        // );
+        history.push(
+          `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=upcoming-sprints`
+        );
       }
     }
   }, [history, simulationSprint, userProfile]);

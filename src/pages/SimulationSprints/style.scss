@@ -18,7 +18,9 @@
     }
 
     &-container{
-        position: relative;
+        position: relative; 
+        padding-bottom: 1rem;
+        min-height: 520px;
 
         .available-sprints{
             font-size: 1.2rem;

@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Dropdown, Menu, notification, Space } from "antd";
 import moment from "moment-timezone";
 import { CustomButton, CustomModal } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 
 import { getSimulationSprint } from "redux/actions/simulationSprint-actions";
@@ -16,6 +16,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import "./style.scss";
 import { convertToLocalTime } from "utils/format";
 import { DownOutlined } from "@ant-design/icons";
+import Emitter from "services/emitter";
 
 const regex = /<[^>]+>/g;
 
@@ -26,6 +27,7 @@ const SimulationSprint = ({
   userProfile,
 }) => {
   const [confirmJoinModal, setConfirmJoinModal] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const history = useHistory();
   const { id } = useParams();
@@ -90,6 +92,10 @@ const SimulationSprint = ({
     window.open(yahooCalendarUrl, "_blank");
   };
 
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   let displayBtn;
   let disabled = false;
   let typeButton = "primary";
@@ -134,6 +140,9 @@ const SimulationSprint = ({
 
   const handleClick = () => {
     if (typeButton === "primary") {
+      if (userProfile.memberShip !== "premium") {
+        return setShowFirewall(true);
+      }
       return setConfirmJoinModal(true);
     }
     history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${id}/resources`);
@@ -301,6 +310,20 @@ const SimulationSprint = ({
           />
         </div>
       </CustomModal>
+
+      {showFirewall && (
+        <div
+          className="conference-card-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              Upgrade to a PREMIUM Membership and get unlimited access to the
+              LAB features
+            </h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
