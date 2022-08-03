@@ -15,6 +15,7 @@ import { Form, Select, Switch } from "antd";
 
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 
 import { actions as speaker } from "redux/actions/speaker-actions";
 import { getUser } from "redux/actions/home-actions";
@@ -34,6 +35,7 @@ const PanelSpeakers = ({
   allMember,
   getAllPanelsOfOneUserSpeakers,
   allMyPanels,
+  allCategories,
   type,
   changeTab
 }) => {
@@ -144,11 +146,36 @@ const PanelSpeakers = ({
     });
   };
 
-  const content = (panels) => (
-    <div className="content-collapse" key={panels.id}>
-      <p className="title-collapse">{panels.panelName}</p>
-    </div>
-  );
+  const content = (panels) => {
+    let dataCat = objectCategoriesData()
+
+    let categories = panels.category.map((data,index) => {
+      if(panels.category.length !== index+1){
+        return (<span className="date-panels" key={index}> {dataCat[data]} |</span>) 
+      }else{
+        return (<span className="date-panels" key={index}> {dataCat[data]}</span>) 
+      }  
+    })
+
+    return (
+      <div className="content-collapse" key={panels.id}>
+        <p className="title-collapse">{panels.panelName}</p>
+        <p className="p-content-panels">Panel topics: 
+          {categories}
+        </p>
+      </div>
+    )  
+  };
+
+  const objectCategoriesData = () => {
+    let objectAllCategories = {}
+
+    allCategories.forEach((category) => {
+      objectAllCategories[`${category.value}`] = category.title
+    })
+
+    return objectAllCategories
+  }
 
   const dataIterated = (panels) => (
     <div className="ajust-contain">
@@ -342,6 +369,7 @@ const mapStateToProps = (state, props) => ({
   allUserSpeaker: speakerAllPanelSpeakerSelector(state).allUserSpeakers,
   allMember: speakerAllPanelSpeakerSelector(state).allMember,
   userProfile: homeSelector(state).userProfile,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {
