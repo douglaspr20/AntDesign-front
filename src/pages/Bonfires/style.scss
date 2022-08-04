@@ -45,8 +45,7 @@
       margin: 2rem 3rem;
       display: grid;
       position: relative;
-      grid-template-columns: 1fr;
-  
+      grid-template-columns: 1fr;  
       @media (max-width: 500px) {
         margin: 2rem 0rem;
       }
