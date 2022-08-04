@@ -6,7 +6,7 @@
 
   &-container{
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 0rem;
 
     .back-link-container{
       margin-left: 3rem;
@@ -46,7 +46,6 @@
       display: grid;
       position: relative;
       grid-template-columns: 1fr;
-      grid-gap: 2rem;
   
       @media (max-width: 500px) {
         margin: 2rem 0rem;

@@ -66,7 +66,7 @@ const CreateBonfireModal = ({
         layout="vertical"
         initialValues={{
           ...bonfireToEdit,
-          time: moment(bonfireToEdit?.startTime).utc(),
+          time: bonfireToEdit ? moment(bonfireToEdit?.startTime).utc() : "",
         }}
         onFinish={(data) => {
           handleBonfire(data);
@@ -94,7 +94,7 @@ const CreateBonfireModal = ({
           label="Data and time  (bonfires are designed to be no more than one hour)"
           rules={[{ required: true, message: "Time is required." }]}
         >
-          <CustomInput type="time" />
+          <CustomInput type="time" value="" />
         </Form.Item>
 
         <Form.Item
