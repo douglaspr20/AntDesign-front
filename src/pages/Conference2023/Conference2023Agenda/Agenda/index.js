@@ -1,6 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
+import { categorySelector } from "redux/selectors/categorySelector";
 import MemberSpeakers from "./MembersSpeakers";
 import ButtonsAgenda from "./ButtonsAgenda";
 import { actions as speaker } from "redux/actions/speaker-actions";
@@ -22,11 +23,24 @@ const AgendaConference2023 = ({
     userProfile,
     maxLength,
     mySessions,
-    setActiveMessages
+    setActiveMessages,
+    allCategories
 }) => {
+
+    const [dataCategoriesState, setDataCategoriesState] = useState()
 
     let clockAnimation
     let clockAnimation2
+
+    useEffect(() => {
+        let objectAllCategories = {}
+    
+        allCategories.forEach((category) => {
+          objectAllCategories[`${category.value}`] = category.title
+        })
+    
+        setDataCategoriesState(objectAllCategories)
+    }, [allCategories, setDataCategoriesState])
 
     useEffect(() => {
         if(userProfile.id !== undefined){
@@ -43,6 +57,14 @@ const AgendaConference2023 = ({
 
     const content = (panels) => {
 
+        let categories = panels.category.map((data,index) => {
+            if(panels.category.length !== index+1){
+                return (<span className="date-panels" key={index}> {dataCategoriesState[data]} |</span>) 
+            }else{
+                return (<span className="date-panels" key={index}> {dataCategoriesState[data]}</span>) 
+            }  
+        })
+        
         return (
             <div className="content-collapse" key={panels.id}>
                 <p className="title-collapse">{panels.panelName}</p>
@@ -60,6 +82,12 @@ const AgendaConference2023 = ({
                         <p className="p-content">Session type:
                             <span className="date">{panels.type}</span>
                         </p> 
+                        {(panels.type === "Panels") &&
+                            <p className="p-content">Panel Topics: {categories}</p> 
+                        }
+                        {(panels.type === "Simulations") &&
+                            <p className="p-content">Simulation Topics: {categories}</p> 
+                        }
                     </div>
                     
                 </div>
@@ -228,6 +256,7 @@ const AgendaConference2023 = ({
     allPanelsOfOneUser: speakerAllPanelSpeakerSelector(state).allPanelsOfOneUser,
     allPanelSpeakersFormat: speakerAllPanelSpeakerSelector(state).allPanelSpeakersFormat,
     allPanelsOfOneUserFormat: speakerAllPanelSpeakerSelector(state).allPanelsOfOneUserFormat,
+    allCategories: categorySelector(state).categories,
     userProfile: homeSelector(state).userProfile,
   });
   

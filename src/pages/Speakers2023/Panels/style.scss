@@ -1,5 +1,50 @@
 @import "../../../styles/main.scss";
 
+.title-filters{
+    width: 96%;
+    padding-left: 2%;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.content-filters{
+    width: 96%;
+    margin-left: 2%;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 60px;
+    padding-left: 20px;
+    background:white;
+    margin-top: 0px;
+    border-radius: 15px;
+    position: relative;
+
+    .form-content-filters{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        width: 100%;
+        font-weight: bold;
+
+        .checkbox-content-filters{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 25px;
+            width: 20%;
+        }
+    }
+
+    @media (max-width: 780px) {
+        .form-content-filters{
+            flex-direction: column;
+
+            .checkbox-content-filters{
+                margin: 0px;
+            }
+        }
+    }
+}
+
 .container-collapse{
     position: relative;
     left: 40px;

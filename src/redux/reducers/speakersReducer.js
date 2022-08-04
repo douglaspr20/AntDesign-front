@@ -7,11 +7,13 @@ import { Map } from "immutable";
 
 export const reducers = {
     [speakerConstans.UPDATE_PANEL_SPEAKERS]: (state, { payload }) => {
-      const {panelsSpeakers} = payload
+      const {panelsSpeakers, filters} = payload
 
       let arrayFixed = []
       let num = -1
       let titlesDateReady
+
+      let panelsSpeakersFilters = {panelsSpeakers:[]}
 
       if(panelsSpeakers.panelsSpeakers !== undefined){
 
@@ -44,8 +46,99 @@ export const reducers = {
         }
       }
 
+      if(filters !== undefined){
+
+        if(!filters.bul){
+          if(filters.topics === undefined || filters.topics?.length === 0){
+            panelsSpeakers.panelsSpeakers.forEach((data,index) => {
+              let numMember = 0
+              data.SpeakerMemberPanels.forEach((member) => {
+                if(member.isModerator === false){
+                  numMember++
+                }
+              }) 
+
+              if(numMember > 4){
+                return
+              }else{
+                panelsSpeakersFilters.panelsSpeakers.push(panelsSpeakers.panelsSpeakers[index])
+              }
+            })
+          }
+        }
+
+        if(filters.topics !== undefined && filters.bul === true){
+          if(filters.topics.length > 0){
+            panelsSpeakersFilters = {panelsSpeakers:[]}
+
+            for(let i = 0 ; i < panelsSpeakers.panelsSpeakers.length ; i++){
+              let bulTopics = false
+
+              for(let y = 0 ; y < filters.topics.length ; y++){
+                if(`${panelsSpeakers.panelsSpeakers[i].category}`.includes(`${filters.topics[y]}`) === true && bulTopics === false){
+                  bulTopics = true
+                }
+              }
+
+              if(bulTopics === true){
+                panelsSpeakersFilters.panelsSpeakers.push(panelsSpeakers.panelsSpeakers[i])
+              }
+            }
+
+          }
+        }
+        
+        if(filters.topics !== undefined && filters.bul === false){
+          if(filters.topics.length > 0){
+            panelsSpeakers.panelsSpeakers.forEach((data,index) => {
+              let numMember = 0
+              data.SpeakerMemberPanels.forEach((member) => {
+                if(member.isModerator === false){
+                  numMember++
+                }
+              }) 
+
+              if(numMember > 4){
+                return
+              }else{
+                panelsSpeakersFilters.panelsSpeakers.push(panelsSpeakers.panelsSpeakers[index])
+              }
+            })
+
+            let newArray = {panelsSpeakers:[]}
+
+            for(let i = 0 ; i < panelsSpeakersFilters.panelsSpeakers.length ; i++){
+              let bulTopics = false
+
+              for(let y = 0 ; y < filters.topics.length ; y++){
+                if(`${panelsSpeakersFilters.panelsSpeakers[i].category}`.includes(`${filters.topics[y]}`) === true && bulTopics === false){
+                  bulTopics = true
+                }
+              }
+
+              if(bulTopics === true){
+                newArray.panelsSpeakers.push(panelsSpeakersFilters.panelsSpeakers[i])
+              }
+            }
+
+            panelsSpeakersFilters = newArray
+          }
+        }
+
+        if(filters.bul && filters.topics === undefined){
+          panelsSpeakersFilters = panelsSpeakers
+        }
+
+        if(filters.bul && filters.topics.length === 0){
+          panelsSpeakersFilters = panelsSpeakers
+        }
+        
+      }else{
+        panelsSpeakersFilters = panelsSpeakers
+      }
+
       return state.merge({
-        allPanelSpeakers: panelsSpeakers,
+        allPanelSpeakers: panelsSpeakersFilters,
         allPanelSpeakersFormat: arrayFixed,
       });
     },

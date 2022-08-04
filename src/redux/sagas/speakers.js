@@ -20,7 +20,7 @@ import {
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
-  const {type} = payload
+  const {type, filters} = payload
 
   yield put(homeActions.setLoading(true));
 
@@ -29,11 +29,9 @@ export function* getPanelSpeakerSaga({ payload }) {
 
     if (response.status === 200) {
       const { panelsSpeakers } = response.data;
-
+        
       yield put(
-        speakerActions.updatePanelSpeakers({
-          panelsSpeakers
-        })
+        speakerActions.updatePanelSpeakers({panelsSpeakers}, filters)
       );
     }
   } catch (error) {
