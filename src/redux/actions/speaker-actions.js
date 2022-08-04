@@ -21,6 +21,7 @@ const GET_SPEAKER_MEMBER = "GET_SPEAKER_MEMBER";
 const SET_SPEAKER_MEMBER = "SET_SPEAKER_MEMBER";
 const MY_PANELS_USER = "MY_PANELS_USER";
 const MY_PANELS_USER_UPDATE = "MY_PANELS_USER_UPDATE"
+const FILTERS_PANELS_SPEAKERS = "FILTERS_PANELS_SPEAKERS"
 
 export const constants = {
   GET_PANEL_SPEAKERS,
@@ -42,7 +43,8 @@ export const constants = {
   GET_SPEAKER_MEMBER,
   SET_SPEAKER_MEMBER,
   MY_PANELS_USER,
-  MY_PANELS_USER_UPDATE
+  MY_PANELS_USER_UPDATE,
+  FILTERS_PANELS_SPEAKERS
 };
 
 // ------------------------------------
@@ -55,8 +57,8 @@ export const addUserSpeakerToPanel = createAction(
 )
 
 export const updatePanelSpeakers = createAction(
-    UPDATE_PANEL_SPEAKERS,
-    (panelsSpeakers) => ({ panelsSpeakers })
+  UPDATE_PANEL_SPEAKERS,
+  (panelsSpeakers, filters) => ({ panelsSpeakers, filters})
 );
 
 export const getAllPanelsOfOneUserSpeakers = createAction(
@@ -71,7 +73,7 @@ export const updateAllPanelsOfOneUserSpeakers = createAction(
 
 export const getAllPanelSpeakers = createAction(
   GET_PANEL_SPEAKERS,
-  (type) => ({ type })
+  (type, filters) => ({ type, filters })
 );
 
 export const getAllUserSpeaker = createAction(

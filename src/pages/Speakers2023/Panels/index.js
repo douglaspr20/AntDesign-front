@@ -8,6 +8,7 @@ import {
   CustomButton,
   ModalCompleteYourProfile,
   CollapseComponent,
+  CustomCheckbox
 } from "components";
 import ButtonsSpeakers from "./ButtonsSpeakers";
 import Modal from "antd/lib/modal/Modal";
@@ -37,9 +38,11 @@ const PanelSpeakers = ({
   allMyPanels,
   allCategories,
   type,
-  changeTab
+  changeTab,
 }) => {
+
   const [speakersUserForm] = Form.useForm();
+  const [filtersTopics] = Form.useForm();
   const [openSearchUser, setOpenSearchUser] = useState(false);
   const [popUpGoCompleteYourProfile, setPopUpGoCompleteYourProfile] =
     useState(false);
@@ -48,15 +51,30 @@ const PanelSpeakers = ({
   const [removeMembersSpeakers, setRemoveMembersSpeakers] = useState(false);
   const [Panel, setPanel] = useState({});
   const [change, setChange] = useState()
+  const [dataCategoriesState, setDataCategoriesState] = useState()
+  const [panelsFullBul, setPanelsFullBul] = useState(false)
 
   useEffect(() => {
     setChange(changeTab)
   }, [changeTab])
 
+  useEffect(() => {
+    let objectAllCategories = {}
+
+    allCategories.forEach((category) => {
+      objectAllCategories[`${category.value}`] = category.title
+    })
+
+    setDataCategoriesState(objectAllCategories)
+  }, [allCategories, setDataCategoriesState])
+
   const { Option } = Select;
 
   useEffect(() => {
-    getAllPanelSpeakers("Panels");
+    getAllPanelSpeakers("Panels", {
+      topics: undefined,
+      bul: panelsFullBul
+    });
     getAllPanelsOfOneUserSpeakers();
     getAllMemberSpeakerPanel()
     getAllUserSpeaker(userProfile.id);
@@ -75,7 +93,10 @@ const PanelSpeakers = ({
       () => {
         setPanel({});
         speakersUserForm.resetFields();
-        getAllPanelSpeakers("Panels");
+        getAllPanelSpeakers("Panels", {
+          topics: undefined,
+          bul: panelsFullBul
+        });
         getAllPanelsOfOneUserSpeakers();
         getAllUserSpeaker(userProfile.id);
       }
@@ -97,7 +118,10 @@ const PanelSpeakers = ({
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
-          getAllPanelSpeakers("Panels");
+          getAllPanelSpeakers("Panels", {
+            topics: undefined,
+            bul: panelsFullBul
+          });
           getAllPanelsOfOneUserSpeakers();
           getAllUserSpeaker(userProfile.id);
           getAllMemberSpeakerPanel()
@@ -123,7 +147,10 @@ const PanelSpeakers = ({
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
-          getAllPanelSpeakers("Panels");
+          getAllPanelSpeakers("Panels", {
+            topics: undefined,
+            bul: panelsFullBul
+          });
           getAllPanelsOfOneUserSpeakers();
           getAllUserSpeaker(userProfile.id);
           getAllMemberSpeakerPanel()
@@ -134,7 +161,10 @@ const PanelSpeakers = ({
 
   const removeUserFunction = (id, user) => {
     removeUserSpeakerToPanel(id, () => {
-      getAllPanelSpeakers("Panels");
+      getAllPanelSpeakers("Panels", {
+        topics: undefined,
+        bul: panelsFullBul
+      });
       getAllPanelsOfOneUserSpeakers();
       getAllUserSpeaker(userProfile.id);
       getAllMemberSpeakerPanel()
@@ -147,13 +177,11 @@ const PanelSpeakers = ({
   };
 
   const content = (panels) => {
-    let dataCat = objectCategoriesData()
-
     let categories = panels.category.map((data,index) => {
       if(panels.category.length !== index+1){
-        return (<span className="date-panels" key={index}> {dataCat[data]} |</span>) 
+        return (<span className="date-panels" key={index}> {dataCategoriesState[data]} |</span>) 
       }else{
-        return (<span className="date-panels" key={index}> {dataCat[data]}</span>) 
+        return (<span className="date-panels" key={index}> {dataCategoriesState[data]}</span>) 
       }  
     })
 
@@ -166,16 +194,6 @@ const PanelSpeakers = ({
       </div>
     )  
   };
-
-  const objectCategoriesData = () => {
-    let objectAllCategories = {}
-
-    allCategories.forEach((category) => {
-      objectAllCategories[`${category.value}`] = category.title
-    })
-
-    return objectAllCategories
-  }
 
   const dataIterated = (panels) => (
     <div className="ajust-contain">
@@ -199,62 +217,124 @@ const PanelSpeakers = ({
     </p>
   );
 
+  const handleChecked = () => {
+    if(panelsFullBul){
+      setPanelsFullBul(false)
+    }else{
+      setPanelsFullBul(true)
+    }
+  }
+
+  const handleUpdatePanels = (data) => {
+    const filters = {
+      topics: (!data.topics) ? [] : data.topics,
+      bul: panelsFullBul
+    }
+    getAllPanelSpeakers("Panels", filters);
+  }
+
   return (
     <>
+      {type === "panels" &&
+        <h2 className="title-filters">Filters:</h2>
+      }
+      {type === "panels" &&
+        <div className="content-filters">
+          <Form 
+            className="form-content-filters"
+            layout="vertical"
+            form={filtersTopics}
+            onFinish={(data) => {
+              handleUpdatePanels(data);
+            }}
+          >
+            <Form.Item
+              name="topics"
+              label="Category"
+              style={{width:"80%", marginTop: "10px", marginBottom: "10px"}}
+            >
+              <Select mode="multiple">
+                {allCategories.map((item) => {
+                  return (
+                    <Select.Option key={item.value} value={item.value}>
+                      {item.title}
+                    </Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+            <Form.Item name="panelFull" label="Panels full" className="checkbox-content-filters">
+              <CustomCheckbox onChange={handleChecked} checked={panelsFullBul} style={{marginTop:"-12px"}}>
+              </CustomCheckbox>
+            </Form.Item>
+            <CustomButton
+              text="search"
+              htmlType="submit"
+              size="sm"
+              type="primary"
+              style={{position: "absolute", bottom: "20px", left: "20px"}}
+            />
+          </Form>
+        </div>
+      }
       {type === "panels" && 
         <div className="container-collapse">
-          {allPanelSpeakers?.panelsSpeakers?.map((panels, index) => (
-            <CollapseComponent
-              key={panels?.id}
-              informationCollapse={content(panels)}
-              className={"container-panel"}
-              dataIterated={dataIterated(panels)}
-              dataStatic={dataStatic(panels)}
-              buttons={
-                <ButtonsSpeakers
-                  index={index}
-                  panels={panels}
-                  removeUserFunction={removeUserFunction}
-                  joinUser={joinUser}
-                  setPanel={setPanel}
-                  setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                  role={userProfile.role}
-                  setOpenSearchUser={setOpenSearchUser}
-                  setRemoveMembersSpeakers={setRemoveMembersSpeakers}
-                  removeMembersSpeakers={removeMembersSpeakers}
-                  allMyPanels={allMyPanels}
-                />
-              }
-            />
-          ))}
+          {allPanelSpeakers?.panelsSpeakers?.map((panels, index) => {
+            return (
+              <CollapseComponent
+                key={panels?.id}
+                informationCollapse={content(panels)}
+                className={"container-panel"}
+                dataIterated={dataIterated(panels)}
+                dataStatic={dataStatic(panels)}
+                buttons={
+                  <ButtonsSpeakers
+                    index={index}
+                    panels={panels}
+                    removeUserFunction={removeUserFunction}
+                    joinUser={joinUser}
+                    setPanel={setPanel}
+                    setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                    role={userProfile.role}
+                    setOpenSearchUser={setOpenSearchUser}
+                    setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                    removeMembersSpeakers={removeMembersSpeakers}
+                    allMyPanels={allMyPanels}
+                  />
+                }
+              />
+            )  
+          })}
         </div>
       }
       {type === "myPanels" && 
         <div className="container-collapse">
-          {allMyPanels?.map((panels, index) => (
-            <CollapseComponent
-              key={panels?.SpeakerPanel?.id}
-              informationCollapse={content(panels?.SpeakerPanel)}
-              className={"container-panel"}
-              dataIterated={dataIterated(panels?.SpeakerPanel)}
-              dataStatic={dataStatic(panels?.SpeakerPanel)}
-              buttons={
-                <ButtonsSpeakers
-                  index={index}
-                  panels={panels?.SpeakerPanel}
-                  removeUserFunction={removeUserFunction}
-                  joinUser={joinUser}
-                  setPanel={setPanel}
-                  setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                  role={userProfile.role}
-                  setOpenSearchUser={setOpenSearchUser}
-                  setRemoveMembersSpeakers={setRemoveMembersSpeakers}
-                  removeMembersSpeakers={removeMembersSpeakers}
-                  allMyPanels={allMyPanels}
-                />
-              }
-            />
-          ))}
+          {allMyPanels?.map((panels, index) => {
+            return (
+              <CollapseComponent
+                key={panels?.SpeakerPanel?.id}
+                informationCollapse={content(panels?.SpeakerPanel)}
+                className={"container-panel"}
+                dataIterated={dataIterated(panels?.SpeakerPanel)}
+                dataStatic={dataStatic(panels?.SpeakerPanel)}
+                buttons={
+                  <ButtonsSpeakers
+                    index={index}
+                    panels={panels?.SpeakerPanel}
+                    removeUserFunction={removeUserFunction}
+                    joinUser={joinUser}
+                    setPanel={setPanel}
+                    setBulCompleteProfile={setPopUpGoCompleteYourProfile}
+                    role={userProfile.role}
+                    setOpenSearchUser={setOpenSearchUser}
+                    setRemoveMembersSpeakers={setRemoveMembersSpeakers}
+                    removeMembersSpeakers={removeMembersSpeakers}
+                    allMyPanels={allMyPanels}
+                  />
+                }
+              />
+            )
+          })}
         </div>
       }
       <Modal
