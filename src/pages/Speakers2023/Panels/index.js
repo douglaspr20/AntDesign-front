@@ -73,7 +73,7 @@ const PanelSpeakers = ({
   useEffect(() => {
     getAllPanelSpeakers("Panels", {
       topics: undefined,
-      bul: panelsFullBul
+      bul: false
     });
     getAllPanelsOfOneUserSpeakers();
     getAllMemberSpeakerPanel()
