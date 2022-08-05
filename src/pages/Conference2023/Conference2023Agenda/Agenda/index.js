@@ -57,30 +57,34 @@ const AgendaConference2023 = ({
 
     const content = (panels) => {
 
-        let categories = panels.category.map((data,index) => {
-            if(panels.category.length !== index+1){
+        let categories
+
+        if(dataCategoriesState !== undefined){
+            categories = panels?.category?.map((data,index) => {
+              if(panels?.category?.length !== index+1){
                 return (<span className="date-panels" key={index}> {dataCategoriesState[data]} |</span>) 
-            }else{
+              }else{
                 return (<span className="date-panels" key={index}> {dataCategoriesState[data]}</span>) 
-            }  
-        })
+              }  
+            })
+        }
         
         return (
-            <div className="content-collapse" key={panels.id}>
-                <p className="title-collapse">{panels.panelName}</p>
+            <div className="content-collapse" key={panels?.id}>
+                <p className="title-collapse">{panels?.panelName}</p>
                 <div className="content-information">
                     <div className="content-first-information">
                         <p className="p-content">Start Time: 
-                            <span className="date"> {convertToLocalTime(panels.startDate, panels.timeZone).format("MM-DD-YYYY hh:mm a")}</span>
+                            <span className="date"> {convertToLocalTime(panels?.startDate, panels?.timeZone).format("MM-DD-YYYY hh:mm a")}</span>
                         </p>
                         <p className="p-content">End Time: 
-                            <span className="date"> {convertToLocalTime(panels.endDate, panels.timeZone).format("MM-DD-YYYY hh:mm a")}</span>
+                            <span className="date"> {convertToLocalTime(panels?.endDate, panels?.timeZone).format("MM-DD-YYYY hh:mm a")}</span>
                         </p>
                         <p className="p-content">Timezone:
                             <span className="date2">{moment.tz.guess()}</span>
                         </p> 
                         <p className="p-content">Session type:
-                            <span className="date">{panels.type}</span>
+                            <span className="date">{panels?.type}</span>
                         </p> 
                         {(panels.type === "Panels") &&
                             <p className="p-content">Panel Topics: {categories}</p> 
@@ -110,14 +114,14 @@ const AgendaConference2023 = ({
 
     const dataStatic = (panels) => (
         <p className="container-panel-speaker-parraf" style={{marginBottom: "40px", fontSize: "18px"}}>
-            Description: <span className="not-bold">{panels.description}</span>
+            Description: <span className="not-bold">{panels?.description}</span>
         </p>
     )
 
     const activeCollapse = (e) => {
-        let targetContainer = e.target.parentElement.parentElement.parentElement.children[1].children[0]
-        let targetHeight = e.target.parentElement.parentElement.parentElement.children[1]
-        let targetContainerHeight = targetContainer.clientHeight
+        let targetContainer = e?.target?.parentElement?.parentElement?.parentElement?.children[1]?.children[0]
+        let targetHeight = e?.target?.parentElement?.parentElement?.parentElement?.children[1]
+        let targetContainerHeight = targetContainer?.clientHeight
 
         targetHeight.style.cssText = `height: ${targetContainerHeight}px;`
 
@@ -178,7 +182,7 @@ const AgendaConference2023 = ({
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
-                                    bulMessage={(panel.type === "Simulations") ? false : true}
+                                    bulMessage={(panel?.type === "Simulations") ? false : true}
                                 />
                             )
                         })}
@@ -196,7 +200,7 @@ const AgendaConference2023 = ({
             }
         }
 
-        let startTime = convertToLocalTime(panels[0].startDate, panels[0].timeZone)
+        let startTime = convertToLocalTime(panels[0]?.startDate, panels[0]?.timeZone)
 
         return (
             <div key={index} id={index}>
@@ -224,7 +228,7 @@ const AgendaConference2023 = ({
                                     className={"container-panel"}
                                     dataIterated={dataIterated(panel)} 
                                     dataStatic={dataStatic(panel)}
-                                    bulMessage={(panel.type === "Simulations") ? false : true}
+                                    bulMessage={(panel?.type === "Simulations") ? false : true}
                                 />
                             )
                         })}
