@@ -51,7 +51,8 @@ const PanelSpeakers = ({
   const [removeMembersSpeakers, setRemoveMembersSpeakers] = useState(false);
   const [Panel, setPanel] = useState({});
   const [change, setChange] = useState()
-  const [dataCategoriesState, setDataCategoriesState] = useState()
+  const [dataCategoriesState, setDataCategoriesState] = useState({})
+  const [categoriesFilterForm, setCategoriesFilterForm] = useState([])
   const [panelsFullBul, setPanelsFullBul] = useState(false)
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const PanelSpeakers = ({
 
   const addUser = (data) => {
     const bulModerator =
-      data.isModerator === undefined ? false : data.isModerator;
+      data.isModerator === undefined ? false : data?.isModerator;
     addUserSpeakerToPanel(
       {
         usersNames: data.users,
@@ -177,17 +178,22 @@ const PanelSpeakers = ({
   };
 
   const content = (panels) => {
-    let categories = panels.category.map((data,index) => {
-      if(panels.category.length !== index+1){
-        return (<span className="date-panels" key={index}> {dataCategoriesState[data]} |</span>) 
-      }else{
-        return (<span className="date-panels" key={index}> {dataCategoriesState[data]}</span>) 
-      }  
-    })
+
+    let categories
+
+    if(dataCategoriesState !== undefined){
+      categories = panels?.category?.map((data,index) => {
+        if(panels?.category?.length !== index+1){
+          return (<span className="date-panels" key={index}> {dataCategoriesState[data]} |</span>) 
+        }else{
+          return (<span className="date-panels" key={index}> {dataCategoriesState[data]}</span>) 
+        }  
+      })
+    }
 
     return (
-      <div className="content-collapse" key={panels.id}>
-        <p className="title-collapse">{panels.panelName}</p>
+      <div className="content-collapse" key={panels?.id}>
+        <p className="title-collapse">{panels?.panelName}</p>
         <p className="p-content-panels">Panel topics: 
           {categories}
         </p>
@@ -201,7 +207,7 @@ const PanelSpeakers = ({
         <MemberSpeakers
           key={user?.id}
           usersPanel={user}
-          isAdmin={userProfile.role === "admin" ? true : false}
+          isAdmin={userProfile?.role === "admin" ? true : false}
           remove={removeUserFunction}
         />
       ))}
@@ -213,21 +219,33 @@ const PanelSpeakers = ({
       className="container-panel-speaker-parraf"
       style={{ marginBottom: "40px", fontSize: "18px" }}
     >
-      Description: <span className="not-bold">{panels.description}</span>
+      Description: <span className="not-bold">{panels?.description}</span>
     </p>
   );
 
   const handleChecked = () => {
     if(panelsFullBul){
       setPanelsFullBul(false)
+      getAllPanelSpeakers("Panels", {
+        topics: categoriesFilterForm,
+        bul: false
+      });
     }else{
       setPanelsFullBul(true)
+      getAllPanelSpeakers("Panels", {
+        topics: categoriesFilterForm,
+        bul: true
+      });
     }
   }
 
-  const handleUpdatePanels = (data) => {
+  const handleCategories = (data) => {
+    setCategoriesFilterForm(data)
+  }
+
+  const handleUpdatePanels = () => {
     const filters = {
-      topics: (!data.topics) ? [] : data.topics,
+      topics: categoriesFilterForm,
       bul: panelsFullBul
     }
     getAllPanelSpeakers("Panels", filters);
@@ -244,27 +262,27 @@ const PanelSpeakers = ({
             className="form-content-filters"
             layout="vertical"
             form={filtersTopics}
-            onFinish={(data) => {
-              handleUpdatePanels(data);
+            onFinish={() => {
+              handleUpdatePanels();
             }}
           >
             <Form.Item
               name="topics"
               label="Category"
-              style={{width:"80%", marginTop: "10px", marginBottom: "10px"}}
+              className="categoris-input"
             >
-              <Select mode="multiple">
+              <Select mode="multiple" onChange={(data) => handleCategories(data)}>
                 {allCategories.map((item) => {
                   return (
-                    <Select.Option key={item.value} value={item.value}>
-                      {item.title}
+                    <Select.Option key={item?.value} value={item?.value}>
+                      {item?.title}
                     </Select.Option>
                   );
                 })}
               </Select>
             </Form.Item>
-            <Form.Item name="panelFull" label="Panels full" className="checkbox-content-filters">
-              <CustomCheckbox onChange={handleChecked} checked={panelsFullBul} style={{marginTop:"-12px"}}>
+            <Form.Item name="panelFull" label="Show only panels with available speaking slots" className="checkbox-content-filters">
+              <CustomCheckbox onChange={handleChecked} checked={panelsFullBul} style={{position:"absolute", top:"0px", left:"-15px"}}>
               </CustomCheckbox>
             </Form.Item>
             <CustomButton
