@@ -13,7 +13,7 @@ const MemberSpeakers = ({
 }) => {
 
     const { id, isModerator, UserId} = usersPanel
-    const { firstName, img, titleProfessions, lastName, abbrName} = usersPanel.User
+    const { firstName, img, titleProfessions, lastName, abbrName} = usersPanel?.User
 
     return (
       <>

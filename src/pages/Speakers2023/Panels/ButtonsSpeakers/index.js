@@ -38,11 +38,11 @@ const ButtonsSpeakers = ({
     }, [allMyPanels, setWithdraw])
 
     useEffect(() => {
-      let arraySpeakersNotAdmin = SpeakerMemberPanels.filter((member) => {
-        return member.isModerator === false
+      let arraySpeakersNotAdmin = SpeakerMemberPanels?.filter((member) => {
+        return member?.isModerator === false
       })
       
-      if(arraySpeakersNotAdmin.length > 4){
+      if(arraySpeakersNotAdmin?.length > 4){
         setFul(true)
       }else{
         setFul(false)
@@ -52,9 +52,9 @@ const ButtonsSpeakers = ({
     useEffect(() => {
       allMyPanels.forEach((data) => {
         if(withdraw !== true && bulJoinOrWithdraw !== true){
-          if(id === data?.SpeakerPanel.id){
+          if(id === data?.SpeakerPanel?.id){
               setWithdraw(true)
-              setIdWithdraw(data.id)
+              setIdWithdraw(data?.id)
           }
         }
       })
@@ -67,7 +67,7 @@ const ButtonsSpeakers = ({
             setWithdraw(false)
             setIdWithdraw(-1)
         }else{
-            if(userProfile.percentOfCompletion === 100){
+            if(userProfile?.percentOfCompletion === 100){
                 setBulJoinOrWithdraw(false)
                 joinUser({
                     id:id,
