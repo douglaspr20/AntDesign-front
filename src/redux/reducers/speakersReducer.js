@@ -15,7 +15,7 @@ export const reducers = {
 
       let panelsSpeakersFilters = panelsSpeakers
 
-      if(panelsSpeakers.panelsSpeakers !== undefined){
+      if(panelsSpeakers?.panelsSpeakers !== undefined){
 
         const arrayOrderTime = panelsSpeakers.panelsSpeakers.sort((a,b) => {
 
@@ -47,25 +47,25 @@ export const reducers = {
       }
 
       const searchNumber = (panel) => {
-        let members = panel.filter((member) => 
-          member.isModerator === false
+        let members = panel?.filter((member) => 
+          member?.isModerator === false
         )
 
-        return members.length
+        return members?.length
       }
 
-      if(filters !== undefined){
+      if(filters?.topics !== undefined && panelsSpeakers !== undefined && panelsSpeakersFilters?.panelsSpeakers !== undefined){
         panelsSpeakersFilters.panelsSpeakers = (filters.bul) ? 
-          panelsSpeakers?.panelsSpeakers.filter((panel) => 
+          panelsSpeakers?.panelsSpeakers?.filter((panel) => 
             searchNumber(panel?.SpeakerMemberPanels) < 5
           ) 
-          : panelsSpeakersFilters.panelsSpeakers
+          : panelsSpeakersFilters?.panelsSpeakers
 
         panelsSpeakersFilters.panelsSpeakers = (filters?.topics?.length > 0 && filters?.topics !== undefined) ?
-          panelsSpeakersFilters?.panelsSpeakers.filter((tabPanel) => 
-              tabPanel?.category.some(category => filters?.topics?.includes(category))
+          panelsSpeakersFilters?.panelsSpeakers?.filter((tabPanel) => 
+              tabPanel?.category?.some(category => filters?.topics?.includes(category))
           )   
-          : panelsSpeakersFilters.panelsSpeakers
+          : panelsSpeakersFilters?.panelsSpeakers
       }
 
       return state.merge({

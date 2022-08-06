@@ -154,7 +154,7 @@ const AgendaConference2023 = ({
             }
         }
 
-        let startTime = convertToLocalTime(panels[0].startDate, panels[0].timeZone)
+        let startTime = convertToLocalTime(panels[0]?.startDate, panels[0]?.timeZone)
 
         return (
             <div key={index} id={index}>

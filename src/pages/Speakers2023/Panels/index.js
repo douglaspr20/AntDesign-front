@@ -44,13 +44,11 @@ const PanelSpeakers = ({
   const [speakersUserForm] = Form.useForm();
   const [filtersTopics] = Form.useForm();
   const [openSearchUser, setOpenSearchUser] = useState(false);
-  const [popUpGoCompleteYourProfile, setPopUpGoCompleteYourProfile] =
-    useState(false);
-  const [popUpCompleteYourProfile, setPopUpCompleteYourProfile] =
-    useState(false);
+  const [popUpGoCompleteYourProfile, setPopUpGoCompleteYourProfile] = useState(false);
+  const [popUpCompleteYourProfile, setPopUpCompleteYourProfile] = useState(false);
   const [removeMembersSpeakers, setRemoveMembersSpeakers] = useState(false);
   const [Panel, setPanel] = useState({});
-  const [change, setChange] = useState()
+  const [change, setChange] = useState("0")
   const [dataCategoriesState, setDataCategoriesState] = useState({})
   const [categoriesFilterForm, setCategoriesFilterForm] = useState([])
   const [panelsFullBul, setPanelsFullBul] = useState(false)
@@ -63,7 +61,7 @@ const PanelSpeakers = ({
     let objectAllCategories = {}
 
     allCategories.forEach((category) => {
-      objectAllCategories[`${category.value}`] = category.title
+      objectAllCategories[`${category.value}`] = category?.title
     })
 
     setDataCategoriesState(objectAllCategories)
@@ -78,15 +76,14 @@ const PanelSpeakers = ({
     });
     getAllPanelsOfOneUserSpeakers();
     getAllMemberSpeakerPanel()
-    getAllUserSpeaker(userProfile.id);
+    getAllUserSpeaker(userProfile?.id);
   }, [getAllPanelSpeakers, getAllUserSpeaker, getAllMemberSpeakerPanel, userProfile.id, change, getAllPanelsOfOneUserSpeakers]);
 
   const addUser = (data) => {
-    const bulModerator =
-      data.isModerator === undefined ? false : data?.isModerator;
+    const bulModerator = data?.isModerator === undefined ? false : data?.isModerator;
     addUserSpeakerToPanel(
       {
-        usersNames: data.users,
+        usersNames: data?.users,
         bul: bulModerator,
         panel: Panel,
         type: "addUserAdmin",
@@ -99,23 +96,23 @@ const PanelSpeakers = ({
           bul: panelsFullBul
         });
         getAllPanelsOfOneUserSpeakers();
-        getAllUserSpeaker(userProfile.id);
+        getAllUserSpeaker(userProfile?.id);
       }
     );
   };
 
   const joinUser = (data,index) => {
     const usersNames = {
-      userId: userProfile.id,
-      userName: userProfile.firstName,
-      userEmail: userProfile.email,
+      userId: userProfile?.id,
+      userName: userProfile?.firstName,
+      userEmail: userProfile?.email,
     };
 
-    let arrayMemberNotModerator = allPanelSpeakers.panelsSpeakers[index]?.SpeakerMemberPanels.filter((member) => {
-      return member.isModerator === false
+    let arrayMemberNotModerator = allPanelSpeakers?.panelsSpeakers[index]?.SpeakerMemberPanels?.filter((member) => {
+      return member?.isModerator === false
     })
 
-    if(allMember.length < 2 && userProfile.role === 'user' && arrayMemberNotModerator.length < 5){
+    if(allMember?.length < 2 && userProfile?.role === 'user' && arrayMemberNotModerator?.length < 5){
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
@@ -124,19 +121,19 @@ const PanelSpeakers = ({
             bul: panelsFullBul
           });
           getAllPanelsOfOneUserSpeakers();
-          getAllUserSpeaker(userProfile.id);
+          getAllUserSpeaker(userProfile?.id);
           getAllMemberSpeakerPanel()
         }
       );
     }else{
-      if(userProfile.role !== "admin"){
-        if(arrayMemberNotModerator.length === 5){
+      if(userProfile?.role !== "admin"){
+        if(arrayMemberNotModerator?.length === 5){
           notification.error({
           message: "ERROR:",
           description: "This panel is full.",
         });
         }
-        if(allMember.length === 2){
+        if(allMember?.length === 2){
           notification.error({
             message: "ERROR:",
             description: "You can't join more than two panels.",
@@ -144,7 +141,7 @@ const PanelSpeakers = ({
         }
       }
     }
-    if(userProfile.role === 'admin'){
+    if(userProfile?.role === 'admin'){
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
@@ -153,7 +150,7 @@ const PanelSpeakers = ({
             bul: panelsFullBul
           });
           getAllPanelsOfOneUserSpeakers();
-          getAllUserSpeaker(userProfile.id);
+          getAllUserSpeaker(userProfile?.id);
           getAllMemberSpeakerPanel()
         }
       );
@@ -167,9 +164,9 @@ const PanelSpeakers = ({
         bul: panelsFullBul
       });
       getAllPanelsOfOneUserSpeakers();
-      getAllUserSpeaker(userProfile.id);
+      getAllUserSpeaker(userProfile?.id);
       getAllMemberSpeakerPanel()
-      if (userProfile.id === user) {
+      if (userProfile?.id === user) {
         setTimeout(() => {
           setRemoveMembersSpeakers(true);
         }, 100);
@@ -272,7 +269,7 @@ const PanelSpeakers = ({
               className="categoris-input"
             >
               <Select mode="multiple" onChange={(data) => handleCategories(data)}>
-                {allCategories.map((item) => {
+                {allCategories?.map((item) => {
                   return (
                     <Select.Option key={item?.value} value={item?.value}>
                       {item?.title}
@@ -313,7 +310,7 @@ const PanelSpeakers = ({
                     joinUser={joinUser}
                     setPanel={setPanel}
                     setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                    role={userProfile.role}
+                    role={userProfile?.role}
                     setOpenSearchUser={setOpenSearchUser}
                     setRemoveMembersSpeakers={setRemoveMembersSpeakers}
                     removeMembersSpeakers={removeMembersSpeakers}
@@ -343,7 +340,7 @@ const PanelSpeakers = ({
                     joinUser={joinUser}
                     setPanel={setPanel}
                     setBulCompleteProfile={setPopUpGoCompleteYourProfile}
-                    role={userProfile.role}
+                    role={userProfile?.role}
                     setOpenSearchUser={setOpenSearchUser}
                     setRemoveMembersSpeakers={setRemoveMembersSpeakers}
                     removeMembersSpeakers={removeMembersSpeakers}

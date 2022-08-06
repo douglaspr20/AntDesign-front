@@ -112,7 +112,7 @@ export function* addUserSpeakerToSaga({ payload }) {
     const response = yield call(addUserSpeakerToPanelEndPoint, { data });
 
     if (response.status === 200) {
-      const { panelsSpeakers } = response.data;
+      const { panelsSpeakers } = response?.data;
       
       yield put(
         speakerActions.updatePanelSpeakers({
