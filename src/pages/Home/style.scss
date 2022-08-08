@@ -142,7 +142,7 @@
           }
 
           &-content {
-            margin-bottom: 5px;
+            margin-bottom: 1rem !important;
 
             .advertisement {
               width: 275px;
@@ -207,74 +207,9 @@
   .advertisement {
     overflow: hidden;
   }
-
-  /* I am commenting on these lines because they break the home page styles.*/
-
-      // &-content {
-      //   display: flex;
-      //   width: 100%;
-
-      //   &-preview {
-      //     margin-top: 1.5rem;
-      //     width: 100%;
-      //     position: relative;
-      //     display: flex;
-      //     justify-content: center;
-      //     position: relative;
-
-      //     .advertisement {
-      //       width: 275px;
-      //       display: flex;
-      //       justify-content: center;
-      //       align-items: center;
-      //       background-color: lightgray;
-      //       height: 275px;
-      //       cursor: pointer;
-
-      //       &-img {
-      //         width: 275px;
-      //         height: 275px;
-      //         object-fit: cover;
-      //       }
-      //     }
-      //   }
-
-      //   &-advertisement-wrapper {
-      //     width: 100%;
-      //     display: flex;
-      //     height: 100vh;
-      //     flex-direction: column;
-      //     align-items: center;
-      //     margin-top: 1.5rem;
-      //     position: relative;
-
-      //     &-content {
-      //       margin-bottom: 5px;
-
-      //       .advertisement {
-      //         width: 275px;
-      //         display: flex;
-      //         justify-content: center;
-      //         align-items: center;
-      //         // background-color: lightgray;
-      //         height: 275px;
-      //         cursor: pointer;
-
-      //         &-img {
-      //           width: 275px;
-      //           height: 275px;
-      //           object-fit: fill;
-      //           // object-fit: scale-down;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
 }
 
  .home-advertisement-wrapper {
-    // margin-left: auto;
-    // margin-right: auto;
 
    &-preview {
      margin-top: 1.5rem;
@@ -301,7 +236,9 @@
    }
   
    &-content {
-     margin-top: 10px;
+     margin-top: 1.5rem;
+     margin-bottom: 1rem;
+
     
      .advertisement {
        width: 275px;
