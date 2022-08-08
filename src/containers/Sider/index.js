@@ -30,7 +30,7 @@ class Sider extends Component {
           render={() => <Sidebar />}
         />
         <PrivateRoute
-          path={INTERNAL_LINKS.COMMUNITIES}
+          path={INTERNAL_LINKS.BONFIRES}
           render={() => <Sidebar />}
         />
         <PrivateRoute path={INTERNAL_LINKS.EVENTS} render={() => <Sidebar />} />

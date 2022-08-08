@@ -216,14 +216,14 @@ class Content extends Component {
 
           <PrivateRoute
             exact
-            path={`${INTERNAL_LINKS.COMMUNITIES}/mentoring`}
-            render={(props) => <MentoringPage {...props} />}
+            path={`${INTERNAL_LINKS.BONFIRES}`}
+            render={(props) => <BonfiresPage {...props} />}
           />
 
           <PrivateRoute
             exact
-            path={`${INTERNAL_LINKS.COMMUNITIES}/bonfires`}
-            render={(props) => <BonfiresPage {...props} />}
+            path={`${INTERNAL_LINKS.COMMUNITIES}/mentoring`}
+            render={(props) => <MentoringPage {...props} />}
           />
 
           <PrivateRoute

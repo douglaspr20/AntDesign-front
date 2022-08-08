@@ -8,9 +8,15 @@
     width: 100%;
     padding: 1rem 0rem;
 
-    .back-link-container{
-      margin-left: 3rem;
-      margin-bottom: 1rem;
+    .menu-bonfires{
+      background: none;
+
+      .menu-bonfires-item:hover,
+      .ant-menu-item-selected,
+      .menu-bonfires-item:active {
+        border-bottom: 2px solid $color-primary !important;
+        color: $color-primary !important;
+}
     }
   }
   .bonfire-list {
@@ -43,7 +49,6 @@
   
     &-container {
       margin: 2rem 3rem;
-      display: grid;
       position: relative;
       grid-template-columns: 1fr;  
       @media (max-width: 500px) {

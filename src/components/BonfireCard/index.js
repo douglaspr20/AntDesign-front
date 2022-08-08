@@ -14,6 +14,7 @@ const BonfireCard = ({
   bonfire,
   added,
   isBonfireCreator,
+  isUserInvited,
   onAddBonfire,
   onRemoveBonfire,
   editBonfire,
@@ -89,7 +90,11 @@ const BonfireCard = ({
         <h3>{bonfire.title}</h3>
 
         {!added && !isBonfireCreator && (
-          <CustomButton size="sm" text="JOIN" onClick={onAddBonfire} />
+          <CustomButton
+            size="sm"
+            text={isUserInvited ? "CONFIRM ATTENDANCE" : `JOIN`}
+            onClick={onAddBonfire}
+          />
         )}
 
         {isBonfireCreator && (

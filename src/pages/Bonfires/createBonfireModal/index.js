@@ -52,6 +52,18 @@ const CreateBonfireModal = ({
     }, 1000);
   };
 
+  const handleDisabledDate = (currentDate) => {
+    currentDate = moment(currentDate).tz("America/Los_Angeles");
+
+    if (
+      moment().tz("America/Los_Angeles").add(6, "days").isAfter(currentDate)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -94,7 +106,7 @@ const CreateBonfireModal = ({
           label="Data and time  (bonfires are designed to be no more than one hour)"
           rules={[{ required: true, message: "Time is required." }]}
         >
-          <CustomInput type="time" value="" />
+          <CustomInput type="time" value="" disabledDate={handleDisabledDate} />
         </Form.Item>
 
         <Form.Item
