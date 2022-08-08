@@ -64,7 +64,7 @@ const EventList = ({
 
   useEffect(() => {
     const groupedData = groupBy(
-      data.map((item) => ({ ...item, groupKey: item.date.slice(0, 10) })),
+      data?.map((item) => ({ ...item, groupKey: item?.date?.slice(0, 10) })),
       "groupKey"
     );
 

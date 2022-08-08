@@ -240,6 +240,9 @@ class EventCard extends React.Component {
         showClaim,
         startAndEndTimes,
         timezone,
+        channel,
+        externalLink,
+        channelSelect
       },
       className,
       edit,
@@ -255,7 +258,7 @@ class EventCard extends React.Component {
 
     return (
       <div
-        className={clsx("event-card", className)}
+        className={(channel === "" || channel === undefined || Number(channel) > 0) ? clsx("event-card", className) : "event-card-channel" }
         onClick={this.openEventDetails}
       >
         {this.state.showFirewall && (
@@ -284,6 +287,14 @@ class EventCard extends React.Component {
               {isEmpty(images) && image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
+              {(channel === "" || channel === undefined || Number(channel) > 0) &&
+                <h5 className="event-card-topic-title">
+                  Event by:
+                  <span>
+                    {channelSelect?.name}
+                  </span>
+                </h5>
+              }
               <h3>{title}</h3>
               <h5 className="event-card-topic-title">
                 {`Event date${startDate !== endDate ? "s" : ""}:`}
@@ -414,6 +425,16 @@ class EventCard extends React.Component {
                       onClick={this.onAttend}
                       loading={this.state.loading}
                     />
+                  )}
+
+                  {(channel === "" || channel === undefined || Number(channel) > 0) && (
+                    <a href={externalLink} style={{margin:"0px", padding: "0px"}} target="_blank"  rel="noopener noreferrer">
+                      <CustomButton
+                        text="Attend"
+                        size="md"
+                        type="primary"
+                      />
+                    </a>
                   )}
 
                   {status === "going" && (

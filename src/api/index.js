@@ -42,6 +42,7 @@ import {
   claimEventCredit,
   claimEventAttendance,
   getMetadata,
+  getAllEventsChannelsEndPoint
 } from "./module/event";
 import {
   addLibrary,
@@ -303,6 +304,7 @@ import {
 
 export {
   getAllParrafsEndPoint,
+  getAllEventsChannelsEndPoint,
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
   getAllMyPanels,

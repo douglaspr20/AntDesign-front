@@ -31,6 +31,7 @@ import {
   claimEventAttendance,
   getMetadata,
   updateEventUserAssistenceFromAPI,
+  getAllEventsChannelsEndPoint
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -56,7 +57,6 @@ export function* getAllEventsSaga() {
     if (response.status === 200) {
       const community = storage.get("community");
       const { id: userId } = community || {};
-
       yield put(
         eventActions.setAllEvents(
           response.data.events
@@ -132,6 +132,53 @@ export function* getEventSaga({ payload }) {
       yield put(logout());
     } else if (payload.callback) {
       payload.callback(true);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getAllEventsChannelsSagas({ payload }){
+  yield put(homeActions.setLoading(true));
+  yield put(eventActions.setError(""));
+
+  try {
+    const response = yield call(getAllEventsChannelsEndPoint);
+    if (response.status === 200) {
+
+      yield put(
+        eventActions.setAllEventsChannels(
+          response.data.allEventsChannels
+            .map((item) => ({
+              ...item,
+              key: item.id,
+              date: moment(item.startDate).utc().format("YYYY.MM.DD h:mm a"),
+              date2: moment(item.endDate).utc().format("YYYY.MM.DD h:mm a"),
+              period: getEventPeriod(
+                item.startDate,
+                item.endDate,
+                item.timezone
+              ),
+              about: getEventDescription(item.description),
+            }))
+            .sort((a, b) => {
+              return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
+            })
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else {
+      const { msg } = error?.response.data || {};
+      yield put(eventActions.setError(msg));
+      notification.error({
+        message: "Cannot read all the events.",
+        description: msg,
+      });
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -600,6 +647,7 @@ function* watchLogin() {
     eventConstants.EVENT_CLAIM_ATTENDANCE,
     claimEventAttendanceSaga
   );
+  yield takeLatest(eventConstants.GET_ALL_EVENTS_CHANNELS, getAllEventsChannelsSagas)
 }
 
 export const eventSaga = [fork(watchLogin)];

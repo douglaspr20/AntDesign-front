@@ -1,6 +1,6 @@
 @import 'styles/main.scss';
 
-.event-card {
+.event-card, .event-card-channel {
 	display: flex;
 	align-items: stretch;
 	background: $color-white;
@@ -304,4 +304,8 @@
 			}
 		}
 	}
+}
+
+.event-card-channel{
+	background: #e3e3e3;
 }

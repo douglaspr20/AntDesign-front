@@ -310,6 +310,15 @@ const EventDrawer = ({
                 loading={loading}
               />
             )}
+            {(event.channel === "" || event.channel === undefined || Number(event.channel) > 0) && (
+              <a href={event.externalLink} style={{margin:"0px", padding: "0px"}} target="_blank"  rel="noopener noreferrer">
+                <CustomButton
+                  text="Attend"
+                  size="md"
+                  type="primary"
+                />
+              </a>
+            )}
             {event.status === "going" && (
               <React.Fragment>
                 <div className="going-label">
