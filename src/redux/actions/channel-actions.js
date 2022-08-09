@@ -11,6 +11,7 @@ const GET_MORE_CHANNEL_LIST = "GET_MORE_CHANNEL_LIST";
 const SET_MORE_CHANNEL_LIST = "SET_MORE_CHANNEL_LIST";
 const SET_FOLLOW_CHANNEL = "SET_FOLLOW_CHANNEL";
 const UNSET_FOLLOW_CHANNEL = "UNSET_FOLLOW_CHANNEL";
+const NOTIFY_NEW_INFORMATION_CREATOR = "NOTIFY_NEW_INFORMATION_CREATOR"
 
 const SET_CHANNEL_LOADING = "SET_CHANNEL_LOADING";
 
@@ -27,6 +28,7 @@ export const constants = {
   SET_CHANNEL_LOADING,
   SET_FOLLOW_CHANNEL,
   UNSET_FOLLOW_CHANNEL,
+  NOTIFY_NEW_INFORMATION_CREATOR
 };
 
 // ------------------------------------
@@ -51,6 +53,7 @@ export const updateChannel = createAction(
     callback,
   })
 );
+export const notificationEmailToNewContentCreators = createAction(NOTIFY_NEW_INFORMATION_CREATOR, (chanelContent) => ({chanelContent}));
 export const deleteChannel = createAction(DELETE_CHANNEL, (id) => ({ id }));
 export const getFirstChannelList = createAction(
   GET_FIRST_CHANNEL_LIST,
@@ -101,4 +104,5 @@ export const actions = {
   setChannelLoading,
   setFollowChannel,
   unsetFollowChannel,
+  notificationEmailToNewContentCreators,
 };

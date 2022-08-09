@@ -194,15 +194,29 @@ const EventsPage = ({
     });
   };
 
+  const orderListEvents = (data) => {
+    
+    const arrayOrderTime = data.sort((a,b) => {
+
+      let aTime = moment(a.startDate, "YYYYMMDDHHmm").format("YYYYMMDDHHmm")
+      let bTime = moment(b.startDate, "YYYYMMDDHHmm").format("YYYYMMDDHHmm")
+
+      return Number(aTime) - Number(bTime)
+
+    })
+
+    return arrayOrderTime
+  }
+
   const TabData = [
     {
       title: "Upcoming events",
       content: () => (
         <EventList
-          data={[
+          data={orderListEvents([
             ...filteredEvents,
             ...allEventsChannels
-          ]}
+          ])}
           onAttend={addMyEvents}
           onClick={onEventClick}
           userProfile={userProfile}

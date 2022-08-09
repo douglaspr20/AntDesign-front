@@ -98,6 +98,7 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  notifyNewEmailChannelsEndPoint
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
 import {
@@ -320,6 +321,7 @@ export {
   signIn,
   signUp,
   getUserFromId,
+  notifyNewEmailChannelsEndPoint,
   updateUser,
   getAllCouncilCommentsFromAPI,
   postCouncilCommentFromAPI,

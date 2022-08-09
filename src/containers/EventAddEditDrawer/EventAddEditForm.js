@@ -33,6 +33,9 @@ import {
   convertToUTCTime,
   convertToCertainTime,
 } from "utils/format";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 
 import "./style.scss";
 
@@ -73,6 +76,7 @@ const EventAddEditForm = ({
   onCancel,
   createChannelEvent,
   updateChannelEvent,
+  notificationEmailToNewContentCreators
 }) => {
   const refForm = useRef(null);
   const [editor, setEditor] = useState("froala");
@@ -117,6 +121,14 @@ const EventAddEditForm = ({
             message: "New event was successfully created.",
           });
           onAdded();
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "event",
+            name: values.title,
+            link: values.externalLink
+          })
         }
       );
     }
@@ -315,6 +327,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   createChannelEvent,
   updateChannelEvent,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventAddEditForm);

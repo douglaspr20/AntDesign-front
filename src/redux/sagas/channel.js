@@ -14,6 +14,7 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  notifyNewEmailChannelsEndPoint
 } from "../../api";
 
 export function* createChannelSaga({ payload }) {
@@ -196,6 +197,33 @@ export function* unsetFollowChannelSaga({ payload }) {
   }
 }
 
+export function* notifyNewEmailChannelsSagas({ payload }) {
+  yield put(channelActions.setChannelLoading(true));
+
+  try {
+    const response = yield call(notifyNewEmailChannelsEndPoint, payload.chanelContent);
+
+    if (response.status === 200) {
+      yield put(channelActions.setChannel(response.data.channel));
+      yield put(homeActions.updateUserInformation(response.data.user));
+
+      if (payload.callback) {
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback("Something went wront. Please try again.");
+    }
+  } finally {
+    yield put(channelActions.setChannelLoading(false));
+  }
+}
+
 function* watchChannel() {
   yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
   yield takeLatest(channelConstants.GET_CHANNEL, getChannelSaga);
@@ -214,6 +242,10 @@ function* watchChannel() {
     channelConstants.UNSET_FOLLOW_CHANNEL,
     unsetFollowChannelSaga
   );
+  yield takeLatest(
+    channelConstants.NOTIFY_NEW_INFORMATION_CREATOR,
+    notifyNewEmailChannelsSagas
+  )
 }
 
 export const channelSaga = [fork(watchChannel)];

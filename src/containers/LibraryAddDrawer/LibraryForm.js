@@ -16,6 +16,9 @@ import {
   addChannelLibrary,
   updateChannelLibrary,
 } from "redux/actions/library-actions";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { librarySelector } from "redux/selectors/librarySelector";
@@ -34,6 +37,7 @@ const LibraryForm = ({
   onCancel,
   addChannelLibrary,
   updateChannelLibrary,
+  notificationEmailToNewContentCreators
 }) => {
   const refForm = useRef(null);
   const onFinish = (values) => {
@@ -61,6 +65,7 @@ const LibraryForm = ({
         }
       );
     } else {
+
       addChannelLibrary(
         {
           ...values,
@@ -72,7 +77,16 @@ const LibraryForm = ({
           notification.info({
             message: "New resource was successfully created.",
           });
+
           onAdded();
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: (type === "article") ? "resources" : "video",
+            name: values.title,
+            link: values.link 
+          })
         }
       );
     }
@@ -166,6 +180,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addChannelLibrary,
   updateChannelLibrary,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LibraryForm);

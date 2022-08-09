@@ -12,9 +12,13 @@ import {
   deleteBlogPost,
 } from "redux/actions/blog-post-action";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { channelSelector } from "redux/selectors/channelSelector";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { CustomButton, CustomModal, BlogCard } from "components";
 import ModalCreateOrEdit from "./ModalCreateOrEditBlog";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 
 const BlogList = ({
   isOwner,
@@ -24,6 +28,8 @@ const BlogList = ({
   getBlogsPostsByChannel,
   updateBlogPost,
   deleteBlogPost,
+  notificationEmailToNewContentCreators,
+  selectedChannel
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
@@ -65,6 +71,14 @@ const BlogList = ({
             });
           }
           getBlogsPostsByChannel(id);
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "blogs",
+            name: data.title,
+            link: "blogs not have link"
+          })
 
           return notification.success({
             message: "Blog Posted Successfully",
@@ -207,6 +221,7 @@ BlogList.defaultProps = {
 
 const mapStateToProps = (state) => ({
   blogsPostByChannel: blogPostSelector(state).blogsPostByChannel,
+  selectedChannel: channelSelector(state).selectedChannel,
   userProfile: homeSelector(state).userProfile,
 });
 
@@ -215,6 +230,7 @@ const mapDispatchToProps = {
   getBlogsPostsByChannel,
   updateBlogPost,
   deleteBlogPost,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogList);

@@ -258,7 +258,7 @@ class EventCard extends React.Component {
 
     return (
       <div
-        className={(channel === "" || channel === undefined || Number(channel) > 0) ? clsx("event-card", className) : "event-card-channel" }
+        className={(channel === "" || channel === undefined || Number(channel) > 0) ? "event-card-channel" : clsx("event-card2", className) }
         onClick={this.openEventDetails}
       >
         {this.state.showFirewall && (

@@ -18,6 +18,9 @@ import {
   addPodcastToChannel,
   updateChannelPodcast,
 } from "redux/actions/podcast-actions";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -34,6 +37,7 @@ const PodcastForm = ({
   onCancel,
   addPodcastToChannel,
   updateChannelPodcast,
+  notificationEmailToNewContentCreators
 }) => {
   const refForm = useRef(null);
 
@@ -70,6 +74,14 @@ const PodcastForm = ({
           notification.info({
             message: "New podcast was successfully created.",
           });
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "podcast",
+            name: values.title,
+            link: values.vimeoLink 
+          })
         }
       );
     }
@@ -207,6 +219,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addPodcastToChannel,
   updateChannelPodcast,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastForm);
