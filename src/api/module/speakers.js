@@ -11,9 +11,7 @@ export const allPanelSpeakersEndPonit = (payload) => {
 }
 
 export const getAllUserSpeakerEndPoint = (payload) => {
-  return httpClient.get("public/speakers/all-users-speakers", {
-    ...payload,
-  })
+  return httpClient.get(`public/speakers/all-users-speakers/${payload.UserId}`)
 }
 
 export const getAllParrafsEndPoint = (payload) => {

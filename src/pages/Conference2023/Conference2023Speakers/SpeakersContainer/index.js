@@ -18,15 +18,16 @@ const SpeakerContainer = ({
     allPanelsOfOneUser,
     maxLength,
     className,
-    setActiveMessages
+    setActiveMessages,
+    type
 }) => {
 
     const [windowPopUpForSpeaker, setWindowPopUpForSpeaker] = useState(false)
     const [speakerSelect, setSpeakerSelect] = useState({})
 
     useEffect(() => {
-        getAllUserSpeaker()
-    },[ getAllUserSpeaker ])
+        getAllUserSpeaker(type)
+    },[ getAllUserSpeaker, type])
 
     const loadDataForPopUpSpeaker = (id) => {
         getAllPanelsOfOneUser({id:id, type: "speakers"}, (error) => {

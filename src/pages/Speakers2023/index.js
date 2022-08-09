@@ -40,7 +40,7 @@ const Speaker2023 = ({
     {
       title: "Speakers",
       key: 3,
-      content: () => (<Speakers className={"container-users-speakers"} />)
+      content: () => (<Speakers className={"container-users-speakers"} type={"speakers"} />)
     },
   ];
 
