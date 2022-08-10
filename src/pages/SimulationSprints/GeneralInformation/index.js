@@ -1,4 +1,3 @@
-import { CustomButton } from "components";
 import React from "react";
 import { connect } from "react-redux";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -90,39 +89,9 @@ const GeneralInformation = ({ userProfile }) => {
         <p>
           Please note: you MUST complete all the requirements of the{" "}
           <strong>Simulation Sprint</strong> to receive your digital
-          certification at the end of the program. Please note that you can
-          withdraw from a <strong>Simulation Sprint</strong> until the day
-          before it kicks off. Once the <strong> Simulation Sprint</strong> has
-          started it will count toward the total number of available{" "}
-          <strong>Simulation Sprint</strong>, whether you complete it or not.
+          certification at the end of the program.
         </p>
         <p>Thank you! </p>
-      </div>
-
-      <div className="simulation-sprints-information">
-        <h2>Get Funded By Your Organization</h2>
-        <p>
-          Are you looking for your company to fund this learning program with
-          the Learning & Development budget?
-        </p>
-
-        <p>
-          Let us help you! We can prepare a personalized letter for you to
-          download and then share with your supervisor/L&D officer and seek
-          funding approval for Simulation Sprints.
-        </p>
-        <p>Please complete this information to use in the letter </p>
-
-        <div
-          style={{ display: "flex", width: "100%", justifyContent: "center" }}
-        >
-          <CustomButton
-            type="primary"
-            size="md"
-            text={`Create and Donwload Letter`}
-            style={{ marginTop: "5px", maxWidth: "340px" }}
-          />
-        </div>
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Dropdown, Menu, notification, Space } from "antd";
 import moment from "moment-timezone";
 import { CustomButton, CustomModal } from "components";
-import { INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import IconBack from "images/icon-back.svg";
 
 import { getSimulationSprint } from "redux/actions/simulationSprint-actions";
@@ -16,6 +16,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import "./style.scss";
 import { convertToLocalTime } from "utils/format";
 import { DownOutlined } from "@ant-design/icons";
+import Emitter from "services/emitter";
 
 const regex = /<[^>]+>/g;
 
@@ -26,19 +27,22 @@ const SimulationSprint = ({
   userProfile,
 }) => {
   const [confirmJoinModal, setConfirmJoinModal] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
 
   const history = useHistory();
   const { id } = useParams();
 
-  const convertedStartTime = moment(simulationSprint.startDate)
-    .tz("America/Los_Angeles")
-    .utcOffset(-7, true);
+  const convertedStartTime = moment(simulationSprint.startDate).tz(
+    "America/Los_Angeles"
+  );
 
-  const convertedEndTime = moment(simulationSprint.endDate)
-    .tz("America/Los_Angeles")
-    .utcOffset(-7, true);
+  const convertedEndTime = moment(simulationSprint.endDate).tz(
+    "America/Los_Angeles"
+  );
 
-  const currentTime = moment().tz("America/Los_Angeles").utcOffset(-7, true);
+  const dateToCloseJoinSimulation = convertedStartTime
+    .subtract(1, "days")
+    .tz("America/Los_Angeles");
 
   const onClickDownloadCalendar = (e) => {
     e.preventDefault();
@@ -88,43 +92,39 @@ const SimulationSprint = ({
     window.open(yahooCalendarUrl, "_blank");
   };
 
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
   let displayBtn;
   let disabled = false;
   let typeButton = "primary";
 
-  if (convertedEndTime.isBefore(currentTime)) {
-    displayBtn = "This simulation ended";
-    disabled = true;
-  } else if (
-    convertedStartTime.isBefore(currentTime) &&
+  if (
+    dateToCloseJoinSimulation.isBefore(moment()) &&
     !simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
     )
   ) {
-    displayBtn = "This simulation has already started";
+    displayBtn = "This simulation is closed";
     disabled = true;
   } else if (
-    convertedStartTime.isBefore(currentTime) &&
     simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
-    )
+    ) &&
+    convertedStartTime.isAfter(moment()) &&
+    convertedEndTime.isBefore(moment())
   ) {
     displayBtn = "Enter the Dashboard";
-    typeButton = "secondary";
   } else if (
-    convertedStartTime.isAfter(currentTime) &&
+    dateToCloseJoinSimulation.isAfter(moment()) &&
     !simulationSprint.SimulationSprintParticipants?.some(
       (participant) => participant.UserId === userProfile.id
     )
   ) {
     displayBtn = "Join";
-  } else if (
-    convertedStartTime.isAfter(currentTime) &&
-    simulationSprint.SimulationSprintParticipants?.some(
-      (participant) => participant.UserId === userProfile.id
-    )
-  ) {
-    const duration = moment.duration(convertedStartTime.diff(currentTime));
+  } else {
+    const duration = moment.duration(convertedStartTime.diff(moment()));
     const days = Math.floor(duration.asDays().toFixed(2));
     const hours = Math.floor(duration.asHours().toFixed(2));
     const minutes = duration.minutes().toFixed(2);
@@ -140,6 +140,9 @@ const SimulationSprint = ({
 
   const handleClick = () => {
     if (typeButton === "primary") {
+      if (userProfile.memberShip !== "premium") {
+        return setShowFirewall(true);
+      }
       return setConfirmJoinModal(true);
     }
     history.push(`${INTERNAL_LINKS.SIMULATION_SPRINTS}/${id}/resources`);
@@ -307,6 +310,20 @@ const SimulationSprint = ({
           />
         </div>
       </CustomModal>
+
+      {showFirewall && (
+        <div
+          className="conference-card-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={planUpgrade}>
+            <h3>
+              Upgrade to a PREMIUM Membership and get unlimited access to the
+              LAB features
+            </h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
