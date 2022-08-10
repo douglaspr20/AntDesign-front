@@ -274,6 +274,9 @@ const BonfiresPage = ({
                           bonfire={b}
                           added={(userProfile.bonfires || []).includes(b.id)}
                           isBonfireCreator={userProfile.id === b.bonfireCreator}
+                          isUserInvited={b.invitedUsers.includes(
+                            userProfile.id
+                          )}
                           editBonfire={() => onEditBonfire(b)}
                           deleteBonfire={() => onDeleteBonfire(b.id)}
                           onAddBonfire={() => onAddBonfire(b)}
