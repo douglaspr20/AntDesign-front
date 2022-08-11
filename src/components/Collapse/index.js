@@ -58,7 +58,7 @@ const Collapse = ({
     const takeActionWithdrawOrJoinUser = () => {
         if(withdraw){
             setBulJoinOrWithdraw(true)
-            removeUserFunction(idWithdraw)
+            removeUserFunction(idWithdraw,"",panelName)
             setWithdraw(false)
             setIdWithdraw(-1)
         }else{
