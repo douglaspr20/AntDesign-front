@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { notification } from "antd";
-import { CARD_TYPE } from "enum";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
 import {
   createBlogPost,
@@ -171,9 +170,15 @@ const BlogList = ({
         <>
           <div className="channels__list">
             {isOwner && (
-              <BlogCard type={CARD_TYPE.ADD} onAdd={onShowBlogPosstModal} />
+              <CustomButton
+                text="Add Blog Posts"
+                htmlType="submit"
+                size="sm"
+                type="primary"
+                style={{position: "absolute", top: "-6px", left: "190px"}}
+                onClick={() => onShowBlogPosstModal()}
+              />
             )}
-
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (

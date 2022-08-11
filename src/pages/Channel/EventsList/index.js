@@ -13,7 +13,7 @@ import {
   getChannelEvents,
   deleteEvent,
   setEvent,
-  addToMyEventList,
+  addToMyEventList
 } from "redux/actions/event-actions";
 import { actions as eventActions } from "redux/actions/event-actions";
 import { eventSelector } from "redux/selectors/eventSelector";
@@ -109,14 +109,17 @@ const EventsList = ({
       setFutureDataFilter((prev) => {
         prev = channelEvents.filter((item) => {
           const flag = new Date(item.startDate) > new Date();
-          return flag;
+          return flag
         });
+        prev = prev.map((item) => {
+          return {...item, channelSelect: channel}
+        })
         return [...prev];
       });
     };
 
     dateFilter();
-  }, [channelEvents]);
+  }, [channelEvents, channel]);
 
   return (
     <div className="channel-page__list-wrap channels-page__events-list-wrap">

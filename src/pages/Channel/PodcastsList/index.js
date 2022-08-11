@@ -105,7 +105,14 @@ const PodcastsList = ({
         <>
           <div className="channels__list">
             {isOwner && (
-              <EpisodeCard type={CARD_TYPE.ADD} onAdd={onShowPodcastModal} />
+              <CustomButton
+                text="Add Podcasts"
+                htmlType="submit"
+                size="sm"
+                type="primary"
+                style={{position: "absolute", top: "-6px", left: "190px"}}
+                onClick={() => onShowPodcastModal()}
+              />
             )}
             {podcasts.map((episode) => (
               <EpisodeCard

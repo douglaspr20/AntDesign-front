@@ -1,16 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
+import { Form, notification, DatePicker, Select } from "antd";
 import omit from "lodash/omit";
 import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
-  CustomCheckbox,
   CustomButton,
   CustomSelect,
-  CustomRadio,
   ImageUpload,
   RichEdit,
   CreditSelect,
@@ -27,6 +25,7 @@ import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { envSelector } from "redux/selectors/envSelector";
+import clsx from "clsx";
 
 import {
   isValidURL,
@@ -43,28 +42,28 @@ const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
 
 const { RangePicker } = DatePicker;
 
-const EventTypes = [
-  {
-    text: "Presentation",
-    value: "presentation",
-  },
-  {
-    text: "Workshop",
-    value: "workshop",
-  },
-  {
-    text: "Panel",
-    value: "panel",
-  },
-  {
-    text: "Peer-to-Peer Conversation",
-    value: "peer-to-peer",
-  },
-  {
-    text: "Conference",
-    value: "conference",
-  },
-];
+// const EventTypes = [
+//   {
+//     text: "Presentation",
+//     value: "presentation",
+//   },
+//   {
+//     text: "Workshop",
+//     value: "workshop",
+//   },
+//   {
+//     text: "Panel",
+//     value: "panel",
+//   },
+//   {
+//     text: "Peer-to-Peer Conversation",
+//     value: "peer-to-peer",
+//   },
+//   {
+//     text: "Conference",
+//     value: "conference",
+//   },
+// ];
 
 const EventAddEditForm = ({
   allCategories,
@@ -177,12 +176,12 @@ const EventAddEditForm = ({
         <Form.Item name="title" label="Title">
           <CustomInput />
         </Form.Item>
-        <Form.Item name="organizer" label="Organizer">
+        {/* <Form.Item name="organizer" label="Organizer">
           <CustomInput />
         </Form.Item>
         <Form.Item name="organizerEmail" label="Organizer's Email">
           <CustomInput />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="startAndEndDate" label="Start date - End date">
           <RangePicker showTime />
         </Form.Item>
@@ -197,16 +196,22 @@ const EventAddEditForm = ({
             }
           />
         </Form.Item>
-        <Form.Item name="categories" label="Categories">
-          <Checkbox.Group className="d-flex flex-column event-addedit-form-topics">
-            {allCategories.map((topic, index) => (
-              <CustomCheckbox key={index} value={topic.value}>
-                {topic.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
+        <Form.Item
+          name="categories" 
+          label="Categories"
+          className="categoris-input"
+        >
+          <Select mode="multiple" className={clsx("custom-select", { border: "bordered" })}>
+            {allCategories?.map((item) => {
+              return (
+                <Select.Option key={item?.value} value={item?.value}>
+                  {item?.title}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
-        <Form.Item name="ticket" label="Tickets">
+        {/* <Form.Item name="ticket" label="Tickets">
           <Radio.Group className="d-flex flex-column event-addedit-form-radiogrp">
             <CustomRadio value="free">Free</CustomRadio>
           </Radio.Group>
@@ -225,7 +230,7 @@ const EventAddEditForm = ({
             <CustomCheckbox value="online">Online</CustomCheckbox>
             <CustomCheckbox value="priced">Venue</CustomCheckbox>
           </Checkbox.Group>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="description" label="Description">
           {editor === "froala" ? (
             <FroalaEdit s3Hash={s3Hash} />
@@ -280,10 +285,10 @@ const EventAddEditForm = ({
         <Form.Item name="code" label="Event Code">
           <EventCodeGenerator disabled={edit} />
         </Form.Item>
-        <Form.Item name="image" label="Image (220 / 280)">
+        {/* <Form.Item name="image" label="Image (220 / 280)">
           <ImageUpload className="event-pic-1" aspect={220 / 280} />
-        </Form.Item>
-        <Form.Item name="image2" label="Image2 (755 / 305)">
+        </Form.Item> */}
+        <Form.Item name="image2" label="Images (755 / 305) px">
           <ImageUpload className="event-pic-2" aspect={755 / 305} />
         </Form.Item>
         <div className="event-addedit-form-panel-footer">

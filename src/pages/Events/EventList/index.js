@@ -71,6 +71,8 @@ const EventList = ({
     setGroupedByEventData({ ...groupedData });
   }, [data]);
 
+  console.log(edit)
+
   return (
     <div className="event-list">
       <div className="event-list-filters">
@@ -84,14 +86,14 @@ const EventList = ({
       </div>
       {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
       {edit && type === CARD_TYPE.EDIT && (
-        <div className="event-list-batch">
-          <div />
-          <EventCard
-            className="add"
-            type={CARD_TYPE.ADD}
-            onClick={onAddEvent}
-          />
-        </div>
+        <CustomButton
+          text="Add Events"
+          htmlType="submit"
+          size="sm"
+          type="primary"
+          style={{position: "absolute", top: "-6px", left: "190px"}}
+          onClick={() => onAddEvent()}
+        />
       )}
       {Object.keys(groupedByEventData).map((date) => {
         const day = moment(date, DataFormat).date();
