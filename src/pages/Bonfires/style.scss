@@ -49,7 +49,6 @@
   
     &-container {
       margin: 2rem 3rem;
-      position: relative;
       grid-template-columns: 1fr;  
       @media (max-width: 500px) {
         margin: 2rem 0rem;
