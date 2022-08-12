@@ -11,22 +11,35 @@
     .menu-bonfires{
       background: none;
 
+      .menu-bonfires-item{
+        font-size: 1.2rem;
+      }
+
       .menu-bonfires-item:hover,
       .ant-menu-item-selected,
       .menu-bonfires-item:active {
         border-bottom: 2px solid $color-primary !important;
         color: $color-primary !important;
-}
+      }
     }
+
+  .bonfire-filter-panel{
+    width: 95%;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    display: none;
+
+    @media  (max-width: 900px){
+      display: block;
+     }
+   
+  }
   }
   .bonfire-list {
     width: 100%;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-  
-    @media (max-width: 1100px) {
-      margin-top: 18rem;
-    }
+
   
     &::-webkit-scrollbar {
       display: none;

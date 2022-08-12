@@ -2,7 +2,7 @@ import INTERNAL_LINKS from "./InternalLinks";
 
 import IconHome from "images/icon-home.svg";
 import IconLibrary from "images/icon-library.svg";
-import IconMentoring from "images/icon-mentoring.svg";
+// import IconMentoring from "images/icon-mentoring.svg";
 import IconCalendar from "images/icon-calendar.svg";
 // import IconMedal from "images/icon-medal.svg";
 // import IconReader from "images/icon-reader.svg";
@@ -18,6 +18,7 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 import IconFlask from "images/icon-flask-outline.svg";
 import IconBriefcase from "images/icon-briefcase-outline.svg";
 // import IconGlobal from "images/icon-global.svg";
+import iconBonfire from "images/icon-bonfire.svg";
 
 export default {
   TOP_MENUS: [
@@ -63,7 +64,7 @@ export default {
     },
     {
       label: "Bonfires",
-      icon: IconMentoring,
+      icon: iconBonfire,
       url: INTERNAL_LINKS.BONFIRES,
     },
     {

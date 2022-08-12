@@ -19,6 +19,7 @@ const BonfireCard = ({
   onRemoveBonfire,
   editBonfire,
   deleteBonfire,
+  onDownloadCsv,
 }) => {
   const [hideInfo, setHideInfo] = useState(true);
 
@@ -103,7 +104,7 @@ const BonfireCard = ({
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              height: "110px",
+              height: "150px",
             }}
           >
             <CustomButton
@@ -119,6 +120,14 @@ const BonfireCard = ({
               size="md"
               text="Delete"
               onClick={deleteBonfire}
+              className="remove-buttom"
+            />
+
+            <CustomButton
+              type="secondary"
+              size="md"
+              text="Download list of participants"
+              onClick={onDownloadCsv}
               className="remove-buttom"
             />
             <CustomButton
@@ -251,6 +260,7 @@ BonfireCard.propTypes = {
   added: PropTypes.bool,
   onAddBonfire: PropTypes.func,
   onRemoveBonfire: PropTypes.func,
+  onDownloadCsv: PropTypes.func,
 };
 
 BonfireCard.defaultProps = {
@@ -258,6 +268,7 @@ BonfireCard.defaultProps = {
   added: false,
   onAddSession: () => {},
   onRemoveBonfire: () => {},
+  onDownloadCsv: () => {},
 };
 
 const mapStateToProps = (state) => ({});

@@ -122,6 +122,7 @@ import {
   updateBonfire,
   deleteBonfire,
   inviteUser,
+  downloadCsvWithParticipants,
 } from "./module/bonfire";
 import {
   getAllSkillCohorts,
@@ -279,7 +280,7 @@ import {
 
 import { getEditorSignature } from "./module/env";
 
-import {   
+import {
   allPanelSpeakersEndPonit,
   getAllUserSpeakerEndPoint,
   removeUserSpeakerToPanelEndPoint,
@@ -287,8 +288,8 @@ import {
   registerUserIfNotAreRegisterConference2023EndPoint,
   getAllPanelsOfOneUserEndPoint,
   addedToPersonalAgendaEndPoint,
-  getAllSponsors2023EndPoint
-} from "./module/speakers"
+  getAllSponsors2023EndPoint,
+} from "./module/speakers";
 
 export {
   addedToPersonalAgendaEndPoint,
@@ -501,4 +502,5 @@ export {
   addBlogPostLike,
   removeBlogPostLike,
   handleReceiveCommunityNotification,
+  downloadCsvWithParticipants,
 };

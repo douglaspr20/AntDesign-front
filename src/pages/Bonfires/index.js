@@ -23,6 +23,8 @@ import BonfiresFilterPanel from "./BonfiresFilterPanel";
 
 import "./style.scss";
 import Emitter from "services/emitter";
+import FilterDrawer from "./FilterDrawer";
+import { downloadCsvWithParticipants } from "api";
 
 const BonfiresPage = ({
   getBonfires,
@@ -83,6 +85,9 @@ const BonfiresPage = ({
   const completeProfile = () => {
     Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
   };
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
+  };
 
   const handleBonfire = (data) => {
     const convertedStartTime = moment
@@ -132,7 +137,7 @@ const BonfiresPage = ({
           });
         } else {
           notification.success({
-            message: "Bonfire created succesfully",
+            message: "Bonfire created successfully",
           });
 
           onCancelModalForm();
@@ -172,6 +177,23 @@ const BonfiresPage = ({
     }
 
     setModalFormVisible(true);
+  };
+
+  const onDownloadCsv = async (b) => {
+    const buffer = await downloadCsvWithParticipants(b.id);
+
+    var fileURL = window.URL.createObjectURL(
+      new Blob([buffer.data], { type: "application/vnd.ms-excel" })
+    );
+    var fileLink = document.createElement("a");
+
+    fileLink.href = fileURL;
+    fileLink.setAttribute("download", `${b.title}.xlsx`);
+    document.body.appendChild(fileLink);
+
+    fileLink.click();
+    document.body.removeChild(fileLink);
+    window.URL.revokeObjectURL(fileURL);
   };
 
   useEffect(() => {
@@ -273,6 +295,7 @@ const BonfiresPage = ({
     <>
       <div className="bonfires-page">
         <BonfiresFilterPanel onChange={onFilterChange} />
+        <FilterDrawer onChange={onFilterChange} />
 
         <div className="bonfires-page-container">
           <Menu
@@ -296,6 +319,13 @@ const BonfiresPage = ({
               My Bonfires
             </Menu.Item>
           </Menu>
+          <CustomButton
+            text="Filters"
+            onClick={() => {
+              showFilterPanel();
+            }}
+            className={"bonfire-filter-panel"}
+          />
           <div className="bonfire-list">
             <div className="bonfire-list-container">
               {selectedKeys === "all-bonfires" && (
@@ -326,6 +356,7 @@ const BonfiresPage = ({
                             deleteBonfire={() => onDeleteBonfire(b.id)}
                             onAddBonfire={() => onAddBonfire(b)}
                             onRemoveBonfire={() => onRemoveBonfire(b)}
+                            onDownloadCsv={() => onDownloadCsv(b)}
                           />
                         ))}
                       </div>
@@ -372,6 +403,7 @@ const BonfiresPage = ({
                                 onAddBonfire(b);
                               }}
                               onRemoveBonfire={() => onRemoveBonfire(b)}
+                              onDownloadCsv={() => onDownloadCsv(b)}
                             />
                           ))}
                       </div>
