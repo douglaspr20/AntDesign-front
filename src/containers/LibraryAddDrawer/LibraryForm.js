@@ -1,16 +1,16 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, notification } from "antd";
+import { Form, Select, notification } from "antd";
 import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
-  CustomCheckbox,
   CustomButton,
   ImageUpload,
 } from "components";
 import { SETTINGS } from "enum";
+import clsx from "clsx";
 
 import {
   addChannelLibrary,
@@ -124,17 +124,23 @@ const LibraryForm = ({
         <Form.Item name="description" label="Description">
           <CustomInput multiple={true} />
         </Form.Item>
-        <Form.Item name="topics" label="What are the content topics?">
-          <Checkbox.Group className="d-flex flex-column library-form-topics">
-            {allCategories.map((topic, index) => (
-              <CustomCheckbox key={index} value={topic.value}>
-                {topic.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
+        <Form.Item
+          name="topics" 
+          label="What are the content topics?"
+          className="categoris-input"
+        >
+          <Select mode="multiple" className={clsx("custom-select", { border: "bordered" })}>
+            {allCategories?.map((item) => {
+              return (
+                <Select.Option key={item?.value} value={item?.value}>
+                  {item?.title}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
         {type !== "video" && (
-          <Form.Item name="image" label="Upload image (400 / 152)">
+          <Form.Item name="image" label="Upload image (400 / 152) px">
             <ImageUpload aspect={400 / 152} />
           </Form.Item>
         )}

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Checkbox, Form, notification } from "antd";
+import { Select, Form} from "antd";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { envSelector } from "redux/selectors/envSelector";
+import clsx from "clsx";
+
 import {
   CustomButton,
-  CustomCheckbox,
   CustomInput,
   CustomModal,
   FroalaEdit,
@@ -20,21 +21,10 @@ const ModalCreateOrEdit = ({
   s3Hash,
 }) => {
   const [blogForm] = Form.useForm();
-  const [categories, setCategories] = useState([]);
   const [summary, setSummary] = useState("");
 
   const handleSummary = (value) => {
     setSummary(value.slice(0, 100));
-  };
-
-  const handleCategories = (categories) => {
-    if (categories.length === 5) {
-      notification.warning({
-        message: "You can only have a maximum of 5 categories in each blog",
-      });
-    }
-
-    setCategories(categories);
   };
 
   const handleSaveDraftBlogPost = (type) => {
@@ -128,25 +118,18 @@ const ModalCreateOrEdit = ({
         <Form.Item
           name="categories"
           label="Categories"
+          className="categoris-input"
           rules={[{ required: true, message: "Categories is required." }]}
         >
-          <Checkbox.Group
-            className="d-flex flex-column event-addedit-form-topics"
-            value={categories}
-            onChange={handleCategories}
-          >
-            {allCategories.map((topic, index) => (
-              <CustomCheckbox
-                key={index}
-                value={topic.value}
-                disabled={
-                  categories.length === 5 && !categories.includes(topic.value)
-                }
-              >
-                {topic.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
+          <Select mode="multiple" className={clsx("custom-select", { border: "bordered" })} style={{background:"white"}}>
+            {allCategories?.map((item) => {
+              return (
+                <Select.Option key={item?.value} value={item?.value}>
+                  {item?.title}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
 
         <div

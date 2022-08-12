@@ -71,8 +71,6 @@ const EventList = ({
     setGroupedByEventData({ ...groupedData });
   }, [data]);
 
-  console.log(edit)
-
   return (
     <div className="event-list">
       <div className="event-list-filters">
