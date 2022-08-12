@@ -76,12 +76,12 @@ export function* getAllUserSpeakerSaga({payload}) {
 
 export function* removeUserSpeakerToPanelSaga({ payload }) {
 
-  const {UserId} = payload
+  const {data} = payload
 
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(removeUserSpeakerToPanelEndPoint, { UserId });
+    const response = yield call(removeUserSpeakerToPanelEndPoint, { data });
 
     if (response.status === 200) {
       if (payload.callback) {
