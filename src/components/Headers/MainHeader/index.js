@@ -35,6 +35,7 @@ import IconFlaskOutline from "images/icon-flask-outline.svg";
 import IconBriefcaseOutline from "images/icon-briefcase-outline.svg";
 import IconReader from "images/icon-reader.svg";
 import IconHome from "images/icon-home.svg";
+import iconSchool from "images/icon-school.svg";
 import IconMentoring from "images/icon-mentoring.svg";
 
 import IconGlobal from "images/icon-global.svg";
@@ -274,7 +275,7 @@ class MainHeader extends React.Component {
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.SPEAKER_2023}`)) {
       pathInfo = {
         // icon: ,
-        label: "Speaker 2023"
+        label: "Speaker 2023",
       };
     }
 
@@ -329,6 +330,15 @@ class MainHeader extends React.Component {
       };
     }
 
+    if (
+      !pathInfo &&
+      pathname.includes(`${INTERNAL_LINKS.SIMULATION_SPRINTS}`)
+    ) {
+      pathInfo = {
+        icon: iconSchool,
+        label: "Simulation Sprints",
+      };
+    }
     if (!pathInfo && pathname.includes(`${INTERNAL_LINKS.COMMUNITIES}`)) {
       const title = capitalizeWord(pathname.slice(13));
       pathInfo = {

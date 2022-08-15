@@ -13,6 +13,7 @@ const CollapseComponent = ({
     className,
     buttons,
     index,
+    bulMessage
 }) => {
     
     const [visibleConfirmApply, setVisibleConfirmApply] = useState(false);
@@ -52,9 +53,16 @@ const CollapseComponent = ({
                             {dataIterated}
                         </>
                     ) : (
-                        <NoItemsMessageCard
-                            message={`There aren't members in this panel.`}
-                        />
+                        <>
+                            {dataStatic}
+                            {bulMessage 
+                            ? (
+                                <NoItemsMessageCard
+                                    message={`There aren't members in this panel.`}
+                                />
+                            ) : <div></div>}
+                            
+                        </>
                     )
                 }
             </div>
@@ -78,6 +86,7 @@ const CollapseComponent = ({
     buttons: PropTypes.element,
     className: PropTypes.string,
     index: PropTypes.number,
+    bulMessage: PropTypes.bool,
   };
   
   CollapseComponent.defaultProps = {
@@ -87,6 +96,7 @@ const CollapseComponent = ({
     buttons: <></>,
     className: "",
     index: -1,
+    bulMessage: true
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(CollapseComponent);

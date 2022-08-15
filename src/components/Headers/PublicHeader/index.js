@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
 import { CustomButton } from "components";
 import IconMenu from "images/icon-menu-outline.svg";
+import { homeSelector } from "redux/selectors/homeSelector";
 import Login from "pages/Login";
 import { Modal } from "antd";
 import { Link } from "react-router-dom";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
+import { registerUserIfNotAreRegisterConference2023, setBulRegister } from "redux/actions/speaker-actions"
 
 import LogoSidebar from "images/logo-sidebar.svg";
 // import { PublicMenuPopup } from "components";
@@ -16,17 +18,60 @@ import LogoSidebar from "images/logo-sidebar.svg";
 import "./style.scss";
 
 const PublicHeader = ({
-  bulRegister
+  bulRegister,
+  userProfile,
+  registerUserIfNotAreRegisterConference2023,
+  setBulRegister, 
+  activeButton
 }) => {
 
   const [modalRegister, setModalRegister] = useState(false)
   const [butonState, setButonState] = useState(false)
+  const [bulMessageOut, setBulMessageOut] = useState(false)
+  const [animation, setAnimation] = useState({opacity:"0%"})
+  const [bulKnowRegister, setBulKnowRegister] = useState(false)
+
+  const quitMessage = useCallback(() => {
+    setAnimation({opacity:"100%"})
+    setTimeout(() => {
+      setAnimation({opacity:"0%"})
+    }, 22000);
+    setTimeout(() => {
+      setBulMessageOut(false)
+      setBulRegister(false)
+    }, 2400);
+  },[setBulMessageOut,setBulRegister])
 
   useEffect(() => {
-    if(bulRegister){
+    if(userProfile.registerConference2023){
       setButonState(true)
     }
-  }, [bulRegister])
+  }, [userProfile.registerConference2023])
+
+  useEffect(() => {
+    if(activeButton){
+      setButonState(true)
+    }
+  },[activeButton] )
+
+  const confirm = useCallback(() => {
+    setBulKnowRegister(true)
+    if(userProfile.registerConference2023 !== undefined){
+      setBulKnowRegister(false)
+      if(!userProfile.registerConference2023){
+        registerUserIfNotAreRegisterConference2023(() => {
+          setBulMessageOut(true)
+          quitMessage()
+        })
+      }
+    }
+  }, [setBulKnowRegister, userProfile.registerConference2023, registerUserIfNotAreRegisterConference2023, quitMessage, setBulMessageOut])
+
+  useEffect(() => {
+    if(bulKnowRegister){
+      confirm()
+    }
+  }, [userProfile,bulKnowRegister, confirm])
 
   return (
     <div 
@@ -34,7 +79,7 @@ const PublicHeader = ({
         (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
         "public-header-conference" : "public-header"
       } 
-      style={{width:"calc( 100% - 17px )"}}
+      style={{width:"calc( 100% )"}}
     >
       <Link 
         to={INTERNAL_LINKS.HOME} 
@@ -42,6 +87,7 @@ const PublicHeader = ({
           (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
           "public-header-left-conference" : "public-header-left"
         }
+        target="_blank"
       >
         <div className="hr-logo">
           <img src={LogoSidebar} alt="sidebar-logo" />
@@ -78,6 +124,17 @@ const PublicHeader = ({
             <div className="public-conference-links">
               <Link 
                 style={
+                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/highlights") ? 
+                  {textDecoration: "underline black"} : {textDecoration: "none"}
+                } 
+                to={INTERNAL_LINKS.CONFERENCE_2023 + "/highlights"}
+              >
+                  <p>Conference Highlights</p>
+              </Link>
+            </div>
+            <div className="public-conference-links">
+              <Link 
+                style={
                   (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/speakers") ? 
                   {textDecoration: "underline black"} : {textDecoration: "none"}
                 } 
@@ -97,13 +154,26 @@ const PublicHeader = ({
                   <p>Agenda</p>
               </Link>
             </div>
-              {butonState ? (
+              {butonState && (
                 <div className="container-you-are-now-register">
                   <div className="div-you-are-now-register">
                     <p>YOU ARE NOW REGISTERED</p>
                   </div>
                 </div>
-              ) : (
+              )}
+              {(!butonState && bulRegister) && (
+                  <CustomButton
+                    className="button-speaker"
+                    text={"REGISTER HERE"}
+                    size="md"
+                    type={"primary"}
+                    onClick={() => {
+                      confirm()
+                      setButonState(true)
+                    }}
+                  />
+                )}
+              {(!butonState && !bulRegister) && (
                 <CustomButton
                   className="button-speaker"
                   text={"REGISTER HERE"}
@@ -113,6 +183,13 @@ const PublicHeader = ({
                 />
               )}
           </div> 
+          {(bulMessageOut && bulRegister) && 
+            <div className="complete-profile" style={animation}>
+              <div className="container-message">
+                <p className="text-message">You are now registered</p>
+              </div>
+            </div>
+          }
           <Modal
             visible={modalRegister}
             footer={null}
@@ -125,6 +202,7 @@ const PublicHeader = ({
               login={true}
               signUp={false}
               history={null}
+              confirm={confirm}
               match={{ params: {} }}
               modal={setModalRegister}
               onClose={() => setModalRegister(false)}
@@ -145,11 +223,14 @@ PublicHeader.defaultProps = {
 };
 
 const mapStateToProps = (state, props) => ({
-  bulRegister: speakerAllPanelSpeakerSelector(state).bulRegister
+  bulRegister: speakerAllPanelSpeakerSelector(state).bulRegister,
+  activeButton: speakerAllPanelSpeakerSelector(state).activeButton,
+  userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
-
+  setBulRegister,
+  registerUserIfNotAreRegisterConference2023
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PublicHeader);

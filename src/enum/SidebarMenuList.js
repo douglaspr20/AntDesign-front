@@ -9,7 +9,6 @@ import IconCalendar from "images/icon-calendar.svg";
 import IconStar from "images/icon-star.svg";
 // import IconJourney from "images/icon-learning-journey.svg";
 import IconBookmark from "images/icon-bookmark.svg";
-// import IconHeartOutline from "images/icon-heart-outline.svg";
 import IconHeadsetOutline from "images/icon-headset-outline.svg";
 import IconStoreFrontOutline from "images/icon-storefront-outline.svg";
 import IconConferenceVideo from "images/icon-sidebar-video.svg";
@@ -19,6 +18,7 @@ import IconFlask from "images/icon-flask-outline.svg";
 import IconBriefcase from "images/icon-briefcase-outline.svg";
 // import IconGlobal from "images/icon-global.svg";
 import iconBonfire from "images/icon-bonfire.svg";
+import iconSchool from "images/icon-school.svg";
 
 export default {
   TOP_MENUS: [
@@ -51,6 +51,11 @@ export default {
       label: "ProjectX",
       icon: IconFlask,
       url: INTERNAL_LINKS.PROJECTX,
+    },
+    {
+      label: "Simulation Sprints",
+      icon: iconSchool,
+      url: INTERNAL_LINKS.SIMULATION_SPRINTS,
     },
     {
       label: "Learning library",

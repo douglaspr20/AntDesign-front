@@ -294,6 +294,17 @@ class TopHeader extends Component {
 
         <Route
           exact
+          path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}`}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <Route
+          path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
+          render={(props) => <MainHeader {...props} />}
+        />
+
+        <Route
+          exact
           path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
           render={(props) => <PublicHeader {...props} />}
         />

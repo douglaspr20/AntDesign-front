@@ -32,7 +32,7 @@ const Sponsors = ({
                             className="container-users" 
                             key={sponsor?.id} 
                         >
-                            <a href={(sponsor?.link.substring(0,7) !== "http://" || sponsor?.link.substring(0,8) !== "https://") ? `https://${sponsor?.link}` : sponsor?.link} target="_blank" rel="noopener noreferrer">
+                            <a href={(sponsor?.link.substring(0,7) !== "http://" && sponsor?.link.substring(0,8) !== "https://") ? `https://${sponsor?.link}` : sponsor?.link} target="_blank" rel="noopener noreferrer">
                                 <Avatar size={200} src={sponsor?.logo} />
                             </a>
                         </div>

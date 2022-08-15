@@ -3,10 +3,10 @@ import React from "react";
 import Conference2023Home from "./Conference2023Home";
 import Conference2023Agenda from "./Conference2023Agenda";
 import Conference2023Speakers from "./Conference2023Speakers";
+import Conference2023Highlights from "./Conference2023Highlights";
 import MessagesGeneral from "./MessagesGeneral";
 import { INTERNAL_LINKS } from "enum";
 import { Redirect, Route } from "react-router-dom";
-
 
 const Conference2023 = ({ match }) => {
   const {url} = match
@@ -19,6 +19,13 @@ const Conference2023 = ({ match }) => {
             path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
             exact
             render={(props) => <Conference2023Home {...props} />}
+          />
+        }
+        {url === `${INTERNAL_LINKS.CONFERENCE_2023}/highlights` &&
+          <Route 
+            path={`${INTERNAL_LINKS.CONFERENCE_2023}/highlights`}
+            exact
+            render={(props) => <Conference2023Highlights {...props} />}
           />
         }
         {url === `${INTERNAL_LINKS.CONFERENCE_2023}/speakers` &&
@@ -35,7 +42,10 @@ const Conference2023 = ({ match }) => {
             render={(props) => <Conference2023Agenda {...props} />}
           />
         }
-        {(url !== `${INTERNAL_LINKS.CONFERENCE_2023}/speakers` && url !== `${INTERNAL_LINKS.CONFERENCE_2023}/agenda` && url !== INTERNAL_LINKS.CONFERENCE_2023) &&
+        {(url !== `${INTERNAL_LINKS.CONFERENCE_2023}/speakers` && 
+          url !== `${INTERNAL_LINKS.CONFERENCE_2023}/agenda` && 
+          url !== `${INTERNAL_LINKS.CONFERENCE_2023}/highlights` && 
+          url !== INTERNAL_LINKS.CONFERENCE_2023) &&
           <Redirect to={INTERNAL_LINKS.HOME}></Redirect> 
         }
     </>

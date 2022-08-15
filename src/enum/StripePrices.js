@@ -1,7 +1,7 @@
 export default {
   STRIPE_PRICES: [
     {
-      price: "119",
+      price: "159",
       country: "GLOBAL",
       character: "&#36;",
       priceId: process.env.REACT_APP_STRIPE_YEARLY_USD_PRICE_ID,
@@ -82,6 +82,30 @@ export default {
       character: "&#36",
       priceId: process.env.REACT_APP_STRIPE_ADVERTISEMENT_CREDITS_50,
     },
-   
+  ],
+  SIMULATION_SPRINT_PRICES: [
+    {
+      price: "700",
+      simulations: "1",
+      country: "GLOBAL",
+      character: "&#36;",
+      priceId: process.env.REACT_APP_STRIPE_ONE_SIMULATION_SPRINT,
+    },
+
+    {
+      price: "2500",
+      simulations: "4",
+      country: "GLOBAL",
+      character: "&#36;",
+      priceId: process.env.REACT_APP_STRIPE_FOUR_SIMULATION_SPRINT,
+    },
+
+    {
+      price: "4000",
+      simulations: "8",
+      country: "GLOBAL",
+      character: "&#36;",
+      priceId: process.env.REACT_APP_STRIPE_EIGHT_SIMULATION_SPRINT,
+    },
   ],
 };

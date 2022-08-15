@@ -44,8 +44,8 @@ import matchmakingReducer from "./matchmakingReducer";
 import councilEventReducer from "./councilEventReducer";
 import councilConversationReducer from "./councilConversationReducer";
 import speakersReducer from "./speakersReducer";
-
 import blogPostReducer from "./blogPostReducer";
+import simulationSprintReducer from "./simulationSprintReducer";
 
 export default combineReducers({
   speakers: speakersReducer,
@@ -94,4 +94,5 @@ export default combineReducers({
   councilEvent: councilEventReducer,
   councilConversation: councilConversationReducer,
   blogPost: blogPostReducer,
+  simulationSprint: simulationSprintReducer,
 });

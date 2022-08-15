@@ -80,10 +80,13 @@ const HomePage = ({
   }, [id]);
 
   useEffect(() => {
-    if (advertisementsByPage !== undefined && advertisementsByPage.home !== undefined) {
-      if(advertisementsByPage?.home[0] !== undefined){
+    if (
+      advertisementsByPage !== undefined &&
+      advertisementsByPage.home !== undefined
+    ) {
+      if (advertisementsByPage?.home[0] !== undefined) {
         setHasAdvertisementData(true);
-      }else{
+      } else {
         setHasAdvertisementData(false);
       }
     } else {
@@ -117,31 +120,31 @@ const HomePage = ({
   };
 
   const displayAds = hasAdvertisementData && (
-      <div className="home-advertisement-wrapper">
-        {advertisementsByPage?.home?.map((advertisement) => {
-          return (
+    <div className="home-advertisement-wrapper" style={{ marginRight: 10 }}>
+      {advertisementsByPage?.home?.map((advertisement) => {
+        return (
+          <div
+            className="home-advertisement-wrapper-content"
+            key={advertisement?.id}
+          >
             <div
-              className="home-advertisement-wrapper-content"
-              key={advertisement?.id}
+              className="advertisement"
+              onClick={() => {
+                createAdvertisementClick(advertisement?.id);
+                window.open(advertisement?.advertisementLink, "_blank");
+              }}
             >
-              <div
-                className="advertisement"
-                onClick={() => {
-                  createAdvertisementClick(advertisement?.id);
-                  window.open(advertisement?.advertisementLink, "_blank");
-                }}
-              >
-                <img
-                  src={advertisement?.adContentLink}
-                  alt="advertisement"
-                  className="advertisement-img"
-                />
-              </div>
+              <img
+                src={advertisement?.adContentLink}
+                alt="advertisement"
+                className="advertisement-img"
+              />
             </div>
-          );
-        })}
-      </div>
-    );
+          </div>
+        );
+      })}
+    </div>
+  );
 
   const displayPreviewAd = isAdPreview && (
     <div className="home-advertisement-wrapper-preview">
@@ -214,19 +217,18 @@ const HomePage = ({
         </div>
       </div>
       <div className="home-page-container--posts">
-        {hasAdvertisementData ? <div></div> :
         <PostsFilterPanel
           title="Stories filter"
           onChange={onFilterChange}
           onSearch={onSearch}
-        />}
+        />
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
               <ProfileStatusBar user={userProfile} />
             </div>
           )}
-          <div className={`home-page-container${hasAdvertisementData ? "--advertsiment-wrapper" : "--mobile-options"}`}>
+          <div className={`home-page-container${"--mobile-options"}`}>
             <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
             <Button
               onClick={() => {
@@ -259,7 +261,6 @@ const HomePage = ({
             </div>
             {displayAds}
             {displayPreviewAd}
-            {/* {dipslayRentAd}*/}
           </div>
         </div>
       </div>

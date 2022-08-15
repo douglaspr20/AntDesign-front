@@ -216,6 +216,21 @@
       display: block;
     }
 
+    .complete-profile {
+      width: 100% ;
+      height: 100vh ;
+      top: 0px ;
+      padding: 0px;
+      margin: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.45);
+      position: fixed;
+      z-index: 800;
+      transition: 0.2s all ease-in-out ;
+    }
+
     .public-header-right{
       top: 100px;
       flex-direction: column;

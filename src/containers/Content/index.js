@@ -65,6 +65,9 @@ import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
 import CommunititesPage from "pages/Communities";
 import BonfiresPage from "pages/Bonfires";
+import SimulationSprintsPage from "pages/SimulationSprints";
+import SimulationSprintPage from "pages/SimulationSprint";
+import SimulationSprintDashboardPage from "pages/SimulationSprintDashboard";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -459,11 +462,30 @@ class Content extends Component {
             exact
             render={(props) => <BlogPage {...props} />}
           />
+
+          <Route
+            exact
+            path={INTERNAL_LINKS.SIMULATION_SPRINTS}
+            render={(props) => <SimulationSprintsPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
+            render={(props) => <SimulationSprintPage {...props} />}
+          />
+
+          <Route
+            exact
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/dashboard`}
+            render={(props) => <SimulationSprintDashboardPage {...props} />}
+          />
           <Route
             exact
             path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
             render={(props) => <PublicEventPage {...props} />}
           />
+
           <Route component={NoPageFound} />
         </Switch>
       </Layout.Content>

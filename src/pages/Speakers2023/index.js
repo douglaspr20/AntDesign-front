@@ -9,6 +9,7 @@ import { actions as homeActions } from "redux/actions/home-actions";
 import { Tabs } from "components";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import PanelSpeakers from "./Panels";
+import Speakers from "pages/Conference2023/Conference2023Speakers/SpeakersContainer";
 
 import "./style.scss";
 
@@ -22,19 +23,29 @@ const Speaker2023 = ({
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [visibleConfirmApply, setVisibleConfirmApply] = useState(true);
-  const id = query.get("id");
-  const accepted = query.get("accepted");
+  const id = query?.get("id");
+  const accepted = query?.get("accepted");
 
   const TabData = [
     {
       title: "Panels",
       key: 1,
-      content: () => (<PanelSpeakers />)
-    }
+      content: () => (<PanelSpeakers type={'panels'} />)
+    },
+    {
+      title: "My panels",
+      key: 2,
+      content: () => (<PanelSpeakers type={'myPanels'} />)
+    },
+    {
+      title: "Speakers",
+      key: 3,
+      content: () => (<Speakers className={"container-users-speakers"} type={"speakers"} />)
+    },
   ];
 
   const onApplySpeaker = () => {
-    sendEmailAuthorization({ userId: userProfile.id});
+    sendEmailAuthorization({ userId: userProfile?.id});
   };
 
   useEffect( () => {
@@ -45,14 +56,14 @@ const Speaker2023 = ({
     }
   },[id,accepted,activeOrDenyAuthorization])
 
-  const responseAuthorization = (userProfile.speakersAuthorization === "reject") ? (
+  const responseAuthorization = (userProfile?.speakersAuthorization === "reject") ? (
     <div className="council-page__list-wrap">
         <NoItemsMessageCard
           message={`You must be a proud speaker member to see this view.`}
         />
       </div>
   ) : (
-    (userProfile.speakersAuthorization === "pending") ? (
+    (userProfile?.speakersAuthorization === "pending") ? (
       <div className="council-page__list-wrap">
           <NoItemsMessageCard
             message={`Your application is pending for approval`}
@@ -77,7 +88,7 @@ const Speaker2023 = ({
 
   return (
     <>
-      {userProfile.speakersAuthorization === "accepted" ? (
+      {userProfile?.speakersAuthorization === "accepted" ? (
         <div className="speaker2023-page">
           <Tabs
             data={TabData}

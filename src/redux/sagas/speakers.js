@@ -12,25 +12,26 @@ import {
     addUserSpeakerToPanelEndPoint,
     registerUserIfNotAreRegisterConference2023EndPoint,
     getAllPanelsOfOneUserEndPoint,
+    getAllMyPanels,
     addedToPersonalAgendaEndPoint,
-    getAllSponsors2023EndPoint
+    getAllSponsors2023EndPoint,
+    getAllParrafsEndPoint,
+    getAllMemberSpeakerPanelEndPoint
 } from "../../api";
 
 export function* getPanelSpeakerSaga({ payload }) {
-  const {UserId} = payload
+  const {type, filters} = payload
 
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(allPanelSpeakersEndPonit, { UserId });
+    const response = yield call(allPanelSpeakersEndPonit, { type });
 
     if (response.status === 200) {
       const { panelsSpeakers } = response.data;
-
+        
       yield put(
-        speakerActions.updatePanelSpeakers({
-          panelsSpeakers
-        })
+        speakerActions.updatePanelSpeakers({panelsSpeakers}, filters)
       );
     }
   } catch (error) {
@@ -75,12 +76,12 @@ export function* getAllUserSpeakerSaga({payload}) {
 
 export function* removeUserSpeakerToPanelSaga({ payload }) {
 
-  const {UserId} = payload
+  const {data} = payload
 
   yield put(homeActions.setLoading(true));
 
   try {
-    const response = yield call(removeUserSpeakerToPanelEndPoint, { UserId });
+    const response = yield call(removeUserSpeakerToPanelEndPoint, { data });
 
     if (response.status === 200) {
       if (payload.callback) {
@@ -111,7 +112,7 @@ export function* addUserSpeakerToSaga({ payload }) {
     const response = yield call(addUserSpeakerToPanelEndPoint, { data });
 
     if (response.status === 200) {
-      const { panelsSpeakers } = response.data;
+      const { panelsSpeakers } = response?.data;
       
       yield put(
         speakerActions.updatePanelSpeakers({
@@ -141,9 +142,11 @@ export function* addUserSpeakerToSaga({ payload }) {
 export function* registerUserIfNotAreRegisterConference2023({payload}) {
 
   try {
+
     const response = yield call(registerUserIfNotAreRegisterConference2023EndPoint);
+
     if(response.status === 200){
-      if(payload.callback && response.data === "funciona"){
+      if(payload.callback){
         payload.callback()
       }
     }
@@ -195,7 +198,39 @@ export function* getAllPanelsOfOneUserSagas({payload}) {
 
 }
 
+export function* getAllPanelsOfOneUserSpeakersSagas({payload}) {
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllMyPanels);
+
+    if (response.status === 200) {
+      const { userSpeakers } = response.data;
+      if(payload.callback){
+        payload.callback();
+      }
+
+      yield put(
+        speakerActions.updateAllPanelsOfOneUserSpeakers(
+          userSpeakers
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "ERROR:",
+        description: error?.response?.data?.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+
+}
+
 export function* addedToPersonalAgendaSagas({payload}) {
+  
   const {data} = payload
   yield put(homeActions.setLoading(true));
 
@@ -245,6 +280,62 @@ export function* getAllSponsors2023Sagas() {
   }
 }
 
+export function* getAllParrafsSagas({payload}) {
+
+  const {type} = payload
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllParrafsEndPoint, { type });
+
+    if (response.status === 200) {
+      const { parraf } = response.data;
+
+      yield put(
+        speakerActions.updateParraf({
+          parraf
+        })
+      );
+    }
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "ERROR:",
+        description: error?.response?.data?.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getAllMemberSpeakerPanelSagas({payload}) {
+
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getAllMemberSpeakerPanelEndPoint);
+
+    if (response.status === 200) {
+      const { member } = response.data;
+
+      yield put(
+        speakerActions.setAllMemberSpeakerPanel({
+          member
+        })
+      );
+    }
+  } catch (error) {
+    console.log(error)
+      notification.error({
+        message: "ERROR:",
+        description: error?.response?.data?.msg,
+      });
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchLogin() {
     yield takeLatest(speakerConstans.GET_PANEL_SPEAKERS, getPanelSpeakerSaga);
     yield takeLatest(speakerConstans.GET_USERS_SPEAKERS, getAllUserSpeakerSaga);
@@ -254,6 +345,9 @@ function* watchLogin() {
     yield takeLatest(speakerConstans.GET_ALL_PANELS_OF_ONE_USER, getAllPanelsOfOneUserSagas);
     yield takeLatest(speakerConstans.ADDED_TO_MY_PERSONAL_AGENDA, addedToPersonalAgendaSagas);
     yield takeLatest(speakerConstans.GET_ALL_SPONSORS, getAllSponsors2023Sagas);
+    yield takeLatest(speakerConstans.GET_ALL_PARRAF_CONFERENCE , getAllParrafsSagas);
+    yield takeLatest(speakerConstans.GET_SPEAKER_MEMBER , getAllMemberSpeakerPanelSagas);
+    yield takeLatest(speakerConstans.MY_PANELS_USER , getAllPanelsOfOneUserSpeakersSagas);
 }
   
 export const speakerSaga = [fork(watchLogin)];
