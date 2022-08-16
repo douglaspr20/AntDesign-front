@@ -122,7 +122,7 @@ const EventsList = ({
   }, [channelEvents, channel]);
 
   return (
-    <div className="channel-page__list-wrap channels-page__events-list-wrap">
+    <div className="channel-page__list-wrap channels-page__events-list-wrap" style={{paddingBottom: "70px"}}>
       <EventAddEditDrawer
         visible={visibleDrawer}
         edit={editMode}

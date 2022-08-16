@@ -86,7 +86,7 @@ const PodcastsList = ({
   }, [channel, filter]);
 
   return (
-    <div className="channel-page__list-wrap">
+    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
       <PodcastDrawer
         visible={visibleDrawer}
         edit={editMode}
