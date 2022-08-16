@@ -85,7 +85,7 @@ export function* getAllEventsSaga() {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else {
-      const { msg } = error?.response.data || {};
+      const { msg } = error?.response?.data || {};
       yield put(eventActions.setError(msg));
       notification.error({
         message: "Cannot read all the events.",
@@ -173,7 +173,7 @@ export function* getAllEventsChannelsSagas({ payload }){
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else {
-      const { msg } = error?.response.data || {};
+      const { msg } = error?.response?.data || {};
       yield put(eventActions.setError(msg));
       notification.error({
         message: "Cannot read all the events.",
@@ -574,9 +574,15 @@ export function* updateChannelEventSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      payload.callback(
-        error.response.data || "Something went wrong, Please try again."
-      );
+      if(error?.response?.data?.msg === undefined){
+        payload.callback(
+          error?.response?.data || "Something went wrong, Please try again."
+        );
+      }else{
+        payload.callback(
+          error?.response?.data?.msg || "Something went wrong, Please try again."
+        );
+      }
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -598,9 +604,15 @@ export function* claimEventCreditSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      payload.callback(
-        error.response.data || "Something went wrong, Please try again."
-      );
+      if(error?.response?.data?.msg === undefined){
+        payload.callback(
+          error?.response?.data || "Something went wrong, Please try again."
+        );
+      }else{
+        payload.callback(
+          error?.response?.data?.msg || "Something went wrong, Please try again."
+        );
+      }
     }
   } finally {
     yield put(homeActions.setLoading(false));

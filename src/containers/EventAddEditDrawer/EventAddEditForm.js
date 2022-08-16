@@ -11,11 +11,10 @@ import {
   CustomSelect,
   ImageUpload,
   RichEdit,
-  CreditSelect,
-  EventCodeGenerator,
   FroalaEdit,
 } from "components";
-import { SETTINGS, TIMEZONE_LIST } from "enum";
+import { SETTINGS} from "enum";
+import { useSearchCity } from "hooks";
 
 import {
   createChannelEvent,
@@ -31,6 +30,7 @@ import {
   isValidURL,
   convertToUTCTime,
   convertToCertainTime,
+  getNameOfCityWithTimezone
 } from "utils/format";
 import {
   notificationEmailToNewContentCreators
@@ -79,14 +79,32 @@ const EventAddEditForm = ({
 }) => {
   const refForm = useRef(null);
   const [editor, setEditor] = useState("froala");
+  const [searchCity, setSearchCity] = useState("");
+  const cities = useSearchCity(searchCity);
+
+  const handleSearchCity = (value) => {
+    if (value === "") {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      setSearchCity(value);
+      clearTimeout(timer);
+    }, 1000);
+  }
 
   const onFinish = (values) => {
+    const timezoneFirstSliceIndex = values.timezone.indexOf("/");
     let params = {
       ...omit(values, "startAndEndDate"),
       startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
       endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
+      timezone: values.timezone.slice(
+        timezoneFirstSliceIndex + 1,
+        values.timezone.length
+      ),
     };
     if (edit) {
       console.log("**** params ", params);
@@ -138,6 +156,13 @@ const EventAddEditForm = ({
   useEffect(() => {
     if (edit && !isEmpty(selectedEvent)) {
       if (refForm && refForm.current) {
+        let city
+
+        if(selectedEvent.timezone && selectedEvent.timezone.includes("/")){
+          city = getNameOfCityWithTimezone(selectedEvent.timezone);
+          setSearchCity(city);
+        }
+
         refForm.current.setFieldsValue({
           ...selectedEvent,
           startAndEndDate: [
@@ -147,6 +172,7 @@ const EventAddEditForm = ({
             ),
             convertToCertainTime(selectedEvent.endDate, selectedEvent.timezone),
           ],
+          timezone: (!city) ? selectedEvent.timezone : `${city}/${selectedEvent.timezone}`,
         });
       }
     }
@@ -183,19 +209,17 @@ const EventAddEditForm = ({
           <CustomInput />
         </Form.Item> */}
         <Form.Item name="startAndEndDate" label="Start date - End date">
-          <RangePicker showTime />
+          <RangePicker showTime={{ format: 'HH:mm' }} format="YYYY/MM/DD HH:mm" />
         </Form.Item>
         <Form.Item name="timezone" label="Timezone">
-          <CustomSelect
-            showSearch
-            options={TIMEZONE_LIST}
-            optionFilterProp="children"
-            bordered
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          />
-        </Form.Item>
+            <CustomSelect
+              showSearch
+              options={cities}
+              optionFilterProp="children"
+              onSearch={(value) => handleSearchCity(value)}
+              className="border"
+            />
+          </Form.Item>
         <Form.Item
           name="categories" 
           label="Categories"
@@ -279,13 +303,13 @@ const EventAddEditForm = ({
             <CustomInput size="sm" />
           </Form.Item>
         )}
-        <Form.Item name="credit" label="Apply for credits">
+        {/*<Form.Item name="credit" label="Apply for credits">
           <CreditSelect />
         </Form.Item>
         <Form.Item name="code" label="Event Code">
           <EventCodeGenerator disabled={edit} />
         </Form.Item>
-        {/* <Form.Item name="image" label="Image (220 / 280)">
+         <Form.Item name="image" label="Image (220 / 280)">
           <ImageUpload className="event-pic-1" aspect={220 / 280} />
         </Form.Item> */}
         <Form.Item name="image2" label="Images (755 / 305) px">

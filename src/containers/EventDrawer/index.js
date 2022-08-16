@@ -5,6 +5,7 @@ import { Avatar, Dropdown, Menu, Space, Tooltip } from "antd";
 import { CheckOutlined, DownOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
+import { categorySelector } from "redux/selectors/categorySelector";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { getCheckoutSession } from "api/module/stripe";
@@ -43,12 +44,24 @@ const EventDrawer = ({
   getChannelEvents,
   channel,
   onConfirmCredit,
+  allCategories,
 }) => {
   const [editor, setEditor] = useState("froala");
   const [showFirewall, setShowFirewall] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stripe, setStripe] = useState(null);
   const DataFormat = "YYYY.MM.DD hh:mm A";
+  const [dataCategoriesState, setDataCategoriesState] = useState()
+
+  useEffect(() => {
+    let objectAllCategories = {}
+
+    allCategories.forEach((category) => {
+      objectAllCategories[`${category.value}`] = category.title
+    })
+
+    setDataCategoriesState(objectAllCategories)
+}, [allCategories, setDataCategoriesState])
 
   const onDrawerClose = () => {
     setShowFirewall(false);
@@ -261,7 +274,7 @@ const EventDrawer = ({
         </div>
         <div className="event-details-content">
           <div className="event-details-content-actions">
-            <DateAvatar day={event.day || 0} month={event.month || ""} />
+            <DateAvatar day={convertToLocalTime(event?.date,event?.timezone).format("DD") || 0} month={event.month || ""} />
             {event.status === "past" && (
               <div className="claim-buttons">
                 <CustomButton
@@ -432,14 +445,16 @@ const EventDrawer = ({
             </h5>
           )}
 
-          {event.categories && event.categories.length > 0 && (
+          {(event.categories && event.categories.length > 0 && dataCategoriesState !== undefined) && (
             <h5 className="event-card-topic-title">
               Event topics:
-              {event.categories.map((tp, index) => (
-                <span>
-                  {capitalizeWord(tp)} {event.categories[index + 1] && `|`}
-                </span>
-              ))}
+              {event.categories.map((tp, index) => {
+                return (
+                  <span>
+                    {capitalizeWord(dataCategoriesState[tp])} {event.categories[index + 1] && `|`}
+                  </span>
+                )  
+              })}
             </h5>
           )}
         </div>
@@ -520,6 +535,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   updatedEvent: eventSelector(state).updatedEvent,
   channel: channelSelector(state).selectedChannel,
+  allCategories: categorySelector(state).categories,
 });
 
 const mapDispatchToProps = {

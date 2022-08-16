@@ -110,7 +110,7 @@ const PodcastsList = ({
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                style={{position: "absolute", top: "-6px", left: "190px"}}
+                className="buttomAddR"
                 onClick={() => onShowPodcastModal()}
               />
             )}

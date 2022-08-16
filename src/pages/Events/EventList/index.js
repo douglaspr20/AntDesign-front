@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
 import moment from "moment";
 import { connect } from "react-redux";
+import { convertToLocalTime } from "utils/format";
 
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
@@ -63,8 +64,12 @@ const EventList = ({
   const getRandomNumber = () => Math.floor(Math.random() * 1000);
 
   useEffect(() => {
-    const groupedData = groupBy(
-      data?.map((item) => ({ ...item, groupKey: item?.date?.slice(0, 10) })),
+    let dateIteraded = data?.map((item) => (
+      { ...item, groupKey: convertToLocalTime(item?.date,item?.timezone).format("YYYY.MM.DD").slice(0, 10) }
+    ))
+
+    let groupedData = groupBy(
+      dateIteraded,
       "groupKey"
     );
 
@@ -89,14 +94,16 @@ const EventList = ({
           htmlType="submit"
           size="sm"
           type="primary"
-          style={{position: "absolute", top: "-6px", left: "190px"}}
+          className="buttomAddRR"
           onClick={() => onAddEvent()}
         />
       )}
       {Object.keys(groupedByEventData).map((date) => {
+
         const day = moment(date, DataFormat).date();
         const month = moment(date, DataFormat).month();
-        return (
+
+        return (moment().isBefore(moment(date,'YYYY.MM.DD'), 'minute') === true) ? (
           <div
             className="event-list-batch"
             key={`${date}-${getRandomNumber()}`}
@@ -123,7 +130,9 @@ const EventList = ({
               ))}
             </Row>
           </div>
-        );
+        ) : (
+          <div></div>
+        )
       })}
     </div>
   );
