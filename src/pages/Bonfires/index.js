@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { notification } from "antd";
+import { useLocation } from "react-router-dom";
+import { notification, Menu } from "antd";
+import qs from "query-string";
 import moment from "moment";
 import { bonfireSelector } from "redux/selectors/bonfireSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -15,13 +16,15 @@ import {
 import { addBonfire, removeBonfire } from "redux/actions/home-actions";
 import { setLoading } from "redux/actions/home-actions";
 import { BonfireCard, CustomButton } from "components";
-import { INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS, TIMEZONE_LIST } from "enum";
 import { convertToLocalTime } from "utils/format";
 import CreateBonfireModal from "./createBonfireModal";
 import BonfiresFilterPanel from "./BonfiresFilterPanel";
-import IconBack from "images/icon-back.svg";
 
 import "./style.scss";
+import Emitter from "services/emitter";
+import FilterDrawer from "./FilterDrawer";
+import { downloadCsvWithParticipants } from "api";
 
 const BonfiresPage = ({
   getBonfires,
@@ -36,14 +39,26 @@ const BonfiresPage = ({
   const [bonfiresData, setBonfiresData] = useState([]);
   const [bonfireToEdit, setBonfireToEdit] = useState(null);
   const [modalFormVisible, setModalFormVisible] = useState(false);
+  const [showFirewall, setShowFirewall] = useState(false);
+  const [firewallText, setFirewallText] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState("all-bonfires");
   const [filters, setFilters] = useState({});
+
+  const location = useLocation();
+
+  const parsed = qs.parse(location.search);
 
   const onFilterChange = (filter) => {
     setFilters(filter);
   };
 
   const onAddBonfire = (bonfire) => {
-    addBonfire(bonfire);
+    if (userProfile.percentOfCompletion !== 100) {
+      setFirewallText("You need to have your profile complete to access");
+      return setShowFirewall(true);
+    }
+
+    addBonfire({ ...bonfire, userTimezone: moment.tz.guess() });
   };
 
   const onRemoveBonfire = (bonfire) => {
@@ -61,6 +76,17 @@ const BonfiresPage = ({
   const onCancelModalForm = () => {
     setModalFormVisible(false);
     setBonfireToEdit(null);
+  };
+
+  const planUpgrade = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_PAYMENT_MODAL);
+  };
+
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
+  const showFilterPanel = () => {
+    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
   };
 
   const handleBonfire = (data) => {
@@ -111,7 +137,7 @@ const BonfiresPage = ({
           });
         } else {
           notification.success({
-            message: "Bonfire created succesfully",
+            message: "Bonfire created successfully",
           });
 
           onCancelModalForm();
@@ -136,6 +162,63 @@ const BonfiresPage = ({
       }
     });
   };
+
+  const handleCreateBonfire = () => {
+    if (userProfile.memberShip !== "premium") {
+      setFirewallText(
+        "Upgrade to a PREMIUM Membership and get unlimited access to the LAB features"
+      );
+      return setShowFirewall(true);
+    }
+
+    if (userProfile.percentOfCompletion !== 100) {
+      setFirewallText("You need to have your profile complete to access");
+      return setShowFirewall(true);
+    }
+
+    setModalFormVisible(true);
+  };
+
+  const onDownloadCsv = async (b) => {
+    const buffer = await downloadCsvWithParticipants(b.id);
+
+    var fileURL = window.URL.createObjectURL(
+      new Blob([buffer.data], { type: "application/vnd.ms-excel" })
+    );
+    var fileLink = document.createElement("a");
+
+    fileLink.href = fileURL;
+    fileLink.setAttribute("download", `${b.title}.xlsx`);
+    document.body.appendChild(fileLink);
+
+    fileLink.click();
+    document.body.removeChild(fileLink);
+    window.URL.revokeObjectURL(fileURL);
+  };
+
+  useEffect(() => {
+    setSelectedKeys(parsed.key || "all-bonfires");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleFirewallAction = () => {
+    if (userProfile.memberShip !== "premium") {
+      planUpgrade();
+    }
+
+    if (userProfile.percentOfCompletion !== 100) {
+      completeProfile();
+    }
+  };
+
+  useEffect(() => {
+    window.history.replaceState(
+      null,
+      "Page",
+      `${INTERNAL_LINKS.BONFIRES}?key=${selectedKeys}`
+    );
+  }, [selectedKeys]);
 
   useEffect(() => {
     const getAllBonfires = async () => {
@@ -209,60 +292,152 @@ const BonfiresPage = ({
   }, [bonfires]);
 
   return (
-    <div className="bonfires-page">
-      <BonfiresFilterPanel onChange={onFilterChange} />
+    <>
+      <div className="bonfires-page">
+        <BonfiresFilterPanel onChange={onFilterChange} />
+        <FilterDrawer onChange={onFilterChange} />
 
-      <div className="bonfires-page-container">
-        <div className="back-link-container">
-          <Link to={INTERNAL_LINKS.COMMUNITIES}>
-            <div className="council-page__content-top">
-              <div className="council-page__content-top-back">
-                <img src={IconBack} alt="icon-back" />
-              </div>
-              <h4>Back to Communities</h4>
+        <div className="bonfires-page-container">
+          <Menu
+            mode="horizontal"
+            className="menu-bonfires"
+            selectedKeys={selectedKeys}
+          >
+            <Menu.Item
+              key="all-bonfires"
+              className="menu-bonfires-item"
+              onClick={() => setSelectedKeys("all-bonfires")}
+            >
+              All Bonfires
+            </Menu.Item>
+
+            <Menu.Item
+              key="my-bonfires"
+              className="menu-bonfires-item"
+              onClick={() => setSelectedKeys("my-bonfires")}
+            >
+              My Bonfires
+            </Menu.Item>
+          </Menu>
+          <CustomButton
+            text="Filters"
+            onClick={() => {
+              showFilterPanel();
+            }}
+            className={"bonfire-filter-panel"}
+          />
+          <div className="bonfire-list">
+            <div className="bonfire-list-container">
+              {selectedKeys === "all-bonfires" && (
+                <>
+                  <CustomButton
+                    type="primary"
+                    size="md"
+                    text="Create Bonfire"
+                    style={{ marginBottom: "1rem" }}
+                    onClick={() => handleCreateBonfire()}
+                  />
+                  {bonfiresData.map((bonfire, i) =>
+                    bonfire.data.length > 0 ? (
+                      <div key={i}>
+                        <h3 className="session-step">{bonfire.step}</h3>
+                        {bonfire.data.map((b, i) => (
+                          <BonfireCard
+                            key={i}
+                            bonfire={b}
+                            added={(userProfile.bonfires || []).includes(b.id)}
+                            isBonfireCreator={
+                              userProfile.id === b.bonfireCreator
+                            }
+                            isUserInvited={b.invitedUsers.includes(
+                              userProfile.id
+                            )}
+                            editBonfire={() => onEditBonfire(b)}
+                            deleteBonfire={() => onDeleteBonfire(b.id)}
+                            onAddBonfire={() => onAddBonfire(b)}
+                            onRemoveBonfire={() => onRemoveBonfire(b)}
+                            onDownloadCsv={() => onDownloadCsv(b)}
+                          />
+                        ))}
+                      </div>
+                    ) : null
+                  )}
+                </>
+              )}
+
+              {selectedKeys === "my-bonfires" && (
+                <>
+                  {bonfiresData.map((bonfire, i) =>
+                    bonfire.data.length > 0 &&
+                    bonfire.data.some(
+                      (b) =>
+                        b.invitedUsers.includes(userProfile.id) ||
+                        b.joinedUsers.includes(userProfile.id) ||
+                        b.bonfireCreator === userProfile.id
+                    ) ? (
+                      <div key={i}>
+                        <h3 className="session-step">{bonfire.step}</h3>
+                        {bonfire.data
+                          .filter(
+                            (b) =>
+                              b.invitedUsers.includes(userProfile.id) ||
+                              b.joinedUsers.includes(userProfile.id) ||
+                              b.bonfireCreator === userProfile.id
+                          )
+                          .map((b, i) => (
+                            <BonfireCard
+                              key={i}
+                              bonfire={b}
+                              added={(userProfile.bonfires || []).includes(
+                                b.id
+                              )}
+                              isBonfireCreator={
+                                userProfile.id === b.bonfireCreator
+                              }
+                              isUserInvited={b.invitedUsers.includes(
+                                userProfile.id
+                              )}
+                              editBonfire={() => onEditBonfire(b)}
+                              deleteBonfire={() => onDeleteBonfire(b.id)}
+                              onAddBonfire={() => {
+                                onAddBonfire(b);
+                              }}
+                              onRemoveBonfire={() => onRemoveBonfire(b)}
+                              onDownloadCsv={() => onDownloadCsv(b)}
+                            />
+                          ))}
+                      </div>
+                    ) : null
+                  )}
+                </>
+              )}
             </div>
-          </Link>
+          </div>
+
+          {modalFormVisible && (
+            <CreateBonfireModal
+              visible={modalFormVisible}
+              bonfireToEdit={bonfireToEdit}
+              handleBonfire={handleBonfire}
+              onCancel={onCancelModalForm}
+            />
+          )}
         </div>
-        <CustomButton
-          type="primary"
-          size="md"
-          text="Create Bonfire"
-          style={{ marginLeft: "3rem" }}
-          onClick={() => setModalFormVisible(true)}
-        />
-        <div className="bonfire-list">
-          <div className="bonfire-list-container">
-            {bonfiresData.map((bonfire, i) =>
-              bonfire.data.length > 0 ? (
-                <div key={i}>
-                  <h3 className="session-step">{bonfire.step}</h3>
-                  {bonfire.data.map((b, i) => (
-                    <BonfireCard
-                      key={i}
-                      bonfire={b}
-                      added={(userProfile.bonfires || []).includes(b.id)}
-                      isBonfireCreator={userProfile.id === b.bonfireCreator}
-                      editBonfire={() => onEditBonfire(b)}
-                      deleteBonfire={() => onDeleteBonfire(b.id)}
-                      onAddBonfire={() => onAddBonfire(b)}
-                      onRemoveBonfire={() => onRemoveBonfire(b)}
-                    />
-                  ))}
-                </div>
-              ) : null
-            )}
+      </div>
+      {showFirewall && (
+        <div
+          className="sidebar-firewall"
+          onClick={() => setShowFirewall(false)}
+        >
+          <div
+            className="upgrade-notification-panel"
+            onClick={handleFirewallAction}
+          >
+            <h3>{firewallText}</h3>
           </div>
         </div>
-        {modalFormVisible && (
-          <CreateBonfireModal
-            visible={modalFormVisible}
-            bonfireToEdit={bonfireToEdit}
-            handleBonfire={handleBonfire}
-            onCancel={onCancelModalForm}
-          />
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

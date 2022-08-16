@@ -122,6 +122,7 @@ import {
   updateBonfire,
   deleteBonfire,
   inviteUser,
+  downloadCsvWithParticipants,
 } from "./module/bonfire";
 import {
   getAllSkillCohorts,
@@ -299,7 +300,7 @@ import {
   getAllParrafsEndPoint,
   getAllMemberSpeakerPanelEndPoint,
   getAllMyPanels,
-} from "./module/speakers"
+} from "./module/speakers";
 
 export {
   getAllParrafsEndPoint,
@@ -519,4 +520,5 @@ export {
   createSimulationSprintParticipant,
   getAllSimulationSprintOfUser,
   handleReceiveCommunityNotification,
+  downloadCsvWithParticipants,
 };
