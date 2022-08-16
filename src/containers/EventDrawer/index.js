@@ -11,7 +11,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { getCheckoutSession } from "api/module/stripe";
 
 import { DateAvatar, CustomButton, CustomDrawer, RichEdit } from "components";
-import { EVENT_TYPES, MONTH_NAMES, SETTINGS } from "enum";
+import { EVENT_TYPES, MONTH_NAMES } from "enum";
 import Emitter from "services/emitter";
 import {
   actions as eventActions,
@@ -29,8 +29,6 @@ import {
 
 import "./style.scss";
 import { channelSelector } from "redux/selectors/channelSelector";
-
-const DataFormat = SETTINGS.DATE_FORMAT;
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK_KEY);
 
