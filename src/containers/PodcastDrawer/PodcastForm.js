@@ -1,23 +1,26 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, notification } from "antd";
+import { Form, Select, notification } from "antd";
 import isEmpty from "lodash/isEmpty";
 import moment from "moment";
 
 import {
   CustomInput,
-  CustomCheckbox,
   CustomButton,
   ImageUpload,
   CustomCalendar,
 } from "components";
 import { SETTINGS } from "enum";
+import clsx from "clsx";
 
 import {
   addPodcastToChannel,
   updateChannelPodcast,
 } from "redux/actions/podcast-actions";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 
@@ -34,11 +37,11 @@ const PodcastForm = ({
   onCancel,
   addPodcastToChannel,
   updateChannelPodcast,
+  notificationEmailToNewContentCreators
 }) => {
   const refForm = useRef(null);
 
   const onFinish = (values) => {
-    console.log("values", values);
     if (edit) {
       updateChannelPodcast(
         {
@@ -70,6 +73,14 @@ const PodcastForm = ({
           notification.info({
             message: "New podcast was successfully created.",
           });
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "podcast",
+            name: values.title,
+            link: values.vimeoLink 
+          })
         }
       );
     }
@@ -127,16 +138,22 @@ const PodcastForm = ({
             <CustomCalendar />
           </Form.Item>
         )}
-        <Form.Item name="topics" label="Topics?">
-          <Checkbox.Group className="d-flex flex-column podcast-form-topics">
-            {allCategories.map((topic, index) => (
-              <CustomCheckbox key={index} value={topic.value}>
-                {topic.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
+        <Form.Item
+          name="topics" 
+          label="Topics?"
+          className="categoris-input"
+        >
+          <Select mode="multiple" className={clsx("custom-select", { border: "bordered" })}>
+            {allCategories?.map((item) => {
+              return (
+                <Select.Option key={item?.value} value={item?.value}>
+                  {item?.title}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
-        <Form.Item name="imageData" label="Upload image (400 / 152)">
+        <Form.Item name="imageData" label="Upload image (400 / 152) px">
           <ImageUpload aspect={400 / 152} />
         </Form.Item>
         <Form.Item label="Vimeo Link" name="vimeoLink">
@@ -207,6 +224,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addPodcastToChannel,
   updateChannelPodcast,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PodcastForm);

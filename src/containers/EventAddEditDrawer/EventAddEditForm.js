@@ -1,23 +1,20 @@
 import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Checkbox, notification, DatePicker, Radio } from "antd";
+import { Form, notification, DatePicker, Select } from "antd";
 import omit from "lodash/omit";
 import isEmpty from "lodash/isEmpty";
 
 import {
   CustomInput,
-  CustomCheckbox,
   CustomButton,
   CustomSelect,
-  CustomRadio,
   ImageUpload,
   RichEdit,
-  CreditSelect,
-  EventCodeGenerator,
   FroalaEdit,
 } from "components";
-import { SETTINGS, TIMEZONE_LIST } from "enum";
+import { SETTINGS} from "enum";
+import { useSearchCity } from "hooks";
 
 import {
   createChannelEvent,
@@ -27,12 +24,16 @@ import { categorySelector } from "redux/selectors/categorySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { envSelector } from "redux/selectors/envSelector";
+import clsx from "clsx";
+import moment from "moment";
 
 import {
   isValidURL,
-  convertToUTCTime,
-  convertToCertainTime,
+  getNameOfCityWithTimezone
 } from "utils/format";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 
 import "./style.scss";
 
@@ -40,28 +41,28 @@ const VisibleLevel = SETTINGS.VISIBLE_LEVEL;
 
 const { RangePicker } = DatePicker;
 
-const EventTypes = [
-  {
-    text: "Presentation",
-    value: "presentation",
-  },
-  {
-    text: "Workshop",
-    value: "workshop",
-  },
-  {
-    text: "Panel",
-    value: "panel",
-  },
-  {
-    text: "Peer-to-Peer Conversation",
-    value: "peer-to-peer",
-  },
-  {
-    text: "Conference",
-    value: "conference",
-  },
-];
+// const EventTypes = [
+//   {
+//     text: "Presentation",
+//     value: "presentation",
+//   },
+//   {
+//     text: "Workshop",
+//     value: "workshop",
+//   },
+//   {
+//     text: "Panel",
+//     value: "panel",
+//   },
+//   {
+//     text: "Peer-to-Peer Conversation",
+//     value: "peer-to-peer",
+//   },
+//   {
+//     text: "Conference",
+//     value: "conference",
+//   },
+// ];
 
 const EventAddEditForm = ({
   allCategories,
@@ -73,17 +74,46 @@ const EventAddEditForm = ({
   onCancel,
   createChannelEvent,
   updateChannelEvent,
+  notificationEmailToNewContentCreators
 }) => {
   const refForm = useRef(null);
   const [editor, setEditor] = useState("froala");
+  const [searchCity, setSearchCity] = useState("");
+  const cities = useSearchCity(searchCity);
+
+  const handleSearchCity = (value) => {
+    if (value === "") {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      setSearchCity(value);
+      clearTimeout(timer);
+    }, 1000);
+  }
 
   const onFinish = (values) => {
+
+    const timezoneFirstSliceIndex = values.timezone.indexOf("/");
+
+    const convertedStartTime = moment
+      .utc(values.startAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+      .format();
+
+    const convertedEndTime = moment
+      .utc(values.startAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+      .format();
+
     let params = {
       ...omit(values, "startAndEndDate"),
-      startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
-      endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
+      startDate: convertedStartTime,
+      endDate: convertedEndTime,
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
+      timezone: values.timezone.slice(
+        timezoneFirstSliceIndex + 1,
+        values.timezone.length
+      ),
     };
     if (edit) {
       console.log("**** params ", params);
@@ -117,6 +147,14 @@ const EventAddEditForm = ({
             message: "New event was successfully created.",
           });
           onAdded();
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "event",
+            name: values.title,
+            link: values.externalLink
+          })
         }
       );
     }
@@ -127,15 +165,19 @@ const EventAddEditForm = ({
   useEffect(() => {
     if (edit && !isEmpty(selectedEvent)) {
       if (refForm && refForm.current) {
+        const startTime = moment(selectedEvent.startDate, "YYYY-MM-DDTHH:mm:ss")
+        const endTime = moment(selectedEvent.endDate, "YYYY-MM-DDTHH:mm:ss")
+        let city
+
+        if(selectedEvent.timezone && selectedEvent.timezone.includes("/")){
+          city = getNameOfCityWithTimezone(selectedEvent.timezone);
+          setSearchCity(city);
+        }
+
         refForm.current.setFieldsValue({
           ...selectedEvent,
-          startAndEndDate: [
-            convertToCertainTime(
-              selectedEvent.startDate,
-              selectedEvent.timezone
-            ),
-            convertToCertainTime(selectedEvent.endDate, selectedEvent.timezone),
-          ],
+          startAndEndDate: [startTime,endTime],
+          timezone: (!city) ? selectedEvent.timezone : `${city}/${selectedEvent.timezone}`,
         });
       }
     }
@@ -165,36 +207,40 @@ const EventAddEditForm = ({
         <Form.Item name="title" label="Title">
           <CustomInput />
         </Form.Item>
-        <Form.Item name="organizer" label="Organizer">
+        {/* <Form.Item name="organizer" label="Organizer">
           <CustomInput />
         </Form.Item>
         <Form.Item name="organizerEmail" label="Organizer's Email">
           <CustomInput />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="startAndEndDate" label="Start date - End date">
-          <RangePicker showTime />
+          <RangePicker showTime={{ format: 'HH:mm' }} format="YYYY/MM/DD HH:mm" />
         </Form.Item>
         <Form.Item name="timezone" label="Timezone">
-          <CustomSelect
-            showSearch
-            options={TIMEZONE_LIST}
-            optionFilterProp="children"
-            bordered
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          />
+            <CustomSelect
+              showSearch
+              options={cities}
+              optionFilterProp="children"
+              onSearch={(value) => handleSearchCity(value)}
+              className="border"
+            />
+          </Form.Item>
+        <Form.Item
+          name="categories" 
+          label="Categories"
+          className="categoris-input"
+        >
+          <Select mode="multiple" className={clsx("custom-select", { border: "bordered" })}>
+            {allCategories?.map((item) => {
+              return (
+                <Select.Option key={item?.value} value={item?.value}>
+                  {item?.title}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </Form.Item>
-        <Form.Item name="categories" label="Categories">
-          <Checkbox.Group className="d-flex flex-column event-addedit-form-topics">
-            {allCategories.map((topic, index) => (
-              <CustomCheckbox key={index} value={topic.value}>
-                {topic.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
-        </Form.Item>
-        <Form.Item name="ticket" label="Tickets">
+        {/* <Form.Item name="ticket" label="Tickets">
           <Radio.Group className="d-flex flex-column event-addedit-form-radiogrp">
             <CustomRadio value="free">Free</CustomRadio>
           </Radio.Group>
@@ -213,7 +259,7 @@ const EventAddEditForm = ({
             <CustomCheckbox value="online">Online</CustomCheckbox>
             <CustomCheckbox value="priced">Venue</CustomCheckbox>
           </Checkbox.Group>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="description" label="Description">
           {editor === "froala" ? (
             <FroalaEdit s3Hash={s3Hash} />
@@ -262,16 +308,16 @@ const EventAddEditForm = ({
             <CustomInput size="sm" />
           </Form.Item>
         )}
-        <Form.Item name="credit" label="Apply for credits">
+        {/*<Form.Item name="credit" label="Apply for credits">
           <CreditSelect />
         </Form.Item>
         <Form.Item name="code" label="Event Code">
           <EventCodeGenerator disabled={edit} />
         </Form.Item>
-        <Form.Item name="image" label="Image (220 / 280)">
+         <Form.Item name="image" label="Image (220 / 280)">
           <ImageUpload className="event-pic-1" aspect={220 / 280} />
-        </Form.Item>
-        <Form.Item name="image2" label="Image2 (755 / 305)">
+        </Form.Item> */}
+        <Form.Item name="image2" label="Images (755 / 305) px">
           <ImageUpload className="event-pic-2" aspect={755 / 305} />
         </Form.Item>
         <div className="event-addedit-form-panel-footer">
@@ -315,6 +361,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   createChannelEvent,
   updateChannelEvent,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventAddEditForm);

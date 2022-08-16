@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import groupBy from "lodash/groupBy";
 import moment from "moment";
 import { connect } from "react-redux";
+import { convertToLocalTime } from "utils/format";
 
 import { DateAvatar, EventCard, CustomButton } from "components";
 import { NoEventCard } from "components";
@@ -63,8 +64,28 @@ const EventList = ({
   const getRandomNumber = () => Math.floor(Math.random() * 1000);
 
   useEffect(() => {
-    const groupedData = groupBy(
-      data.map((item) => ({ ...item, groupKey: item.date.slice(0, 10) })),
+
+    let dateIteraded = data?.map((item) => {
+      if(item.channel !== null){
+        return (
+          { 
+            ...item,
+            date: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY-MM-DD hh:mm a") , 
+            groupKey: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY.MM.DD").slice(0, 10),
+          }
+        )
+      }else{
+        return (
+          { 
+            ...item,
+            groupKey: item?.date?.slice(0, 10),
+          }
+        )
+      }
+    })
+
+    let groupedData = groupBy(
+      dateIteraded,
       "groupKey"
     );
 
@@ -84,19 +105,21 @@ const EventList = ({
       </div>
       {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
       {edit && type === CARD_TYPE.EDIT && (
-        <div className="event-list-batch">
-          <div />
-          <EventCard
-            className="add"
-            type={CARD_TYPE.ADD}
-            onClick={onAddEvent}
-          />
-        </div>
+        <CustomButton
+          text="Add Events"
+          htmlType="submit"
+          size="sm"
+          type="primary"
+          className="buttomAddRR"
+          onClick={() => onAddEvent()}
+        />
       )}
       {Object.keys(groupedByEventData).map((date) => {
+
         const day = moment(date, DataFormat).date();
         const month = moment(date, DataFormat).month();
-        return (
+
+        return (moment().isBefore(moment(date,'YYYY.MM.DD'), 'minute') === true) ? (
           <div
             className="event-list-batch"
             key={`${date}-${getRandomNumber()}`}
@@ -123,7 +146,9 @@ const EventList = ({
               ))}
             </Row>
           </div>
-        );
+        ) : (
+          <div></div>
+        )
       })}
     </div>
   );

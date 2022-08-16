@@ -240,6 +240,10 @@ class EventCard extends React.Component {
         showClaim,
         startAndEndTimes,
         timezone,
+        channel,
+        externalLink,
+        channelSelect,
+        period2
       },
       className,
       edit,
@@ -255,7 +259,7 @@ class EventCard extends React.Component {
 
     return (
       <div
-        className={clsx("event-card", className)}
+        className={(channel === "" || channel === undefined || Number(channel) > 0) ? "event-card-channel" : clsx("event-card2", className) }
         onClick={this.openEventDetails}
       >
         {this.state.showFirewall && (
@@ -284,11 +288,35 @@ class EventCard extends React.Component {
               {isEmpty(images) && image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
+              {(channel === "" || channel === undefined || Number(channel) > 0) ?
+                (
+                  <h5 className="event-card-topic-title">
+                    Event by:{" "}
+                    <span>
+                      {channelSelect?.name}
+                    </span>
+                  </h5>
+                ) : (
+                  <h5 className="event-card-topic-title">
+                    Event by: Hacking HR
+                  </h5>
+                )
+              }
               <h3>{title}</h3>
-              <h5 className="event-card-topic-title">
-                {`Event date${startDate !== endDate ? "s" : ""}:`}
-                <span>{period}</span>
-              </h5>
+              {
+                (channel === "" || channel === undefined || Number(channel) > 0) ?
+                (
+                  <h5 className="event-card-topic-title">
+                    {`Event date${startDate !== endDate ? "s" : ""}:`}
+                    <span>{period2}</span>
+                  </h5>
+                ) : (
+                  <h5 className="event-card-topic-title">
+                    {`Event date${startDate !== endDate ? "s" : ""}:`}
+                    <span>{period}</span>
+                  </h5>
+                )
+              }
 
               {location && (
                 <h5 className="event-card-topic-title">
@@ -307,7 +335,7 @@ class EventCard extends React.Component {
 
               {ticket && (
                 <h5 className="event-card-topic-title">
-                  Event tickets:
+                  Event tickets:{" "}
                   <span>
                     {ticket === "fee"
                       ? `$${ticketFee} Registration fee`
@@ -319,7 +347,7 @@ class EventCard extends React.Component {
               )}
 
               <h5 className="event-card-topic-title">
-                Content delivery format:
+                Content delivery format:{" "}
                 {type &&
                   type.map((tp, index) => (
                     <span>
@@ -332,8 +360,8 @@ class EventCard extends React.Component {
                 <>
                   <h5 className="event-card-topic-title">
                     {startAndEndTimes.length > 1
-                      ? " Calendar downloads:"
-                      : " Calendar download:"}
+                      ? " Calendar downloads: "
+                      : " Calendar download: "}
                   </h5>
                   <Space direction="vertical" style={{ marginBottom: "1rem" }}>
                     {startAndEndTimes.map((time, index) => {
@@ -414,6 +442,16 @@ class EventCard extends React.Component {
                       onClick={this.onAttend}
                       loading={this.state.loading}
                     />
+                  )}
+
+                  {(channel === "" || channel === undefined || Number(channel) > 0) && (
+                    <a href={externalLink} style={{margin:"0px", padding: "0px"}} target="_blank"  rel="noopener noreferrer">
+                      <CustomButton
+                        text="Attend"
+                        size="md"
+                        type="primary"
+                      />
+                    </a>
                   )}
 
                   {status === "going" && (

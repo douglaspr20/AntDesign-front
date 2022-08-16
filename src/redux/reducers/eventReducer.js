@@ -11,6 +11,9 @@ export const reducers = {
   [eventConstants.SET_ALL_EVENTS]: (state, { payload }) => {
     return state.merge({ allEvents: cloneDeep(payload.events) });
   },
+  [eventConstants.SET_ALL_EVENT_CHANNELS]: (state, { payload }) => {
+    return state.merge({ allEventsChannels: cloneDeep(payload.eventsChannels) })
+  },
   [eventConstants.SET_METADATA]: (state, { payload }) => {
     return state.merge({ metadata: cloneDeep(payload.metadata) });
   },
@@ -75,6 +78,7 @@ export const initialState = () =>
     myEvents: [],
     updatedEvent: {},
     channelEvents: [],
+    allEventsChannels: []
   });
 
 export default handleActions(reducers, initialState());

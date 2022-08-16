@@ -1,9 +1,9 @@
 @import 'styles/main.scss';
 
-.event-card {
+.event-card2, .event-card-channel {
 	display: flex;
 	align-items: stretch;
-	background: $color-white;
+	background: #e3e3e3;
 	box-shadow: 4px 0px 14px #37215714;
 	border: 1px solid $color-border;
 	border-radius: 0.5rem;
@@ -304,4 +304,8 @@
 			}
 		}
 	}
+}
+
+.event-card-channel{
+	background: $color-white;
 }

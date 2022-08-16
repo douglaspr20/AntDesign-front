@@ -42,6 +42,7 @@ import {
   claimEventCredit,
   claimEventAttendance,
   getMetadata,
+  getAllEventsChannelsEndPoint
 } from "./module/event";
 import {
   addLibrary,
@@ -97,6 +98,7 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
+  notifyNewEmailChannelsEndPoint
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
 import {
@@ -304,6 +306,7 @@ import {
 
 export {
   getAllParrafsEndPoint,
+  getAllEventsChannelsEndPoint,
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
   getAllMyPanels,
@@ -319,6 +322,7 @@ export {
   signIn,
   signUp,
   getUserFromId,
+  notifyNewEmailChannelsEndPoint,
   updateUser,
   getAllCouncilCommentsFromAPI,
   postCouncilCommentFromAPI,

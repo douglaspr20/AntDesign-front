@@ -22,6 +22,7 @@ import {
   getMyEvents,
   claimEventAttendance,
   claimEventCredit,
+  getAllEventsChannels
 } from "redux/actions/event-actions";
 import {
   setLoading,
@@ -65,6 +66,8 @@ const EventsPage = ({
   advertisementById,
   isAdPreview = false,
   createAdvertisementClick,
+  getAllEventsChannels,
+  allEventsChannels
 }) => {
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [visibleFilter, setVisibleFilter] = useState(false);
@@ -191,12 +194,29 @@ const EventsPage = ({
     });
   };
 
+  const orderListEvents = (data) => {
+    
+    const arrayOrderTime = data.sort((a,b) => {
+
+      let aTime = moment(a.startDate, "YYYYMMDDHHmm").format("YYYYMMDDHHmm")
+      let bTime = moment(b.startDate, "YYYYMMDDHHmm").format("YYYYMMDDHHmm")
+
+      return Number(aTime) - Number(bTime)
+
+    })
+
+    return arrayOrderTime
+  }
+
   const TabData = [
     {
       title: "Upcoming events",
       content: () => (
         <EventList
-          data={filteredEvents}
+          data={orderListEvents([
+            ...filteredEvents,
+            ...allEventsChannels
+          ])}
           onAttend={addMyEvents}
           onClick={onEventClick}
           userProfile={userProfile}
@@ -407,6 +427,9 @@ const EventsPage = ({
     if (!myEvents || myEvents.length === 0) {
       getMyEvents();
     }
+    if(!allEventsChannels || allEventsChannels.length === 0) {
+      getAllEventsChannels()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -534,6 +557,7 @@ const mapStateToProps = (state) => ({
   allEvents: eventSelector(state).allEvents,
   updatedEvent: eventSelector(state).updatedEvent,
   userProfile: homeSelector(state).userProfile,
+  allEventsChannels: eventSelector(state).allEventsChannels,
   ...advertisementSelector(state),
 });
 
@@ -549,6 +573,7 @@ const mapDispatchToProps = {
   getAdvertisementsTodayByPage,
   getAdvertisementById,
   createAdvertisementClick,
+  getAllEventsChannels
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);

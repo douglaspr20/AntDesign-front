@@ -32,10 +32,26 @@
   background: $color-background;
   padding: 2rem;
   position: relative;
+  overflow: hidden;
 
   @media (max-width: 1023.98px) {
     padding: 2rem 1.5rem;
   }
+}
+
+@media (max-width: 1000px) {
+  .channel-page__results {
+    overflow: scroll;
+  }
+}
+
+.channel-page__results::-webkit-scrollbar {
+  width: 10px;
+}
+
+.channel-page__results::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: $color-text-secondary;
 }
 
 .channel-page__row {
@@ -72,6 +88,7 @@
 
 .channel-page__content {
   width: calc(100% - 240px);
+  position: relative;
 
   &-top {
     display: flex;
@@ -93,6 +110,12 @@
 
     & > h4 {
       font-weight: normal !important;
+    }
+  }
+
+  @media (max-width: 750px) {
+    &-top {
+      margin-bottom: 50px;
     }
   }
 
@@ -162,11 +185,45 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-gap: 2rem;
+
+  .buttomAddR{
+    position: absolute; 
+    top: -6px; 
+    left: 190px;
+  }
+
+  .buttomAddRR{
+    position: absolute; 
+    top: -6px; 
+    left: 190px;
+  }
+
+  @media (max-width: 750px) {
+    .buttomAddR{
+      position: absolute; 
+      top: 40px; 
+      left: 0px;
+    }
+  }
 }
 
 .channels-page__events-list-wrap {
   .event-list {
     height: auto;
+
+    .buttomAddRR{
+      position: absolute; 
+      top: -6px; 
+      left: 190px;
+    }
+
+    @media (max-width: 750px) {
+      .buttomAddRR{
+        position: absolute; 
+        top: 40px; 
+        left: 0px;
+      }
+    }
   }
 
   .event-list-filters {

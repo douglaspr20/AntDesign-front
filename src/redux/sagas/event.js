@@ -5,6 +5,7 @@ import {
   getEventPeriod,
   getEventDescription,
   convertToCertainTime,
+  convertToLocalTime
 } from "utils/format";
 import storage from "store";
 
@@ -31,6 +32,7 @@ import {
   claimEventAttendance,
   getMetadata,
   updateEventUserAssistenceFromAPI,
+  getAllEventsChannelsEndPoint
 } from "../../api";
 
 const getEventStatus = (data, userId) => {
@@ -56,7 +58,6 @@ export function* getAllEventsSaga() {
     if (response.status === 200) {
       const community = storage.get("community");
       const { id: userId } = community || {};
-
       yield put(
         eventActions.setAllEvents(
           response.data.events
@@ -70,6 +71,7 @@ export function* getAllEventsSaga() {
                 item.endDate,
                 item.timezone
               ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))
@@ -85,7 +87,7 @@ export function* getAllEventsSaga() {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else {
-      const { msg } = error?.response.data || {};
+      const { msg } = error?.response?.data || {};
       yield put(eventActions.setError(msg));
       notification.error({
         message: "Cannot read all the events.",
@@ -120,6 +122,7 @@ export function* getEventSaga({ payload }) {
             event.endDate,
             event.timezone
           ),
+          period2: `${convertToLocalTime(event?.startDate,event?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(event?.endDate,event?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(event.description),
           status: getEventStatus(event, userId),
         })
@@ -132,6 +135,54 @@ export function* getEventSaga({ payload }) {
       yield put(logout());
     } else if (payload.callback) {
       payload.callback(true);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getAllEventsChannelsSagas({ payload }){
+  yield put(homeActions.setLoading(true));
+  yield put(eventActions.setError(""));
+
+  try {
+    const response = yield call(getAllEventsChannelsEndPoint);
+    if (response.status === 200) {
+
+      yield put(
+        eventActions.setAllEventsChannels(
+          response.data.allEventsChannels
+            .map((item) => ({
+              ...item,
+              key: item.id,
+              date: moment(item.startDate).utc().format("YYYY.MM.DD h:mm a"),
+              date2: moment(item.endDate).utc().format("YYYY.MM.DD h:mm a"),
+              period: getEventPeriod(
+                item.startDate,
+                item.endDate,
+                item.timezone
+              ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
+              about: getEventDescription(item.description),
+            }))
+            .sort((a, b) => {
+              return moment(a.startDate).isAfter(moment(b.startDate)) ? 1 : -1;
+            })
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else {
+      const { msg } = error?.response?.data || {};
+      yield put(eventActions.setError(msg));
+      notification.error({
+        message: "Cannot read all the events.",
+        description: msg,
+      });
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -160,6 +211,7 @@ export function* getLiveEventSaga() {
                 item.endDate,
                 item.timezone
               ),
+              period2:`${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))
@@ -196,6 +248,7 @@ export function* addToMyEventList({ payload }) {
           date: moment(data.startDate).utc().format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).utc().format("YYYY.MM.DD h:mm a"),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -236,6 +289,7 @@ export function* removeFromMyEventList({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -273,6 +327,7 @@ export function* getAllMyEvents() {
               "YYYY.MM.DD h:mm a"
             ),
             period: getEventPeriod(item.startDate, item.endDate, item.timezone),
+            period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
             about: getEventDescription(item.description),
             status: getEventStatus(item, userId),
           }))
@@ -326,6 +381,7 @@ export function* updateEventStatus({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -359,6 +415,7 @@ export function* updateEvent({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           usersAssistence: data.usersAssistence,
         })
@@ -397,6 +454,7 @@ export function* updateEventUserAssistenceSagas({ payload }) {
             event.endDate,
             event.timezone
           ),
+          period2: `${convertToLocalTime(event?.startDate,event?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(event?.endDate,event?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(event.description),
         })
       );
@@ -470,6 +528,7 @@ export function* getChannelEventsSaga({ payload }) {
                 item.endDate,
                 item.timezone
               ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))
@@ -527,9 +586,15 @@ export function* updateChannelEventSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      payload.callback(
-        error.response.data || "Something went wrong, Please try again."
-      );
+      if(error?.response?.data?.msg === undefined){
+        payload.callback(
+          error?.response?.data || "Something went wrong, Please try again."
+        );
+      }else{
+        payload.callback(
+          error?.response?.data?.msg || "Something went wrong, Please try again."
+        );
+      }
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -551,9 +616,15 @@ export function* claimEventCreditSaga({ payload }) {
     if (error && error.response && error.response.status === 401) {
       yield put(logout());
     } else if (payload.callback) {
-      payload.callback(
-        error.response.data || "Something went wrong, Please try again."
-      );
+      if(error?.response?.data?.msg === undefined){
+        payload.callback(
+          error?.response?.data || "Something went wrong, Please try again."
+        );
+      }else{
+        payload.callback(
+          error?.response?.data?.msg || "Something went wrong, Please try again."
+        );
+      }
     }
   } finally {
     yield put(homeActions.setLoading(false));
@@ -600,6 +671,7 @@ function* watchLogin() {
     eventConstants.EVENT_CLAIM_ATTENDANCE,
     claimEventAttendanceSaga
   );
+  yield takeLatest(eventConstants.GET_ALL_EVENTS_CHANNELS, getAllEventsChannelsSagas)
 }
 
 export const eventSaga = [fork(watchLogin)];

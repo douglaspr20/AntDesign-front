@@ -25,6 +25,8 @@ const UPDATE_EVENT_USER_ASSISTENCE = "UPDATE_EVENT_USER_ASSISTENCE";
 const UPDATE_CHANNEL_EVENT = "UPDATE_CHANNEL_EVENT";
 const EVENT_CLAIM_CREDIT = "EVENT_CLAIM_CREDIT";
 const EVENT_CLAIM_ATTENDANCE = "EVENT_CLAIM_ATTENDANCE";
+const SET_ALL_EVENT_CHANNELS = "SET_ALL_EVENT_CHANNELS";
+const GET_ALL_EVENTS_CHANNELS = "GET_ALL_EVENTS_CHANNELS";
 
 export const constants = {
   GET_ALL_EVENTS,
@@ -52,6 +54,8 @@ export const constants = {
   UPDATE_EVENT_USER_ASSISTENCE,
   EVENT_CLAIM_CREDIT,
   EVENT_CLAIM_ATTENDANCE,
+  SET_ALL_EVENT_CHANNELS,
+  GET_ALL_EVENTS_CHANNELS
 };
 
 // ------------------------------------
@@ -69,6 +73,10 @@ export const getEvent = createAction(GET_EVENT, (id, callback) => ({
 export const setAllEvents = createAction(SET_ALL_EVENTS, (events) => ({
   events,
 }));
+export const getAllEventsChannels = createAction(GET_ALL_EVENTS_CHANNELS, () => ({}))
+export const setAllEventsChannels = createAction(SET_ALL_EVENT_CHANNELS, (eventsChannels) => ({
+  eventsChannels
+}))
 export const setEvent = createAction(SET_EVENT, (event) => ({ event }));
 export const setMetadata = createAction(SET_METADATA, (metadata) => ({
   metadata,
@@ -169,4 +177,6 @@ export const actions = {
   updateChannelEvent,
   claimEventCredit,
   claimEventAttendance,
+  setAllEventsChannels,
+  getAllEventsChannels
 };

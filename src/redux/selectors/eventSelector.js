@@ -13,6 +13,7 @@ const resultSelector = createSelector(eventDataSelector, (payload) => {
     error: payload.get("error"),
     myEvents: payload.get("myEvents"),
     channelEvents: payload.get("channelEvents"),
+    allEventsChannels: payload.get("allEventsChannels")
   };
 });
 

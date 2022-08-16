@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { notification } from "antd";
-import { CARD_TYPE } from "enum";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
 import {
   createBlogPost,
@@ -12,9 +11,13 @@ import {
   deleteBlogPost,
 } from "redux/actions/blog-post-action";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { channelSelector } from "redux/selectors/channelSelector";
 import NoItemsMessageCard from "components/NoItemsMessageCard";
 import { CustomButton, CustomModal, BlogCard } from "components";
 import ModalCreateOrEdit from "./ModalCreateOrEditBlog";
+import {
+  notificationEmailToNewContentCreators
+}  from "redux/actions/channel-actions";
 
 const BlogList = ({
   isOwner,
@@ -24,6 +27,8 @@ const BlogList = ({
   getBlogsPostsByChannel,
   updateBlogPost,
   deleteBlogPost,
+  notificationEmailToNewContentCreators,
+  selectedChannel
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
@@ -65,6 +70,14 @@ const BlogList = ({
             });
           }
           getBlogsPostsByChannel(id);
+          notificationEmailToNewContentCreators({
+            channelName: selectedChannel.name, 
+            channelAdmin: selectedChannel.User.firstName,
+            channelAdminEmail: selectedChannel.User.email,
+            contentType: "blogs",
+            name: data.title,
+            link: "blogs not have link"
+          })
 
           return notification.success({
             message: "Blog Posted Successfully",
@@ -157,9 +170,15 @@ const BlogList = ({
         <>
           <div className="channels__list">
             {isOwner && (
-              <BlogCard type={CARD_TYPE.ADD} onAdd={onShowBlogPosstModal} />
+              <CustomButton
+                text="Add Blog Posts"
+                htmlType="submit"
+                size="sm"
+                type="primary"
+                className="buttomAddR"
+                onClick={() => onShowBlogPosstModal()}
+              />
             )}
-
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (
@@ -207,6 +226,7 @@ BlogList.defaultProps = {
 
 const mapStateToProps = (state) => ({
   blogsPostByChannel: blogPostSelector(state).blogsPostByChannel,
+  selectedChannel: channelSelector(state).selectedChannel,
   userProfile: homeSelector(state).userProfile,
 });
 
@@ -215,6 +235,7 @@ const mapDispatchToProps = {
   getBlogsPostsByChannel,
   updateBlogPost,
   deleteBlogPost,
+  notificationEmailToNewContentCreators
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogList);

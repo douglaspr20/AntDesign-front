@@ -35,3 +35,7 @@ export const updateChannel = ({ channel }) => {
 export const unsetFollowChannel = ({ channel }) => {
   return httpClient.put(`private/channel/unfollow/${channel.id}`);
 };
+
+export const notifyNewEmailChannelsEndPoint = (data) => {
+  return httpClient.post(`private/email/notfication/channel`, data)
+}

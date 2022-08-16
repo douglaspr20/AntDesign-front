@@ -14,6 +14,10 @@ export const getMetadata = (metadata) => {
   });
 };
 
+export const getAllEventsChannelsEndPoint = () => {
+  return httpClient.get(`private/events/channels`)
+}
+
 export const getLiveEventFromAPI = () => {
   return httpClient.get(`private/events-live/`);
 };

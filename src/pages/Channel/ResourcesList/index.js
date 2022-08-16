@@ -136,7 +136,14 @@ const ResourcesList = ({
         <>
           <div className="channels__list">
             {isOwner && (
-              <LibraryCard type={CARD_TYPE.ADD} onAdd={onShowResourceModal} />
+              <CustomButton
+                text={(type === "article") ? "Add Resources" : "Add Videos"}
+                htmlType="submit"
+                size="sm"
+                type="primary"
+                className="buttomAddR"
+                onClick={() => onShowResourceModal()}
+              />
             )}
             {resources.map((item, index) => (
               <LibraryCard

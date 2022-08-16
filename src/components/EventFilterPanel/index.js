@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Checkbox } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
-import { CustomCheckbox, CustomCalendar, CustomButton } from "components";
+import { CustomCalendar, CustomButton } from "components";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { categorySelector } from "redux/selectors/categorySelector";
 
@@ -34,12 +33,6 @@ const EventFilterPanel = ({
     onFilterChange({});
   };
 
-  const onEventFilterChange = (field, values) => {
-    const newFilters = { ...filterValues, [field]: values, date: null };
-    setFilterValues(newFilters);
-    onFilterChange(newFilters);
-  };
-
   return (
     <div className="event-filter-panel">
       <CloseOutlined className="event-filter-panel-close" onClick={onClose} />
@@ -55,21 +48,6 @@ const EventFilterPanel = ({
         text="All Events"
         onClick={onShowAllEvent}
       />
-      <div className="event-filter-panel-content">
-        <div className="search-filter">
-          <h5 className="search-filter-title font-bold">Topics</h5>
-          <Checkbox.Group
-            value={filterValues["Topics"]}
-            onChange={(values) => onEventFilterChange("Topics", values)}
-          >
-            {allCategories.map((item) => (
-              <CustomCheckbox key={item.value} value={item.value} size="sm">
-                {item.title}
-              </CustomCheckbox>
-            ))}
-          </Checkbox.Group>
-        </div>
-      </div>
     </div>
   );
 };
