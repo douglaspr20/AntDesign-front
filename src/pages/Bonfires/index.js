@@ -25,6 +25,7 @@ import "./style.scss";
 import Emitter from "services/emitter";
 import FilterDrawer from "./FilterDrawer";
 import { downloadCsvWithParticipants } from "api";
+import GeneralInformation from "./GeneralInformation";
 
 const BonfiresPage = ({
   getBonfires,
@@ -41,7 +42,7 @@ const BonfiresPage = ({
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
   const [firewallText, setFirewallText] = useState("");
-  const [selectedKeys, setSelectedKeys] = useState("all-bonfires");
+  const [selectedKeys, setSelectedKeys] = useState("general-informatio");
   const [filters, setFilters] = useState({});
 
   const location = useLocation();
@@ -197,7 +198,7 @@ const BonfiresPage = ({
   };
 
   useEffect(() => {
-    setSelectedKeys(parsed.key || "all-bonfires");
+    setSelectedKeys(parsed.key || "general-informatio");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -304,6 +305,13 @@ const BonfiresPage = ({
             selectedKeys={selectedKeys}
           >
             <Menu.Item
+              key="general-information"
+              className="menu-bonfires-item"
+              onClick={() => setSelectedKeys("general-information")}
+            >
+              General information
+            </Menu.Item>
+            <Menu.Item
               key="all-bonfires"
               className="menu-bonfires-item"
               onClick={() => setSelectedKeys("all-bonfires")}
@@ -328,6 +336,7 @@ const BonfiresPage = ({
           />
           <div className="bonfire-list">
             <div className="bonfire-list-container">
+              {selectedKeys === "general-information" && <GeneralInformation />}
               {selectedKeys === "all-bonfires" && (
                 <>
                   <CustomButton
