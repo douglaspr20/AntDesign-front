@@ -66,9 +66,22 @@ const EventList = ({
   useEffect(() => {
 
     let dateIteraded = data?.map((item) => {
-      return (
-        { ...item,date:convertToLocalTime(item?.startDate,item?.timezone).format("YYYY-MM-DD hh:mm a") , groupKey: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY.MM.DD").slice(0, 10) }
-      )
+      if(item.channel !== null){
+        return (
+          { 
+            ...item,
+            date: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY-MM-DD hh:mm a") , 
+            groupKey: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY.MM.DD").slice(0, 10),
+          }
+        )
+      }else{
+        return (
+          { 
+            ...item,
+            groupKey: item?.date?.slice(0, 10),
+          }
+        )
+      }
     })
 
     let groupedData = groupBy(
