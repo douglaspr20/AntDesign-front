@@ -64,9 +64,12 @@ const EventList = ({
   const getRandomNumber = () => Math.floor(Math.random() * 1000);
 
   useEffect(() => {
-    let dateIteraded = data?.map((item) => (
-      { ...item, groupKey: convertToLocalTime(item?.date,item?.timezone).format("YYYY.MM.DD").slice(0, 10) }
-    ))
+
+    let dateIteraded = data?.map((item) => {
+      return (
+        { ...item,date:convertToLocalTime(item?.startDate,item?.timezone).format("YYYY-MM-DD hh:mm a") , groupKey: convertToLocalTime(item?.startDate,item?.timezone).format("YYYY.MM.DD").slice(0, 10) }
+      )
+    })
 
     let groupedData = groupBy(
       dateIteraded,

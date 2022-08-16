@@ -25,11 +25,10 @@ import { channelSelector } from "redux/selectors/channelSelector";
 import { eventSelector } from "redux/selectors/eventSelector";
 import { envSelector } from "redux/selectors/envSelector";
 import clsx from "clsx";
+import moment from "moment";
 
 import {
   isValidURL,
-  convertToUTCTime,
-  convertToCertainTime,
   getNameOfCityWithTimezone
 } from "utils/format";
 import {
@@ -94,11 +93,21 @@ const EventAddEditForm = ({
   }
 
   const onFinish = (values) => {
+
     const timezoneFirstSliceIndex = values.timezone.indexOf("/");
+
+    const convertedStartTime = moment
+      .utc(values.startAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+      .format();
+
+    const convertedEndTime = moment
+      .utc(values.startAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+      .format();
+
     let params = {
       ...omit(values, "startAndEndDate"),
-      startDate: convertToUTCTime(values.startAndEndDate[0], values.timezone),
-      endDate: convertToUTCTime(values.startAndEndDate[1], values.timezone),
+      startDate: convertedStartTime,
+      endDate: convertedEndTime,
       level: VisibleLevel.CHANNEL,
       channel: selectedChannel.id,
       timezone: values.timezone.slice(
@@ -156,6 +165,8 @@ const EventAddEditForm = ({
   useEffect(() => {
     if (edit && !isEmpty(selectedEvent)) {
       if (refForm && refForm.current) {
+        const startTime = moment(selectedEvent.startDate, "YYYY-MM-DDTHH:mm:ss")
+        const endTime = moment(selectedEvent.endDate, "YYYY-MM-DDTHH:mm:ss")
         let city
 
         if(selectedEvent.timezone && selectedEvent.timezone.includes("/")){
@@ -165,13 +176,7 @@ const EventAddEditForm = ({
 
         refForm.current.setFieldsValue({
           ...selectedEvent,
-          startAndEndDate: [
-            convertToCertainTime(
-              selectedEvent.startDate,
-              selectedEvent.timezone
-            ),
-            convertToCertainTime(selectedEvent.endDate, selectedEvent.timezone),
-          ],
+          startAndEndDate: [startTime,endTime],
           timezone: (!city) ? selectedEvent.timezone : `${city}/${selectedEvent.timezone}`,
         });
       }

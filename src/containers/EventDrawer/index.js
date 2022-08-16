@@ -274,7 +274,7 @@ const EventDrawer = ({
         </div>
         <div className="event-details-content">
           <div className="event-details-content-actions">
-            <DateAvatar day={convertToLocalTime(event?.date,event?.timezone).format("DD") || 0} month={event.month || ""} />
+            <DateAvatar day={convertToLocalTime(event?.startDate,event?.timezone).format("DD") || 0} month={event.month || ""} />
             {event.status === "past" && (
               <div className="claim-buttons">
                 <CustomButton
@@ -351,10 +351,18 @@ const EventDrawer = ({
           </div>
           <h1 className="event-title">{event.title}</h1>
           <div className="d-flex items-center event-info">
-            <h5 className="event-card-topic-title">
-              {`Event date${event.startDate !== event.endDate ? "s" : ""}:`}
-              <span>{event.period}</span>
-            </h5>
+          {(event.channel === "" || event.channel === undefined || Number(event.channel) > 0) ?
+            (
+              <h5 className="event-card-topic-title">
+                {`Event date${event.startDate !== event.endDate ? "s" : ""}:`}
+                <span>{event.period2}</span>
+              </h5>
+            ) : (
+              <h5 className="event-card-topic-title">
+                {`Event date${event.startDate !== event.endDate ? "s" : ""}:`}
+                <span>{event.period}</span>
+              </h5>
+            )}
             {/* <div className="d-flex items-center">
               <h3 className="event-date">{event.period}</h3>
             </div> */}

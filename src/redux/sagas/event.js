@@ -5,6 +5,7 @@ import {
   getEventPeriod,
   getEventDescription,
   convertToCertainTime,
+  convertToLocalTime
 } from "utils/format";
 import storage from "store";
 
@@ -70,6 +71,7 @@ export function* getAllEventsSaga() {
                 item.endDate,
                 item.timezone
               ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))
@@ -120,6 +122,7 @@ export function* getEventSaga({ payload }) {
             event.endDate,
             event.timezone
           ),
+          period2: `${convertToLocalTime(event?.startDate,event?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(event?.endDate,event?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(event.description),
           status: getEventStatus(event, userId),
         })
@@ -159,6 +162,7 @@ export function* getAllEventsChannelsSagas({ payload }){
                 item.endDate,
                 item.timezone
               ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
             }))
             .sort((a, b) => {
@@ -207,6 +211,7 @@ export function* getLiveEventSaga() {
                 item.endDate,
                 item.timezone
               ),
+              period2:`${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))
@@ -243,6 +248,7 @@ export function* addToMyEventList({ payload }) {
           date: moment(data.startDate).utc().format("YYYY.MM.DD h:mm a"),
           date2: moment(data.endDate).utc().format("YYYY.MM.DD h:mm a"),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -283,6 +289,7 @@ export function* removeFromMyEventList({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -320,6 +327,7 @@ export function* getAllMyEvents() {
               "YYYY.MM.DD h:mm a"
             ),
             period: getEventPeriod(item.startDate, item.endDate, item.timezone),
+            period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
             about: getEventDescription(item.description),
             status: getEventStatus(item, userId),
           }))
@@ -373,6 +381,7 @@ export function* updateEventStatus({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           status: getEventStatus(data, userId),
         })
@@ -406,6 +415,7 @@ export function* updateEvent({ payload }) {
             "YYYY.MM.DD h:mm a"
           ),
           period: getEventPeriod(data.startDate, data.endDate, data.timezone),
+          period2: `${convertToLocalTime(data?.startDate,data?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(data?.endDate,data?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(data.description),
           usersAssistence: data.usersAssistence,
         })
@@ -444,6 +454,7 @@ export function* updateEventUserAssistenceSagas({ payload }) {
             event.endDate,
             event.timezone
           ),
+          period2: `${convertToLocalTime(event?.startDate,event?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(event?.endDate,event?.timezone).format("MMMM DD, YYYY")}`,
           about: getEventDescription(event.description),
         })
       );
@@ -517,6 +528,7 @@ export function* getChannelEventsSaga({ payload }) {
                 item.endDate,
                 item.timezone
               ),
+              period2: `${convertToLocalTime(item?.startDate,item?.timezone).format("MMMM DD, YYYY")} - ${convertToLocalTime(item?.endDate,item?.timezone).format("MMMM DD, YYYY")}`,
               about: getEventDescription(item.description),
               status: getEventStatus(item, userId),
             }))

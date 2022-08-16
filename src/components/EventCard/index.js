@@ -243,6 +243,7 @@ class EventCard extends React.Component {
         channel,
         externalLink,
         channelSelect,
+        period2
       },
       className,
       edit,
@@ -302,10 +303,20 @@ class EventCard extends React.Component {
                 )
               }
               <h3>{title}</h3>
-              <h5 className="event-card-topic-title">
-                {`Event date${startDate !== endDate ? "s" : ""}: `}
-                <span>{period}</span>
-              </h5>
+              {
+                (channel === "" || channel === undefined || Number(channel) > 0) ?
+                (
+                  <h5 className="event-card-topic-title">
+                    {`Event date${startDate !== endDate ? "s" : ""}:`}
+                    <span>{period2}</span>
+                  </h5>
+                ) : (
+                  <h5 className="event-card-topic-title">
+                    {`Event date${startDate !== endDate ? "s" : ""}:`}
+                    <span>{period}</span>
+                  </h5>
+                )
+              }
 
               {location && (
                 <h5 className="event-card-topic-title">
