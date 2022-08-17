@@ -115,7 +115,7 @@ const ResourcesList = ({
   }, [channel, filter, refresh]);
 
   return (
-    <div className="channel-page__list-wrap">
+    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
       <LibraryAddDrawer
         visible={visibleDrawer}
         type={type}

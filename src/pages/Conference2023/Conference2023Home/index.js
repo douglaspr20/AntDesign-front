@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import SpeakersContainer from "../Conference2023Speakers/SpeakersContainer/index.js";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
@@ -18,8 +18,15 @@ const Conference2023Home = ({
     getAllParafs("Home")
   }, [getAllParafs])
 
+  const [activeMessages, setActiveMessages] = useState(false)
+
   return (
     <>
+      {activeMessages &&
+        <div className="container-messages-general" style={{zIndex: "100000"}}>
+            <div className="messages">No Authorization was found, please Register.</div>
+        </div>
+      }
       <div className="container-conference" style={{marginTop: "90px"}}>
         <div className="imagen-conference">
           <div className="container-content-picture">
@@ -38,7 +45,7 @@ const Conference2023Home = ({
         </div>
         <div className="container-speaker-home">
           <p className="p-speakers">Speakers</p>
-          <SpeakersContainer maxLength={4} className={"container-users"} />
+          <SpeakersContainer maxLength={4} className={"container-users"} setActiveMessages={setActiveMessages} />
           <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}>
             <button className="button-speakers-home">
               View All Speakers
@@ -47,7 +54,7 @@ const Conference2023Home = ({
         </div>
         <div className="container-agenda-home">
           <p className="p-agenda">Agenda</p>
-          <Agenda maxLength={4} type={"double-collapse"} />
+          <Agenda maxLength={4} type={"double-collapse"} setActiveMessages={setActiveMessages} />
           <Link style={{textDecoration: "none"}} to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}>
             <button className="button-agenda-home">
               View All Conference schedule

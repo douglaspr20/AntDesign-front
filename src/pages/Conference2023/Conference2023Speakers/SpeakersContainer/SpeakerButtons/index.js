@@ -2,8 +2,12 @@ import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { speakerAllPanelSpeakerSelector } from "redux/selectors/speakerSelector";
 import { actions as speaker } from "redux/actions/speaker-actions";
-import {CustomModal, CustomButton} from "components";
+import { CustomButton} from "components";
 import { homeSelector } from "redux/selectors/homeSelector";
+import { Modal } from "antd"
+import IconLogo from "images/logo-sidebar.svg";
+import clsx from "clsx";
+import { CloseCircleFilled } from "@ant-design/icons";
 
 const SpeakerButtons = ({
     addedToPersonalAgenda,
@@ -80,11 +84,24 @@ const SpeakerButtons = ({
                 {bulAddedToMyAgenda ? `ADDED TO MY PERSONAL AGENDA` : `ADD TO MY PERSONAL AGENDA`}
             </button>
             <div style={{height: "10px", width: "200px"}}></div>
-            <CustomModal
-                title="Are you sure?"
-                visible={toMyPersonalAgenda}
+            <Modal
+                title={
+                    <div className="custom-modal-title">
+                    <h3>Are you sure?</h3>
+                    <div className="custom-modal-logo">
+                        <img src={IconLogo} alt="custom-logo" />
+                    </div>
+                    </div>
+                }
                 centered
+                visible={toMyPersonalAgenda}
                 onCancel={() => setToMyPersonalAgenda(false)}
+                closable={true}
+                footer={[]}
+                width={"300px"}
+                closeIcon={<CloseCircleFilled className="custom-modal-close" />}
+                className={clsx("custom-modal")}
+                wrapClassName={clsx("custom-modal-wrap")}
             >
                 <div className="container-buttons">
                     <CustomButton
@@ -109,7 +126,7 @@ const SpeakerButtons = ({
                         }}
                     />
                 </div>
-            </CustomModal>
+            </Modal>
         </>
     );
   };

@@ -10,6 +10,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { convertToLocalTime } from "utils/format";
 import IconLogo from "images/logo-sidebar.svg";
 import moment from "moment";
+import clsx from "clsx";
 
 import "./style.scss";
 
@@ -232,9 +233,8 @@ const ButtonsAgenda = ({
             }
             <div style={{height: "10px", width: "200px"}}></div>
             <Modal
-                onCancel={() => setToMyPersonalAgenda(false)}
-                className="custom-modal"
-                wrapClassName="custom-modal-wrap"
+                className={clsx("custom-modal")}
+                wrapClassName={clsx("custom-modal-wrap")}
                 title={
                     <div className="custom-modal-title">
                     <h3>Are you sure?</h3>
@@ -244,6 +244,7 @@ const ButtonsAgenda = ({
                     </div>
                 }
                 centered
+                onCancel={() => setToMyPersonalAgenda(false)}
                 visible={toMyPersonalAgenda}
                 closable={true}
                 footer={[]}

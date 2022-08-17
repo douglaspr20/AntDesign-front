@@ -277,7 +277,7 @@ const EventDrawer = ({
             {(event.channel === "" || event.channel === undefined || Number(event.channel) > 0) ? (
                 <DateAvatar day={convertToLocalTime(event?.startDate,event?.timezone).format("DD") || 0} month={event.month || ""} />
               ) : (
-                <DateAvatar day={event.date || 0} month={event.month || ""} />
+                <DateAvatar day={moment(event?.date, DataFormat).date() || 0} month={event.month || ""} />
             ) }
             {event.status === "past" && (
               <div className="claim-buttons">

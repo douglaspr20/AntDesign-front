@@ -126,7 +126,7 @@ const BlogList = ({
   }, [getBlogsPostsByChannel, id]);
 
   return (
-    <div className="channel-page__list-wrap">
+    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
       {visibleModal && (
         <ModalCreateOrEdit
           onCancelModal={onCancelModal}
