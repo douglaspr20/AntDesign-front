@@ -42,7 +42,7 @@ const BonfiresPage = ({
   const [modalFormVisible, setModalFormVisible] = useState(false);
   const [showFirewall, setShowFirewall] = useState(false);
   const [firewallText, setFirewallText] = useState("");
-  const [selectedKeys, setSelectedKeys] = useState("general-informatio");
+  const [selectedKeys, setSelectedKeys] = useState("general-information");
   const [filters, setFilters] = useState({});
 
   const location = useLocation();
@@ -198,7 +198,7 @@ const BonfiresPage = ({
   };
 
   useEffect(() => {
-    setSelectedKeys(parsed.key || "general-informatio");
+    setSelectedKeys(parsed.key || "general-information");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
