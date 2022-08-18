@@ -46,7 +46,7 @@
   }
   &--mobile-options {
     display: none;
-    @media (max-width: 1023.98px) {
+    @media (max-width: 1200px) {
       display: block;
     }
     button {
@@ -91,16 +91,17 @@
       flex-direction: column;
       width: 100%;
       padding-bottom: 1em;
-      padding-left:20px;
-      @media (max-width: 1023.98px) {
-        padding: 0px 1em 1em 1em;
-      }
+      padding-left: 10px;
+      // @media (max-width: 1023.98px) {
+      //   padding: 0px 1em 1em 1em;
+      // }
 
       &-content {
         display: flex;
         width: 100%;
-        @media (max-width: 1200px) {
-        display: block;
+        @media (max-width: 1500px) {
+        flex-direction: column-reverse;
+        align-items: center;
         }
         &-preview {
           margin-top: 1.5rem;
@@ -141,7 +142,7 @@
           }
 
           &-content {
-            margin-bottom: 5px;
+            margin-bottom: 1rem !important;
 
             .advertisement {
               width: 275px;
@@ -206,74 +207,9 @@
   .advertisement {
     overflow: hidden;
   }
-
-  /* I am commenting on these lines because they break the home page styles.*/
-
-      // &-content {
-      //   display: flex;
-      //   width: 100%;
-
-      //   &-preview {
-      //     margin-top: 1.5rem;
-      //     width: 100%;
-      //     position: relative;
-      //     display: flex;
-      //     justify-content: center;
-      //     position: relative;
-
-      //     .advertisement {
-      //       width: 275px;
-      //       display: flex;
-      //       justify-content: center;
-      //       align-items: center;
-      //       background-color: lightgray;
-      //       height: 275px;
-      //       cursor: pointer;
-
-      //       &-img {
-      //         width: 275px;
-      //         height: 275px;
-      //         object-fit: cover;
-      //       }
-      //     }
-      //   }
-
-      //   &-advertisement-wrapper {
-      //     width: 100%;
-      //     display: flex;
-      //     height: 100vh;
-      //     flex-direction: column;
-      //     align-items: center;
-      //     margin-top: 1.5rem;
-      //     position: relative;
-
-      //     &-content {
-      //       margin-bottom: 5px;
-
-      //       .advertisement {
-      //         width: 275px;
-      //         display: flex;
-      //         justify-content: center;
-      //         align-items: center;
-      //         // background-color: lightgray;
-      //         height: 275px;
-      //         cursor: pointer;
-
-      //         &-img {
-      //           width: 275px;
-      //           height: 275px;
-      //           object-fit: fill;
-      //           // object-fit: scale-down;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
 }
 
  .home-advertisement-wrapper {
-    // margin-left: auto;
-    // margin-right: auto;
 
    &-preview {
      margin-top: 1.5rem;
@@ -300,7 +236,9 @@
    }
   
    &-content {
-     margin-top: 10px;
+     margin-top: 1.5rem;
+     margin-bottom: 1rem;
+
     
      .advertisement {
        width: 275px;

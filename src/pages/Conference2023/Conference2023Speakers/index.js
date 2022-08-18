@@ -20,7 +20,7 @@ const Conference2023Speakers = () => {
           </div>
         </div>
         <div className="containers-speakers" id="speakers"> 
-          <SpeakersContainer className={"container-users"} setActiveMessages={setActiveMessages} />
+          <SpeakersContainer className={"container-users"} setActiveMessages={setActiveMessages} type={"conference"}/>
         </div>
         {activeMessages &&
           <div className="container-messages-general">

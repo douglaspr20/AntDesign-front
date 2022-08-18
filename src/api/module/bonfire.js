@@ -23,3 +23,15 @@ export const deleteBonfire = ({ id }) => {
 export const inviteUser = ({ id, userId }) => {
   return httpClient.put(`private/bonfire/${id}/invitedUser/${userId}`);
 };
+
+export const downloadCsvWithParticipants = (id) => {
+  return httpClient({
+    method: "GET",
+    url: `private/bonfire-download/${id}`,
+    responseType: "blob",
+    headers: { "Content-Type": "application/json" },
+    params: {
+      data: "nothing",
+    },
+  });
+};

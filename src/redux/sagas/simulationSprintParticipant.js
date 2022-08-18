@@ -16,6 +16,9 @@ export function* createSimulationSprintParticipantSaga({ payload }) {
     });
 
     if (response.status === 200 && payload.callback) {
+      yield put(
+        homeActions.updateUserInformation(response.data.userUpdated[0][0][0])
+      );
       payload.callback();
     }
   } catch (error) {

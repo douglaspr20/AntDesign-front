@@ -6,12 +6,36 @@
     background: $color-background;
     margin-top: 20px;
     margin-left: 60px;
-    margin-right: 50px;
+    margin-right: 20px;
     border: 1px solid $color-border;
     max-width: 1500px;
 
+   
+
+    @media (max-width: 575.98px) {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
     &-container{
-        height: 100vh;
+        position: relative; 
+        padding-bottom: 1rem;
+        min-height: 520px;
+
+        .available-sprints{
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 !important;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+        }
+    }
+
+    &-content{
+        max-height: 80vh;
+        overflow: auto;
     }
 
     &-information{
@@ -55,6 +79,7 @@
         justify-content: space-around;
         flex-wrap: wrap;
         padding-bottom: 20px;
+        margin-top: 90px;
 
         & .ant-card:nth-child(1){
             border-top: 6px solid $color-warning;

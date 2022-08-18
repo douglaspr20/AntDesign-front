@@ -16,6 +16,8 @@ import IconTvOutline from "images/icon-tv-outline.svg";
 // import IconGlobal from "images/icon-global.svg";
 import IconFlask from "images/icon-flask-outline.svg";
 import IconBriefcase from "images/icon-briefcase-outline.svg";
+// import IconGlobal from "images/icon-global.svg";
+import iconBonfire from "images/icon-bonfire.svg";
 import iconSchool from "images/icon-school.svg";
 
 export default {
@@ -65,11 +67,11 @@ export default {
       icon: IconConferenceVideo,
       url: INTERNAL_LINKS.CONFERENCE_LIBRARY,
     },
-    // {
-    //   label: "Communities",
-    //   icon: IconMentoring,
-    //   url: INTERNAL_LINKS.COMMUNITIES,
-    // },
+    {
+      label: "Bonfires",
+      icon: iconBonfire,
+      url: INTERNAL_LINKS.BONFIRES,
+    },
     {
       label: "Events",
       icon: IconCalendar,

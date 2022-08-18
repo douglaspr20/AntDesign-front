@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import qs from "query-string";
 import { homeSelector } from "redux/selectors/homeSelector";
-import { INTERNAL_LINKS } from "enum";
+import { EVENT_TYPES, INTERNAL_LINKS } from "enum";
 import GeneralInformation from "./GeneralInformation";
 import UpcomingSprints from "./UpcomingSprints";
 import MySprints from "./MySprints";
-
+import Emitter from "services/emitter";
 import "./style.scss";
 
 const SimulationSprintsPage = ({ userProfile }) => {
+  const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
+    useState(false);
   const [selectedKeys, setSelectedKeys] = useState("general-information");
 
   const location = useLocation();
-  const history = useHistory();
 
   const parsed = qs.parse(location.search);
 
   useEffect(() => {
-    history.push("/");
     setSelectedKeys(parsed.key || "general-information");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,6 +33,10 @@ const SimulationSprintsPage = ({ userProfile }) => {
       `${INTERNAL_LINKS.SIMULATION_SPRINTS}?key=${selectedKeys}`
     );
   }, [selectedKeys]);
+
+  const completeProfile = () => {
+    Emitter.emit(EVENT_TYPES.EVENT_VIEW_PROFILE);
+  };
 
   return (
     <div className="simulation-sprints">
@@ -66,14 +70,29 @@ const SimulationSprintsPage = ({ userProfile }) => {
           </Menu.Item>
         </Menu>
 
-        {selectedKeys === "general-information" ? (
-          <GeneralInformation />
-        ) : selectedKeys === "upcoming-sprints" ? (
-          <UpcomingSprints />
-        ) : (
-          <MySprints />
-        )}
+        <div className="simulation-sprints-content">
+          {selectedKeys === "general-information" ? (
+            <GeneralInformation />
+          ) : selectedKeys === "upcoming-sprints" ? (
+            <UpcomingSprints />
+          ) : (
+            <MySprints />
+          )}
+        </div>
       </div>
+      {showProfileCompletionFirewall && (
+        <div
+          className="simulation-sprint-firewall"
+          onClick={() => setShowProfileCompletionFirewall(false)}
+        >
+          <div className="upgrade-notification-panel" onClick={completeProfile}>
+            <h3>
+              You must fully complete your profile before you can purchase any
+              of the simulation sprint packages.
+            </h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

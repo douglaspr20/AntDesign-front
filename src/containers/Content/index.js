@@ -19,7 +19,7 @@ import ArticlePage from "pages/Article";
 import FavouritePage from "pages/Favourites";
 import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
-// import MentoringPage from "pages/Mentoring";
+import MentoringPage from "pages/Mentoring";
 import StartRouteSwift from "./StartRouteSwift"
 import CertificatePage from "pages/Certificate";
 import MicroClassCertificatePage from "pages/MicroClassCertificate";
@@ -62,10 +62,11 @@ import EventCertificatePage from "pages/EventCertificate/ShareCertificate";
 import SearchPage from "pages/Search";
 import BlogsPage from "pages/Blogs";
 import BlogPage from "pages/Blog";
+import CommunititesPage from "pages/Communities";
+import BonfiresPage from "pages/Bonfires";
 import SimulationSprintsPage from "pages/SimulationSprints";
 import SimulationSprintPage from "pages/SimulationSprint";
-// import CommunititesPage from "pages/Communities";
-// import BonfiresPage from "pages/Bonfires";
+import SimulationSprintDashboardPage from "pages/SimulationSprintDashboard";
 
 // Enum
 import { INTERNAL_LINKS } from "enum";
@@ -75,7 +76,6 @@ import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { injectIntl } from "react-intl";
 
 import { homeSelector } from "redux/selectors/homeSelector";
-import SimulationSprintResourcePage from "pages/SimulationSprintResource";
 
 class Content extends Component {
   componentDidMount() {
@@ -216,23 +216,23 @@ class Content extends Component {
             render={(props) => <PodcastPage {...props} />}
           />
 
-          {/* <PrivateRoute
+          <PrivateRoute
+            exact
+            path={`${INTERNAL_LINKS.BONFIRES}`}
+            render={(props) => <BonfiresPage {...props} />}
+          />
+
+          <PrivateRoute
             exact
             path={`${INTERNAL_LINKS.COMMUNITIES}/mentoring`}
             render={(props) => <MentoringPage {...props} />}
-          /> */}
+          />
 
-          {/* <PrivateRoute
-            exact
-            path={`${INTERNAL_LINKS.COMMUNITIES}/bonfires`}
-            render={(props) => <BonfiresPage {...props} />}
-          /> */}
-          {/* 
           <PrivateRoute
             exact
             path={INTERNAL_LINKS.COMMUNITIES}
             render={(props) => <CommunititesPage {...props} />}
-          /> */}
+          />
 
           <PrivateRoute
             path={`${INTERNAL_LINKS.CERTIFICATE}/:id`}
@@ -476,8 +476,8 @@ class Content extends Component {
 
           <Route
             exact
-            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/resources`}
-            render={(props) => <SimulationSprintResourcePage {...props} />}
+            path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id/dashboard`}
+            render={(props) => <SimulationSprintDashboardPage {...props} />}
           />
           <Route
             exact

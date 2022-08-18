@@ -112,7 +112,7 @@ const PanelSpeakers = ({
       return member?.isModerator === false
     })
 
-    if(allMember?.length < 2 && userProfile?.role === 'user' && arrayMemberNotModerator?.length < 5){
+    if(allMember?.length < 2 && userProfile?.role !== 'admin' && arrayMemberNotModerator?.length < 5){
       addUserSpeakerToPanel(
         { usersNames, bul: false, panel: data, type: "joinUser" },
         () => {
@@ -157,8 +157,8 @@ const PanelSpeakers = ({
     }
   };
 
-  const removeUserFunction = (id, user) => {
-    removeUserSpeakerToPanel(id, () => {
+  const removeUserFunction = (id, user, panelName) => {
+    removeUserSpeakerToPanel({id:id,panelName:panelName}, () => {
       getAllPanelSpeakers("Panels", {
         topics: undefined,
         bul: panelsFullBul

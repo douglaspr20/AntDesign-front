@@ -88,7 +88,7 @@ export const updateAllUserSpeakers = createAction(
 
 export const removeUserSpeakerToPanel = createAction(
   REMOVE_USERS_PANEL,
-  (UserId, callback) => ({ UserId, callback})
+  (data, callback) => ({ data, callback})
 )
 
 export const registerUserIfNotAreRegisterConference2023 = createAction(
