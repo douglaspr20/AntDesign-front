@@ -5,7 +5,7 @@ import isEmpty from "lodash/isEmpty";
 
 import { Tabs, CustomButton } from "components";
 import { INTERNAL_LINKS, USER_ROLES } from "enum";
-import ChannelFilterPanel from "./ChannelFilterPanel";
+// import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
 import EventsList from "./EventsList";
@@ -14,9 +14,9 @@ import BlogList from "./BlogsList";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { channelSelector } from "redux/selectors/channelSelector";
 import {
-  getChannel,
   setFollowChannel,
   unsetFollowChannel,
+  getChannelForName
 } from "redux/actions/channel-actions";
 
 import IconBack from "images/icon-back.svg";
@@ -29,16 +29,16 @@ const Channel = ({
   selectedChannel,
   channelLoading,
   userProfile,
-  getChannel,
   setFollowChannel,
   unsetFollowChannel,
+  getChannelForName
 }) => {
   const { search, pathname } = useLocation();
   const query = new URLSearchParams(search);
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
-  const [filter, setFilter] = useState({});
+  // const [filter, setFilter] = useState({});
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
@@ -51,9 +51,9 @@ const Channel = ({
     }
   }, [query, history, pathname]);
 
-  const onFilterChange = (values) => {
-    setFilter(values);
-  };
+  // const onFilterChange = (values) => {
+  //   setFilter(values);
+  // };
 
   const followChannel = () => {
     if (followed) {
@@ -70,14 +70,16 @@ const Channel = ({
         <ResourcesList
           type="article"
           refresh={currentTab === "0"}
-          filter={filter}
+          // filter={filter}
           isOwner={isChannelOwner}
         />
       ),
     },
     {
       title: "Podcasts",
-      content: () => <PodcastsList isOwner={isChannelOwner} filter={filter} />,
+       content: () => <PodcastsList isOwner={isChannelOwner} 
+        // filter={filter} 
+       />,
     },
     {
       title: "Videos",
@@ -85,14 +87,16 @@ const Channel = ({
         <ResourcesList
           refresh={currentTab === "2"}
           type="video"
-          filter={filter}
+          // filter={filter}
           isOwner={isChannelOwner}
         />
       ),
     },
     {
       title: "Events",
-      content: () => <EventsList isOwner={isChannelOwner} filter={filter} />,
+      content: () => <EventsList isOwner={isChannelOwner} 
+      // filter={filter} 
+      />,
     },
     {
       title: "Blogs",
@@ -113,41 +117,66 @@ const Channel = ({
     }
   }, [userProfile, selectedChannel]);
 
-  useEffect(() => {
-    let isMounted = true;
-    if (match.params.id) {
-      getChannel(match.params.id, (error) => {
-        if (isMounted && error) {
-          history.push(INTERNAL_LINKS.NOT_FOUND);
-        }
-      });
-    }
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   if (match.params.id) {
+  //     getChannel(match.params.id, (error) => {
+  //       if (isMounted && error) {
+  //         history.push(INTERNAL_LINKS.NOT_FOUND);
+  //       }
+  //     });
+  //   }
 
-    return () => {
-      isMounted = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const fixNameUrl = (name) => {
+
+    let spaces = name.split("-").length - 1
+    let newTitle = name
+
+    for(let i = 0; i < Number(spaces) ; i++){
+      newTitle = newTitle.replace("-"," ")
+    }
+    return newTitle
+  }
+
+  useEffect(() => {
+      let isMounted = true;
+      let pathNameFixed = pathname.substring(1,pathname.length)
+      
+      if (pathname) {
+        getChannelForName( fixNameUrl(pathNameFixed) , (error) => {
+          if (isMounted && error) {
+            history.push(INTERNAL_LINKS.NOT_FOUND);
+          }
+        });
+      }
+  
+      return () => {
+        isMounted = false;
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
   return (
     <div className="channel-page">
-      <ChannelFilterPanel onChange={onFilterChange} />
+      {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
       <div className="channel-page__container">
+        <Link to={INTERNAL_LINKS.CHANNELS} >
+          <div className="channel-page__content-top">
+            <div className="channel-page__content-top-back">
+              <img src={IconBack} alt="icon-back" />
+            </div>
+            <h4>Back to Channels</h4>
+          </div>
+        </Link>
         <div className="channel-page__results">
           <div className="channel-page__row">
             <div className="channel-page__info-column">
-              {isChannelOwner ? (
-                <div className="channel-page__space" />
-              ) : (
-                <CustomButton
-                  htmlType="button"
-                  text={followed ? "Followed" : "Follow Channel"}
-                  type={followed ? "secondary" : "primary"}
-                  size="md"
-                  loading={channelLoading}
-                  onClick={followChannel}
-                />
-              )}
               {!isEmpty(selectedChannel) && (
                 <>
                   <div className="channel-info__user">
@@ -158,30 +187,45 @@ const Channel = ({
                     )}
                   </div>
                   <div className="channel-info__general-info">
-                    <h3 className="channel-info__name text-center">
+                    <h2 className="channel-info__name">
                       {selectedChannel.name}
-                    </h3>
-                    <p className="channel-info__description text-center">
+                    </h2>
+                    <p className="channel-info__description">
                       {selectedChannel.description}
                     </p>
+                    <p className="channel-info__topics">
+                      <span>Channel Topics: </span>
+                      {selectedChannel?.categories?.map((category) => (
+                        <div className="container-category">{category}</div>
+                      ))}
+                    </p>
+                    <CustomButton
+                      htmlType="button"
+                      text={followed ? "Followed" : "Follow Channel"}
+                      type={followed ? "secondary" : "primary"}
+                      size="md"
+                      style={{marginLeft: "30px"}}
+                      loading={channelLoading}
+                      onClick={followChannel}
+                    />
                   </div>
                 </>
               )}
             </div>
             <div className="channel-page__content">
-              <Link to={INTERNAL_LINKS.CHANNELS}>
-                <div className="channel-page__content-top">
-                  <div className="channel-page__content-top-back">
-                    <img src={IconBack} alt="icon-back" />
-                  </div>
-                  <h4>Back to Channels</h4>
-                </div>
-              </Link>
-              <Tabs
+              <div className="tabs-channels">
+                <p className="select">Home</p>
+                <p>Resources</p>
+                <p>Podcasts</p>
+                <p>Videos</p>
+                <p>Events</p>
+                <p>Blogs</p>
+              </div>
+              {/* <Tabs
                 data={TabData}
                 current={currentTab}
                 onChange={setCurrentTab}
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -198,7 +242,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = {
-  getChannel,
+  getChannelForName,
   setFollowChannel,
   unsetFollowChannel,
 };

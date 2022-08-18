@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { connect } from "react-redux";
 import { SpecialtyItem } from "components";
 import { Link } from "react-router-dom";
-import { INTERNAL_LINKS, CARD_MENUS } from "enum";
+import { CARD_MENUS } from "enum";
 import { categorySelector } from "redux/selectors/categorySelector";
 import CardMenu from "components/CardMenu";
 
@@ -28,10 +28,21 @@ const ChannelCard = ({
   onClick,
   onMenuClick,
 }) => {
+  
+  let spaces = title.split(" ").length - 1
+
+  const fixName = (title) => {
+    let newTitle = title
+    for(let i = 0; i < Number(spaces) ; i++){
+      newTitle = newTitle.replace(" ","-")
+    }
+    return newTitle
+  }
+
   return (
     <Link
       className={clsx("channel-card", { add })}
-      to={add ? "#" : `${INTERNAL_LINKS.CHANNELS}/${id}`}
+      to={add ? "#" : `/${fixName(title)}`}
       onClick={onClick}
     >
       {add ? (

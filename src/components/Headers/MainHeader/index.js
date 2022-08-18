@@ -513,6 +513,7 @@ const mapStateToProps = (state) => ({
   inputUserSearchValue: homeSelector(state).inputUserSearchValue,
   searchedUsers: homeSelector(state).searchedUsers,
   userShow: homeSelector(state).userShow,
+  bulChannelPage: channelSelector(state).bulChannelPage,
   visibleProfileUser: homeSelector(state).visibleProfileUser,
 });
 

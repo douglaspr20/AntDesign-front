@@ -51,6 +51,7 @@ import { pushNotification } from "redux/actions/notification-actions";
 import { envSelector } from "redux/selectors/envSelector";
 import { homeSelector } from "redux/selectors/homeSelector";
 import { conversationsSelector } from "redux/selectors/conversationSelector";
+import { channelSelector } from "redux/selectors/channelSelector";
 import { authSelector } from "redux/selectors/authSelector";
 
 import JuntosNotification from "./sound/juntos.mp3";
@@ -284,12 +285,14 @@ class App extends Component {
               {window.screen.width > 1000 &&
               this.props.userProfile?.id &&
               isNaN(isPublicEventId) &&
-              (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
+              (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) &&
+              (this.props.bulChannelPage !== 'channel') ? (
                 <Chat />
               ) : window.screen.width < 1000 &&
                 this.props.userProfile?.id &&
                 isNaN(isPublicEventId) &&
-                (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) ? (
+                (window.location.pathname.substring(0,15) !== INTERNAL_LINKS.CONFERENCE_2023) &&
+                (this.props.bulChannelPage !== 'channel') ? (
                 <>
                   <ChatMobile
                     openChat={openChat}
@@ -354,6 +357,7 @@ const mapStateToProps = (state) => ({
   userProfile: homeSelector(state).userProfile,
   authLoading: authSelector(state).loading,
   conversations: conversationsSelector(state).conversations,
+  bulChannelPage: channelSelector(state).bulChannelPage,
 });
 
 const mapDispatchToProps = {

@@ -10,6 +10,7 @@ const resultSelector = createSelector(channelDataSelector, (payload) => {
     error: payload.get("error"),
     countOfResults: payload.get("countOfResults"),
     currentPage: payload.get("currentPage"),
+    bulChannelPage: payload.get("bulChannelPage")
   };
 });
 

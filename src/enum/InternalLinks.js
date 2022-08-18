@@ -26,6 +26,7 @@ export default {
   PODCAST_SERIES: "/podcast-series",
   CHANNELS: "/channels",
   PUBLIC_EVENT: "",
+  CHANNEL_PAGE: "",
   JOIN: "/join",
   TERMSOFUSE: "/terms-of-use",
   MARKETPLACE: "/marketplace",

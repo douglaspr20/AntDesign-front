@@ -128,11 +128,15 @@ const PublicEventPage = ({
       setCanonicalUrl(
         `${process.env.REACT_APP_DOMAIN_URL}${INTERNAL_LINKS.PUBLIC_EVENT}/${match.params.id}`
       );
-      getEvent(match.params.id, (error) => {
-        if (isMounted && error) {
-          history.push(INTERNAL_LINKS.NOT_FOUND);
-        }
-      });
+      if(!isNaN(Number(match.params.id))){
+        getEvent(match.params.id, (error) => {
+          if (isMounted && error) {
+            history.push(INTERNAL_LINKS.NOT_FOUND);
+          }
+        });
+      }else{
+        history.push(INTERNAL_LINKS.NOT_FOUND);
+      }
     }
 
     return () => {

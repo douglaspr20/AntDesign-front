@@ -14,7 +14,8 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
-  notifyNewEmailChannelsEndPoint
+  notifyNewEmailChannelsEndPoint,
+  getChannelForNameEndPoint
 } from "../../api";
 
 export function* createChannelSaga({ payload }) {
@@ -45,6 +46,32 @@ export function* getChannelSaga({ payload }) {
 
   try {
     const response = yield call(getChannel, { ...payload });
+
+    if (response.status === 200) {
+      yield put(channelActions.setChannel(response.data.channel));
+
+      if (payload.callback) {
+        payload.callback(false);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback(true);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getChannelForNameSagas({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getChannelForNameEndPoint, { ...payload });
 
     if (response.status === 200) {
       yield put(channelActions.setChannel(response.data.channel));
@@ -227,6 +254,7 @@ export function* notifyNewEmailChannelsSagas({ payload }) {
 function* watchChannel() {
   yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
   yield takeLatest(channelConstants.GET_CHANNEL, getChannelSaga);
+  yield takeLatest(channelConstants.GET_CHANNEL_FOR_NAME, getChannelForNameSagas)
   yield takeLatest(channelConstants.UPDATE_CHANNEL, updateChannelSaga);
   yield takeLatest(channelConstants.DELETE_CHANNEL, deleteChannelSaga);
   yield takeLatest(

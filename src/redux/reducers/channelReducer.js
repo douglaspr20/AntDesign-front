@@ -26,6 +26,9 @@ export const reducers = {
   [channelConstants.SET_CHANNEL_LOADING]: (state, { payload }) => {
     return state.merge({ ...payload });
   },
+  [channelConstants.SET_BUL_CHANNEL_PAGE]: (state, { payload }) => {
+    return state.merge({ bulChannelPage: payload.bul });
+  },
 };
 
 export const initialState = () =>
@@ -36,6 +39,7 @@ export const initialState = () =>
     selectedChannel: [],
     countOfResults: 0,
     currentPage: 1,
+    bulChannelPage: 'nada',
   });
 
 export default handleActions(reducers, initialState());
