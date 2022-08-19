@@ -104,7 +104,7 @@ const PodcastsList = ({
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && (
+            {/* {isOwner && (
               <CustomButton
                 text="Add Podcasts"
                 htmlType="submit"
@@ -113,7 +113,7 @@ const PodcastsList = ({
                 className="buttomAddR"
                 onClick={() => onShowPodcastModal()}
               />
-            )}
+            )} */}
             {podcasts.map((episode) => (
               <EpisodeCard
                 key={episode.id}

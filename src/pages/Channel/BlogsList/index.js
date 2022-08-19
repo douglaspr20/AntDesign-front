@@ -169,7 +169,7 @@ const BlogList = ({
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && (
+            {/* {isOwner && (
               <CustomButton
                 text="Add Blog Posts"
                 htmlType="submit"
@@ -178,7 +178,7 @@ const BlogList = ({
                 className="buttomAddR"
                 onClick={() => onShowBlogPosstModal()}
               />
-            )}
+            )} */}
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (

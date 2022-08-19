@@ -104,7 +104,7 @@ const EventList = ({
         />
       </div>
       {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
-      {edit && type === CARD_TYPE.EDIT && (
+      {/* {edit && type === CARD_TYPE.EDIT && (
         <CustomButton
           text="Add Events"
           htmlType="submit"
@@ -113,7 +113,7 @@ const EventList = ({
           className="buttomAddRR"
           onClick={() => onAddEvent()}
         />
-      )}
+      )} */}
       {Object.keys(groupedByEventData).map((date) => {
 
         const day = moment(date, DataFormat).date();
@@ -124,7 +124,7 @@ const EventList = ({
             className="event-list-batch"
             key={`${date}-${getRandomNumber()}`}
           >
-            <DateAvatar day={day} month={monthStr[month]} />
+            {/* <DateAvatar day={day} month={monthStr[month]} /> */}
             <Row gutter={[0, 36]}>
               {groupedByEventData[date].map((event, index) => (
                 <Col

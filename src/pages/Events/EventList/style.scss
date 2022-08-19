@@ -32,11 +32,8 @@
   }
 
   &-batch {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    grid-column-gap: 53px;
-    margin-bottom: 2.25rem;
+    width: 50%;
+    display: block;
 
     .date-avatar {
       margin-bottom: 28px;

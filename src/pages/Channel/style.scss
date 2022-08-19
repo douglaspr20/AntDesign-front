@@ -33,8 +33,10 @@
     cursor: pointer;
     width: fit-content;
     margin-top: 0px;
-    margin-left: 20px;
-    padding-top: 15px;
+    left: 20px;
+    top: 15px;
+    position: absolute;
+    z-index: 10;
 
     .channel-page__content-top-back {
       width: 1.5rem;
@@ -59,6 +61,7 @@
   width: 100%;
   position: relative;
   overflow: scroll;
+  z-index: 1;
 
   @media (max-width: 1023.98px) {
     padding: 0rem 1.5rem;
@@ -79,6 +82,19 @@
   flex-wrap: wrap;
   width:60%;
   margin-left: 20%;
+  padding-bottom:60px ;
+  padding-top: 25px;
+
+  .background-forms{
+    width: 100%;
+    background-image: url(../../images/masck.svg);
+    background-size: 100% 100vh;
+    background-repeat: repeat-y;
+    z-index: -1;
+    position: absolute;
+    top: -15px;
+    left: 0px;
+  }
 
   @media (max-width: 1023.98px) {
     > * + * {
@@ -98,8 +114,8 @@
   border-width: 2px 0px 0px 2px;
   border-style: solid;
   border-color: #D9D1D1;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.201);
-  backdrop-filter: blur(30px);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  backdrop-filter: blur(5px);
   padding-bottom: 30px;
 
   > * + * {
@@ -120,13 +136,14 @@
     border-width: 2px 0px 0px 2px;
     border-style: solid;
     border-color: #D9D1D1;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.201);
-    backdrop-filter: blur(30px);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    backdrop-filter: blur(5px);
     margin-top: 20px;
     display: flex;
     flex-direction: row;
     align-content: center;
     padding-left: 15px;
+    position: relative;
 
     p {
       padding: 0px 20px;
@@ -138,14 +155,35 @@
       color: #697077;
       font-size: 15px;
       cursor: pointer;
+      transition: all 0.5s ease-in-out;
     }
 
     .select{
+      transition: all 0.5s ease-in-out;
+      color:#FE5621 ;
+    }
+
+    .box-select{
+      position: absolute;
+      height: 100%;
       border-width: 0px 0px 3px 0px;
       border-style: solid;
-      color:#FE5621 ;
       border-color: #FE5621;
+      transition: all 0.5s ease-in-out;
     }
+  }
+
+  .card-content-home{
+    border-radius: 20px;
+    background: linear-gradient(103.94deg, rgba(255, 255, 255, 0.768) -0.42%, rgba(234, 234, 234, 0.325) 102.69%);
+    border-width: 2px 0px 0px 2px;
+    border-style: solid;
+    border-color: #D9D1D1;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    backdrop-filter: blur(5px);
+    padding: 20px;
+    overflow: hidden;
+    margin-top: 20px;
   }
 
   @media (max-width: 750px) {
@@ -237,31 +275,45 @@
     width: calc(100% - 60px);
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     
     span{
+      margin: 0px;
+      padding: 0px;
+      margin-top: 7.5px;
       font-weight: bold;
+      display: inline-block;
+      overflow-wrap: normal;
+      width: 110px;
     }
 
-    .container-category{
-      padding: 2px 20px 5px 20px;
-      margin: 0px;
-      border-radius: 5px;
-      border-width: 2px 2px 2px 2px;
-      border-style: solid;
-      border-color: #438CEF;
-      display: inline-block;
-      color: #438CEF;
-      margin-left: 10px;
-      font-size: 14px;
-      line-height: 16px;
+    .container-topics{
       display: flex;
-      justify-content: center;
-      align-items: center;
-      transform: translateY(1px);
+      flex-direction: row;
+      flex-wrap: wrap;
+        
+      .container-category{
+        padding: 2px 20px 5px 20px;
+        margin: 0px;
+        border-radius: 5px;
+        border-width: 2px 2px 2px 2px;
+        border-style: solid;
+        border-color: #438CEF;
+        color: #438CEF;
+        margin-left: 10px;
+        font-size: 14px;
+        line-height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(1px);
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
     }
+    
   }
 
   > * + * {
@@ -272,7 +324,7 @@
 .channel-page__list-wrap {
   padding-top: 1rem;
   overflow: auto;
-  height: calc(100vh - 200px);
+  height: auto;
 
   &::-webkit-scrollbar {
     display: none;

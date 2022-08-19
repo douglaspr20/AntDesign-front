@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
@@ -33,11 +33,16 @@ const Channel = ({
   unsetFollowChannel,
   getChannelForName
 }) => {
+  const selectDiv = useRef()
+  const firstSelect = useRef()
+  const contentBackground = useRef() 
   const { search, pathname } = useLocation();
   const query = new URLSearchParams(search);
 
   const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
+  const [heightData, setHeightData] = useState(`0px`)
+  const [tabData, setTabData] = useState(0)
   // const [filter, setFilter] = useState({});
   const [followed, setFollowed] = useState(false);
 
@@ -162,6 +167,17 @@ const Channel = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+  const selectTabs = (e, index) => {
+    setTabData(index)
+    selectDiv.current.style.cssText = `left: ${e.target.offsetLeft}px; width: ${e.target.clientWidth}px;`
+  }
+
+  useEffect(() => {
+    if(contentBackground.current){
+      setHeightData(`${Number(contentBackground.current.clientHeight) + 15}px`)
+    }
+  }, [contentBackground])
+
   return (
     <div className="channel-page">
       {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
@@ -175,7 +191,10 @@ const Channel = ({
           </div>
         </Link>
         <div className="channel-page__results">
-          <div className="channel-page__row">
+          <div className="channel-page__row" ref={contentBackground}>
+            <div className="background-forms" style={{height: heightData}}>
+
+            </div>
             <div className="channel-page__info-column">
               {!isEmpty(selectedChannel) && (
                 <>
@@ -193,12 +212,14 @@ const Channel = ({
                     <p className="channel-info__description">
                       {selectedChannel.description}
                     </p>
-                    <p className="channel-info__topics">
+                    <div className="channel-info__topics">
                       <span>Channel Topics: </span>
-                      {selectedChannel?.categories?.map((category) => (
-                        <div className="container-category">{category}</div>
-                      ))}
-                    </p>
+                      <div className="container-topics">
+                        {selectedChannel?.categories?.map((category) => (
+                          <div className="container-category">{category}</div>
+                        ))}
+                      </div>
+                    </div>
                     <CustomButton
                       htmlType="button"
                       text={followed ? "Followed" : "Follow Channel"}
@@ -214,13 +235,71 @@ const Channel = ({
             </div>
             <div className="channel-page__content">
               <div className="tabs-channels">
-                <p className="select">Home</p>
-                <p>Resources</p>
-                <p>Podcasts</p>
-                <p>Videos</p>
-                <p>Events</p>
-                <p>Blogs</p>
+                <p 
+                  ref={firstSelect}
+                  className={(tabData === 0) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 0 )}}
+                >Home</p>
+                <p 
+                  className={(tabData === 1) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 1 )}}
+                >Resources</p>
+                <p 
+                  className={(tabData === 2) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 2 )}}
+                >Podcasts</p>
+                <p 
+                  className={(tabData === 3) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 3 )}}
+                >Videos</p>
+                <p 
+                  className={(tabData === 4) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 4 )}}
+                >Events</p>
+                <p 
+                  className={(tabData === 5) ? "select" : ""}
+                  onClick={(e) => {selectTabs( e , 5 )}}
+                >Blogs</p>
+                <div className="box-select" ref={selectDiv} style={{left: "15px", width: "80px"}}></div>
               </div>
+              {(tabData === 0) &&
+                <div>
+                  <div className="card-content-home" style={{height: "475px"}}>
+                    <h3>Resources</h3>
+                    <ResourcesList
+                      type="article"
+                      refresh={currentTab === "0"}
+                      isOwner={isChannelOwner}
+                    />
+                  </div>
+                  <div className="card-content-home" style={{height: "475px"}}>
+                    <h3>Podcasts</h3>
+                    <PodcastsList 
+                      isOwner={isChannelOwner} 
+                    />
+                  </div>
+                  <div className="card-content-home" style={{height: "475px"}}>
+                    <h3>Videos</h3>
+                    <ResourcesList
+                      type="video"
+                      refresh={currentTab === "0"}
+                      isOwner={isChannelOwner}
+                    />
+                  </div>
+                  <div className="card-content-home" style={{height: "540px"}}>
+                    <h3>Events</h3>
+                    <EventsList 
+                      isOwner={isChannelOwner}
+                    />
+                  </div>
+                  <div className="card-content-home" style={{height: "475px"}}>
+                    <h3>Blogs</h3>
+                    <BlogList
+                      isOwner={isChannelOwner}
+                    />
+                  </div>
+                </div>
+              }
               {/* <Tabs
                 data={TabData}
                 current={currentTab}

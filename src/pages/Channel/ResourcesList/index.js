@@ -115,7 +115,7 @@ const ResourcesList = ({
   }, [channel, filter, refresh]);
 
   return (
-    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap">
       <LibraryAddDrawer
         visible={visibleDrawer}
         type={type}
@@ -135,7 +135,7 @@ const ResourcesList = ({
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && (
+            {/* {isOwner && (
               <CustomButton
                 text={(type === "article") ? "Add Resources" : "Add Videos"}
                 htmlType="submit"
@@ -144,7 +144,7 @@ const ResourcesList = ({
                 className="buttomAddR"
                 onClick={() => onShowResourceModal()}
               />
-            )}
+            )} */}
             {resources.map((item, index) => (
               <LibraryCard
                 type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
