@@ -183,10 +183,10 @@ const BonfiresPage = ({
   const onDownloadCsv = async (b) => {
     const buffer = await downloadCsvWithParticipants(b.id);
 
-    var fileURL = window.URL.createObjectURL(
+    let fileURL = window.URL.createObjectURL(
       new Blob([buffer.data], { type: "application/vnd.ms-excel" })
     );
-    var fileLink = document.createElement("a");
+    let fileLink = document.createElement("a");
 
     fileLink.href = fileURL;
     fileLink.setAttribute("download", `${b.title}.xlsx`);
