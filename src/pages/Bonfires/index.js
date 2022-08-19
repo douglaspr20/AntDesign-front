@@ -223,7 +223,7 @@ const BonfiresPage = ({
 
   useEffect(() => {
     const getAllBonfires = async () => {
-      getBonfires(filters);
+      getBonfires({ ...filters, date: moment().utc().format() });
     };
 
     getAllBonfires();
