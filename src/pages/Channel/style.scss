@@ -275,19 +275,23 @@
     width: calc(100% - 60px);
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-start;
     
-    span{
-      margin: 0px;
-      padding: 0px;
-      margin-top: 7.5px;
-      font-weight: bold;
-      display: inline-block;
-      overflow-wrap: normal;
+    .content-title-channel-topics{
       width: 110px;
+
+      span{
+        margin: 0px;
+        padding: 0px;
+        margin-top: 7.5px;
+        font-weight: bold;
+        display: inline-block;
+        overflow-wrap: normal;
+        width: 110px;
+      }
     }
+    
 
     .container-topics{
       display: flex;

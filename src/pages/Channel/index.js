@@ -213,7 +213,9 @@ const Channel = ({
                       {selectedChannel.description}
                     </p>
                     <div className="channel-info__topics">
-                      <span>Channel Topics: </span>
+                      <div className="content-title-channel-topics">
+                        <span>Channel Topics: </span>
+                      </div>
                       <div className="container-topics">
                         {selectedChannel?.categories?.map((category) => (
                           <div className="container-category">{category}</div>
