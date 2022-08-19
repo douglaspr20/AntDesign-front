@@ -63,9 +63,6 @@
   overflow: scroll;
   z-index: 1;
 
-  @media (max-width: 1023.98px) {
-    padding: 0rem 1.5rem;
-  }
 }
 
 .channel-page__results::-webkit-scrollbar {
@@ -96,11 +93,6 @@
     left: 0px;
   }
 
-  @media (max-width: 1023.98px) {
-    > * + * {
-      margin-top: 15px;
-    }
-  }
 }
 
 .channel-page__info-column {
@@ -182,8 +174,9 @@
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     backdrop-filter: blur(5px);
     padding: 20px;
-    overflow: hidden;
     margin-top: 20px;
+    padding-bottom: 30px;
+    height: auto;
   }
 
   @media (max-width: 750px) {
@@ -342,22 +335,8 @@
 
   .buttomAddR{
     position: absolute; 
-    top: -6px; 
-    left: 190px;
-  }
-
-  .buttomAddRR{
-    position: absolute; 
-    top: -6px; 
-    left: 190px;
-  }
-
-  @media (max-width: 750px) {
-    .buttomAddR{
-      position: absolute; 
-      top: 40px; 
-      left: 0px;
-    }
+    top: -154px; 
+    left: 240px;
   }
 }
 
@@ -367,16 +346,8 @@
 
     .buttomAddRR{
       position: absolute; 
-      top: -6px; 
-      left: 190px;
-    }
-
-    @media (max-width: 750px) {
-      .buttomAddRR{
-        position: absolute; 
-        top: 40px; 
-        left: 0px;
-      }
+      top: -154px; 
+      left: 240px;
     }
   }
 

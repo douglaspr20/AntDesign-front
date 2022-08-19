@@ -30,6 +30,8 @@ const PodcastsList = ({
   getFirstChannelPodcastList,
   getMoreChannelPodcastList,
   deleteChannelPodcast,
+  limit,
+  buttomEdit
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -86,7 +88,7 @@ const PodcastsList = ({
   }, [channel, filter]);
 
   return (
-    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap">
       <PodcastDrawer
         visible={visibleDrawer}
         edit={editMode}
@@ -104,7 +106,7 @@ const PodcastsList = ({
       ) : (
         <>
           <div className="channels__list">
-            {/* {isOwner && (
+            {(isOwner && buttomEdit) && (
               <CustomButton
                 text="Add Podcasts"
                 htmlType="submit"
@@ -113,16 +115,22 @@ const PodcastsList = ({
                 className="buttomAddR"
                 onClick={() => onShowPodcastModal()}
               />
-            )} */}
-            {podcasts.map((episode) => (
-              <EpisodeCard
-                key={episode.id}
-                type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                links={getPodcastLinks(episode)}
-                onMenuClick={(menu) => handlePodcast(menu, episode)}
-                episode={episode}
-              />
-            ))}
+            )}
+            {podcasts.map((episode,index) => {
+              if(limit > index || limit === 'all'){
+                return (
+                  <EpisodeCard
+                    key={episode.id}
+                    type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    links={getPodcastLinks(episode)}
+                    onMenuClick={(menu) => handlePodcast(menu, episode)}
+                    episode={episode}
+                  />
+                )
+              }else{
+                return (<div key={episode.id}></div>)
+              }
+            })}
           </div>
           {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
             <div className="channel-page-loading d-flex justify-center items-center">

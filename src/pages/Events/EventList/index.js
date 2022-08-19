@@ -6,30 +6,38 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { convertToLocalTime } from "utils/format";
 
-import { DateAvatar, EventCard, CustomButton } from "components";
+import { 
+  // DateAvatar, 
+  EventCard, 
+  CustomButton 
+} from "components";
 import { NoEventCard } from "components";
 import Emitter from "services/emitter";
-import { EVENT_TYPES, SETTINGS, CARD_TYPE } from "enum";
+import { 
+  EVENT_TYPES, 
+  //SETTINGS,
+  CARD_TYPE 
+} from "enum";
 import { envSelector } from "redux/selectors/envSelector";
 
 import "./style.scss";
 
-const monthStr = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
+// const monthStr = [
+//   "JAN",
+//   "FEB",
+//   "MAR",
+//   "APR",
+//   "MAY",
+//   "JUN",
+//   "JUL",
+//   "AUG",
+//   "SEP",
+//   "OCT",
+//   "NOV",
+//   "DEC",
+// ];
 
-const DataFormat = SETTINGS.DATE_FORMAT;
+// const DataFormat = SETTINGS.DATE_FORMAT;
 
 const EventList = ({
   data,
@@ -44,9 +52,13 @@ const EventList = ({
   onConfirmAttendance,
   onConfirmCredit,
   userProfile,
+  limit,
+  buttomEdit,
   ...rest
 }) => {
   const [groupedByEventData, setGroupedByEventData] = useState({});
+
+  let num = -1
 
   const onEventChanged = (event, going) => {
     event.going = going;
@@ -104,7 +116,7 @@ const EventList = ({
         />
       </div>
       {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
-      {/* {edit && type === CARD_TYPE.EDIT && (
+      {(edit && type === CARD_TYPE.EDIT && buttomEdit) && (
         <CustomButton
           text="Add Events"
           htmlType="submit"
@@ -113,42 +125,48 @@ const EventList = ({
           className="buttomAddRR"
           onClick={() => onAddEvent()}
         />
-      )} */}
+      )}
       {Object.keys(groupedByEventData).map((date) => {
 
-        const day = moment(date, DataFormat).date();
-        const month = moment(date, DataFormat).month();
+        // const day = moment(date, DataFormat).date();
+        // const month = moment(date, DataFormat).month();
 
-        return (moment().isBefore(moment(date,'YYYY.MM.DD'), 'minute') === true) ? (
-          <div
-            className="event-list-batch"
-            key={`${date}-${getRandomNumber()}`}
-          >
-            {/* <DateAvatar day={day} month={monthStr[month]} /> */}
-            <Row gutter={[0, 36]}>
-              {groupedByEventData[date].map((event, index) => (
-                <Col
-                  key={`col-${date}-${getRandomNumber()}`}
-                  span={24}
-                  className="event-list-item"
-                >
-                  <EventCard
-                    edit={edit}
-                    data={event}
-                    userProfile={userProfile}
-                    onAttend={(going) => onEventChanged(event, going)}
-                    onClick={onClick}
-                    onMenuClick={(menu) => onMenuClick(menu, event)}
-                    onConfirmAttendance={onConfirmAttendance}
-                    onConfirmCredit={onConfirmCredit}
-                  />
-                </Col>
-              ))}
-            </Row>
-          </div>
-        ) : (
-          <div></div>
-        )
+        if((moment().isBefore(moment(date,'YYYY.MM.DD'), 'minute') === true)){
+          num++
+
+          return (limit > num || limit === 'all') ? (
+            <div
+              className="event-list-batch"
+              key={`${date}-${getRandomNumber()}`}
+            >
+              {/* <DateAvatar day={day} month={monthStr[month]} /> */}
+              <Row gutter={[0, 36]}>
+                {groupedByEventData[date].map((event, index) => (
+                  <Col
+                    key={`col-${date}-${getRandomNumber()}`}
+                    span={24}
+                    className="event-list-item"
+                  >
+                    <EventCard
+                      edit={edit}
+                      data={event}
+                      userProfile={userProfile}
+                      onAttend={(going) => onEventChanged(event, going)}
+                      onClick={onClick}
+                      onMenuClick={(menu) => onMenuClick(menu, event)}
+                      onConfirmAttendance={onConfirmAttendance}
+                      onConfirmCredit={onConfirmCredit}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          ) : (
+            <div key={`${date}-${getRandomNumber()}`}></div>
+          ) 
+        }else{
+          return(<div key={`${date}-${getRandomNumber()}`}></div>)
+        }
       })}
     </div>
   );

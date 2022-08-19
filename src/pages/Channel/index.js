@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 
-import { Tabs, CustomButton } from "components";
+import { CustomButton } from "components";
 import { INTERNAL_LINKS, USER_ROLES } from "enum";
 // import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
@@ -24,7 +24,6 @@ import IconBack from "images/icon-back.svg";
 import "./style.scss";
 
 const Channel = ({
-  match,
   history,
   selectedChannel,
   channelLoading,
@@ -68,47 +67,6 @@ const Channel = ({
     }
   };
 
-  const TabData = [
-    {
-      title: "Resources",
-      content: () => (
-        <ResourcesList
-          type="article"
-          refresh={currentTab === "0"}
-          // filter={filter}
-          isOwner={isChannelOwner}
-        />
-      ),
-    },
-    {
-      title: "Podcasts",
-       content: () => <PodcastsList isOwner={isChannelOwner} 
-        // filter={filter} 
-       />,
-    },
-    {
-      title: "Videos",
-      content: () => (
-        <ResourcesList
-          refresh={currentTab === "2"}
-          type="video"
-          // filter={filter}
-          isOwner={isChannelOwner}
-        />
-      ),
-    },
-    {
-      title: "Events",
-      content: () => <EventsList isOwner={isChannelOwner} 
-      // filter={filter} 
-      />,
-    },
-    {
-      title: "Blogs",
-      content: () => <BlogList isOwner={isChannelOwner} />,
-    },
-  ];
-
   useEffect(() => {
     if (userProfile && selectedChannel) {
       setIsChannelOwner(
@@ -121,22 +79,6 @@ const Channel = ({
       );
     }
   }, [userProfile, selectedChannel]);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   if (match.params.id) {
-  //     getChannel(match.params.id, (error) => {
-  //       if (isMounted && error) {
-  //         history.push(INTERNAL_LINKS.NOT_FOUND);
-  //       }
-  //     });
-  //   }
-
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const fixNameUrl = (name) => {
 
@@ -170,16 +112,15 @@ const Channel = ({
   const selectTabs = (e, index) => {
     setTabData(index)
     selectDiv.current.style.cssText = `left: ${e.target.offsetLeft}px; width: ${e.target.clientWidth}px;`
+    setHeightData(`${Number(contentBackground?.current?.clientHeight) + 15}px`)
   }
 
-  useEffect(() => {
-    if(contentBackground.current){
-      setHeightData(`${Number(contentBackground.current.clientHeight) + 15}px`)
-    }
-  }, [contentBackground])
+  const loadFunction = () => {
+    setHeightData(`${Number(contentBackground?.current?.clientHeight) + 15}px`) 
+  } 
 
   return (
-    <div className="channel-page">
+    <div className="channel-page" onLoad={() => loadFunction()}>
       {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
       <div className="channel-page__container">
         <Link to={INTERNAL_LINKS.CHANNELS} >
@@ -217,8 +158,8 @@ const Channel = ({
                         <span>Channel Topics: </span>
                       </div>
                       <div className="container-topics">
-                        {selectedChannel?.categories?.map((category) => (
-                          <div className="container-category">{category}</div>
+                        {selectedChannel?.categories?.map((category,index) => (
+                          <div className="container-category" key={index}>{category}</div>
                         ))}
                       </div>
                     </div>
@@ -226,7 +167,7 @@ const Channel = ({
                       htmlType="button"
                       text={followed ? "Followed" : "Follow Channel"}
                       type={followed ? "secondary" : "primary"}
-                      size="md"
+                      size="sm"
                       style={{marginLeft: "30px"}}
                       loading={channelLoading}
                       onClick={followChannel}
@@ -266,47 +207,101 @@ const Channel = ({
               </div>
               {(tabData === 0) &&
                 <div>
-                  <div className="card-content-home" style={{height: "475px"}}>
+                  <div className="card-content-home">
                     <h3>Resources</h3>
                     <ResourcesList
                       type="article"
                       refresh={currentTab === "0"}
                       isOwner={isChannelOwner}
+                      limit={2}
                     />
                   </div>
-                  <div className="card-content-home" style={{height: "475px"}}>
+                  <div className="card-content-home">
                     <h3>Podcasts</h3>
                     <PodcastsList 
                       isOwner={isChannelOwner} 
+                      limit={2}
                     />
                   </div>
-                  <div className="card-content-home" style={{height: "475px"}}>
+                  <div className="card-content-home">
                     <h3>Videos</h3>
                     <ResourcesList
                       type="video"
                       refresh={currentTab === "0"}
                       isOwner={isChannelOwner}
+                      limit={2}
                     />
                   </div>
-                  <div className="card-content-home" style={{height: "540px"}}>
+                  <div className="card-content-home">
                     <h3>Events</h3>
                     <EventsList 
                       isOwner={isChannelOwner}
+                      limit={2}
                     />
                   </div>
-                  <div className="card-content-home" style={{height: "475px"}}>
+                  <div className="card-content-home">
                     <h3>Blogs</h3>
                     <BlogList
                       isOwner={isChannelOwner}
+                      limit={2}
                     />
                   </div>
                 </div>
               }
-              {/* <Tabs
-                data={TabData}
-                current={currentTab}
-                onChange={setCurrentTab}
-              /> */}
+              {(tabData === 1) && (
+                <div className="card-content-home">
+                  <h3>Resources</h3>
+                  <ResourcesList
+                    type="article"
+                    refresh={currentTab === "0"}
+                    isOwner={isChannelOwner}
+                    limit={'all'}
+                    buttomEdit={true}
+                  />
+                </div>
+              )}
+              {(tabData === 2) && (
+                <div className="card-content-home">
+                  <h3>Podcasts</h3>
+                  <PodcastsList 
+                    isOwner={isChannelOwner} 
+                    limit={'all'}
+                    buttomEdit={true}
+                  />
+                </div>
+              )}
+              {(tabData === 3) && (
+                <div className="card-content-home">
+                  <h3>Videos</h3>
+                  <ResourcesList
+                    type="video"
+                    refresh={currentTab === "0"}
+                    isOwner={isChannelOwner}
+                    limit={'all'}
+                    buttomEdit={true}
+                  />
+                </div>
+              )}
+              {(tabData === 4) && (
+                <div className="card-content-home">
+                  <h3>Events</h3>
+                  <EventsList 
+                    isOwner={isChannelOwner}
+                    limit={'all'}
+                    buttomEdit={true}
+                  />
+                </div>
+              )}
+              {(tabData === 5) && (
+                <div className="card-content-home">
+                  <h3>Blogs</h3>
+                  <BlogList
+                    isOwner={isChannelOwner}
+                    limit={'all'}
+                    buttomEdit={true}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

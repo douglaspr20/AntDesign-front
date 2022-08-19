@@ -4,6 +4,9 @@
   padding-top: 40px;
   height: calc(100vh - 200px);
   overflow: hidden scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 
   &::-webkit-scrollbar {
     width: 10px;
@@ -32,7 +35,7 @@
   }
 
   &-batch {
-    width: 50%;
+    width: 45%;
     display: block;
 
     .date-avatar {

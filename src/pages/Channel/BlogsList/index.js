@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
 import { notification } from "antd";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
 import {
@@ -28,13 +27,13 @@ const BlogList = ({
   updateBlogPost,
   deleteBlogPost,
   notificationEmailToNewContentCreators,
-  selectedChannel
+  selectedChannel,
+  limit,
+  buttomEdit
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
   const [editOrDeleteBlogPost, setEditOrDeleteBlogPost] = useState({});
-
-  const { id } = useParams();
 
   const onShowBlogPosstModal = () => {
     setVisibleModal(true);
@@ -54,7 +53,7 @@ const BlogList = ({
             message: error,
           });
         }
-        getBlogsPostsByChannel(id);
+        getBlogsPostsByChannel(selectedChannel.id);
 
         return notification.success({
           message: "Blog Updated Successfully",
@@ -62,14 +61,14 @@ const BlogList = ({
       });
     } else {
       createBlogPost(
-        { ...data, UserId: userProfile.id, ChannelId: id },
+        { ...data, UserId: userProfile.id, ChannelId: selectedChannel.id },
         (error) => {
           if (error) {
             return notification.error({
               message: error,
             });
           }
-          getBlogsPostsByChannel(id);
+          getBlogsPostsByChannel(selectedChannel.id);
           notificationEmailToNewContentCreators({
             channelName: selectedChannel.name, 
             channelAdmin: selectedChannel.User.firstName,
@@ -110,7 +109,7 @@ const BlogList = ({
           message: error,
         });
       }
-      getBlogsPostsByChannel(id);
+      getBlogsPostsByChannel(selectedChannel.id);
 
       return notification.success({
         message: "Blog Deleted Successfully",
@@ -122,11 +121,11 @@ const BlogList = ({
   };
 
   useEffect(() => {
-    getBlogsPostsByChannel(id);
-  }, [getBlogsPostsByChannel, id]);
+    getBlogsPostsByChannel(selectedChannel.id);
+  }, [getBlogsPostsByChannel, selectedChannel.id]);
 
   return (
-    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap">
       {visibleModal && (
         <ModalCreateOrEdit
           onCancelModal={onCancelModal}
@@ -169,7 +168,7 @@ const BlogList = ({
       ) : (
         <>
           <div className="channels__list">
-            {/* {isOwner && (
+            {(isOwner && buttomEdit) && (
               <CustomButton
                 text="Add Blog Posts"
                 htmlType="submit"
@@ -178,7 +177,7 @@ const BlogList = ({
                 className="buttomAddR"
                 onClick={() => onShowBlogPosstModal()}
               />
-            )} */}
+            )}
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (
@@ -191,20 +190,26 @@ const BlogList = ({
 
                 return null;
               })
-              .map((blogPost) => (
-                <BlogCard
-                  onMenuClick={handleEditOrDelete}
-                  isOwner={isOwner}
-                  key={blogPost.id}
-                  id={blogPost.id}
-                  image={blogPost.imageUrl}
-                  date={blogPost.createdAt}
-                  title={blogPost.title}
-                  summary={blogPost.summary}
-                  isDraft={blogPost.status === "draft"}
-                  categories={blogPost.categories}
-                />
-              ))}
+              .map((blogPost, index) => {
+                if(limit > index || limit === 'all'){
+                  return (
+                    <BlogCard
+                      onMenuClick={handleEditOrDelete}
+                      isOwner={isOwner}
+                      key={blogPost.id}
+                      id={blogPost.id}
+                      image={blogPost.imageUrl}
+                      date={blogPost.createdAt}
+                      title={blogPost.title}
+                      summary={blogPost.summary}
+                      isDraft={blogPost.status === "draft"}
+                      categories={blogPost.categories}
+                    />
+                  )
+                }else{
+                  return (<div key={blogPost.id}></div>)
+                }
+              })}
           </div>
         </>
       )}

@@ -37,6 +37,8 @@ const ResourcesList = ({
   deleteChannelLibrary,
   setLibrary,
   shareChannelLibrary,
+  limit,
+  buttomEdit
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -135,7 +137,7 @@ const ResourcesList = ({
       ) : (
         <>
           <div className="channels__list">
-            {/* {isOwner && (
+            {(isOwner && buttomEdit) && (
               <CustomButton
                 text={(type === "article") ? "Add Resources" : "Add Videos"}
                 htmlType="submit"
@@ -144,15 +146,21 @@ const ResourcesList = ({
                 className="buttomAddR"
                 onClick={() => onShowResourceModal()}
               />
-            )} */}
-            {resources.map((item, index) => (
-              <LibraryCard
-                type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                key={index}
-                data={item}
-                onMenuClick={(menu) => handleLibrary(menu, item)}
-              />
-            ))}
+            )}
+            {resources.map((item, index) => {
+              if(limit > index || limit === 'all'){
+                return (
+                  <LibraryCard
+                    type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    key={index}
+                    data={item}
+                    onMenuClick={(menu) => handleLibrary(menu, item)}
+                  />
+                )
+              }else{
+                return (<div key={index}></div>)
+              }
+            })}
           </div>
           {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
             <div className="channel-page-loading d-flex justify-center items-center">

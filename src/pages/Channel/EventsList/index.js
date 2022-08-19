@@ -8,6 +8,7 @@ import EventList from "pages/Events/EventList";
 import EventAddEditDrawer from "containers/EventAddEditDrawer";
 import EventDrawer from "containers/EventDrawer";
 import { CARD_TYPE, MONTH_NAMES } from "enum";
+import NoItemsMessageCard from "components/NoItemsMessageCard";
 
 import {
   getChannelEvents,
@@ -30,6 +31,8 @@ const EventsList = ({
   deleteEvent,
   addToMyEventList,
   setEvent,
+  limit,
+  buttomEdit
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -122,7 +125,7 @@ const EventsList = ({
   }, [channelEvents, channel]);
 
   return (
-    <div className="channel-page__list-wrap channels-page__events-list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap channels-page__events-list-wrap">
       <EventAddEditDrawer
         visible={visibleDrawer}
         edit={editMode}
@@ -132,15 +135,23 @@ const EventsList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      <EventList
-        edit={isOwner}
-        type={CARD_TYPE.EDIT}
-        data={futureDataFilter}
-        onClick={onEventClick}
-        onAddEvent={onAddEvent}
-        onAttend={onEventChanged}
-        onMenuClick={handleEvent}
-      />
+      {!isOwner && futureDataFilter?.length === 0 ? (
+        <NoItemsMessageCard
+          message={`There are no Blogs for you at the moment`}
+        />
+       ) : (
+        <EventList
+          edit={isOwner}
+          type={CARD_TYPE.EDIT}
+          data={futureDataFilter}
+          onClick={onEventClick}
+          onAddEvent={onAddEvent}
+          onAttend={onEventChanged}
+          onMenuClick={handleEvent}
+          limit={limit}
+          buttomEdit={buttomEdit}
+        />
+      )}
       <EventDrawer
         visible={visibleEventDrawer}
         event={selectedEvent}
