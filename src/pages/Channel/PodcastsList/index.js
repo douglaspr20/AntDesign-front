@@ -106,13 +106,14 @@ const PodcastsList = ({
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner && buttomEdit) && (
+            {(isOwner) && (
               <CustomButton
                 text="Add Podcasts"
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                className="buttomAddR"
+                className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+                style={(buttomEdit === 'home') ? {left: "130px"} : {}}
                 onClick={() => onShowPodcastModal()}
               />
             )}

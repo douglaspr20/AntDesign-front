@@ -24,6 +24,7 @@ const ChannelForm = ({
   allCategories,
   onSubmit,
   onCancel,
+  type = 'all'
 }) => {
   const [description, setDescription] = useState("");
 
@@ -84,46 +85,91 @@ const ChannelForm = ({
     }
   }, [selectedChannel, edit]);
 
+  const filterChannelForm = {
+    all:{
+      name:true,
+      description: true,
+      image:true,
+      image2:false,
+      categories:true
+    },
+    frontImage:{
+      name:false,
+      description: false,
+      image:true,
+      image2:false,
+      categories:false
+    },
+    content:{
+      name:true,
+      description: true,
+      image:false,
+      image2:false,
+      categories:true
+    },
+    bannerImage:{
+      name:false,
+      description: false,
+      image:false,
+      image2:true,
+      categories: false
+    }
+  }
+
   return (
     <Form
       className="channel-form"
       layout="vertical"
       name="basic"
+      style={{padding: "25px"}}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       onValuesChange={onFormValuesChange}
       ref={refForm}
     >
-      <Form.Item
-        name="name"
-        label="Channel Name"
-        rules={[
-          { required: true, message: "Please enter the channel name.    " },
-        ]}
-      >
-        <CustomInput />
-      </Form.Item>
-      <Form.Item
-        name="description"
-        label={`Description (${Math.min(
-          description ? description.replaceAll("\n", " ").split(" ").length : 0,
-          MAX_DESCRIPTION
-        )}/${MAX_DESCRIPTION})`}
-      >
-        <CustomInput multiple={true} />
-      </Form.Item>
-      <Form.Item name="image" label="Upload image (400 / 152)">
-        <ImageUpload2 width="400px" height="152px" aspect={400 / 152} />
-      </Form.Item>
-      <Form.Item name="categories" label="What are the content topics?">
-        <Checkbox.Group className="d-flex flex-column channel-form-topics">
-          {allCategories.map((topic, index) => (
-            <CustomCheckbox key={index} value={topic.value}>
-              {topic.title}
-            </CustomCheckbox>
-          ))}
-        </Checkbox.Group>
-      </Form.Item>
+      {filterChannelForm[type].name && (
+        <Form.Item
+          name="name"
+          label="Channel Name"
+          rules={[
+            { required: true, message: "Please enter the channel name.    " },
+          ]}
+        >
+          <CustomInput />
+        </Form.Item>
+      )}
+      {filterChannelForm[type].description && (
+        <Form.Item
+          name="description"
+          label={`Description (${Math.min(
+            description ? description.replaceAll("\n", " ").split(" ").length : 0,
+            MAX_DESCRIPTION
+          )}/${MAX_DESCRIPTION})`}
+        >
+          <CustomInput multiple={true} />
+        </Form.Item>
+      )}
+      {filterChannelForm[type].image && (
+        <Form.Item name="image" label="Upload image (400 / 152) px">
+          <ImageUpload2 width="400px" height="152px" aspect={400 / 152} />
+        </Form.Item>
+      )}
+      {filterChannelForm[type].image2 && (
+        <Form.Item name="image2" label="Upload image (900 / 175) px">
+          <ImageUpload2 width="400px" height="152px" aspect={900 / 175} />
+        </Form.Item>
+      )}
+      {filterChannelForm[type].categories && (
+        <Form.Item name="categories" label="What are the content topics?">
+          <Checkbox.Group className="d-flex flex-column channel-form-topics">
+            {allCategories.map((topic, index) => (
+              <CustomCheckbox key={index} value={topic.value}>
+                {topic.title}
+              </CustomCheckbox>
+            ))}
+          </Checkbox.Group>
+        </Form.Item>
+      )}
       <div className="channel-form-footer">
         <CustomButton
           text="Cancel"

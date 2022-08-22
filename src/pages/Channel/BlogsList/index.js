@@ -168,13 +168,14 @@ const BlogList = ({
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner && buttomEdit) && (
+            {(isOwner) && (
               <CustomButton
                 text="Add Blog Posts"
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                className="buttomAddR"
+                className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+                style={(buttomEdit === 'home') ? {left: "100px"} : {}}
                 onClick={() => onShowBlogPosstModal()}
               />
             )}

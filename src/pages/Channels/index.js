@@ -37,6 +37,7 @@ const Channels = ({
   setChannel,
 }) => {
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
+  const [type, setType] = useState(undefined)
   const [filters, setFilters] = useState({});
   const [editMode, setEditMode] = useState(false);
 
@@ -67,12 +68,13 @@ const Channels = ({
     Emitter.emit(EVENT_TYPES.OPEN_CHANNELS_FILTER_PANEL);
   };
 
-  const handleChannel = (menu, channel) => {
+  const handleChannel = (menu, channel, type) => {
     switch (menu) {
       case "edit":
         setEditMode(true);
         setOpenChannelDrawer(true);
         setChannel(channel);
+        setType(type)
         break;
       default:
         break;
@@ -93,6 +95,7 @@ const Channels = ({
         edit={editMode}
         onClose={() => setOpenChannelDrawer(false)}
         onCreated={onChannelCreated}
+        type={type}
       />
       <div className="channels-page__container">
         <div className="search-results-container">
@@ -137,7 +140,9 @@ const Channels = ({
                   image={chnl.image}
                   categories={chnl.categories}
                   isOwner={isChannelOwner}
-                  onMenuClick={(menu) => handleChannel(menu, chnl)}
+                  onMenuClick={(menu, type) => {
+                    handleChannel(menu, chnl, type)
+                  }}
                 />
               );
             })}

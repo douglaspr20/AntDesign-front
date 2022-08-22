@@ -116,6 +116,18 @@ const ResourcesList = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channel, filter, refresh]);
 
+  const leftButtom = () => {
+    if(buttomEdit === 'home'){
+      if(type === 'article'){
+        return `145px`
+      }else{
+        return `105px`
+      }
+    }else{
+      return 
+    }
+  }
+
   return (
     <div className="channel-page__list-wrap">
       <LibraryAddDrawer
@@ -137,13 +149,14 @@ const ResourcesList = ({
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner && buttomEdit) && (
+            {(isOwner) && (
               <CustomButton
                 text={(type === "article") ? "Add Resources" : "Add Videos"}
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                className="buttomAddR"
+                className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+                style={{left: leftButtom()}}
                 onClick={() => onShowResourceModal()}
               />
             )}

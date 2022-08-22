@@ -116,13 +116,14 @@ const EventList = ({
         />
       </div>
       {data && data.length === 0 && type !== CARD_TYPE.EDIT && <NoEventCard />}
-      {(edit && type === CARD_TYPE.EDIT && buttomEdit) && (
+      {(edit && type === CARD_TYPE.EDIT) && (
         <CustomButton
           text="Add Events"
           htmlType="submit"
           size="sm"
           type="primary"
-          className="buttomAddRR"
+          className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+          style={(buttomEdit === 'home') ? {left: "110px"} : {}}
           onClick={() => onAddEvent()}
         />
       )}

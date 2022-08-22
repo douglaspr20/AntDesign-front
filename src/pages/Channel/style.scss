@@ -25,6 +25,7 @@
 .channel-page__container {
   background: #FAFAFC;
   width: 100%;
+  overflow: hidden;
 
   .channel-page__content-top {
     display: flex;
@@ -60,9 +61,8 @@
   height: calc(100vh - 72px);
   width: 100%;
   position: relative;
-  overflow: scroll;
+  overflow: hidden scroll;
   z-index: 1;
-
 }
 
 .channel-page__results::-webkit-scrollbar {
@@ -83,6 +83,7 @@
   padding-top: 25px;
 
   .background-forms{
+    display: none;
     width: 100%;
     background-image: url(../../images/masck.svg);
     background-size: 100% 100vh;
@@ -109,10 +110,35 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   backdrop-filter: blur(5px);
   padding-bottom: 30px;
+  padding-top: 25px;
 
-  > * + * {
-    margin-top: 25px;
+  .pencil-container{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    top: 10px;
+    left: calc(100% - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease-in-out;
+
+    .pencil{
+      background-image: url(../../images/pencil.svg);
+      width: 20px;
+      height: 20px;
+      background-size: 100% 100%;
+    }
   }
+
+  .pencil-container:hover{
+    transition: all 0.4s ease-in-out;
+    background: #ffbda9;
+  }
+
 }
 
 .channel-page__content {
@@ -210,13 +236,51 @@
   position: relative;
   width: 100%;
   padding-top: 20%;
-  border-radius: 20px 20px 50px 50px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.386);
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  margin-bottom: 20px;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .container-image{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    background: rgba(255, 255, 255, 0.326);
+  }
+
+  .pencil-container{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    top: 10px;
+    left: calc(100% - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease-in-out;
+
+    .pencil{
+      background-image: url(../../images/pencil.svg);
+      width: 20px;
+      height: 20px;
+      background-size: 100% 100%;
+    }
+  }
+
+  .pencil-container:hover{
+    transition: all 0.4s ease-in-out;
+    background: #ffbda9;
   }
 
   & > * {
@@ -277,7 +341,6 @@
       span{
         margin: 0px;
         padding: 0px;
-        margin-top: 7.5px;
         font-weight: bold;
         display: inline-block;
         overflow-wrap: normal;
@@ -287,28 +350,19 @@
     
 
     .container-topics{
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-        
-      .container-category{
-        padding: 2px 20px 5px 20px;
-        margin: 0px;
-        border-radius: 5px;
-        border-width: 2px 2px 2px 2px;
-        border-style: solid;
-        border-color: #438CEF;
-        color: #438CEF;
-        margin-left: 10px;
-        font-size: 14px;
-        line-height: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: translateY(1px);
-        margin-top: 5px;
-        margin-bottom: 5px;
+      font-weight: bold ;
+      color: $color-text-primary ;
+      margin-bottom: 0px ;
+
+      span{
+        font-weight: 500 ;
+        margin-left: 5px ;
       }
+
+      @media (max-width: 575.98px) {
+        @include app-font(16px, 21px);
+      }
+      
     }
     
   }
@@ -338,17 +392,29 @@
     top: -154px; 
     left: 240px;
   }
+
+  .buttomAddRR{
+    position: absolute;
+    top: 17px;
+  }
+
 }
 
 .channels-page__events-list-wrap {
   .event-list {
     height: auto;
 
-    .buttomAddRR{
+    .buttomAddR{
       position: absolute; 
       top: -154px; 
       left: 240px;
     }
+
+    .buttomAddRR{
+      position: absolute;
+      top: 17px;
+    }
+
   }
 
   .event-list-filters {
