@@ -11,6 +11,7 @@ import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
 import EventsList from "./EventsList";
 import BlogList from "./BlogsList";
+// import Followers from "./Followers";
 
 import { getUser } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -180,16 +181,16 @@ const Channel = ({
                   <h2>{"Upload image (900 x 175 px)"}</h2>
                 </div>
               )}
-              <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('bannerImage')}}>
+              {isChannelOwner && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('bannerImage')}}>
                 <div className="pencil"></div>
-              </div>
+              </div>}
             </div>
             <div className="channel-page__info-column">
               {!isEmpty(selectedChannel) && (
                 <>
-                  <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('content')}}>
+                  {isChannelOwner && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('content')}}>
                     <div className="pencil"></div>
-                  </div>
+                  </div>}
                   <div className="channel-info__general-info">
                     <h2 className="channel-info__name">
                       {selectedChannel.name}
@@ -358,6 +359,15 @@ const Channel = ({
                     buttomEdit={'Blogs'}
                   />
                 </div>
+              )}
+              {(tabData === 6) && (
+                <div className="card-content-home">
+                <h3>Followers</h3>
+                {/* <Followers
+                  followers={}
+                  index={}
+                /> */}
+              </div>
               )}
             </div>
           </div>

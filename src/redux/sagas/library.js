@@ -189,6 +189,8 @@ export function* updateChannelLibrarySaga({ payload }) {
 export function* getFirstChannelLibraryList({ payload }) {
   yield put(homeActions.setLoading(true));
 
+  console.log(payload)
+
   try {
     const response = yield call(searchChannelLibrary, { ...payload });
 
@@ -223,7 +225,7 @@ export function* getMoreChannelLibraryList({ payload }) {
         libraryActions.setMoreChannelLibraryList(
           response.data.libraries.count,
           payload.filter.page,
-          response.data.libraries.rows
+          response.data.libraries.rows,
         )
       );
     }

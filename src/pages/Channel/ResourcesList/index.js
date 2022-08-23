@@ -62,10 +62,18 @@ const ResourcesList = ({
 
   const getFirstBunchOfResources = () => {
     if (channel && channel.id) {
-      getFirstChannelLibraryList(
-        { ...filter, channel: channel.id, contentType: type },
-        "newest-first"
-      );
+      if(type === 'article'){
+        getFirstChannelLibraryList(
+          { ...filter, channel: channel.id, contentType: type },
+          "newest-first"
+        );
+      }
+      if(type === 'video'){
+        // getFirstChannelLibraryList(
+        //   { ...filter, channel: channel.id, contentType: type },
+        //   "newest-first"
+        // );
+      }
     }
   };
 
