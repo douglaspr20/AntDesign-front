@@ -27,6 +27,7 @@ const BlogCard = ({
   categories,
   date,
   isOwner,
+  isEditor,
   isDraft,
   onMenuClick,
 }) => {
@@ -80,7 +81,7 @@ const BlogCard = ({
             <div className="blog-card-content-date">
               <span>{moment(date).format("MM/DD/YYYY")}</span>
             </div>
-            {isOwner && (
+            {isOwner || isEditor && (
               <CardMenu
                 menus={CARD_MENUS.slice(0, 2)}
                 onClick={(option) => onMenuClick(option, id)}
@@ -107,6 +108,7 @@ BlogCard.propTypes = {
   onAdd: PropTypes.func,
   date: PropTypes.string,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   isDraft: PropTypes.bool,
   onMenuClick: PropTypes.func,
 };
@@ -118,6 +120,7 @@ BlogCard.defaultProps = {
   onAdd: () => {},
   categories: [],
   isOwner: false,
+  isEditor: false,
   isDraft: false,
   date: `${moment().format("MM/DD/YYYY")}`,
   onMenuClick: () => {},

@@ -52,6 +52,13 @@ export const reducers = {
       countOfResults: payload.total,
     });
   },
+  [libraryConstants.SET_FIRST_CHANNEL_LIBRARY_LIST_HOME]: (state, { payload }) => {
+    return state.merge({
+      allLibrariesArticle: cloneDeep([...payload.channelLibraries]),
+      currentPagueArticle: payload.page,
+      countOfResultsArticle: payload.total,
+    });
+  },
   [libraryConstants.SET_MORE_CHANNEL_LIBRARY_LIST]: (state, { payload }) => {
     const allLibraries = state.get("allLibraries");
     return state.merge({
@@ -125,7 +132,10 @@ export const initialState = () =>
     selectedLibrary: {},
     recommendations: {},
     allCompletedLibraries: [],
-    allSaveForLaterLibraries: []
+    allSaveForLaterLibraries: [],
+    allLibrariesArticle: [],
+    countOfResultsArticle: 0,
+    currentPagueArticle: 1,
   });
 
 export default handleActions(reducers, initialState());

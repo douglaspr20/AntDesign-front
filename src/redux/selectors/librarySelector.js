@@ -13,7 +13,9 @@ const resultSelector = createSelector(libraryDataSelector, (payload) => {
     recommendations: payload.get("recommendations"),
     allCompletedLibraries: payload.get("allCompletedLibraries"),
     allSaveForLaterLibraries: payload.get("allSaveForLaterLibraries"),
-    allLibrariesResources: payload.get("allLibrariesResources")
+    allLibrariesArticle: payload.get("allLibrariesArticle"),
+    currentPagueArticle: payload.get("currentPagueArticle"),
+    countOfResultsArticle: payload.get("countOfResultsArticle")
   };
 });
 

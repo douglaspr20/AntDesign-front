@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 
-import { CustomButton } from "components";
-import { INTERNAL_LINKS, USER_ROLES } from "enum";
+import { CustomButton, CardMenu } from "components";
+import { Form, Select, Modal, Table, Space } from "antd";
+import { INTERNAL_LINKS, USER_ROLES, TABS_CHANNELS } from "enum";
 import ChannelDrawer from "containers/ChannelDrawer";
 // import ChannelFilterPanel from "./ChannelFilterPanel";
 import ResourcesList from "./ResourcesList";
 import PodcastsList from "./PodcastsList";
 import EventsList from "./EventsList";
 import BlogList from "./BlogsList";
-// import Followers from "./Followers";
+import Followers from "./Followers";
 
 import { getUser } from "redux/actions/home-actions";
 import { homeSelector } from "redux/selectors/homeSelector";
@@ -20,11 +21,17 @@ import { categorySelector } from "redux/selectors/categorySelector";
 import {
   setFollowChannel,
   unsetFollowChannel,
-  getChannelForName
+  getChannelForName,
+  downloadFollowersChannels,
+  setNewsChannelEditor,
+  getChannelEditor,
+  deleteChannelEditor,
 } from "redux/actions/channel-actions";
+import { searchUser } from "redux/actions/home-actions"
 import { capitalizeWord } from "utils/format";
 
 import IconBack from "images/icon-back.svg";
+import IconMenu from "images/icon-menu.svg";
 
 import "./style.scss";
 
@@ -37,15 +44,26 @@ const Channel = ({
   unsetFollowChannel,
   getChannelForName,
   allCategories,
+  followers,
+  searchUsers,
+  searchUser,
+  downloadFollowersChannels,
+  setNewsChannelEditor,
+  getChannelEditor,
+  deleteChannelEditor,
+  userChannelEditor
 }) => {
   const selectDiv = useRef()
   const firstSelect = useRef()
   const contentBackground = useRef() 
+  const widthTab = useRef()
   const { pathname } = useLocation();
+  const [rolesCHannelsForms] = Form.useForm();
   // const query = new URLSearchParams(search);
 
   // const [currentTab, setCurrentTab] = useState(query.get("tab") || "0");
   const [isChannelOwner, setIsChannelOwner] = useState(true);
+  const [isChannelEditor, setIsChannelEditor] = useState(true);
   const [heightData, setHeightData] = useState(`0px`)
   const [tabData, setTabData] = useState(0)
   const [type, setType] = useState(undefined)
@@ -53,8 +71,10 @@ const Channel = ({
   const [followed, setFollowed] = useState(false);
   const [dataCategoriesState, setDataCategoriesState] = useState()
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
+  const [openPopUpSpeakers, setOpenPopUpSpeakers] = useState(false)
 
   let clock
+  const { Option } = Select;
 
   useEffect(() => {
     let objectAllCategories = {}
@@ -80,6 +100,12 @@ const Channel = ({
   //   setFilter(values);
   // };
 
+  const handleSearchSpeakers = (data) => {
+    if(data !== ""){
+      searchUser(data)
+    }
+  }
+
   const followChannel = () => {
     if (followed) {
       unsetFollowChannel(selectedChannel);
@@ -95,6 +121,11 @@ const Channel = ({
           !!userProfile.channel &&
           userProfile.channel === selectedChannel.id
       );
+      setIsChannelEditor(
+        userProfile.role === USER_ROLES.CHANNEL_CONTENT_EDITOR &&
+          !!userProfile.channel &&
+          userProfile.channel === selectedChannel.id
+      )
       setFollowed(
         (selectedChannel.followedUsers || []).includes(userProfile.id)
       );
@@ -122,6 +153,7 @@ const Channel = ({
             history.push(INTERNAL_LINKS.NOT_FOUND);
           }
         });
+        getChannelEditor(selectedChannel?.id)
       }
   
       return () => {
@@ -132,11 +164,13 @@ const Channel = ({
 
   const selectTabs = (e, index) => {
     setTabData(index)
-    selectDiv.current.style.cssText = `left: ${e.target.offsetLeft}px; width: ${e.target.clientWidth}px;`
-    clearTimeout(clock)
-    clock = setTimeout(() => {
-      setHeightData(`${Number(contentBackground?.current?.clientHeight) + 15}px`)
-    }, 100)
+    if(e !== undefined){
+      selectDiv.current.style.cssText = `left: ${e.target.offsetLeft}px; width: ${e.target.clientWidth}px; display: 'block'`
+      clearTimeout(clock)
+      clock = setTimeout(() => {
+        setHeightData(`${Number(contentBackground?.current?.clientHeight) + 15}px`)
+      }, 100)
+    }
   }
 
   const loadFunction = () => {
@@ -156,6 +190,58 @@ const Channel = ({
     });
   };
 
+  const dataSourceColumnsContentEditors = [
+    {
+      title: "Profile",
+      dataIndex: "firstName",
+      key: "1",
+      width:50,
+      align: "center",
+      render: (text, record) => {
+        return (
+          <Followers
+            followers={record}
+          />
+        )
+      },
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "2",
+      width:50,
+      align: "center",
+      render: () => {
+        return ('Content editor')
+      },
+    },
+    {
+      title: "Actions",
+      dataIndex: "Actions",
+      key: "Actions",
+      align:"center",
+      width: 20,
+      render: (_, data) => (
+        <Space>
+          <CustomButton
+            text="Delete"
+            size="sm"
+            style={{padding:"0px 10px"}}
+            onClick={() => {
+              if(isChannelOwner){
+                deleteChannelEditor(data?.id, (err) => {
+                  if(!err){
+                    getChannelEditor(selectedChannel?.id)
+                  }
+                })
+              }
+            }}
+          />
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="channel-page" onLoad={() => loadFunction()}>
       {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
@@ -174,21 +260,21 @@ const Channel = ({
 
             </div>
             <div className="channel-info__user">
-              {selectedChannel.image2 ? (
-                <img src={selectedChannel.image2} alt="user-icon" />
+              {selectedChannel?.image2 ? (
+                <img src={selectedChannel?.image2} alt="user-icon" />
               ) : (
                 <div className="container-image">
                   <h2>{"Upload image (900 x 175 px)"}</h2>
                 </div>
               )}
-              {isChannelOwner && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('bannerImage')}}>
+              {(isChannelOwner || isChannelEditor) && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('bannerImage')}}>
                 <div className="pencil"></div>
               </div>}
             </div>
             <div className="channel-page__info-column">
               {!isEmpty(selectedChannel) && (
                 <>
-                  {isChannelOwner && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('content')}}>
+                  {(isChannelOwner || isChannelEditor) && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('content')}}>
                     <div className="pencil"></div>
                   </div>}
                   <div className="channel-info__general-info">
@@ -222,41 +308,63 @@ const Channel = ({
               )}
             </div>
             <div className="channel-page__content">
-              <div className="tabs-channels">
-                <p 
-                  ref={firstSelect}
-                  className={(tabData === 0) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 0 )}}
-                >Home</p>
-                <p 
-                  className={(tabData === 1) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 1 )}}
-                >Resources</p>
-                <p 
-                  className={(tabData === 2) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 2 )}}
-                >Podcasts</p>
-                <p 
-                  className={(tabData === 3) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 3 )}}
-                >Videos</p>
-                <p 
-                  className={(tabData === 4) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 4 )}}
-                >Events</p>
-                <p 
-                  className={(tabData === 5) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 5 )}}
-                >Blogs</p>
-                <p
-                  className={(tabData === 6) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 6 )}}
-                >Followers</p>
-                <p
-                  className={(tabData === 7) ? "select" : ""}
-                  onClick={(e) => {selectTabs( e , 7 )}}
-                >Admin tools</p>
-                <div className="box-select" ref={selectDiv} style={{left: "15px", width: "80px"}}></div>
+              <div className="tabs-channels" ref={widthTab}>
+                <div className="calc-with-tabs">
+                  <p 
+                    ref={firstSelect}
+                    className={(tabData === 0) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 0 )}}
+                  >Home</p>
+                  <p 
+                    className={(tabData === 1) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 1 )}}
+                  >Resources</p>
+                  <p 
+                    className={(tabData === 2) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 2 )}}
+                  >Podcasts</p>
+                  <p 
+                    className={(tabData === 3) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 3 )}}
+                  >Videos</p>
+                  <p 
+                    className={(tabData === 4) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 4 )}}
+                  >Events</p>
+                  <p 
+                    className={(tabData === 5) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 5 )}}
+                  >Blogs</p>
+                  <p
+                    className={(tabData === 6) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 6 )}}
+                  >Followers</p>
+                  <p
+                    className={(tabData === 7) ? "select" : ""}
+                    onClick={(e) => {selectTabs( e , 7 )}}
+                  >Admin tools</p>
+                </div>
+                <div className="box-select" ref={selectDiv} style={{left: "15px", width: "80px", display: 'block'}}></div>
+                <div 
+                  className="container-card-menu"
+                  style={(widthTab?.current?.clientWidth > widthTab?.current?.children[0]?.clientWidth) ?
+                    {display: 'none'} :
+                    {display: "flex"}
+                  }
+                >
+                  <CardMenu 
+                    menus={TABS_CHANNELS} 
+                    onClick={(value) => {
+                      selectDiv.current.style.cssText = `left: 15px; width: 80px; display: none;`
+                      selectTabs( undefined , value )
+                    }} 
+                    container={widthTab.current}
+                  >
+                    <div className="library-card-menu-tab">
+                      <img src={IconMenu} alt="icon-menu" />
+                    </div>
+                  </CardMenu>
+                </div>
               </div>
               {(tabData === 0) &&
                 <div>
@@ -266,6 +374,7 @@ const Channel = ({
                       type="article"
                       refresh={tabData === 0}
                       isOwner={isChannelOwner}
+                      isEditor={isChannelEditor}
                       limit={2}
                       buttomEdit={'home'}
                     />
@@ -273,7 +382,8 @@ const Channel = ({
                   <div className="card-content-home">
                     <h3>Podcasts</h3>
                     <PodcastsList 
-                      isOwner={isChannelOwner} 
+                      isOwner={isChannelOwner}
+                      isEditor={isChannelEditor} 
                       limit={2}
                       buttomEdit={'home'}
                     />
@@ -281,9 +391,10 @@ const Channel = ({
                   <div className="card-content-home">
                     <h3>Videos</h3>
                     <ResourcesList
-                      type="video"
+                      type="videoHome"
                       refresh={tabData === 0}
                       isOwner={isChannelOwner}
+                      isEditor={isChannelEditor}
                       limit={2}
                       buttomEdit={'home'}
                     />
@@ -292,6 +403,7 @@ const Channel = ({
                     <h3>Events</h3>
                     <EventsList 
                       isOwner={isChannelOwner}
+                      isEditor={isChannelEditor}
                       limit={2}
                       buttomEdit={'home'}
                     />
@@ -300,6 +412,7 @@ const Channel = ({
                     <h3>Blogs</h3>
                     <BlogList
                       isOwner={isChannelOwner}
+                      isEditor={isChannelEditor}
                       limit={2}
                       buttomEdit={'home'}
                     />
@@ -313,6 +426,7 @@ const Channel = ({
                     type="article"
                     refresh={tabData === 1}
                     isOwner={isChannelOwner}
+                    isEditor={isChannelEditor}
                     limit={'all'}
                     buttomEdit={'resources'}
                   />
@@ -322,7 +436,8 @@ const Channel = ({
                 <div className="card-content-home">
                   <h3>Podcasts</h3>
                   <PodcastsList 
-                    isOwner={isChannelOwner} 
+                    isOwner={isChannelOwner}
+                    isEditor={isChannelEditor} 
                     limit={'all'}
                     buttomEdit={'Podcasts'}
                   />
@@ -335,6 +450,7 @@ const Channel = ({
                     type="video"
                     refresh={tabData === 3}
                     isOwner={isChannelOwner}
+                    isEditor={isChannelEditor}
                     limit={'all'}
                     buttomEdit={'Videos'}
                   />
@@ -345,6 +461,7 @@ const Channel = ({
                   <h3>Events</h3>
                   <EventsList 
                     isOwner={isChannelOwner}
+                    isEditor={isChannelEditor}
                     limit={'all'}
                     buttomEdit={'Events'}
                   />
@@ -355,6 +472,7 @@ const Channel = ({
                   <h3>Blogs</h3>
                   <BlogList
                     isOwner={isChannelOwner}
+                    isEditor={isChannelEditor}
                     limit={'all'}
                     buttomEdit={'Blogs'}
                   />
@@ -363,11 +481,55 @@ const Channel = ({
               {(tabData === 6) && (
                 <div className="card-content-home">
                 <h3>Followers</h3>
-                {/* <Followers
-                  followers={}
-                  index={}
-                /> */}
+                <div className="ajust-contain">
+                  {followers?.map((user, index) => (
+                      <Followers
+                        followers={user}
+                        index={index}
+                      />
+                  ))}
+                </div>
               </div>
+              )}
+              {(tabData === 7) && (
+                <div>
+                  <div className="card-content-home">
+                    <h4 style={{paddingBottom: "20px"}}>Actions</h4>
+                    <div className="content-botton margin-botton-content">
+                      <CustomButton
+                        htmlType="button"
+                        text={"Download list of followers"}
+                        type={"primary"}
+                        size="sm"
+                        onClick={() => {downloadFollowersChannels(selectedChannel?.id)}}
+                      />
+                    </div>
+                    {isChannelOwner && <div className="content-botton">
+                      <CustomButton
+                        htmlType="button"
+                        text={"Add content editor"}
+                        type={"primary"}
+                        size="sm"
+                        onClick={() => {setOpenPopUpSpeakers(true)}}
+                      />
+                    </div>}
+                  </div>
+                  {isChannelOwner && 
+                    <div className="card-content-home">
+                      <h4>Contents editor</h4>
+                      <div>
+                        <Table
+                          dataSource={userChannelEditor}
+                          columns={dataSourceColumnsContentEditors}
+                          rowKey="id"
+                          pagination={false}
+                          scroll={{ y: "400px", x: "300px" }}
+                          style={{testAlign:"center"}}
+                        />
+                      </div>
+                    </div>
+                  }
+                </div>
               )}
             </div>
           </div>
@@ -381,16 +543,66 @@ const Channel = ({
         type={type}
         history={history}
       />
+      <Modal
+        visible={openPopUpSpeakers}
+        onCancel={() => {setOpenPopUpSpeakers(false)}}
+        onOk={() => {
+          rolesCHannelsForms.submit();
+        }}
+      >
+        <Form
+          form={rolesCHannelsForms}
+          layout="vertical"
+          onFinish={(data) => {
+            setNewsChannelEditor({
+              idUsers:data?.Users, 
+              channelId:selectedChannel?.id
+            }, (err) => {
+              if(!err){
+                setOpenPopUpSpeakers(false)
+                getChannelEditor(selectedChannel?.id)
+              }
+            })
+          }}
+        >
+          <Form.Item
+              label="Users"
+              name="Users"
+              size="large"
+            >
+              <Select 
+                style={{ width: "100%" }} 
+                mode="multiple" 
+                onKeyUp={(e) => {
+                  handleSearchSpeakers(e.target.value);
+                }}
+                optionFilterProp="children"
+              >
+                {searchUsers !== undefined ? searchUsers.map((users) => {
+
+                  return (
+                    <Option key={users.id} value={users.id}>
+                      {`${users.firstName} / ${users.email}`}
+                    </Option>
+                  )
+                  }): <div style={{display: "none"}}></div>}
+              </Select>
+          </Form.Item> 
+        </Form>
+      </Modal>
     </div>
   );
 };
 
 const mapStateToProps = (state, props) => ({
   selectedChannel: channelSelector(state).selectedChannel,
+  followers: channelSelector(state).followers,
   channelLoading: channelSelector(state).loading,
   userProfile: homeSelector(state).userProfile,
   updateEvent: channelSelector(state).selectedChannel,
   allCategories: categorySelector(state).categories,
+  searchUsers: homeSelector(state).searchedUsers,
+  userChannelEditor: channelSelector(state).userChannelEditor
 });
 
 const mapDispatchToProps = {
@@ -398,6 +610,11 @@ const mapDispatchToProps = {
   setFollowChannel,
   getUser,
   unsetFollowChannel,
+  downloadFollowersChannels,
+  searchUser,
+  setNewsChannelEditor,
+  getChannelEditor,
+  deleteChannelEditor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

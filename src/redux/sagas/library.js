@@ -189,14 +189,38 @@ export function* updateChannelLibrarySaga({ payload }) {
 export function* getFirstChannelLibraryList({ payload }) {
   yield put(homeActions.setLoading(true));
 
-  console.log(payload)
-
   try {
     const response = yield call(searchChannelLibrary, { ...payload });
 
     if (response.status === 200) {
       yield put(
         libraryActions.setFirstChannelLibraryList(
+          response.data.libraries.count,
+          1,
+          response.data.libraries.rows
+        )
+      );
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getFirstChannelLibraryListHome({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(searchChannelLibrary, { ...payload });
+
+    if (response.status === 200) {
+      yield put(
+        libraryActions.setFirstChannelLibraryListHome(
           response.data.libraries.count,
           1,
           response.data.libraries.rows
@@ -404,6 +428,10 @@ function* watchLogin() {
   yield takeLatest(
     libraryConstants.GET_FIRST_CHANNEL_LIBRARY_LIST,
     getFirstChannelLibraryList
+  );
+  yield takeLatest(
+    libraryConstants.GET_FIRST_CHANNEL_LIBRARY_LIST_HOME,
+    getFirstChannelLibraryListHome
   );
   yield takeLatest(
     libraryConstants.GET_MORE_CHANNEL_LIBRARY_LIST,

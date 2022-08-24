@@ -131,6 +131,11 @@ const Channels = ({
                 userProfile &&
                 userProfile.role === USER_ROLES.CHANNEL_ADMIN &&
                 userProfile.channel === chnl.id;
+
+                const isChannelEditor =
+                  userProfile &&
+                  userProfile.role === USER_ROLES.CHANNEL_CONTENT_EDITOR &&
+                  userProfile.channel === chnl.id;
               return (
                 <ChannelCard
                   key={chnl.id}
@@ -140,6 +145,7 @@ const Channels = ({
                   image={chnl.image}
                   categories={chnl.categories}
                   isOwner={isChannelOwner}
+                  isEditor={isChannelEditor}
                   onMenuClick={(menu, type) => {
                     handleChannel(menu, chnl, type)
                   }}

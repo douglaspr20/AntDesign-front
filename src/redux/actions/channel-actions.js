@@ -15,6 +15,11 @@ const NOTIFY_NEW_INFORMATION_CREATOR = "NOTIFY_NEW_INFORMATION_CREATOR"
 const GET_CHANNEL_FOR_NAME = "GET_CHANNEL_FOR_NAME";
 const SET_CHANNEL_LOADING = "SET_CHANNEL_LOADING";
 const SET_BUL_CHANNEL_PAGE = "SET_BUL_CHANNEL_PAGE";
+const EXPORT_FOLLOWERS_CHANNELS = "EXPORT_FOLLOWERS_CHANNELS";
+const SET_NEWS_CHANNEL_EDITOR = "SET_NEWS_CHANNEL_EDITOR";
+const DELETE_CHANNEL_EDITOR = "DELETE_CHANNEL_EDITOR";
+const SET_CHANNEL_EDITOR = "SET_CHANNEL_EDITOR";
+const GET_CHANNEL_EDITOR = "GET_CHANNEL_EDITOR";
 
 export const constants = {
   CREATE_CHANNEL,
@@ -32,6 +37,11 @@ export const constants = {
   GET_CHANNEL_FOR_NAME,
   NOTIFY_NEW_INFORMATION_CREATOR,
   SET_BUL_CHANNEL_PAGE,
+  EXPORT_FOLLOWERS_CHANNELS,
+  SET_NEWS_CHANNEL_EDITOR,
+  DELETE_CHANNEL_EDITOR,
+  SET_CHANNEL_EDITOR,
+  GET_CHANNEL_EDITOR
 };
 
 // ------------------------------------
@@ -101,6 +111,31 @@ export const unsetFollowChannel = createAction(
   })
 );
 
+export const downloadFollowersChannels = createAction(
+  EXPORT_FOLLOWERS_CHANNELS,
+  (idChannel) => ({idChannel})
+)
+
+export const setNewsChannelEditor = createAction(
+  SET_NEWS_CHANNEL_EDITOR,
+  (data, callback) => ({data, callback})
+)
+
+export const getChannelEditor = createAction(
+  GET_CHANNEL_EDITOR,
+  (id) => ({id})
+)
+
+export const deleteChannelEditor = createAction(
+  DELETE_CHANNEL_EDITOR,
+  (id, callback) => ({id, callback})
+)
+
+export const setChannelEditors = createAction(
+  SET_CHANNEL_EDITOR,
+  (channelEditor) => ({channelEditor})
+)
+
 export const actions = {
   createChannel,
   getChannel,
@@ -116,5 +151,10 @@ export const actions = {
   setFollowChannel,
   unsetFollowChannel,
   notificationEmailToNewContentCreators,
-  setBulChannelPage
+  setBulChannelPage,
+  downloadFollowersChannels,
+  setNewsChannelEditor,
+  deleteChannelEditor,
+  setChannelEditors,
+  getChannelEditor
 };

@@ -162,6 +162,7 @@
     align-content: center;
     padding-left: 15px;
     position: relative;
+    overflow: hidden;
 
     p {
       padding: 0px 20px;
@@ -174,6 +175,7 @@
       font-size: 15px;
       cursor: pointer;
       transition: all 0.5s ease-in-out;
+      white-space: nowrap;
     }
 
     .select{
@@ -189,6 +191,32 @@
       border-color: #FE5621;
       transition: all 0.5s ease-in-out;
     }
+
+    .calc-with-tabs{
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+    }
+
+    .container-card-menu{
+      position: absolute;
+      height: 100%;
+      right: 0px;
+      width: 50px;
+      padding-left: 10px;
+      padding-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(241, 241, 241);
+      border-radius: 0px 15px 15px 0px;
+
+      .library-card-menu-tab{
+        width: 75%;
+        height: 50%;
+        margin-top: -5%;
+      }
+    }
   }
 
   .card-content-home{
@@ -203,6 +231,22 @@
     margin-top: 20px;
     padding-bottom: 30px;
     height: auto;
+
+    .ajust-contain{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .content-botton{
+      width: 100%;
+      margin-left: 30px;
+    }
+
+    .margin-botton-content{
+      margin-bottom: 20px;
+    }
   }
 
   @media (max-width: 750px) {

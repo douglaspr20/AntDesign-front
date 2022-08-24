@@ -5,6 +5,27 @@ export const createChannel = ({ channel }) => {
   return httpClient.post(`private/channel`, { ...channel });
 };
 
+export const exportsFollowersChannel = ({ idChannel }) => {
+  return httpClient({
+    method: 'GET',
+    url: `private/channel/get-excel-all-followers-channels/${idChannel}`,
+    responseType: 'blob',
+    headers: {'Content-Type': 'application/json'},
+  })
+}
+
+export const addNewContentEditorChannel = (idUsers) => {
+  return httpClient.post(`private/channel/newContentEditor`, idUsers);
+}
+
+export const removeContentEditorChannel = (id) => {
+  return httpClient.delete(`private/channel/removeContentEditor/${id}`);
+}
+
+export const getContentEditorChannelEndPoint = (id) => {
+  return httpClient.get(`private/channel/getContentEditor/${id}`);
+}
+
 export const searchChannels = ({ filter = {}, order, page, num }) => {
   let params = {
     ...filter,

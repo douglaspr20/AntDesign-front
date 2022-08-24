@@ -21,6 +21,7 @@ import { isEmpty } from "lodash";
 const BusinessPartnerList = ({
   filter,
   isOwner,
+  isEditor,
   type,
   refresh,
   getBusinessPartnerResources,
@@ -71,7 +72,7 @@ const BusinessPartnerList = ({
   );
   return (
     <div className="channel-page__list-wrap">
-      {!isOwner && resources?.length === 0 ? (
+      {!isOwner && !isEditor && resources?.length === 0 ? (
         <NoItemsMessageCard
           message={`There are no ${
             type === "article" ? "resources" : "videos"
@@ -80,10 +81,10 @@ const BusinessPartnerList = ({
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && <BusinessPartnerCard type={CARD_TYPE.ADD} />}
+            {isOwner || isEditor && <BusinessPartnerCard type={CARD_TYPE.ADD} />}
             {businessResourcesSort?.map((item, index) => (
               <BusinessPartnerCard
-                type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                 key={index}
                 data={item}
                 setCurrentValue={setCurrentValue}
@@ -99,6 +100,7 @@ const BusinessPartnerList = ({
 BusinessPartnerList.propTypes = {
   resources: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   refresh: PropTypes.bool,
   filter: PropTypes.object,
   type: PropTypes.string,
@@ -107,6 +109,7 @@ BusinessPartnerList.propTypes = {
 BusinessPartnerList.defaultProps = {
   resources: [],
   isOwner: false,
+  isEditor: false,
   refresh: false,
   filter: {},
   type: "article",

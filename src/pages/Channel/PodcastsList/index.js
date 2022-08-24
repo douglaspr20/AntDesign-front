@@ -22,6 +22,7 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 const PodcastsList = ({
   podcasts,
   isOwner,
+  isEditor,
   loading,
   total,
   page,
@@ -99,14 +100,14 @@ const PodcastsList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      {!isOwner && podcasts.length === 0 ? (
+      {!isOwner && !isEditor && podcasts.length === 0 ? (
         <NoItemsMessageCard
           message={"There are no podcasts for you at the moment"}
         />
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner) && (
+            {(isOwner || isEditor) && (
               <CustomButton
                 text="Add Podcasts"
                 htmlType="submit"
@@ -122,14 +123,14 @@ const PodcastsList = ({
                 return (
                   <EpisodeCard
                     key={episode.id}
-                    type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                     links={getPodcastLinks(episode)}
                     onMenuClick={(menu) => handlePodcast(menu, episode)}
                     episode={episode}
                   />
                 )
               }else{
-                return (<div key={episode.id}></div>)
+                return (<div key={episode.id} style={{display: "none"}} ></div>)
               }
             })}
           </div>
@@ -157,12 +158,14 @@ const PodcastsList = ({
 PodcastsList.propTypes = {
   podcasts: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   filter: PropTypes.object,
 };
 
 PodcastsList.defaultProps = {
   podcasts: [],
   isOwner: false,
+  isEditor: false,
   filter: {},
 };
 

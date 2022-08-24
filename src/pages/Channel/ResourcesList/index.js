@@ -16,6 +16,7 @@ import {
   deleteChannelLibrary,
   setLibrary,
   shareChannelLibrary,
+  getFirstChannelLibraryListHome
 } from "redux/actions/library-actions";
 import { librarySelector } from "redux/selectors/librarySelector";
 import { channelSelector } from "redux/selectors/channelSelector";
@@ -26,14 +27,19 @@ const ResourcesList = ({
   resources,
   total,
   page,
+  resourcesArticle,
+  totalArticle,
+  pageArticle,
   filter,
   channel,
   isOwner,
+  isEditor,
   loading,
   type,
   refresh,
   getFirstChannelLibraryList,
   getMoreChannelLibraryList,
+  getFirstChannelLibraryListHome,
   deleteChannelLibrary,
   setLibrary,
   shareChannelLibrary,
@@ -69,10 +75,16 @@ const ResourcesList = ({
         );
       }
       if(type === 'video'){
-        // getFirstChannelLibraryList(
-        //   { ...filter, channel: channel.id, contentType: type },
-        //   "newest-first"
-        // );
+        getFirstChannelLibraryList(
+          { ...filter, channel: channel.id, contentType: type },
+          "newest-first"
+        );
+      }
+      if(type === 'videoHome'){
+        getFirstChannelLibraryListHome(
+          { ...filter, channel: channel.id, contentType: 'video' },
+          "newest-first"
+        );
       }
     }
   };
@@ -148,7 +160,7 @@ const ResourcesList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      {!isOwner && resources.length === 0 ? (
+      {(!isOwner && !isEditor && resources.length === 0 ) ? (
         <NoItemsMessageCard
           message={`There are no ${
             type === "article" ? "resources" : "videos"
@@ -157,7 +169,7 @@ const ResourcesList = ({
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner) && (
+            {(isOwner || isEditor) && (
               <CustomButton
                 text={(type === "article") ? "Add Resources" : "Add Videos"}
                 htmlType="submit"
@@ -168,22 +180,50 @@ const ResourcesList = ({
                 onClick={() => onShowResourceModal()}
               />
             )}
-            {resources.map((item, index) => {
+            {(type !== 'videoHome') ? resources.map((item, index) => {
               if(limit > index || limit === 'all'){
                 return (
                   <LibraryCard
-                    type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
                     key={index}
                     data={item}
                     onMenuClick={(menu) => handleLibrary(menu, item)}
                   />
                 )
               }else{
-                return (<div key={index}></div>)
+                return (<div key={index} style={{display: "none"}} ></div>)
+              }
+            }) : resourcesArticle.map((item, index) => {
+              if(limit > index || limit === 'all'){
+                return (
+                  <LibraryCard
+                    type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    key={index}
+                    data={item}
+                    onMenuClick={(menu) => handleLibrary(menu, item)}
+                  />
+                )
+              }else{
+                return (<div key={index} style={{display: "none"}} ></div>)
               }
             })}
           </div>
-          {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
+          {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && type !== 'videoHome' && (
+            <div className="channel-page-loading d-flex justify-center items-center">
+              {loading ? (
+                <div className="channel-page-loading-more">
+                  <img src={IconLoadingMore} alt="loading-more-img" />
+                </div>
+              ) : (
+                <CustomButton
+                  text="Show More"
+                  type="primary outlined"
+                  onClick={onShowMore}
+                />
+              )}
+            </div>
+          )}
+          {pageArticle * SETTINGS.MAX_SEARCH_ROW_NUM < totalArticle && type !== 'videoHome' && (
             <div className="channel-page-loading d-flex justify-center items-center">
               {loading ? (
                 <div className="channel-page-loading-more">
@@ -207,6 +247,7 @@ const ResourcesList = ({
 ResourcesList.propTypes = {
   resources: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   refresh: PropTypes.bool,
   filter: PropTypes.object,
   type: PropTypes.string,
@@ -215,6 +256,7 @@ ResourcesList.propTypes = {
 ResourcesList.defaultProps = {
   resources: [],
   isOwner: false,
+  isEditor: false,
   refresh: false,
   filter: {},
   type: "article",
@@ -222,6 +264,9 @@ ResourcesList.defaultProps = {
 
 const mapStateToProps = (state) => ({
   resources: librarySelector(state).allLibraries,
+  resourcesArticle: librarySelector(state).allLibrariesArticle,
+  totalArticle: librarySelector(state).countOfResultsArticle,
+  pageArticle: librarySelector(state).currentPagueArticle,
   total: librarySelector(state).countOfResults,
   page: librarySelector(state).currentPage,
   loading: librarySelector(state).loading,
@@ -234,6 +279,7 @@ const mapDispatchToProps = {
   deleteChannelLibrary,
   setLibrary,
   shareChannelLibrary,
+  getFirstChannelLibraryListHome,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourcesList);

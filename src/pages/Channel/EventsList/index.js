@@ -24,6 +24,7 @@ const DataFormat = "YYYY.MM.DD hh:mm A";
 
 const EventsList = ({
   isOwner,
+  isEditor,
   filter,
   channelEvents,
   channel,
@@ -135,13 +136,13 @@ const EventsList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      {!isOwner && futureDataFilter?.length === 0 ? (
+      {!isOwner && !isEditor && futureDataFilter?.length === 0 ? (
         <NoItemsMessageCard
           message={`There are no Blogs for you at the moment`}
         />
        ) : (
         <EventList
-          edit={isOwner}
+          edit={(isOwner || isEditor)}
           type={CARD_TYPE.EDIT}
           data={futureDataFilter}
           onClick={onEventClick}
@@ -163,11 +164,13 @@ const EventsList = ({
 
 EventsList.propTypes = {
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   filter: PropTypes.object,
 };
 
 EventsList.defaultProps = {
   isOwner: false,
+  isEditor: false,
   filter: {},
 };
 

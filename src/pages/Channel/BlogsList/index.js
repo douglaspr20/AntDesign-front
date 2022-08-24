@@ -20,6 +20,7 @@ import {
 
 const BlogList = ({
   isOwner,
+  isEditor,
   userProfile,
   blogsPostByChannel,
   createBlogPost,
@@ -53,7 +54,7 @@ const BlogList = ({
             message: error,
           });
         }
-        getBlogsPostsByChannel(selectedChannel.id);
+        getBlogsPostsByChannel(selectedChannel?.id);
 
         return notification.success({
           message: "Blog Updated Successfully",
@@ -61,7 +62,7 @@ const BlogList = ({
       });
     } else {
       createBlogPost(
-        { ...data, UserId: userProfile.id, ChannelId: selectedChannel.id },
+        { ...data, UserId: userProfile?.id, ChannelId: selectedChannel?.id },
         (error) => {
           if (error) {
             return notification.error({
@@ -70,9 +71,9 @@ const BlogList = ({
           }
           getBlogsPostsByChannel(selectedChannel.id);
           notificationEmailToNewContentCreators({
-            channelName: selectedChannel.name, 
-            channelAdmin: selectedChannel.User.firstName,
-            channelAdminEmail: selectedChannel.User.email,
+            channelName: selectedChannel?.name, 
+            channelAdmin: selectedChannel?.User?.firstName,
+            channelAdminEmail: selectedChannel?.User?.email,
             contentType: "blogs",
             name: data.title,
             link: "blogs not have link"
@@ -91,7 +92,7 @@ const BlogList = ({
 
   const handleEditOrDelete = (option, blogId) => {
     const blogPost = blogsPostByChannel.find(
-      (blogPost) => blogPost.id === blogId
+      (blogPost) => blogPost?.id === blogId
     );
 
     if (!blogPost) return;
@@ -109,7 +110,7 @@ const BlogList = ({
           message: error,
         });
       }
-      getBlogsPostsByChannel(selectedChannel.id);
+      getBlogsPostsByChannel(selectedChannel?.id);
 
       return notification.success({
         message: "Blog Deleted Successfully",
@@ -121,8 +122,10 @@ const BlogList = ({
   };
 
   useEffect(() => {
-    getBlogsPostsByChannel(selectedChannel.id);
-  }, [getBlogsPostsByChannel, selectedChannel.id]);
+    if(selectedChannel !== undefined){
+      getBlogsPostsByChannel(selectedChannel?.id);
+    }
+  }, [getBlogsPostsByChannel, selectedChannel]);
 
   return (
     <div className="channel-page__list-wrap">
@@ -157,18 +160,18 @@ const BlogList = ({
             type="primary"
             text="Yes"
             style={{ marginLeft: "5px" }}
-            onClick={() => handleDeleteBlogPost(editOrDeleteBlogPost.id)}
+            onClick={() => handleDeleteBlogPost(editOrDeleteBlogPost?.id)}
           />
         </div>
       </CustomModal>
-      {!isOwner && blogsPostByChannel?.length === 0 ? (
+      {!isOwner && !isEditor && blogsPostByChannel?.length === 0 ? (
         <NoItemsMessageCard
           message={`There are no Blogs for you at the moment`}
         />
       ) : (
         <>
           <div className="channels__list">
-            {(isOwner) && (
+            {(isOwner || isEditor) && (
               <CustomButton
                 text="Add Blog Posts"
                 htmlType="submit"
@@ -182,9 +185,9 @@ const BlogList = ({
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (
-                  (blogPost.UserId === userProfile.id &&
-                    blogPost.status === "draft") ||
-                  blogPost.status === "published"
+                  (blogPost?.UserId === userProfile?.id &&
+                    blogPost?.status === "draft") ||
+                  blogPost?.status === "published"
                 ) {
                   return blogPost;
                 }
@@ -197,18 +200,19 @@ const BlogList = ({
                     <BlogCard
                       onMenuClick={handleEditOrDelete}
                       isOwner={isOwner}
-                      key={blogPost.id}
-                      id={blogPost.id}
-                      image={blogPost.imageUrl}
-                      date={blogPost.createdAt}
-                      title={blogPost.title}
-                      summary={blogPost.summary}
-                      isDraft={blogPost.status === "draft"}
-                      categories={blogPost.categories}
+                      isEditor={isEditor}
+                      key={blogPost?.id}
+                      id={blogPost?.id}
+                      image={blogPost?.imageUrl}
+                      date={blogPost?.createdAt}
+                      title={blogPost?.title}
+                      summary={blogPost?.summary}
+                      isDraft={blogPost?.status === "draft"}
+                      categories={blogPost?.categories}
                     />
                   )
                 }else{
-                  return (<div key={blogPost.id}></div>)
+                  return (<div key={blogPost?.id} style={{display: "none"}}></div>)
                 }
               })}
           </div>
@@ -221,12 +225,14 @@ const BlogList = ({
 BlogList.propTypes = {
   blogPosts: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   filter: PropTypes.object,
 };
 
 BlogList.defaultProps = {
   blogPosts: [],
   isOwner: false,
+  isEditor: false,
   filter: {},
 };
 

@@ -25,6 +25,7 @@ const ChannelCard = ({
   allCategories,
   categories,
   isOwner,
+  isEditor,
   onClick,
   onMenuClick,
 }) => {
@@ -41,7 +42,7 @@ const ChannelCard = ({
 
   return (
     <div style={{position: "relative"}}>
-      {isOwner && 
+      {(isOwner || isEditor) && 
         <div className="pencil-container" onClick={() => {onMenuClick('edit','frontImage')}}>
           <div className="pencil"></div>
         </div>
@@ -90,7 +91,7 @@ const ChannelCard = ({
                   <SvgIcon name="bookmark" className="channel-card-icon" />
                 </div>
               </div> */}
-              {isOwner && (
+              {(isOwner || isEditor) && (
                 <CardMenu menus={CARD_MENUS.slice(0, 1)} onClick={onMenuClick}>
                   <div className="library-card-menu">
                     <img src={IconMenu} alt="icon-menu" />
@@ -113,6 +114,7 @@ ChannelCard.propTypes = {
   image: PropTypes.string,
   categories: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   onClick: PropTypes.func,
   onMenuClick: PropTypes.func,
 };
@@ -124,6 +126,7 @@ ChannelCard.defaultProps = {
   image: HARDCODED_COVER_PLACEHOLDER,
   categories: [],
   isOwner: false,
+  isEditor: false,
   onClick: () => {},
   onMenuClick: () => {},
 };

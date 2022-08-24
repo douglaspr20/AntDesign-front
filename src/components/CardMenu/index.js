@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Popover } from "antd";
@@ -7,7 +7,7 @@ import { CARD_MENUS } from "enum";
 
 import "./style.scss";
 
-const CardMenu = ({ menus, className, children, onClick, ...rest }) => {
+const CardMenu = ({ menus, className, children, container, onClick, ...rest }) => {
   const [visible, setVisible] = useState(false);
 
   const onMenuClick = (e, menu) => {
@@ -17,19 +17,48 @@ const CardMenu = ({ menus, className, children, onClick, ...rest }) => {
     onClick(menu.value);
   };
 
-  const ContentSection = () => (
-    <div className="card-menu-dropdown-content">
-      {menus.map((menu) => (
-        <div
-          className="card-menu-dropdown-menu"
-          key={menu.value}
-          onClick={(e) => onMenuClick(e, menu)}
-        >
-          {menu.label}
+  const ContentSection = () => {
+
+    if(container !== undefined){
+      let num = 0
+      let num2  = 0
+
+      for(let i = 0 ; i < container?.children[0]?.children?.length ; i++ ){
+        num2 = num2 + container?.children[0]?.children[i]?.clientWidth
+        if(num2 < container?.clientWidth){
+          num++
+        }
+      }
+
+      return (
+        <div className="card-menu-dropdown-content">
+          {menus?.slice(0,container?.children[0]?.children?.length - num)?.map((menu) => (
+            <div
+              className="card-menu-dropdown-menu"
+              key={menu.value}
+              onClick={(e) => onMenuClick(e, menu)}
+            >
+              {menu.label}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      )
+    }else{
+      return (
+        <div className="card-menu-dropdown-content">
+          {menus.map((menu) => (
+            <div
+              className="card-menu-dropdown-menu"
+              key={menu.value}
+              onClick={(e) => onMenuClick(e, menu)}
+            >
+              {menu.label}
+            </div>
+          ))}
+        </div>
+      )
+    }
+  };
 
   return (
     <Popover

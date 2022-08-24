@@ -163,10 +163,10 @@ const EventList = ({
               </Row>
             </div>
           ) : (
-            <div key={`${date}-${getRandomNumber()}`}></div>
+            <div key={`${date}-${getRandomNumber()}`} style={{display: "none"}}></div>
           ) 
         }else{
-          return(<div key={`${date}-${getRandomNumber()}`}></div>)
+          return(<div key={`${date}-${getRandomNumber()}`} style={{display: "none"}}></div>)
         }
       })}
     </div>

@@ -14,7 +14,7 @@ const MemberSpeakers = ({
 
     return (
       <>
-        <div className="container-users" key={index}>
+        <div className="container-users" key={index} style={{width: "300px"}}>
           <div className="container-data-member">
             {img ? (
               <Avatar size={55} src={img} />

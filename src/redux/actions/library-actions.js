@@ -24,6 +24,8 @@ const UPDATE_LIBRARY_VIEWED = "UPDATE_LIBRARY_VIEWED";
 const SAVE_FOR_LATER_LIBRARY = "SAVE_FOR_LATER_LIBRARY";
 const SET_SAVE_FOR_LATER_LIBRARY = "SET_SAVE_FOR_LATER_LIBRARY";
 const UPDATE_LIBRARY_SAVE_FOR_LATER = "UPDATE_LIBRARY_SAVE_FOR_LATER";
+const GET_FIRST_CHANNEL_LIBRARY_LIST_HOME = "GET_FIRST_CHANNEL_LIBRARY_LIST_HOME";
+const SET_FIRST_CHANNEL_LIBRARY_LIST_HOME = "SET_FIRST_CHANNEL_LIBRARY_LIST_HOME"
 
 export const constants = {
   GET_MORE_LIBRARIES,
@@ -50,6 +52,8 @@ export const constants = {
   SAVE_FOR_LATER_LIBRARY,
   SET_SAVE_FOR_LATER_LIBRARY,
   UPDATE_LIBRARY_SAVE_FOR_LATER,
+  GET_FIRST_CHANNEL_LIBRARY_LIST_HOME,
+  SET_FIRST_CHANNEL_LIBRARY_LIST_HOME
 };
 
 // ------------------------------------
@@ -105,6 +109,14 @@ export const updateChannelLibrary = createAction(
 export const getFirstChannelLibraryList = createAction(
   GET_FIRST_CHANNEL_LIBRARY_LIST,
   (filter, order) => ({ filter, order })
+);
+export const getFirstChannelLibraryListHome = createAction(
+  GET_FIRST_CHANNEL_LIBRARY_LIST_HOME,
+  (filter, order) => ({filter, order})
+)
+export const setFirstChannelLibraryListHome = createAction(
+  SET_FIRST_CHANNEL_LIBRARY_LIST_HOME,
+  (total, page, channelLibraries) => ({ total, page, channelLibraries })
 );
 export const setFirstChannelLibraryList = createAction(
   SET_FIRST_CHANNEL_LIBRARY_LIST,
@@ -179,4 +191,6 @@ export const actions = {
   saveForLaterLibrary,
   setSaveForLaterLibrary,
   updateLibrarySaveForLater,
+  getFirstChannelLibraryListHome,
+  setFirstChannelLibraryListHome
 };
