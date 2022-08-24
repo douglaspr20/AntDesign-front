@@ -16,7 +16,7 @@ import {
   Space,
   Popconfirm,
   Tooltip,
-  notification
+  notification,
 } from "antd";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
@@ -30,6 +30,7 @@ import CouncilEventPanel from "./CouncilEventPanel";
 import "./style.scss";
 import moment from "moment-timezone";
 import TimezoneList from "enum/TimezoneList";
+import { useSearchCity } from "hooks";
 
 const { RangePicker } = DatePicker;
 
@@ -54,8 +55,9 @@ const CouncilEvents = ({
   const [numOfPanels, setNumOfPanels] = useState(1);
   const [status, setStatus] = useState(null);
   const [event, setEvent] = useState({});
-  const [edit, setEdit] = useState(false)
-
+  const [edit, setEdit] = useState(false);
+  const [searchCity, setSearchCity] = useState("");
+  const cities = useSearchCity(searchCity);
   const [form] = Form.useForm();
 
   const timezone =
@@ -134,10 +136,11 @@ const CouncilEvents = ({
 
   const disableDate = (date, isPanel = false) => {
     const startAndEndDate = isPanel && form.getFieldValue(["startAndEndDate"]);
-    
+
     return (
       moment(date).isBefore(moment()) ||
-      (isPanel && moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
+      (isPanel &&
+        moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
     );
   };
 
@@ -159,10 +162,10 @@ const CouncilEvents = ({
       panelName: values.panelName,
       startDate: values.panelStartAndEndDate[0]
         .utcOffset(timezone.offset, true)
-        .startOf('hour'),
+        .startOf("hour"),
       endDate: values.panelStartAndEndDate[1]
         .utcOffset(timezone.offset, true)
-        .startOf('hour'),
+        .startOf("hour"),
       numberOfPanelists: values.numberOfPanelists,
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
@@ -174,10 +177,10 @@ const CouncilEvents = ({
         ...panel,
         startDate: panel.panelStartAndEndDate[0]
           .utcOffset(timezone.offset, true)
-          .startOf('hour'),
+          .startOf("hour"),
         endDate: panel.panelStartAndEndDate[1]
           .utcOffset(timezone.offset, true)
-          .startOf('hour')
+          .startOf("hour"),
       };
     });
     panels = [panel, ...panels];
@@ -196,7 +199,7 @@ const CouncilEvents = ({
       panels,
       status,
       isEdit: edit,
-      idEvent: event?.id
+      idEvent: event?.id,
     };
 
     upsertCouncilEvent(transformedValues, (error) => {
@@ -209,7 +212,7 @@ const CouncilEvents = ({
         form.resetFields();
         setEvent({});
         setIsDrawerOpen(false);
-        setEdit(false)
+        setEdit(false);
         getCouncilEvents();
       }
     });
@@ -221,7 +224,7 @@ const CouncilEvents = ({
   };
 
   const handleEdit = (eve) => {
-    setEdit(true)
+    setEdit(true);
     setEvent(eve);
     setLimit(event.numberOfPanels);
     setNumOfPanels(event.numberOfPanels);
@@ -237,6 +240,17 @@ const CouncilEvents = ({
 
   const handleConfirmDelete = (id) => {
     deleteCouncilEvent(id);
+  };
+
+  const handleSearchCity = (value) => {
+    if (value === "") {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      setSearchCity(value);
+      clearTimeout(timer);
+    }, 1000);
   };
 
   const displayPanels = event?.CouncilEventPanels?.map((panel) => {
@@ -359,9 +373,9 @@ const CouncilEvents = ({
           <div
             className="council-event-card"
             onClick={() => {
-              setIsDrawerOpen(true); 
+              setIsDrawerOpen(true);
               form.resetFields();
-              setEdit(false)
+              setEdit(false);
             }}
           >
             <PlusOutlined style={{ fontSize: "2rem" }} />
@@ -374,7 +388,7 @@ const CouncilEvents = ({
           setEvent({});
           setIsDrawerOpen(false);
           form.resetFields();
-          setEdit(false)
+          setEdit(false);
         }}
         visible={isDrawerOpen}
         width={520}
@@ -423,28 +437,28 @@ const CouncilEvents = ({
             name="maxNumberOfPanelsUsersCanJoin"
             rules={[{ required: true }]}
           >
-            <InputNumber 
+            <InputNumber
               size="large"
               min="1"
               style={{ width: "100%" }}
               onChange={limitOnChange}
-             />
+            />
           </Form.Item>
+
           <Form.Item
-            label="Timezone"
-            name="timezone"
-            rules={[{ required: true }]}
+            name={"timezone"}
+            label="Select the timezone using the city name"
+            rules={[{ required: true, message: "City is required." }]}
           >
             <CustomSelect
               showSearch
-              options={TIMEZONE_LIST}
+              options={cities}
               optionFilterProp="children"
-              bordered
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
+              onSearch={(value) => handleSearchCity(value)}
+              className="border"
             />
           </Form.Item>
+
           <Form.Item>
             <div>
               <h3>Panel #1</h3>
