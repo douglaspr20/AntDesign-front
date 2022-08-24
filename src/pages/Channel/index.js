@@ -153,8 +153,9 @@ const Channel = ({
             history.push(INTERNAL_LINKS.NOT_FOUND);
           }
         });
-        getChannelEditor(selectedChannel?.id)
       }
+
+      getChannelEditor(selectedChannel?.id)
   
       return () => {
         isMounted = false;
@@ -188,6 +189,7 @@ const Channel = ({
         }
       }
     });
+    getChannelEditor(selectedChannel?.id)
   };
 
   const dataSourceColumnsContentEditors = [
@@ -339,10 +341,10 @@ const Channel = ({
                     className={(tabData === 6) ? "select" : ""}
                     onClick={(e) => {selectTabs( e , 6 )}}
                   >Followers</p>
-                  <p
+                  {(isChannelOwner || isChannelEditor) && <p
                     className={(tabData === 7) ? "select" : ""}
-                    onClick={(e) => {selectTabs( e , 7 )}}
-                  >Admin tools</p>
+                    onClick={(e) => {selectTabs( e , 7 ); getChannelEditor(selectedChannel?.id)}}
+                  >Admin tools</p>}
                 </div>
                 <div className="box-select" ref={selectDiv} style={{left: "15px", width: "80px", display: 'block'}}></div>
                 <div 
@@ -353,9 +355,16 @@ const Channel = ({
                   }
                 >
                   <CardMenu 
-                    menus={TABS_CHANNELS} 
+                    menus={
+                      (isChannelOwner || isChannelEditor) ? 
+                      TABS_CHANNELS : 
+                      TABS_CHANNELS.slice(1,Object.entries(TABS_CHANNELS).length-2)
+                    } 
                     onClick={(value) => {
                       selectDiv.current.style.cssText = `left: 15px; width: 80px; display: none;`
+                      if(value === 7){
+                        getChannelEditor(selectedChannel?.id)
+                      }
                       selectTabs( undefined , value )
                     }} 
                     container={widthTab.current}
