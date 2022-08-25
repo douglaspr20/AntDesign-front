@@ -209,6 +209,22 @@
   }
 }
 
+@media (max-width: 1500px) {
+  .home-page-container{
+    display:block;
+    height: auto;
+    width: auto;
+    overflow: hidden scroll;
+
+    &--posts{
+      &-central-panel {
+        padding-left: 0px;
+      }
+    }
+    
+  }
+}
+
 @media (max-width: 900px) {
   .home-page-container{
     &--upgrade{
@@ -216,6 +232,26 @@
 
       .recommend-card-upgrade-2{
         transform: scale(0.8);
+      }
+    }
+    
+  }
+}
+
+@media (max-width: 700px) {
+  .home-page-container{
+    &--upgrade{
+      width: 95%;
+      margin-left: -2.5%;
+
+      .recommend-card-upgrade-2{
+        transform: scale(0.8);
+      }
+    }
+
+    &--posts{
+      &-central-panel {
+        padding-left: 0px;
       }
     }
     

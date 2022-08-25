@@ -314,7 +314,7 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-  opacity: 100%;
+  transform: scale(1);
   animation: animationHeader 1s ease-in-out;
 
   .public-header-right-channel {
@@ -399,13 +399,13 @@
 
 @keyframes animationHeader {
   0% {
-    opacity: 0%;
+    transform: scale(0);
   }
-  50% {
-    opacity: 0%;
+  80% {
+    transform: scale(0);
   }
   100% {
-    opacity: 100%;
+    transform: scale(1);
   }
 }
 

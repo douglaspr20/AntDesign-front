@@ -255,8 +255,8 @@ const HomePage = ({
               </div>
             )}
           </div>
-          <div className="home-page-container--upgrade">
-            <div>
+          <div className="home-page-container--posts">
+            <div className="home-page-container-central-panel">
               <Posts onShowMore={onShowMore} history={history} />
             </div>
             {displayAds}
