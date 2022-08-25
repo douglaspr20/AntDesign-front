@@ -243,7 +243,7 @@ class EventCard extends React.Component {
         channel,
         externalLink,
         channelSelect,
-        period2
+        period2,
       },
       className,
       edit,
@@ -260,7 +260,11 @@ class EventCard extends React.Component {
 
     return (
       <div
-        className={(channel === "" || channel === undefined || Number(channel) > 0) ? "event-card-channel" : clsx("event-card2", className) }
+        className={
+          channel === "" || channel === undefined || Number(channel) > 0
+            ? "event-card-channel"
+            : clsx("event-card2", className)
+        }
         onClick={this.openEventDetails}
       >
         {this.state.showFirewall && (
@@ -289,35 +293,29 @@ class EventCard extends React.Component {
               {isEmpty(images) && image2 && <img src={image2} alt="card-img" />}
             </div>
             <div className="event-card-content d-flex flex-column justify-between items-start">
-              {(channel === "" || channel === undefined || Number(channel) > 0) ?
-                (
-                  <h5 className="event-card-topic-title">
-                    Event by:{" "}
-                    <span>
-                      {channelSelect?.name}
-                    </span>
-                  </h5>
-                ) : (
-                  <h5 className="event-card-topic-title">
-                    Event by: Hacking HR
-                  </h5>
-                )
-              }
+              {channel === "" ||
+              channel === undefined ||
+              Number(channel) > 0 ? (
+                <h5 className="event-card-topic-title">
+                  Event by: <span>{channelSelect?.name}</span>
+                </h5>
+              ) : (
+                <h5 className="event-card-topic-title">Event by: Hacking HR</h5>
+              )}
               <h3>{title}</h3>
-              {
-                (channel === "" || channel === undefined || Number(channel) > 0) ?
-                (
-                  <h5 className="event-card-topic-title">
-                    {`Event date${startDate !== endDate ? "s" : ""}:`}
-                    <span>{period2}</span>
-                  </h5>
-                ) : (
-                  <h5 className="event-card-topic-title">
-                    {`Event date${startDate !== endDate ? "s" : ""}:`}
-                    <span>{period}</span>
-                  </h5>
-                )
-              }
+              {channel === "" ||
+              channel === undefined ||
+              Number(channel) > 0 ? (
+                <h5 className="event-card-topic-title">
+                  {`Event date${startDate !== endDate ? "s" : ""}:`}
+                  <span>{period2}</span>
+                </h5>
+              ) : (
+                <h5 className="event-card-topic-title">
+                  {`Event date${startDate !== endDate ? "s" : ""}:`}
+                  <span>{period}</span>
+                </h5>
+              )}
 
               {location && (
                 <h5 className="event-card-topic-title">
