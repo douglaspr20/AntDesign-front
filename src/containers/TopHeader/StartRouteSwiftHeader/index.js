@@ -31,7 +31,7 @@ const StartRouteSwiftHeader = ({
           <Route
               exact
               path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
-              render={(props) => <PublicHeader {...props} />}
+              render={(props) => <PublicHeader bulChannelPage={bulChannelPage} {...props} />}
           />
       }
       

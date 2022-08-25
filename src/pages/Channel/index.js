@@ -276,7 +276,7 @@ const Channel = ({
                 <img src={selectedChannel?.image2} alt="user-icon" />
               ) : (
                 <div className="container-image">
-                  <h2>{"Upload image (900 x 175 px)"}</h2>
+                  <h3>{"Upload image (900 x 175 px)"}</h3>
                 </div>
               )}
               {(isChannelOwner || isChannelEditor) && <div className="pencil-container" onClick={() => {setOpenChannelDrawer(true); setType('bannerImage')}}>

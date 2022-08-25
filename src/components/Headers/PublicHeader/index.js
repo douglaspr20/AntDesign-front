@@ -76,13 +76,28 @@ const PublicHeader = ({
     }
   }, [userProfile,bulKnowRegister, confirm])
 
+  const classNameObject = {
+    channel: 'public-header-channel',
+    conference: 'public-header-conference',
+    event: 'public-header'
+  }
+
+  const searchClassname = () => {
+    if(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023){
+      return classNameObject.conference
+    }
+    if(bulChannelPage === 'event'){
+      return classNameObject.event
+    }
+    if(bulChannelPage === 'channel'){
+      return classNameObject.channel
+    }
+  }
+
   return (
     <>
       <div 
-        className={
-          (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
-          "public-header-conference" : "public-header"
-        } 
+        className={searchClassname()} 
         style={{width:"calc( 100% )"}}
       >
         {bulChannelPage !== 'channel' && 
@@ -217,7 +232,7 @@ const PublicHeader = ({
           </>
         }
         {bulChannelPage === 'channel' && 
-          <div className="public-header-right">
+          <div className="public-header-right-channel">
             <CustomButton
               className="button-speaker"
               text={"log in"}
