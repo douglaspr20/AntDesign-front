@@ -177,11 +177,11 @@ const CouncilEvents = ({
   const handleOnFinish = (values) => {
     const timezoneFirstSliceIndex = values.timezone.indexOf("/");
     const convertedStartTime = moment
-      .utc(values.panelStartAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+      .utc(values.startAndEndDate[0].format("YYYY-MM-DD HH:mm"))
       .format();
 
     const convertedEndTime = moment
-      .utc(values.panelStartAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+      .utc(values.startAndEndDate[1].format("YYYY-MM-DD HH:mm"))
       .format();
 
     const panel = {
