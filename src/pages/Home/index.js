@@ -256,11 +256,11 @@ const HomePage = ({
             )}
           </div>
           <div className="home-page-container--upgrade">
-            {displayAds}
-            {displayPreviewAd}
             <div>
               <Posts onShowMore={onShowMore} history={history} />
             </div>
+            {displayAds}
+            {displayPreviewAd}
           </div>
         </div>
       </div>
