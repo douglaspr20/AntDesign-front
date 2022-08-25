@@ -437,7 +437,7 @@ class MainHeader extends React.Component {
               <div className="live-container">
                 <div className="live-circle"></div>
                 <div>LIVE</div>
-                <p>: {this.props.live.title}</p>
+                <p>: {this.props?.live?.title}</p>
               </div>
             </div>
           )}
@@ -513,6 +513,7 @@ const mapStateToProps = (state) => ({
   inputUserSearchValue: homeSelector(state).inputUserSearchValue,
   searchedUsers: homeSelector(state).searchedUsers,
   userShow: homeSelector(state).userShow,
+  bulChannelPage: channelSelector(state).bulChannelPage,
   visibleProfileUser: homeSelector(state).visibleProfileUser,
 });
 

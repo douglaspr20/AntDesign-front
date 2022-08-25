@@ -249,6 +249,7 @@ class EventCard extends React.Component {
       edit,
       type: cardType,
       onMenuClick,
+      userProfile
     } = this.props;
 
     let userTimezone = moment.tz.guess();
@@ -354,7 +355,7 @@ class EventCard extends React.Component {
                   ))}
               </h5>
 
-              {status === "going" && (
+              {(status === "going" && userProfile?.id !== undefined) && (
                 <>
                   <h5 className="event-card-topic-title">
                     {startAndEndTimes.length > 1
@@ -421,7 +422,7 @@ class EventCard extends React.Component {
 
               <div className="event-card-content-footer">
                 <div className="event-card-content-footer-actions">
-                  {!["going", "attend"].includes(status) && showClaim === 1 && (
+                  {(!["going", "attend"].includes(status) && showClaim === 1 && userProfile?.id !== undefined) && (
                     <div className="claim-buttons">
                       <CustomButton
                         className="claim-digital-certificate"
@@ -432,7 +433,7 @@ class EventCard extends React.Component {
                       />
                     </div>
                   )}
-                  {status === "attend" && (
+                  {(status === "attend" && userProfile?.id !== undefined) && (
                     <CustomButton
                       text="Attend"
                       size="md"
@@ -442,20 +443,22 @@ class EventCard extends React.Component {
                     />
                   )}
 
-                  {(channel === "" ||
-                    channel === undefined ||
-                    Number(channel) > 0) && (
-                    <a
-                      href={externalLink}
-                      style={{ margin: "0px", padding: "0px" }}
-                      target="_blank"
+                  {(channel === "" || channel === undefined || Number(channel) > 0) && (
+                    <a 
+                      href={userProfile?.id !== undefined ? externalLink : "#"} 
+                      style={userProfile?.id !== undefined ? {margin:"0px", padding: "0px"} : {display: "none"}} 
+                      target="_blank"  
                       rel="noopener noreferrer"
                     >
-                      <CustomButton text="Attend" size="md" type="primary" />
+                      <CustomButton
+                        text="Attend"
+                        size="md"
+                        type="primary"
+                      />
                     </a>
                   )}
 
-                  {status === "going" && (
+                  {(status === "going" && userProfile?.id !== undefined) && (
                     <div className="going-group-part">
                       <div className="going-label">
                         <CheckOutlined />

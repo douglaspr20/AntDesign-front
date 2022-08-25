@@ -238,8 +238,8 @@ const getNameOfCityWithTimezone = (timezone) => {
 };
 
 const capitalizeWord = (word) => {
-  const firstCharacter = word.charAt(0);
-  const transformWord = firstCharacter.toUpperCase() + word.slice(1);
+  const firstCharacter = word?.charAt(0);
+  const transformWord = firstCharacter?.toUpperCase() + word?.slice(1);
 
   return transformWord;
 };

@@ -20,18 +20,17 @@ import FavouritePage from "pages/Favourites";
 import EventsPage from "pages/Events";
 import PodcastPage from "pages/Podcast";
 import MentoringPage from "pages/Mentoring";
+import StartRouteSwift from "./StartRouteSwift"
 import CertificatePage from "pages/Certificate";
 import MicroClassCertificatePage from "pages/MicroClassCertificate";
 import ClassesPage from "pages/Classes";
 import MicroClassPage from "pages/MicroClass";
 import JourneyPage from "pages/Journey";
-import PublicEventPage from "pages/PublicEvent";
 import TermsOfUsePage from "pages/TermsOfUSe";
 import MarketplacePage from "pages/Marketplace";
 import NoPageFound from "pages/NoPageFound";
 import ConferenceLibrary from "pages/ConferenceLibrary";
 import ChannelsPage from "pages/Channels";
-import ChannelPage from "pages/Channel";
 import NotificationPage from "pages/Notification";
 import GlobalConferencePage from "pages/GlobalConference";
 import MicroConferencePage from "pages/MicroConference";
@@ -191,11 +190,11 @@ class Content extends Component {
             path={INTERNAL_LINKS.CHANNELS}
             render={(props) => <ChannelsPage {...props} />}
           />
-          <PrivateRoute
+          {/* <PrivateRoute
             path={`${INTERNAL_LINKS.CHANNELS}/:id`}
             exact
             render={(props) => <ChannelPage {...props} />}
-          />
+          /> */}
           <PrivateRoute
             path={INTERNAL_LINKS.LEARNING_LIBRARY}
             render={(props) => <LearningLibraryPage {...props} />}
@@ -482,8 +481,8 @@ class Content extends Component {
           />
           <Route
             exact
-            path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
-            render={(props) => <PublicEventPage {...props} />}
+            path={"/:data"}
+            render={(props) => <StartRouteSwift {...props} />}
           />
 
           <Route component={NoPageFound} />

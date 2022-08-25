@@ -2,19 +2,43 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { notification } from "antd";
+import { useLocation } from "react-router-dom";
 
 import { CustomDrawer, ChannelForm } from "components";
 import { createChannel, updateChannel } from "redux/actions/channel-actions";
+import { INTERNAL_LINKS } from "enum";
 
 const ChannelDrawer = ({
+  history,
   visible,
   edit,
   onClose,
   createChannel,
   updateChannel,
   onCreated,
+  type
 }) => {
+
+  const { pathname } = useLocation();
+
+  const fixNameUrl = (name) => {
+
+    
+    let newTitle = name
+    if(name !== undefined){
+      let spaces = name?.split(" ").length - 1
+
+      for(let i = 0; i < Number(spaces) ; i++){
+        newTitle = newTitle.replace(" ","-")
+      }
+    }
+
+    return newTitle
+
+  }
+
   const onCreateChannel = (values) => {
+    let pathNameFixed = pathname.substring(1,pathname.length)
     if (edit) {
       updateChannel(values, (error) => {
         if (error) {
@@ -23,7 +47,17 @@ const ChannelDrawer = ({
             description: error,
           });
         } else {
-          onCreated();
+          if(history !== undefined){
+            if(values.name !== undefined){
+              onCreated(INTERNAL_LINKS.CHANNEL_PAGE + fixNameUrl(values?.name));
+              history.push(INTERNAL_LINKS.CHANNEL_PAGE + fixNameUrl(values?.name));
+            }else{
+              onCreated(INTERNAL_LINKS.CHANNEL_PAGE + fixNameUrl(pathNameFixed));
+              history.push(INTERNAL_LINKS.CHANNEL_PAGE + fixNameUrl(pathNameFixed));
+            }
+          }else{
+            onCreated()
+          }
         }
       });
     } else {
@@ -46,7 +80,7 @@ const ChannelDrawer = ({
       visible={visible}
       onClose={onClose}
     >
-      <ChannelForm edit={edit} onSubmit={onCreateChannel} onCancel={onClose} />
+      <ChannelForm edit={edit} onSubmit={onCreateChannel} onCancel={onClose} type={type} />
     </CustomDrawer>
   );
 };

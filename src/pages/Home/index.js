@@ -249,18 +249,18 @@ const HomePage = ({
                   text="Upgrade to PREMIUM"
                   type="primary"
                   size="xl"
-                  className="recommend-card-upgrade"
+                  className="recommend-card-upgrade-2"
                   onClick={onUpgrade}
                 />
               </div>
             )}
           </div>
-          <div className="home-page-container--posts-central-panel-content">
-            <div className="home-page-container--posts-central-panel-content-posts">
-              <Posts onShowMore={onShowMore} history={history} />
-            </div>
+          <div className="home-page-container--upgrade">
             {displayAds}
             {displayPreviewAd}
+            <div>
+              <Posts onShowMore={onShowMore} history={history} />
+            </div>
           </div>
         </div>
       </div>

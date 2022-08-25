@@ -4,4 +4,5 @@ export default {
   PODCAST: "editor",
   CONFERENCE: "conference",
   CHANNEL_ADMIN: "channel_admin",
+  CHANNEL_CONTENT_EDITOR: "channel_content_editor"
 };

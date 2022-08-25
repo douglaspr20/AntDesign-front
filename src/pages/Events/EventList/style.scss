@@ -4,6 +4,9 @@
   padding-top: 40px;
   height: calc(100vh - 200px);
   overflow: hidden scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 
   &::-webkit-scrollbar {
     width: 10px;
@@ -32,11 +35,8 @@
   }
 
   &-batch {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    grid-column-gap: 53px;
-    margin-bottom: 2.25rem;
+    width: 45%;
+    display: block;
 
     .date-avatar {
       margin-bottom: 28px;
@@ -46,14 +46,30 @@
       width: 100%;
     }
 
-    @media (max-width: 575.98px) {
-      grid-template-columns: 1fr;
-      justify-items: center;
-    }
+  }
+}
 
-    // Medium devices (tablets, less than 992px)
-    @media (max-width: 991.98px) {
-      grid-column-gap: 16px;
+@media  (max-width: 1000px){
+  .event-list{
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    &-batch {
+      width: 60%;
+      margin-bottom: 40px;
+    }
+  }
+}
+
+@media  (max-width: 700px){
+  .event-list{
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    &-batch {
+      width: 100%;
+      margin-bottom: 40px;
+      margin-left: 10px;
     }
   }
 }

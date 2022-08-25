@@ -5,7 +5,7 @@ export const getAllEvents = () => {
 };
 
 export const getEvent = ({ id }) => {
-  return httpClient.get(`public/event/${id}`);
+  return httpClient.get(`public/event/get/${id}`);
 };
 
 export const getMetadata = (metadata) => {
@@ -39,11 +39,12 @@ export const createChannelEvent = ({ data }) => {
 };
 
 export const getChannelEvents = ({ filter }) => {
+
   const parsedFilter = Object.keys(filter)
     .map((item) => `${item}=${filter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/event/channel?${parsedFilter}`);
+  return httpClient.get(`public/event/channel?${parsedFilter}`);
 };
 
 export const deleteEvent = ({ event }) => {

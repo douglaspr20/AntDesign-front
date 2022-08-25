@@ -98,7 +98,12 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
-  notifyNewEmailChannelsEndPoint
+  notifyNewEmailChannelsEndPoint,
+  getChannelForNameEndPoint,
+  exportsFollowersChannel,
+  addNewContentEditorChannel,
+  removeContentEditorChannel,
+  getContentEditorChannelEndPoint
 } from "./module/channel";
 import { getChannelCategories } from "./module/channel-category";
 import {
@@ -306,6 +311,10 @@ import {
 
 export {
   getAllParrafsEndPoint,
+  exportsFollowersChannel,
+  addNewContentEditorChannel,
+  removeContentEditorChannel,
+  getContentEditorChannelEndPoint,
   getAllEventsChannelsEndPoint,
   addedToPersonalAgendaEndPoint,
   sendEmailAuthorizationSpeakersEndPoint,
@@ -322,6 +331,7 @@ export {
   signIn,
   signUp,
   getUserFromId,
+  getChannelForNameEndPoint,
   notifyNewEmailChannelsEndPoint,
   updateUser,
   getAllCouncilCommentsFromAPI,

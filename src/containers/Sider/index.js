@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 // Sider
 import { Sidebar, PrivateRoute } from "components";
+import StartRouteSwiftSider from "./StartRouteSwiftSider"
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -177,7 +178,6 @@ class Sider extends Component {
           exact
           render={() => <Sidebar />}
         />
-
         <PrivateRoute
           path={`${INTERNAL_LINKS.BLOGS}/:id`}
           exact
@@ -193,6 +193,11 @@ class Sider extends Component {
         <PrivateRoute
           path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
           render={() => <Sidebar />}
+        />
+        <Route
+          exact
+          path={"/:data"}
+          render={(props) => <StartRouteSwiftSider {...props} />}
         />
       </Switch>
     );

@@ -279,7 +279,7 @@ const EventDrawer = ({
               ) : (
                 <DateAvatar day={moment(event?.date, DataFormat).date() || 0} month={event.month || ""} />
             ) }
-            {event.status === "past" && (
+            {(event.status === "past" && userProfile?.id !== undefined) && (
               <div className="claim-buttons">
                 <CustomButton
                   className="claim-digital-certificate"
@@ -290,7 +290,7 @@ const EventDrawer = ({
                 />
               </div>
             )}
-            {event.status === "confirmed" && (
+            {(event.status === "confirmed" && userProfile?.id !== undefined) && (
               <React.Fragment>
                 {(userProfile || {}).memberShip === "premium" ? (
                   <React.Fragment>
@@ -318,7 +318,7 @@ const EventDrawer = ({
                 )}
               </React.Fragment>
             )}
-            {event.status === "attend" && (
+            {(event.status === "attend" && userProfile?.id !== undefined) && (
               <CustomButton
                 text="Attend"
                 size="lg"
@@ -328,7 +328,12 @@ const EventDrawer = ({
               />
             )}
             {(event.channel === "" || event.channel === undefined || Number(event.channel) > 0) && (
-              <a href={event.externalLink} style={{margin:"0px", padding: "0px"}} target="_blank"  rel="noopener noreferrer">
+              <a 
+                href={(userProfile?.id !== undefined) ? event.externalLink : "#"} 
+                style={userProfile?.id !== undefined ? {margin:"0px", padding: "0px"} : {display: "none"}}
+                target="_blank"  
+                rel="noopener noreferrer"
+              >
                 <CustomButton
                   text="Attend"
                   size="md"
@@ -336,7 +341,7 @@ const EventDrawer = ({
                 />
               </a>
             )}
-            {event.status === "going" && (
+            {(event.status === "going" && userProfile?.id !== undefined) && (
               <React.Fragment>
                 <div className="going-label">
                   <CheckOutlined />

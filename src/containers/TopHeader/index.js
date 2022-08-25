@@ -8,6 +8,7 @@ import {
   CertificateHeader,
   PublicHeader,
 } from "components";
+import StartRouteSwiftHeader from './StartRouteSwiftHeader'
 // Enum
 import { INTERNAL_LINKS } from "enum";
 
@@ -302,12 +303,6 @@ class TopHeader extends Component {
           path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
           render={(props) => <MainHeader {...props} />}
         />
-
-        <Route
-          exact
-          path={`${INTERNAL_LINKS.PUBLIC_EVENT}/:id`}
-          render={(props) => <PublicHeader {...props} />}
-        />
         <Route
           exact
           path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
@@ -317,6 +312,11 @@ class TopHeader extends Component {
           exact
           path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
           render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          exact
+          path={"/:data"}
+          render={(props) => <StartRouteSwiftHeader {...props} />}
         />
       </Switch>
     );

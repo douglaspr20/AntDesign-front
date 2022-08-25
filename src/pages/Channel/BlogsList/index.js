@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
 import { notification } from "antd";
 import { blogPostSelector } from "redux/selectors/blogPostSelector";
 import {
@@ -21,6 +20,7 @@ import {
 
 const BlogList = ({
   isOwner,
+  isEditor,
   userProfile,
   blogsPostByChannel,
   createBlogPost,
@@ -28,13 +28,13 @@ const BlogList = ({
   updateBlogPost,
   deleteBlogPost,
   notificationEmailToNewContentCreators,
-  selectedChannel
+  selectedChannel,
+  limit,
+  buttomEdit
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
   const [editOrDeleteBlogPost, setEditOrDeleteBlogPost] = useState({});
-
-  const { id } = useParams();
 
   const onShowBlogPosstModal = () => {
     setVisibleModal(true);
@@ -54,7 +54,7 @@ const BlogList = ({
             message: error,
           });
         }
-        getBlogsPostsByChannel(id);
+        getBlogsPostsByChannel(selectedChannel?.id);
 
         return notification.success({
           message: "Blog Updated Successfully",
@@ -62,18 +62,18 @@ const BlogList = ({
       });
     } else {
       createBlogPost(
-        { ...data, UserId: userProfile.id, ChannelId: id },
+        { ...data, UserId: userProfile?.id, ChannelId: selectedChannel?.id },
         (error) => {
           if (error) {
             return notification.error({
               message: error,
             });
           }
-          getBlogsPostsByChannel(id);
+          getBlogsPostsByChannel(selectedChannel.id);
           notificationEmailToNewContentCreators({
-            channelName: selectedChannel.name, 
-            channelAdmin: selectedChannel.User.firstName,
-            channelAdminEmail: selectedChannel.User.email,
+            channelName: selectedChannel?.name, 
+            channelAdmin: selectedChannel?.User?.firstName,
+            channelAdminEmail: selectedChannel?.User?.email,
             contentType: "blogs",
             name: data.title,
             link: "blogs not have link"
@@ -92,7 +92,7 @@ const BlogList = ({
 
   const handleEditOrDelete = (option, blogId) => {
     const blogPost = blogsPostByChannel.find(
-      (blogPost) => blogPost.id === blogId
+      (blogPost) => blogPost?.id === blogId
     );
 
     if (!blogPost) return;
@@ -110,7 +110,7 @@ const BlogList = ({
           message: error,
         });
       }
-      getBlogsPostsByChannel(id);
+      getBlogsPostsByChannel(selectedChannel?.id);
 
       return notification.success({
         message: "Blog Deleted Successfully",
@@ -122,11 +122,13 @@ const BlogList = ({
   };
 
   useEffect(() => {
-    getBlogsPostsByChannel(id);
-  }, [getBlogsPostsByChannel, id]);
+    if(selectedChannel !== undefined){
+      getBlogsPostsByChannel(selectedChannel?.id);
+    }
+  }, [getBlogsPostsByChannel, selectedChannel]);
 
   return (
-    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap">
       {visibleModal && (
         <ModalCreateOrEdit
           onCancelModal={onCancelModal}
@@ -158,53 +160,61 @@ const BlogList = ({
             type="primary"
             text="Yes"
             style={{ marginLeft: "5px" }}
-            onClick={() => handleDeleteBlogPost(editOrDeleteBlogPost.id)}
+            onClick={() => handleDeleteBlogPost(editOrDeleteBlogPost?.id)}
           />
         </div>
       </CustomModal>
-      {!isOwner && blogsPostByChannel?.length === 0 ? (
+      {!isOwner && !isEditor && blogsPostByChannel?.length === 0 ? (
         <NoItemsMessageCard
           message={`There are no Blogs for you at the moment`}
         />
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && (
+            {(isOwner || isEditor) && (
               <CustomButton
                 text="Add Blog Posts"
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                className="buttomAddR"
+                className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+                style={(buttomEdit === 'home') ? {left: "100px"} : {}}
                 onClick={() => onShowBlogPosstModal()}
               />
             )}
             {blogsPostByChannel
               .filter((blogPost) => {
                 if (
-                  (blogPost.UserId === userProfile.id &&
-                    blogPost.status === "draft") ||
-                  blogPost.status === "published"
+                  (blogPost?.UserId === userProfile?.id &&
+                    blogPost?.status === "draft") ||
+                  blogPost?.status === "published"
                 ) {
                   return blogPost;
                 }
 
                 return null;
               })
-              .map((blogPost) => (
-                <BlogCard
-                  onMenuClick={handleEditOrDelete}
-                  isOwner={isOwner}
-                  key={blogPost.id}
-                  id={blogPost.id}
-                  image={blogPost.imageUrl}
-                  date={blogPost.createdAt}
-                  title={blogPost.title}
-                  summary={blogPost.summary}
-                  isDraft={blogPost.status === "draft"}
-                  categories={blogPost.categories}
-                />
-              ))}
+              .map((blogPost, index) => {
+                if(limit > index || limit === 'all'){
+                  return (
+                    <BlogCard
+                      onMenuClick={handleEditOrDelete}
+                      isOwner={isOwner}
+                      isEditor={isEditor}
+                      key={blogPost?.id}
+                      id={blogPost?.id}
+                      image={blogPost?.imageUrl}
+                      date={blogPost?.createdAt}
+                      title={blogPost?.title}
+                      summary={blogPost?.summary}
+                      isDraft={blogPost?.status === "draft"}
+                      categories={blogPost?.categories}
+                    />
+                  )
+                }else{
+                  return (<div key={blogPost?.id} style={{display: "none"}}></div>)
+                }
+              })}
           </div>
         </>
       )}
@@ -215,12 +225,14 @@ const BlogList = ({
 BlogList.propTypes = {
   blogPosts: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   filter: PropTypes.object,
 };
 
 BlogList.defaultProps = {
   blogPosts: [],
   isOwner: false,
+  isEditor: false,
   filter: {},
 };
 

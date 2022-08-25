@@ -22,6 +22,7 @@ import IconLoadingMore from "images/icon-loading-more.gif";
 const PodcastsList = ({
   podcasts,
   isOwner,
+  isEditor,
   loading,
   total,
   page,
@@ -30,6 +31,8 @@ const PodcastsList = ({
   getFirstChannelPodcastList,
   getMoreChannelPodcastList,
   deleteChannelPodcast,
+  limit,
+  buttomEdit
 }) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -86,7 +89,7 @@ const PodcastsList = ({
   }, [channel, filter]);
 
   return (
-    <div className="channel-page__list-wrap" style={{paddingBottom: "70px"}}>
+    <div className="channel-page__list-wrap">
       <PodcastDrawer
         visible={visibleDrawer}
         edit={editMode}
@@ -97,32 +100,39 @@ const PodcastsList = ({
         }}
         onClose={() => setVisibleDrawer(false)}
       />
-      {!isOwner && podcasts.length === 0 ? (
+      {!isOwner && !isEditor && podcasts.length === 0 ? (
         <NoItemsMessageCard
           message={"There are no podcasts for you at the moment"}
         />
       ) : (
         <>
           <div className="channels__list">
-            {isOwner && (
+            {(isOwner || isEditor) && (
               <CustomButton
                 text="Add Podcasts"
                 htmlType="submit"
                 size="sm"
                 type="primary"
-                className="buttomAddR"
+                className={(buttomEdit === 'home') ? "buttomAddRR" : "buttomAddR"}
+                style={(buttomEdit === 'home') ? {left: "130px"} : {}}
                 onClick={() => onShowPodcastModal()}
               />
             )}
-            {podcasts.map((episode) => (
-              <EpisodeCard
-                key={episode.id}
-                type={isOwner ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
-                links={getPodcastLinks(episode)}
-                onMenuClick={(menu) => handlePodcast(menu, episode)}
-                episode={episode}
-              />
-            ))}
+            {podcasts.map((episode,index) => {
+              if(limit > index || limit === 'all'){
+                return (
+                  <EpisodeCard
+                    key={episode.id}
+                    type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}
+                    links={getPodcastLinks(episode)}
+                    onMenuClick={(menu) => handlePodcast(menu, episode)}
+                    episode={episode}
+                  />
+                )
+              }else{
+                return (<div key={episode.id} style={{display: "none"}} ></div>)
+              }
+            })}
           </div>
           {page * SETTINGS.MAX_SEARCH_ROW_NUM < total && (
             <div className="channel-page-loading d-flex justify-center items-center">
@@ -148,12 +158,14 @@ const PodcastsList = ({
 PodcastsList.propTypes = {
   podcasts: PropTypes.array,
   isOwner: PropTypes.bool,
+  isEditor: PropTypes.bool,
   filter: PropTypes.object,
 };
 
 PodcastsList.defaultProps = {
   podcasts: [],
   isOwner: false,
+  isEditor: false,
   filter: {},
 };
 

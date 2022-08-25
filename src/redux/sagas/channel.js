@@ -14,7 +14,12 @@ import {
   setFollowChannel,
   unsetFollowChannel,
   updateChannel,
-  notifyNewEmailChannelsEndPoint
+  notifyNewEmailChannelsEndPoint,
+  getChannelForNameEndPoint,
+  exportsFollowersChannel,
+  addNewContentEditorChannel,
+  removeContentEditorChannel,
+  getContentEditorChannelEndPoint
 } from "../../api";
 
 export function* createChannelSaga({ payload }) {
@@ -48,6 +53,34 @@ export function* getChannelSaga({ payload }) {
 
     if (response.status === 200) {
       yield put(channelActions.setChannel(response.data.channel));
+
+      if (payload.callback) {
+        payload.callback(false);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback(true);
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getChannelForNameSagas({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(getChannelForNameEndPoint, { ...payload });
+    if (response.status === 200) {
+      yield put(channelActions.setChannel({
+        channel:response.data.channel,
+        followers:response.data.followers
+      }));
 
       if (payload.callback) {
         payload.callback(false);
@@ -224,9 +257,123 @@ export function* notifyNewEmailChannelsSagas({ payload }) {
   }
 }
 
+export function* exportFollowersChannelsSagas({ payload }) {
+
+  const {idChannel} = payload
+
+  try {
+    const response = yield call(exportsFollowersChannel, {idChannel});
+
+    if (response.status === 200) {
+      var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.ms-excel'}));
+      var fileLink = document.createElement('a');
+  
+      fileLink.href = fileURL;
+      fileLink.setAttribute('download', `followers.xlsx`);
+      document.body.appendChild(fileLink);
+  
+      fileLink.click();
+      document.body.removeChild (fileLink);
+      window.URL.revokeObjectURL (fileURL);
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      payload.callback("Something went wront. Please try again.");
+    }
+  } finally {
+    yield put(channelActions.setChannelLoading(false));
+  }
+}
+
+export function* newChannelEditor({ payload }) {
+  yield put(homeActions.setLoading(true));
+
+  try {
+    const response = yield call(addNewContentEditorChannel, {...payload.data});
+
+    if (response.status === 200 && payload.callback) {
+
+      payload.callback();
+  
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      const { msg } = error.response.data || {};
+      payload.callback(msg || "Something went wrong, please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* getChannelEditor({ payload }) {
+  yield put(homeActions.setLoading(true));
+  const {id} = payload
+
+  try {
+
+    const response = yield call(getContentEditorChannelEndPoint, id);
+
+    if (response.status === 200) {
+      yield put(channelActions.setChannelEditors(response.data.contentEditors));
+
+      if(payload.callback){
+        payload.callback("");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      const { msg } = error.response.data || {};
+      payload.callback(msg || "Something went wrong, please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
+export function* deleteChannelEditor({ payload }) {
+  yield put(homeActions.setLoading(true));
+  const {id} = payload
+
+  try {
+    const response = yield call(removeContentEditorChannel, id);
+
+    if (response.status === 200) {
+
+      if(payload.callback){
+        payload.callback();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+
+    if (error && error.response && error.response.status === 401) {
+      yield put(logout());
+    } else if (payload.callback) {
+      const { msg } = error.response.data || {};
+      payload.callback(msg || "Something went wrong, please try again.");
+    }
+  } finally {
+    yield put(homeActions.setLoading(false));
+  }
+}
+
 function* watchChannel() {
   yield takeLatest(channelConstants.CREATE_CHANNEL, createChannelSaga);
   yield takeLatest(channelConstants.GET_CHANNEL, getChannelSaga);
+  yield takeLatest(channelConstants.GET_CHANNEL_FOR_NAME, getChannelForNameSagas)
   yield takeLatest(channelConstants.UPDATE_CHANNEL, updateChannelSaga);
   yield takeLatest(channelConstants.DELETE_CHANNEL, deleteChannelSaga);
   yield takeLatest(
@@ -246,6 +393,10 @@ function* watchChannel() {
     channelConstants.NOTIFY_NEW_INFORMATION_CREATOR,
     notifyNewEmailChannelsSagas
   )
+  yield takeLatest(channelConstants.EXPORT_FOLLOWERS_CHANNELS, exportFollowersChannelsSagas)
+  yield takeLatest(channelConstants.SET_NEWS_CHANNEL_EDITOR, newChannelEditor)
+  yield takeLatest(channelConstants.DELETE_CHANNEL_EDITOR, deleteChannelEditor)
+  yield takeLatest(channelConstants.GET_CHANNEL_EDITOR, getChannelEditor)
 }
 
 export const channelSaga = [fork(watchChannel)];
