@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import SocketIO from "services/socket";
-import {
-  CustomDrawer,
-  CustomInput,
-  CustomButton,
-  CustomModal,
-  CustomSelect,
-} from "components";
+import { connect } from "react-redux";
 import {
   Form,
   DatePicker,
@@ -16,11 +8,22 @@ import {
   Space,
   Popconfirm,
   Tooltip,
-  notification
+  notification,
 } from "antd";
-import { connect } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
-import { TIMEZONE_LIST, SOCKET_EVENT_TYPE } from "enum";
+import SocketIO from "services/socket";
+import moment from "moment-timezone";
+import {
+  CustomDrawer,
+  CustomInput,
+  CustomButton,
+  CustomModal,
+  CustomSelect,
+} from "components";
+
+import { useSearchCity } from "hooks";
+import { SOCKET_EVENT_TYPE } from "enum";
 
 import { actions as councilEventActions } from "redux/actions/council-events-actions";
 import { councilEventSelector } from "redux/selectors/councilEventSelector";
@@ -28,8 +31,8 @@ import { homeSelector } from "redux/selectors/homeSelector";
 import CouncilEventPanel from "./CouncilEventPanel";
 
 import "./style.scss";
-import moment from "moment-timezone";
-import TimezoneList from "enum/TimezoneList";
+import { convertToLocalTime, getNameOfCityWithTimezone } from "utils/format";
+import FormListPanelItem from "./FomrListPanelItem";
 
 const { RangePicker } = DatePicker;
 
@@ -54,12 +57,14 @@ const CouncilEvents = ({
   const [numOfPanels, setNumOfPanels] = useState(1);
   const [status, setStatus] = useState(null);
   const [event, setEvent] = useState({});
-  const [edit, setEdit] = useState(false)
-
+  const [edit, setEdit] = useState(false);
+  const [searchCity, setSearchCity] = useState("");
+  const cities = useSearchCity(searchCity);
   const [form] = Form.useForm();
 
-  const timezone =
-    !isEmpty(event) && TIMEZONE_LIST.find((tz) => tz.value === event.timezone);
+  const userTimezone = moment.tz.guess();
+
+  const timezone = !isEmpty(event) && event.timezone;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -90,10 +95,8 @@ const CouncilEvents = ({
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
 
-      const timezone = TimezoneList.find((tz) => tz.value === event.timezone);
-
-      let startTime = moment.tz(panel.startDate, timezone.utc[0]);
-      let endTime = moment.tz(panel.endDate, timezone.utc[0]);
+      let startTime = moment(panel.startDate).utc();
+      let endTime = moment(panel.endDate).utc();
 
       panel = {
         ...panel,
@@ -101,8 +104,8 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
-        let startTime = moment.tz(panel.startDate, timezone.utc[0]);
-        let endTime = moment.tz(panel.endDate, timezone.utc[0]);
+        let startTime = moment(panel.startDate).utc();
+        let endTime = moment(panel.endDate).utc();
 
         return {
           ...panel,
@@ -110,9 +113,15 @@ const CouncilEvents = ({
         };
       });
 
-      const startDate = moment.tz(event.startDate, timezone?.utc[0]);
-      const endDate = moment.tz(event.endDate, timezone?.utc[0]);
+      const startDate = moment(event.startDate);
+      const endDate = moment(event.endDate);
       const startAndEndDate = [startDate, endDate];
+
+      const city = getNameOfCityWithTimezone(event.timezone);
+
+      if (city) {
+        setSearchCity(city);
+      }
 
       form.setFieldsValue({
         ...event,
@@ -123,6 +132,7 @@ const CouncilEvents = ({
         councilEventPanelId: panel.councilEventPanelId,
         panelStartAndEndDate: [startTime, endTime],
         linkToJoin: panel.linkToJoin,
+        timezone: `${city}/${event.timezone}`,
       });
 
       setLimit(event.numberOfPanels); //max panels
@@ -132,13 +142,25 @@ const CouncilEvents = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
-  const disableDate = (date, isPanel = false) => {
+  const disableDate = (date = moment(), isPanel = false) => {
     const startAndEndDate = isPanel && form.getFieldValue(["startAndEndDate"]);
-    
-    return (
-      moment(date).isBefore(moment()) ||
-      (isPanel && moment(date).isBefore(moment(startAndEndDate[0]).startOf("day")))
-    );
+
+    if (startAndEndDate) {
+      return (
+        moment(date).isBefore(moment()) ||
+        (isPanel &&
+          moment(date).isBefore(moment(startAndEndDate[0]).startOf("day"))) ||
+        (isPanel &&
+          moment(date).isAfter(
+            moment(startAndEndDate[1]).add(1, "days").startOf("day")
+          ))
+      );
+    } else {
+      return (
+        moment(date).isBefore(moment()) ||
+        (isPanel && moment(date).isBefore(moment().startOf("day")))
+      );
+    }
   };
 
   const limitOnChange = (value) => {
@@ -146,38 +168,47 @@ const CouncilEvents = ({
   };
 
   const checkIfOverTheLimit = (add) => {
-    if (numOfPanels < limit) {
+    if (numOfPanels <= limit) {
       add();
       setNumOfPanels((state) => state + 1);
     }
   };
 
   const handleOnFinish = (values) => {
-    const timezone = TimezoneList.find((tz) => tz.value === values.timezone);
+    const timezoneFirstSliceIndex = values.timezone.indexOf("/");
+    const convertedStartTime = moment
+      .utc(values.panelStartAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+      .format();
+
+    const convertedEndTime = moment
+      .utc(values.panelStartAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+      .format();
 
     const panel = {
       panelName: values.panelName,
-      startDate: values.panelStartAndEndDate[0]
-        .utcOffset(timezone.offset, true)
-        .startOf('hour'),
-      endDate: values.panelStartAndEndDate[1]
-        .utcOffset(timezone.offset, true)
-        .startOf('hour'),
+      startDate: convertedStartTime,
+      endDate: convertedEndTime,
       numberOfPanelists: values.numberOfPanelists,
+      timezone: values.timezone.slice(
+        timezoneFirstSliceIndex + 1,
+        values.timezone.length
+      ),
       linkToJoin: values.linkToJoin,
       id: values.councilEventPanelId,
       councilEventId: event ? event.id : null,
     };
+
     let panels = values.panels || [];
+
     panels = panels.map((panel) => {
       return {
         ...panel,
-        startDate: panel.panelStartAndEndDate[0]
-          .utcOffset(timezone.offset, true)
-          .startOf('hour'),
-        endDate: panel.panelStartAndEndDate[1]
-          .utcOffset(timezone.offset, true)
-          .startOf('hour')
+        startDate: moment
+          .utc(panel.panelStartAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+          .format(),
+        endDate: moment
+          .utc(panel.panelStartAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+          .format(),
       };
     });
     panels = [panel, ...panels];
@@ -185,31 +216,28 @@ const CouncilEvents = ({
     const transformedValues = {
       ...values,
       id: event ? event.id : null,
-      startDate: values.startAndEndDate[0]
-        .startOf("day")
-        .utcOffset(timezone.offset, true)
-        .set({ second: 0, millisecond: 0 }),
-      endDate: values.startAndEndDate[1]
-        .startOf("day")
-        .utcOffset(timezone.offset, true)
-        .set({ second: 0, millisecond: 0 }),
+      startDate: convertedStartTime,
+      endDate: convertedEndTime,
+      timezone: values.timezone.slice(
+        timezoneFirstSliceIndex + 1,
+        values.timezone.length
+      ),
       panels,
       status,
       isEdit: edit,
-      idEvent: event?.id
+      idEvent: event?.id,
     };
 
     upsertCouncilEvent(transformedValues, (error) => {
       if (error) {
         notification.error({
-          message: "Error",
-          description: "Event was not deleted.",
+          message: "Something went wrong.",
         });
       } else {
         form.resetFields();
         setEvent({});
         setIsDrawerOpen(false);
-        setEdit(false)
+        setEdit(false);
         getCouncilEvents();
       }
     });
@@ -221,7 +249,7 @@ const CouncilEvents = ({
   };
 
   const handleEdit = (eve) => {
-    setEdit(true)
+    setEdit(true);
     setEvent(eve);
     setLimit(event.numberOfPanels);
     setNumOfPanels(event.numberOfPanels);
@@ -239,12 +267,24 @@ const CouncilEvents = ({
     deleteCouncilEvent(id);
   };
 
+  const handleSearchCity = (value) => {
+    if (value === "") {
+      return;
+    }
+
+    let timer = setTimeout(() => {
+      setSearchCity(value);
+      clearTimeout(timer);
+    }, 1000);
+  };
+
   const displayPanels = event?.CouncilEventPanels?.map((panel) => {
     return (
       <CouncilEventPanel
         key={panel.id}
         panel={panel}
         tz={event.timezone}
+        userTimezone={userTimezone}
         closeMainModal={() => setIsModalOpen(false)}
         councilEventId={event.id}
       />
@@ -359,9 +399,9 @@ const CouncilEvents = ({
           <div
             className="council-event-card"
             onClick={() => {
-              setIsDrawerOpen(true); 
+              setIsDrawerOpen(true);
               form.resetFields();
-              setEdit(false)
+              setEdit(false);
             }}
           >
             <PlusOutlined style={{ fontSize: "2rem" }} />
@@ -374,7 +414,7 @@ const CouncilEvents = ({
           setEvent({});
           setIsDrawerOpen(false);
           form.resetFields();
-          setEdit(false)
+          setEdit(false);
         }}
         visible={isDrawerOpen}
         width={520}
@@ -423,28 +463,28 @@ const CouncilEvents = ({
             name="maxNumberOfPanelsUsersCanJoin"
             rules={[{ required: true }]}
           >
-            <InputNumber 
+            <InputNumber
               size="large"
               min="1"
               style={{ width: "100%" }}
               onChange={limitOnChange}
-             />
+            />
           </Form.Item>
+
           <Form.Item
-            label="Timezone"
-            name="timezone"
-            rules={[{ required: true }]}
+            name={"timezone"}
+            label="Select the timezone using the city name"
+            rules={[{ required: true, message: "City is required." }]}
           >
             <CustomSelect
               showSearch
-              options={TIMEZONE_LIST}
+              options={cities}
               optionFilterProp="children"
-              bordered
-              filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
+              onSearch={(value) => handleSearchCity(value)}
+              className="border"
             />
           </Form.Item>
+
           <Form.Item>
             <div>
               <h3>Panel #1</h3>
@@ -490,61 +530,17 @@ const CouncilEvents = ({
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }, index) => (
-                  <div key={key} style={{ marginTop: "2rem" }}>
-                    <Form.Item {...restField}>
-                      <div className="add-panel-title">
-                        <h3>Panel #{index + 2}</h3>
-                        <MinusCircleOutlined
-                          onClick={() => {
-                            setNumOfPanels((state) => state - 1);
-                            remove(name);
-                          }}
-                        />
-                      </div>
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      label="Panel name"
-                      name={[name, "panelName"]}
-                      rules={[{ required: true }]}
-                    >
-                      <CustomInput />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      label="Start and End Date"
-                      name={[name, "panelStartAndEndDate"]}
-                      rules={[{ required: true }]}
-                    >
-                      <RangePicker
-                        showTime
-                        disabledDate={(date) => disableDate(date, true)}
-                        style={{ width: "100%" }}
-                        size="large"
-                        format="YYYY-MM-DD HH:mm"
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      label="Number of panelists"
-                      name={[name, "numberOfPanelists"]}
-                      rules={[{ required: true }]}
-                    >
-                      <InputNumber
-                        size="large"
-                        min="1"
-                        style={{ width: "100%" }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      label="Link to join each panel"
-                      name={[name, "linkToJoin"]}
-                      rules={[{ required: true, type: "url" }]}
-                    >
-                      <CustomInput />
-                    </Form.Item>
-                  </div>
+                  <FormListPanelItem
+                    key={key}
+                    restField={restField}
+                    index={index}
+                    name={name}
+                    limit={limit}
+                    numOfPanels={numOfPanels}
+                    setNumOfPanels={setNumOfPanels}
+                    remove={remove}
+                    disableDate={disableDate}
+                  />
                 ))}
                 {numOfPanels < limit && (
                   <Form.Item>
@@ -589,14 +585,9 @@ const CouncilEvents = ({
             <h2>Event Name: {event?.eventName}</h2>
             <h4>
               Date:{" "}
-              {moment
-                .tz(event?.startDate, !isEmpty(timezone) && timezone?.utc[0])
-                .format("LL")}{" "}
-              -{" "}
-              {moment
-                .tz(event?.endDate, !isEmpty(timezone) && timezone?.utc[0])
-                .format("LL")}{" "}
-              ({timezone.abbr})
+              {convertToLocalTime(event?.startDate, timezone).format("LL")} -{" "}
+              {convertToLocalTime(event?.endDate, timezone).format("LL")} (
+              {userTimezone})
             </h4>
             <h4>Description: {event?.description}</h4>
           </Space>
