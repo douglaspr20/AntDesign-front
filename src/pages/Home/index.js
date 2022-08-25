@@ -217,11 +217,6 @@ const HomePage = ({
         </div>
       </div>
       <div className="home-page-container--posts">
-        <PostsFilterPanel
-          title="Stories filter"
-          onChange={onFilterChange}
-          onSearch={onSearch}
-        />
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
