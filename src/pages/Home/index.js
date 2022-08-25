@@ -223,16 +223,6 @@ const HomePage = ({
               <ProfileStatusBar user={userProfile} />
             </div>
           )}
-          <div className={`home-page-container${"--mobile-options"}`}>
-            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-            <Button
-              onClick={() => {
-                showFilterPanel();
-              }}
-            >
-              Filters
-            </Button>
-          </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
