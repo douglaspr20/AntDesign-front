@@ -209,6 +209,19 @@
   }
 }
 
+@media (max-width: 900px) {
+  .home-page-container{
+    &--upgrade{
+      width: 90%;
+
+      .recommend-card-upgrade-2{
+        transform: scale(0.8);
+      }
+    }
+    
+  }
+}
+
  .home-advertisement-wrapper {
 
    &-preview {

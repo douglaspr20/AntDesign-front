@@ -314,6 +314,8 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+  opacity: 100%;
+  animation: animationHeader 1s ease-in-out;
 
   .public-header-right-channel {
     display: flex;
@@ -395,10 +397,23 @@
   }
 }
 
+@keyframes animationHeader {
+  0% {
+    opacity: 0%;
+  }
+  50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
 .space-channel{
   position: relative;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 105px;
+  background: #fafafc;
 }

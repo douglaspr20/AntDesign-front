@@ -178,11 +178,6 @@ class Sider extends Component {
           exact
           render={() => <Sidebar />}
         />
-        <Route
-          exact
-          path={"/:data"}
-          render={(props) => <StartRouteSwiftSider {...props} />}
-        />
         <PrivateRoute
           path={`${INTERNAL_LINKS.BLOGS}/:id`}
           exact
@@ -198,6 +193,11 @@ class Sider extends Component {
         <PrivateRoute
           path={`${INTERNAL_LINKS.SIMULATION_SPRINTS}/:id`}
           render={() => <Sidebar />}
+        />
+        <Route
+          exact
+          path={"/:data"}
+          render={(props) => <StartRouteSwiftSider {...props} />}
         />
       </Switch>
     );

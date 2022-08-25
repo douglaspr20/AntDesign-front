@@ -305,11 +305,6 @@ class TopHeader extends Component {
         />
         <Route
           exact
-          path={"/:data"}
-          render={(props) => <StartRouteSwiftHeader {...props} />}
-        />
-        <Route
-          exact
           path={`${INTERNAL_LINKS.CONFERENCE_2023}/:data`}
           render={(props) => <PublicHeader {...props} />}
         />
@@ -317,6 +312,11 @@ class TopHeader extends Component {
           exact
           path={`${INTERNAL_LINKS.CONFERENCE_2023}`}
           render={(props) => <PublicHeader {...props} />}
+        />
+        <Route
+          exact
+          path={"/:data"}
+          render={(props) => <StartRouteSwiftHeader {...props} />}
         />
       </Switch>
     );

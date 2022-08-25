@@ -85,19 +85,21 @@ const PublicHeader = ({
   const searchClassname = () => {
     if(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023){
       return classNameObject.conference
+    }else{
+      if(bulChannelPage === 'event'){
+        return classNameObject.event
+      }
+      if(bulChannelPage === 'channel'){
+        return classNameObject.channel
+      } 
     }
-    if(bulChannelPage === 'event'){
-      return classNameObject.event
-    }
-    if(bulChannelPage === 'channel'){
-      return classNameObject.channel
-    }
+    
   }
 
   return (
     <>
       <div 
-        className={searchClassname()} 
+        className={searchClassname()}
         style={{width:"calc( 100% )"}}
       >
         {bulChannelPage !== 'channel' && 
