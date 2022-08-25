@@ -279,12 +279,12 @@
 
 @media (max-width: 1500px) {
   .home-page-container{
-    display:block;
-    height: auto;
-    width: auto;
-    overflow: hidden scroll;
 
     &--posts{
+      display:block;
+      height: auto;
+      width: auto;
+      overflow: auto;
       &-central-panel {
         padding-left: 0px;
       }
