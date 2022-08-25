@@ -4,15 +4,16 @@ import { connect } from "react-redux";
 import PublicEventPage from "pages/PublicEvent";
 import { INTERNAL_LINKS } from "enum";
 import { Route } from "react-router-dom";
-import { PrivateRoute } from "components";
 import { getChannelForName, setBulChannelPage } from "redux/actions/channel-actions";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { getUser } from "redux/actions/home-actions";
 
 const StartRouteSwift = ({ 
   match,
   getChannelForName,
   setBulChannelPage,
-  bulChannelPage
+  bulChannelPage,
+  getUser
 }) => {
 
   const {url} = match
@@ -48,12 +49,16 @@ const StartRouteSwift = ({
         isMounted = false;
       };
       
-    }, [getChannelForName, setBulChannelPage, fixNameUrl, url]);
+    }, [getChannelForName, fixNameUrl, url, setBulChannelPage]);
+
+    useEffect(() => {
+      getUser()
+    },[getUser])
 
     return (
       <>
         {bulChannelPage === "channel" &&
-          <PrivateRoute
+          <Route
               path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
               exact
               render={(props) => <ChannelPage {...props} />}
@@ -78,6 +83,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getChannelForName,
   setBulChannelPage,
+  getUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartRouteSwift);

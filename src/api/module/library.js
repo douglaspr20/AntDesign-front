@@ -52,7 +52,7 @@ export const searchChannelLibrary = ({ filter, order }) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/library/channel?${parsedFilter}`);
+  return httpClient.get(`public/library/channel?${parsedFilter}`);
 };
 
 export const deleteChannelLibrary = ({ library }) => {

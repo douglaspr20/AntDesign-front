@@ -94,8 +94,9 @@ const LibraryCard = ({
       if (type === CARD_TYPE.ADD) {
         onAdd();
       } else if (data.link && !modalVisible) {
-        console.log(data.link)
-        window.open(data.link);
+        if(data.link !== 'https://'){
+          window.open(data.link);
+        }
       }
     }
   };

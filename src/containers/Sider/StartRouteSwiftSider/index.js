@@ -1,17 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { INTERNAL_LINKS } from "enum";
-import { PrivateRoute, Sidebar } from "components";
+import { Sidebar } from "components";
+import { Route } from "react-router-dom";
 import { channelSelector } from "redux/selectors/channelSelector";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const StartRouteSwiftSider = ({ 
-  bulChannelPage
+  bulChannelPage,
+  userProfile
 }) => {
 
     return (
       <>
-        {bulChannelPage === "channel" &&
-            <PrivateRoute
+        {bulChannelPage === "channel" && userProfile.id !== undefined &&
+            <Route
                 path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
                 exact
                 render={() => <Sidebar />}
@@ -23,6 +26,7 @@ const StartRouteSwiftSider = ({
 
 const mapStateToProps = (state) => ({
     bulChannelPage: channelSelector(state).bulChannelPage,
+    userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

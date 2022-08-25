@@ -48,7 +48,7 @@ export const searchChannelPodcast = ({ filter }) => {
     .map((item) => `${item}=${newFilter[item]}`)
     .join("&");
 
-  return httpClient.get(`private/podcast/channel?${parsedFilter}`);
+  return httpClient.get(`public/podcast/channel?${parsedFilter}`);
 };
 
 export const deleteChannelPodcast = ({ episode }) => {

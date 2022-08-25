@@ -17,7 +17,7 @@ export const searchBlogPost = ({ filters = {}, page }) => {
 };
 
 export const getBlogPostByChannelId = ({ ChannelId }) => {
-  return httpClient.get(`private/blogpost/${ChannelId}`);
+  return httpClient.get(`public/blogpost/${ChannelId}`);
 };
 
 export const getBlogPost = (blogPostId) => {

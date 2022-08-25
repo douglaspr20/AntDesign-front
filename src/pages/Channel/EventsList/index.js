@@ -138,7 +138,7 @@ const EventsList = ({
       />
       {!isOwner && !isEditor && futureDataFilter?.length === 0 ? (
         <NoItemsMessageCard
-          message={`There are no Blogs for you at the moment`}
+          message={`There are no Events for you at the moment`}
         />
        ) : (
         <EventList

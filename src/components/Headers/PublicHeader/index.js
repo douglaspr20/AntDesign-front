@@ -22,7 +22,8 @@ const PublicHeader = ({
   userProfile,
   registerUserIfNotAreRegisterConference2023,
   setBulRegister, 
-  activeButton
+  activeButton,
+  bulChannelPage
 }) => {
 
   const [modalRegister, setModalRegister] = useState(false)
@@ -30,6 +31,8 @@ const PublicHeader = ({
   const [bulMessageOut, setBulMessageOut] = useState(false)
   const [animation, setAnimation] = useState({opacity:"0%"})
   const [bulKnowRegister, setBulKnowRegister] = useState(false)
+  const [bulModal, setBulModal] = useState(false)
+  const [type, setType] = useState("login")
 
   const quitMessage = useCallback(() => {
     setAnimation({opacity:"100%"})
@@ -74,143 +77,192 @@ const PublicHeader = ({
   }, [userProfile,bulKnowRegister, confirm])
 
   return (
-    <div 
-      className={
-        (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
-        "public-header-conference" : "public-header"
-      } 
-      style={{width:"calc( 100% )"}}
-    >
-      <Link 
-        to={INTERNAL_LINKS.HOME} 
+    <>
+      <div 
         className={
           (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
-          "public-header-left-conference" : "public-header-left"
-        }
-        target="_blank"
+          "public-header-conference" : "public-header"
+        } 
+        style={{width:"calc( 100% )"}}
       >
-        <div className="hr-logo">
-          <img src={LogoSidebar} alt="sidebar-logo" />
-        </div>
-      </Link>
-      {/* {PUBLIC_HEADER_MENUS.map((menu, index) => (
-        <Link key={index} to={menu.url}>
-          <span className="public-header-menu">{menu.text}</span>
-        </Link>
-      ))} */}
-      {/* <PublicMenuPopup>
-        <div className="public-header-bar">
-          <i className="fal fa-bars" />
-        </div>
-      </PublicMenuPopup> */}
-      {(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) && 
-        <>
-          <input id="checkbox" className="checkboxHiden" type="checkbox" style={{zIndex: "100"}} />
-          <label htmlFor="checkbox" className="conteiner-icon-menu">
-            <img src={IconMenu} alt="icon-menu" />
-          </label>
-          <div className="public-header-right">
-            <div className="public-conference-links">
-              <Link 
-                style={
-                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? 
-                  {textDecoration: "underline black"} : {textDecoration: "none"}
-                } 
-                to={INTERNAL_LINKS.CONFERENCE_2023}
-              >
-                  <p>Home</p>
-              </Link>
+        {bulChannelPage !== 'channel' && 
+          <Link 
+            to={INTERNAL_LINKS.HOME} 
+            className={
+              (window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) ? 
+              "public-header-left-conference" : "public-header-left"
+            }
+            target="_blank"
+          >
+            <div className="hr-logo">
+              <img src={LogoSidebar} alt="sidebar-logo" />
             </div>
-            <div className="public-conference-links">
-              <Link 
-                style={
-                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/highlights") ? 
-                  {textDecoration: "underline black"} : {textDecoration: "none"}
-                } 
-                to={INTERNAL_LINKS.CONFERENCE_2023 + "/highlights"}
-              >
-                  <p>Conference Highlights</p>
-              </Link>
-            </div>
-            <div className="public-conference-links">
-              <Link 
-                style={
-                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/speakers") ? 
-                  {textDecoration: "underline black"} : {textDecoration: "none"}
-                } 
-                to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}
-              >
-                  <p>Speakers</p>
-              </Link>
-            </div>
-            <div className="public-conference-links">
-              <Link 
-                style={
-                  (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/agenda") ? 
-                  {textDecoration: "underline black"} : {textDecoration: "none"}
-                } 
-                to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}
-              >
-                  <p>Agenda</p>
-              </Link>
-            </div>
-              {butonState && (
-                <div className="container-you-are-now-register">
-                  <div className="div-you-are-now-register">
-                    <p>YOU ARE NOW REGISTERED</p>
+          </Link>
+        }
+        {/* {PUBLIC_HEADER_MENUS.map((menu, index) => (
+          <Link key={index} to={menu.url}>
+            <span className="public-header-menu">{menu.text}</span>
+          </Link>
+        ))} */}
+        {/* <PublicMenuPopup>
+          <div className="public-header-bar">
+            <i className="fal fa-bars" />
+          </div>
+        </PublicMenuPopup> */}
+        {(window.location.pathname.substring(0,15) === INTERNAL_LINKS.CONFERENCE_2023) && 
+          <>
+            <input id="checkbox" className="checkboxHiden" type="checkbox" style={{zIndex: "100"}} />
+            <label htmlFor="checkbox" className="conteiner-icon-menu">
+              <img src={IconMenu} alt="icon-menu" />
+            </label>
+            <div className="public-header-right">
+              <div className="public-conference-links">
+                <Link 
+                  style={
+                    (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023) ? 
+                    {textDecoration: "underline black"} : {textDecoration: "none"}
+                  } 
+                  to={INTERNAL_LINKS.CONFERENCE_2023}
+                >
+                    <p>Home</p>
+                </Link>
+              </div>
+              <div className="public-conference-links">
+                <Link 
+                  style={
+                    (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/highlights") ? 
+                    {textDecoration: "underline black"} : {textDecoration: "none"}
+                  } 
+                  to={INTERNAL_LINKS.CONFERENCE_2023 + "/highlights"}
+                >
+                    <p>Conference Highlights</p>
+                </Link>
+              </div>
+              <div className="public-conference-links">
+                <Link 
+                  style={
+                    (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/speakers") ? 
+                    {textDecoration: "underline black"} : {textDecoration: "none"}
+                  } 
+                  to={INTERNAL_LINKS.CONFERENCE_2023 + "/speakers"}
+                >
+                    <p>Speakers</p>
+                </Link>
+              </div>
+              <div className="public-conference-links">
+                <Link 
+                  style={
+                    (window.location.pathname === INTERNAL_LINKS.CONFERENCE_2023 + "/agenda") ? 
+                    {textDecoration: "underline black"} : {textDecoration: "none"}
+                  } 
+                  to={INTERNAL_LINKS.CONFERENCE_2023 + "/agenda"}
+                >
+                    <p>Agenda</p>
+                </Link>
+              </div>
+                {butonState && (
+                  <div className="container-you-are-now-register">
+                    <div className="div-you-are-now-register">
+                      <p>YOU ARE NOW REGISTERED</p>
+                    </div>
                   </div>
-                </div>
-              )}
-              {(!butonState && bulRegister) && (
+                )}
+                {(!butonState && bulRegister) && (
+                    <CustomButton
+                      className="button-speaker"
+                      text={"REGISTER HERE"}
+                      size="md"
+                      type={"primary"}
+                      onClick={() => {
+                        confirm()
+                        setButonState(true)
+                      }}
+                    />
+                  )}
+                {(!butonState && !bulRegister) && (
                   <CustomButton
                     className="button-speaker"
                     text={"REGISTER HERE"}
                     size="md"
                     type={"primary"}
-                    onClick={() => {
-                      confirm()
-                      setButonState(true)
-                    }}
+                    onClick={() => {setModalRegister(true)}}
                   />
                 )}
-              {(!butonState && !bulRegister) && (
-                <CustomButton
-                  className="button-speaker"
-                  text={"REGISTER HERE"}
-                  size="md"
-                  type={"primary"}
-                  onClick={() => {setModalRegister(true)}}
-                />
-              )}
-          </div> 
-          {(bulMessageOut && bulRegister) && 
-            <div className="complete-profile" style={animation}>
-              <div className="container-message">
-                <p className="text-message">You are now registered</p>
+            </div> 
+            {(bulMessageOut && bulRegister) && 
+              <div className="complete-profile" style={animation}>
+                <div className="container-message">
+                  <p className="text-message">You are now registered</p>
+                </div>
               </div>
-            </div>
-          }
-          <Modal
-            visible={modalRegister}
-            footer={null}
-            width={400}
-            bodyStyle={{ overflow: "auto", padding: "20px" }}
-            className="modal-container-login"
-            onCancel={() => setModalRegister(false)}
-          >
-            <Login
-              login={true}
-              signUp={false}
-              history={null}
-              confirm={confirm}
-              match={{ params: {} }}
-              modal={setModalRegister}
-              onClose={() => setModalRegister(false)}
+            }
+            <Modal
+              visible={modalRegister}
+              footer={null}
+              width={400}
+              bodyStyle={{ overflow: "auto", padding: "20px" }}
+              className="modal-container-login"
+              onCancel={() => setModalRegister(false)}
+            >
+              <Login
+                login={true}
+                signUp={false}
+                history={null}
+                confirm={confirm}
+                match={{ params: {} }}
+                modal={setModalRegister}
+                onClose={() => setModalRegister(false)}
+              />
+            </Modal>
+          </>
+        }
+        {bulChannelPage === 'channel' && 
+          <div className="public-header-right">
+            <CustomButton
+              className="button-speaker"
+              text={"log in"}
+              size="md"
+              type={"primary"}
+              onClick={() => {
+                setBulModal(true)
+                setType('login')
+              }}
             />
-          </Modal>
-        </>
+            <CustomButton
+              className="button-speaker"
+              text={"sign up"}
+              size="md"
+              type={"primary"}
+              onClick={() => {
+                setBulModal(true)
+                setType('register')
+              }}
+            />
+          </div>
+        }
+      </div>
+      {bulChannelPage === 'channel' && 
+        <div className="space-channel"></div>
       }
-    </div>
+      <Modal
+        visible={bulModal}
+        footer={null}
+        width={400}
+        bodyStyle={{ overflow: "auto", padding: "20px" }}
+        className="modal-container-login"
+        onCancel={() => setBulModal(false)}
+      >
+        <Login
+          login={(type === 'login') ? true : false}
+          signup={(type === 'login') ? false : true}
+          history={null}
+          confirm={confirm}
+          match={{ params: {} }}
+          modal={setBulModal}
+          onClose={() => setBulModal(false)}
+        />
+      </Modal>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 export default [
     {
-        label: "Admin tools",
+        label: "Admin Tools",
         value: 7,
     },
     {

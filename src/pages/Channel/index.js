@@ -4,7 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 
 import { CustomButton, CardMenu } from "components";
-import { Form, Select, Modal, Table, Space } from "antd";
+import { Form, Select, Modal, Table, Space} from "antd";
+import Login from "pages/Login";
 import { INTERNAL_LINKS, USER_ROLES, TABS_CHANNELS } from "enum";
 import ChannelDrawer from "containers/ChannelDrawer";
 // import ChannelFilterPanel from "./ChannelFilterPanel";
@@ -71,7 +72,8 @@ const Channel = ({
   const [followed, setFollowed] = useState(false);
   const [dataCategoriesState, setDataCategoriesState] = useState()
   const [openCannelDrawer, setOpenChannelDrawer] = useState(false);
-  const [openPopUpSpeakers, setOpenPopUpSpeakers] = useState(false)
+  const [openPopUpSpeakers, setOpenPopUpSpeakers] = useState(false);
+  const [registerModal, setRegisterModal] = useState(false)
 
   let clock
   const { Option } = Select;
@@ -155,7 +157,9 @@ const Channel = ({
         });
       }
 
-      getChannelEditor(selectedChannel?.id)
+      if(userProfile?.id !== undefined){
+        getChannelEditor(selectedChannel?.id)
+      }
   
       return () => {
         isMounted = false;
@@ -189,7 +193,9 @@ const Channel = ({
         }
       }
     });
-    getChannelEditor(selectedChannel?.id)
+    if(userProfile?.id !== undefined){
+      getChannelEditor(selectedChannel?.id)
+    }
   };
 
   const dataSourceColumnsContentEditors = [
@@ -197,7 +203,7 @@ const Channel = ({
       title: "Profile",
       dataIndex: "firstName",
       key: "1",
-      width:50,
+      width:300,
       align: "center",
       render: (text, record) => {
         return (
@@ -211,7 +217,7 @@ const Channel = ({
       title: "Role",
       dataIndex: "role",
       key: "2",
-      width:50,
+      width:250,
       align: "center",
       render: () => {
         return ('Content editor')
@@ -222,7 +228,7 @@ const Channel = ({
       dataIndex: "Actions",
       key: "Actions",
       align:"center",
-      width: 20,
+      width: 150,
       render: (_, data) => (
         <Space>
           <CustomButton
@@ -233,7 +239,9 @@ const Channel = ({
               if(isChannelOwner){
                 deleteChannelEditor(data?.id, (err) => {
                   if(!err){
-                    getChannelEditor(selectedChannel?.id)
+                    if(userProfile?.id !== undefined){
+                      getChannelEditor(selectedChannel?.id)
+                    }
                   }
                 })
               }
@@ -248,14 +256,16 @@ const Channel = ({
     <div className="channel-page" onLoad={() => loadFunction()}>
       {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
       <div className="channel-page__container">
-        <Link to={INTERNAL_LINKS.CHANNELS} >
-          <div className="channel-page__content-top">
-            <div className="channel-page__content-top-back">
-              <img src={IconBack} alt="icon-back" />
+        {userProfile?.id !== undefined && 
+          <Link to={INTERNAL_LINKS.CHANNELS} >
+            <div className="channel-page__content-top">
+              <div className="channel-page__content-top-back">
+                <img src={IconBack} alt="icon-back" />
+              </div>
+              <h4>Back to Channels</h4>
             </div>
-            <h4>Back to Channels</h4>
-          </div>
-        </Link>
+          </Link>
+        }
         <div className="channel-page__results">
           <div className="channel-page__row" ref={contentBackground}>
             <div className="background-forms" style={{height: heightData}}>
@@ -280,9 +290,9 @@ const Channel = ({
                     <div className="pencil"></div>
                   </div>}
                   <div className="channel-info__general-info">
-                    <h2 className="channel-info__name">
+                    <p className="channel-info__name">
                       {selectedChannel.name}
-                    </h2>
+                    </p>
                     <p className="channel-info__description">
                       {selectedChannel.description}
                     </p>
@@ -303,7 +313,13 @@ const Channel = ({
                       size="sm"
                       style={{marginLeft: "30px"}}
                       loading={channelLoading}
-                      onClick={followChannel}
+                      onClick={() => {
+                        if(userProfile?.id !== undefined){
+                          followChannel()
+                        }else{
+                          setRegisterModal(true)
+                        }
+                      }}
                     />
                   </div>
                 </>
@@ -343,8 +359,13 @@ const Channel = ({
                   >Followers</p>
                   {(isChannelOwner || isChannelEditor) && <p
                     className={(tabData === 7) ? "select" : ""}
-                    onClick={(e) => {selectTabs( e , 7 ); getChannelEditor(selectedChannel?.id)}}
-                  >Admin tools</p>}
+                    onClick={(e) => {
+                      selectTabs( e , 7 ); 
+                      if(userProfile?.id !== undefined){
+                        getChannelEditor(selectedChannel?.id)
+                      }
+                    }}
+                  >Admin Tools</p>}
                 </div>
                 <div className="box-select" ref={selectDiv} style={{left: "15px", width: "80px", display: 'block'}}></div>
                 <div 
@@ -363,7 +384,9 @@ const Channel = ({
                     onClick={(value) => {
                       selectDiv.current.style.cssText = `left: 15px; width: 80px; display: none;`
                       if(value === 7){
-                        getChannelEditor(selectedChannel?.id)
+                        if(userProfile?.id !== undefined){
+                          getChannelEditor(selectedChannel?.id)
+                        }
                       }
                       selectTabs( undefined , value )
                     }} 
@@ -500,7 +523,7 @@ const Channel = ({
                 </div>
               </div>
               )}
-              {(tabData === 7) && (
+              {(tabData === 7 && userProfile?.id !== undefined) && (
                 <div>
                   <div className="card-content-home">
                     <h4 style={{paddingBottom: "20px"}}>Actions</h4>
@@ -525,14 +548,14 @@ const Channel = ({
                   </div>
                   {isChannelOwner && 
                     <div className="card-content-home">
-                      <h4>Contents editor</h4>
+                      <h4>Content Editor</h4>
                       <div>
                         <Table
                           dataSource={userChannelEditor}
                           columns={dataSourceColumnsContentEditors}
                           rowKey="id"
                           pagination={false}
-                          scroll={{ y: "400px", x: "300px" }}
+                          scroll={(window.clientWidth <= 1500) ? { y: "400px", x: "100vw" } : { y: "400px", x: "100px" }}
                           style={{testAlign:"center"}}
                         />
                       </div>
@@ -569,7 +592,9 @@ const Channel = ({
             }, (err) => {
               if(!err){
                 setOpenPopUpSpeakers(false)
-                getChannelEditor(selectedChannel?.id)
+                if(userProfile?.id !== undefined){
+                  getChannelEditor(selectedChannel?.id)
+                }
               }
             })
           }}
@@ -598,6 +623,23 @@ const Channel = ({
               </Select>
           </Form.Item> 
         </Form>
+      </Modal>
+      <Modal
+        visible={registerModal}
+        footer={null}
+        width={400}
+        bodyStyle={{ overflow: "auto", padding: "20px" }}
+        className="modal-container-login"
+        onCancel={() => setRegisterModal(false)}
+      >
+        <Login
+          login={true}
+          signUp={false}
+          history={null}
+          match={{ params: {} }}
+          modal={setRegisterModal}
+          onClose={() => setRegisterModal(false)}
+        />
       </Modal>
     </div>
   );

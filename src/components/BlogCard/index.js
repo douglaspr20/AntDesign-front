@@ -81,7 +81,7 @@ const BlogCard = ({
             <div className="blog-card-content-date">
               <span>{moment(date).format("MM/DD/YYYY")}</span>
             </div>
-            {isOwner || isEditor && (
+            {(isOwner || isEditor) && (
               <CardMenu
                 menus={CARD_MENUS.slice(0, 2)}
                 onClick={(option) => onMenuClick(option, id)}

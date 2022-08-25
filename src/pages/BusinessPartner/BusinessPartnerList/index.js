@@ -81,7 +81,7 @@ const BusinessPartnerList = ({
       ) : (
         <>
           <div className="channels__list">
-            {isOwner || isEditor && <BusinessPartnerCard type={CARD_TYPE.ADD} />}
+            {(isOwner || isEditor) && <BusinessPartnerCard type={CARD_TYPE.ADD} />}
             {businessResourcesSort?.map((item, index) => (
               <BusinessPartnerCard
                 type={(isOwner || isEditor) ? CARD_TYPE.EDIT : CARD_TYPE.VIEW}

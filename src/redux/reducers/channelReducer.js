@@ -42,7 +42,7 @@ export const reducers = {
     return state.merge({ ...payload });
   },
   [channelConstants.SET_BUL_CHANNEL_PAGE]: (state, { payload }) => {
-    return state.merge({ bulChannelPage: payload.bul });
+    return state.merge({ bulChannelPage: payload.type });
   },
 };
 

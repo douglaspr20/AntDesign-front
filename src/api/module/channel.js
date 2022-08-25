@@ -46,7 +46,7 @@ export const getChannel = ({ id }) => {
 };
 
 export const getChannelForNameEndPoint = ({ name }) => {
-  return httpClient.get(`private/channel/forName/${name}`);
+  return httpClient.get(`public/channel/forName/${name}`);
 };
 
 export const setFollowChannel = ({ channel }) => {

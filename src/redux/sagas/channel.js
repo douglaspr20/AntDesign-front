@@ -269,7 +269,7 @@ export function* exportFollowersChannelsSagas({ payload }) {
       var fileLink = document.createElement('a');
   
       fileLink.href = fileURL;
-      fileLink.setAttribute('download', `archivo.xlsx`);
+      fileLink.setAttribute('download', `followers.xlsx`);
       document.body.appendChild(fileLink);
   
       fileLink.click();
@@ -319,6 +319,7 @@ export function* getChannelEditor({ payload }) {
   const {id} = payload
 
   try {
+
     const response = yield call(getContentEditorChannelEndPoint, id);
 
     if (response.status === 200) {

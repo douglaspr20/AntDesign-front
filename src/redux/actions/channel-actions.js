@@ -62,8 +62,8 @@ export const getChannelForName = createAction(GET_CHANNEL_FOR_NAME, (name, callb
   name,
   callback,
 }));
-export const setBulChannelPage = createAction(SET_BUL_CHANNEL_PAGE, (bul) => ({
-  bul
+export const setBulChannelPage = createAction(SET_BUL_CHANNEL_PAGE, (type) => ({
+  type
 }))
 export const setChannel = createAction(SET_CHANNEL, (channel) => ({ channel }));
 export const updateChannel = createAction(
