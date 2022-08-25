@@ -31,7 +31,7 @@ export const constants = {
 
 export const upsertCouncilEvent = createAction(
   UPSERT_COUNCIL_EVENT,
-  (councilEvent,callback) => ({ councilEvent,callback })
+  (councilEvent, callback) => ({ councilEvent, callback })
 );
 export const setUpsertCouncilEvent = createAction(
   SET_COUNCIL_EVENT,

@@ -13,9 +13,7 @@ import {
 } from "antd";
 import { CustomButton, CustomModal } from "components";
 import Emitter from "services/emitter";
-import moment from "moment-timezone";
 import { DownOutlined } from "@ant-design/icons";
-import { TIMEZONE_LIST } from "enum";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import { EVENT_TYPES } from "enum";
@@ -26,6 +24,7 @@ import { homeSelector } from "redux/selectors/homeSelector";
 
 import CommentForm from "./CommentForm";
 import "./style.scss";
+import { convertToLocalTime } from "utils/format";
 
 const { Panel } = Collapse;
 
@@ -34,31 +33,34 @@ const CouncilEventPanel = ({
   userProfile,
   joinCouncilEvent,
   tz,
+  userTimezone,
   status,
   removeCouncilEventPanelist,
   searchUserForCouncilEventPanelist,
   searchedUsersForCouncilEvent,
   closeMainModal,
-  councilEventId
+  councilEventId,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showProfileCompletionFirewall, setShowProfileCompletionFirewall] =
     useState(false);
   const [form] = Form.useForm();
 
-  const userTimezone = moment.tz.guess();
-  const timezone = TIMEZONE_LIST.find((timezone) => timezone.value === tz);
-
-  let startTime = moment.tz(panel.startDate, timezone.utc[0]);
-  let endTime = moment.tz(panel.endDate, timezone.utc[0]);
+  let startTime = convertToLocalTime(panel.startDate, tz);
+  let endTime = convertToLocalTime(panel.endDate, tz);
 
   const handleJoinPanel = (panel, state) => {
-    joinCouncilEvent(panel.id, userProfile.id, state, false, false, councilEventId);
+    joinCouncilEvent(
+      panel.id,
+      userProfile.id,
+      state,
+      false,
+      false,
+      councilEventId
+    );
   };
 
   const onClickDownloadCalendar = (e) => {
-    const userTimezone = moment.tz.guess();
-
     e.preventDefault();
     e.stopPropagation();
     window.open(
@@ -73,13 +75,9 @@ const CouncilEventPanel = ({
 
     let googleCalendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${encodeURIComponent(
       panel.panelName
-    )}&dates=${moment
-      .tz(panel.startDate, userTimezone)
-      .format("YYYYMMDDTHHmmSSS")}/${moment
-      .tz(panel.endDate, userTimezone)
-      .format("YYYYMMDDTHHmmSSS")}&details=${encodeURIComponent(
-      `Link to join: ${panel.linkToJoin}`
-    )}`;
+    )}&dates=${startTime.format("YYYYMMDDTHHmmSSS")}/${endTime.format(
+      "YYYYMMDDTHHmmSSS"
+    )}&details=${encodeURIComponent(`Link to join: ${panel.linkToJoin}`)}`;
     window.open(googleCalendarUrl, "_blank");
   };
 
@@ -87,11 +85,9 @@ const CouncilEventPanel = ({
     e.preventDefault();
     e.stopPropagation();
 
-    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${moment
-      .tz(panel.panelStartAndEndDate[0], userTimezone)
-      .format("YYYYMMDDTHHmm")}&et=${moment
-      .tz(panel.panelStartAndEndDate[1], userTimezone)
-      .format("YYYYMMDDTHHmm")}&title=${encodeURIComponent(
+    let yahooCalendarUrl = `https://calendar.yahoo.com/?v=60&st=${startTime.format(
+      "YYYYMMDDTHHmm"
+    )}&et=${endTime.format("YYYYMMDDTHHmm")}&title=${encodeURIComponent(
       panel.panelName
     )}&desc=${encodeURIComponent(`Link to join: ${panel.linkToJoin}`)}`;
 
@@ -239,16 +235,13 @@ const CouncilEventPanel = ({
             <b>Panel</b>: {panel?.panelName}
           </div>
           <div>
-            <b>Panel Date</b>:
-            {` ${moment.tz(panel?.startDate, timezone.utc[0]).format("LL")} ${
-              timezone.abbr
-            }`}
+            <b>Panel Date</b>:{` ${startTime.format("LL")}`}
           </div>
           <div>
-            <b>Panel Start Time</b>: {startTime.format("HH:mm")} {timezone.abbr}
+            <b>Panel Start Time</b>: {startTime.format("HH:mm")} {userTimezone}
           </div>
           <div>
-            <b>Panel End Time</b>: {endTime.format("HH:mm")} {timezone.abbr}
+            <b>Panel End Time</b>: {endTime.format("HH:mm")} {userTimezone}
           </div>
           <div
             className="d-flex"
