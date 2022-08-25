@@ -95,8 +95,8 @@ const CouncilEvents = ({
       const councilEventPanels = event.CouncilEventPanels;
       let panel = councilEventPanels[0];
 
-      let startTime = moment(panel.startDate).utc();
-      let endTime = moment(panel.endDate).utc();
+      let startTime = moment.utc(panel.startDate);
+      let endTime = moment.utc(panel.endDate);
 
       panel = {
         ...panel,
@@ -104,8 +104,8 @@ const CouncilEvents = ({
       };
 
       const panels = councilEventPanels.slice(1).map((panel) => {
-        let startTime = moment(panel.startDate).utc();
-        let endTime = moment(panel.endDate).utc();
+        let startTime = moment.utc(panel.startDate);
+        let endTime = moment.utc(panel.endDate);
 
         return {
           ...panel,
@@ -113,8 +113,8 @@ const CouncilEvents = ({
         };
       });
 
-      const startDate = moment(event.startDate);
-      const endDate = moment(event.endDate);
+      const startDate = moment.utc(event.startDate);
+      const endDate = moment.utc(event.endDate);
       const startAndEndDate = [startDate, endDate];
 
       const city = getNameOfCityWithTimezone(event.timezone);
@@ -177,17 +177,21 @@ const CouncilEvents = ({
   const handleOnFinish = (values) => {
     const timezoneFirstSliceIndex = values.timezone.indexOf("/");
     const convertedStartTime = moment
-      .utc(values.startAndEndDate[0].format("YYYY-MM-DD HH:mm"))
+      .utc(values.startAndEndDate[0].format("YYYY-MM-DD"))
       .format();
 
     const convertedEndTime = moment
-      .utc(values.startAndEndDate[1].format("YYYY-MM-DD HH:mm"))
+      .utc(values.startAndEndDate[1].format("YYYY-MM-DD"))
       .format();
 
     const panel = {
       panelName: values.panelName,
-      startDate: convertedStartTime,
-      endDate: convertedEndTime,
+      startDate: moment.utc(
+        values.panelStartAndEndDate[0].format("YYYY-MM-DD HH:mm")
+      ),
+      endDate: moment.utc(
+        values.panelStartAndEndDate[1].format("YYYY-MM-DD HH:mm")
+      ),
       numberOfPanelists: values.numberOfPanelists,
       timezone: values.timezone.slice(
         timezoneFirstSliceIndex + 1,
@@ -324,9 +328,9 @@ const CouncilEvents = ({
               </div>
             )}
           </div>
-          <div>Start date: {moment(eve.startDate).format("LL")}</div>
+          <div>Start date: {moment.utc(eve.startDate).format("LL")}</div>
           <div style={{ marginBottom: "10px" }}>
-            End date: {moment(eve.endDate).format("LL")}
+            End date: {moment.utc(eve.endDate).format("LL")}
           </div>
           <div style={{ marginTop: "auto" }}>
             {userProfile.isExpertCouncilAdmin ? (
