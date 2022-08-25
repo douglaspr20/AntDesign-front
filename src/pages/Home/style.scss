@@ -170,6 +170,8 @@
     width: 100%;
     max-width: 1000px;
     font-weight: 500 !important;
+    display: flex;
+    flex-direction: row;
 
     .recommend-card {
       padding: 2.25rem 0;
@@ -277,7 +279,7 @@
   }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1230px) {
   .home-page-container{
 
     &--posts{
@@ -287,6 +289,15 @@
       overflow: auto;
       &-central-panel {
         padding-left: 0px;
+      }
+    }
+
+    &--upgrade{
+      display: block;
+      flex-direction: none;
+
+      .home-advertisement-wrapper{
+        display: none;
       }
     }
     
