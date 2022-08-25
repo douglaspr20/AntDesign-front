@@ -1,16 +1,18 @@
 /* eslint-disable no-template-curly-in-string */
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { useParams } from "react-router-dom";
 import AdvertisementDrawer from "containers/AdvertisementDrawer";
 
 import ProfileStatusBar from "./ProfileStatusBar";
-import { PostsFilterPanel, CustomButton } from "components";
+import { 
+  // PostsFilterPanel, 
+  CustomButton 
+} from "components";
 
 import Posts from "containers/Posts";
-import FilterDrawer from "../Home/FilterDrawer";
+// import FilterDrawer from "../Home/FilterDrawer";
 
 import { getUser } from "redux/actions/home-actions";
 import { getAllPost } from "redux/actions/post-actions";
@@ -48,8 +50,8 @@ const HomePage = ({
   isAdPreview = false,
   createAdvertisementClick,
 }) => {
-  const [filters, setFilters] = useState({});
-  const [text, setText] = useState("");
+  const [filters] = useState({});
+  const [text] = useState("");
   const [visible, setVisible] = useState(false);
   const [hasAdvertisementData, setHasAdvertisementData] = useState(null);
   const { id } = useParams();
@@ -94,22 +96,22 @@ const HomePage = ({
     }
   }, [advertisementsByPage]);
 
-  const onFilterChange = (filter) => {
-    getAllPost({ ...filter, text });
-    setFilters(filter);
-  };
+  // const onFilterChange = (filter) => {
+  //   getAllPost({ ...filter, text });
+  //   setFilters(filter);
+  // };
 
-  const showFilterPanel = () => {
-    Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
-  };
+  // const showFilterPanel = () => {
+  //   Emitter.emit(EVENT_TYPES.OPEN_FILTER_PANEL);
+  // };
 
-  const onSearch = (value) => {
-    getAllPost({
-      ...filters,
-      text: value,
-    });
-    setText(value);
-  };
+  // const onSearch = (value) => {
+  //   getAllPost({
+  //     ...filters,
+  //     text: value,
+  //   });
+  //   setText(value);
+  // };
 
   const onShowMore = () => {
     getAllPost({
@@ -217,27 +219,12 @@ const HomePage = ({
         </div>
       </div>
       <div className="home-page-container--posts">
-        <PostsFilterPanel
-          title="Stories filter"
-          onChange={onFilterChange}
-          onSearch={onSearch}
-        />
         <div className="home-page-container--posts-central-panel">
           {userProfile && userProfile.percentOfCompletion !== 100 && (
             <div className="home-page-container--profile">
               <ProfileStatusBar user={userProfile} />
             </div>
           )}
-          <div className={`home-page-container${"--mobile-options"}`}>
-            <FilterDrawer onChange={onFilterChange} onSearch={onSearch} />
-            <Button
-              onClick={() => {
-                showFilterPanel();
-              }}
-            >
-              Filters
-            </Button>
-          </div>
           <div className="home-page-container--upgrade">
             {userProfile && userProfile.memberShip === "free" && (
               <div className="recommend-card">
