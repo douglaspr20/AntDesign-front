@@ -36,7 +36,7 @@ const StartRouteSwift = ({
       let pathNameFixed = url.substring(1,url.length)
       
       if (url) {
-        getChannelForName( fixNameUrl(pathNameFixed) , (error) => {
+        getChannelForName( JSON.stringify({name: fixNameUrl(pathNameFixed)}) , (error) => {
           if (isMounted && error) {
             setBulChannelPage("event")
           }else{

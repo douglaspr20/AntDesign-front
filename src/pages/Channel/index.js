@@ -150,7 +150,7 @@ const Channel = ({
       let pathNameFixed = pathname.substring(1,pathname.length)
       
       if (pathname) {
-        getChannelForName( fixNameUrl(pathNameFixed) , (error) => {
+        getChannelForName( JSON.stringify({name: fixNameUrl(pathNameFixed)}) , (error) => {
           if (isMounted && error) {
             history.push(INTERNAL_LINKS.NOT_FOUND);
           }
