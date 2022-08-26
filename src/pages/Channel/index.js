@@ -52,7 +52,9 @@ const Channel = ({
   setNewsChannelEditor,
   getChannelEditor,
   deleteChannelEditor,
-  userChannelEditor
+  userChannelEditor,
+  channelOptimizate,
+  getUser
 }) => {
   const selectDiv = useRef()
   const firstSelect = useRef()
@@ -149,7 +151,7 @@ const Channel = ({
       let isMounted = true;
       let pathNameFixed = pathname.substring(1,pathname.length)
       
-      if (pathname) {
+      if (pathname && channelOptimizate && selectedChannel?.name !== fixNameUrl(pathNameFixed)) {
         getChannelForName( JSON.stringify({name: fixNameUrl(pathNameFixed)}) , (error) => {
           if (isMounted && error) {
             history.push(INTERNAL_LINKS.NOT_FOUND);
@@ -157,8 +159,9 @@ const Channel = ({
         });
       }
 
-      if(userProfile?.id !== undefined){
+      if(localStorage.getItem("community") !== null){
         getChannelEditor(selectedChannel?.id)
+        getUser()
       }
   
       return () => {
@@ -184,6 +187,7 @@ const Channel = ({
 
   const onChannelCreated = (data) => {
     setOpenChannelDrawer(false);
+    getUser()
     getChannelForName( fixNameUrl(data) , (error) => {
       if (error) {
         if(data !== undefined){
@@ -193,7 +197,7 @@ const Channel = ({
         }
       }
     });
-    if(userProfile?.id !== undefined){
+    if(localStorage.getItem("community") !== null){
       getChannelEditor(selectedChannel?.id)
     }
   };
@@ -239,7 +243,7 @@ const Channel = ({
               if(isChannelOwner){
                 deleteChannelEditor(data?.id, (err) => {
                   if(!err){
-                    if(userProfile?.id !== undefined){
+                    if(localStorage.getItem("community") !== null){
                       getChannelEditor(selectedChannel?.id)
                     }
                   }
@@ -256,7 +260,7 @@ const Channel = ({
     <div className="channel-page" onLoad={() => loadFunction()}>
       {/* <ChannelFilterPanel onChange={onFilterChange} /> */}
       <div className="channel-page__container">
-        {userProfile?.id !== undefined && 
+        {localStorage.getItem("community") !== null && 
           <Link to={INTERNAL_LINKS.CHANNELS} >
             <div className="channel-page__content-top">
               <div className="channel-page__content-top-back">
@@ -314,7 +318,7 @@ const Channel = ({
                       style={{marginLeft: "30px"}}
                       loading={channelLoading}
                       onClick={() => {
-                        if(userProfile?.id !== undefined){
+                        if(localStorage.getItem("community") !== null){
                           followChannel()
                         }else{
                           setRegisterModal(true)
@@ -361,7 +365,7 @@ const Channel = ({
                     className={(tabData === 7) ? "select" : ""}
                     onClick={(e) => {
                       selectTabs( e , 7 ); 
-                      if(userProfile?.id !== undefined){
+                      if(localStorage.getItem("community") !== null){
                         getChannelEditor(selectedChannel?.id)
                       }
                     }}
@@ -384,7 +388,7 @@ const Channel = ({
                     onClick={(value) => {
                       selectDiv.current.style.cssText = `left: 15px; width: 80px; display: none;`
                       if(value === 7){
-                        if(userProfile?.id !== undefined){
+                        if(localStorage.getItem("community") !== null){
                           getChannelEditor(selectedChannel?.id)
                         }
                       }
@@ -400,55 +404,65 @@ const Channel = ({
               </div>
               {(tabData === 0) &&
                 <div>
-                  <div className="card-content-home">
-                    <h3>Resources</h3>
-                    <ResourcesList
-                      type="article"
-                      refresh={tabData === 0}
-                      isOwner={isChannelOwner}
-                      isEditor={isChannelEditor}
-                      limit={2}
-                      buttomEdit={'home'}
-                    />
-                  </div>
-                  <div className="card-content-home">
-                    <h3>Podcasts</h3>
-                    <PodcastsList 
-                      isOwner={isChannelOwner}
-                      isEditor={isChannelEditor} 
-                      limit={2}
-                      buttomEdit={'home'}
-                    />
-                  </div>
-                  <div className="card-content-home">
-                    <h3>Videos</h3>
-                    <ResourcesList
-                      type="videoHome"
-                      refresh={tabData === 0}
-                      isOwner={isChannelOwner}
-                      isEditor={isChannelEditor}
-                      limit={2}
-                      buttomEdit={'home'}
-                    />
-                  </div>
-                  <div className="card-content-home">
-                    <h3>Events</h3>
-                    <EventsList 
-                      isOwner={isChannelOwner}
-                      isEditor={isChannelEditor}
-                      limit={2}
-                      buttomEdit={'home'}
-                    />
-                  </div>
-                  <div className="card-content-home">
-                    <h3>Blogs</h3>
-                    <BlogList
-                      isOwner={isChannelOwner}
-                      isEditor={isChannelEditor}
-                      limit={2}
-                      buttomEdit={'home'}
-                    />
-                  </div>
+                  {(selectedChannel?.librariesResources > 0) &&
+                    <div className="card-content-home">
+                      <h3>Resources</h3>
+                      <ResourcesList
+                        type="article"
+                        refresh={tabData === 0}
+                        isOwner={isChannelOwner}
+                        isEditor={isChannelEditor}
+                        limit={2}
+                        buttomEdit={'home'}
+                      />
+                    </div>
+                  } 
+                  {(selectedChannel?.podcast > 0) &&
+                    <div className="card-content-home">
+                      <h3>Podcasts</h3>
+                      <PodcastsList 
+                        isOwner={isChannelOwner}
+                        isEditor={isChannelEditor} 
+                        limit={2}
+                        buttomEdit={'home'}
+                      />
+                    </div>
+                  }
+                  {(selectedChannel?.librariesVideos > 0) &&
+                    <div className="card-content-home">
+                      <h3>Videos</h3>
+                      <ResourcesList
+                        type="videoHome"
+                        refresh={tabData === 0}
+                        isOwner={isChannelOwner}
+                        isEditor={isChannelEditor}
+                        limit={2}
+                        buttomEdit={'home'}
+                      />
+                    </div>
+                  }
+                  {(selectedChannel?.channelEvents > 0) &&
+                    <div className="card-content-home">
+                      <h3>Events</h3>
+                      <EventsList 
+                        isOwner={isChannelOwner}
+                        isEditor={isChannelEditor}
+                        limit={2}
+                        buttomEdit={'home'}
+                      />
+                    </div>
+                  } 
+                  {(selectedChannel?.blogsPostByChannel > 0) &&
+                    <div className="card-content-home">
+                      <h3>Blogs</h3>
+                      <BlogList
+                        isOwner={isChannelOwner}
+                        isEditor={isChannelEditor}
+                        limit={2}
+                        buttomEdit={'home'}
+                      />
+                    </div>
+                  } 
                 </div>
               }
               {(tabData === 1) && (
@@ -515,15 +529,17 @@ const Channel = ({
                 <h3>Followers</h3>
                 <div className="ajust-contain">
                   {followers?.map((user, index) => (
+                    <div key={index}>
                       <Followers
                         followers={user}
                         index={index}
                       />
+                    </div>
                   ))}
                 </div>
               </div>
               )}
-              {(tabData === 7 && userProfile?.id !== undefined) && (
+              {(tabData === 7 && localStorage.getItem("community") !== null) && (
                 <div>
                   <div className="card-content-home">
                     <h4 style={{paddingBottom: "20px"}}>Actions</h4>
@@ -592,7 +608,7 @@ const Channel = ({
             }, (err) => {
               if(!err){
                 setOpenPopUpSpeakers(false)
-                if(userProfile?.id !== undefined){
+                if(localStorage.getItem("community") !== null){
                   getChannelEditor(selectedChannel?.id)
                 }
               }

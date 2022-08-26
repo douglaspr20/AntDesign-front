@@ -32,7 +32,6 @@ const PublicHeader = ({
   const [animation, setAnimation] = useState({opacity:"0%"})
   const [bulKnowRegister, setBulKnowRegister] = useState(false)
   const [bulModal, setBulModal] = useState(false)
-  const [type, setType] = useState("login")
 
   const quitMessage = useCallback(() => {
     setAnimation({opacity:"100%"})
@@ -46,10 +45,10 @@ const PublicHeader = ({
   },[setBulMessageOut,setBulRegister])
 
   useEffect(() => {
-    if(userProfile.registerConference2023){
+    if(userProfile?.registerConference2023){
       setButonState(true)
     }
-  }, [userProfile.registerConference2023])
+  }, [userProfile])
 
   useEffect(() => {
     if(activeButton){
@@ -59,16 +58,16 @@ const PublicHeader = ({
 
   const confirm = useCallback(() => {
     setBulKnowRegister(true)
-    if(userProfile.registerConference2023 !== undefined){
+    if(userProfile?.registerConference2023 !== undefined){
       setBulKnowRegister(false)
-      if(!userProfile.registerConference2023){
+      if(!userProfile?.registerConference2023){
         registerUserIfNotAreRegisterConference2023(() => {
           setBulMessageOut(true)
           quitMessage()
         })
       }
     }
-  }, [setBulKnowRegister, userProfile.registerConference2023, registerUserIfNotAreRegisterConference2023, quitMessage, setBulMessageOut])
+  }, [setBulKnowRegister, userProfile, registerUserIfNotAreRegisterConference2023, quitMessage, setBulMessageOut])
 
   useEffect(() => {
     if(bulKnowRegister){
@@ -237,22 +236,11 @@ const PublicHeader = ({
           <div className="public-header-right-channel">
             <CustomButton
               className="button-speaker"
-              text={"log in"}
+              text={"log in / sign up"}
               size="md"
               type={"primary"}
               onClick={() => {
                 setBulModal(true)
-                setType('login')
-              }}
-            />
-            <CustomButton
-              className="button-speaker"
-              text={"sign up"}
-              size="md"
-              type={"primary"}
-              onClick={() => {
-                setBulModal(true)
-                setType('register')
               }}
             />
           </div>
@@ -270,8 +258,8 @@ const PublicHeader = ({
         onCancel={() => setBulModal(false)}
       >
         <Login
-          login={(type === 'login') ? true : false}
-          signup={(type === 'login') ? false : true}
+          login={true}
+          signup={false}
           history={null}
           confirm={confirm}
           match={{ params: {} }}

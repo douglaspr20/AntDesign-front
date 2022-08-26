@@ -86,6 +86,21 @@ const Channels = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const orderChannels = (allChannels) => {
+
+    const arrayOrderTime = allChannels.sort((a,b) => {
+
+      let aList = (a?.podcast + a?.blogsPostByChannel + a?.channelEvents + a?.librariesResources + a?.librariesVideos)
+      let bList = (b?.podcast + b?.blogsPostByChannel + b?.channelEvents + b?.librariesResources + b?.librariesVideos)
+
+      return bList - aList
+
+    })
+
+    return arrayOrderTime
+
+  }
+
   return (
     <div className="channels-page">
       <ChannelsFilterPanel onChange={onFilterChange} />
@@ -126,16 +141,17 @@ const Channels = ({
               !userProfile.channel && (
                 <ChannelCard add={true} onClick={onCreateChannel} />
               )}
-            {allChannels.map((chnl) => {
+            {orderChannels(allChannels).map((chnl) => {
               const isChannelOwner =
                 userProfile &&
                 userProfile.role === USER_ROLES.CHANNEL_ADMIN &&
                 userProfile.channel === chnl.id;
 
-                const isChannelEditor =
-                  userProfile &&
-                  userProfile.role === USER_ROLES.CHANNEL_CONTENT_EDITOR &&
-                  userProfile.channel === chnl.id;
+              const isChannelEditor =
+                userProfile &&
+                userProfile.role === USER_ROLES.CHANNEL_CONTENT_EDITOR &&
+                userProfile.channel === chnl.id;
+
               return (
                 <ChannelCard
                   key={chnl.id}

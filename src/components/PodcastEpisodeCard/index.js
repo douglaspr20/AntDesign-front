@@ -70,10 +70,10 @@ function EpisodeCard({
     e.stopPropagation();
 
     const isSavedForLater =
-      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile.id);
+      !isEmpty(saveForLaterData) && saveForLaterData.includes(userProfile?.id);
     const status = isSavedForLater ? "not saved" : "saved";
 
-    saveForLaterPodcast(id, userProfile.id, status);
+    saveForLaterPodcast(id, userProfile?.id, status);
   };
 
   useEffect(() => {
@@ -184,13 +184,13 @@ function EpisodeCard({
               <CustomButton
                 className="mark-viewed"
                 type={
-                  viewed && viewed[userProfile.id] === "mark"
+                  viewed && viewed[userProfile?.id] === "mark"
                     ? "remove"
                     : "secondary"
                 }
                 size="xs"
                 text={
-                  viewed && viewed[userProfile.id] === "mark"
+                  viewed && viewed[userProfile?.id] === "mark"
                     ? "Viewed"
                     : "Mark As Completed"
                 }
@@ -199,25 +199,25 @@ function EpisodeCard({
                   e.stopPropagation();
                   setPodcastViewed(
                     id,
-                    viewed && viewed[userProfile.id] === "mark"
+                    viewed && viewed[userProfile?.id] === "mark"
                       ? "unmark"
                       : "mark"
                   );
                 }}
               />
-              {viewed && viewed[userProfile.id] !== "mark" && (
+              {viewed && viewed[userProfile?.id] !== "mark" && (
                 <CustomButton
                   className="save-for-later"
                   type={
                     !isEmpty(saveForLaterData) &&
-                    saveForLaterData.includes(userProfile.id)
+                    saveForLaterData.includes(userProfile?.id)
                       ? "remove"
                       : "third"
                   }
                   size="xs"
                   text={
                     !isEmpty(saveForLaterData) &&
-                    saveForLaterData.includes(userProfile.id)
+                    saveForLaterData.includes(userProfile?.id)
                       ? "Unsave"
                       : "Save for later"
                   }

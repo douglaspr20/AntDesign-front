@@ -4,23 +4,21 @@ import { INTERNAL_LINKS } from "enum";
 import { Route } from "react-router-dom";
 import { PublicHeader, MainHeader } from "components";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { homeSelector } from "redux/selectors/homeSelector";
 
 const StartRouteSwiftHeader = ({ 
   bulChannelPage,
-  userProfile
 }) => {
 
   return (
     <>
-      {bulChannelPage === "channel" && userProfile?.id === undefined &&
+      {bulChannelPage === "channel" && localStorage.getItem("community") === null &&
           <Route
               path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
               exact
               render={(props) => <PublicHeader bulChannelPage={bulChannelPage} {...props} />}
           />
       }
-      {bulChannelPage === "channel" && userProfile?.id !== undefined &&
+      {bulChannelPage === "channel" && localStorage.getItem("community") !== null &&
           <Route
               path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
               exact
@@ -41,7 +39,6 @@ const StartRouteSwiftHeader = ({
 
 const mapStateToProps = (state) => ({
     bulChannelPage: channelSelector(state).bulChannelPage,
-    userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {

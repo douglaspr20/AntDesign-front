@@ -1,22 +1,25 @@
-import React, { useEffect, useCallback} from "react";
+import React, { useEffect, useCallback, useState} from "react";
 import ChannelPage from "pages/Channel";
 import { connect } from "react-redux";
 import PublicEventPage from "pages/PublicEvent";
 import { INTERNAL_LINKS } from "enum";
 import { Route } from "react-router-dom";
-import { getChannelForName, setBulChannelPage } from "redux/actions/channel-actions";
+import { getChannelForName, setBulChannelPage, setChannel } from "redux/actions/channel-actions";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { getUser } from "redux/actions/home-actions";
+import { homeSelector } from "redux/selectors/homeSelector";
 
 const StartRouteSwift = ({ 
   match,
   getChannelForName,
   setBulChannelPage,
   bulChannelPage,
-  getUser
+  allChannels,
+  setChannel,
+  userProfile
 }) => {
 
   const {url} = match
+  const [channelOptimizate, setChannelOptimizate] = useState(false)
 
   const fixNameUrl = useCallback((name) => {
 
@@ -34,8 +37,12 @@ const StartRouteSwift = ({
 
       let isMounted = true;
       let pathNameFixed = url.substring(1,url.length)
+
+      let filter = allChannels.filter((channel) => {
+        return channel.name === fixNameUrl(pathNameFixed)
+      })
       
-      if (url) {
+      if (url && filter[0]?.name !== fixNameUrl(pathNameFixed)) {
         getChannelForName( JSON.stringify({name: fixNameUrl(pathNameFixed)}) , (error) => {
           if (isMounted && error) {
             setBulChannelPage("event")
@@ -43,17 +50,24 @@ const StartRouteSwift = ({
             setBulChannelPage("channel")
           }
         });
+      }else{
+        setChannel({
+          followers: filter[0].followers,
+          channel: {
+            User: userProfile,
+            ...filter[0],
+            followers: []
+          },
+        })
+        setBulChannelPage("channel")
+        setChannelOptimizate(true)
       }
   
       return () => {
         isMounted = false;
       };
       
-    }, [getChannelForName, fixNameUrl, url, setBulChannelPage]);
-
-    useEffect(() => {
-      getUser()
-    },[getUser])
+    }, [getChannelForName, fixNameUrl, url, setBulChannelPage, allChannels, setChannel, userProfile]);
 
     return (
       <>
@@ -61,7 +75,7 @@ const StartRouteSwift = ({
           <Route
               path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
               exact
-              render={(props) => <ChannelPage {...props} />}
+              render={(props) => <ChannelPage {...props} channelOptimizate={channelOptimizate} />}
           />
         }
         {bulChannelPage === "event" &&
@@ -78,12 +92,14 @@ const StartRouteSwift = ({
 
 const mapStateToProps = (state) => ({
   bulChannelPage: channelSelector(state).bulChannelPage,
+  allChannels: channelSelector(state).allChannels,
+  userProfile: homeSelector(state).userProfile
 });
 
 const mapDispatchToProps = {
   getChannelForName,
   setBulChannelPage,
-  getUser
+  setChannel
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartRouteSwift);
