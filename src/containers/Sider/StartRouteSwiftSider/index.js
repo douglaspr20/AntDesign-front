@@ -4,16 +4,14 @@ import { INTERNAL_LINKS } from "enum";
 import { Sidebar } from "components";
 import { Route } from "react-router-dom";
 import { channelSelector } from "redux/selectors/channelSelector";
-import { homeSelector } from "redux/selectors/homeSelector";
 
 const StartRouteSwiftSider = ({ 
   bulChannelPage,
-  userProfile
 }) => {
 
     return (
       <>
-        {bulChannelPage === "channel" && userProfile.id !== undefined &&
+        {bulChannelPage === "channel" && localStorage.getItem("community") !== null &&
             <Route
                 path={`${INTERNAL_LINKS.CHANNEL_PAGE}/:name`}
                 exact
@@ -26,7 +24,6 @@ const StartRouteSwiftSider = ({
 
 const mapStateToProps = (state) => ({
     bulChannelPage: channelSelector(state).bulChannelPage,
-    userProfile: homeSelector(state).userProfile,
 });
 
 const mapDispatchToProps = {
