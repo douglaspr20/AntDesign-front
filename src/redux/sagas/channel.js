@@ -231,7 +231,6 @@ export function* unsetFollowChannelSaga({ payload }) {
 }
 
 export function* notifyNewEmailChannelsSagas({ payload }) {
-  yield put(channelActions.setChannelLoading(true));
 
   try {
     const response = yield call(notifyNewEmailChannelsEndPoint, payload.chanelContent);
@@ -252,9 +251,7 @@ export function* notifyNewEmailChannelsSagas({ payload }) {
     } else if (payload.callback) {
       payload.callback("Something went wront. Please try again.");
     }
-  } finally {
-    yield put(channelActions.setChannelLoading(false));
-  }
+  } 
 }
 
 export function* exportFollowersChannelsSagas({ payload }) {
